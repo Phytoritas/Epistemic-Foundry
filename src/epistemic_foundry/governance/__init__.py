@@ -13,11 +13,21 @@ from .promotion import (
     PromotionRequest,
     decide_promotion,
 )
+from .separation import (
+    RelabelingRefused,
+    SelfApprovalRefused,
+    require_independent_approval,
+    require_no_empirical_relabeling,
+)
 
 __all__ = [
     "PromotionRefused",
     "PromotionRequest",
+    "RelabelingRefused",
+    "SelfApprovalRefused",
     "adjusted_support_count",
     "build_dependency_cluster",
     "decide_promotion",
+    "require_independent_approval",
+    "require_no_empirical_relabeling",
 ]
