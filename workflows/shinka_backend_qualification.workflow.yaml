@@ -1,0 +1,469 @@
+workflow_id: shinka_backend_qualification
+version: 4.0.0
+kind: dag
+description: Qualify ShinkaEvolve as an optional executable-program search backend
+  behind Foundry authority.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- external backend is optional and never canonical authority
+- exact source revision and license are recorded
+- raw combined score, archive or novelty labels cannot promote scientific claims
+- candidate and evaluator/holdout trust domains remain separated
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: resolve_shinka_source_revision
+  purpose: Resolve exact repository revision or package digest and Apache-2.0 license
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.evolution.resolve_shinka_source_revision:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/shinka-backend-manifest.schema.json
+  depends_on: []
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/source/**
+  capabilities:
+  - network_read
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - resolve_shinka_source_revision contract valid
+  - resolve_shinka_source_revision result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - resolve_shinka_source_revision_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: inventory_shinka_runtime_surfaces
+  purpose: Inventory runner, config, database, parent selection, novelty, bandit,
+    prompts, skills and execution modes
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.inventory_shinka_runtime_surfaces:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/workspace-map-snapshot.schema.json
+  depends_on:
+  - resolve_shinka_source_revision
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/inventory/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - inventory_shinka_runtime_surfaces contract valid
+  - inventory_shinka_runtime_surfaces result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - inventory_shinka_runtime_surfaces_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: map_shinka_candidate_contract
+  purpose: Map Program, metrics, correctness, archive and lineage to Foundry candidate
+    and receipt contracts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.map_shinka_candidate_contract:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/compatibility-matrix.schema.json
+  depends_on:
+  - inventory_shinka_runtime_surfaces
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/mapping/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - map_shinka_candidate_contract contract valid
+  - map_shinka_candidate_contract result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - map_shinka_candidate_contract_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: disable_unsafe_or_unqualified_features
+  purpose: Disable direct evaluator mutation, unsealed prompt coevolution, hidden-holdout
+    access and unsupported execution modes
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.disable_unsafe_or_unqualified_features:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/shinka-backend-manifest.schema.json
+  depends_on:
+  - map_shinka_candidate_contract
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/policy_overlay/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - disable_unsafe_or_unqualified_features contract valid
+  - disable_unsafe_or_unqualified_features result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - disable_unsafe_or_unqualified_features_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_shinka_adapter_sandbox
+  purpose: Build isolated adapter with pinned dependencies and capability leases
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.build_shinka_adapter_sandbox:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/artifact-manifest.schema.json
+  depends_on:
+  - disable_unsafe_or_unqualified_features
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/adapter/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - build_shinka_adapter_sandbox contract valid
+  - build_shinka_adapter_sandbox result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - build_shinka_adapter_sandbox_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: test_candidate_count_reconciliation
+  purpose: Verify proposed, evaluated, persisted, failed and missing candidates reconcile
+    exactly
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.test_candidate_count_reconciliation:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/stage-evaluation-result.schema.json
+  depends_on:
+  - build_shinka_adapter_sandbox
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/tests/counts/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - test_candidate_count_reconciliation contract valid
+  - test_candidate_count_reconciliation result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - test_candidate_count_reconciliation_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: test_resume_and_idempotency
+  purpose: Crash and resume database, archive, side-effect and source_job_id paths
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.test_resume_and_idempotency:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/stage-evaluation-result.schema.json
+  depends_on:
+  - build_shinka_adapter_sandbox
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/tests/resume/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - test_resume_and_idempotency contract valid
+  - test_resume_and_idempotency result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - test_resume_and_idempotency_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: test_novelty_failure_semantics
+  purpose: Verify novelty outages become typed UNASSESSED/FAILED rather than scientific
+    novelty
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.test_novelty_failure_semantics:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/stage-evaluation-result.schema.json
+  depends_on:
+  - build_shinka_adapter_sandbox
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/tests/novelty/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - test_novelty_failure_semantics contract valid
+  - test_novelty_failure_semantics result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - test_novelty_failure_semantics_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: test_evaluator_and_holdout_isolation
+  purpose: Verify candidate code and mutation models cannot read or mutate sealed
+    evaluator/holdout
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.test_evaluator_and_holdout_isolation:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/leakage-audit.schema.json
+  depends_on:
+  - build_shinka_adapter_sandbox
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/tests/isolation/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - test_evaluator_and_holdout_isolation contract valid
+  - test_evaluator_and_holdout_isolation result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - test_evaluator_and_holdout_isolation_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: test_bandit_delayed_reward_mapping
+  purpose: Verify raw combined score cannot directly update promotion or scientific
+    model reward
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.test_bandit_delayed_reward_mapping:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/operator-bandit-state.schema.json
+  depends_on:
+  - test_candidate_count_reconciliation
+  - test_resume_and_idempotency
+  - test_novelty_failure_semantics
+  - test_evaluator_and_holdout_isolation
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/tests/bandit/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - test_bandit_delayed_reward_mapping contract valid
+  - test_bandit_delayed_reward_mapping result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - test_bandit_delayed_reward_mapping_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: independent_shinka_adapter_audit
+  purpose: Audit source pin, mappings, sandbox, failures and known limitations
+  executor_type: llm
+  executor_ref: prompts/shinka_adapter_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/backend-adapter-qualification.schema.json
+  depends_on:
+  - test_bandit_delayed_reward_mapping
+  read_scope: []
+  write_scope:
+  - artifacts/shinka/review/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - independent_shinka_adapter_audit contract valid
+  - independent_shinka_adapter_audit result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - independent_shinka_adapter_audit_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: approve_shinka_backend_profile
+  purpose: Approve, restrict or reject the backend profile
+  executor_type: human_gate
+  executor_ref: epistemic_foundry.governance.backend:approve
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/approval-record.schema.json
+  depends_on:
+  - independent_shinka_adapter_audit
+  read_scope: []
+  write_scope:
+  - db.approval_records
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - approve_shinka_backend_profile contract valid
+  - approve_shinka_backend_profile result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - approve_shinka_backend_profile_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: publish_shinka_backend_manifest
+  purpose: Publish exact qualified adapter profile and limitations
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.publish_shinka_backend_manifest:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/shinka-backend-manifest.schema.json
+  depends_on:
+  - approve_shinka_backend_profile
+  read_scope: []
+  write_scope:
+  - db.backend_manifests
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - publish_shinka_backend_manifest contract valid
+  - publish_shinka_backend_manifest result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - publish_shinka_backend_manifest_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

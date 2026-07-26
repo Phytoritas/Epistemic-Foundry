@@ -1,0 +1,63 @@
+{
+  "reconciliation_id": "ERR-0001",
+  "run_id": "RUN-0001",
+  "source_result_id": "XR-0001",
+  "candidate_evidence_id": "EV-X-0001",
+  "source_evidence_class": "benchmark",
+  "target_evidence_role": "support",
+  "promotion_decision": "QUARANTINE",
+  "non_empirical_guard_passed": true,
+  "scope_mapping": {
+    "domain": "learning_science",
+    "population": "adult learners enrolled in introductory university courses",
+    "entity_type": "participant",
+    "entity_subtype": "university student",
+    "unit_of_analysis": "individual learner",
+    "setting": "controlled course-based study",
+    "geography": null,
+    "jurisdiction": null,
+    "language": "English",
+    "lifecycle_stage": null,
+    "spatial_scale": "individual",
+    "temporal_scale": "14-day delayed outcome",
+    "time_period": null,
+    "measurement_time": "14 days after the final study session",
+    "intervention_or_exposure": {
+      "name": "spaced retrieval practice",
+      "category": "learning intervention",
+      "min_value": 3,
+      "max_value": 3,
+      "unit": "sessions",
+      "duration": "one week",
+      "frequency": "three sessions",
+      "rate": null,
+      "route_or_delivery": "computer-based practice"
+    },
+    "comparator": "rereading with matched total study time",
+    "inclusion_criteria": [
+      "completed baseline assessment",
+      "completed all assigned sessions"
+    ],
+    "exclusion_criteria": [
+      "missing delayed outcome"
+    ],
+    "conditions": {
+      "matched_total_study_time": true,
+      "feedback_available": true,
+      "retention_interval_days": 14
+    },
+    "domain_extensions": {
+      "material_type": "expository text",
+      "outcome_instrument": "preregistered delayed-recall test"
+    }
+  },
+  "quality_adjustments": {
+    "directness": 0.3,
+    "reason": "benchmark evidence is indirect for empirical claims"
+  },
+  "reasons": [
+    "Retain as benchmark evidence; do not label as prospective empirical observation."
+  ],
+  "created_at": "2026-07-25T12:01:00Z",
+  "record_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+}

@@ -1,0 +1,26 @@
+version: 2.0.0
+loops:
+  discovery_until_dry:
+    convergence_predicate: no_fresh_items_for_required_dry_rounds
+    max_iterations: 8
+    max_cost_units: 100
+    max_wall_seconds: 7200
+    dry_rounds_required: 2
+    dedupe_against: all_seen_items
+    on_nonconvergence: escalate
+  review_fix:
+    convergence_predicate: no_confirmed_material_findings
+    max_iterations: 4
+    max_cost_units: 80
+    max_wall_seconds: 10800
+    dry_rounds_required: 1
+    dedupe_against: finding_fingerprint
+    on_nonconvergence: SPEC_GAP_or_FAIL
+  reassessment:
+    convergence_predicate: no_current_stale_artifact_in_affected_set
+    max_iterations: 3
+    max_cost_units: 100
+    max_wall_seconds: 21600
+    dry_rounds_required: 1
+    dedupe_against: artifact_revision_hash
+    on_nonconvergence: BLOCKED

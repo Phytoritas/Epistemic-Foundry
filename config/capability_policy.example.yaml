@@ -1,0 +1,30 @@
+policy_id: capability-policy-v2.0.0
+roles:
+  ingest_worker:
+  - filesystem_read
+  - object_store_write
+  - database_write
+  - parser_call
+  retrieval_worker:
+  - database_read
+  - artifact_read
+  - external_search_limited
+  scientific_role:
+  - artifact_read
+  - artifact_write
+  judge:
+  - artifact_read
+  - artifact_write
+  reviewer:
+  - repository_read
+  - test_artifact_read
+  validation_executor:
+  - approved_code_read
+  - isolated_compute
+  - artifact_write
+denials:
+- raw_shell_from_corpus_text
+- production_schema_change_by_agent
+- secret_in_model_context
+- self_approval
+- unapproved_external_mutation

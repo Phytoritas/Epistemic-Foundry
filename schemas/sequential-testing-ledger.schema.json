@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/sequential-testing-ledger.schema.json",
+  "title": "SequentialTestingLedger",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "ledger_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "family_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "testing_policy": {
+      "enum": [
+        "alpha_spending",
+        "e_value",
+        "bayesian_monitoring",
+        "fixed_horizon",
+        "other"
+      ]
+    },
+    "initial_budget": {
+      "type": "number",
+      "minimum": 0
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "test_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "generation": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "statistic": {
+            "type": "number"
+          },
+          "threshold": {
+            "type": "number"
+          },
+          "spent": {
+            "type": "number",
+            "minimum": 0
+          },
+          "decision": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "test_id",
+          "generation",
+          "statistic",
+          "threshold",
+          "spent",
+          "decision"
+        ]
+      },
+      "minItems": 1
+    },
+    "remaining_budget": {
+      "type": "number",
+      "minimum": 0
+    },
+    "selection_events": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "ledger_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "ledger_id",
+    "family_id",
+    "testing_policy",
+    "initial_budget",
+    "entries",
+    "remaining_budget",
+    "selection_events",
+    "ledger_hash"
+  ],
+  "description": "진화 과정의 반복 검정·중간 관찰·alpha spending을 누적 기록한다."
+}

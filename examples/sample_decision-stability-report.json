@@ -1,0 +1,29 @@
+{
+  "report_id": "DSR-0001",
+  "hypothesis_id": "HYP-0001",
+  "passport_revision": 1,
+  "perturbations": [
+    {
+      "perturbation_id": "PERT-1",
+      "type": "remove_top_support",
+      "description": "Remove the highest-ranked support item.",
+      "resulting_verdict": "CONDITIONAL",
+      "resulting_promotion": "LITERATURE_GROUNDED"
+    },
+    {
+      "perturbation_id": "PERT-2",
+      "type": "change_method_threshold",
+      "description": "Tighten method compatibility threshold.",
+      "resulting_verdict": "UNDERDETERMINED",
+      "resulting_promotion": "CANDIDATE"
+    }
+  ],
+  "verdict_flip_count": 1,
+  "promotion_flip_count": 1,
+  "stability_class": "MODERATE",
+  "sensitive_inputs": [
+    "method compatibility threshold"
+  ],
+  "created_at": "2026-07-25T12:01:00Z",
+  "report_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/phase-artifact-set.schema.json",
+  "title": "PhaseArtifactSet",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "set_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "phase": {
+      "enum": [
+        "IDLE",
+        "I",
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ]
+    },
+    "required_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "kind": {
+            "type": "string"
+          },
+          "schema_ref": {
+            "type": "string"
+          },
+          "content_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "receipt_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "status": {
+            "enum": [
+              "VALID",
+              "INVALID",
+              "MISSING",
+              "STALE"
+            ]
+          }
+        },
+        "required": [
+          "artifact_id",
+          "kind",
+          "schema_ref",
+          "content_hash",
+          "receipt_id",
+          "status"
+        ]
+      },
+      "minItems": 1
+    },
+    "optional_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "kind": {
+            "type": "string"
+          },
+          "schema_ref": {
+            "type": "string"
+          },
+          "content_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "receipt_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "status": {
+            "enum": [
+              "VALID",
+              "INVALID",
+              "MISSING",
+              "STALE"
+            ]
+          }
+        },
+        "required": [
+          "artifact_id",
+          "kind",
+          "schema_ref",
+          "content_hash",
+          "receipt_id",
+          "status"
+        ]
+      }
+    },
+    "complete": {
+      "type": "boolean"
+    },
+    "missing_kinds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "set_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "set_id",
+    "session_id",
+    "phase",
+    "required_artifacts",
+    "optional_artifacts",
+    "complete",
+    "missing_kinds",
+    "validated_at",
+    "set_hash"
+  ]
+}

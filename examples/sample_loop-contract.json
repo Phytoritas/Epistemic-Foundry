@@ -1,0 +1,17 @@
+{
+  "loop_id": "LOOP-discovery-0001",
+  "workflow_id": "evidence_update_and_reassessment",
+  "entry_node_id": "discover_candidates",
+  "exit_node_id": "confirm_saturation",
+  "state_artifact_id": "ART-SEENSET-0001",
+  "convergence_metric": "new_unique_candidate_count",
+  "convergence_predicate": "new_unique_candidate_count == 0 for dry_rounds_required rounds",
+  "max_iterations": 10,
+  "max_cost_units": 100.0,
+  "max_wall_seconds": 3600,
+  "dry_rounds_required": 2,
+  "dedupe_key": "canonical_claim_hash",
+  "seen_set_scope": "run",
+  "on_nonconvergence": "ESCALATE",
+  "contract_hash": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+}

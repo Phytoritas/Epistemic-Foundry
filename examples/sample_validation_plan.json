@@ -1,0 +1,89 @@
+{
+  "plan_id": "VPLAN-0001",
+  "hypothesis_id": "HYP-0001",
+  "target_id": "delayed_recall_pipeline",
+  "target_version": "1.0.0",
+  "objective": "Test whether retrieval practice adds preregistered delayed-recall value beyond matched exposure and baseline ability.",
+  "variable_mapping": {
+    "intervention": "treatment_group",
+    "baseline_ability": "baseline_score",
+    "outcome": "delayed_recall_score"
+  },
+  "mechanism_mapping": {
+    "retrieval_strengthening": "positive adjusted treatment contrast at delayed assessment"
+  },
+  "baseline": {
+    "model": "delayed_recall ~ baseline_score + matched_study_time"
+  },
+  "actions": [
+    {
+      "action": "validate_input",
+      "arguments": {}
+    },
+    {
+      "action": "fit_preregistered_model",
+      "arguments": {
+        "model_family": "linear"
+      }
+    },
+    {
+      "action": "run_holdout_analysis",
+      "arguments": {
+        "split": "site"
+      }
+    }
+  ],
+  "scenario_matrix": [
+    {
+      "retention_interval_days": 1
+    },
+    {
+      "retention_interval_days": 14
+    },
+    {
+      "retention_interval_days": 30
+    }
+  ],
+  "inputs": {
+    "dataset_artifact_id": "ART-DATA-0001"
+  },
+  "controlled_conditions": {
+    "study_time": "matched",
+    "feedback": "identical"
+  },
+  "observables": [
+    "adjusted_effect",
+    "confidence_interval"
+  ],
+  "metrics": [
+    "adjusted_mean_difference",
+    "minimum_practically_relevant_effect",
+    "holdout_error"
+  ],
+  "falsification_rule": "The registered claim fails this screen if the delayed contrast is below the practical threshold and the interval excludes that threshold across the preregistered holdout analysis.",
+  "assumptions": [
+    "outcome scoring is comparable across groups",
+    "the target manifest matches the supplied data schema"
+  ],
+  "identifiability_warnings": [],
+  "random_seed": 104729,
+  "environment_digest": "sha256:9b11fc061d8fda74652af81938625ce4cc3c5b506525b2bd1887d9c247de7a88",
+  "resource_limits": {
+    "timeout_seconds": 1800,
+    "cpu_count": 2,
+    "memory_mb": 4096
+  },
+  "approval_required": false,
+  "provenance_manifest_id": "PM-VPLAN-0001",
+  "preregistration_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "analysis_plan_artifact_id": "ART-ANALYSIS-PLAN-0001",
+  "stopping_rules": [
+    "stop after all scenarios complete or a safety gate blocks execution"
+  ],
+  "data_leakage_guards": [
+    "holdout labels unavailable to planner"
+  ],
+  "approval_record_ids": [
+    "APR-0001"
+  ]
+}

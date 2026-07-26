@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/effect-receipt.schema.json",
+  "title": "EffectReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "intent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "external_operation_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "SUCCEEDED",
+        "FAILED",
+        "UNKNOWN",
+        "ROLLED_BACK",
+        "NOT_EXECUTED"
+      ]
+    },
+    "result_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "error_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "observed_state_hash": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^(sha256:[0-9a-f]{64})?$"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reconciliation_required": {
+      "type": "boolean"
+    },
+    "receipt_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "intent_id",
+    "run_id",
+    "external_operation_id",
+    "status",
+    "result_artifact_ids",
+    "error_artifact_ids",
+    "observed_state_hash",
+    "idempotency_key",
+    "started_at",
+    "finished_at",
+    "reconciliation_required",
+    "receipt_hash"
+  ]
+}

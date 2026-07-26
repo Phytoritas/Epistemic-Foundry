@@ -1,0 +1,43 @@
+{
+  "run_id": "RUN-0001",
+  "run_type": "deliberate",
+  "input_artifact_ids": [
+    "ART-INSIGHT-0001",
+    "ART-EP-0001"
+  ],
+  "corpus_snapshot_hash": "sha256:578899c4f2cb96c5dda4cae946bf198ff4cc9f66596fb4dd86c673709b337503",
+  "ontology_version": "core-ontology-v2.0.0",
+  "workflow_id": "insight_deliberation",
+  "workflow_version": "2.0.0",
+  "model_policy_version": "model-policy-v2.0.0",
+  "allowed_capabilities": [
+    "database_read",
+    "artifact_read",
+    "artifact_write"
+  ],
+  "budget": {
+    "max_tokens": 250000,
+    "max_cost_usd": null,
+    "max_wall_seconds": 7200,
+    "max_concurrency": 8
+  },
+  "approval_policy": "high_risk_only",
+  "created_at": "2026-07-25T12:00:00Z",
+  "run_hash": "sha256:dc963b4786c4283b3695ee6989e9a6d86a2e945cf3ef71f747e07f2165a0f376",
+  "schema_bundle_version": "2.0.0",
+  "policy_bundle_id": "PB-0001",
+  "domain_pack_refs": [
+    "DP-learning-science@1.0.0"
+  ],
+  "security_profile_version": "2.0.0",
+  "expected_node_ids": [
+    "n1",
+    "n2"
+  ],
+  "convergence_policy": {
+    "loop_contract_ids": [],
+    "default_max_iterations": 3,
+    "nonconvergence_action": "ESCALATE"
+  },
+  "retention_policy_version": "2.0.0"
+}

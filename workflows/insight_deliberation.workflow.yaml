@@ -1,0 +1,1104 @@
+workflow_id: insight_deliberation
+version: 4.0.0
+kind: dag
+description: Run asymmetric evidence deliberation, adversarial challenge, stability
+  analysis, attestation, and Passport issuance.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- first-round briefs are blind and evidence-access asymmetric
+- every substantive statement cites an Evidence or Argument ID or is marked unsupported
+- method veto and deterministic gates cannot be overruled by majority vote
+- minority reports and strongest counterevidence survive promotion
+- epistemic, causal, novelty, validation, and promotion states remain separate
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: validate_insight_card
+  purpose: Validate immutable InsightCard registration and route non-falsifiable cards
+    to Inbox
+  executor_type: policy
+  executor_ref: epistemic_foundry.policy.insights:validate_for_council
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - db.insights
+  write_scope:
+  - db.gate_decisions/council_readiness
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - statement/scope/mechanism/predictions/falsifiers present
+  - revision hash verified
+  - risk class assigned
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - council_readiness_decision_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: decompose_hypothesis
+  purpose: Decompose the insight into atomic predictions, premises, assumptions, alternatives,
+    and falsifiers
+  executor_type: llm
+  executor_ref: prompts/hypothesis_decomposer.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - validate_insight_card
+  read_scope:
+  - db.insights
+  write_scope:
+  - db.hypothesis_decompositions
+  capabilities:
+  - database_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - scope not broadened
+  - hidden assumptions explicit
+  - predictions are discriminable
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - hypothesis_decomposition_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: dispatch_evidence_retrieval
+  purpose: Execute the canonical evidence retrieval subworkflow against the decomposition
+  executor_type: subworkflow
+  executor_ref: workflows/evidence_retrieval.workflow.yaml
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - decompose_hypothesis
+  read_scope:
+  - db.hypothesis_decompositions
+  - db.insights
+  write_scope:
+  - artifacts/subworkflows/evidence_retrieval/**
+  capabilities:
+  - workflow_dispatch
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 7200
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - child run ID recorded
+  - child terminal status PASS or explicit PARTIAL
+  - child artifact hashes linked
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - retrieval_subworkflow_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: verify_evidence_pack
+  purpose: Verify pack completeness, source resolution, trust labels, and retrieval
+    certificate before agents see it
+  executor_type: policy
+  executor_ref: epistemic_foundry.policy.evidence_pack:verify
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - dispatch_evidence_retrieval
+  read_scope:
+  - db.evidence_packs
+  - db.retrieval_runs
+  - db.coverage_snapshots
+  - db.gate_decisions/retrieval
+  write_scope:
+  - db.gate_decisions/evidence_pack
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - all evidence IDs resolve
+  - untrusted text remains quoted data
+  - mandatory lane receipts present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - evidence_pack_gate_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: map_argument_graph
+  purpose: Create a typed argument graph of premises, rules, attacks, undercuts, alternatives,
+    and predictions
+  executor_type: llm
+  executor_ref: prompts/argument_mapper.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - verify_evidence_pack
+  - decompose_hypothesis
+  read_scope:
+  - db.hypothesis_decompositions
+  - db.evidence_packs
+  write_scope:
+  - db.argument_graphs
+  capabilities:
+  - database_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - argument nodes reference evidence or assumptions
+  - attack types explicit
+  - proof gaps represented
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - argument_graph_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: assign_evidence_acls
+  purpose: Create role-specific ContextAssemblyManifests and evidence access controls
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evidence_parliament.acl:assign
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - verify_evidence_pack
+  - map_argument_graph
+  read_scope:
+  - db.evidence_packs
+  - db.argument_graphs
+  - config/policy_bundle.yaml
+  write_scope:
+  - db.context_manifests
+  capabilities:
+  - database_read
+  - filesystem_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - Defender and Prosecutor blind views differ
+  - source trust and injection labels retained
+  - context ordering and hash recorded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - context_manifests_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: brief_defender
+  purpose: Construct the strongest scope-bounded support case
+  executor_type: llm
+  executor_ref: prompts/defender.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assign_evidence_acls
+  read_scope:
+  - db.context_manifests
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/briefs/defender/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - brief follows CouncilBrief schema
+  - every material assertion grounded or marked unsupported
+  - position-change condition supplied
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - support_brief_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: brief_prosecutor
+  purpose: Seek decisive refutation, nulls, reverse causation, and minimum survivable
+    scope
+  executor_type: llm
+  executor_ref: prompts/prosecutor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assign_evidence_acls
+  read_scope:
+  - db.context_manifests
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/briefs/prosecutor/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - brief follows CouncilBrief schema
+  - every material assertion grounded or marked unsupported
+  - position-change condition supplied
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - counter_brief_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: brief_method_auditor
+  purpose: Judge whether measurements and designs can support each target claim; hold
+    veto
+  executor_type: llm
+  executor_ref: prompts/method_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assign_evidence_acls
+  read_scope:
+  - db.context_manifests
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/briefs/method_auditor/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - brief follows CouncilBrief schema
+  - every material assertion grounded or marked unsupported
+  - position-change condition supplied
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - method_brief_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: brief_scope_auditor
+  purpose: Audit population, setting, time, scale, intervention, and external validity
+  executor_type: llm
+  executor_ref: prompts/scope_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assign_evidence_acls
+  read_scope:
+  - db.context_manifests
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/briefs/scope_auditor/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - brief follows CouncilBrief schema
+  - every material assertion grounded or marked unsupported
+  - position-change condition supplied
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - scope_brief_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: brief_inductivist
+  purpose: Aggregate condition-result tuples and identify heterogeneity without causal
+    overclaim
+  executor_type: llm
+  executor_ref: prompts/inductivist.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assign_evidence_acls
+  read_scope:
+  - db.context_manifests
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/briefs/inductivist/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - brief follows CouncilBrief schema
+  - every material assertion grounded or marked unsupported
+  - position-change condition supplied
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - inductive_brief_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: brief_deductivist
+  purpose: Check premises, rules, proof trace, conservation constraints, and broken
+    edges
+  executor_type: llm
+  executor_ref: prompts/deductivist.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assign_evidence_acls
+  read_scope:
+  - db.context_manifests
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/briefs/deductivist/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - brief follows CouncilBrief schema
+  - every material assertion grounded or marked unsupported
+  - position-change condition supplied
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - deductive_brief_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: brief_causal_auditor
+  purpose: Assess DAGs, confounding, mediation, colliders, temporal order, and identifiability
+  executor_type: llm
+  executor_ref: prompts/causal_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assign_evidence_acls
+  read_scope:
+  - db.context_manifests
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/briefs/causal_auditor/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - brief follows CouncilBrief schema
+  - every material assertion grounded or marked unsupported
+  - position-change condition supplied
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - causal_brief_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: brief_novelty_examiner
+  purpose: Bound prior-art and novelty claims to the executed search certificate
+  executor_type: llm
+  executor_ref: prompts/novelty_examiner.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assign_evidence_acls
+  read_scope:
+  - db.context_manifests
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/briefs/novelty_examiner/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - brief follows CouncilBrief schema
+  - every material assertion grounded or marked unsupported
+  - position-change condition supplied
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - novelty_brief_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: brief_bias_auditor
+  purpose: Assess publication, selection, corpus, method, and lab-family bias
+  executor_type: llm
+  executor_ref: prompts/bias_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assign_evidence_acls
+  read_scope:
+  - db.context_manifests
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/briefs/bias_auditor/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - brief follows CouncilBrief schema
+  - every material assertion grounded or marked unsupported
+  - position-change condition supplied
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - bias_brief_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: brief_dependency_auditor
+  purpose: Audit independence, shared samples, versions, citation ancestry, and evidence
+    inflation
+  executor_type: llm
+  executor_ref: prompts/dependency_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assign_evidence_acls
+  read_scope:
+  - db.context_manifests
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/briefs/dependency_auditor/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - brief follows CouncilBrief schema
+  - every material assertion grounded or marked unsupported
+  - position-change condition supplied
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - dependency_brief_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: typed_cross_examination
+  purpose: Generate targeted attacks and replies over typed Claim/Argument IDs without
+    free-form consensus drift
+  executor_type: llm
+  executor_ref: prompts/cross_examiner.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - brief_defender
+  - brief_prosecutor
+  - brief_method_auditor
+  - brief_scope_auditor
+  - brief_inductivist
+  - brief_deductivist
+  - brief_causal_auditor
+  - brief_novelty_examiner
+  - brief_bias_auditor
+  - brief_dependency_auditor
+  read_scope:
+  - artifacts/council/briefs/defender/**
+  - artifacts/council/briefs/prosecutor/**
+  - artifacts/council/briefs/method_auditor/**
+  - artifacts/council/briefs/scope_auditor/**
+  - artifacts/council/briefs/inductivist/**
+  - artifacts/council/briefs/deductivist/**
+  - artifacts/council/briefs/causal_auditor/**
+  - artifacts/council/briefs/novelty_examiner/**
+  - artifacts/council/briefs/bias_auditor/**
+  - artifacts/council/briefs/dependency_auditor/**
+  - db.argument_graphs
+  write_scope:
+  - db.cross_examinations
+  capabilities:
+  - artifact_read
+  - database_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - attack target ID valid
+  - attack type enumerated
+  - reply cites evidence or concedes
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - cross_examination_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: falsification_round
+  purpose: Attempt to kill the surviving hypothesis using strongest counterexample,
+    null model, artifact, and common-cause explanation
+  executor_type: llm
+  executor_ref: prompts/prosecutor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - typed_cross_examination
+  read_scope:
+  - db.cross_examinations
+  - db.evidence_packs
+  - db.argument_graphs
+  write_scope:
+  - artifacts/council/falsification/**
+  capabilities:
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - at least one concrete falsification attempt
+  - search limits acknowledged
+  - minimum scope revision proposed
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - falsification_record_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: abductive_mediation
+  purpose: Generate competing minimal explanations for unresolved contradictions and
+    discriminating observations
+  executor_type: llm
+  executor_ref: prompts/abductive_mediator.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - typed_cross_examination
+  - falsification_round
+  read_scope:
+  - db.cross_examinations
+  - artifacts/council/falsification/**
+  - db.coverage_snapshots
+  write_scope:
+  - artifacts/aporia_engine/abductions/**
+  capabilities:
+  - database_read
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - multiple competitors retained
+  - new mechanism does not masquerade as evidence
+  - discriminating test proposed
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - abductive_hypotheses_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: write_minority_report
+  purpose: Preserve the strongest unresolved dissent and why the emerging majority
+    may be wrong
+  executor_type: llm
+  executor_ref: prompts/minority_reporter.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - typed_cross_examination
+  - falsification_round
+  - abductive_mediation
+  read_scope:
+  - db.cross_examinations
+  - artifacts/council/falsification/**
+  - artifacts/aporia_engine/abductions/**
+  write_scope:
+  - db.minority_reports
+  capabilities:
+  - database_read
+  - artifact_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - minority claim cites evidence
+  - unresolved test explicit
+  - empty dissent only with documented reason
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - minority_report_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: evaluate_deterministic_gates
+  purpose: Evaluate provenance, scope, retrieval, independence, method veto, causal
+    ceiling, dissent, and completeness policies
+  executor_type: policy
+  executor_ref: epistemic_foundry.policy.council:evaluate_gates
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - write_minority_report
+  - brief_defender
+  - brief_prosecutor
+  - brief_method_auditor
+  - brief_scope_auditor
+  - brief_inductivist
+  - brief_deductivist
+  - brief_causal_auditor
+  - brief_novelty_examiner
+  - brief_bias_auditor
+  - brief_dependency_auditor
+  read_scope:
+  - db.evidence_packs
+  - db.retrieval_runs
+  - db.context_manifests
+  - db.cross_examinations
+  - db.minority_reports
+  - db.gate_decisions/**
+  write_scope:
+  - db.gate_decisions/council
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - non-waivable gates machine-enforced
+  - method veto promotion ceiling applied
+  - all expected role outputs reconciled
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - council_gate_set_created
+  required_policy_checks:
+  - council_promotion_policy
+  - method_veto_policy
+  - causal_claim_policy
+  - dissent_preservation_policy
+- node_id: adjudicate
+  purpose: Write a schema-bound verdict constrained by gate outcomes, strongest support,
+    strongest refutation, and unresolved issues
+  executor_type: llm
+  executor_ref: prompts/judge.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - evaluate_deterministic_gates
+  read_scope:
+  - db.gate_decisions/council
+  - db.argument_graphs
+  - db.cross_examinations
+  - db.minority_reports
+  - artifacts/aporia_engine/abductions/**
+  write_scope:
+  - db.adjudications
+  capabilities:
+  - database_read
+  - artifact_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - judge cannot override failed gate
+  - multi-axis status explicit
+  - language bounded to evidence scope
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - adjudication_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: analyze_decision_stability
+  purpose: Test sensitivity to evidence ordering, role omission, dependent-study removal,
+    and allowed model variation
+  executor_type: llm
+  executor_ref: prompts/decision_stability_analyst.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - adjudicate
+  read_scope:
+  - db.adjudications
+  - db.evidence_packs
+  - db.context_manifests
+  - db.dependency_clusters
+  write_scope:
+  - db.decision_stability_reports
+  capabilities:
+  - database_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - perturbation set preregistered
+  - status flips and fragile dimensions reported
+  - original adjudication not overwritten
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - decision_stability_report_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: independent_attestation
+  purpose: Independently attest the structured evidence pack, argument graph, gates,
+    adjudication, and stability report
+  executor_type: llm
+  executor_ref: prompts/independent_attestor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - analyze_decision_stability
+  read_scope:
+  - db.evidence_packs
+  - db.argument_graphs
+  - db.gate_decisions/council
+  - db.adjudications
+  - db.decision_stability_reports
+  - db.minority_reports
+  write_scope:
+  - db.attestations
+  capabilities:
+  - database_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - attestor receives no persuasive transcript beyond typed artifacts
+  - hashes and unresolved issues checked
+  - attestation may reject
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - attestation_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: resolve_human_review
+  purpose: Record required human approval, rejection, scope amendment, or NOT_REQUIRED
+    without overwriting machine outputs
+  executor_type: human_gate
+  executor_ref: epistemic_foundry.governance.human_review:resolve
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - independent_attestation
+  read_scope:
+  - db.attestations
+  - db.adjudications
+  - db.gate_decisions/council
+  - config/policy_bundle.yaml
+  write_scope:
+  - db.human_decisions
+  capabilities:
+  - database_read
+  - database_write
+  - human_approval
+  model_tier: deterministic
+  timeout_seconds: 86400
+  max_attempts: 1
+  failure_policy: mark_partial
+  acceptance_checks:
+  - risk policy determines necessity
+  - human rationale and actor recorded
+  - machine and human decisions remain distinct
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - human_decision_recorded
+  required_policy_checks:
+  - human_review_policy
+  - high_impact_decision_policy
+- node_id: issue_hypothesis_passport
+  purpose: Issue an immutable-revision HypothesisPassport with evidence, dissent,
+    stability, search scope, and next test
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.passports.issue:issue
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - resolve_human_review
+  read_scope:
+  - db.adjudications
+  - db.attestations
+  - db.human_decisions
+  - db.decision_stability_reports
+  - db.evidence_packs
+  - db.coverage_snapshots
+  - db.minority_reports
+  write_scope:
+  - db.passports
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - epistemic/causal/novelty/validation/promotion states separate
+  - minority and strongest counterevidence retained
+  - lifecycle and staleness fields initialized
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - hypothesis_passport_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: commit_deliberation_projection
+  purpose: Commit D/R-Graph projections and Noetic Ledger events from approved artifacts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evidence_parliament.projection:commit
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - issue_hypothesis_passport
+  read_scope:
+  - db.passports
+  - db.adjudications
+  - db.attestations
+  - db.cross_examinations
+  - db.argument_graphs
+  write_scope:
+  - db.projections/reasoning_deliberation
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - projection rebuildable
+  - superseded decisions preserved
+  - event chain complete
+  resource_dependencies:
+  - exclusive:deliberation_projection
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - deliberation_projection_updated
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

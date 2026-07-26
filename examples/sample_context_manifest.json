@@ -1,0 +1,41 @@
+{
+  "manifest_id": "CM-0001",
+  "run_id": "RUN-0001",
+  "node_id": "prosecutor",
+  "agent_role": "Prosecutor",
+  "evidence_ids": [
+    "EV-0101",
+    "EV-0201",
+    "EV-0301"
+  ],
+  "excluded_evidence_ids": [
+    "EV-0001",
+    "EV-0002"
+  ],
+  "query_hashes": [
+    "sha256:e3e515437cab561c63a5a062c042fbdf3ac1f79267c29746fecd41a50a420fbc"
+  ],
+  "ranking_version": "ranking-v1.0.0",
+  "ontology_version": "core-ontology-v2.0.0",
+  "prompt_hash": "sha256:0c829048890ab0430ebffb728a78895bca60c21d6728d612fa1e8a7de90d653a",
+  "model_identifier": "provider:model-version-pinned-at-runtime",
+  "model_parameters": {
+    "temperature": 0,
+    "reasoning_effort": "high"
+  },
+  "created_at": "2026-07-25T12:00:00Z",
+  "source_trust_labels": {
+    "EV-0001": "trusted",
+    "EV-0002": "trusted"
+  },
+  "injection_scan_report_id": "SIR-0001",
+  "redaction_policy_version": "2.0.0",
+  "token_accounting": {
+    "instruction_tokens": 1200,
+    "evidence_tokens": 4200,
+    "tool_tokens": 300,
+    "total_tokens": 5700
+  },
+  "context_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "ordering_strategy": "role_acl_then_relevance"
+}

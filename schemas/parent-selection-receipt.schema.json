@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/parent-selection-receipt.schema.json",
+  "title": "ParentSelectionReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "island_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "eligible_candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "selected_parent_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "acquisition_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "acquisition_components": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "expected_information_gain": {
+          "type": "number"
+        },
+        "uncertainty": {
+          "type": "number"
+        },
+        "coverage_debt": {
+          "type": "number"
+        },
+        "replication_debt": {
+          "type": "number"
+        },
+        "lineage_saturation": {
+          "type": "number"
+        },
+        "cost_penalty": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "expected_information_gain",
+        "uncertainty",
+        "coverage_debt",
+        "replication_debt",
+        "lineage_saturation",
+        "cost_penalty"
+      ]
+    },
+    "random_seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "receipt_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "evolution_run_id",
+    "island_id",
+    "eligible_candidate_ids",
+    "selected_parent_ids",
+    "acquisition_policy",
+    "acquisition_components",
+    "random_seed",
+    "receipt_hash"
+  ],
+  "description": "부모 선택이 어떤 후보군·획득함수·불확실성·비용으로 이루어졌는지 기록한다."
+}

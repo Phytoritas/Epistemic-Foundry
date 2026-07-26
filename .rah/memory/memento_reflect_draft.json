@@ -1,0 +1,32 @@
+{
+  "summary": [
+    "Bootstrapped C:\\dev\\insight\\Epistemic-Foundry into the recursive-architecture harness with `rah admin setup` (docs/architecture spine + .rah sidecar + managed .gitignore).",
+    "Verified the skill package itself: `verify --tier smoke` passed (manifest/compile/byte-contracts) and `admin parity` reported in_parity with the ~/.claude mirror (53 managed files).",
+    "Ran the full pytest suite file-by-file from outside the package: 354 passed, 4 skipped, 0 failed across test_rah_core, test_verify, test_state_store, test_ralph_state_probe, test_agent_engine, test_prd_projection, test_fleet.",
+    "Hydrated Memento (context 23 fragments, caseMode recall 3 prior RAH cases, tool_feedback 3755) and recorded it in .rah/memory + .rah/state so doctor reports honest freshness.",
+    "Doctor now passes 15 checks; 2 warnings remain by design: no git/repo markers at root, and no deployment.json (only written by `admin install`, not by `admin setup`)."
+  ],
+  "decisions": [
+    "Authored repo-local AGENTS.md at the root carrying the harness overlay (docs/architecture spine, .rah sidecar, implementation-gate discipline) plus the Windows Git Bash invocation rule, which cleared the doctor agents_visibility warning.",
+    "Left the repository un-initialized for Git: harness setup does not require it and initializing was outside the requested setup scope."
+  ],
+  "errors_resolved": [
+    "Running pytest with the package root as CWD created .rah/ and .pytest_cache/ inside the skill package, which broke the closed package-manifest contract and made 6 tests fail with 'refusing state-mutating dispatch' (unmanaged_extra: .rah). Quarantining both directories and rerunning from /tmp produced a clean full pass."
+  ],
+  "new_procedures": [
+    "Always run the RAH package test suite from a directory outside the package (e.g. `cd /tmp && python -m pytest <pkg>/tests/<file>.py -p no:cacheprovider`); pytest artifacts written into the package root violate invariant I6 and cause false failures.",
+    "`verify --tier full` and the whole-suite pytest run exceed the 5-minute shell execution cap on this machine (test_fleet.py alone is ~193 s); split verification into smoke tier plus per-file pytest runs instead of retrying the single long command.",
+    "This environment's reliability hook blocks assembled/backgrounded RAH command strings; invoke rah.py as a single literal `bash -lc \"python '<abs path>/automation/rah.py' ...\"` command."
+  ],
+  "open_questions": [
+    "No goal/source has been registered yet: `.rah/ralph` is empty and the implementation gate is intentionally still blocked until `rah run <root> --goal ... --source ...` is issued.",
+    "Whether Epistemic-Foundry should become a Git repository before substantive work begins."
+  ],
+  "source_paths": [
+    "docs\\architecture\\Phytoritas.md",
+    ".rah/logs/activity_log.md",
+    ".rah/memory/decision_register.md",
+    ".rah/plans/current_loop.md"
+  ],
+  "note": "Fill this from observed work, then use it as the source for reflect()."
+}

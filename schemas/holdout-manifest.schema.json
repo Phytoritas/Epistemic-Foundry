@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/holdout-manifest.schema.json",
+  "title": "HoldoutManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "holdout_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dataset_or_fixture_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "split_strategy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection_cutoff": {
+      "type": "string",
+      "minLength": 1
+    },
+    "access_principal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "candidate_access": {
+      "enum": [
+        "NONE",
+        "METADATA_ONLY",
+        "AGGREGATE_ONLY"
+      ]
+    },
+    "unblinding_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rotation_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "holdout_manifest_id",
+    "dataset_or_fixture_ids",
+    "split_strategy",
+    "selection_cutoff",
+    "access_principal_ids",
+    "candidate_access",
+    "unblinding_policy",
+    "rotation_policy",
+    "manifest_hash"
+  ],
+  "description": "숨은 검증 데이터·challenge split·접근권한·봉인 해시를 정의한다."
+}

@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/host-capability-report.schema.json",
+  "title": "HostCapabilityReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "host": {
+      "enum": [
+        "codex_cli",
+        "codex_desktop",
+        "chatgpt_work",
+        "claude_code",
+        "other"
+      ]
+    },
+    "host_version": {
+      "type": "string"
+    },
+    "plugin_version": {
+      "type": "string"
+    },
+    "detected_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "capabilities": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "state": {
+            "enum": [
+              "SUPPORTED",
+              "UNSUPPORTED",
+              "UNKNOWN",
+              "DISABLED",
+              "ERROR"
+            ]
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "observed_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "state",
+          "evidence"
+        ]
+      }
+    },
+    "hook_events": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "unobserved_tool_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "mode": {
+      "enum": [
+        "FULL",
+        "DEGRADED",
+        "READ_ONLY",
+        "SAFE_MODE",
+        "BLOCKED"
+      ]
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "report_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "report_id",
+    "host",
+    "host_version",
+    "plugin_version",
+    "detected_at",
+    "capabilities",
+    "hook_events",
+    "unobserved_tool_paths",
+    "mode",
+    "blockers",
+    "report_hash"
+  ]
+}

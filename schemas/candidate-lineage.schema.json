@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/candidate-lineage.schema.json",
+  "title": "CandidateLineage",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "lineage_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "inspiration_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "mutation_operator_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "crossover_parent_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "island_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ancestor_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "lineage_id",
+    "candidate_id",
+    "parent_ids",
+    "inspiration_ids",
+    "mutation_operator_ids",
+    "crossover_parent_ids",
+    "generation",
+    "island_id",
+    "ancestor_hashes",
+    "created_at"
+  ],
+  "description": "후보의 부모·영감·교차·도전 생존 이력을 불변 계보로 기록한다."
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/operator-bandit-state.schema.json",
+  "title": "OperatorBanditState",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "state_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy": {
+      "enum": [
+        "ucb",
+        "thompson",
+        "safe_ucb",
+        "fixed"
+      ]
+    },
+    "arms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "arm_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pulls": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "immediate_reward_mean": {
+            "type": "number"
+          },
+          "delayed_reward_mean": {
+            "type": "number"
+          },
+          "mean_cost": {
+            "type": "number",
+            "minimum": 0
+          },
+          "failures": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "safety_violations": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "arm_id",
+          "pulls",
+          "immediate_reward_mean",
+          "delayed_reward_mean",
+          "mean_cost",
+          "failures",
+          "safety_violations"
+        ]
+      },
+      "minItems": 1
+    },
+    "exploration_budget": {
+      "type": "number",
+      "minimum": 0
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "state_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "state_id",
+    "evolution_run_id",
+    "policy",
+    "arms",
+    "exploration_budget",
+    "last_updated",
+    "state_hash"
+  ],
+  "description": "변이 연산자·모델의 즉시/지연 보상과 비용을 분리해 안전한 탐색 상태를 저장한다."
+}

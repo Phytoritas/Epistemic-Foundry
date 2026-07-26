@@ -1,0 +1,462 @@
+workflow_id: plugin_upgrade_migration
+version: 4.0.0
+kind: dag
+description: Upgrade or roll back the plugin with package verification, hook trust,
+  migration dry-run and replay.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- upgrade is an effectful gated workflow
+- changed hooks require explicit trust
+- migrations never manufacture evidence
+- rollback preserves audit history
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: freeze_pre_upgrade_state
+  purpose: Pause mutating jobs and freeze plugin, state, policy and artifact snapshots
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.freeze_pre_upgrade_state:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - plugin/**
+  - db/**
+  - .epistemic-foundry/**
+  write_scope:
+  - backups/pre_upgrade/**
+  capabilities:
+  - filesystem_read
+  - filesystem_write
+  - database_read
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - writes quiesced
+  - snapshot hashes recorded
+  - active leases handled
+  resource_dependencies:
+  - exclusive:upgrade
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: verify_candidate_package
+  purpose: Verify candidate manifest, bundle hash, signature, SBOM and compatibility
+    declaration
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.verify_candidate_package:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - freeze_pre_upgrade_state
+  read_scope:
+  - candidate_plugin/**
+  write_scope:
+  - artifacts/upgrade/package_verification/**
+  capabilities:
+  - filesystem_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - manifest and bundle hash match
+  - signature status explicit
+  - untrusted package blocked
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: diff_hooks_skills_and_capabilities
+  purpose: Diff trusted hooks, skills, MCP tools, permissions and host requirements
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.diff_hooks_skills_and_capabilities:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - verify_candidate_package
+  read_scope:
+  - plugin/**
+  - candidate_plugin/**
+  write_scope:
+  - artifacts/upgrade/capability_diff/**
+  capabilities:
+  - filesystem_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - modified hook hashes listed
+  - new permissions explicit
+  - removed capabilities visible
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: probe_candidate_in_isolation
+  purpose: Install candidate into isolated local marketplace/profile and run capability
+    probes
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.probe_candidate_in_isolation:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - verify_candidate_package
+  read_scope:
+  - candidate_plugin/**
+  write_scope:
+  - artifacts/upgrade/probe/**
+  capabilities:
+  - sandbox_execute
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - fresh-install path tested
+  - PATH-less CLI tested
+  - host limitations recorded
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compile_schema_migration_plan
+  purpose: Compile schema/store/artifact migrations, compatibility window and rollback
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.compile_schema_migration_plan:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - diff_hooks_skills_and_capabilities
+  - probe_candidate_in_isolation
+  read_scope:
+  - schemas/**
+  - candidate_plugin/**
+  - db.migration_state
+  write_scope:
+  - artifacts/upgrade/migration_plan/**
+  capabilities:
+  - filesystem_read
+  - database_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - each breaking change mapped
+  - backfill and rollback defined
+  - no narrative completion converted to receipt
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: dry_run_migrations
+  purpose: Run migrations against a verified clone and compare replay/Passport samples
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.dry_run_migrations:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_schema_migration_plan
+  read_scope:
+  - backups/pre_upgrade/**
+  - artifacts/upgrade/migration_plan/**
+  write_scope:
+  - artifacts/upgrade/dry_run/**
+  capabilities:
+  - sandbox_execute
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - dry-run data integrity PASS
+  - replay equivalence measured
+  - unconverted fields reported
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: approve_upgrade
+  purpose: Obtain required human/policy approval for permissions, downtime and migration
+  executor_type: human_gate
+  executor_ref: epistemic_foundry.plugin.approve_upgrade:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - dry_run_migrations
+  read_scope:
+  - artifacts/upgrade/**
+  write_scope:
+  - db.human_decisions
+  capabilities:
+  - human_input
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: escalate
+  acceptance_checks:
+  - approver sees diffs and rollback
+  - high-risk permission dual control where required
+  - decision immutable
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: apply_package_and_migrations
+  purpose: Apply exact approved package and migration plan
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.apply_package_and_migrations:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - approve_upgrade
+  read_scope:
+  - candidate_plugin/**
+  - artifacts/upgrade/migration_plan/**
+  - db.human_decisions
+  write_scope:
+  - plugin/**
+  - db/**
+  capabilities:
+  - filesystem_write
+  - database_write
+  - sandbox_execute
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - approved hashes only
+  - migration transaction boundaries respected
+  - effect receipts emitted
+  resource_dependencies:
+  - exclusive:upgrade
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: reapprove_modified_hooks
+  purpose: Require host trust for changed hook definitions and record resulting state
+  executor_type: human_gate
+  executor_ref: epistemic_foundry.plugin.reapprove_modified_hooks:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - apply_package_and_migrations
+  read_scope:
+  - plugin/hooks/**
+  - artifacts/upgrade/capability_diff/**
+  write_scope:
+  - db.plugin_install_state
+  capabilities:
+  - human_input
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: escalate
+  acceptance_checks:
+  - changed hooks not assumed trusted
+  - approval hashes exact
+  - declined hooks yield DEGRADED
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_post_upgrade_health_and_replay
+  purpose: Run health, golden FORGE, state integrity and replay drift checks
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.run_post_upgrade_health_and_replay:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - reapprove_modified_hooks
+  read_scope:
+  - plugin/**
+  - db/**
+  write_scope:
+  - artifacts/upgrade/post_checks/**
+  - db.plugin_health_reports
+  capabilities:
+  - sandbox_execute
+  - database_read
+  - database_write
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - golden flow passes
+  - state integrity passes
+  - compatibility matrix updated
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: rollback_on_gate_failure
+  purpose: Rollback package/store when non-waivable post-upgrade gate fails
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.rollback_on_gate_failure:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - run_post_upgrade_health_and_replay
+  read_scope:
+  - artifacts/upgrade/post_checks/**
+  - backups/pre_upgrade/**
+  write_scope:
+  - plugin/**
+  - db/**
+  - db.ledger
+  capabilities:
+  - filesystem_write
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: escalate
+  acceptance_checks:
+  - rollback decision deterministic
+  - all historical events preserved
+  - external effects reconciled
+  resource_dependencies:
+  - exclusive:upgrade
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: commit_upgrade_record
+  purpose: Commit PluginInstallState, migration receipts, health and rollback availability
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.commit_upgrade_record:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - run_post_upgrade_health_and_replay
+  - rollback_on_gate_failure
+  read_scope:
+  - artifacts/upgrade/**
+  - db.plugin_health_reports
+  write_scope:
+  - db.plugin_install_state
+  - db.ledger
+  capabilities:
+  - artifact_read
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - final active version unambiguous
+  - degraded state visible
+  - backup retention recorded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

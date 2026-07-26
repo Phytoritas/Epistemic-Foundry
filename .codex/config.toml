@@ -1,0 +1,26 @@
+# Project-scoped Codex configuration for Epistemic Foundry.
+# Canonical state remains in repository artifacts and Noetic Ledger, never in a provider session.
+
+[features]
+multi_agent = true
+
+[agents]
+max_threads = 8
+max_depth = 2
+job_max_runtime_seconds = 3600
+
+[agents.spec_auditor]
+description = "Read-only specification and traceability auditor"
+config_file = "agents/spec-auditor.toml"
+
+[agents.contract_reviewer]
+description = "Read-only schema, workflow, migration, and compatibility reviewer"
+config_file = "agents/contract-reviewer.toml"
+
+[agents.test_verifier]
+description = "Read-only verifier that runs declared checks and records reproducible evidence"
+config_file = "agents/test-verifier.toml"
+
+[agents.integration_auditor]
+description = "Independent integration-gate reviewer"
+config_file = "agents/integration-auditor.toml"

@@ -1,0 +1,872 @@
+version: 4.0.0
+requirements:
+- requirement_id: EF4-I01
+  statement: Plugin shell, hooks, skills, GUI, chat transcripts and provider SDKs
+    never own canonical state, policy, gates or replay.
+  artifacts:
+  - docs/v3_plugin_architecture.md
+  - schemas/plugin-install-state.schema.json
+  work_packages:
+  - A02
+  - D01
+  - E01
+  - G01
+  - X01
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I02
+  statement: A promoted empirical or documentary claim always resolves to immutable
+    SourceSpan evidence.
+  artifacts:
+  - schemas/claim-card.schema.json
+  - workflows/claim_extraction.workflow.yaml
+  work_packages:
+  - K03
+  - O03
+  - Q02
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I03
+  statement: An insight without scope, predictions and falsifier cannot enter Observe
+    or Parliament.
+  artifacts:
+  - docs/forge_protocol.md
+  - workflows/forge_research_cycle.workflow.yaml
+  work_packages:
+  - F03
+  - I02
+  - P01
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I04
+  statement: Coverage, searched scope, missing lanes and dependency diversity are
+    shown before confidence or verdict.
+  artifacts:
+  - schemas/coverage-snapshot.schema.json
+  - docs/v3_plugin_architecture.md
+  work_packages:
+  - O01
+  - O04
+  - U03
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I05
+  statement: UNSEARCHED, SEARCHED_NONE, SEARCHED_WITH_RESULTS and failed search are
+    distinct.
+  artifacts:
+  - schemas/search-completeness-certificate.schema.json
+  - workflows/evidence_retrieval.workflow.yaml
+  work_packages:
+  - O01
+  - O04
+  - Q03
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I06
+  statement: Counterevidence, null, boundary and method lanes are mandatory whenever
+    applicable.
+  artifacts:
+  - workflows/evidence_retrieval.workflow.yaml
+  - docs/forge_protocol.md
+  work_packages:
+  - O01
+  - O02
+  - P01
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I07
+  statement: Method-incompatible evidence is stratified and may impose a promotion
+    ceiling; it is never silently pooled.
+  artifacts:
+  - schemas/measurement-compatibility-report.schema.json
+  work_packages:
+  - I03
+  - P02
+  - R01
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I08
+  statement: Shared samples, datasets, publication families and derived analyses are
+    dependency clusters, not independent votes.
+  artifacts:
+  - schemas/evidence-dependency-cluster.schema.json
+  work_packages:
+  - O03
+  - P04
+  - Q03
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I09
+  statement: Agent count or majority agreement cannot promote a hypothesis.
+  artifacts:
+  - docs/forge_protocol.md
+  - workflows/insight_deliberation.workflow.yaml
+  work_packages:
+  - P01
+  - P04
+  - N04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I10
+  statement: Induction, deduction, abduction and causal identification remain separate
+    typed outputs.
+  artifacts:
+  - schemas/argument-graph.schema.json
+  - docs/forge_protocol.md
+  work_packages:
+  - R01
+  - R02
+  - R03
+  - R04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I11
+  statement: Simulation, formal derivation, benchmark and review-derived evidence
+    never become empirical observation by relabeling.
+  artifacts:
+  - schemas/validation-plan.schema.json
+  - workflows/validation_execution.workflow.yaml
+  work_packages:
+  - V01
+  - V04
+  - R04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I12
+  statement: Makers cannot approve their own work, claim promotion, validation, or
+    release.
+  artifacts:
+  - manifests/development_manifest.yaml
+  work_packages:
+  - N04
+  - P04
+  - Z04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I13
+  statement: Phase transitions, side effects, tests, installs and releases require
+    resolving artifact/effect receipts.
+  artifacts:
+  - schemas/artifact-receipt.schema.json
+  - schemas/forge-transition-request.schema.json
+  work_packages:
+  - E02
+  - F03
+  - T02
+  - Z04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I14
+  statement: Hook coverage is observed and useful but never treated as the complete
+    enforcement boundary.
+  artifacts:
+  - schemas/host-capability-report.schema.json
+  - docs/plugin_security_threat_model.md
+  work_packages:
+  - H01
+  - H04
+  - X01
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I15
+  statement: Host and dependency capabilities are runtime-probed; missing capabilities
+    select explicit degraded or blocked modes.
+  artifacts:
+  - schemas/host-capability-report.schema.json
+  - workflows/plugin_bootstrap.workflow.yaml
+  work_packages:
+  - G04
+  - H04
+  - Z01
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I16
+  statement: Canonical session and lifecycle state is reducer-derived from append-only
+    events with revision control.
+  artifacts:
+  - docs/state_memory_and_mapping.md
+  work_packages:
+  - D01
+  - E01
+  - F02
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I17
+  statement: Human approvals and overrides are immutable records with viewed revisions,
+    rationale, scope and downstream invalidation.
+  artifacts:
+  - schemas/human-decision.schema.json
+  - schemas/forge-transition-request.schema.json
+  work_packages:
+  - E03
+  - F03
+  - P04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I18
+  statement: Recall occurs only within allowed memory classes, purpose, consent, retention
+    and workspace scope.
+  artifacts:
+  - schemas/memory-policy.schema.json
+  - workflows/memory_recall.workflow.yaml
+  work_packages:
+  - L01
+  - L02
+  - L04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I19
+  statement: Cross-workspace state, memory and artifacts are denied by default below
+    the model layer.
+  artifacts:
+  - schemas/memory-policy.schema.json
+  - docs/state_memory_and_mapping.md
+  work_packages:
+  - D02
+  - L01
+  - S02
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I20
+  statement: Compaction and resume context is rebuilt from hash-bound canonical artifacts
+    with exclusions and freshness.
+  artifacts:
+  - schemas/context-capsule.schema.json
+  work_packages:
+  - J03
+  - J04
+  - W02
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I21
+  statement: Third-party skills are quarantined, inspected, permissioned, pinned and
+    approved before activation.
+  artifacts:
+  - schemas/skill-lockfile.schema.json
+  - workflows/skill_acquisition.workflow.yaml
+  work_packages:
+  - J01
+  - S03
+  - Z02
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I22
+  statement: CLI, MCP, HTTP, persistence and UI models derive from canonical schemas;
+    duplicated wire literals are forbidden.
+  artifacts:
+  - docs/plugin_ux_cli_and_mcp.md
+  work_packages:
+  - C01
+  - C02
+  - C04
+  - U01
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I23
+  statement: EMPTY_CONFIRMED, DEGRADED and UNAVAILABLE are distinct; backend failure
+    never appears as empty research state.
+  artifacts:
+  - docs/plugin_ux_cli_and_mcp.md
+  work_packages:
+  - U02
+  - U04
+  - Y02
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I24
+  statement: A map labeled as ranked uses an actual algorithm; baseline centrality,
+    query relevance and risk remain separate.
+  artifacts:
+  - schemas/workspace-map-snapshot.schema.json
+  - workflows/workspace_mapping.workflow.yaml
+  work_packages:
+  - M02
+  - M03
+  - M04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I25
+  statement: Every subagent dispatch resolves a RoleSpec with tool ACL, evidence ACL,
+    write scope, budget and expected count.
+  artifacts:
+  - schemas/role-dispatch-plan.schema.json
+  work_packages:
+  - N01
+  - N02
+  - N04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I26
+  statement: Fan-in reconciles expected and actual identities; missing outputs remain
+    visible and constrain the result.
+  artifacts:
+  - workflows/forge_research_cycle.workflow.yaml
+  work_packages:
+  - N03
+  - N04
+  - P04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I27
+  statement: Every cycle has a seen-set key, novelty/convergence rule, dry rounds,
+    maximum rounds, budget and escalation.
+  artifacts:
+  - schemas/loop-contract.schema.json
+  work_packages:
+  - N03
+  - Y01
+  - W01
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I28
+  statement: Budgets are labeled HARD_METERED, HARD_PREALLOCATED, SOFT_ESTIMATE or
+    UNMETERED.
+  artifacts:
+  - schemas/budget-envelope.schema.json
+  work_packages:
+  - N03
+  - Y01
+  - Z04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I29
+  statement: Secrets are opaque handles and never copied into prompts, evidence artifacts,
+    logs or exports.
+  artifacts:
+  - docs/plugin_security_threat_model.md
+  work_packages:
+  - S02
+  - T04
+  - Y02
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I30
+  statement: PDFs, web pages, datasets and model output are data and cannot grant
+    authority or execute instructions.
+  artifacts:
+  - docs/plugin_security_threat_model.md
+  - workflows/corpus_ingest.workflow.yaml
+  work_packages:
+  - K04
+  - S01
+  - S04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I31
+  statement: Breaking schema/plugin changes require compatibility, dry-run, backup,
+    rollback and hook re-trust.
+  artifacts:
+  - workflows/plugin_upgrade_migration.workflow.yaml
+  - docs/migration_v2_to_v3.md
+  work_packages:
+  - C03
+  - D04
+  - Z03
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I32
+  statement: Shipped bundles require reproducible build evidence, SBOM, manifest,
+    clean extraction and signing status.
+  artifacts:
+  - schemas/plugin-release-provenance.schema.json
+  - workflows/plugin_release.workflow.yaml
+  work_packages:
+  - B02
+  - Z02
+  - Z04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I33
+  statement: Capabilities are labeled SPECIFIED, IMPLEMENTED, EXPERIMENTAL, DEFERRED
+    or UNSUPPORTED; release labels are evidence-derived.
+  artifacts:
+  - docs/status_taxonomy.md
+  work_packages:
+  - A01
+  - A02
+  - Z04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I34
+  statement: Codex, Claude and other models are replaceable node executors; adapters
+    cannot alter canonical semantics.
+  artifacts:
+  - docs/codex_claude_adapter_contract.md
+  work_packages:
+  - N02
+  - X01
+  - X02
+  - X04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I35
+  statement: Fresh install, PATH-less execution, upgrade, downgrade, uninstall and
+    cross-platform paths are product acceptance tests.
+  artifacts:
+  - workflows/plugin_release.workflow.yaml
+  work_packages:
+  - G04
+  - Z01
+  - Z03
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I36
+  statement: Remote notification/approval adapters are optional and cannot execute
+    arbitrary commands or export raw evidence by default.
+  artifacts:
+  - docs/plugin_ux_cli_and_mcp.md
+  work_packages:
+  - S02
+  - T02
+  - U02
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I37
+  statement: Source access and license restrictions propagate through retrieval, evidence,
+    export and deletion.
+  artifacts:
+  - workflows/corpus_ingest.workflow.yaml
+  work_packages:
+  - K01
+  - O03
+  - Z04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I38
+  statement: Corrections, retractions, parser fixes, policy/ontology changes and new
+    evidence invalidate dependent projections and Passports.
+  artifacts:
+  - workflows/evidence_update_reassessment.workflow.yaml
+  work_packages:
+  - F02
+  - W03
+  - W04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I39
+  statement: RunSpec, context, adapter/model, tools, receipts, policy, corpus and
+    prompts are sufficient to explain and compare a run.
+  artifacts:
+  - docs/state_memory_and_mapping.md
+  - workflows/evaluation_release.workflow.yaml
+  work_packages:
+  - E04
+  - W04
+  - X04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I40
+  statement: UNDERDETERMINED, UNTESTABLE, NOT_ASSESSED and PARTIAL are normal truthful
+    outcomes, not system failure.
+  artifacts:
+  - docs/forge_protocol.md
+  work_packages:
+  - F04
+  - O04
+  - P04
+  - V04
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I41
+  statement: Evolution Chamber may propose, mutate, challenge and rank candidates
+    but cannot own evidence truth, evaluator authority, policy, hidden holdout, promotion
+    or release.
+  artifacts:
+  - docs/v4_evolution_architecture.md
+  - schemas/evolution-run-spec.schema.json
+  work_packages:
+  - A05
+  - F05
+  - P05
+  - Z05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I42
+  statement: Every evolvable hypothesis carries scope, mechanism, predictions, falsifiers,
+    alternatives, measurement contracts, evidence, validation plan and immutable lineage.
+  artifacts:
+  - schemas/hypothesis-genome.schema.json
+  - schemas/candidate-lineage.schema.json
+  work_packages:
+  - C05
+  - I05
+  - R05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I43
+  statement: A running or completed EvolutionRun references one content-addressed
+    evaluator bundle that cannot be changed retroactively.
+  artifacts:
+  - schemas/evaluator-bundle.schema.json
+  - workflows/verifier_firewall_qualification.workflow.yaml
+  work_packages:
+  - S05
+  - W05
+  - Z05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I44
+  statement: Candidate generation, mutation prompts, external backends and ordinary
+    agents cannot read hidden holdout content or derive it from tool/log/cache leakage.
+  artifacts:
+  - schemas/holdout-manifest.schema.json
+  - schemas/leakage-audit.schema.json
+  work_packages:
+  - K05
+  - S05
+  - V05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I45
+  statement: A combined score may order search but cannot promote; hard gates, FitnessVector,
+    Pareto/niche analysis, statistics, replication and Parliament constrain promotion.
+  artifacts:
+  - schemas/fitness-vector.schema.json
+  - schemas/pareto-front-snapshot.schema.json
+  work_packages:
+  - Q05
+  - P05
+  - Y05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I46
+  statement: Claim, mechanism, prediction, falsifier, scope, experiment, evidence
+    and external prior-art novelty remain separate from support and truth.
+  artifacts:
+  - schemas/novelty-vector.schema.json
+  - prompts/novelty_vector_assessor.md
+  work_packages:
+  - O05
+  - R05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I47
+  statement: Absent, empty, failed or incomplete novelty assessment yields UNASSESSED,
+    PARTIAL or FAILED and never NOVEL by default.
+  artifacts:
+  - schemas/novelty-vector.schema.json
+  - workflows/shinka_backend_qualification.workflow.yaml
+  work_packages:
+  - O05
+  - T05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I48
+  statement: The archive preserves epistemic niches and trade-offs rather than only
+    a global top score.
+  artifacts:
+  - schemas/quality-diversity-map.schema.json
+  - schemas/epistemic-niche.schema.json
+  work_packages:
+  - D05
+  - Y05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I49
+  statement: Nulls, counterexamples, failed replications, unsafe failures and minority
+    lineages cannot be evicted merely for low fitness.
+  artifacts:
+  - schemas/epistemic-archive-entry.schema.json
+  - workflows/archive_rebalancing.workflow.yaml
+  work_packages:
+  - D05
+  - L05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I50
+  statement: Islands specialize by typed mechanism, scope, method or evidence state;
+    migration requires compatibility and preserves source/target history.
+  artifacts:
+  - schemas/island-state.schema.json
+  - schemas/crossover-compatibility-report.schema.json
+  work_packages:
+  - D05
+  - M05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I51
+  statement: Crossover requires scope, measurement, unit and causal compatibility;
+    semantic collage is rejected.
+  artifacts:
+  - schemas/crossover-compatibility-report.schema.json
+  - prompts/crossover_auditor.md
+  work_packages:
+  - C05
+  - R05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I52
+  statement: Challenges are safe, reproducible and claim-relevant; apparent failures
+    replicate before refutation and boundary conditions remain distinct.
+  artifacts:
+  - schemas/challenge-genome.schema.json
+  - workflows/red_queen_challenge_coevolution.workflow.yaml
+  work_packages:
+  - P05
+  - R05
+  - V05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I53
+  statement: Evolutionary search records candidate families, repeated tests, sequential
+    decisions, multiplicity and selective inference.
+  artifacts:
+  - schemas/sequential-testing-ledger.schema.json
+  - schemas/multiple-testing-adjustment.schema.json
+  - schemas/selective-inference-report.schema.json
+  work_packages:
+  - Q05
+  - Q06
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I54
+  statement: Model and operator bandits learn from validated holdout/replication utility
+    and safety, not only immediate proxy score.
+  artifacts:
+  - schemas/operator-bandit-state.schema.json
+  - schemas/model-routing-receipt.schema.json
+  work_packages:
+  - X05
+  - Y05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I55
+  statement: Prompt genomes cannot alter current policy, evaluator, holdout or promotion
+    gate and become active only after independent future-run qualification.
+  artifacts:
+  - schemas/prompt-genome.schema.json
+  - schemas/prompt-mutation-proposal.schema.json
+  work_packages:
+  - J05
+  - S05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I56
+  statement: Evaluator defects create quarantined proposals; approved changes apply
+    to new sealed runs and never rewrite completed judgments.
+  artifacts:
+  - schemas/evaluator-mutation-proposal.schema.json
+  - workflows/evaluator_update_governance.workflow.yaml
+  work_packages:
+  - S06
+  - W05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I57
+  statement: A surrogate may prioritize direct evaluation but cannot replace required
+    direct, hidden or replication stages.
+  artifacts:
+  - schemas/surrogate-triage-report.schema.json
+  - prompts/surrogate_triage.md
+  work_packages:
+  - Q05
+  - Y05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I58
+  statement: High scientific promotion after adaptive evolution requires an appropriate
+    independent preregistered replication or an explicit lower ceiling.
+  artifacts:
+  - schemas/replication-plan.schema.json
+  - schemas/replication-result.schema.json
+  work_packages:
+  - V05
+  - V06
+  - P05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I59
+  statement: Top-candidate estimates disclose search/selection history, winner's curse
+    risk and bias-corrected uncertainty.
+  artifacts:
+  - schemas/selective-inference-report.schema.json
+  - prompts/statistical_selection_auditor.md
+  work_packages:
+  - Q05
+  - Q06
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I60
+  statement: Every fan-out reconciles proposed, generated, evaluated, persisted, failed,
+    cancelled and missing candidate identities.
+  artifacts:
+  - workflows/evolution_chamber_cycle.workflow.yaml
+  - schemas/candidate-generation-record.schema.json
+  work_packages:
+  - N05
+  - E05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I61
+  statement: A safe resume point binds population, archive, islands, bandit, budget,
+    testing ledger and evaluator hash atomically.
+  artifacts:
+  - schemas/evolution-checkpoint.schema.json
+  - workflows/evolution_chamber_cycle.workflow.yaml
+  work_packages:
+  - D06
+  - W05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I62
+  statement: Budget, dry rounds, stability, coverage, safety, human stop and blockers
+    yield an EvolutionStopCertificate that preserves partial work.
+  artifacts:
+  - schemas/evolution-stop-certificate.schema.json
+  - plugin_blueprint/epistemic-foundry/skills/foundry-evolution-stop/SKILL.md
+  work_packages:
+  - F05
+  - W05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I63
+  statement: ShinkaEvolve and other search engines are optional pinned adapters; their
+    scores, archives, novelty and state never become Foundry authority.
+  artifacts:
+  - schemas/shinka-backend-manifest.schema.json
+  - schemas/backend-adapter-qualification.schema.json
+  work_packages:
+  - T05
+  - X05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check
+- requirement_id: EF4-I64
+  statement: Candidate code executes only under declared capabilities, resource quotas,
+    network policy, effect receipts and evaluator/holdout isolation.
+  artifacts:
+  - docs/evolution_security_threat_model.md
+  - workflows/shinka_backend_qualification.workflow.yaml
+  work_packages:
+  - S05
+  - T05
+  - V05
+  verification:
+  - schema_or_doc_presence
+  - work_package_acceptance
+  - release_traceability_check

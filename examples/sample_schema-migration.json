@@ -1,0 +1,22 @@
+{
+  "migration_id": "MIG-claim-card-1-to-2",
+  "schema_name": "ClaimCard",
+  "from_version": "1.1.0",
+  "to_version": "2.0.0",
+  "compatibility": "breaking",
+  "transform_entrypoint": "epistemic_foundry.migrations.claim_card_v2:upgrade",
+  "reverse_transform_entrypoint": null,
+  "preconditions": [
+    "valid v1.1 ClaimCard"
+  ],
+  "postconditions": [
+    "source_span_ids populated",
+    "lifecycle state initialized"
+  ],
+  "fixture_artifact_ids": [
+    "ART-MIG-FIXTURE-0001"
+  ],
+  "data_loss_possible": false,
+  "approval_record_id": "APR-MIG-0001",
+  "migration_hash": "sha256:8888888888888888888888888888888888888888888888888888888888888888"
+}

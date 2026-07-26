@@ -1,0 +1,374 @@
+workflow_id: workspace_mapping
+version: 4.0.0
+kind: dag
+description: Create auditable code, research, artifact and authority maps with real
+  baseline and query-specific rankings.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- mapping is read-only
+- baseline centrality is never a uniform placeholder
+- risk, centrality and relevance remain separate
+- all exclusions are visible
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: freeze_mapping_snapshot
+  purpose: Freeze root paths, source hashes, exclusions and query
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.freeze_mapping_snapshot:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - workspace/**
+  write_scope:
+  - artifacts/maps/input/**
+  capabilities:
+  - filesystem_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - root canonicalized
+  - generated/vendor scopes classified
+  - input snapshot hash recorded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: inventory_workspace_entities
+  purpose: Inventory code, schemas, workflows, tests, papers, datasets, skills, hooks
+    and artifacts
+  executor_type: parser
+  executor_ref: epistemic_foundry.plugin.inventory_workspace_entities:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - freeze_mapping_snapshot
+  read_scope:
+  - workspace/**
+  write_scope:
+  - artifacts/maps/inventory/**
+  capabilities:
+  - filesystem_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - entity kinds explicit
+  - unreadable paths listed
+  - no content mutation
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: extract_code_and_contract_edges
+  purpose: Extract symbols, imports, schema refs, API contracts and test links
+  executor_type: parser
+  executor_ref: epistemic_foundry.plugin.extract_code_and_contract_edges:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - inventory_workspace_entities
+  read_scope:
+  - artifacts/maps/inventory/**
+  write_scope:
+  - artifacts/maps/code_edges/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - resolved/unresolved edges separated
+  - source/dist paths distinguished
+  - contract ownership explicit
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: extract_research_and_provenance_edges
+  purpose: Extract paper, citation, dataset, Claim, Evidence and artifact lineage
+    edges
+  executor_type: parser
+  executor_ref: epistemic_foundry.plugin.extract_research_and_provenance_edges:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - inventory_workspace_entities
+  read_scope:
+  - artifacts/maps/inventory/**
+  - db.claims
+  - db.ledger
+  write_scope:
+  - artifacts/maps/research_edges/**
+  capabilities:
+  - artifact_read
+  - database_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - publication family/dependency edges retained
+  - provenance direction correct
+  - missing locators explicit
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_global_structural_graph
+  purpose: Build one typed graph from inventories and edges
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.build_global_structural_graph:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - extract_code_and_contract_edges
+  - extract_research_and_provenance_edges
+  read_scope:
+  - artifacts/maps/**
+  write_scope:
+  - artifacts/maps/global_graph/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - no duplicate node identity
+  - edge types validated
+  - excluded scopes preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compute_baseline_centrality
+  purpose: Compute real baseline centrality and connectivity metrics
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.compute_baseline_centrality:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_global_structural_graph
+  read_scope:
+  - artifacts/maps/global_graph/**
+  write_scope:
+  - artifacts/maps/baseline_scores/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - nontrivial graph never assigned uniform placeholder scores
+  - algorithm and alpha recorded
+  - isolates retained
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compute_query_personalization
+  purpose: Compute query-specific relevance independently of baseline centrality
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.plugin.compute_query_personalization:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_global_structural_graph
+  read_scope:
+  - artifacts/maps/global_graph/**
+  write_scope:
+  - artifacts/maps/query_scores/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - query absent yields explicit null personalization
+  - semantic score separate
+  - ranking version recorded
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compute_risk_and_change_impact
+  purpose: Compute blast radius from authority, write scope, dependency and data sensitivity
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.compute_risk_and_change_impact:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_global_structural_graph
+  read_scope:
+  - artifacts/maps/global_graph/**
+  - manifests/**
+  write_scope:
+  - artifacts/maps/risk_scores/**
+  capabilities:
+  - artifact_read
+  - filesystem_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - risk not conflated with centrality
+  - mutable contracts weighted
+  - shared resources represented
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: emit_workspace_map_snapshot
+  purpose: Emit canonical map snapshot with nodes, edges, algorithms and exclusions
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.emit_workspace_map_snapshot:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compute_baseline_centrality
+  - compute_query_personalization
+  - compute_risk_and_change_impact
+  read_scope:
+  - artifacts/maps/**
+  write_scope:
+  - db.workspace_maps
+  capabilities:
+  - artifact_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - schema-valid snapshot
+  - hash reproducible
+  - scores retain separate dimensions
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: validate_mapping_claims
+  purpose: Validate that displayed ranking labels match the actual algorithm and coverage
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.validate_mapping_claims:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - emit_workspace_map_snapshot
+  read_scope:
+  - db.workspace_maps
+  write_scope:
+  - db.gate_decisions/maps
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - symbol map not mislabeled as importance map
+  - coverage limitations visible
+  - sample edge audit passes
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

@@ -1,0 +1,3719 @@
+version: 4.0.0
+audit_id: EF4-288-LENS
+method: 24 failure-surface families × 12 contract lenses. This is a structured specification
+  audit, not 288 statistically independent proofs or reviewers.
+families:
+- family_id: A
+  name: Evolution authority
+  focus: Can the search layer acquire evidence, evaluator, policy, holdout, promotion,
+    or release authority?
+  lenses:
+  - lens_id: A01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: null
+  - lens_id: A12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/v4_evolution_architecture.md
+    - schemas/evolution-run-spec.schema.json
+    owner_work_package: A06
+    conditional_requirement: Production implementation must provide measured evidence
+      for evolution authority on gold, adversarial, recovery and scale fixtures.
+- family_id: B
+  name: Genome semantics
+  focus: Are scientific candidates typed, falsifiable, scoped, measurable, and lineage-bound?
+  lenses:
+  - lens_id: B01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: null
+  - lens_id: B12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/hypothesis-genome.schema.json
+    - schemas/mechanism-graph.schema.json
+    owner_work_package: B06
+    conditional_requirement: Production implementation must provide measured evidence
+      for genome semantics on gold, adversarial, recovery and scale fixtures.
+- family_id: C
+  name: Mutation and crossover
+  focus: Do operators preserve invariants and reject incompatible semantic crossover?
+  lenses:
+  - lens_id: C01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: null
+  - lens_id: C12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/mutation-operator-spec.schema.json
+    - schemas/crossover-compatibility-report.schema.json
+    owner_work_package: C06
+    conditional_requirement: Production implementation must provide measured evidence
+      for mutation and crossover on gold, adversarial, recovery and scale fixtures.
+- family_id: D
+  name: Fitness and Pareto
+  focus: Are hard gates, uncertainty, multi-objective trade-offs, and no-scalar promotion
+    enforced?
+  lenses:
+  - lens_id: D01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: null
+  - lens_id: D12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/fitness-vector.schema.json
+    - schemas/pareto-front-snapshot.schema.json
+    owner_work_package: D06
+    conditional_requirement: Production implementation must provide measured evidence
+      for fitness and pareto on gold, adversarial, recovery and scale fixtures.
+- family_id: E
+  name: Quality-diversity archive
+  focus: Are epistemic niches, negative memory, migration, and replacement scientifically
+    governed?
+  lenses:
+  - lens_id: E01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: null
+  - lens_id: E12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/quality-diversity-map.schema.json
+    - workflows/archive_rebalancing.workflow.yaml
+    owner_work_package: E06
+    conditional_requirement: Production implementation must provide measured evidence
+      for quality-diversity archive on gold, adversarial, recovery and scale fixtures.
+- family_id: F
+  name: Parent selection and bandits
+  focus: Are acquisition, delayed reward, cost, safety, and diversity receipts complete?
+  lenses:
+  - lens_id: F01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: null
+  - lens_id: F12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/parent-selection-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: F06
+    conditional_requirement: Production implementation must provide measured evidence
+      for parent selection and bandits on gold, adversarial, recovery and scale fixtures.
+- family_id: G
+  name: Novelty and prior art
+  focus: Are multi-layer novelty, search completeness, failure typing, and truth separation
+    enforced?
+  lenses:
+  - lens_id: G01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: null
+  - lens_id: G12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/novelty-vector.schema.json
+    - docs/search_completeness.md
+    owner_work_package: G06
+    conditional_requirement: Production implementation must provide measured evidence
+      for novelty and prior art on gold, adversarial, recovery and scale fixtures.
+- family_id: H
+  name: Verifier Firewall
+  focus: Are evaluator validity, immutability, calibration, gameability, and future-only
+    updates governed?
+  lenses:
+  - lens_id: H01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: null
+  - lens_id: H12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/verifier_firewall.md
+    - workflows/verifier_firewall_qualification.workflow.yaml
+    owner_work_package: H06
+    conditional_requirement: Production implementation must provide measured evidence
+      for verifier firewall on gold, adversarial, recovery and scale fixtures.
+- family_id: I
+  name: Holdout and leakage
+  focus: Are hidden/OOD assets isolated across prompts, tools, caches, logs, embeddings,
+    and backends?
+  lenses:
+  - lens_id: I01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: null
+  - lens_id: I12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/holdout-manifest.schema.json
+    - schemas/leakage-audit.schema.json
+    owner_work_package: I06
+    conditional_requirement: Production implementation must provide measured evidence
+      for holdout and leakage on gold, adversarial, recovery and scale fixtures.
+- family_id: J
+  name: Red Queen challenges
+  focus: Are challenges relevant, safe, diverse, replicated, and audited for overfit?
+  lenses:
+  - lens_id: J01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: null
+  - lens_id: J12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/challenge-genome.schema.json
+    - workflows/red_queen_challenge_coevolution.workflow.yaml
+    owner_work_package: J06
+    conditional_requirement: Production implementation must provide measured evidence
+      for red queen challenges on gold, adversarial, recovery and scale fixtures.
+- family_id: K
+  name: Adaptive-search statistics
+  focus: Are sequential testing, multiplicity, selection bias, and winner's curse
+    addressed?
+  lenses:
+  - lens_id: K01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: null
+  - lens_id: K12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/statistical_search_governance.md
+    - schemas/selective-inference-report.schema.json
+    owner_work_package: K06
+    conditional_requirement: Production implementation must provide measured evidence
+      for adaptive-search statistics on gold, adversarial, recovery and scale fixtures.
+- family_id: L
+  name: Replication
+  focus: Is replication preregistered, independent, complete, heterogeneous, and promotion-linked?
+  lenses:
+  - lens_id: L01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: null
+  - lens_id: L12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/replication-plan.schema.json
+    - workflows/hypothesis_replication.workflow.yaml
+    owner_work_package: L06
+    conditional_requirement: Production implementation must provide measured evidence
+      for replication on gold, adversarial, recovery and scale fixtures.
+- family_id: M
+  name: Async execution
+  focus: Are queues bounded and proposed/evaluated/persisted/failed/missing identities
+    reconciled?
+  lenses:
+  - lens_id: M01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: null
+  - lens_id: M12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - workflows/evolution_chamber_cycle.workflow.yaml
+    - schemas/candidate-generation-record.schema.json
+    owner_work_package: M06
+    conditional_requirement: Production implementation must provide measured evidence
+      for async execution on gold, adversarial, recovery and scale fixtures.
+- family_id: N
+  name: State, checkpoint, replay
+  focus: Are population, archive, bandit, budget, testing and evaluator state atomically
+    replayable?
+  lenses:
+  - lens_id: N01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: null
+  - lens_id: N12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evolution-checkpoint.schema.json
+    - docs/evolution_state_machine.md
+    owner_work_package: N06
+    conditional_requirement: Production implementation must provide measured evidence
+      for state, checkpoint, replay on gold, adversarial, recovery and scale fixtures.
+- family_id: O
+  name: Security and sandbox
+  focus: Are candidate code, skills, providers, effects, secrets, and egress zero-trust?
+  lenses:
+  - lens_id: O01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: null
+  - lens_id: O12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_security_threat_model.md
+    - schemas/capability-lease.schema.json
+    owner_work_package: O06
+    conditional_requirement: Production implementation must provide measured evidence
+      for security and sandbox on gold, adversarial, recovery and scale fixtures.
+- family_id: P
+  name: Shinka backend adapter
+  focus: Is the optional backend pinned, mapped, isolated, qualified, and non-authoritative?
+  lenses:
+  - lens_id: P01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: null
+  - lens_id: P12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/shinka_backend_adapter_contract.md
+    - workflows/shinka_backend_qualification.workflow.yaml
+    owner_work_package: P06
+    conditional_requirement: Production implementation must provide measured evidence
+      for shinka backend adapter on gold, adversarial, recovery and scale fixtures.
+- family_id: Q
+  name: Plugin skills and UX
+  focus: Do skills route minimally and does UI expose truthful state, gaps, and degraded
+    modes?
+  lenses:
+  - lens_id: Q01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: null
+  - lens_id: Q12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_plugin_skills_and_cli.md
+    - docs/evolution_ui_ux_contract.md
+    owner_work_package: Q06
+    conditional_requirement: Production implementation must provide measured evidence
+      for plugin skills and ux on gold, adversarial, recovery and scale fixtures.
+- family_id: R
+  name: Provider and model routing
+  focus: Are adapters neutral, model errors visible, diversity measured, and reward
+    delayed?
+  lenses:
+  - lens_id: R01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: null
+  - lens_id: R12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/model-routing-receipt.schema.json
+    - schemas/operator-bandit-state.schema.json
+    owner_work_package: R06
+    conditional_requirement: Production implementation must provide measured evidence
+      for provider and model routing on gold, adversarial, recovery and scale fixtures.
+- family_id: S
+  name: Evidence integration
+  focus: Do evolved candidates remain source-grounded with coverage, method, dependency,
+    and evidence-class controls?
+  lenses:
+  - lens_id: S01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: null
+  - lens_id: S12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/evidence-pack.schema.json
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: S06
+    conditional_requirement: Production implementation must provide measured evidence
+      for evidence integration on gold, adversarial, recovery and scale fixtures.
+- family_id: T
+  name: Parliament and promotion
+  focus: Can hard gates, veto, statistics, replication, strongest challenge, and minority
+    reports constrain promotion?
+  lenses:
+  - lens_id: T01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: null
+  - lens_id: T12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/promotion-decision.schema.json
+    - workflows/insight_deliberation.workflow.yaml
+    owner_work_package: T06
+    conditional_requirement: Production implementation must provide measured evidence
+      for parliament and promotion on gold, adversarial, recovery and scale fixtures.
+- family_id: U
+  name: Domain neutrality
+  focus: Can DomainPacks extend semantics without coupling core to one model, discipline,
+    or ontology?
+  lenses:
+  - lens_id: U01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: null
+  - lens_id: U12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/domain-pack.schema.json
+    - docs/ontology_measurement_contract.md
+    owner_work_package: U06
+    conditional_requirement: Production implementation must provide measured evidence
+      for domain neutrality on gold, adversarial, recovery and scale fixtures.
+- family_id: V
+  name: Cost, scale, operations
+  focus: Are budgets truthful, multi-fidelity evaluation bounded, and production load
+    measurable?
+  lenses:
+  - lens_id: V01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: null
+  - lens_id: V12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - schemas/validation-cascade-plan.schema.json
+    - docs/cost_concurrency_contract.md
+    owner_work_package: V06
+    conditional_requirement: Production implementation must provide measured evidence
+      for cost, scale, operations on gold, adversarial, recovery and scale fixtures.
+- family_id: W
+  name: Migration, release, supply chain
+  focus: Are v3 history, schema evolution, builds, manifests, signing, install, rollback
+    and uninstall governed?
+  lenses:
+  - lens_id: W01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: null
+  - lens_id: W12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/migration_v3_to_v4.md
+    - workflows/evolution_release.workflow.yaml
+    owner_work_package: W06
+    conditional_requirement: Production implementation must provide measured evidence
+      for migration, release, supply chain on gold, adversarial, recovery and scale
+      fixtures.
+- family_id: X
+  name: Evaluation and benchmark
+  focus: Are baselines, gold sets, time-sliced/OOD tests, ablations, calibration and
+    success language adequate?
+  lenses:
+  - lens_id: X01
+    kind: Authority
+    question: The governing authority and prohibited mutation surface are explicit.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X02
+    kind: Contract
+    question: Canonical strict schemas and examples cover the state and outputs.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X03
+    kind: Workflow
+    question: A provider-neutral DAG implements the required path and dependencies.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X04
+    kind: Failure
+    question: FAIL, BLOCKED, SPEC_GAP, PARTIAL and unassessed states cannot collapse.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X05
+    kind: Provenance
+    question: Inputs, versions, hashes, lineage, prompts, models and effects are traceable.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X06
+    kind: Security
+    question: Untrusted inputs cannot gain capability or cross trust boundaries.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X07
+    kind: Concurrency
+    question: Parallel paths have disjoint writes, resource constraints and expected-count
+      checks.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X08
+    kind: Replay
+    question: State can be explained and resumed from immutable artifacts without
+      narrative authority.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X09
+    kind: Governance
+    question: Human approval, override, conflict and appeal are explicit and append-only.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X10
+    kind: Evaluation
+    question: Objective tests and adversarial cases can falsify the implementation
+      claim.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X11
+    kind: Migration
+    question: Version changes preserve history, compatibility, rollback and stale
+      propagation.
+    status: PASS
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: null
+  - lens_id: X12
+    kind: Production evidence
+    question: Actual deployment must demonstrate the family-specific performance and
+      safety thresholds.
+    status: CONDITIONAL
+    evidence:
+    - MASTER_SPEC.md
+    - manifests/product_invariants.yaml
+    - manifests/development_manifest.yaml
+    - docs/evolution_evaluation_benchmark.md
+    - manifests/acceptance_matrix.yaml
+    owner_work_package: X06
+    conditional_requirement: Production implementation must provide measured evidence
+      for evaluation and benchmark on gold, adversarial, recovery and scale fixtures.

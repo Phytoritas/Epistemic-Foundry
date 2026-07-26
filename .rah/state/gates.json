@@ -1,0 +1,48 @@
+{
+  "schema_version": 3,
+  "root_and_capability_gate": {
+    "status": "pass",
+    "evidence": [
+      "C:\\dev\\insight\\Epistemic-Foundry",
+      "generic",
+      "docs\\architecture"
+    ]
+  },
+  "agents_and_workflow_gate": {
+    "status": "pass",
+    "note": "Repo-local AGENTS.md present at the bootstrap root: the Epistemic Foundry v4 bundle's own AGENTS.md is authoritative (MASTER_SPEC.md > manifests/* > schemas/workflows > role_registry > AGENTS.md). Harness overlay stays advisory at .rah/runtime/AGENTS.overlay.md and must not override it. Verified by doctor agents_visibility."
+  },
+  "scaffold_bootstrap_gate": {
+    "status": "pass",
+    "note": "Starter architecture scaffold created or preserved."
+  },
+  "harness_state_gate": {
+    "status": "pass",
+    "note": "Starter .rah runtime sidecar created or preserved."
+  },
+  "phytoritas_gate": {
+    "status": "pass",
+    "note": "Phytoritas starter artifact created or preserved."
+  },
+  "artifact_audit_gate": {
+    "status": "pending",
+    "note": "Workspace audit and current-system recon still need real content."
+  },
+  "memento_connectivity_gate": {
+    "status": "pass",
+    "note": "Memento-related config appears to exist locally; live connectivity is still unverified."
+  },
+  "memento_recall_gate": {
+    "status": "pass",
+    "note": "context() hydrated 23 fragments and caseMode recall() (searchEventId 88182) returned 3 prior RAH harness cases; recorded in .rah/memory/memento_context.json and memento_recall.json."
+  },
+  "memento_feedback_gate": {
+    "status": "pass",
+    "note": "tool_feedback id 3755 recorded for recall searchEventId 88182 (relevant/sufficient) in .rah/memory/memento_feedback.json."
+  },
+  "implementation_gate": {
+    "status": "blocked",
+    "note": "Implementation stays blocked until architecture, interfaces, seams, validation, regression protection, and memory-assisted recon are explicit."
+  },
+  "earliest_restart_point": "Stage 0. Source intake for the Epistemic Foundry v4 spec bundle"
+}

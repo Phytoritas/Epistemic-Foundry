@@ -1,0 +1,57 @@
+{
+  "domain_pack_id": "learning_science",
+  "version": "1.0.0",
+  "domain": "learning science",
+  "status": "active",
+  "core_compatibility": {
+    "minimum_version": "2.0.0",
+    "maximum_version": null
+  },
+  "ontology_version": "learning-science-ontology-v1.0.0",
+  "scope_extension_keys": [
+    "material_type",
+    "outcome_instrument"
+  ],
+  "coverage_axes": [
+    {
+      "axis_id": "retention_interval",
+      "label": "Retention interval",
+      "source": "scope",
+      "ordered": true
+    },
+    {
+      "axis_id": "learning_activity",
+      "label": "Learning activity",
+      "source": "ontology",
+      "ordered": false
+    },
+    {
+      "axis_id": "unit_of_analysis",
+      "label": "Unit of analysis",
+      "source": "core",
+      "ordered": true
+    }
+  ],
+  "method_catalog_refs": [
+    "domain_packs/learning_science/methods.yaml"
+  ],
+  "unit_registry_refs": [],
+  "retrieval_lexicon_refs": [
+    "domain_packs/learning_science/retrieval_lexicon.yaml"
+  ],
+  "validation_adapter_refs": [
+    "validation_targets/delayed_recall_pipeline.yaml"
+  ],
+  "artifact_hashes": [
+    "sha256:a1fca7e973cb8d3a1c8a7d5d64fcc0414447422d86cff5f6a8055a29e1f02009"
+  ],
+  "provenance_manifest_id": "PM-DP-0001",
+  "publisher": "Epistemic Foundry Example Consortium",
+  "trust_level": "organization_approved",
+  "signature": null,
+  "migration_refs": [],
+  "policy_refs": [
+    "POL-DOMAINPACK-2.0.0"
+  ],
+  "schema_bundle_compatibility": ">=4.0.0 <5.0.0"
+}

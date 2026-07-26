@@ -1,0 +1,616 @@
+workflow_id: plugin_release
+version: 4.0.0
+kind: dag
+description: Build, test, audit, sign and package the native plugin without overstating
+  implementation maturity.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- release label is evidence-derived
+- fresh install and recovery are product tests
+- UI/API contracts are generated
+- signing and provenance are separate from semantic correctness
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: freeze_release_candidate
+  purpose: Freeze source revision, schema/workflow bundle, dependencies and build
+    environment
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.freeze_release_candidate:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - source/**
+  - lockfiles/**
+  write_scope:
+  - artifacts/release/freeze/**
+  capabilities:
+  - filesystem_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - dirty tree policy enforced
+  - source revision immutable
+  - dependency locks complete
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: validate_plugin_manifest_and_assets
+  purpose: Validate plugin manifest, skills, hook paths, MCP config and assets
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.validate_plugin_manifest_and_assets:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - freeze_release_candidate
+  read_scope:
+  - plugins/epistemic-foundry/**
+  write_scope:
+  - artifacts/release/plugin_validation/**
+  capabilities:
+  - filesystem_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - all manifest paths internal
+  - skill metadata valid
+  - MCP optionality explicit
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_contract_and_workflow_validation
+  purpose: Validate all JSON Schemas, examples, node contracts, DAGs and traceability
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.run_contract_and_workflow_validation:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - freeze_release_candidate
+  read_scope:
+  - schemas/**
+  - examples/**
+  - workflows/**
+  - manifests/**
+  write_scope:
+  - artifacts/release/contracts/**
+  capabilities:
+  - sandbox_execute
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - zero schema/example errors
+  - zero cycles/missing dependencies
+  - A-Z graph valid
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_unit_integration_and_golden_tests
+  purpose: Run component, adapter, FORGE, Parliament, replay and UI contract tests
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.run_unit_integration_and_golden_tests:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - freeze_release_candidate
+  read_scope:
+  - source/**
+  - tests/**
+  write_scope:
+  - artifacts/release/tests/**
+  capabilities:
+  - sandbox_execute
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 7200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - all non-quarantined tests pass
+  - golden E1/E3/E4 flows pass
+  - no self-approval
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_security_privacy_supply_chain_tests
+  purpose: Run prompt-injection, path, secret, egress, skill-vault, consent and dependency
+    tests
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.run_security_privacy_supply_chain_tests:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - freeze_release_candidate
+  read_scope:
+  - source/**
+  - tests/security/**
+  write_scope:
+  - artifacts/release/security/**
+  capabilities:
+  - sandbox_execute
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 7200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - zero critical finding
+  - injection cannot gain authority
+  - SBOM/license/secret scans complete
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_reproducible_distribution
+  purpose: Build dist, plugin bundle, Python wheel and dashboard deterministically
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.build_reproducible_distribution:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - validate_plugin_manifest_and_assets
+  - run_unit_integration_and_golden_tests
+  read_scope:
+  - source/**
+  - lockfiles/**
+  write_scope:
+  - dist/**
+  capabilities:
+  - sandbox_execute
+  - filesystem_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - two clean builds byte-identical or explained
+  - source/dist equivalence
+  - no dev-only path import
+  resource_dependencies:
+  - exclusive:release_build
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: generate_openapi_clients_and_contract_tests
+  purpose: Generate TS/Python/UI clients and run cross-surface conformance
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.generate_openapi_clients_and_contract_tests:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_reproducible_distribution
+  read_scope:
+  - schemas/**
+  - openapi/**
+  - dist/**
+  write_scope:
+  - generated/**
+  - artifacts/release/conformance/**
+  capabilities:
+  - sandbox_execute
+  - filesystem_write
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - CLI/MCP/HTTP shapes agree
+  - dev/packaged handlers agree
+  - error states explicit
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_fresh_install_matrix
+  purpose: Install via local marketplace on supported OS/surfaces and test PATH-less
+    commands
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.run_fresh_install_matrix:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_reproducible_distribution
+  read_scope:
+  - dist/**
+  - tests/install/**
+  write_scope:
+  - artifacts/release/install_matrix/**
+  capabilities:
+  - sandbox_execute
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 7200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - install/enable/disable/uninstall pass
+  - spaces/non-ASCII paths pass
+  - hook trust state visible
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_upgrade_downgrade_recovery_matrix
+  purpose: Test previous-version upgrade, migration failure, rollback, backup and
+    restore
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.run_upgrade_downgrade_recovery_matrix:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_reproducible_distribution
+  read_scope:
+  - dist/**
+  - fixtures/previous_versions/**
+  write_scope:
+  - artifacts/release/recovery/**
+  capabilities:
+  - sandbox_execute
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 7200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - rollback restores integrity
+  - unresolved effects reconciled
+  - backup restore verified
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_performance_budget_tests
+  purpose: Measure startup, hook latency, mapping, retrieval, fan-out and resource
+    ceilings
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.run_performance_budget_tests:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_reproducible_distribution
+  read_scope:
+  - dist/**
+  - tests/performance/**
+  write_scope:
+  - artifacts/release/performance/**
+  capabilities:
+  - sandbox_execute
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 7200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - hook latency SLO measured
+  - fan-in missing detection 100%
+  - budget enforcement class truthful
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_216_lens_plugin_audit
+  purpose: Execute the structured 216-lens plugin architecture and release audit
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.run_216_lens_plugin_audit:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - run_contract_and_workflow_validation
+  - run_security_privacy_supply_chain_tests
+  - run_fresh_install_matrix
+  - run_upgrade_downgrade_recovery_matrix
+  read_scope:
+  - docs/**
+  - reports/216_lens_plugin_audit_results.json
+  - artifacts/release/**
+  write_scope:
+  - artifacts/release/216_lens/**
+  capabilities:
+  - filesystem_read
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - 216 lenses accounted
+  - zero FAIL at spec release
+  - conditional owners explicit
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: generate_sbom_and_provenance
+  purpose: Generate SBOM, license report, source/bundle/environment hashes and provenance
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.generate_sbom_and_provenance:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_reproducible_distribution
+  - run_security_privacy_supply_chain_tests
+  read_scope:
+  - dist/**
+  - lockfiles/**
+  - artifacts/release/**
+  write_scope:
+  - dist/SBOM.json
+  - dist/release-provenance.json
+  capabilities:
+  - filesystem_read
+  - filesystem_write
+  - artifact_read
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - all shipped dependencies represented
+  - builder identity/environment recorded
+  - bundle hash final
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: sign_release_artifacts
+  purpose: Sign bundle, manifest, SBOM and provenance with production identity
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.sign_release_artifacts:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - generate_sbom_and_provenance
+  read_scope:
+  - dist/**
+  write_scope:
+  - dist/signatures/**
+  capabilities:
+  - signing_service
+  - filesystem_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: escalate
+  acceptance_checks:
+  - signing identity approved
+  - all signatures verify
+  - unsigned build not labeled signed
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: independent_release_review
+  purpose: Review spec, code, tests, compatibility, security, conditional items and
+    capability claims
+  executor_type: llm
+  executor_ref: prompts/plugin/independent_release_review.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - run_216_lens_plugin_audit
+  - generate_openapi_clients_and_contract_tests
+  - run_performance_budget_tests
+  - sign_release_artifacts
+  read_scope:
+  - artifacts/release/**
+  - dist/**
+  - docs/**
+  write_scope:
+  - artifacts/release/independent_review/**
+  capabilities:
+  - artifact_read
+  - filesystem_read
+  - artifact_write
+  model_tier: frontier
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - reviewer did not author release
+  - capability claims source-backed
+  - conditional items block inappropriate level
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: apply_release_gate
+  purpose: Apply deterministic release-level gates and select SPEC/ALPHA/BETA/PRODUCTION
+    label
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.apply_release_gate:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - independent_release_review
+  read_scope:
+  - artifacts/release/**
+  - manifests/acceptance_matrix.yaml
+  write_scope:
+  - db.gate_decisions/release
+  capabilities:
+  - artifact_read
+  - filesystem_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - no label exceeds evidence
+  - all expected checks reconcile
+  - critical failure non-waivable
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: package_and_verify_release
+  purpose: Create deterministic archive, clean-extract, rehash and emit final release
+    receipt
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.package_and_verify_release:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - apply_release_gate
+  read_scope:
+  - dist/**
+  - db.gate_decisions/release
+  write_scope:
+  - releases/**
+  - db.release_receipts
+  capabilities:
+  - filesystem_read
+  - filesystem_write
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - ZIP/TAR path safety
+  - clean extraction matches manifest
+  - final hash and receipt emitted
+  resource_dependencies:
+  - exclusive:release_package
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

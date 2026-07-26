@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/domain-pack.schema.json",
+  "title": "DomainPack",
+  "description": "Versioned plug-in contract that specializes the domain-neutral core without changing core schemas or runtime authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$"
+    }
+  },
+  "properties": {
+    "domain_pack_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "version": {
+      "$ref": "#/$defs/semver"
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "active",
+        "deprecated"
+      ]
+    },
+    "core_compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "minimum_version": {
+          "$ref": "#/$defs/semver"
+        },
+        "maximum_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "minimum_version",
+        "maximum_version"
+      ]
+    },
+    "ontology_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope_extension_keys": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "coverage_axes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "axis_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "enum": [
+              "core",
+              "scope",
+              "method",
+              "ontology",
+              "custom"
+            ]
+          },
+          "ordered": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "axis_id",
+          "label",
+          "source",
+          "ordered"
+        ]
+      }
+    },
+    "method_catalog_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unit_registry_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "retrieval_lexicon_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_adapter_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifact_hashes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sha256"
+      }
+    },
+    "provenance_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publisher": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trust_level": {
+      "enum": [
+        "unreviewed",
+        "community_reviewed",
+        "organization_approved",
+        "signed_release"
+      ]
+    },
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "migration_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "policy_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "schema_bundle_compatibility": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "domain_pack_id",
+    "version",
+    "domain",
+    "status",
+    "core_compatibility",
+    "ontology_version",
+    "scope_extension_keys",
+    "coverage_axes",
+    "method_catalog_refs",
+    "unit_registry_refs",
+    "retrieval_lexicon_refs",
+    "validation_adapter_refs",
+    "artifact_hashes",
+    "provenance_manifest_id",
+    "publisher",
+    "trust_level",
+    "signature",
+    "migration_refs",
+    "policy_refs",
+    "schema_bundle_compatibility"
+  ]
+}

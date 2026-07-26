@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/policy-bundle.schema.json",
+  "title": "PolicyBundle",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "policy_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$"
+    },
+    "capability_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retrieval_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "data_governance_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "security_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retention_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "non_waivable_gate_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifact_hashes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      }
+    },
+    "approved_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "policy_bundle_id",
+    "version",
+    "capability_policy_ref",
+    "retrieval_policy_ref",
+    "model_policy_ref",
+    "data_governance_policy_ref",
+    "security_policy_ref",
+    "retention_policy_ref",
+    "non_waivable_gate_ids",
+    "artifact_hashes",
+    "approved_by",
+    "approved_at",
+    "bundle_hash"
+  ]
+}

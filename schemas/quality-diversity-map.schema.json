@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/quality-diversity-map.schema.json",
+  "title": "QualityDiversityMap",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "map_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "niche_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "occupied_niches": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_niches": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "coverage_ratio": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "lineage_entropy": {
+      "type": "number",
+      "minimum": 0
+    },
+    "stagnant_niche_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "map_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "map_id",
+    "evolution_run_id",
+    "generation",
+    "niche_ids",
+    "occupied_niches",
+    "total_niches",
+    "coverage_ratio",
+    "lineage_entropy",
+    "stagnant_niche_ids",
+    "map_hash"
+  ],
+  "description": "전체 epistemic niche 커버리지·엘리트·공백·포화도를 기록한다."
+}

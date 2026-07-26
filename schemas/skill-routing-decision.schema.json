@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/skill-routing-decision.schema.json",
+  "title": "SkillRoutingDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "mode": {
+      "enum": [
+        "explicit",
+        "implicit",
+        "none"
+      ]
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "skill_id": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "reason": {
+            "type": "string"
+          },
+          "implicit_allowed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "skill_id",
+          "score",
+          "reason",
+          "implicit_allowed"
+        ]
+      }
+    },
+    "selected_skill_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "rejected_skill_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "context_budget_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "authority_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "policy_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decision_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "decision_id",
+    "request_id",
+    "mode",
+    "candidates",
+    "selected_skill_ids",
+    "rejected_skill_ids",
+    "context_budget_tokens",
+    "authority_notes",
+    "policy_hash",
+    "decided_at",
+    "decision_hash"
+  ]
+}

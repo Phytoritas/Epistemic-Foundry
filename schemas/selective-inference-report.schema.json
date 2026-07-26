@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/selective-inference-report.schema.json",
+  "title": "SelectiveInferenceReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection_mechanism": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection_events": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "naive_estimate": {
+      "type": "number"
+    },
+    "bias_corrected_estimate": {
+      "type": "number"
+    },
+    "correction_method": {
+      "type": "string",
+      "minLength": 1
+    },
+    "uncertainty_interval": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2
+    },
+    "winner_curse_risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "unknown"
+      ]
+    },
+    "promotion_recommendation": {
+      "enum": [
+        "ALLOW",
+        "REPLICATE_FIRST",
+        "LOWER",
+        "BLOCK"
+      ]
+    },
+    "report_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "report_id",
+    "candidate_id",
+    "selection_mechanism",
+    "selection_events",
+    "naive_estimate",
+    "bias_corrected_estimate",
+    "correction_method",
+    "uncertainty_interval",
+    "winner_curse_risk",
+    "promotion_recommendation",
+    "report_hash"
+  ],
+  "description": "진화가 최상위 후보를 선택한 뒤 생기는 winner's curse와 선택편향을 평가한다."
+}

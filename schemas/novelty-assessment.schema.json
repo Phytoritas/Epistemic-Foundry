@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/novelty-assessment.schema.json",
+  "title": "NoveltyAssessment",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "assessment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "statement_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "corpus_snapshot_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "search_completeness_certificate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "novelty_status": {
+      "enum": [
+        "NOT_ASSESSED",
+        "KNOWN_PRIOR_ART",
+        "CORPUS_NOVEL_ONLY",
+        "SEARCH_CONDITIONAL",
+        "POTENTIALLY_NOVEL"
+      ]
+    },
+    "novelty_dimensions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "ENTITY",
+          "RELATION",
+          "MECHANISM",
+          "SCOPE",
+          "METHOD",
+          "COMBINATION",
+          "PREDICTION",
+          "VALIDATION_DESIGN"
+        ]
+      }
+    },
+    "closest_prior_art_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "distinguishing_features": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "searched_sources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "unsearched_sources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "search_cutoff": {
+      "type": "string",
+      "format": "date"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "promotion_ceiling": {
+      "enum": [
+        "NO_NOVELTY_CLAIM",
+        "CORPUS_ONLY",
+        "SEARCH_CONDITIONAL",
+        "ELIGIBLE_FOR_HUMAN_REVIEW"
+      ]
+    },
+    "assessor_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assessed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "assessment_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "assessment_id",
+    "run_id",
+    "subject_ref",
+    "statement_hash",
+    "corpus_snapshot_hash",
+    "search_completeness_certificate_id",
+    "novelty_status",
+    "novelty_dimensions",
+    "closest_prior_art_refs",
+    "distinguishing_features",
+    "searched_sources",
+    "unsearched_sources",
+    "search_cutoff",
+    "limitations",
+    "promotion_ceiling",
+    "assessor_ref",
+    "assessed_at",
+    "assessment_hash"
+  ]
+}

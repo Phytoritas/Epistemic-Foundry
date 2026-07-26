@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/lineage-diversity-report.schema.json",
+  "title": "LineageDiversityReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "lineage_entropy": {
+      "type": "number",
+      "minimum": 0
+    },
+    "effective_lineage_count": {
+      "type": "number",
+      "minimum": 0
+    },
+    "dominant_lineage_share": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "operator_entropy": {
+      "type": "number",
+      "minimum": 0
+    },
+    "model_entropy": {
+      "type": "number",
+      "minimum": 0
+    },
+    "inbreeding_alerts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "recommended_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "report_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "report_id",
+    "evolution_run_id",
+    "generation",
+    "lineage_entropy",
+    "effective_lineage_count",
+    "dominant_lineage_share",
+    "operator_entropy",
+    "model_entropy",
+    "inbreeding_alerts",
+    "recommended_actions",
+    "report_hash"
+  ],
+  "description": "계보 붕괴·모델 단일화·근친 교차·archive 포화를 탐지한다."
+}

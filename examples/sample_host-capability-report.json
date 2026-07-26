@@ -1,0 +1,33 @@
+{
+  "report_id": "HCR-001",
+  "host": "codex_cli",
+  "host_version": "2026.07",
+  "plugin_version": "4.0.0",
+  "detected_at": "2026-07-26T04:00:00+09:00",
+  "capabilities": {
+    "plugin_hooks": {
+      "state": "SUPPORTED",
+      "evidence": "SessionStart probe succeeded.",
+      "observed_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "limitations": []
+    },
+    "hosted_tool_hooks": {
+      "state": "UNSUPPORTED",
+      "evidence": "Hosted search does not traverse local tool hooks.",
+      "limitations": [
+        "kernel receipts required"
+      ]
+    }
+  },
+  "hook_events": [
+    "SessionStart",
+    "PreToolUse",
+    "PostToolUse"
+  ],
+  "unobserved_tool_paths": [
+    "WebSearch"
+  ],
+  "mode": "DEGRADED",
+  "blockers": [],
+  "report_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

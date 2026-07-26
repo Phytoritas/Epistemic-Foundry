@@ -1,0 +1,50 @@
+{
+  "ticket_id": "XT-0001",
+  "hypothesis_id": "HYP-0001",
+  "objective": "Discriminate a retrieval-specific mechanism from feedback, expectancy, and exposure-time alternatives.",
+  "design_type": "prospective_experiment",
+  "discriminates_between": [
+    "retrieval-strengthening hypothesis",
+    "matched-exposure null model",
+    "feedback-and-expectancy alternative"
+  ],
+  "required_inputs": [
+    "baseline knowledge score",
+    "session-level study-time logs",
+    "feedback assignment",
+    "immediate and 14-day delayed-recall outcomes"
+  ],
+  "intervention": "Randomly assign spaced retrieval practice with standardized feedback.",
+  "comparator": "Rereading with matched total study time and identical feedback schedule.",
+  "outcomes": [
+    "preregistered 14-day delayed-recall score",
+    "immediate recall",
+    "retention slope"
+  ],
+  "preregistered_metrics": [
+    "adjusted mean difference",
+    "95% confidence interval",
+    "calibration of the preregistered model",
+    "minimum practically relevant effect"
+  ],
+  "falsification_rule": "Reject the registered mechanism claim if the delayed-recall contrast is below the minimum practically relevant effect and the confidence interval excludes that threshold.",
+  "assumptions": [
+    "study time and feedback exposure are equivalent across groups",
+    "outcome scoring is blinded and measurement invariance is acceptable"
+  ],
+  "estimated_information_gain": 0.84,
+  "cost_class": "medium",
+  "status": "proposed",
+  "provenance_manifest_id": "PM-XT-0001",
+  "ethics_and_safety": {
+    "review_required": false,
+    "risk_class": "low",
+    "constraints": [
+      "no personally identifiable data"
+    ]
+  },
+  "data_management_plan": "Use de-identified project data under the registered retention policy.",
+  "stopping_rule": "Stop after the preregistered sample size or a safety block.",
+  "preregistration_hash": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+  "approval_record_ids": []
+}

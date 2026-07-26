@@ -1,0 +1,111 @@
+{
+  "claim_id": "CLM-0001",
+  "version": 1,
+  "paper_id": "P-001",
+  "paper_version_id": "PV-001-01",
+  "source_spans": [
+    {
+      "paper_version_id": "PV-001-01",
+      "page": 8,
+      "section": "Results",
+      "bbox": [
+        0.1,
+        0.2,
+        0.9,
+        0.4
+      ],
+      "char_start": 180,
+      "char_end": 420,
+      "passage_hash": "sha256:81eca52c0201cfac2ce819a43dc8f6d48f28ecf16d98104943146d651aef7f7f"
+    }
+  ],
+  "verbatim_text": "Under matched total study time, spaced retrieval practice produced higher 14-day delayed-recall scores than rereading.",
+  "claim_type": "observation",
+  "author_stance": "supported",
+  "subject": "spaced_retrieval_practice",
+  "relation": "improves",
+  "object": "delayed_recall",
+  "direction": "positive",
+  "scope": {
+    "domain": "learning_science",
+    "population": "adult learners enrolled in introductory university courses",
+    "entity_type": "participant",
+    "entity_subtype": "university student",
+    "unit_of_analysis": "individual learner",
+    "setting": "controlled course-based study",
+    "geography": null,
+    "jurisdiction": null,
+    "language": "English",
+    "lifecycle_stage": null,
+    "spatial_scale": "individual",
+    "temporal_scale": "14-day delayed outcome",
+    "time_period": null,
+    "measurement_time": "14 days after the final study session",
+    "intervention_or_exposure": {
+      "name": "spaced retrieval practice",
+      "category": "learning intervention",
+      "min_value": 3,
+      "max_value": 3,
+      "unit": "sessions",
+      "duration": "one week",
+      "frequency": "three sessions",
+      "rate": null,
+      "route_or_delivery": "computer-based practice"
+    },
+    "comparator": "rereading with matched total study time",
+    "inclusion_criteria": [
+      "completed baseline assessment",
+      "completed all assigned sessions"
+    ],
+    "exclusion_criteria": [
+      "missing delayed outcome"
+    ],
+    "conditions": {
+      "matched_total_study_time": true,
+      "feedback_available": true,
+      "retention_interval_days": 14
+    },
+    "domain_extensions": {
+      "material_type": "expository text",
+      "outcome_instrument": "preregistered delayed-recall test"
+    }
+  },
+  "method_ids": [
+    "M-DELAYED-RECALL-TEST"
+  ],
+  "dataset_family_id": "DF-001",
+  "quantitative": {
+    "effect_size": 0.42,
+    "effect_size_type": "standardized_mean_difference",
+    "ci_low": 0.15,
+    "ci_high": 0.69,
+    "p_value": 0.004,
+    "sample_size": 128,
+    "magnitude_text": "small-to-moderate improvement"
+  },
+  "hedging_level": 1,
+  "evidence_layer": "direct_measurement",
+  "extraction_confidence": 0.91,
+  "provenance": {
+    "parser_version": "grobid+docling-pinned",
+    "extractor_model": "provider:model-version",
+    "prompt_hash": "sha256:45320fff87f8ca0ab27c43f5d1415e92a9a80a5b183a86fb591480d6a0a6a77b",
+    "created_at": "2026-07-25T12:00:00Z",
+    "human_review": "unreviewed"
+  },
+  "claim_status": "verified",
+  "source_span_ids": [
+    "SPAN-0001"
+  ],
+  "construct_ids": [
+    "CONSTRUCT-spaced-practice",
+    "CONSTRUCT-delayed-recall"
+  ],
+  "integrity_flags": [
+    "none"
+  ],
+  "lifecycle_event_ids": [
+    "CLE-0001"
+  ],
+  "supersedes_claim_id": null
+}

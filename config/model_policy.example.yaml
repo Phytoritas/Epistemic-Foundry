@@ -1,0 +1,54 @@
+policy_id: model-policy-v2.0.0
+principle: route by validated task accuracy and failure cost, not provider brand
+tiers:
+  deterministic:
+    executor: code
+    use_for:
+    - hashing
+    - schema_validation
+    - dedupe
+    - routing
+    - gates
+    - reconciliation
+  economy:
+    required_capabilities:
+    - structured_output
+    use_for:
+    - metadata
+    - candidate_detection
+    - broad_retrieval
+    - inventory
+    reasoning_effort: medium
+  balanced:
+    required_capabilities:
+    - structured_output
+    - long_context
+    use_for:
+    - scope_normalization
+    - method_mapping
+    - dependency_clustering
+    reasoning_effort: high
+  frontier:
+    required_capabilities:
+    - structured_output
+    - tool_use
+    - long_context
+    use_for:
+    - grounding_verification
+    - adversarial_roles
+    - adjudication
+    - architecture
+    - integration
+    reasoning_effort: high
+record_at_runtime:
+- provider
+- requested_alias
+- resolved_model_id
+- model_version_or_snapshot
+- reasoning_effort
+- parameters
+- prompt_hash
+default_limits:
+  write_concurrency: 4
+  read_concurrency: 8
+  hard_concurrency: 16

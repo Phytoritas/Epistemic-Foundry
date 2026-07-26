@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/plugin-install-state.schema.json",
+  "title": "PluginInstallState",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "install_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "plugin_id": {
+      "type": "string"
+    },
+    "plugin_version": {
+      "type": "string"
+    },
+    "plugin_root_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "host": {
+      "type": "string"
+    },
+    "host_version": {
+      "type": "string"
+    },
+    "installed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "trusted_hook_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "uniqueItems": true
+    },
+    "profile": {
+      "enum": [
+        "LITE",
+        "RESEARCH",
+        "TEAM",
+        "REGULATED"
+      ]
+    },
+    "migration_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 128
+      },
+      "uniqueItems": true
+    },
+    "health_report_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "state_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "install_id",
+    "plugin_id",
+    "plugin_version",
+    "plugin_root_hash",
+    "host",
+    "host_version",
+    "installed_at",
+    "trusted_hook_hashes",
+    "profile",
+    "migration_ids",
+    "health_report_id",
+    "enabled",
+    "state_hash"
+  ]
+}

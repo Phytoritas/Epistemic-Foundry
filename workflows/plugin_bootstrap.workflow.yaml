@@ -1,0 +1,464 @@
+workflow_id: plugin_bootstrap
+version: 4.0.0
+kind: dag
+description: Initialize a native host session without surrendering authority to host
+  chat state.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- capabilities are observed, not assumed
+- hooks are guardrails, not the sole enforcement boundary
+- memory is never searched before policy and consent
+- state integrity failure enters SAFE_MODE
+- context is reconstructed from canonical artifacts
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: resolve_plugin_install
+  purpose: Resolve installed plugin root, data directory, manifest and content hash
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.resolve_plugin_install:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope: []
+  write_scope:
+  - db.plugin_install_state
+  capabilities:
+  - filesystem_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - plugin root canonicalized
+  - manifest hash recorded
+  - no workspace data stored under plugin root
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: probe_host_capabilities
+  purpose: Probe host version, hooks, MCP, worktrees, tool coverage and runtime dependencies
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.probe_host_capabilities:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - resolve_plugin_install
+  read_scope:
+  - plugin/**
+  write_scope:
+  - db.host_capability_reports
+  capabilities:
+  - sandbox_execute
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - observed capabilities typed
+  - unobserved tool paths explicit
+  - no optimistic capability inference
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: verify_hook_trust
+  purpose: Compare bundled hook hashes with trusted/approved hook state
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.verify_hook_trust:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - resolve_plugin_install
+  read_scope:
+  - plugin/hooks/**
+  - db.plugin_install_state
+  write_scope:
+  - db.hook_trust_reports
+  capabilities:
+  - filesystem_read
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - every active hook hash reconciled
+  - modified hooks require reapproval
+  - disabled hooks visible
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: open_state_store
+  purpose: Open or initialize local/team state store with integrity checks
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.open_state_store:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - resolve_plugin_install
+  read_scope:
+  - .epistemic-foundry/**
+  write_scope:
+  - db.migration_state
+  capabilities:
+  - filesystem_read
+  - filesystem_write
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - WAL/transaction mode verified
+  - schema version explicit
+  - corrupt state enters SAFE_MODE
+  resource_dependencies:
+  - exclusive:state_migration
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: verify_migration_compatibility
+  purpose: Check schema range and pending migrations without applying them
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.verify_migration_compatibility:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - open_state_store
+  - probe_host_capabilities
+  read_scope:
+  - db.migration_state
+  - schemas/**
+  write_scope:
+  - db.migration_reports
+  capabilities:
+  - database_read
+  - database_write
+  - filesystem_read
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - compatibility window evaluated
+  - pending migrations listed
+  - rollback prerequisite known
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: load_policy_pack
+  purpose: Load and verify workspace/admin/plugin policy precedence
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.load_policy_pack:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - open_state_store
+  read_scope:
+  - policy/**
+  - db.plugin_install_state
+  write_scope:
+  - db.effective_policy
+  capabilities:
+  - filesystem_read
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - authority precedence deterministic
+  - policy hash recorded
+  - unknown rule fails safely
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: resolve_workspace_and_profile
+  purpose: Resolve workspace boundary and LITE/RESEARCH/TEAM/REGULATED profile
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.resolve_workspace_and_profile:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - probe_host_capabilities
+  - load_policy_pack
+  read_scope:
+  - workspace/**
+  - db.effective_policy
+  write_scope:
+  - db.workspace_profile
+  capabilities:
+  - filesystem_read
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - workspace boundary explicit
+  - profile capability-compatible
+  - cross-workspace state denied by default
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: evaluate_memory_consent
+  purpose: Evaluate memory and recall consent before any historical retrieval
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.evaluate_memory_consent:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - resolve_workspace_and_profile
+  read_scope:
+  - db.consent
+  - db.memory_policy
+  write_scope:
+  - db.memory_access_decisions
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - consent state explicit
+  - unconsented stores excluded
+  - retention policy loaded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: index_bundled_skills
+  purpose: Index bundled skill metadata and activation policy without loading full
+    instructions
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.index_bundled_skills:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - resolve_plugin_install
+  - load_policy_pack
+  read_scope:
+  - plugin/skills/**
+  write_scope:
+  - db.skill_index
+  capabilities:
+  - filesystem_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - name/description boundaries valid
+  - implicit invocation policy recorded
+  - skill content hashes stored
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: resume_or_create_session
+  purpose: Load a compatible active FORGE session or create a revision-zero session
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.resume_or_create_session:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - verify_migration_compatibility
+  - resolve_workspace_and_profile
+  read_scope:
+  - db.sessions
+  - db.ledger
+  write_scope:
+  - db.sessions
+  - db.ledger
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - compare-and-swap revision used
+  - stale sessions marked
+  - new session has RunSpec reference
+  resource_dependencies:
+  - exclusive:session_revision
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: assemble_bootstrap_capsule
+  purpose: Build a minimal fresh ContextCapsule from canonical state and permitted
+    memory
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.assemble_bootstrap_capsule:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - resume_or_create_session
+  - evaluate_memory_consent
+  - index_bundled_skills
+  read_scope:
+  - db.sessions
+  - db.memory_access_decisions
+  - db.skill_index
+  write_scope:
+  - artifacts/context_capsules/**
+  capabilities:
+  - database_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - capsule token budget enforced
+  - excluded stores listed
+  - all summaries hash-bound
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: emit_plugin_health
+  purpose: Aggregate capability, trust, migration, policy, state and session checks
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.emit_plugin_health:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - probe_host_capabilities
+  - verify_hook_trust
+  - verify_migration_compatibility
+  - assemble_bootstrap_capsule
+  read_scope:
+  - db.host_capability_reports
+  - db.hook_trust_reports
+  - db.migration_reports
+  - artifacts/context_capsules/**
+  write_scope:
+  - db.plugin_health_reports
+  capabilities:
+  - database_read
+  - database_write
+  - artifact_read
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - overall state PASS/DEGRADED/FAIL/SAFE_MODE
+  - remediation actionable
+  - no unavailable feature advertised
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

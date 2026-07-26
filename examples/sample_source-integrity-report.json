@@ -1,0 +1,27 @@
+{
+  "report_id": "SIR-0001",
+  "document_id": "DOC-0001",
+  "content_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "checks": [
+    {
+      "check_id": "malware_scan",
+      "status": "PASS",
+      "details": "No malicious payload detected.",
+      "evidence_artifact_ids": [
+        "ART-SCAN-0001"
+      ]
+    },
+    {
+      "check_id": "prompt_injection_scan",
+      "status": "PASS",
+      "details": "No instruction-like payload outside scholarly content.",
+      "evidence_artifact_ids": [
+        "ART-SCAN-0002"
+      ]
+    }
+  ],
+  "overall_status": "PASS",
+  "trusted_for_extraction": true,
+  "evaluated_at": "2026-07-25T12:00:00Z",
+  "policy_version": "2.0.0"
+}

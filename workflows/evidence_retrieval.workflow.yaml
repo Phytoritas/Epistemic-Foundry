@@ -1,0 +1,848 @@
+workflow_id: evidence_retrieval
+version: 4.0.0
+kind: dag
+description: Compile a relation-aware query plan, execute eleven evidence lanes, and
+  issue a completeness-bounded EvidencePack.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- vector similarity is never the sole retrieval channel
+- support, counter, null, boundary, method, temporal, and novelty searches are independently
+  receipted
+- searched-none is distinct from unsearched
+- absence and novelty claims are bounded by recorded search scope
+- dependent evidence is deduplicated before ranking or counting
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: validate_insight_readiness
+  purpose: Validate statement, scope, mechanism, predictions, and falsifiers before
+    retrieval
+  executor_type: policy
+  executor_ref: epistemic_foundry.policy.insights:validate_for_retrieval
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - db.insights
+  write_scope:
+  - db.gate_decisions/insight_readiness
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - falsifier present or routed to Inbox
+  - ambiguous terms listed
+  - registration hash verified
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - insight_readiness_decision_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compile_query_plan
+  purpose: Compile directional, scoped, relation-aware queries and lane quotas
+  executor_type: llm
+  executor_ref: prompts/retrieval_planner.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - validate_insight_readiness
+  read_scope:
+  - db.insights
+  - domain_packs/**
+  - config/retrieval_policy.example.yaml
+  write_scope:
+  - db.query_plans
+  capabilities:
+  - database_read
+  - filesystem_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - forward and reverse relations explicit
+  - scope expansions bounded
+  - lane-specific stop criteria present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - query_plan_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_lexical
+  purpose: Exact terms, identifiers, equations, instruments, and phrases
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:lexical
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/lexical/**
+  capabilities:
+  - fulltext_search
+  - database_read
+  - artifact_write
+  model_tier: economy
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:lexical
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - lexical_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_semantic
+  purpose: Conceptually similar claims with different wording
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:semantic
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/semantic/**
+  capabilities:
+  - vector_search
+  - database_read
+  - artifact_write
+  model_tier: economy
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:semantic
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - semantic_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_citation
+  purpose: Prior, subsequent, replication, correction, and retraction paths
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:citation
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/citation/**
+  capabilities:
+  - graph_query
+  - database_read
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: mark_partial
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:citation
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - citation_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_entity_variable
+  purpose: Shared entities, variables, outcomes, and units
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:entity_variable
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/entity_variable/**
+  capabilities:
+  - graph_query
+  - database_read
+  - artifact_write
+  model_tier: economy
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: mark_partial
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:entity_variable
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - entity_variable_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_mechanism
+  purpose: Mechanistic chains and intermediate links
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:mechanism
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/mechanism/**
+  capabilities:
+  - graph_query
+  - vector_search
+  - database_read
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: mark_partial
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:mechanism
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - mechanism_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_counter
+  purpose: Opposite direction, refutation, reverse causation, and alternative explanation
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:counter
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/counter/**
+  capabilities:
+  - fulltext_search
+  - vector_search
+  - database_read
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:counter
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - counter_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_null
+  purpose: Null effects, failed replications, negative results, and equivalence findings
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:null
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/null/**
+  capabilities:
+  - fulltext_search
+  - vector_search
+  - database_read
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:null
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - null_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_boundary
+  purpose: Scope shifts, moderators, thresholds, and non-monotonicity
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:boundary
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/boundary/**
+  capabilities:
+  - graph_query
+  - vector_search
+  - database_read
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: mark_partial
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:boundary
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - boundary_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_method
+  purpose: Measurement validity, design limitations, and construct compatibility
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:method
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/method/**
+  capabilities:
+  - fulltext_search
+  - graph_query
+  - database_read
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:method
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - method_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_temporal
+  purpose: Later updates, corrections, retractions, and historical precedence
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:temporal
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/temporal/**
+  capabilities:
+  - approved_external_search
+  - database_read
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: mark_partial
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:temporal
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - temporal_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_novelty
+  purpose: Corpus-external prior art and independent formulations
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.retrieval.lanes:novelty
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_query_plan
+  read_scope:
+  - db.query_plans
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - domain_packs/**
+  write_scope:
+  - artifacts/retrieval/novelty/**
+  capabilities:
+  - approved_external_search
+  - database_read
+  - artifact_write
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: mark_partial
+  acceptance_checks:
+  - query hash and index snapshot recorded
+  - result/rank/cutoff retained
+  - lane stop reason typed
+  resource_dependencies:
+  - quota:retrieval:novelty
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - novelty_lane_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: emit_lane_receipts
+  purpose: Emit signed SearchLaneReceipts including zero-result and failed-lane states
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.retrieval.receipts:emit
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - retrieve_lexical
+  - retrieve_semantic
+  - retrieve_citation
+  - retrieve_entity_variable
+  - retrieve_mechanism
+  - retrieve_counter
+  - retrieve_null
+  - retrieve_boundary
+  - retrieve_method
+  - retrieve_temporal
+  - retrieve_novelty
+  read_scope:
+  - artifacts/retrieval/lexical/**
+  - artifacts/retrieval/semantic/**
+  - artifacts/retrieval/citation/**
+  - artifacts/retrieval/entity_variable/**
+  - artifacts/retrieval/mechanism/**
+  - artifacts/retrieval/counter/**
+  - artifacts/retrieval/null/**
+  - artifacts/retrieval/boundary/**
+  - artifacts/retrieval/method/**
+  - artifacts/retrieval/temporal/**
+  - artifacts/retrieval/novelty/**
+  write_scope:
+  - db.search_lane_receipts
+  capabilities:
+  - artifact_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - all eleven lanes reconciled
+  - SEARCHED_NONE distinct from UNSEARCHED
+  - failures visible
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - search_lane_receipts_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: reconcile_dependency_clusters
+  purpose: Deduplicate versions and dependent studies, then compute effective independent
+    evidence count
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.retrieval.reconcile:dependencies
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - emit_lane_receipts
+  read_scope:
+  - db.search_lane_receipts
+  - db.evidence_nodes
+  - db.dependency_clusters
+  write_scope:
+  - artifacts/retrieval/reconciled/**
+  capabilities:
+  - database_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - paper count not used as independence count
+  - cluster uncertainty retained
+  - duplicates have traceable disposition
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - reconciled_retrieval_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: assess_bias_and_diversity
+  purpose: Assess publication, selection, laboratory, method, geographic, language,
+    temporal, and corpus coverage bias
+  executor_type: llm
+  executor_ref: prompts/bias_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - reconcile_dependency_clusters
+  read_scope:
+  - artifacts/retrieval/reconciled/**
+  - db.search_lane_receipts
+  - db.query_plans
+  write_scope:
+  - db.bias_risk_registers
+  capabilities:
+  - artifact_read
+  - database_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - bias risks separated from evidence quality
+  - unobservable publication bias not claimed corrected
+  - diversity gaps explicit
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - bias_risk_register_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_evidence_pack
+  purpose: Build a compact, role-balanced, dependency-adjusted EvidencePack with exact
+    source access
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.retrieval.pack:build
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assess_bias_and_diversity
+  read_scope:
+  - artifacts/retrieval/reconciled/**
+  - db.bias_risk_registers
+  - db.search_lane_receipts
+  - db.source_spans
+  write_scope:
+  - db.evidence_packs
+  capabilities:
+  - artifact_read
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - support/counter/null/boundary/method quotas visible
+  - all evidence IDs resolve
+  - pack hash reproducible
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - evidence_pack_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_coverage_snapshot
+  purpose: Project searched, found, missing, incompatible, and biased cells into Epistemic
+    Atlas coverage axes
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.epistemic_atlas.coverage:build
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_evidence_pack
+  read_scope:
+  - db.evidence_packs
+  - db.query_plans
+  - domain_packs/**
+  write_scope:
+  - db.coverage_snapshots
+  capabilities:
+  - database_read
+  - filesystem_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - UNSEARCHED/SEARCHED_NONE/SEARCHED_WITH_RESULTS distinct
+  - coverage axes versioned
+  - effective independent count shown
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - coverage_snapshot_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: issue_search_completeness_certificate
+  purpose: Issue a bounded certificate of executed lanes, databases, dates, cutoffs,
+    failures, and unsearched regions
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.retrieval.completeness:certify
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_coverage_snapshot
+  read_scope:
+  - db.search_lane_receipts
+  - db.query_plans
+  - db.coverage_snapshots
+  write_scope:
+  - db.retrieval_runs
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - absence claims limited to certificate scope
+  - external index outage visible
+  - certificate hash stable
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - retrieval_run_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieval_release_gate
+  purpose: Block deliberation when mandatory lanes, provenance, or dependency reconciliation
+    are incomplete
+  executor_type: policy
+  executor_ref: epistemic_foundry.policy.retrieval:gate
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - issue_search_completeness_certificate
+  read_scope:
+  - db.retrieval_runs
+  - db.evidence_packs
+  - db.coverage_snapshots
+  - config/policy_bundle.yaml
+  write_scope:
+  - db.gate_decisions/retrieval
+  capabilities:
+  - database_read
+  - database_write
+  - filesystem_read
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - counter/null/method mandatory lanes enforced
+  - partial novelty search caps novelty status
+  - silent lane failure impossible
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - retrieval_gate_decision_created
+  required_policy_checks:
+  - retrieval_completeness_policy
+  - absence_claim_policy
+  - novelty_policy

@@ -1,0 +1,30 @@
+{
+  "mechanism_graph_id": "MG-1",
+  "nodes": [
+    {
+      "node_id": "N1",
+      "concept_id": "X",
+      "role": "cause"
+    },
+    {
+      "node_id": "N2",
+      "concept_id": "Y",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "E1",
+      "source": "N1",
+      "target": "N2",
+      "relation": "causes",
+      "sign": "positive",
+      "lag": "1 day"
+    }
+  ],
+  "assumptions": [
+    "No unmeasured common cause."
+  ],
+  "identification_status": "ASSUMPTION_DEPENDENT",
+  "graph_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

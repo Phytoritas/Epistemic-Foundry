@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/replication-result.schema.json",
+  "title": "ReplicationResult",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "replication_result_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replication_plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "REPLICATED",
+        "PARTIAL",
+        "FAILED",
+        "INCONCLUSIVE",
+        "BLOCKED"
+      ]
+    },
+    "metric_summary": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {}
+    },
+    "heterogeneity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "failure_analysis": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "promotion_effect": {
+      "enum": [
+        "RAISE",
+        "UNCHANGED",
+        "LOWER",
+        "BLOCK"
+      ]
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "result_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "replication_result_id",
+    "replication_plan_id",
+    "candidate_id",
+    "status",
+    "metric_summary",
+    "heterogeneity",
+    "failure_analysis",
+    "promotion_effect",
+    "artifact_ids",
+    "result_hash"
+  ],
+  "description": "복제 성공·실패·이질성·원인과 승격 영향를 기록한다."
+}

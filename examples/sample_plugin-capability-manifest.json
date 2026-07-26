@@ -1,0 +1,39 @@
+{
+  "plugin_id": "epistemic-foundry",
+  "version": "4.0.0",
+  "schema_version": "4.0.0",
+  "host_surfaces": [
+    "codex_cli",
+    "claude_code"
+  ],
+  "required_capabilities": [
+    "local_state",
+    "artifact_hashing"
+  ],
+  "optional_capabilities": [
+    "plugin_hooks",
+    "mcp",
+    "worktrees"
+  ],
+  "degraded_modes": [
+    {
+      "missing_capability": "plugin_hooks",
+      "mode": "DEGRADED",
+      "behavior": "Use explicit CLI and kernel gates."
+    }
+  ],
+  "skills": [
+    "foundry",
+    "foundry-intake"
+  ],
+  "hook_bundles": [
+    "hooks/session.json"
+  ],
+  "mcp_servers": [
+    "epistemic-foundry"
+  ],
+  "cli_commands": [
+    "efoundry doctor",
+    "efoundry status"
+  ]
+}

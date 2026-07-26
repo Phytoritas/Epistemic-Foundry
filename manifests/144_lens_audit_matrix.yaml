@@ -1,0 +1,1923 @@
+version: 2.0.0
+architecture_name: Epistemic Foundry
+audit_method:
+  lens_count: 144
+  family_count: 12
+  execution: concurrent deterministic specification checks
+  clarification: These are 144 independent review lenses and test questions, not 144 claims of independent human or model
+    proof.
+  status_semantics:
+    PASS: all specification evidence checks passed
+    CONDITIONAL: architecture is specified but a deployment-specific external decision remains
+    FAIL: required design evidence is absent or inconsistent
+families:
+- id: A
+  name: Epistemic semantics and type safety
+  lenses:
+  - id: A01
+    name: Claim-first atom
+    question: Is the reasoning atom a claim rather than an entire paper?
+    approach: ontology/epistemology audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/requirements_traceability.yaml
+      tokens:
+      - Claim-first
+    - type: json_has_properties
+      path: schemas/claim-card.schema.json
+      properties:
+      - claim_id
+      - subject
+      - relation
+      - object
+  - id: A02
+    name: Span-or-reject
+    question: Can a promoted claim exist without an immutable source anchor?
+    approach: grounding invariant audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/requirements_traceability.yaml
+      tokens:
+      - Span-or-reject
+    - type: json_has_properties
+      path: schemas/source-span.schema.json
+      properties:
+      - span_id
+      - text_hash
+      - provenance_manifest_id
+  - id: A03
+    name: Scope-first semantics
+    question: Are scope and comparison conditions first-class before contradiction?
+    approach: scope logic audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/scope-vector.schema.json
+      properties:
+      - unit_of_analysis
+      - temporal_scale
+      - intervention_or_exposure
+      - comparator
+    - type: contains_all
+      path: manifests/requirements_traceability.yaml
+      tokens:
+      - Scope-first
+  - id: A04
+    name: Falsifier admission gate
+    question: Is a falsifier required before deliberation?
+    approach: Popperian admission audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/insight-card.schema.json
+      properties:
+      - falsifiers
+      - predictions
+    - type: contains_all
+      path: manifests/requirements_traceability.yaml
+      tokens:
+      - Falsifier-before-council
+  - id: A05
+    name: Multidimensional verdict
+    question: Are epistemic, causal, novelty, and promotion states separate?
+    approach: type-system audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/hypothesis-passport.schema.json
+      properties:
+      - epistemic_status
+      - causal_status
+      - novelty_status
+      - promotion_level
+      - epistemic_assessment
+  - id: A06
+    name: Causal ceiling
+    question: Can association be promoted as identified causation?
+    approach: causal semantics audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/acceptance_matrix.yaml
+      tokens:
+      - No causal claim promoted
+    - type: json_has_properties
+      path: schemas/hypothesis-passport.schema.json
+      properties:
+      - causal_status
+  - id: A07
+    name: Evidence-class preservation
+    question: Are observed, computed, simulated, formal, and benchmark results kept distinct?
+    approach: evidence typing audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/experiment-result.schema.json
+      properties:
+      - result_type
+      - evidence_class
+    - type: contains_all
+      path: manifests/requirements_traceability.yaml
+      tokens:
+      - Evidence subtype preservation
+  - id: A08
+    name: Abstention as valid state
+    question: Can the system return underdetermined or untestable instead of fabricating certainty?
+    approach: abstention-state audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - UNDERDETERMINED
+      - UNTESTABLE
+    - type: contains_all
+      path: prompts/judge.md
+      tokens:
+      - Common execution contract
+  - id: A09
+    name: No proof inflation
+    question: Does the architecture avoid treating literature support as universal proof?
+    approach: language and claim-strength audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - SUPPORTED
+      - NOT_IDENTIFIED
+    - type: contains_all
+      path: manifests/acceptance_matrix.yaml
+      tokens:
+      - No simulated, computed, formal, or benchmark result
+  - id: A10
+    name: Boundary-condition representation
+    question: Can findings be narrowed by condition rather than mislabeled as contradiction?
+    approach: boundary semantics audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/coverage-snapshot.schema.json
+      properties:
+      - cells
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - BOUNDARY_CONDITION
+  - id: A11
+    name: Argument/proposition separation
+    question: Are arguments, assumptions, and evidence represented as different node types?
+    approach: argumentation ontology audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/argument-graph.schema.json
+      properties:
+      - nodes
+      - edges
+      - hidden_assumption_ids
+      - unresolved_objection_ids
+  - id: A12
+    name: Hypothesis lifecycle
+    question: Can a Passport become stale or superseded without historical erasure?
+    approach: epistemic lifecycle audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/hypothesis-passport.schema.json
+      properties:
+      - revision
+      - lifecycle_status
+      - stale_reasons
+    - type: contains_all
+      path: manifests/requirements_traceability.yaml
+      tokens:
+      - Lifecycle-not-overwrite
+- id: B
+  name: Source integrity, provenance, and corpus authority
+  lenses:
+  - id: B01
+    name: Content-addressed source
+    question: Are original bytes and source hashes authoritative?
+    approach: content-addressability audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/document-manifest.schema.json
+      properties:
+      - content_hash
+      - paper_version_id
+      - provenance_manifest_id
+    - type: workflow_has_nodes
+      path: workflows/corpus_ingest.workflow.yaml
+      nodes:
+      - register_document
+  - id: B02
+    name: Page and bounding-box provenance
+    question: Can evidence be located on the original page and layout?
+    approach: layout provenance audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/source-span.schema.json
+      properties:
+      - page
+      - bbox
+      - coordinate_system
+  - id: B03
+    name: Character-span provenance
+    question: Can normalized text be traced to exact character boundaries?
+    approach: text locator audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/source-span.schema.json
+      properties:
+      - char_start
+      - char_end
+      - verbatim_text
+      - text_hash
+  - id: B04
+    name: Parser-version pinning
+    question: Are parser identity and version recorded?
+    approach: parser reproducibility audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/source-span.schema.json
+      properties:
+      - parser_name
+      - parser_version
+    - type: contains_all
+      path: workflows/corpus_ingest.workflow.yaml
+      tokens:
+      - parser image/version hash recorded
+  - id: B05
+    name: Document version lineage
+    question: Are preprint, final, correction, and supersession relationships explicit?
+    approach: publication lifecycle audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/document-manifest.schema.json
+      properties:
+      - bibliographic_version
+      - supersedes_version_id
+      - status
+  - id: B06
+    name: Retraction/correction awareness
+    question: Can source updates trigger downstream reassessment?
+    approach: scholarly record audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: workflows/evidence_update_reassessment.workflow.yaml
+      tokens:
+      - retractions
+      - supersession
+    - type: contains_all
+      path: manifests/development_manifest.yaml
+      tokens:
+      - retraction propagation
+  - id: B07
+    name: Source-integrity report
+    question: Are corruption, active content, and trust decisions typed?
+    approach: hostile-source audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/source-integrity-report.schema.json
+      properties:
+      - checks
+      - overall_status
+      - trusted_for_extraction
+      - policy_version
+  - id: B08
+    name: Artifact manifest
+    question: Are derived files independently hashed and typed?
+    approach: artifact provenance audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/artifact-manifest.schema.json
+      properties:
+      - artifact_id
+      - content_hash
+      - media_type
+      - provenance_manifest_id
+  - id: B09
+    name: Append-only event record
+    question: Can state transitions be reconstructed from immutable events?
+    approach: event-sourcing audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/event-record.schema.json
+      properties:
+      - event_id
+      - sequence
+      - event_type
+      - event_hash
+  - id: B10
+    name: Context assembly provenance
+    question: Is the exact evidence/context given to each agent reproducible?
+    approach: context provenance audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/context-assembly-manifest.schema.json
+      properties:
+      - evidence_ids
+      - excluded_evidence_ids
+      - context_hash
+      - ordering_strategy
+      - model_identifier
+  - id: B11
+    name: Noetic Ledger authority
+    question: Is canonical state outside model conversation and tied to the ledger?
+    approach: authority-boundary audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: workflows/corpus_ingest.workflow.yaml
+      tokens:
+      - Noetic Ledger
+    - type: contains_all
+      path: manifests/requirements_traceability.yaml
+      tokens:
+      - Canonical state outside models
+  - id: B12
+    name: Production corpus license inventory
+    question: Have concrete production corpus rights and access rules been assigned?
+    approach: legal/deployment readiness audit
+    expected_status: CONDITIONAL
+    checks:
+    - type: conditional
+      path: manifests/acceptance_matrix.yaml
+      condition: corpus licensing and access inventory
+- id: C
+  name: Claim Forge extraction and normalization
+  lenses:
+  - id: C01
+    name: Evidence-unit selection
+    question: Are result paragraphs linked to captions, tables, figures, and methods before extraction?
+    approach: document-unit audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - select_evidence_units
+    - type: contains_all
+      path: workflows/claim_extraction.workflow.yaml
+      tokens:
+      - results-caption links retained
+  - id: C02
+    name: High-recall candidate stage
+    question: Are candidates separated from promoted claims?
+    approach: pipeline-stage audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - detect_claim_candidates
+    - type: contains_all
+      path: workflows/claim_extraction.workflow.yaml
+      tokens:
+      - candidate is not yet evidence
+  - id: C03
+    name: Atomicization
+    question: Are compound statements split without losing negation or quantifiers?
+    approach: logical atomicity audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - atomicize_claims
+    - type: contains_all
+      path: workflows/claim_extraction.workflow.yaml
+      tokens:
+      - one principal relation per claim
+  - id: C04
+    name: Scope extraction
+    question: Are unknown scope values preserved rather than guessed?
+    approach: missingness audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - extract_scope
+    - type: contains_all
+      path: workflows/claim_extraction.workflow.yaml
+      tokens:
+      - no domain field guessed
+  - id: C05
+    name: Method and quantitative extraction
+    question: Are reported values distinguished from inferred values?
+    approach: measurement audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - extract_method_quant
+    - type: contains_all
+      path: workflows/claim_extraction.workflow.yaml
+      tokens:
+      - reported and inferred values distinguished
+  - id: C06
+    name: Author stance and evidence layer
+    question: Are speculation, review claims, and primary findings kept separate?
+    approach: rhetorical-status audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - classify_author_stance_layer
+    - type: json_has_properties
+      path: schemas/claim-card.schema.json
+      properties:
+      - author_stance
+      - evidence_layer
+      - hedging_level
+  - id: C07
+    name: Ontology and construct normalization
+    question: Are labels separated from measured constructs and unit rules?
+    approach: semantic normalization audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - normalize_ontology_constructs
+    - type: contains_all
+      path: docs/ontology_measurement_contract.md
+      tokens:
+      - measurement
+  - id: C08
+    name: Grounding verifier
+    question: Is claim-to-span entailment checked independently?
+    approach: citation laundering audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - verify_grounding
+    - type: contains_all
+      path: prompts/grounding_verifier.md
+      tokens:
+      - citation
+  - id: C09
+    name: Claim lifecycle events
+    question: Are revisions, invalidations, and supersessions append-only?
+    approach: lifecycle audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - register_claim_lifecycle
+    - type: json_has_properties
+      path: schemas/claim-lifecycle-event.schema.json
+      properties:
+      - event_id
+      - from_status
+      - to_status
+      - reason_code
+  - id: C10
+    name: Evidence node construction
+    question: Are only grounded claims converted into evidence?
+    approach: promotion audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - build_evidence_nodes
+    - type: json_has_properties
+      path: schemas/evidence-node.schema.json
+      properties:
+      - claim_ids
+      - evidence_class
+      - validity_status
+  - id: C11
+    name: Dependency clustering
+    question: Are shared data, samples, experiments, versions, and citation ancestry clustered?
+    approach: independence audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/claim_extraction.workflow.yaml
+      nodes:
+      - cluster_dependencies
+    - type: contains_all
+      path: prompts/dependency_auditor.md
+      tokens:
+      - shared participants
+      - citation ancestry
+  - id: C12
+    name: Human-review and active-learning queue
+    question: Does high-impact or low-confidence extraction route to human review rather than silent acceptance?
+    approach: human-in-the-loop audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - 인간 검토 큐
+      - active learning
+    - type: contains_all
+      path: manifests/development_manifest.yaml
+      tokens:
+      - Gold corpus and evaluation fixtures
+- id: D
+  name: Relation-aware retrieval and Epistemic Atlas coverage
+  lenses:
+  - id: D01
+    name: Directional query plan
+    question: Are forward, reverse, null, boundary, method, and novelty queries explicit?
+    approach: query-plan audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/query-plan.schema.json
+      properties:
+      - forward_queries
+      - reverse_queries
+      - null_queries
+      - boundary_queries
+      - method_queries
+      - novelty_queries
+  - id: D02
+    name: Lexical lane
+    question: Are exact identifiers, terms, equations, and methods searchable independently?
+    approach: lexical retrieval audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - retrieve_lexical
+  - id: D03
+    name: Semantic lane
+    question: Is conceptual similarity used as one lane rather than sole authority?
+    approach: semantic retrieval audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - retrieve_semantic
+    - type: contains_all
+      path: workflows/evidence_retrieval.workflow.yaml
+      tokens:
+      - vector similarity is never the sole
+  - id: D04
+    name: Citation and entity lanes
+    question: Can lineage and shared-variable relationships be searched?
+    approach: graph/citation retrieval audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - retrieve_citation
+      - retrieve_entity_variable
+  - id: D05
+    name: Mechanism lane
+    question: Can intermediate mechanisms be retrieved separately from surface similarity?
+    approach: mechanistic retrieval audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - retrieve_mechanism
+  - id: D06
+    name: Counterevidence lane
+    question: Is opposite-direction and alternative-explanation search mandatory?
+    approach: adversarial retrieval audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - retrieve_counter
+    - type: contains_all
+      path: manifests/acceptance_matrix.yaml
+      tokens:
+      - counter
+  - id: D07
+    name: Null-result lane
+    question: Are null, negative, equivalence, and failed-replication findings independently searched?
+    approach: negative-evidence audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - retrieve_null
+  - id: D08
+    name: Boundary lane
+    question: Are moderators, thresholds, scope shifts, and non-monotonicity retrieved?
+    approach: boundary retrieval audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - retrieve_boundary
+  - id: D09
+    name: Method lane
+    question: Can measurement validity and design limitations be retrieved independently?
+    approach: method retrieval audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - retrieve_method
+  - id: D10
+    name: Temporal and novelty lanes
+    question: Are updates, retractions, historical precedence, and external prior art separated?
+    approach: temporal/prior-art audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - retrieve_temporal
+      - retrieve_novelty
+  - id: D11
+    name: Lane receipts
+    question: Does every executed, empty, blocked, or failed lane leave a receipt?
+    approach: search accountability audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - emit_lane_receipts
+    - type: json_has_properties
+      path: schemas/search-lane-receipt.schema.json
+      properties:
+      - lane
+      - search_state
+      - query_hash
+      - stop_reason
+  - id: D12
+    name: Coverage and completeness certificate
+    question: Are unsearched, searched-none, effective count, bias, and search scope exposed?
+    approach: coverage-first audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - build_coverage_snapshot
+      - issue_search_completeness_certificate
+    - type: json_has_properties
+      path: schemas/retrieval-run.schema.json
+      properties:
+      - coverage_state
+      - completeness_certificate_hash
+      - bias_risk_register_id
+- id: E
+  name: Reasoning, contradiction, and Aporia Engine
+  lenses:
+  - id: E01
+    name: Deductive proof trace
+    question: Are premises, rules, hidden assumptions, and broken edges explicit?
+    approach: formal reasoning audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: prompts/deductivist.md
+      tokens:
+      - premise
+      - proof
+    - type: json_has_properties
+      path: schemas/argument-graph.schema.json
+      properties:
+      - proof_trace_artifact_id
+      - hidden_assumption_ids
+  - id: E02
+    name: Inductive heterogeneity
+    question: Are repeated patterns synthesized with moderators and dependence rather than vote count?
+    approach: inductive synthesis audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: prompts/inductivist.md
+      tokens:
+      - heterogeneity
+      - dependency
+  - id: E03
+    name: Abductive competition
+    question: Are multiple minimal explanations retained for contradictions?
+    approach: abductive reasoning audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: prompts/abductive_mediator.md
+      tokens:
+      - competing
+      - discriminating
+  - id: E04
+    name: Causal identification
+    question: Are confounding, mediation, colliders, timing, and identification status audited?
+    approach: causal inference audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: prompts/causal_auditor.md
+      tokens:
+      - confound
+      - collider
+      - identif
+  - id: E05
+    name: Condition-aware contradiction
+    question: Are true contradictions separated from scope, method, temporal, and measurement differences?
+    approach: contradiction taxonomy audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - TRUE_CONTRADICTION
+      - METHOD_DIFFERENCE
+      - TEMPORAL_DIFFERENCE
+  - id: E06
+    name: Moderator discovery
+    question: Can scope differences be proposed as testable moderator rules?
+    approach: moderator inference audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - moderator discovery
+      - 조절변수
+  - id: E07
+    name: Null model
+    question: Does falsification include a concrete null model and reverse causation?
+    approach: falsification audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: prompts/prosecutor.md
+      tokens:
+      - null model
+      - reverse causation
+  - id: E08
+    name: Alternative hypotheses
+    question: Are alternatives represented as competing explanations rather than footnotes?
+    approach: model competition audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: prompts/argument_mapper.md
+      tokens:
+      - COMPETES_WITH
+      - alternatives
+  - id: E09
+    name: Typed attacks
+    question: Are rebuttal, undercut, premise, evidence, scope, method, and causal attacks distinguishable?
+    approach: argument attack audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/cross-examination.schema.json
+      properties:
+      - attack_type
+      - target_assertion_id
+      - evidence_ids
+      - resolution_status
+  - id: E10
+    name: Reasoning-mode separation
+    question: Are deduction, induction, abduction, and causation kept in separate traces?
+    approach: inference-mode audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/requirements_traceability.yaml
+      tokens:
+      - Separate inference modes
+    - type: json_has_properties
+      path: schemas/hypothesis-passport.schema.json
+      properties:
+      - reasoning_modes
+  - id: E11
+    name: Decision stability
+    question: Is verdict fragility tested under registered perturbations?
+    approach: robustness/sensitivity audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/decision-stability-report.schema.json
+      properties:
+      - perturbations
+      - stability_class
+      - sensitive_inputs
+      - verdict_flip_count
+    - type: workflow_has_nodes
+      path: workflows/insight_deliberation.workflow.yaml
+      nodes:
+      - analyze_decision_stability
+  - id: E12
+    name: Discriminating test
+    question: Does unresolved reasoning produce a test capable of changing the decision?
+    approach: experimental discrimination audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/experiment-ticket.schema.json
+      properties:
+      - discriminates_between
+      - falsification_rule
+      - estimated_information_gain
+    - type: workflow_has_nodes
+      path: workflows/validation_execution.workflow.yaml
+      nodes:
+      - propose_discriminating_test
+- id: F
+  name: Evidence Parliament and human governance
+  lenses:
+  - id: F01
+    name: Blind first round
+    question: Are initial briefs isolated from each other?
+    approach: deliberation-independence audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: workflows/insight_deliberation.workflow.yaml
+      tokens:
+      - first-round briefs are blind
+  - id: F02
+    name: Evidence ACL
+    question: Do roles receive asymmetric, hash-recorded context manifests?
+    approach: information-access audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/insight_deliberation.workflow.yaml
+      nodes:
+      - assign_evidence_acls
+    - type: json_has_properties
+      path: schemas/context-assembly-manifest.schema.json
+      properties:
+      - agent_role
+      - evidence_ids
+      - excluded_evidence_ids
+  - id: F03
+    name: Defender loss function
+    question: Is the strongest scope-bounded support case constructed without hiding counterevidence?
+    approach: role-contract audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: prompts/defender.md
+      tokens:
+      - Loss function
+      - scope
+  - id: F04
+    name: Prosecutor burden
+    question: Can one strong, scope-matched refutation defeat many dependent supports?
+    approach: asymmetric burden audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: prompts/prosecutor.md
+      tokens:
+      - One high-quality
+      - scope-matched
+  - id: F05
+    name: Method veto
+    question: Can measurement invalidity cap or block promotion regardless of votes?
+    approach: measurement-governance audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: prompts/method_auditor.md
+      tokens:
+      - Veto
+    - type: contains_all
+      path: workflows/insight_deliberation.workflow.yaml
+      tokens:
+      - method veto
+  - id: F06
+    name: Scope audit
+    question: Is extrapolation across population, setting, time, and scale explicitly challenged?
+    approach: external-validity audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: prompts/scope_auditor.md
+      tokens:
+      - scope
+      - extrapolation
+  - id: F07
+    name: Bias and dependency auditors
+    question: Are evidence-base bias and non-independence represented by dedicated roles?
+    approach: role-diversity audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/insight_deliberation.workflow.yaml
+      nodes:
+      - brief_bias_auditor
+      - brief_dependency_auditor
+  - id: F08
+    name: Typed cross-examination
+    question: Must attacks target exact Claim/Argument IDs and evidence?
+    approach: cross-examination audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/insight_deliberation.workflow.yaml
+      nodes:
+      - typed_cross_examination
+    - type: contains_all
+      path: prompts/cross_examiner.md
+      tokens:
+      - target
+  - id: F09
+    name: Minority preservation
+    question: Is the strongest unresolved dissent mandatory and durable?
+    approach: minority-rights audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/insight_deliberation.workflow.yaml
+      nodes:
+      - write_minority_report
+    - type: json_has_properties
+      path: schemas/minority-report.schema.json
+      properties:
+      - minority_claim
+      - why_majority_may_be_wrong
+  - id: F10
+    name: Deterministic promotion gates
+    question: Can a judge or majority bypass failed provenance/method/completeness gates?
+    approach: authority audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/insight_deliberation.workflow.yaml
+      nodes:
+      - evaluate_deterministic_gates
+    - type: contains_all
+      path: prompts/judge.md
+      tokens:
+      - cannot
+      - gate
+  - id: F11
+    name: Independent attestation
+    question: Does final review receive structured evidence rather than persuasive transcript?
+    approach: attestation-independence audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/insight_deliberation.workflow.yaml
+      nodes:
+      - independent_attestation
+    - type: contains_all
+      path: prompts/independent_attestor.md
+      tokens:
+      - structured
+  - id: F12
+    name: Named human governance roles
+    question: Have production approvers, appeal authorities, and conflict rules been assigned?
+    approach: organizational governance audit
+    expected_status: CONDITIONAL
+    checks:
+    - type: conditional
+      path: manifests/acceptance_matrix.yaml
+      condition: human governance role assignments
+- id: G
+  name: Foundry Kernel graph runtime and replay
+  lenses:
+  - id: G01
+    name: Immutable RunSpec
+    question: Are workflow, corpus, policy, schema, budget, and expected nodes frozen per run?
+    approach: run-contract audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/run-spec.schema.json
+      properties:
+      - workflow_id
+      - corpus_snapshot_hash
+      - policy_bundle_id
+      - expected_node_ids
+      - run_hash
+  - id: G02
+    name: Node contract
+    question: Does every node declare typed I/O, capabilities, scopes, retries, policies, effects, and acceptance checks?
+    approach: node-contract audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/node-contract.schema.json
+      properties:
+      - input_schema_ref
+      - output_schema_ref
+      - capabilities
+      - resource_dependencies
+      - expected_effects
+      - required_policy_checks
+  - id: G03
+    name: Real dependency test
+    question: Are edges justified by data/control/resource dependencies rather than narrative order?
+    approach: graph-topology audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - real dependency
+      - EdgeContract
+  - id: G04
+    name: Hidden resource edge
+    question: Do shared writes, quotas, approvals, and exclusive resources create explicit dependencies?
+    approach: resource-conflict audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/node-contract.schema.json
+      properties:
+      - resource_dependencies
+      - write_scope
+    - type: contains_all
+      path: manifests/development_manifest.yaml
+      tokens:
+      - hidden_edge_rule
+  - id: G05
+    name: Fan-out
+    question: Can independent retrieval lanes and council roles execute in parallel?
+    approach: parallelism audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - Fan-out
+    - type: workflow_has_nodes
+      path: workflows/evidence_retrieval.workflow.yaml
+      nodes:
+      - retrieve_lexical
+      - retrieve_counter
+      - retrieve_null
+  - id: G06
+    name: Layered fan-in
+    question: Is large synthesis reduced in bounded layers rather than one context dump?
+    approach: context-scaling audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - Layered fan-in
+  - id: G07
+    name: Completeness reconciliation
+    question: Are expected and actual nodes/artifacts compared before synthesis?
+    approach: silent-failure audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/result-envelope.schema.json
+      properties:
+      - completeness
+    - type: contains_all
+      path: workflows/evaluation_release.workflow.yaml
+      tokens:
+      - all expected evaluation receipts reconciled
+  - id: G08
+    name: Idempotency
+    question: Are retries keyed and safe against duplicate side effects?
+    approach: retry-safety audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/node-contract.schema.json
+      properties:
+      - idempotency_key_fields
+    - type: json_has_properties
+      path: schemas/action-intent.schema.json
+      properties:
+      - idempotency_key
+  - id: G09
+    name: Bounded loops
+    question: Do iterative loops have novelty, budget, time, and dry-round termination?
+    approach: convergence audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/loop-contract.schema.json
+      properties:
+      - convergence_predicate
+      - max_iterations
+      - max_cost_units
+      - max_wall_seconds
+      - dry_rounds_required
+  - id: G10
+    name: Action/effect sourcing
+    question: Are intended and observed side effects separated and reconciled?
+    approach: effect-sourcing audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/action-intent.schema.json
+      properties:
+      - intent_hash
+      - arguments_hash
+      - idempotency_key
+    - type: json_has_properties
+      path: schemas/effect-receipt.schema.json
+      properties:
+      - status
+      - result_artifact_ids
+      - reconciliation_required
+  - id: G11
+    name: Checkpoint and replay
+    question: Can state resume from approved checkpoints and distinguish strict from semantic replay?
+    approach: recovery/replay audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/checkpoint-manifest.schema.json
+      properties:
+      - checkpoint_id
+      - state_hash
+    - type: json_has_properties
+      path: schemas/replay-report.schema.json
+      properties:
+      - mode
+      - event_equivalence
+      - artifact_hash_matches
+  - id: G12
+    name: Provider-neutral authority
+    question: Are Codex and Claude execution adapters prevented from owning canonical state?
+    approach: provider-independence audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/requirements_traceability.yaml
+      tokens:
+      - Provider-neutral kernel
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - provider-neutral
+- id: H
+  name: Security, privacy, safety, and supply chain
+  lenses:
+  - id: H01
+    name: Untrusted corpus boundary
+    question: Are documents and snippets always treated as data rather than instructions?
+    approach: prompt-boundary audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: workflows/corpus_ingest.workflow.yaml
+      tokens:
+      - untrusted data
+    - type: contains_all
+      path: prompts/argument_mapper.md
+      tokens:
+      - untrusted
+  - id: H02
+    name: Prompt-injection scanning
+    question: Are instruction-like source spans scanned, labeled, and propagated to contexts?
+    approach: injection-resistance audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/context-assembly-manifest.schema.json
+      properties:
+      - injection_scan_report_id
+      - source_trust_labels
+    - type: contains_all
+      path: workflows/corpus_ingest.workflow.yaml
+      tokens:
+      - prompt-injection
+  - id: H03
+    name: Active-content quarantine
+    question: Are attachments and active content inventoried without execution?
+    approach: document security audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: workflows/corpus_ingest.workflow.yaml
+      tokens:
+      - active content
+      - non-executable
+  - id: H04
+    name: Sandbox profile
+    question: Are validation executions isolated and resource bounded?
+    approach: execution isolation audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/validation-target-manifest.schema.json
+      properties:
+      - sandbox_profile
+      - capability_requirements
+    - type: workflow_has_nodes
+      path: workflows/validation_execution.workflow.yaml
+      nodes:
+      - execute_validation_actions
+  - id: H05
+    name: Network policy
+    question: Can validation targets access only explicitly permitted networks?
+    approach: egress-control audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/validation-target-manifest.schema.json
+      properties:
+      - network_policy
+    - type: contains_all
+      path: workflows/validation_execution.workflow.yaml
+      tokens:
+      - network and filesystem policy enforced
+  - id: H06
+    name: Secret handling
+    question: Are credentials excluded from artifacts, logs, and prompts?
+    approach: secret-management audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - 비밀 관리
+      - secret
+  - id: H07
+    name: Data classification
+    question: Do allowed data classes and redaction rules propagate to execution and contexts?
+    approach: data-governance audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/validation-target-manifest.schema.json
+      properties:
+      - allowed_data_classes
+    - type: json_has_properties
+      path: schemas/context-assembly-manifest.schema.json
+      properties:
+      - redaction_policy_version
+  - id: H08
+    name: Privacy and retention
+    question: Are purpose, minimization, retention, and deletion rules explicit?
+    approach: privacy audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - privacy
+      - retention
+  - id: H09
+    name: License enforcement
+    question: Do document and output rights constrain access and export?
+    approach: license-compliance audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/document-manifest.schema.json
+      properties:
+      - license_status
+      - access_policy_ref
+    - type: contains_all
+      path: workflows/corpus_ingest.workflow.yaml
+      tokens:
+      - license
+  - id: H10
+    name: Supply-chain attestation
+    question: Are target binaries, dependencies, and build provenance pinned?
+    approach: software supply-chain audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/validation-target-manifest.schema.json
+      properties:
+      - supply_chain_attestation_artifact_id
+      - artifact_hashes
+    - type: contains_all
+      path: workflows/evaluation_release.workflow.yaml
+      tokens:
+      - SBOM
+  - id: H11
+    name: Auditability
+    question: Are policy, approval, action, effect, and human decision events retained?
+    approach: security audit-trail review
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/policy-bundle.schema.json
+      properties:
+      - policy_bundle_id
+    - type: json_has_properties
+      path: schemas/human-decision.schema.json
+      properties:
+      - decision_hash
+      - non_mutation_acknowledgement
+  - id: H12
+    name: Production signing key custody
+    question: Has the production signing identity and key-custody process been established?
+    approach: cryptographic operations audit
+    expected_status: CONDITIONAL
+    checks:
+    - type: conditional
+      path: manifests/acceptance_matrix.yaml
+      condition: production signing identity and key custody
+- id: I
+  name: Reliability, update propagation, and operations
+  lenses:
+  - id: I01
+    name: Typed terminal states
+    question: Are PASS, PARTIAL, BLOCKED, SPEC_GAP, and FAIL distinguishable?
+    approach: failure-semantics audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: workflows/corpus_ingest.workflow.yaml
+      tokens:
+      - PASS
+      - PARTIAL
+      - BLOCKED
+      - SPEC_GAP
+      - FAIL
+  - id: I02
+    name: Retry bounds
+    question: Do nodes have bounded attempts and typed failure policy?
+    approach: retry-policy audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/node-contract.schema.json
+      properties:
+      - max_attempts
+      - failure_policy
+  - id: I03
+    name: Lease and fencing
+    question: Can stale or duplicate workers be prevented from committing?
+    approach: concurrency-control audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/node-invocation.schema.json
+      properties:
+      - lease_token
+    - type: contains_all
+      path: workflows/validation_execution.workflow.yaml
+      tokens:
+      - fenced
+  - id: I04
+    name: Visible partial output
+    question: Can partial results be used only when typed and visibly incomplete?
+    approach: partial-completion audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/result-envelope.schema.json
+      properties:
+      - status
+      - completeness
+      - terminal_reason
+  - id: I05
+    name: Staleness index
+    question: Are invalidated downstream artifacts excluded without deletion?
+    approach: staleness audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_update_reassessment.workflow.yaml
+      nodes:
+      - invalidate_stale_artifacts
+    - type: contains_all
+      path: workflows/evidence_update_reassessment.workflow.yaml
+      tokens:
+      - stale does not mean deleted
+  - id: I06
+    name: Targeted reassessment
+    question: Can only affected documents, claims, retrievals, and decisions be rerun?
+    approach: incremental recomputation audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evidence_update_reassessment.workflow.yaml
+      nodes:
+      - refresh_documents
+      - refresh_claims
+      - refresh_retrieval
+      - refresh_deliberation
+  - id: I07
+    name: Backup and restore
+    question: Is recovery a tested gate rather than a written promise?
+    approach: disaster-recovery audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/acceptance_matrix.yaml
+      tokens:
+      - backup_restore_success
+    - type: contains_all
+      path: manifests/development_manifest.yaml
+      tokens:
+      - restore_drill
+  - id: I08
+    name: SLO and error budget
+    question: Are latency, completeness, recovery, and evidence-quality SLOs defined?
+    approach: service-reliability audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - SLO
+      - error budget
+  - id: I09
+    name: Observability
+    question: Are traces, metrics, logs, artifacts, and decision events correlated by run/node IDs?
+    approach: observability audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - OpenTelemetry
+      - run_id
+  - id: I10
+    name: Hard/soft budget truthfulness
+    question: Are advisory estimates distinguished from enforceable metering and cancellation?
+    approach: cost-control audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/development_manifest.yaml
+      tokens:
+      - soft estimates
+      - hard budgets
+  - id: I11
+    name: Incident response
+    question: Are unexpected effects, corruption, leakage, and security failures routed to incident records?
+    approach: incident-management audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - incident
+      - unexpected
+  - id: I12
+    name: Production deployment profile
+    question: Have the PostgreSQL, object-store, queue, region, and recovery topology been selected and tested?
+    approach: infrastructure readiness audit
+    expected_status: CONDITIONAL
+    checks:
+    - type: conditional
+      path: manifests/acceptance_matrix.yaml
+      condition: PostgreSQL/object-store deployment profile
+- id: J
+  name: Scientific evaluation, calibration, and red teaming
+  lenses:
+  - id: J01
+    name: Gold corpus
+    question: Is a manually adjudicated gold set required before scale-up?
+    approach: benchmark-design audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/development_manifest.yaml
+      tokens:
+      - Gold corpus and evaluation fixtures
+    - type: contains_all
+      path: manifests/acceptance_matrix.yaml
+      tokens:
+      - claim_gold_min
+  - id: J02
+    name: Known-false cases
+    question: Are intentionally false hypotheses used to measure rejection rather than support only?
+    approach: false-positive audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/acceptance_matrix.yaml
+      tokens:
+      - known_false_rejection_rate
+  - id: J03
+    name: Adversarial sources
+    question: Are malformed, poisoned, injection-bearing, and citation-laundering documents evaluated?
+    approach: security red-team audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evaluation_release.workflow.yaml
+      nodes:
+      - run_adversarial_source_eval
+  - id: J04
+    name: Parser metrics
+    question: Are reading order, tables, figures, formulas, and source locators measured?
+    approach: parser evaluation audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - Parser metrics
+      - bbox
+  - id: J05
+    name: Claim/evidence metrics
+    question: Are atomicity, grounding, scope, stance, and unsupported-promotion rates measured?
+    approach: extraction evaluation audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - Claim/Evidence metrics
+      - unsupported
+  - id: J06
+    name: Retrieval metrics
+    question: Are counter/null/boundary/method recall and diversity measured?
+    approach: retrieval evaluation audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - Retrieval metrics
+      - counter
+  - id: J07
+    name: Reasoning metrics
+    question: Are causal overclaim, verdict accuracy, alternatives, and calibration measured?
+    approach: reasoning evaluation audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - Reasoning/Council metrics
+      - causal
+  - id: J08
+    name: Council ablation
+    question: Is asymmetric Parliament compared with single-agent and symmetric alternatives?
+    approach: causal ablation of architecture audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evaluation_release.workflow.yaml
+      nodes:
+      - run_council_ablations
+  - id: J09
+    name: Time-sliced backtest
+    question: Are future papers held out with leakage controls?
+    approach: temporal generalization audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evaluation_release.workflow.yaml
+      nodes:
+      - run_time_sliced_backtest
+    - type: contains_all
+      path: workflows/validation_execution.workflow.yaml
+      tokens:
+      - leakage guards
+  - id: J10
+    name: Calibration and stability
+    question: Are Brier/ECE, abstention, and verdict fragility evaluated?
+    approach: probabilistic calibration audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evaluation_release.workflow.yaml
+      nodes:
+      - run_calibration_eval
+    - type: json_has_properties
+      path: schemas/calibration-report.schema.json
+      properties:
+      - brier_score
+      - expected_calibration_error
+  - id: J11
+    name: Accessibility and multilingual QA
+    question: Are screen-reader, keyboard, locale, and source/translation separation tested?
+    approach: inclusive-quality audit
+    expected_status: PASS
+    checks:
+    - type: workflow_has_nodes
+      path: workflows/evaluation_release.workflow.yaml
+      nodes:
+      - run_accessibility_i18n_eval
+  - id: J12
+    name: Gold annotation ownership
+    question: Have annotators, adjudicators, agreement rules, and conflict resolution been assigned?
+    approach: evaluation-governance audit
+    expected_status: CONDITIONAL
+    checks:
+    - type: conditional
+      path: manifests/acceptance_matrix.yaml
+      condition: gold-corpus annotation owner and adjudication protocol
+- id: K
+  name: Domain neutrality, interoperability, and extensibility
+  lenses:
+  - id: K01
+    name: Domain-neutral core
+    question: Does core avoid hard-coded field names, variables, instruments, or target models?
+    approach: domain-coupling audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/requirements_traceability.yaml
+      tokens:
+      - Domain-neutral core
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - DomainPack
+  - id: K02
+    name: Versioned DomainPack
+    question: Can ontology, method, unit, evidence hierarchy, and coverage axes be plugged in?
+    approach: semantic plug-in audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/domain-pack.schema.json
+      properties:
+      - domain_pack_id
+      - ontology_version
+      - method_catalog_refs
+      - unit_registry_refs
+      - coverage_axes
+  - id: K03
+    name: ValidationTarget types
+    question: Can simulation, analysis, formal solver, benchmark, experiment, service, and custom targets be represented?
+    approach: execution plug-in audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/validation-target-manifest.schema.json
+      properties:
+      - target_type
+      - supported_actions
+      - reproducibility_contract
+  - id: K04
+    name: Schema evolution
+    question: Can compatible, breaking, and lossy migrations be classified and tested?
+    approach: schema governance audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/schema-migration.schema.json
+      properties:
+      - compatibility
+      - transform_entrypoint
+      - reverse_transform_entrypoint
+      - data_loss_possible
+  - id: K05
+    name: REST API contract
+    question: Are corpus, claim, evidence, insight, council, Passport, and validation resources specified?
+    approach: interface audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - REST API v1
+      - Corpus
+      - Passport/Validation
+  - id: K06
+    name: CLI contract
+    question: Is a provider-neutral `efoundry` CLI defined?
+    approach: operator-interface audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/development_manifest.yaml
+      tokens:
+      - efoundry
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - CLI
+  - id: K07
+    name: Projection-not-authority
+    question: Can graph, vector, and RDF projections be rebuilt from canonical state?
+    approach: storage architecture audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - projection
+      - source of truth
+  - id: K08
+    name: PROV/SHACL interoperability
+    question: Can provenance and RDF constraints be projected without making them the only store?
+    approach: standards interoperability audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - PROV
+      - SHACL
+  - id: K09
+    name: Multilingual sources
+    question: Can source language, translation, aliases, and measurement constructs remain distinct?
+    approach: multilingual semantics audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/scope-vector.schema.json
+      properties:
+      - language
+    - type: contains_all
+      path: manifests/development_manifest.yaml
+      tokens:
+      - multilingual
+  - id: K10
+    name: Policy and prompt versioning
+    question: Are prompts, policies, schemas, ontologies, and models independently pinned?
+    approach: configuration-version audit
+    expected_status: PASS
+    checks:
+    - type: json_has_properties
+      path: schemas/run-spec.schema.json
+      properties:
+      - model_policy_version
+      - schema_bundle_version
+      - policy_bundle_id
+      - ontology_version
+  - id: K11
+    name: Core-only operation
+    question: Can literature reasoning run when no DomainPack or ValidationTarget is configured?
+    approach: optional-dependency audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: workflows/validation_execution.workflow.yaml
+      tokens:
+      - TARGET_NOT_CONFIGURED
+    - type: contains_all
+      path: README.md
+      tokens:
+      - core-only
+  - id: K12
+    name: Deployment specialization selection
+    question: Has the first production DomainPack and optional ValidationTarget interoperability profile been chosen?
+    approach: deployment specialization audit
+    expected_status: CONDITIONAL
+    checks:
+    - type: conditional
+      path: manifests/acceptance_matrix.yaml
+      condition: production DomainPack/ValidationTarget interoperability profile
+- id: L
+  name: Implementation readiness, agent harness, and release integrity
+  lenses:
+  - id: L01
+    name: Bounded work-package DAG
+    question: Is implementation decomposed into dependency-aware, independently testable packages?
+    approach: development-plan audit
+    expected_status: PASS
+    checks:
+    - type: yaml_list_count
+      path: manifests/development_manifest.yaml
+      key: work_packages
+      expected: 68
+  - id: L02
+    name: Authority order
+    question: Is the source-of-truth hierarchy explicit and conflict handling defined?
+    approach: specification-authority audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/development_manifest.yaml
+      tokens:
+      - authority_order
+      - MASTER_SPEC.md
+  - id: L03
+    name: Maker-reviewer-integrator separation
+    question: Can authors approve neither their own nodes nor hidden integration repairs?
+    approach: engineering-governance audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - Maker–Reviewer–Integrator
+      - author
+  - id: L04
+    name: Worktree isolation
+    question: Are parallel write tasks isolated and shared contracts frozen?
+    approach: parallel-development audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: MASTER_SPEC.md
+      tokens:
+      - worktree
+      - write scope
+  - id: L05
+    name: Codex project agents
+    question: Are repository-scoped Codex agents/config provided for bounded review?
+    approach: Codex harness audit
+    expected_status: PASS
+    checks:
+    - type: glob_count
+      pattern: .codex/agents/*.toml
+      minimum: 4
+    - type: contains_all
+      path: AGENTS.md
+      tokens:
+      - Codex
+  - id: L06
+    name: Claude project agents
+    question: Are project-scoped Claude subagents provided with least-privilege tools?
+    approach: Claude harness audit
+    expected_status: PASS
+    checks:
+    - type: glob_count
+      pattern: .claude/agents/*.md
+      minimum: 4
+    - type: contains_all
+      path: CLAUDE.md
+      tokens:
+      - worktree
+  - id: L07
+    name: CI and security baseline
+    question: Does the plan require lint, typing, tests, schema validation, secrets, and dependency locks?
+    approach: CI readiness audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: manifests/development_manifest.yaml
+      tokens:
+      - CI, lint, typing and security baseline
+      - secret scan
+  - id: L08
+    name: 144-lens runner
+    question: Is the >100-lens audit executable concurrently and reproducibly?
+    approach: meta-assurance audit
+    expected_status: PASS
+    checks:
+    - type: yaml_family_shape
+      path: manifests/144_lens_audit_matrix.yaml
+      families: 12
+      lenses_per_family: 12
+    - type: contains_all
+      path: tools/run_144_lens_audit.py
+      tokens:
+      - ThreadPoolExecutor
+  - id: L09
+    name: Final-byte manifest
+    question: Are package contents, hashes, ZIP CRC, and duplicate entries verified after finalization?
+    approach: release integrity audit
+    expected_status: PASS
+    checks:
+    - type: contains_all
+      path: workflows/evaluation_release.workflow.yaml
+      tokens:
+      - final bytes
+      - checksums
+    - type: contains_all
+      path: manifests/acceptance_matrix.yaml
+      tokens:
+      - zip_crc_errors
+  - id: L10
+    name: Migration and operator guide
+    question: Is migration from v1.1 and the A01 bootstrap path documented?
+    approach: adoption audit
+    expected_status: PASS
+    checks:
+    - type: path_exists
+      path: docs/migration_v1_1_to_v2_0.md
+    - type: contains_all
+      path: README.md
+      tokens:
+      - A01
+  - id: L11
+    name: Production corpus and load-test infrastructure
+    question: Is the 1,800–2,000-paper corpus and production-scale test environment available?
+    approach: scale readiness audit
+    expected_status: CONDITIONAL
+    checks:
+    - type: conditional
+      path: manifests/acceptance_matrix.yaml
+      condition: production 1800-2000 paper corpus and load-test infrastructure
+  - id: L12
+    name: Provider credentials and quotas
+    question: Have production credentials, rate limits, cancellation, and hard-budget metering been configured?
+    approach: provider operations audit
+    expected_status: CONDITIONAL
+    checks:
+    - type: conditional
+      path: manifests/acceptance_matrix.yaml
+      condition: production provider credentials and quota policy

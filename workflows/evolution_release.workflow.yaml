@@ -1,0 +1,537 @@
+workflow_id: evolution_release
+version: 4.0.0
+kind: dag
+description: Validate and package v4 specification and later implementation releases
+  without maturity overclaim.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- specification validation is not implementation validation
+- unsigned means unsigned
+- all release counts derive from the package
+- conditional external values remain visible
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: freeze_v4_release_candidate
+  purpose: Freeze specification, schemas, workflows, prompts, skills and source inventory
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.freeze_v4_release_candidate:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/artifact-manifest.schema.json
+  depends_on: []
+  read_scope: []
+  write_scope:
+  - artifacts/release/frozen/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - freeze_v4_release_candidate contract valid
+  - freeze_v4_release_candidate result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - freeze_v4_release_candidate_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: validate_all_v4_schemas_examples
+  purpose: Meta-validate all Draft 2020-12 schemas and matching examples
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.validate_all_v4_schemas_examples:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluation-run.schema.json
+  depends_on:
+  - freeze_v4_release_candidate
+  read_scope: []
+  write_scope:
+  - artifacts/release/schema_validation/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - validate_all_v4_schemas_examples contract valid
+  - validate_all_v4_schemas_examples result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validate_all_v4_schemas_examples_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: validate_all_workflow_graphs
+  purpose: Validate node contracts, references, DAGs, write conflicts and expected
+    counts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.validate_all_workflow_graphs:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluation-run.schema.json
+  depends_on:
+  - freeze_v4_release_candidate
+  read_scope: []
+  write_scope:
+  - artifacts/release/workflow_validation/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - validate_all_workflow_graphs contract valid
+  - validate_all_workflow_graphs result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validate_all_workflow_graphs_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: validate_a_to_z_work_graph
+  purpose: Validate work-package dependencies, scopes, checkpoints and traceability
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.validate_a_to_z_work_graph:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluation-run.schema.json
+  depends_on:
+  - freeze_v4_release_candidate
+  read_scope: []
+  write_scope:
+  - artifacts/release/work_graph_validation/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - validate_a_to_z_work_graph contract valid
+  - validate_a_to_z_work_graph result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validate_a_to_z_work_graph_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_evolution_threat_model_suite
+  purpose: Test reward hacking, holdout leakage, evaluator mutation, archive poisoning,
+    unsafe code and prompt drift
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.run_evolution_threat_model_suite:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluation-run.schema.json
+  depends_on:
+  - validate_all_v4_schemas_examples
+  - validate_all_workflow_graphs
+  read_scope: []
+  write_scope:
+  - artifacts/release/security/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_evolution_threat_model_suite contract valid
+  - run_evolution_threat_model_suite result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_evolution_threat_model_suite_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_statistical_governance_suite
+  purpose: Test multiplicity, sequential testing, selection bias and winner-curse
+    contracts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.run_statistical_governance_suite:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluation-run.schema.json
+  depends_on:
+  - validate_all_v4_schemas_examples
+  read_scope: []
+  write_scope:
+  - artifacts/release/statistics/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_statistical_governance_suite contract valid
+  - run_statistical_governance_suite result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_statistical_governance_suite_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_shinka_source_traceability_check
+  purpose: Verify every adopted or corrected Shinka mechanism is source-traceable
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.run_shinka_source_traceability_check:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/attestation.schema.json
+  depends_on:
+  - freeze_v4_release_candidate
+  read_scope: []
+  write_scope:
+  - artifacts/release/shinka_traceability/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_shinka_source_traceability_check contract valid
+  - run_shinka_source_traceability_check result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_shinka_source_traceability_check_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_288_lens_architecture_audit
+  purpose: Run 24 × 12 structural audit matrix and preserve CONDITIONAL deployment
+    values
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.run_288_lens_architecture_audit:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluation-run.schema.json
+  depends_on:
+  - run_evolution_threat_model_suite
+  - run_statistical_governance_suite
+  - run_shinka_source_traceability_check
+  read_scope: []
+  write_scope:
+  - artifacts/release/audit/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_288_lens_architecture_audit contract valid
+  - run_288_lens_architecture_audit result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_288_lens_architecture_audit_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_reference_blueprint_fail_closed_test
+  purpose: Verify nonimplemented plugin runtime exits explicitly and cannot fake production
+    status
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.run_reference_blueprint_fail_closed_test:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluation-run.schema.json
+  depends_on:
+  - freeze_v4_release_candidate
+  read_scope: []
+  write_scope:
+  - artifacts/release/blueprint/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_reference_blueprint_fail_closed_test contract valid
+  - run_reference_blueprint_fail_closed_test result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_reference_blueprint_fail_closed_test_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_deterministic_release_archive
+  purpose: Build normalized deterministic ZIP and manifest
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.build_deterministic_release_archive:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/plugin-release-provenance.schema.json
+  depends_on:
+  - validate_a_to_z_work_graph
+  - run_288_lens_architecture_audit
+  - run_reference_blueprint_fail_closed_test
+  read_scope: []
+  write_scope:
+  - artifacts/release/archive/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - build_deterministic_release_archive contract valid
+  - build_deterministic_release_archive result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - build_deterministic_release_archive_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: verify_clean_extraction
+  purpose: Extract into clean directory and compare every manifest hash
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.verify_clean_extraction:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluation-run.schema.json
+  depends_on:
+  - build_deterministic_release_archive
+  read_scope: []
+  write_scope:
+  - artifacts/release/extraction/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - verify_clean_extraction contract valid
+  - verify_clean_extraction result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - verify_clean_extraction_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: independent_release_attestation
+  purpose: Review only structured validation, audit, manifest and clean-extraction
+    evidence
+  executor_type: llm
+  executor_ref: prompts/promotion_attestor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/attestation.schema.json
+  depends_on:
+  - verify_clean_extraction
+  read_scope: []
+  write_scope:
+  - artifacts/release/attestation/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - independent_release_attestation contract valid
+  - independent_release_attestation result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - independent_release_attestation_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: select_truthful_release_level
+  purpose: Select SPEC_BUNDLE, PLUGIN_ALPHA, EVOLUTION_MVP, PILOT or PRODUCTION solely
+    from acceptance matrix
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.select_truthful_release_level:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - independent_release_attestation
+  read_scope: []
+  write_scope:
+  - artifacts/release/level/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - select_truthful_release_level contract valid
+  - select_truthful_release_level result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - select_truthful_release_level_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: emit_release_report
+  purpose: Emit final pass/fail/conditional report without implementation overclaim
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.emit_release_report:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/plugin-release-provenance.schema.json
+  depends_on:
+  - select_truthful_release_level
+  read_scope: []
+  write_scope:
+  - reports/v4_release_report.json
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - emit_release_report contract valid
+  - emit_release_report result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - emit_release_report_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: sign_or_mark_unsigned
+  purpose: Sign with configured identity or explicitly mark unsigned; never simulate
+    signing
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.sign_or_mark_unsigned:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/plugin-release-provenance.schema.json
+  depends_on:
+  - emit_release_report
+  read_scope: []
+  write_scope:
+  - artifacts/release/signature/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - sign_or_mark_unsigned contract valid
+  - sign_or_mark_unsigned result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - sign_or_mark_unsigned_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

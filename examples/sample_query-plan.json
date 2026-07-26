@@ -1,0 +1,89 @@
+{
+  "query_plan_id": "QPLAN-0001",
+  "insight_id": "INS-0001",
+  "insight_revision": 1,
+  "canonical_relation": "spaced retrieval practice improves delayed recall",
+  "forward_queries": [
+    "spaced retrieval practice delayed recall"
+  ],
+  "reverse_queries": [
+    "spaced retrieval practice impairs delayed recall"
+  ],
+  "null_queries": [
+    "spaced retrieval practice no effect delayed recall"
+  ],
+  "boundary_queries": [
+    "spaced retrieval practice moderator delayed recall"
+  ],
+  "method_queries": [
+    "delayed recall measurement reliability spaced practice"
+  ],
+  "novelty_queries": [
+    "mechanism spaced retrieval delayed recall"
+  ],
+  "scope_partitions": [
+    {
+      "domain": "learning_science",
+      "population": "adult learners enrolled in introductory university courses",
+      "entity_type": "participant",
+      "entity_subtype": "university student",
+      "unit_of_analysis": "individual learner",
+      "setting": "controlled course-based study",
+      "geography": null,
+      "jurisdiction": null,
+      "language": "English",
+      "lifecycle_stage": null,
+      "spatial_scale": "individual",
+      "temporal_scale": "14-day delayed outcome",
+      "time_period": null,
+      "measurement_time": "14 days after the final study session",
+      "intervention_or_exposure": {
+        "name": "spaced retrieval practice",
+        "category": "learning intervention",
+        "min_value": 3,
+        "max_value": 3,
+        "unit": "sessions",
+        "duration": "one week",
+        "frequency": "three sessions",
+        "rate": null,
+        "route_or_delivery": "computer-based practice"
+      },
+      "comparator": "rereading with matched total study time",
+      "inclusion_criteria": [
+        "completed baseline assessment",
+        "completed all assigned sessions"
+      ],
+      "exclusion_criteria": [
+        "missing delayed outcome"
+      ],
+      "conditions": {
+        "matched_total_study_time": true,
+        "feedback_available": true,
+        "retention_interval_days": 14
+      },
+      "domain_extensions": {
+        "material_type": "expository text",
+        "outcome_instrument": "preregistered delayed-recall test"
+      }
+    }
+  ],
+  "required_lanes": [
+    "lexical",
+    "semantic",
+    "counterevidence",
+    "null",
+    "boundary",
+    "method"
+  ],
+  "budget": {
+    "max_queries": 40,
+    "max_documents": 80,
+    "max_seconds": 900
+  },
+  "stop_rules": [
+    "all required lanes terminal",
+    "two consecutive saturation rounds"
+  ],
+  "planner_prompt_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "created_at": "2026-07-25T12:00:00Z"
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/cross-examination.schema.json",
+  "title": "CrossExamination",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "cross_exam_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attacker_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_brief_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_assertion_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attack_type": {
+      "enum": [
+        "premise_attack",
+        "evidence_attack",
+        "scope_attack",
+        "method_attack",
+        "causal_attack",
+        "dependency_attack",
+        "bias_attack",
+        "alternative_explanation"
+      ]
+    },
+    "challenge": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "resolution_condition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "response": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "resolution_status": {
+      "enum": [
+        "unanswered",
+        "answered",
+        "sustained",
+        "overruled",
+        "partially_sustained"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "cross_exam_id",
+    "run_id",
+    "attacker_role",
+    "target_brief_id",
+    "target_assertion_id",
+    "attack_type",
+    "challenge",
+    "evidence_ids",
+    "resolution_condition",
+    "response",
+    "resolution_status",
+    "created_at",
+    "record_hash"
+  ]
+}

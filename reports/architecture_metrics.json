@@ -1,0 +1,478 @@
+{
+  "architecture_name": "Epistemic Foundry",
+  "version": "2.0.0",
+  "scope": "specification_bundle",
+  "generated_from_current_tree": true,
+  "files_total": 200,
+  "files_by_top_level": {
+    ".claude": 5,
+    ".codex": 6,
+    "<root>": 7,
+    "config": 7,
+    "docs": 30,
+    "examples": 49,
+    "manifests": 4,
+    "prompts": 26,
+    "reports": 3,
+    "schemas": 48,
+    "templates": 4,
+    "tools": 4,
+    "workflows": 7
+  },
+  "schemas": 48,
+  "examples_json": 48,
+  "prompts": 26,
+  "docs": 30,
+  "workflows": {
+    "count": 7,
+    "total_nodes": 112,
+    "executor_types": {
+      "deterministic": 44,
+      "human_gate": 2,
+      "llm": 32,
+      "parser": 3,
+      "policy": 12,
+      "retrieval": 13,
+      "sandbox": 1,
+      "subworkflow": 5
+    },
+    "expected_effect_declarations": 114,
+    "required_policy_check_declarations": 235,
+    "details": {
+      "claim_extraction.workflow.yaml": {
+        "workflow_id": "claim_extraction",
+        "nodes": 13,
+        "layers": 11,
+        "max_parallel_width": 3,
+        "cycle_nodes": [],
+        "topological_layers": [
+          [
+            "select_evidence_units"
+          ],
+          [
+            "detect_claim_candidates"
+          ],
+          [
+            "atomicize_claims"
+          ],
+          [
+            "classify_author_stance_layer",
+            "extract_method_quant",
+            "extract_scope"
+          ],
+          [
+            "normalize_ontology_constructs"
+          ],
+          [
+            "verify_grounding"
+          ],
+          [
+            "register_claim_lifecycle"
+          ],
+          [
+            "build_evidence_nodes"
+          ],
+          [
+            "cluster_dependencies"
+          ],
+          [
+            "extraction_release_gate"
+          ],
+          [
+            "commit_claim_projection"
+          ]
+        ],
+        "executor_types": {
+          "deterministic": 5,
+          "llm": 7,
+          "policy": 1
+        },
+        "subworkflow_nodes": [],
+        "human_gate_nodes": [],
+        "sandbox_nodes": []
+      },
+      "corpus_ingest.workflow.yaml": {
+        "workflow_id": "corpus_ingest",
+        "nodes": 11,
+        "layers": 8,
+        "max_parallel_width": 3,
+        "cycle_nodes": [],
+        "topological_layers": [
+          [
+            "register_document"
+          ],
+          [
+            "resolve_metadata",
+            "scan_source_integrity"
+          ],
+          [
+            "extract_embedded_artifacts",
+            "parse_layout_docling",
+            "parse_structure_grobid"
+          ],
+          [
+            "reconcile_document_streams"
+          ],
+          [
+            "emit_source_spans"
+          ],
+          [
+            "build_document_manifest"
+          ],
+          [
+            "ingest_quality_gate"
+          ],
+          [
+            "commit_ingest_projection"
+          ]
+        ],
+        "executor_types": {
+          "deterministic": 5,
+          "parser": 3,
+          "policy": 2,
+          "retrieval": 1
+        },
+        "subworkflow_nodes": [],
+        "human_gate_nodes": [],
+        "sandbox_nodes": []
+      },
+      "evaluation_release.workflow.yaml": {
+        "workflow_id": "evaluation_release",
+        "nodes": 16,
+        "layers": 5,
+        "max_parallel_width": 12,
+        "cycle_nodes": [],
+        "topological_layers": [
+          [
+            "freeze_evaluation_snapshot"
+          ],
+          [
+            "run_144_lens_audit",
+            "run_accessibility_i18n_eval",
+            "run_adversarial_source_eval",
+            "run_calibration_eval",
+            "run_council_ablations",
+            "run_gold_claim_eval",
+            "run_retrieval_eval",
+            "run_scale_recovery_eval",
+            "run_security_supply_chain_scan",
+            "run_time_sliced_backtest",
+            "validate_schema_bundle",
+            "validate_workflow_bundle"
+          ],
+          [
+            "aggregate_release_evidence"
+          ],
+          [
+            "independent_release_attestation"
+          ],
+          [
+            "issue_release_manifest"
+          ]
+        ],
+        "executor_types": {
+          "deterministic": 15,
+          "llm": 1
+        },
+        "subworkflow_nodes": [],
+        "human_gate_nodes": [],
+        "sandbox_nodes": []
+      },
+      "evidence_retrieval.workflow.yaml": {
+        "workflow_id": "evidence_retrieval",
+        "nodes": 20,
+        "layers": 10,
+        "max_parallel_width": 11,
+        "cycle_nodes": [],
+        "topological_layers": [
+          [
+            "validate_insight_readiness"
+          ],
+          [
+            "compile_query_plan"
+          ],
+          [
+            "retrieve_boundary",
+            "retrieve_citation",
+            "retrieve_counter",
+            "retrieve_entity_variable",
+            "retrieve_lexical",
+            "retrieve_mechanism",
+            "retrieve_method",
+            "retrieve_novelty",
+            "retrieve_null",
+            "retrieve_semantic",
+            "retrieve_temporal"
+          ],
+          [
+            "emit_lane_receipts"
+          ],
+          [
+            "reconcile_dependency_clusters"
+          ],
+          [
+            "assess_bias_and_diversity"
+          ],
+          [
+            "build_evidence_pack"
+          ],
+          [
+            "build_coverage_snapshot"
+          ],
+          [
+            "issue_search_completeness_certificate"
+          ],
+          [
+            "retrieval_release_gate"
+          ]
+        ],
+        "executor_types": {
+          "deterministic": 5,
+          "llm": 2,
+          "policy": 2,
+          "retrieval": 11
+        },
+        "subworkflow_nodes": [],
+        "human_gate_nodes": [],
+        "sandbox_nodes": []
+      },
+      "evidence_update_reassessment.workflow.yaml": {
+        "workflow_id": "evidence_update_reassessment",
+        "nodes": 12,
+        "layers": 12,
+        "max_parallel_width": 1,
+        "cycle_nodes": [],
+        "topological_layers": [
+          [
+            "detect_updates"
+          ],
+          [
+            "build_update_impact_report"
+          ],
+          [
+            "invalidate_stale_artifacts"
+          ],
+          [
+            "compile_reassessment_plan"
+          ],
+          [
+            "refresh_documents"
+          ],
+          [
+            "refresh_claims"
+          ],
+          [
+            "refresh_retrieval"
+          ],
+          [
+            "refresh_deliberation"
+          ],
+          [
+            "compare_decision_delta"
+          ],
+          [
+            "record_supersession"
+          ],
+          [
+            "notify_dependents"
+          ],
+          [
+            "reassessment_release_gate"
+          ]
+        ],
+        "executor_types": {
+          "deterministic": 5,
+          "policy": 2,
+          "retrieval": 1,
+          "subworkflow": 4
+        },
+        "subworkflow_nodes": [
+          "refresh_documents",
+          "refresh_claims",
+          "refresh_retrieval",
+          "refresh_deliberation"
+        ],
+        "human_gate_nodes": [],
+        "sandbox_nodes": []
+      },
+      "insight_deliberation.workflow.yaml": {
+        "workflow_id": "insight_deliberation",
+        "nodes": 27,
+        "layers": 18,
+        "max_parallel_width": 10,
+        "cycle_nodes": [],
+        "topological_layers": [
+          [
+            "validate_insight_card"
+          ],
+          [
+            "decompose_hypothesis"
+          ],
+          [
+            "dispatch_evidence_retrieval"
+          ],
+          [
+            "verify_evidence_pack"
+          ],
+          [
+            "map_argument_graph"
+          ],
+          [
+            "assign_evidence_acls"
+          ],
+          [
+            "brief_bias_auditor",
+            "brief_causal_auditor",
+            "brief_deductivist",
+            "brief_defender",
+            "brief_dependency_auditor",
+            "brief_inductivist",
+            "brief_method_auditor",
+            "brief_novelty_examiner",
+            "brief_prosecutor",
+            "brief_scope_auditor"
+          ],
+          [
+            "typed_cross_examination"
+          ],
+          [
+            "falsification_round"
+          ],
+          [
+            "abductive_mediation"
+          ],
+          [
+            "write_minority_report"
+          ],
+          [
+            "evaluate_deterministic_gates"
+          ],
+          [
+            "adjudicate"
+          ],
+          [
+            "analyze_decision_stability"
+          ],
+          [
+            "independent_attestation"
+          ],
+          [
+            "resolve_human_review"
+          ],
+          [
+            "issue_hypothesis_passport"
+          ],
+          [
+            "commit_deliberation_projection"
+          ]
+        ],
+        "executor_types": {
+          "deterministic": 3,
+          "human_gate": 1,
+          "llm": 19,
+          "policy": 3,
+          "subworkflow": 1
+        },
+        "subworkflow_nodes": [
+          "dispatch_evidence_retrieval"
+        ],
+        "human_gate_nodes": [
+          "resolve_human_review"
+        ],
+        "sandbox_nodes": []
+      },
+      "validation_execution.workflow.yaml": {
+        "workflow_id": "validation_execution",
+        "nodes": 13,
+        "layers": 13,
+        "max_parallel_width": 1,
+        "cycle_nodes": [],
+        "topological_layers": [
+          [
+            "screen_target_eligibility"
+          ],
+          [
+            "compile_validation_plan"
+          ],
+          [
+            "preregister_validation_plan"
+          ],
+          [
+            "assess_safety_ethics_privacy"
+          ],
+          [
+            "resolve_validation_approval"
+          ],
+          [
+            "validate_plan_contracts"
+          ],
+          [
+            "issue_action_intent"
+          ],
+          [
+            "execute_validation_actions"
+          ],
+          [
+            "capture_effect_receipt"
+          ],
+          [
+            "analyze_validation_results"
+          ],
+          [
+            "reconcile_validation_evidence"
+          ],
+          [
+            "propose_discriminating_test"
+          ],
+          [
+            "revise_passport_from_validation"
+          ]
+        ],
+        "executor_types": {
+          "deterministic": 6,
+          "human_gate": 1,
+          "llm": 3,
+          "policy": 2,
+          "sandbox": 1
+        },
+        "subworkflow_nodes": [],
+        "human_gate_nodes": [
+          "resolve_validation_approval"
+        ],
+        "sandbox_nodes": [
+          "execute_validation_actions"
+        ]
+      }
+    }
+  },
+  "development": {
+    "work_packages": 68,
+    "layers": 32,
+    "max_parallel_width": 5,
+    "cycle_nodes": [],
+    "traceable_invariants": 25,
+    "release_levels": [
+      "SPEC_BUNDLE",
+      "MVP_50",
+      "PILOT_200",
+      "PRODUCTION_2000"
+    ]
+  },
+  "audit_144": {
+    "families": 12,
+    "lenses": 144,
+    "pass": 136,
+    "conditional": 8,
+    "fail": 0
+  },
+  "product_modules": [
+    "Foundry Kernel",
+    "Claim Forge",
+    "Epistemic Atlas",
+    "Evidence Parliament",
+    "Aporia Engine",
+    "Noetic Ledger",
+    "Validation Bay",
+    "Hypothesis Passport"
+  ]
+}

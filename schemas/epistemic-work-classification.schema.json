@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/epistemic-work-classification.schema.json",
+  "title": "EpistemicWorkClassification",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "classification_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "work_class": {
+      "enum": [
+        "E0",
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5"
+      ]
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "risk_factors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_phases": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "IDLE",
+          "I",
+          "F",
+          "O",
+          "R",
+          "G",
+          "E"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "default_role_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 16
+    },
+    "human_gate_required": {
+      "type": "boolean"
+    },
+    "classified_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "classifier_version": {
+      "type": "string"
+    },
+    "classification_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "classification_id",
+    "request_id",
+    "work_class",
+    "reasons",
+    "risk_factors",
+    "required_phases",
+    "default_role_count",
+    "human_gate_required",
+    "classified_at",
+    "classifier_version",
+    "classification_hash"
+  ]
+}

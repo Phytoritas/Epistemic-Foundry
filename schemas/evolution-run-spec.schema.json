@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evolution-run-spec.schema.json",
+  "title": "EvolutionRunSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_run_spec_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "population_types": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "hypothesis",
+          "challenge",
+          "experiment",
+          "measurement",
+          "mechanism"
+        ]
+      },
+      "minItems": 1
+    },
+    "seed_genome_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "evaluator_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "holdout_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operator_registry_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "max_generations": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_candidates": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "budget_envelope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stop_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "random_seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "spec_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "evolution_run_id",
+    "base_run_spec_id",
+    "objective",
+    "population_types",
+    "seed_genome_ids",
+    "evaluator_bundle_id",
+    "holdout_manifest_id",
+    "operator_registry_version",
+    "max_generations",
+    "max_candidates",
+    "budget_envelope_id",
+    "selection_policy",
+    "stop_policy",
+    "random_seed",
+    "spec_hash"
+  ],
+  "description": "한 진화 실행의 고정 목표, 평가자, 예산, 숨은 홀드아웃 및 정지 조건을 봉인한다."
+}

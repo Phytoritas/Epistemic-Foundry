@@ -1,0 +1,681 @@
+version: 4.0.0
+architecture_name: Epistemic Foundry
+invariants:
+- id: EF4-I01
+  category: Kernel authority
+  statement: Plugin shell, hooks, skills, GUI, chat transcripts and provider SDKs
+    never own canonical state, policy, gates or replay.
+  evidence_artifacts:
+  - docs/v3_plugin_architecture.md
+  - schemas/plugin-install-state.schema.json
+  work_packages:
+  - A02
+  - D01
+  - E01
+  - G01
+  - X01
+- id: EF4-I02
+  category: Claim-first evidence
+  statement: A promoted empirical or documentary claim always resolves to immutable
+    SourceSpan evidence.
+  evidence_artifacts:
+  - schemas/claim-card.schema.json
+  - workflows/claim_extraction.workflow.yaml
+  work_packages:
+  - K03
+  - O03
+  - Q02
+- id: EF4-I03
+  category: Falsifiable intake
+  statement: An insight without scope, predictions and falsifier cannot enter Observe
+    or Parliament.
+  evidence_artifacts:
+  - docs/forge_protocol.md
+  - workflows/forge_research_cycle.workflow.yaml
+  work_packages:
+  - F03
+  - I02
+  - P01
+- id: EF4-I04
+  category: Coverage before confidence
+  statement: Coverage, searched scope, missing lanes and dependency diversity are
+    shown before confidence or verdict.
+  evidence_artifacts:
+  - schemas/coverage-snapshot.schema.json
+  - docs/v3_plugin_architecture.md
+  work_packages:
+  - O01
+  - O04
+  - U03
+- id: EF4-I05
+  category: Search-state type safety
+  statement: UNSEARCHED, SEARCHED_NONE, SEARCHED_WITH_RESULTS and failed search are
+    distinct.
+  evidence_artifacts:
+  - schemas/search-completeness-certificate.schema.json
+  - workflows/evidence_retrieval.workflow.yaml
+  work_packages:
+  - O01
+  - O04
+  - Q03
+- id: EF4-I06
+  category: Adversarial retrieval
+  statement: Counterevidence, null, boundary and method lanes are mandatory whenever
+    applicable.
+  evidence_artifacts:
+  - workflows/evidence_retrieval.workflow.yaml
+  - docs/forge_protocol.md
+  work_packages:
+  - O01
+  - O02
+  - P01
+- id: EF4-I07
+  category: Method comparability
+  statement: Method-incompatible evidence is stratified and may impose a promotion
+    ceiling; it is never silently pooled.
+  evidence_artifacts:
+  - schemas/measurement-compatibility-report.schema.json
+  work_packages:
+  - I03
+  - P02
+  - R01
+- id: EF4-I08
+  category: Dependency-adjusted evidence
+  statement: Shared samples, datasets, publication families and derived analyses are
+    dependency clusters, not independent votes.
+  evidence_artifacts:
+  - schemas/evidence-dependency-cluster.schema.json
+  work_packages:
+  - O03
+  - P04
+  - Q03
+- id: EF4-I09
+  category: No majority authority
+  statement: Agent count or majority agreement cannot promote a hypothesis.
+  evidence_artifacts:
+  - docs/forge_protocol.md
+  - workflows/insight_deliberation.workflow.yaml
+  work_packages:
+  - P01
+  - P04
+  - N04
+- id: EF4-I10
+  category: Inference separation
+  statement: Induction, deduction, abduction and causal identification remain separate
+    typed outputs.
+  evidence_artifacts:
+  - schemas/argument-graph.schema.json
+  - docs/forge_protocol.md
+  work_packages:
+  - R01
+  - R02
+  - R03
+  - R04
+- id: EF4-I11
+  category: Evidence-class separation
+  statement: Simulation, formal derivation, benchmark and review-derived evidence
+    never become empirical observation by relabeling.
+  evidence_artifacts:
+  - schemas/validation-plan.schema.json
+  - workflows/validation_execution.workflow.yaml
+  work_packages:
+  - V01
+  - V04
+  - R04
+- id: EF4-I12
+  category: No self-approval
+  statement: Makers cannot approve their own work, claim promotion, validation, or
+    release.
+  evidence_artifacts:
+  - manifests/development_manifest.yaml
+  work_packages:
+  - N04
+  - P04
+  - Z04
+- id: EF4-I13
+  category: Receipt-bound completion
+  statement: Phase transitions, side effects, tests, installs and releases require
+    resolving artifact/effect receipts.
+  evidence_artifacts:
+  - schemas/artifact-receipt.schema.json
+  - schemas/forge-transition-request.schema.json
+  work_packages:
+  - E02
+  - F03
+  - T02
+  - Z04
+- id: EF4-I14
+  category: Hooks are guardrails
+  statement: Hook coverage is observed and useful but never treated as the complete
+    enforcement boundary.
+  evidence_artifacts:
+  - schemas/host-capability-report.schema.json
+  - docs/plugin_security_threat_model.md
+  work_packages:
+  - H01
+  - H04
+  - X01
+- id: EF4-I15
+  category: Capability negotiation
+  statement: Host and dependency capabilities are runtime-probed; missing capabilities
+    select explicit degraded or blocked modes.
+  evidence_artifacts:
+  - schemas/host-capability-report.schema.json
+  - workflows/plugin_bootstrap.workflow.yaml
+  work_packages:
+  - G04
+  - H04
+  - Z01
+- id: EF4-I16
+  category: Event-sourced state
+  statement: Canonical session and lifecycle state is reducer-derived from append-only
+    events with revision control.
+  evidence_artifacts:
+  - docs/state_memory_and_mapping.md
+  work_packages:
+  - D01
+  - E01
+  - F02
+- id: EF4-I17
+  category: Explicit human authority
+  statement: Human approvals and overrides are immutable records with viewed revisions,
+    rationale, scope and downstream invalidation.
+  evidence_artifacts:
+  - schemas/human-decision.schema.json
+  - schemas/forge-transition-request.schema.json
+  work_packages:
+  - E03
+  - F03
+  - P04
+- id: EF4-I18
+  category: Consent-bound memory
+  statement: Recall occurs only within allowed memory classes, purpose, consent, retention
+    and workspace scope.
+  evidence_artifacts:
+  - schemas/memory-policy.schema.json
+  - workflows/memory_recall.workflow.yaml
+  work_packages:
+  - L01
+  - L02
+  - L04
+- id: EF4-I19
+  category: Workspace isolation
+  statement: Cross-workspace state, memory and artifacts are denied by default below
+    the model layer.
+  evidence_artifacts:
+  - schemas/memory-policy.schema.json
+  - docs/state_memory_and_mapping.md
+  work_packages:
+  - D02
+  - L01
+  - S02
+- id: EF4-I20
+  category: Canonical context capsule
+  statement: Compaction and resume context is rebuilt from hash-bound canonical artifacts
+    with exclusions and freshness.
+  evidence_artifacts:
+  - schemas/context-capsule.schema.json
+  work_packages:
+  - J03
+  - J04
+  - W02
+- id: EF4-I21
+  category: Skill supply-chain quarantine
+  statement: Third-party skills are quarantined, inspected, permissioned, pinned and
+    approved before activation.
+  evidence_artifacts:
+  - schemas/skill-lockfile.schema.json
+  - workflows/skill_acquisition.workflow.yaml
+  work_packages:
+  - J01
+  - S03
+  - Z02
+- id: EF4-I22
+  category: Generated transport contracts
+  statement: CLI, MCP, HTTP, persistence and UI models derive from canonical schemas;
+    duplicated wire literals are forbidden.
+  evidence_artifacts:
+  - docs/plugin_ux_cli_and_mcp.md
+  work_packages:
+  - C01
+  - C02
+  - C04
+  - U01
+- id: EF4-I23
+  category: Honest UI state
+  statement: EMPTY_CONFIRMED, DEGRADED and UNAVAILABLE are distinct; backend failure
+    never appears as empty research state.
+  evidence_artifacts:
+  - docs/plugin_ux_cli_and_mcp.md
+  work_packages:
+  - U02
+  - U04
+  - Y02
+- id: EF4-I24
+  category: Real map ranking
+  statement: A map labeled as ranked uses an actual algorithm; baseline centrality,
+    query relevance and risk remain separate.
+  evidence_artifacts:
+  - schemas/workspace-map-snapshot.schema.json
+  - workflows/workspace_mapping.workflow.yaml
+  work_packages:
+  - M02
+  - M03
+  - M04
+- id: EF4-I25
+  category: Role-scoped delegation
+  statement: Every subagent dispatch resolves a RoleSpec with tool ACL, evidence ACL,
+    write scope, budget and expected count.
+  evidence_artifacts:
+  - schemas/role-dispatch-plan.schema.json
+  work_packages:
+  - N01
+  - N02
+  - N04
+- id: EF4-I26
+  category: No silent partial fan-in
+  statement: Fan-in reconciles expected and actual identities; missing outputs remain
+    visible and constrain the result.
+  evidence_artifacts:
+  - workflows/forge_research_cycle.workflow.yaml
+  work_packages:
+  - N03
+  - N04
+  - P04
+- id: EF4-I27
+  category: Bounded cycles
+  statement: Every cycle has a seen-set key, novelty/convergence rule, dry rounds,
+    maximum rounds, budget and escalation.
+  evidence_artifacts:
+  - schemas/loop-contract.schema.json
+  work_packages:
+  - N03
+  - Y01
+  - W01
+- id: EF4-I28
+  category: Typed budget enforcement
+  statement: Budgets are labeled HARD_METERED, HARD_PREALLOCATED, SOFT_ESTIMATE or
+    UNMETERED.
+  evidence_artifacts:
+  - schemas/budget-envelope.schema.json
+  work_packages:
+  - N03
+  - Y01
+  - Z04
+- id: EF4-I29
+  category: Secret minimization
+  statement: Secrets are opaque handles and never copied into prompts, evidence artifacts,
+    logs or exports.
+  evidence_artifacts:
+  - docs/plugin_security_threat_model.md
+  work_packages:
+  - S02
+  - T04
+  - Y02
+- id: EF4-I30
+  category: Untrusted evidence plane
+  statement: PDFs, web pages, datasets and model output are data and cannot grant
+    authority or execute instructions.
+  evidence_artifacts:
+  - docs/plugin_security_threat_model.md
+  - workflows/corpus_ingest.workflow.yaml
+  work_packages:
+  - K04
+  - S01
+  - S04
+- id: EF4-I31
+  category: Migration and rollback
+  statement: Breaking schema/plugin changes require compatibility, dry-run, backup,
+    rollback and hook re-trust.
+  evidence_artifacts:
+  - workflows/plugin_upgrade_migration.workflow.yaml
+  - docs/migration_v2_to_v3.md
+  work_packages:
+  - C03
+  - D04
+  - Z03
+- id: EF4-I32
+  category: Release provenance
+  statement: Shipped bundles require reproducible build evidence, SBOM, manifest,
+    clean extraction and signing status.
+  evidence_artifacts:
+  - schemas/plugin-release-provenance.schema.json
+  - workflows/plugin_release.workflow.yaml
+  work_packages:
+  - B02
+  - Z02
+  - Z04
+- id: EF4-I33
+  category: Status honesty
+  statement: Capabilities are labeled SPECIFIED, IMPLEMENTED, EXPERIMENTAL, DEFERRED
+    or UNSUPPORTED; release labels are evidence-derived.
+  evidence_artifacts:
+  - docs/status_taxonomy.md
+  work_packages:
+  - A01
+  - A02
+  - Z04
+- id: EF4-I34
+  category: Provider neutrality
+  statement: Codex, Claude and other models are replaceable node executors; adapters
+    cannot alter canonical semantics.
+  evidence_artifacts:
+  - docs/codex_claude_adapter_contract.md
+  work_packages:
+  - N02
+  - X01
+  - X02
+  - X04
+- id: EF4-I35
+  category: Installability is tested
+  statement: Fresh install, PATH-less execution, upgrade, downgrade, uninstall and
+    cross-platform paths are product acceptance tests.
+  evidence_artifacts:
+  - workflows/plugin_release.workflow.yaml
+  work_packages:
+  - G04
+  - Z01
+  - Z03
+- id: EF4-I36
+  category: Remote messaging minimized
+  statement: Remote notification/approval adapters are optional and cannot execute
+    arbitrary commands or export raw evidence by default.
+  evidence_artifacts:
+  - docs/plugin_ux_cli_and_mcp.md
+  work_packages:
+  - S02
+  - T02
+  - U02
+- id: EF4-I37
+  category: License-aware corpus/export
+  statement: Source access and license restrictions propagate through retrieval, evidence,
+    export and deletion.
+  evidence_artifacts:
+  - workflows/corpus_ingest.workflow.yaml
+  work_packages:
+  - K01
+  - O03
+  - Z04
+- id: EF4-I38
+  category: Stale propagation
+  statement: Corrections, retractions, parser fixes, policy/ontology changes and new
+    evidence invalidate dependent projections and Passports.
+  evidence_artifacts:
+  - workflows/evidence_update_reassessment.workflow.yaml
+  work_packages:
+  - F02
+  - W03
+  - W04
+- id: EF4-I39
+  category: Replayability
+  statement: RunSpec, context, adapter/model, tools, receipts, policy, corpus and
+    prompts are sufficient to explain and compare a run.
+  evidence_artifacts:
+  - docs/state_memory_and_mapping.md
+  - workflows/evaluation_release.workflow.yaml
+  work_packages:
+  - E04
+  - W04
+  - X04
+- id: EF4-I40
+  category: Honest underdetermination
+  statement: UNDERDETERMINED, UNTESTABLE, NOT_ASSESSED and PARTIAL are normal truthful
+    outcomes, not system failure.
+  evidence_artifacts:
+  - docs/forge_protocol.md
+  work_packages:
+  - F04
+  - O04
+  - P04
+  - V04
+- id: EF4-I41
+  category: Evolution is subordinate
+  statement: Evolution Chamber may propose, mutate, challenge and rank candidates
+    but cannot own evidence truth, evaluator authority, policy, hidden holdout, promotion
+    or release.
+  evidence_artifacts:
+  - docs/v4_evolution_architecture.md
+  - schemas/evolution-run-spec.schema.json
+  work_packages:
+  - A05
+  - F05
+  - P05
+  - Z05
+- id: EF4-I42
+  category: Typed scientific genome
+  statement: Every evolvable hypothesis carries scope, mechanism, predictions, falsifiers,
+    alternatives, measurement contracts, evidence, validation plan and immutable lineage.
+  evidence_artifacts:
+  - schemas/hypothesis-genome.schema.json
+  - schemas/candidate-lineage.schema.json
+  work_packages:
+  - C05
+  - I05
+  - R05
+- id: EF4-I43
+  category: Immutable evaluator per run
+  statement: A running or completed EvolutionRun references one content-addressed
+    evaluator bundle that cannot be changed retroactively.
+  evidence_artifacts:
+  - schemas/evaluator-bundle.schema.json
+  - workflows/verifier_firewall_qualification.workflow.yaml
+  work_packages:
+  - S05
+  - W05
+  - Z05
+- id: EF4-I44
+  category: Hidden holdout firewall
+  statement: Candidate generation, mutation prompts, external backends and ordinary
+    agents cannot read hidden holdout content or derive it from tool/log/cache leakage.
+  evidence_artifacts:
+  - schemas/holdout-manifest.schema.json
+  - schemas/leakage-audit.schema.json
+  work_packages:
+  - K05
+  - S05
+  - V05
+- id: EF4-I45
+  category: No scalar promotion authority
+  statement: A combined score may order search but cannot promote; hard gates, FitnessVector,
+    Pareto/niche analysis, statistics, replication and Parliament constrain promotion.
+  evidence_artifacts:
+  - schemas/fitness-vector.schema.json
+  - schemas/pareto-front-snapshot.schema.json
+  work_packages:
+  - Q05
+  - P05
+  - Y05
+- id: EF4-I46
+  category: Multi-layer novelty
+  statement: Claim, mechanism, prediction, falsifier, scope, experiment, evidence
+    and external prior-art novelty remain separate from support and truth.
+  evidence_artifacts:
+  - schemas/novelty-vector.schema.json
+  - prompts/novelty_vector_assessor.md
+  work_packages:
+  - O05
+  - R05
+- id: EF4-I47
+  category: Novelty failure type safety
+  statement: Absent, empty, failed or incomplete novelty assessment yields UNASSESSED,
+    PARTIAL or FAILED and never NOVEL by default.
+  evidence_artifacts:
+  - schemas/novelty-vector.schema.json
+  - workflows/shinka_backend_qualification.workflow.yaml
+  work_packages:
+  - O05
+  - T05
+- id: EF4-I48
+  category: Quality-diversity archive
+  statement: The archive preserves epistemic niches and trade-offs rather than only
+    a global top score.
+  evidence_artifacts:
+  - schemas/quality-diversity-map.schema.json
+  - schemas/epistemic-niche.schema.json
+  work_packages:
+  - D05
+  - Y05
+- id: EF4-I49
+  category: Protected negative memory
+  statement: Nulls, counterexamples, failed replications, unsafe failures and minority
+    lineages cannot be evicted merely for low fitness.
+  evidence_artifacts:
+  - schemas/epistemic-archive-entry.schema.json
+  - workflows/archive_rebalancing.workflow.yaml
+  work_packages:
+  - D05
+  - L05
+- id: EF4-I50
+  category: Semantic islands
+  statement: Islands specialize by typed mechanism, scope, method or evidence state;
+    migration requires compatibility and preserves source/target history.
+  evidence_artifacts:
+  - schemas/island-state.schema.json
+  - schemas/crossover-compatibility-report.schema.json
+  work_packages:
+  - D05
+  - M05
+- id: EF4-I51
+  category: Typed crossover
+  statement: Crossover requires scope, measurement, unit and causal compatibility;
+    semantic collage is rejected.
+  evidence_artifacts:
+  - schemas/crossover-compatibility-report.schema.json
+  - prompts/crossover_auditor.md
+  work_packages:
+  - C05
+  - R05
+- id: EF4-I52
+  category: Red Queen relevance
+  statement: Challenges are safe, reproducible and claim-relevant; apparent failures
+    replicate before refutation and boundary conditions remain distinct.
+  evidence_artifacts:
+  - schemas/challenge-genome.schema.json
+  - workflows/red_queen_challenge_coevolution.workflow.yaml
+  work_packages:
+  - P05
+  - R05
+  - V05
+- id: EF4-I53
+  category: Adaptive-search statistics
+  statement: Evolutionary search records candidate families, repeated tests, sequential
+    decisions, multiplicity and selective inference.
+  evidence_artifacts:
+  - schemas/sequential-testing-ledger.schema.json
+  - schemas/multiple-testing-adjustment.schema.json
+  - schemas/selective-inference-report.schema.json
+  work_packages:
+  - Q05
+  - Q06
+- id: EF4-I54
+  category: Delayed reward routing
+  statement: Model and operator bandits learn from validated holdout/replication utility
+    and safety, not only immediate proxy score.
+  evidence_artifacts:
+  - schemas/operator-bandit-state.schema.json
+  - schemas/model-routing-receipt.schema.json
+  work_packages:
+  - X05
+  - Y05
+- id: EF4-I55
+  category: Prompt evolution quarantine
+  statement: Prompt genomes cannot alter current policy, evaluator, holdout or promotion
+    gate and become active only after independent future-run qualification.
+  evidence_artifacts:
+  - schemas/prompt-genome.schema.json
+  - schemas/prompt-mutation-proposal.schema.json
+  work_packages:
+  - J05
+  - S05
+- id: EF4-I56
+  category: Evaluator updates are future-only
+  statement: Evaluator defects create quarantined proposals; approved changes apply
+    to new sealed runs and never rewrite completed judgments.
+  evidence_artifacts:
+  - schemas/evaluator-mutation-proposal.schema.json
+  - workflows/evaluator_update_governance.workflow.yaml
+  work_packages:
+  - S06
+  - W05
+- id: EF4-I57
+  category: Surrogate is triage only
+  statement: A surrogate may prioritize direct evaluation but cannot replace required
+    direct, hidden or replication stages.
+  evidence_artifacts:
+  - schemas/surrogate-triage-report.schema.json
+  - prompts/surrogate_triage.md
+  work_packages:
+  - Q05
+  - Y05
+- id: EF4-I58
+  category: Replication-gated promotion
+  statement: High scientific promotion after adaptive evolution requires an appropriate
+    independent preregistered replication or an explicit lower ceiling.
+  evidence_artifacts:
+  - schemas/replication-plan.schema.json
+  - schemas/replication-result.schema.json
+  work_packages:
+  - V05
+  - V06
+  - P05
+- id: EF4-I59
+  category: Selection-bias visibility
+  statement: Top-candidate estimates disclose search/selection history, winner's curse
+    risk and bias-corrected uncertainty.
+  evidence_artifacts:
+  - schemas/selective-inference-report.schema.json
+  - prompts/statistical_selection_auditor.md
+  work_packages:
+  - Q05
+  - Q06
+- id: EF4-I60
+  category: Exact candidate reconciliation
+  statement: Every fan-out reconciles proposed, generated, evaluated, persisted, failed,
+    cancelled and missing candidate identities.
+  evidence_artifacts:
+  - workflows/evolution_chamber_cycle.workflow.yaml
+  - schemas/candidate-generation-record.schema.json
+  work_packages:
+  - N05
+  - E05
+- id: EF4-I61
+  category: Atomic evolution checkpoints
+  statement: A safe resume point binds population, archive, islands, bandit, budget,
+    testing ledger and evaluator hash atomically.
+  evidence_artifacts:
+  - schemas/evolution-checkpoint.schema.json
+  - workflows/evolution_chamber_cycle.workflow.yaml
+  work_packages:
+  - D06
+  - W05
+- id: EF4-I62
+  category: Typed stop certificate
+  statement: Budget, dry rounds, stability, coverage, safety, human stop and blockers
+    yield an EvolutionStopCertificate that preserves partial work.
+  evidence_artifacts:
+  - schemas/evolution-stop-certificate.schema.json
+  - plugin_blueprint/epistemic-foundry/skills/foundry-evolution-stop/SKILL.md
+  work_packages:
+  - F05
+  - W05
+- id: EF4-I63
+  category: External backend isolation
+  statement: ShinkaEvolve and other search engines are optional pinned adapters; their
+    scores, archives, novelty and state never become Foundry authority.
+  evidence_artifacts:
+  - schemas/shinka-backend-manifest.schema.json
+  - schemas/backend-adapter-qualification.schema.json
+  work_packages:
+  - T05
+  - X05
+- id: EF4-I64
+  category: Executable candidate sandbox
+  statement: Candidate code executes only under declared capabilities, resource quotas,
+    network policy, effect receipts and evaluator/holdout isolation.
+  evidence_artifacts:
+  - docs/evolution_security_threat_model.md
+  - workflows/shinka_backend_qualification.workflow.yaml
+  work_packages:
+  - S05
+  - T05
+  - V05

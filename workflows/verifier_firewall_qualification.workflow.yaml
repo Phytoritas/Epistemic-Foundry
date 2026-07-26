@@ -1,0 +1,500 @@
+workflow_id: verifier_firewall_qualification
+version: 4.0.0
+kind: dag
+description: Qualify evaluators as fallible scientific instruments before they can
+  score candidates.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- current candidates cannot modify the evaluator used on them
+- holdout content is inaccessible to candidate generation
+- qualification failure cannot be overridden by model consensus
+- approved evaluator changes apply only to future sealed runs
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: register_evaluator_candidate
+  purpose: Register evaluator code, metrics, data contracts, environment and policy
+    as a candidate bundle
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.register_evaluator_candidate:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-bundle.schema.json
+  depends_on: []
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/candidate/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - register_evaluator_candidate contract valid
+  - register_evaluator_candidate result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - register_evaluator_candidate_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: freeze_candidate_bundle
+  purpose: Content-address and freeze candidate evaluator bytes for qualification
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.freeze_candidate_bundle:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-bundle.schema.json
+  depends_on:
+  - register_evaluator_candidate
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/frozen/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - freeze_candidate_bundle contract valid
+  - freeze_candidate_bundle result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - freeze_candidate_bundle_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: construct_hidden_holdout_manifest
+  purpose: Create time, OOD and adversarial splits with candidate-inaccessible ACL
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.construct_hidden_holdout_manifest:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/holdout-manifest.schema.json
+  depends_on:
+  - freeze_candidate_bundle
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/holdout/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - construct_hidden_holdout_manifest contract valid
+  - construct_hidden_holdout_manifest result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - construct_hidden_holdout_manifest_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: scan_evaluator_supply_chain
+  purpose: Scan dependencies, executable surfaces, secrets, active content and provenance
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.scan_evaluator_supply_chain:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/source-integrity-report.schema.json
+  depends_on:
+  - freeze_candidate_bundle
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/supply_chain/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - scan_evaluator_supply_chain contract valid
+  - scan_evaluator_supply_chain result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - scan_evaluator_supply_chain_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: audit_metric_construct_validity
+  purpose: Check that each metric measures the intended scientific property and cannot
+    be trivially gamed
+  executor_type: llm
+  executor_ref: prompts/evaluator_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-qualification-report.schema.json
+  depends_on:
+  - freeze_candidate_bundle
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/construct/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - audit_metric_construct_validity contract valid
+  - audit_metric_construct_validity result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - audit_metric_construct_validity_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_leakage_audit
+  purpose: Audit prompts, caches, embeddings, logs, ACLs and future-information exposure
+  executor_type: llm
+  executor_ref: prompts/leakage_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/leakage-audit.schema.json
+  depends_on:
+  - construct_hidden_holdout_manifest
+  - scan_evaluator_supply_chain
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/leakage/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_leakage_audit contract valid
+  - run_leakage_audit result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_leakage_audit_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: generate_metamorphic_suite
+  purpose: Generate invariance and monotonicity tests from evaluator contracts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.generate_metamorphic_suite:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/validation-cascade-plan.schema.json
+  depends_on:
+  - audit_metric_construct_validity
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/metamorphic_plan/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - generate_metamorphic_suite contract valid
+  - generate_metamorphic_suite result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - generate_metamorphic_suite_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: generate_adversarial_evaluator_challenges
+  purpose: Generate reward-hacking and false-positive/negative challenge fixtures
+  executor_type: llm
+  executor_ref: prompts/red_queen_challenger.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/challenge-genome.schema.json
+  depends_on:
+  - audit_metric_construct_validity
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/challenges/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - generate_adversarial_evaluator_challenges contract valid
+  - generate_adversarial_evaluator_challenges result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - generate_adversarial_evaluator_challenges_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: execute_evaluator_test_matrix
+  purpose: Execute baseline, metamorphic, adversarial, calibration and crash tests
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.execute_evaluator_test_matrix:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/stage-evaluation-result.schema.json
+  depends_on:
+  - run_leakage_audit
+  - generate_metamorphic_suite
+  - generate_adversarial_evaluator_challenges
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/test_results/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - execute_evaluator_test_matrix contract valid
+  - execute_evaluator_test_matrix result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - execute_evaluator_test_matrix_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compare_against_gold_and_baseline
+  purpose: Measure false-positive, false-negative, calibration and stability deltas
+    on gold and hidden sets
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.compare_against_gold_and_baseline:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/calibration-report.schema.json
+  depends_on:
+  - execute_evaluator_test_matrix
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/comparison/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - compare_against_gold_and_baseline contract valid
+  - compare_against_gold_and_baseline result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - compare_against_gold_and_baseline_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: audit_evaluator_gameability
+  purpose: Attempt to optimize proxy metrics while violating intended scientific behavior
+  executor_type: llm
+  executor_ref: prompts/evaluator_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/challenge-result.schema.json
+  depends_on:
+  - compare_against_gold_and_baseline
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/gameability/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - audit_evaluator_gameability contract valid
+  - audit_evaluator_gameability result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - audit_evaluator_gameability_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: independent_evaluator_review
+  purpose: Independently review bundle without candidate-generation transcripts
+  executor_type: llm
+  executor_ref: prompts/evaluator_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-qualification-report.schema.json
+  depends_on:
+  - audit_evaluator_gameability
+  read_scope: []
+  write_scope:
+  - artifacts/verifier/independent_review/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - independent_evaluator_review contract valid
+  - independent_evaluator_review result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - independent_evaluator_review_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: human_approve_evaluator_bundle
+  purpose: Approve, restrict or reject evaluator for future runs only
+  executor_type: human_gate
+  executor_ref: epistemic_foundry.governance.evaluator:approve
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/approval-record.schema.json
+  depends_on:
+  - independent_evaluator_review
+  read_scope: []
+  write_scope:
+  - db.approval_records
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - human_approve_evaluator_bundle contract valid
+  - human_approve_evaluator_bundle result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - human_approve_evaluator_bundle_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: seal_qualified_evaluator_bundle
+  purpose: Seal approved bundle and exact qualification report; never mutate a running
+    evaluation
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.seal_qualified_evaluator_bundle:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-bundle.schema.json
+  depends_on:
+  - human_approve_evaluator_bundle
+  read_scope: []
+  write_scope:
+  - db.evaluator_bundles
+  - object_store/evaluator_bundles/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - seal_qualified_evaluator_bundle contract valid
+  - seal_qualified_evaluator_bundle result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - seal_qualified_evaluator_bundle_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

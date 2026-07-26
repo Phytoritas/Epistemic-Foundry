@@ -1,0 +1,449 @@
+workflow_id: skill_acquisition
+version: 4.0.0
+kind: dag
+description: Discover and activate third-party skills through a supply-chain quarantine
+  and lockfile.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- remote skills are untrusted software
+- discovery never implies activation
+- exact revisions and permissions are locked
+- critical scan finding blocks activation
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: discover_skill_candidates
+  purpose: Query approved catalogs or explicit source references for candidate skill
+    metadata
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.plugin.discover_skill_candidates:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - request
+  - db.effective_policy
+  write_scope:
+  - artifacts/skill_vault/discovery/**
+  capabilities:
+  - approved_external_search
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - source catalog recorded
+  - no candidate activated
+  - network receipt emitted
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: select_candidate_for_inspection
+  purpose: Select candidates by declared need, provenance and duplication
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.select_candidate_for_inspection:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - discover_skill_candidates
+  read_scope:
+  - artifacts/skill_vault/discovery/**
+  - db.skill_index
+  write_scope:
+  - artifacts/skill_vault/selection/**
+  capabilities:
+  - artifact_read
+  - database_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - existing bundled skill preferred when equivalent
+  - selection rationale explicit
+  - ambiguous identity blocked
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: fetch_to_quarantine
+  purpose: Fetch exact revision into a non-executable quarantine
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.fetch_to_quarantine:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - select_candidate_for_inspection
+  read_scope:
+  - artifacts/skill_vault/selection/**
+  write_scope:
+  - skill-vault/quarantine/**
+  - db.action_receipts
+  capabilities:
+  - network_fetch
+  - filesystem_write
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - revision and content hash pinned
+  - no hooks/scripts executed
+  - path traversal blocked
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: inspect_skill_metadata_and_boundaries
+  purpose: Inspect SKILL.md metadata, triggers, implicit policy and authority claims
+  executor_type: llm
+  executor_ref: prompts/plugin/inspect_skill_metadata_and_boundaries.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - fetch_to_quarantine
+  read_scope:
+  - skill-vault/quarantine/**
+  write_scope:
+  - artifacts/skill_vault/metadata_review/**
+  capabilities:
+  - filesystem_read
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - should/should-not-trigger boundaries evaluated
+  - self-authority claims flagged
+  - progressive disclosure assessed
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: inventory_scripts_dependencies_assets
+  purpose: Inventory executable scripts, binaries, assets, symlinks and dependencies
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.inventory_scripts_dependencies_assets:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - fetch_to_quarantine
+  read_scope:
+  - skill-vault/quarantine/**
+  write_scope:
+  - artifacts/skill_vault/inventory/**
+  capabilities:
+  - filesystem_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - all executable content enumerated
+  - symlink targets resolved safely
+  - dependency lock presence recorded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: scan_supply_chain_risks
+  purpose: Scan secrets, network, filesystem, shell, obfuscation, license and provenance
+    risks
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.scan_supply_chain_risks:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - inventory_scripts_dependencies_assets
+  read_scope:
+  - artifacts/skill_vault/inventory/**
+  - skill-vault/quarantine/**
+  write_scope:
+  - artifacts/skill_vault/risk/**
+  capabilities:
+  - filesystem_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - permissions inferred
+  - license/provenance status typed
+  - critical finding blocks activation
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_quarantine_smoke
+  purpose: Run permitted scripts in a no-secret, no-network or policy-limited sandbox
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.run_quarantine_smoke:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - scan_supply_chain_risks
+  read_scope:
+  - skill-vault/quarantine/**
+  write_scope:
+  - artifacts/skill_vault/smoke/**
+  capabilities:
+  - sandbox_execute
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - sandbox policy recorded
+  - side effects captured
+  - timeout enforced
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: review_skill_candidate
+  purpose: Obtain human or policy approval with declared permissions and scope
+  executor_type: human_gate
+  executor_ref: epistemic_foundry.plugin.review_skill_candidate:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - inspect_skill_metadata_and_boundaries
+  - scan_supply_chain_risks
+  - run_quarantine_smoke
+  read_scope:
+  - artifacts/skill_vault/**
+  write_scope:
+  - db.human_decisions
+  capabilities:
+  - human_input
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: escalate
+  acceptance_checks:
+  - review sees exact hash
+  - permissions explicit
+  - approval/denial reason recorded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: update_skill_lockfile
+  purpose: Write exact source revision, hash, license, permissions and review state
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.update_skill_lockfile:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - review_skill_candidate
+  read_scope:
+  - db.human_decisions
+  - artifacts/skill_vault/**
+  write_scope:
+  - skill-vault/SkillLockfile.json
+  capabilities:
+  - database_read
+  - artifact_read
+  - filesystem_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - lockfile schema-valid
+  - hash and origin exact
+  - approval identity linked
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: install_candidate_disabled
+  purpose: Install or link the approved skill in disabled state
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.install_candidate_disabled:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - update_skill_lockfile
+  read_scope:
+  - skill-vault/quarantine/**
+  - skill-vault/SkillLockfile.json
+  write_scope:
+  - skill-vault/installed/**
+  - db.skill_index
+  capabilities:
+  - filesystem_read
+  - filesystem_write
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - content matches lockfile
+  - disabled by default
+  - name collision reported
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_activation_conformance
+  purpose: Test routing, context budget, script permissions and uninstall in isolation
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.plugin.run_activation_conformance:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - install_candidate_disabled
+  read_scope:
+  - skill-vault/installed/**
+  write_scope:
+  - artifacts/skill_vault/conformance/**
+  capabilities:
+  - sandbox_execute
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - no undeclared capability
+  - implicit invocation policy honored
+  - clean uninstall verified
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: activate_skill_explicitly
+  purpose: Activate only after conformance and append activation event
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.activate_skill_explicitly:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - run_activation_conformance
+  read_scope:
+  - artifacts/skill_vault/conformance/**
+  - skill-vault/SkillLockfile.json
+  write_scope:
+  - db.skill_index
+  - db.ledger
+  capabilities:
+  - artifact_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - approved exact hash activated
+  - activation scope recorded
+  - rollback available
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/memory-retrieval-receipt.schema.json",
+  "title": "MemoryRetrievalReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "query": {
+      "type": "string"
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "searched_classes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "EPHEMERAL",
+          "SESSION",
+          "WORKSPACE",
+          "USER",
+          "EVIDENCE",
+          "REGULATED"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "excluded_classes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "EPHEMERAL",
+          "SESSION",
+          "WORKSPACE",
+          "USER",
+          "EVIDENCE",
+          "REGULATED"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "hits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "memory_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "class": {
+            "enum": [
+              "EPHEMERAL",
+              "SESSION",
+              "WORKSPACE",
+              "USER",
+              "EVIDENCE",
+              "REGULATED"
+            ]
+          },
+          "score": {
+            "type": "number"
+          },
+          "source_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "redacted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "memory_id",
+          "class",
+          "score",
+          "source_hash",
+          "redacted"
+        ]
+      }
+    },
+    "redaction_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "consent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "context_capsule_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "retrieved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "result_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "query",
+    "workspace_id",
+    "purpose",
+    "searched_classes",
+    "excluded_classes",
+    "hits",
+    "redaction_count",
+    "consent_id",
+    "context_capsule_id",
+    "retrieved_at",
+    "result_hash"
+  ]
+}

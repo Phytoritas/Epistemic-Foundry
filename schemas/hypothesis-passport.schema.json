@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/hypothesis-passport.schema.json",
+  "title": "HypothesisPassport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "hypothesis_id": {
+      "type": "string"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "canonical_statement": {
+      "type": "string",
+      "minLength": 10
+    },
+    "scope": {
+      "$ref": "scope-vector.schema.json"
+    },
+    "reasoning_modes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "deductive",
+          "inductive",
+          "abductive",
+          "causal",
+          "mechanistic",
+          "computational",
+          "formal",
+          "simulation"
+        ]
+      }
+    },
+    "mechanism_chain": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prediction_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "falsifier_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_pack_id": {
+      "type": "string"
+    },
+    "strongest_counterevidence_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "unresolved_objection_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "epistemic_status": {
+      "enum": [
+        "ENTAILED",
+        "SUPPORTED",
+        "CONDITIONAL",
+        "MIXED",
+        "CONTRADICTED",
+        "UNDERDETERMINED",
+        "UNTESTABLE"
+      ]
+    },
+    "causal_status": {
+      "enum": [
+        "IDENTIFIED",
+        "ASSUMPTION_DEPENDENT",
+        "NOT_IDENTIFIED",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "novelty_status": {
+      "enum": [
+        "PRIOR_ART_FOUND",
+        "CORPUS_NOVEL",
+        "NOT_FOUND_WITHIN_SEARCH_SCOPE",
+        "NOT_ASSESSED"
+      ]
+    },
+    "promotion_level": {
+      "enum": [
+        "INBOX",
+        "CANDIDATE",
+        "LITERATURE_GROUNDED",
+        "VALIDATION_SCREENED",
+        "EMPIRICALLY_TESTED",
+        "REPLICATED"
+      ]
+    },
+    "confidence_vector": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "grounding": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "directness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "independence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scope_match": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "method_validity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "causal_identifiability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "testability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "grounding",
+        "directness",
+        "independence",
+        "scope_match",
+        "method_validity",
+        "causal_identifiability",
+        "testability"
+      ]
+    },
+    "minority_report_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "next_experiment_ticket_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "attestation_id": {
+      "type": "string"
+    },
+    "provenance_manifest_id": {
+      "type": "string"
+    },
+    "epistemic_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "grounding": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_sufficiency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "consistency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "method_fitness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scope_transportability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "falsifiability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "calibration_status": {
+          "enum": [
+            "CALIBRATED",
+            "UNCALIBRATED",
+            "INSUFFICIENT_DATA"
+          ]
+        }
+      },
+      "required": [
+        "grounding",
+        "evidence_sufficiency",
+        "consistency",
+        "method_fitness",
+        "scope_transportability",
+        "falsifiability",
+        "calibration_status"
+      ]
+    },
+    "bias_risk_register_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision_stability_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "search_completeness": {
+      "enum": [
+        "COMPLETE_FOR_POLICY",
+        "PARTIAL",
+        "BLOCKED",
+        "NOT_ASSESSED"
+      ]
+    },
+    "human_decision_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lifecycle_status": {
+      "enum": [
+        "active",
+        "stale",
+        "withdrawn",
+        "superseded"
+      ]
+    },
+    "stale_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "hypothesis_id",
+    "revision",
+    "canonical_statement",
+    "scope",
+    "reasoning_modes",
+    "mechanism_chain",
+    "prediction_ids",
+    "falsifier_ids",
+    "evidence_pack_id",
+    "strongest_counterevidence_id",
+    "unresolved_objection_ids",
+    "epistemic_status",
+    "causal_status",
+    "novelty_status",
+    "promotion_level",
+    "confidence_vector",
+    "minority_report_id",
+    "next_experiment_ticket_id",
+    "run_id",
+    "attestation_id",
+    "provenance_manifest_id",
+    "epistemic_assessment",
+    "bias_risk_register_id",
+    "decision_stability_report_id",
+    "search_completeness",
+    "human_decision_ids",
+    "lifecycle_status",
+    "stale_reasons"
+  ]
+}

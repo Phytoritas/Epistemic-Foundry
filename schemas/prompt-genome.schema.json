@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/prompt-genome.schema.json",
+  "title": "PromptGenome",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "prompt_genome_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "task_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "template": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_context_classes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "forbidden_authorities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "fitness_history_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "parent_prompt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "status": {
+      "enum": [
+        "QUARANTINED",
+        "QUALIFIED",
+        "ACTIVE",
+        "RETIRED",
+        "REJECTED"
+      ]
+    },
+    "prompt_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "prompt_genome_id",
+    "version",
+    "task_class",
+    "template",
+    "allowed_context_classes",
+    "forbidden_authorities",
+    "fitness_history_ids",
+    "parent_prompt_ids",
+    "status",
+    "prompt_hash"
+  ],
+  "description": "변이 프롬프트를 진화 가능하지만 권한 제한된 유전체로 관리한다."
+}

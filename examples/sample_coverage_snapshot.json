@@ -1,0 +1,94 @@
+{
+  "snapshot_id": "COV-0001",
+  "insight_id": "HYP-0001",
+  "insight_revision": 1,
+  "corpus_snapshot_hash": "sha256:578899c4f2cb96c5dda4cae946bf198ff4cc9f66596fb4dd86c673709b337503",
+  "axes": [
+    {
+      "axis_id": "temporal_scale",
+      "label": "Outcome horizon",
+      "buckets": [
+        "immediate",
+        "one_week",
+        "one_month_or_longer"
+      ]
+    },
+    {
+      "axis_id": "unit_of_analysis",
+      "label": "Unit of analysis",
+      "buckets": [
+        "item",
+        "individual",
+        "classroom_or_group",
+        "institution"
+      ]
+    },
+    {
+      "axis_id": "evidence_role",
+      "label": "Evidence role",
+      "buckets": [
+        "support",
+        "counter",
+        "null",
+        "boundary",
+        "method"
+      ]
+    }
+  ],
+  "cells": [
+    {
+      "coordinate": {
+        "temporal_scale": "one_week",
+        "unit_of_analysis": "individual",
+        "evidence_role": "support"
+      },
+      "search_state": "SEARCHED_WITH_RESULTS",
+      "support_count": 2,
+      "counter_count": 1,
+      "null_count": 1,
+      "boundary_count": 1,
+      "method_count": 1,
+      "independent_cluster_count": 3,
+      "evidence_ids": [
+        "EV-0001",
+        "EV-0101",
+        "EV-0201",
+        "EV-0301",
+        "EV-0401"
+      ],
+      "gap_labels": []
+    },
+    {
+      "coordinate": {
+        "temporal_scale": "one_month_or_longer",
+        "unit_of_analysis": "institution",
+        "evidence_role": "support"
+      },
+      "search_state": "SEARCHED_NONE",
+      "support_count": 0,
+      "counter_count": 0,
+      "null_count": 0,
+      "boundary_count": 0,
+      "method_count": 0,
+      "independent_cluster_count": 0,
+      "evidence_ids": [],
+      "gap_labels": [
+        "no institution-scale long-horizon evidence found within the corpus snapshot"
+      ]
+    }
+  ],
+  "lens_entropy": 0.72,
+  "dominant_lens": "combine",
+  "unsearched_scopes": [
+    "multilingual settings with independently replicated outcomes"
+  ],
+  "created_at": "2026-07-25T12:00:00Z",
+  "provenance_manifest_id": "PM-COV-0001",
+  "search_lane_receipt_ids": [
+    "SLR-0001"
+  ],
+  "bias_risk_register_id": "BRR-0001",
+  "coverage_certificate_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+  "effective_independent_evidence_count": 4.0,
+  "stale": false
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evaluator-bundle.schema.json",
+  "title": "EvaluatorBundle",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "evaluator_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluator_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "metric_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "holdout_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "environment_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "metamorphic_test_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "challenge_set_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "readable_by_candidates": {
+      "type": "boolean"
+    },
+    "mutable_during_run": {
+      "type": "boolean"
+    },
+    "bundle_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "evaluator_bundle_id",
+    "version",
+    "evaluator_artifact_ids",
+    "metric_ids",
+    "holdout_manifest_id",
+    "environment_manifest_id",
+    "policy_bundle_id",
+    "metamorphic_test_ids",
+    "challenge_set_ids",
+    "readable_by_candidates",
+    "mutable_during_run",
+    "bundle_hash"
+  ],
+  "description": "평가 코드·메트릭·데이터 분할·환경·정책을 content-addressed 불변 묶음으로 봉인한다."
+}

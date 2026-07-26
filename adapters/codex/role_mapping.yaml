@@ -1,0 +1,120 @@
+version: 4.0.0
+strategy: compile canonical RoleSpec into built-in Codex agent type plus inline bounded prompt
+roles:
+  evidence_scout:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#evidence_scout
+    result_schema: schemas/result-envelope.schema.json
+  claim_extractor:
+    agent_type: worker
+    prompt_source: manifests/role_registry.yaml#claim_extractor
+    result_schema: schemas/claim-card.schema.json
+  defender:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#defender
+    result_schema: schemas/result-envelope.schema.json
+  prosecutor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#prosecutor
+    result_schema: schemas/result-envelope.schema.json
+  method_auditor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#method_auditor
+    result_schema: schemas/result-envelope.schema.json
+  scope_auditor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#scope_auditor
+    result_schema: schemas/result-envelope.schema.json
+  inductivist:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#inductivist
+    result_schema: schemas/result-envelope.schema.json
+  deductivist:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#deductivist
+    result_schema: schemas/result-envelope.schema.json
+  causal_auditor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#causal_auditor
+    result_schema: schemas/result-envelope.schema.json
+  novelty_examiner:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#novelty_examiner
+    result_schema: schemas/novelty-assessment.schema.json
+  abductive_mediator:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#abductive_mediator
+    result_schema: schemas/result-envelope.schema.json
+  minority_reporter:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#minority_reporter
+    result_schema: schemas/minority-report.schema.json
+  judge:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#judge
+    result_schema: schemas/adjudication.schema.json
+  independent_attestor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#independent_attestor
+    result_schema: schemas/attestation.schema.json
+  validation_executor:
+    agent_type: worker
+    prompt_source: manifests/role_registry.yaml#validation_executor
+    result_schema: schemas/result-envelope.schema.json
+  contract_reviewer:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#contract_reviewer
+    result_schema: schemas/result-envelope.schema.json
+  evolution_governor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#evolution_governor
+    result_schema: schemas/evolution-stop-certificate.schema.json
+  hypothesis_mutator:
+    agent_type: worker
+    prompt_source: manifests/role_registry.yaml#hypothesis_mutator
+    result_schema: schemas/hypothesis-genome.schema.json
+  challenge_evolver:
+    agent_type: worker
+    prompt_source: manifests/role_registry.yaml#challenge_evolver
+    result_schema: schemas/challenge-genome.schema.json
+  experiment_evolver:
+    agent_type: worker
+    prompt_source: manifests/role_registry.yaml#experiment_evolver
+    result_schema: schemas/experiment-genome.schema.json
+  parent_selection_auditor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#parent_selection_auditor
+    result_schema: schemas/parent-selection-receipt.schema.json
+  verifier_firewall_auditor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#verifier_firewall_auditor
+    result_schema: schemas/evaluator-qualification-report.schema.json
+  statistical_governor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#statistical_governor
+    result_schema: schemas/selective-inference-report.schema.json
+  archive_curator:
+    agent_type: worker
+    prompt_source: manifests/role_registry.yaml#archive_curator
+    result_schema: schemas/archive-rebalance-plan.schema.json
+  replication_auditor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#replication_auditor
+    result_schema: schemas/replication-result.schema.json
+  prompt_genome_auditor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#prompt_genome_auditor
+    result_schema: schemas/prompt-mutation-proposal.schema.json
+  shinka_adapter_auditor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#shinka_adapter_auditor
+    result_schema: schemas/backend-adapter-qualification.schema.json
+  evolution_promotion_attestor:
+    agent_type: explorer
+    prompt_source: manifests/role_registry.yaml#evolution_promotion_attestor
+    result_schema: schemas/promotion-decision.schema.json
+constraints:
+- custom scientific semantics remain in RoleSpec
+- host agent type is adapter detail
+- hooks cannot silently expand ACL
+- resolved model and adapter version are recorded

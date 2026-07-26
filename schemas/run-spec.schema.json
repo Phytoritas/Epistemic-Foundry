@@ -1,0 +1,317 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/run-spec.schema.json",
+  "title": "RunSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_-]*-[A-Za-z0-9._:-]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "paper_version_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "section": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bbox": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "char_start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "char_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "passage_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "paper_version_id",
+        "page",
+        "char_start",
+        "char_end",
+        "passage_hash"
+      ]
+    },
+    "quality_vector": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "directness": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "design_strength": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "measurement_validity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "statistical_precision": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "replication": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "independence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scope_match": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "extraction_confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "directness",
+        "design_strength",
+        "measurement_validity",
+        "statistical_precision",
+        "replication",
+        "independence",
+        "scope_match",
+        "extraction_confidence"
+      ]
+    }
+  },
+  "properties": {
+    "run_id": {
+      "$ref": "#/$defs/id"
+    },
+    "run_type": {
+      "enum": [
+        "ingest",
+        "extract",
+        "deliberate",
+        "validate",
+        "execute",
+        "evaluate",
+        "replay"
+      ]
+    },
+    "input_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "corpus_snapshot_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "ontology_version": {
+      "type": "string"
+    },
+    "workflow_id": {
+      "type": "string"
+    },
+    "workflow_version": {
+      "type": "string"
+    },
+    "model_policy_version": {
+      "type": "string"
+    },
+    "allowed_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_cost_usd": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "max_wall_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        }
+      },
+      "required": [
+        "max_tokens",
+        "max_cost_usd",
+        "max_wall_seconds",
+        "max_concurrency"
+      ]
+    },
+    "approval_policy": {
+      "enum": [
+        "none",
+        "high_risk_only",
+        "all_effects"
+      ]
+    },
+    "created_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "run_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "schema_bundle_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain_pack_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "security_profile_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_node_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "convergence_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "loop_contract_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "default_max_iterations": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "nonconvergence_action": {
+          "enum": [
+            "BLOCK",
+            "PARTIAL",
+            "ESCALATE",
+            "FAIL"
+          ]
+        }
+      },
+      "required": [
+        "loop_contract_ids",
+        "default_max_iterations",
+        "nonconvergence_action"
+      ]
+    },
+    "retention_policy_version": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "run_id",
+    "run_type",
+    "input_artifact_ids",
+    "corpus_snapshot_hash",
+    "ontology_version",
+    "workflow_id",
+    "workflow_version",
+    "model_policy_version",
+    "allowed_capabilities",
+    "budget",
+    "approval_policy",
+    "created_at",
+    "run_hash",
+    "schema_bundle_version",
+    "policy_bundle_id",
+    "domain_pack_refs",
+    "security_profile_version",
+    "expected_node_ids",
+    "convergence_policy",
+    "retention_policy_version"
+  ]
+}

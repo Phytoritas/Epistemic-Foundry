@@ -1,0 +1,49 @@
+{
+  "node_id": "prosecutor",
+  "purpose": "Build the strongest evidence-grounded countercase.",
+  "executor_type": "llm",
+  "executor_ref": "prompts/prosecutor.md",
+  "input_schema_ref": "schemas/node-invocation.schema.json",
+  "output_schema_ref": "schemas/result-envelope.schema.json",
+  "depends_on": [
+    "build_evidence_pack"
+  ],
+  "read_scope": [
+    "db.evidence_packs",
+    "db.evidence_nodes"
+  ],
+  "write_scope": [
+    "db.council_briefs.prosecutor"
+  ],
+  "capabilities": [
+    "database_read",
+    "artifact_read",
+    "artifact_write",
+    "llm_inference"
+  ],
+  "model_tier": "frontier",
+  "timeout_seconds": 900,
+  "max_attempts": 2,
+  "failure_policy": "fail_run",
+  "acceptance_checks": [
+    "counter/null/boundary evidence cited",
+    "generic unsupported skepticism absent"
+  ],
+  "resource_dependencies": [
+    "corpus_snapshot",
+    "retrieval_index"
+  ],
+  "determinism_class": "provider_nondeterministic",
+  "idempotency_key_fields": [
+    "run_id",
+    "node_id",
+    "input_hash"
+  ],
+  "loop_contract_ref": null,
+  "expected_effects": [],
+  "required_policy_checks": [
+    "capability_allowed",
+    "input_schema_valid",
+    "write_scope_lease"
+  ]
+}

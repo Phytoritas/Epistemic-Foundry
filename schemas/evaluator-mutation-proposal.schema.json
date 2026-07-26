@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evaluator-mutation-proposal.schema.json",
+  "title": "EvaluatorMutationProposal",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "current_evaluator_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "defect_class": {
+      "enum": [
+        "false_positive",
+        "false_negative",
+        "leakage",
+        "metric_misalignment",
+        "instability",
+        "security",
+        "coverage_gap"
+      ]
+    },
+    "evidence_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "proposed_change": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retroactive_effect_prohibited": {
+      "type": "boolean"
+    },
+    "qualification_required": {
+      "type": "boolean"
+    },
+    "status": {
+      "enum": [
+        "QUARANTINED",
+        "UNDER_REVIEW",
+        "APPROVED_FOR_FUTURE",
+        "REJECTED"
+      ]
+    },
+    "proposal_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "proposal_id",
+    "source_run_id",
+    "current_evaluator_bundle_id",
+    "defect_class",
+    "evidence_artifact_ids",
+    "proposed_change",
+    "retroactive_effect_prohibited",
+    "qualification_required",
+    "status",
+    "proposal_hash"
+  ],
+  "description": "후보가 발견한 평가 결함을 별도 거버넌스에 제출하되 현재 run을 변경하지 않는다."
+}

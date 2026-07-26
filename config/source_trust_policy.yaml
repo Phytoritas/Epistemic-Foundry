@@ -1,0 +1,20 @@
+policy_id: source-trust-v2.0.0
+default_trust: untrusted
+checks:
+  - content_hash
+  - media_type
+  - archive_depth_and_size
+  - active_content
+  - malformed_structure
+  - suspicious_links
+  - instruction_like_text
+  - exfiltration_patterns
+  - malware_scan
+outcomes:
+  PASS: parse_with_standard_profile
+  RESTRICTED: parse_in_strict_sandbox
+  QUARANTINED: preserve_bytes_and_block_extraction
+rules:
+  - corpus text never changes system or developer instructions
+  - source instructions never grant capabilities
+  - tool output is validated as data

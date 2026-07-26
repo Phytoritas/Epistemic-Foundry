@@ -1,0 +1,302 @@
+workflow_id: memory_recall
+version: 4.0.0
+kind: dag
+description: Retrieve prior context under explicit purpose, consent, scope, redaction
+  and receipts.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- no memory search before policy decision
+- cross-workspace retrieval is denied by default
+- every retrieval emits a receipt
+- memory summaries never become source evidence
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: detect_recall_intent
+  purpose: Classify whether prior personal/workspace context is materially needed
+  executor_type: llm
+  executor_ref: prompts/plugin/detect_recall_intent.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - request
+  write_scope:
+  - artifacts/recall_intent/**
+  capabilities:
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - recall need explained
+  - unrelated profile search prohibited
+  - no current-conversation duplication
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: resolve_memory_policy
+  purpose: Resolve workspace, consent, purpose and allowed memory classes
+  executor_type: policy
+  executor_ref: epistemic_foundry.plugin.resolve_memory_policy:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - detect_recall_intent
+  read_scope:
+  - db.memory_policy
+  - db.consent
+  - artifacts/recall_intent/**
+  write_scope:
+  - db.memory_access_decisions
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - cross-workspace default deny
+  - expired/revoked consent honored
+  - purpose bound
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compile_memory_query
+  purpose: Compile bounded queries and store selection
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.compile_memory_query:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - resolve_memory_policy
+  read_scope:
+  - db.memory_access_decisions
+  write_scope:
+  - artifacts/memory_queries/**
+  capabilities:
+  - database_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - searched/excluded stores explicit
+  - query contains no unnecessary sensitive terms
+  - result cap set
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: search_permitted_memory
+  purpose: Search only permitted session/workspace/user/evidence stores
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.plugin.search_permitted_memory:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_memory_query
+  read_scope:
+  - db.memory_index
+  write_scope:
+  - artifacts/memory_hits/**
+  capabilities:
+  - database_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - store boundaries enforced
+  - hit provenance retained
+  - failures typed
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: redact_and_deduplicate_memory
+  purpose: Apply redaction, retention and duplicate-source rules
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.redact_and_deduplicate_memory:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - search_permitted_memory
+  read_scope:
+  - artifacts/memory_hits/**
+  - db.memory_policy
+  write_scope:
+  - artifacts/memory_selected/**
+  capabilities:
+  - artifact_read
+  - database_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - redactions counted
+  - expired items excluded
+  - duplicate summaries do not amplify
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: emit_memory_retrieval_receipt
+  purpose: Emit searched/excluded stores, hits, redactions and result hash
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.emit_memory_retrieval_receipt:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - redact_and_deduplicate_memory
+  read_scope:
+  - artifacts/memory_selected/**
+  write_scope:
+  - db.memory_retrieval_receipts
+  capabilities:
+  - artifact_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - receipt schema-valid
+  - zero results distinguish searched-none
+  - query/result hashes recorded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: assemble_recall_capsule
+  purpose: Add only selected memory artifacts to a bounded ContextCapsule
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.assemble_recall_capsule:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - emit_memory_retrieval_receipt
+  read_scope:
+  - db.memory_retrieval_receipts
+  - artifacts/memory_selected/**
+  write_scope:
+  - artifacts/context_capsules/**
+  capabilities:
+  - database_read
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - token budget enforced
+  - source hashes present
+  - excluded stores listed
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: record_recall_observation
+  purpose: Record capsule use or explicit no-recall outcome without modifying source
+    memories
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.plugin.record_recall_observation:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assemble_recall_capsule
+  read_scope:
+  - artifacts/context_capsules/**
+  write_scope:
+  - db.ledger
+  capabilities:
+  - artifact_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 300
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - memory source unmodified
+  - use event append-only
+  - session link explicit
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects: []
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

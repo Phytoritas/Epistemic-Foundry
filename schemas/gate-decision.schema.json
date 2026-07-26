@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/gate-decision.schema.json",
+  "title": "GateDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "gate_id": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "BLOCK",
+        "WAIVE"
+      ]
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "waiver_authority": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "waiver_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evaluated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "policy_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "non_waivable": {
+      "type": "boolean"
+    },
+    "evaluator_type": {
+      "enum": [
+        "deterministic",
+        "human",
+        "model_assisted",
+        "formal_verifier"
+      ]
+    },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "decision_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "gate_id",
+    "run_id",
+    "name",
+    "status",
+    "reasons",
+    "evidence_ids",
+    "waiver_authority",
+    "waiver_reason",
+    "evaluated_at",
+    "policy_version",
+    "non_waivable",
+    "evaluator_type",
+    "input_hash",
+    "decision_hash"
+  ]
+}

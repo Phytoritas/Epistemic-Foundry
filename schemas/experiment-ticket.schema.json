@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/experiment-ticket.schema.json",
+  "title": "ExperimentTicket",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "ticket_id": {
+      "type": "string"
+    },
+    "hypothesis_id": {
+      "type": "string"
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "design_type": {
+      "enum": [
+        "simulation",
+        "retrospective_data",
+        "prospective_experiment",
+        "measurement_audit",
+        "formal_verification",
+        "benchmark",
+        "external_system_test"
+      ]
+    },
+    "discriminates_between": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "intervention": {
+      "type": "string"
+    },
+    "comparator": {
+      "type": "string"
+    },
+    "outcomes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "preregistered_metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "falsification_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "estimated_information_gain": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "cost_class": {
+      "enum": [
+        "very_low",
+        "low",
+        "medium",
+        "high",
+        "unknown"
+      ]
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "approved",
+        "running",
+        "completed",
+        "blocked",
+        "cancelled"
+      ]
+    },
+    "provenance_manifest_id": {
+      "type": "string"
+    },
+    "ethics_and_safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "review_required": {
+          "type": "boolean"
+        },
+        "risk_class": {
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "review_required",
+        "risk_class",
+        "constraints"
+      ]
+    },
+    "data_management_plan": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stopping_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "preregistration_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "approval_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "ticket_id",
+    "hypothesis_id",
+    "objective",
+    "design_type",
+    "discriminates_between",
+    "required_inputs",
+    "intervention",
+    "comparator",
+    "outcomes",
+    "preregistered_metrics",
+    "falsification_rule",
+    "assumptions",
+    "estimated_information_gain",
+    "cost_class",
+    "status",
+    "provenance_manifest_id",
+    "ethics_and_safety",
+    "data_management_plan",
+    "stopping_rule",
+    "preregistration_hash",
+    "approval_record_ids"
+  ]
+}

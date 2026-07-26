@@ -1,0 +1,2238 @@
+audit_id: EF-PLUGIN-AUDIT-216
+architecture_name: Epistemic Foundry
+version: 3.0.0
+audit_method: 18 architecture families × 12 review lenses. Each lens validates that the specification contains a traceable
+  contract and identifies implementation-dependent conditions. This is not 216 independent human or model proofs.
+families:
+- id: A
+  name: A — Epistemic semantics
+  lenses:
+  - id: A01
+    question: Are epistemic, causal, novelty, lifecycle and stability states independently typed?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A02
+    question: Can underdetermination be represented without forcing a confidence score?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A03
+    question: Can simulation or formal output be accidentally promoted as empirical evidence?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A04
+    question: Does the system distinguish claim truth from evidence quality and retrieval completeness?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A05
+    question: Are inference modes prevented from silently inheriting one another's status?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A06
+    question: Can scope narrowing be expressed without rewriting the original claim?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A07
+    question: Are author stance and system adjudication kept separate?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A08
+    question: Can a review-derived statement be traced to its primary-source dependency?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A09
+    question: Does every controlled term have a versioned authority or explicit unknown value?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A10
+    question: Can conflicting verdict dimensions coexist without schema failure?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A11
+    question: Are promotion ceilings monotonic under veto and hard-gate failure?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: none
+  - id: A12
+    question: Do domain experts accept the state vocabulary on a real gold set?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/product_constitution.md
+    owner_work_package: R04
+    release_effect: blocks production-level claim until resolved
+- id: B
+  name: B — Source, Claim and provenance integrity
+  lenses:
+  - id: B01
+    question: Must every promoted Claim resolve to immutable source bytes and a locator?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B02
+    question: Can page, character, table, figure and formula locators coexist?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B03
+    question: Does source-version replacement preserve prior spans and lifecycle events?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B04
+    question: Can extraction uncertainty be represented without dropping the Claim?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B05
+    question: Are source text and model paraphrase stored as different objects?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B06
+    question: Does atomicity validation reject compound claims with multiple relations?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B07
+    question: Can table/caption evidence be linked without inventing prose?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B08
+    question: Are parser disagreements retained as first-class artifacts?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B09
+    question: Are document corrections and retractions propagated to dependent Claims?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B10
+    question: Can a Claim be superseded without deleting its prior revision?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B11
+    question: Does the provenance chain include parser, model, prompt, schema and corpus hashes?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: none
+  - id: B12
+    question: Does a human span audit meet the promoted-claim validity threshold?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/claim-card.schema.json
+    owner_work_package: K04
+    release_effect: blocks production-level claim until resolved
+- id: C
+  name: C — Retrieval, coverage and absence
+  lenses:
+  - id: C01
+    question: Are lexical, semantic, citation and relation lanes independently receipted?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C02
+    question: Are counterevidence, null, boundary and method lanes mandatory when applicable?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C03
+    question: Can a failed search lane be distinguished from a zero-result lane?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C04
+    question: Is searched scope bounded by corpus, database, date, language and filters?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C05
+    question: Can retrieval direction distinguish support, contradict, moderate and method critique?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C06
+    question: Are shared datasets and publication families deduplicated before evidence strength?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C07
+    question: Does the Evidence Pack preserve diversity rather than only top similarity?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C08
+    question: Can unsearched coverage cells remain visible after synthesis?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C09
+    question: Does an absence or novelty claim require a completeness certificate?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C10
+    question: Are corrections, retractions and later rebuttals included in temporal retrieval?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C11
+    question: Can compact subgraph assembly prove which candidates were excluded?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: none
+  - id: C12
+    question: Does retrieval meet counter/null/novelty recall targets on production corpora?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/evidence_retrieval.workflow.yaml
+    owner_work_package: O04
+    release_effect: blocks production-level claim until resolved
+- id: D
+  name: D — Reasoning and Aporia
+  lenses:
+  - id: D01
+    question: Does deductive output expose every premise, rule, hidden assumption and broken edge?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D02
+    question: Does induction adjust for dependency, heterogeneity and scope?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D03
+    question: Does abduction preserve multiple live explanations rather than select the most fluent?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D04
+    question: Does causal analysis test time order, confounding, mediation, colliders and measurement error?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D05
+    question: Can true contradiction be separated from scope, method, temporal and question differences?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D06
+    question: Are moderator hypotheses linked to the conflicting evidence pairs they explain?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D07
+    question: Can a reverse-causality model be represented beside the preferred model?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D08
+    question: Does the system propose discriminating observations rather than generic future work?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D09
+    question: Are formal proof traces mechanically checkable where the representation allows?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D10
+    question: Can a reasoning result abstain when constructs are not commensurable?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D11
+    question: Does the ArgumentGraph reject orphan conclusions and scope widening?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: none
+  - id: D12
+    question: Do real-domain experts judge generated discriminating tests useful and feasible?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/forge_protocol.md
+    owner_work_package: R04
+    release_effect: blocks production-level claim until resolved
+- id: E
+  name: E — Parliament and governance
+  lenses:
+  - id: E01
+    question: Are blind first-round briefs isolated by evidence ACL and context manifest?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E02
+    question: Does the Prosecutor receive counter/null/boundary evidence without support-first anchoring?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E03
+    question: Can Method, Scope, Causal, Novelty and Safety auditors impose typed ceilings or vetoes?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E04
+    question: Is majority vote prohibited as a promotion rule?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E05
+    question: Is the strongest counterargument retained in a supporting verdict?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E06
+    question: Can a Minority Report survive fan-in and export unchanged?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E07
+    question: Does cross-examination require Claim and Evidence IDs?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E08
+    question: Does the Judge receive gate outputs and remain unable to override deterministic failure?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E09
+    question: Does the Attestor avoid persuasive debate transcripts and inspect structured evidence?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E10
+    question: Are human approvals, overrides, conflicts and appeals immutable?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E11
+    question: Can missing agents or failed roles constrain the verdict rather than vanish?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: none
+  - id: E12
+    question: Does Parliament outperform single-agent and consensus baselines under calibrated cost?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/forge_research_cycle.workflow.yaml
+    owner_work_package: P04
+    release_effect: blocks production-level claim until resolved
+- id: F
+  name: F — Plugin packaging and installability
+  lenses:
+  - id: F01
+    question: Is `.codex-plugin/plugin.json` valid and limited to package-internal paths?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F02
+    question: Can the plugin ship skills, hooks, optional MCP and assets under one stable identity?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F03
+    question: Does a payload-resident CLI work without PATH configuration or repository checkout?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F04
+    question: Are plugin code, plugin-writable data and workspace state physically separated?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F05
+    question: Can install, enable, disable and uninstall preserve user data policy?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F06
+    question: Are spaces, non-ASCII paths and Windows path semantics tested?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F07
+    question: Does the package disclose exact required and optional host capabilities?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F08
+    question: Are development-only source imports absent from the shipped package?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F09
+    question: Are assets, screenshots and default prompts truthful to implemented capability?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F10
+    question: Does the local marketplace path match the production package layout?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F11
+    question: Can a clean extraction reproduce the package manifest and hashes?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: none
+  - id: F12
+    question: Does the built plugin pass fresh-install tests on every declared host/OS surface?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/v3_plugin_architecture.md
+    owner_work_package: G04
+    release_effect: blocks production-level claim until resolved
+- id: G
+  name: G — Hooks and capability negotiation
+  lenses:
+  - id: G01
+    question: Does every hook payload pass through one normalized, hashed gateway?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G02
+    question: Are hook decisions bounded, timed and schema-valid?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G03
+    question: Are hosted and specialized tool paths that bypass hooks explicitly listed?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G04
+    question: Are hooks described as guardrails rather than the sole security perimeter?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G05
+    question: Does SessionStart perform a bounded probe rather than expensive hidden work?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G06
+    question: Can UserPromptSubmit suggest skills without mutating canonical phase?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G07
+    question: Do PreToolUse decisions reference policy, lease and resource scope?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G08
+    question: Do PostToolUse events capture success, failure and effect receipts?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G09
+    question: Do Subagent hooks bind expected identity and ResultEnvelope?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G10
+    question: Does compaction recovery rebuild from canonical artifacts?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G11
+    question: Do modified hook definitions require new trust and visible health state?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: none
+  - id: G12
+    question: Does the compatibility probe work across supported Codex releases and managed-hook policies?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/host-capability-report.schema.json
+    owner_work_package: H04
+    release_effect: blocks production-level claim until resolved
+- id: H
+  name: H — State, ledger, effects and replay
+  lenses:
+  - id: H01
+    question: Is local state transactional with WAL, revision comparison and integrity checks?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H02
+    question: Is team state semantically equivalent under PostgreSQL?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H03
+    question: Are immutable artifacts separated from mutable projections?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H04
+    question: Does every external effect follow Intent → policy → lease → attempt → receipt → reconcile?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H05
+    question: Are stale fencing tokens rejected?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H06
+    question: Can unknown in-flight effects be reconciled without blind retry?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H07
+    question: Is state rebuildable from append-only ledger events?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H08
+    question: Can checkpoints be resumed without relying on chat history?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H09
+    question: Do correction, retraction and policy changes mark downstream artifacts stale?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H10
+    question: Are strict reducer replay and semantic replay reported separately?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H11
+    question: Does rollback preserve audit history and external-effect reconciliation?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: none
+  - id: H12
+    question: Do crash, corruption, concurrency and backup/restore tests meet operational targets?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/state_memory_and_mapping.md
+    owner_work_package: E04
+    release_effect: blocks production-level claim until resolved
+- id: I
+  name: I — Memory and context
+  lenses:
+  - id: I01
+    question: Are ephemeral, session, workspace, user, evidence and regulated memory separate?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I02
+    question: Is recall denied before purpose, consent and workspace are resolved?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I03
+    question: Can consent expiry and revocation stop retrieval immediately?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I04
+    question: Does every recall emit searched/excluded store and redaction receipts?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I05
+    question: Are duplicate memories prevented from evidence amplification?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I06
+    question: Can a user forget memory while honoring legal hold and evidence provenance?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I07
+    question: Does a ContextCapsule contain artifact IDs, source hashes, exclusions and token budget?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I08
+    question: Is capsule freshness checked after corpus, policy or session revision changes?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I09
+    question: Can post-compaction resume restore phase, blockers and authority?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I10
+    question: Are summaries prevented from becoming primary evidence?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I11
+    question: Is cross-workspace retrieval denied below the model layer?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: none
+  - id: I12
+    question: Does recall recover needed context without leaking unrelated private material in user tests?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/memory_recall.workflow.yaml
+    owner_work_package: L04
+    release_effect: blocks production-level claim until resolved
+- id: J
+  name: J — Skills and supply chain
+  lenses:
+  - id: J01
+    question: Are bundled skill descriptions specific enough for bounded implicit invocation?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J02
+    question: Are sensitive or side-effecting skills explicit-only?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J03
+    question: Does progressive disclosure keep initial context within the host skill budget?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J04
+    question: Are remote skills discovered as metadata before content fetch?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J05
+    question: Are fetched skills quarantined and non-executable by default?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J06
+    question: Are source revision, hash, license, scripts, dependencies and permissions inventoried?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J07
+    question: Do static and sandbox scans detect path, secret, network and obfuscation risks?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J08
+    question: Does activation require exact-hash approval and a SkillLockfile?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J09
+    question: Can a skill never expand its own capabilities or approve itself?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J10
+    question: Are skill name collisions and shadowing visible?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J11
+    question: Can activation be rolled back and uninstalled cleanly?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: none
+  - id: J12
+    question: Does the malicious-skill fixture suite cover real catalog and packaging variations?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/skill_acquisition.workflow.yaml
+    owner_work_package: S04
+    release_effect: blocks production-level claim until resolved
+- id: K
+  name: K — Workspace and corpus mapping
+  lenses:
+  - id: K01
+    question: Does the map inventory code, schemas, workflows, tests, papers, data and artifacts?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K02
+    question: Are unresolved and dynamic edges represented instead of dropped?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K03
+    question: Does baseline centrality run a real algorithm on nontrivial graphs?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K04
+    question: Are query relevance, centrality and blast radius separate values?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K05
+    question: Are generated, vendor, test and archived scopes classified and visible?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K06
+    question: Can shared writes, quotas, approvals and mutable contracts become hidden dependency edges?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K07
+    question: Are paper citation, dataset and publication-family edges included?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K08
+    question: Can the map identify orphan schemas, dead workflows and unowned contracts?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K09
+    question: Are algorithm version, alpha, personalization and exclusions recorded?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K10
+    question: Can users trace a displayed rank to its inputs?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K11
+    question: Does change-impact mapping identify stale evidence and downstream Passports?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: none
+  - id: K12
+    question: Does mapping scale and remain accurate on the production repository/corpus?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/workspace_mapping.workflow.yaml
+    owner_work_package: M04
+    release_effect: blocks production-level claim until resolved
+- id: L
+  name: L — Agent orchestration and graph execution
+  lenses:
+  - id: L01
+    question: Does every role have mission, forbidden behavior, tool/evidence ACL and output schema?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L02
+    question: Are host-specific agent names compiled from provider-neutral RoleSpecs?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L03
+    question: Does the scheduler distinguish data, resource, quota, approval and privacy edges?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L04
+    question: Are parallel writes limited to disjoint scopes and isolated worktrees?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L05
+    question: Are barriers used only for true set-wide operations?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L06
+    question: Does fan-in compare expected and actual identities?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L07
+    question: Are large fan-ins hierarchical without discarding provenance?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L08
+    question: Are retries idempotent and bounded by policy?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L09
+    question: Do cycles have seen-set, dry-round, max-round and budget contracts?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L10
+    question: Does model routing consider failure cost and measured error diversity?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L11
+    question: Can the workflow fall back to serial execution without changing semantics?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: none
+  - id: L12
+    question: Does multi-agent execution improve quality per cost under production evaluation?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/role-dispatch-plan.schema.json
+    owner_work_package: N04
+    release_effect: blocks production-level claim until resolved
+- id: M
+  name: M — Security and privacy
+  lenses:
+  - id: M01
+    question: Can evidence or model output ever enter the instruction/authority plane?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M02
+    question: Are secret values represented as handles and excluded from prompts/logs/artifacts?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M03
+    question: Are filesystem paths canonicalized with symlink and traversal defenses?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M04
+    question: Is network egress allowlisted, metered and receipted?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M05
+    question: Are sandbox boundaries and timeouts enforced independently of model claims?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M06
+    question: Are tool-hook coverage gaps covered by kernel policy where observable?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M07
+    question: Are remote notifications denied raw evidence and arbitrary commands by default?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M08
+    question: Are tenancy and workspace boundaries enforced below the UI/model layer?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M09
+    question: Are logs, traces, screenshots and exports redacted under policy?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M10
+    question: Does a source license constrain downstream export and retention?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M11
+    question: Are threat findings linked to tests and non-waivable gates?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: none
+  - id: M12
+    question: Does an external security review and penetration test find zero unresolved critical issues?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_security_threat_model.md
+    owner_work_package: S04
+    release_effect: blocks production-level claim until resolved
+- id: N
+  name: N — API, CLI and UI integrity
+  lenses:
+  - id: N01
+    question: Do JSON Schema and OpenAPI generate all transport and UI contracts?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N02
+    question: Do CLI, MCP, HTTP and persisted artifacts pass cross-surface conformance?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N03
+    question: Do development and packaged servers call the same handlers?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N04
+    question: Are stable error codes categorized and actionable?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N05
+    question: Does the dashboard distinguish READY, EMPTY_CONFIRMED, DEGRADED and UNAVAILABLE?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N06
+    question: Can users open exact SourceSpans from Claims and verdicts?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N07
+    question: Are counterevidence, limitations, minority and unsearched scope visible by default?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N08
+    question: Are approval and override actions protected by local auth, CSRF and audit receipts?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N09
+    question: Is untrusted evidence escaped and excluded from raw HTML execution?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N10
+    question: Does the UI expose profile, workspace, corpus snapshot and health?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N11
+    question: Can all core workflows be completed via accessible non-GUI surfaces?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: none
+  - id: N12
+    question: Does packaged UI meet accessibility and real-user usability thresholds?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/plugin_ux_cli_and_mcp.md
+    owner_work_package: U04
+    release_effect: blocks production-level claim until resolved
+- id: O
+  name: O — Performance, budget and operations
+  lenses:
+  - id: O01
+    question: Are budgets typed by actual enforcement authority?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O02
+    question: Can hard allocation cancel or pause before limits are exceeded?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O03
+    question: Are unmetered/estimated costs never described as hard caps?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O04
+    question: Does adaptive fleet size respond to epistemic uncertainty and risk?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O05
+    question: Are startup and hook latencies bounded and measured?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O06
+    question: Can parsing/retrieval jobs stream rather than wait at unnecessary barriers?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O07
+    question: Are caches disposable, keyed by all semantic versions and safe to rebuild?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O08
+    question: Are rate limits, backoff and transport redaction centralized?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O09
+    question: Are SLOs defined for health, retrieval, replay, backup and recovery?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O10
+    question: Do telemetry and traces avoid secrets and licensed full text?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O11
+    question: Can operators diagnose partial, stuck, blocked and degraded runs?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: none
+  - id: O12
+    question: Does the 2,000-document production load test meet quality, cost and latency gates?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - schemas/budget-envelope.schema.json
+    owner_work_package: Y04
+    release_effect: blocks production-level claim until resolved
+- id: P
+  name: P — Cross-provider and host compatibility
+  lenses:
+  - id: P01
+    question: Do Codex and Claude adapters preserve the same canonical RoleSpec and ResultEnvelope?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P02
+    question: Are provider/model/adapter versions recorded on every node result?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P03
+    question: Does fallback require policy approval and remain visible?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P04
+    question: Are custom Claude agents and built-in Codex types generated from one role authority?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P05
+    question: Are worktree and sandbox differences capability-probed?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P06
+    question: Can hooks be disabled without losing kernel correctness?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P07
+    question: Can MCP unavailability fall back to CLI without changing artifact semantics?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P08
+    question: Are provider outages isolated and classified rather than hidden?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P09
+    question: Is error diversity measured instead of inferred from vendor names?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P10
+    question: Are prompts and evals versioned per adapter?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P11
+    question: Do supported host versions have an explicit compatibility window?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: none
+  - id: P12
+    question: Does parity testing show acceptable verdict/contract behavior across production providers?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - docs/codex_claude_adapter_contract.md
+    owner_work_package: X04
+    release_effect: blocks production-level claim until resolved
+- id: Q
+  name: Q — Migration, release and provenance
+  lenses:
+  - id: Q01
+    question: Does every breaking contract change have migration, backfill, compatibility and rollback?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q02
+    question: Are v2 narrative fields prevented from becoming manufactured v3 receipts?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q03
+    question: Is an upgrade tested on a verified clone before production state?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q04
+    question: Are modified hooks re-trusted after upgrade?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q05
+    question: Can failed post-upgrade health trigger deterministic rollback?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q06
+    question: Does rollback retain migration and effect history?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q07
+    question: Is source/dist equivalence checked?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q08
+    question: Are dependency locks, SBOM, license and secret scans complete?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q09
+    question: Are bundles deterministic or differences explained?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q10
+    question: Are manifest, SBOM, provenance and bundle signatures independently verifiable?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q11
+    question: Do release labels derive from gates rather than author intent?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: none
+  - id: Q12
+    question: Does the production signing, key-custody and publication process pass organizational review?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - workflows/plugin_release.workflow.yaml
+    owner_work_package: Z04
+    release_effect: blocks production-level claim until resolved
+- id: R
+  name: R — Implementation readiness and governance
+  lenses:
+  - id: R01
+    question: Does the A-Z manifest cover authority through release without orphan work?
+    approach: formal type and schema analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R02
+    question: Are work-package write scopes and dependencies non-overlapping where parallel?
+    approach: counterexample construction
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R03
+    question: Does every package have objective exit criteria, commands and independent review?
+    approach: source-to-output provenance walk
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R04
+    question: Are only reviewed integration packages safe checkpoints?
+    approach: failure injection
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R05
+    question: Are SPEC_GAP, BLOCKED and FAIL semantically distinct?
+    approach: dependency and hidden-edge analysis
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R06
+    question: Can agents stop rather than fabricate missing infrastructure or evidence?
+    approach: property-based state-machine review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R07
+    question: Are conditional deployment values listed with owners and release impact?
+    approach: threat modeling
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R08
+    question: Are architecture decisions and rejected alternatives recorded?
+    approach: adversarial retrieval test
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R09
+    question: Can every invariant trace to schema/workflow/work package/test?
+    approach: differential cross-provider check
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R10
+    question: Does the package distinguish specification, blueprint and implementation status?
+    approach: fresh-install/recovery simulation
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R11
+    question: Can a new team start from A01 without hidden oral knowledge?
+    approach: human-factors and status-honesty review
+    expected_status: PASS
+    finding: The v3 specification contains an explicit contract and traceable implementation/release gate.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: none
+  - id: R12
+    question: Does an independent implementation team successfully build the plugin from this specification?
+    approach: production evidence gate
+    expected_status: CONDITIONAL
+    finding: The contract is specified, but final confidence requires implementation, production data, host, organizational,
+      or independent human evidence.
+    evidence_paths:
+    - MASTER_SPEC.md
+    - manifests/development_manifest.yaml
+    owner_work_package: A04
+    release_effect: blocks production-level claim until resolved

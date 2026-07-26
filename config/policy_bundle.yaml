@@ -1,0 +1,26 @@
+policy_bundle_id: ef-policy-bundle-2.0.0
+version: 2.0.0
+status: specification_example
+policies:
+  claim_promotion_policy: config/policies/claim_promotion.yaml
+  grounding_policy: config/policies/grounding.yaml
+  retrieval_completeness_policy: config/policies/retrieval_completeness.yaml
+  absence_claim_policy: config/policies/absence_claim.yaml
+  method_veto_policy: config/policies/method_veto.yaml
+  causal_claim_policy: config/policies/causal_claim.yaml
+  human_review_policy: config/policies/human_review.yaml
+  validation_safety_policy: config/policies/validation_safety.yaml
+  schema_migration_policy: config/policies/schema_migration.yaml
+  update_reassessment_policy: config/policies/update_reassessment.yaml
+non_waivable:
+  - source_span_required
+  - mandatory_counter_null_method_receipts
+  - method_veto_ceiling
+  - causal_identification_ceiling
+  - no_untrusted_instruction_execution
+  - no_side_effect_without_intent_and_receipt
+  - no_breaking_schema_change_without_migration
+  - no_release_with_failed_non_negotiable_gate
+authority:
+  canonical_store: Noetic Ledger
+  provider_sessions_are_authority: false

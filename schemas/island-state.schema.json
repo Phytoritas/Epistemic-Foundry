@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/island-state.schema.json",
+  "title": "IslandState",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "island_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semantic_specialization": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "archive_entry_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "migration_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "incoming_migrant_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "outgoing_migrant_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "stagnation_rounds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "state_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "island_id",
+    "evolution_run_id",
+    "semantic_specialization",
+    "candidate_ids",
+    "archive_entry_ids",
+    "generation",
+    "migration_policy",
+    "incoming_migrant_ids",
+    "outgoing_migrant_ids",
+    "stagnation_rounds",
+    "state_hash"
+  ],
+  "description": "의미적으로 분리된 진화 island의 목표·집단·이주·정체 상태를 정의한다."
+}

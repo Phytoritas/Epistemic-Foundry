@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/approval-record.schema.json",
+  "title": "ApprovalRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "approval_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_type": {
+      "enum": [
+        "capability",
+        "external_effect",
+        "high_risk_validation",
+        "human_override",
+        "release",
+        "data_access"
+      ]
+    },
+    "decision": {
+      "enum": [
+        "APPROVE",
+        "DENY",
+        "EXPIRE",
+        "REVOKE"
+      ]
+    },
+    "authority_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "record_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "approval_id",
+    "run_id",
+    "subject_id",
+    "approval_type",
+    "decision",
+    "authority_id",
+    "authority_role",
+    "reason",
+    "evidence_artifact_ids",
+    "conditions",
+    "issued_at",
+    "expires_at",
+    "record_hash"
+  ]
+}

@@ -1,0 +1,544 @@
+workflow_id: validation_execution
+version: 4.0.0
+kind: dag
+description: Screen an optional validation target, preregister and authorize a plan,
+  execute it safely, and reconcile typed evidence.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- validation is optional and target-neutral
+- all actions, metrics, leakage guards, and falsifiers are preregistered
+- side effects require approved ActionIntent and produce EffectReceipt
+- computed, simulated, formal, benchmark, and empirical results retain distinct evidence
+  classes
+- TARGET_NOT_CONFIGURED is a valid typed outcome
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: screen_target_eligibility
+  purpose: Map a Passport to a version-pinned ValidationTarget and assess representability,
+    identifiability, and constraints
+  executor_type: llm
+  executor_ref: prompts/validation_adapter.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - db.passports
+  - validation/target_manifests/**
+  - domain_packs/**
+  write_scope:
+  - db.validation_eligibility
+  capabilities:
+  - database_read
+  - filesystem_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - TARGET_NOT_CONFIGURED allowed
+  - unsupported links explicit
+  - target version and interface hash recorded
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validation_eligibility_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compile_validation_plan
+  purpose: Create a typed plan with baseline, comparator, perturbations/actions, metrics,
+    uncertainty, and falsifiers
+  executor_type: llm
+  executor_ref: prompts/validation_adapter.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - screen_target_eligibility
+  read_scope:
+  - db.validation_eligibility
+  - db.passports
+  - validation/target_manifests/**
+  write_scope:
+  - db.validation_plans
+  capabilities:
+  - database_read
+  - filesystem_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - analysis and stopping rules explicit
+  - data leakage guards present
+  - result evidence class preregistered
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validation_plan_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: preregister_validation_plan
+  purpose: Freeze plan hash, analysis code/input snapshot references, and permitted
+    deviations before execution
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.validation.preregistration:freeze
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_validation_plan
+  read_scope:
+  - db.validation_plans
+  - validation/target_manifests/**
+  write_scope:
+  - db.approval_records/preregistration
+  capabilities:
+  - database_read
+  - filesystem_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - plan hash immutable
+  - deviation policy explicit
+  - timestamp precedes execution
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validation_preregistration_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: assess_safety_ethics_privacy
+  purpose: Assess physical, data, privacy, ethics, licensing, dual-use, and external-service
+    risks
+  executor_type: policy
+  executor_ref: epistemic_foundry.policy.validation:risk_assess
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - preregister_validation_plan
+  read_scope:
+  - db.validation_plans
+  - db.passports
+  - validation/target_manifests/**
+  - config/policy_bundle.yaml
+  write_scope:
+  - db.gate_decisions/validation_risk
+  capabilities:
+  - database_read
+  - filesystem_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - risk dimensions explicit
+  - non-waivable prohibitions enforced
+  - required approval roles identified
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validation_risk_decision_created
+  required_policy_checks:
+  - validation_safety_policy
+  - privacy_policy
+  - ethics_policy
+  - license_policy
+- node_id: resolve_validation_approval
+  purpose: Record human or delegated approval, rejection, expiry, and scope for consequential
+    actions
+  executor_type: human_gate
+  executor_ref: epistemic_foundry.governance.approvals:resolve_validation
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - assess_safety_ethics_privacy
+  read_scope:
+  - db.gate_decisions/validation_risk
+  - db.validation_plans
+  write_scope:
+  - db.approval_records/validation
+  capabilities:
+  - database_read
+  - database_write
+  - human_approval
+  model_tier: deterministic
+  timeout_seconds: 86400
+  max_attempts: 1
+  failure_policy: mark_partial
+  acceptance_checks:
+  - approval scope and expiry recorded
+  - NOT_REQUIRED allowed by policy
+  - rejection blocks action
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validation_approval_recorded
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: validate_plan_contracts
+  purpose: Validate target interface, schemas, units, seeds, resources, approvals,
+    and sandbox policy
+  executor_type: policy
+  executor_ref: epistemic_foundry.validation.contracts:validate
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - resolve_validation_approval
+  read_scope:
+  - db.validation_plans
+  - db.approval_records/validation
+  - validation/target_manifests/**
+  - config/policy_bundle.yaml
+  write_scope:
+  - db.gate_decisions/validation_plan
+  capabilities:
+  - database_read
+  - filesystem_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - all referenced inputs and metrics typed
+  - approval current
+  - budget and resource limits enforceable
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validation_plan_gate_created
+  required_policy_checks:
+  - validation_contract_policy
+  - resource_budget_policy
+  - sandbox_policy
+- node_id: issue_action_intent
+  purpose: Issue an exact-hash ActionIntent for the authorized target invocation and
+    expected effects
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.kernel.actions:issue_intent
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - validate_plan_contracts
+  read_scope:
+  - db.validation_plans
+  - db.gate_decisions/validation_plan
+  - db.approval_records/validation
+  write_scope:
+  - db.action_intents
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - canonical action hash approved
+  - capability lease fenced
+  - expected effects and reconciliation policy explicit
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - action_intent_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: execute_validation_actions
+  purpose: Execute only the approved ActionIntent in an isolated, resource-bounded
+    environment
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.validation.runner:execute
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - issue_action_intent
+  read_scope:
+  - db.action_intents
+  - db.validation_plans
+  - object_store/validation_inputs/**
+  - validation/target_runtime/**
+  write_scope:
+  - object_store/validation_runs/**
+  capabilities:
+  - sandbox_execute
+  - object_store_read
+  - object_store_write
+  model_tier: deterministic
+  timeout_seconds: 14400
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - intent hash verified before start
+  - network and filesystem policy enforced
+  - stdout/stderr/exit/resource use captured
+  resource_dependencies:
+  - exclusive:validation_target
+  - quota:compute
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validation_execution_performed
+  required_policy_checks:
+  - sandbox_policy
+  - network_policy
+  - resource_budget_policy
+- node_id: capture_effect_receipt
+  purpose: Capture observed effects, non-effects, failures, reconciliation keys, and
+    environment hashes
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.kernel.effects:capture_receipt
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - execute_validation_actions
+  read_scope:
+  - db.action_intents
+  - object_store/validation_runs/**
+  write_scope:
+  - db.effect_receipts
+  capabilities:
+  - database_read
+  - object_store_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - every expected effect reconciled
+  - unexpected effects trigger incident
+  - environment and target hashes recorded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - effect_receipt_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: analyze_validation_results
+  purpose: Evaluate preregistered metrics, uncertainty, sensitivity, identifiability,
+    and stopping/falsifier outcomes
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.validation.analysis:analyze
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - capture_effect_receipt
+  read_scope:
+  - db.validation_plans
+  - db.effect_receipts
+  - object_store/validation_runs/**
+  write_scope:
+  - db.experiment_results
+  capabilities:
+  - database_read
+  - object_store_read
+  - database_write
+  - python_analysis
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - registered analysis distinguished from exploratory
+  - failed scenarios retained
+  - result subtype and validity domain explicit
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - experiment_result_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: reconcile_validation_evidence
+  purpose: Create EvidenceReconciliationRecords and E/X graph nodes without epistemic
+    type inflation
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.validation.reconcile:evidence
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - analyze_validation_results
+  read_scope:
+  - db.experiment_results
+  - db.validation_plans
+  - db.passports
+  - db.effect_receipts
+  write_scope:
+  - db.evidence_reconciliation_records
+  - db.evidence_nodes
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - SIMULATED/COMPUTED/FORMAL/BENCHMARK/OBSERVED preserved
+  - conflicts create revisions not overwrite
+  - source target lineage complete
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validation_evidence_reconciled
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: propose_discriminating_test
+  purpose: Rank the next dataset, benchmark, formal check, replication, or experiment
+    by expected information gain, ambiguity, cost, and risk
+  executor_type: llm
+  executor_ref: prompts/validation_adapter.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - reconcile_validation_evidence
+  read_scope:
+  - db.evidence_reconciliation_records
+  - db.passports
+  - db.coverage_snapshots
+  - db.experiment_results
+  write_scope:
+  - db.experiment_tickets
+  capabilities:
+  - database_read
+  - database_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - competing hypotheses listed
+  - test can change a stated decision
+  - cost/safety/ethics fields present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - experiment_ticket_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: revise_passport_from_validation
+  purpose: Create a new Passport revision with typed validation evidence and unchanged
+    historical state
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.passports.revise:from_validation
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - propose_discriminating_test
+  read_scope:
+  - db.passports
+  - db.evidence_reconciliation_records
+  - db.experiment_tickets
+  write_scope:
+  - db.passports
+  - db.claim_lifecycle_events
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - prior Passport immutable
+  - validation result cannot imply empirical confirmation unless observed
+  - revision reason and hashes recorded
+  resource_dependencies:
+  - exclusive:passport_revision
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - passport_revision_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

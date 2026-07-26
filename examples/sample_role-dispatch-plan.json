@@ -1,0 +1,35 @@
+{
+  "plan_id": "RDP-001",
+  "session_id": "FS-001",
+  "roles": [
+    {
+      "role_id": "prosecutor",
+      "host_agent_type": "explorer",
+      "model_tier": "frontier",
+      "tool_acl": [
+        "search.read"
+      ],
+      "evidence_acl": [
+        "counter",
+        "null",
+        "boundary"
+      ],
+      "read_scope": [
+        "evidence/*"
+      ],
+      "write_scope": [
+        "briefs/prosecutor/*"
+      ],
+      "depends_on": [],
+      "budget_tokens": 12000,
+      "timeout_seconds": 900,
+      "independence_group": "blind-round-1"
+    }
+  ],
+  "expected_count": 1,
+  "fan_in_policy": "all_required",
+  "missing_result_policy": "fail_gate",
+  "max_concurrency": 1,
+  "budget_envelope_id": "BE-001",
+  "plan_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

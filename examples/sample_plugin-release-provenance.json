@@ -1,0 +1,32 @@
+{
+  "release_id": "REL-300",
+  "plugin_id": "epistemic-foundry",
+  "version": "4.0.0",
+  "source_revision": "git:example",
+  "source_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "bundle_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "sbom_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "manifest_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "builder": {
+    "identity": "ci/release",
+    "environment_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "reproducible": true
+  },
+  "checks": [
+    {
+      "check_id": "fresh_install",
+      "status": "PASS",
+      "details": "All matrix lanes passed.",
+      "remediation": []
+    }
+  ],
+  "signatures": [
+    {
+      "kind": "sigstore",
+      "identity": "release@example",
+      "signature": "base64:placeholder"
+    }
+  ],
+  "created_at": "2026-07-26T04:00:00+09:00",
+  "provenance_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

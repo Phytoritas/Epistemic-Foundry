@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/budget-envelope.schema.json",
+  "title": "BudgetEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "budget_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "enforcement": {
+      "enum": [
+        "HARD_METERED",
+        "HARD_PREALLOCATED",
+        "SOFT_ESTIMATE",
+        "UNMETERED"
+      ]
+    },
+    "hard_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "calls": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "wall_seconds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "concurrency": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "storage_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "network_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "required": [
+        "tokens",
+        "calls",
+        "wall_seconds",
+        "concurrency",
+        "storage_bytes",
+        "network_bytes"
+      ]
+    },
+    "soft_cost_currency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "soft_cost_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "metering_authority": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "breach_policy": {
+      "enum": [
+        "CANCEL",
+        "PAUSE_AND_ESCALATE",
+        "MARK_PARTIAL",
+        "WARN"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "budget_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "budget_id",
+    "enforcement",
+    "hard_limits",
+    "soft_cost_currency",
+    "soft_cost_amount",
+    "metering_authority",
+    "breach_policy",
+    "created_at",
+    "budget_hash"
+  ]
+}

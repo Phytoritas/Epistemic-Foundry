@@ -1,0 +1,446 @@
+workflow_id: corpus_ingest
+version: 4.0.0
+kind: dag
+description: Register, integrity-screen, parse, reconcile, and release immutable source
+  documents.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- source bytes are immutable and content-addressed
+- all parsed elements preserve page and coordinate provenance when available
+- corpus content is untrusted data and never executable instruction
+- document versions, corrections, and retractions are append-only lifecycle events
+- parser disagreement is retained rather than silently erased
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: register_document
+  purpose: Register source bytes, license metadata, and content hash
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.ingest.registry:register_document
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - incoming/documents/**
+  write_scope:
+  - db.documents
+  - object_store/source/**
+  capabilities:
+  - filesystem_read
+  - database_write
+  - object_store_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - sha256 recorded
+  - original bytes preserved
+  - license/access class recorded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - document_registered
+  - source_blob_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: scan_source_integrity
+  purpose: Scan the document and metadata for corruption, active content, prompt-injection
+    markers, and trust risks
+  executor_type: policy
+  executor_ref: epistemic_foundry.security.source_integrity:scan
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - register_document
+  read_scope:
+  - object_store/source/**
+  - db.documents
+  write_scope:
+  - db.source_integrity_reports
+  capabilities:
+  - object_store_read
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - active content inventory recorded
+  - instruction-like spans labeled as untrusted content
+  - quarantine decision typed
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - source_integrity_report_created
+  required_policy_checks:
+  - source_trust_policy
+  - malware_policy
+  - prompt_injection_policy
+- node_id: resolve_metadata
+  purpose: Resolve bibliographic metadata, versions, corrections, retractions, and
+    publication family
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.ingest.metadata:resolve
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - register_document
+  read_scope:
+  - db.documents
+  write_scope:
+  - db.document_metadata
+  capabilities:
+  - database_read
+  - database_write
+  - approved_external_search
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - resolution candidates and confidence stored
+  - correction/retraction status timestamped
+  - preprint/final lineage explicit
+  resource_dependencies:
+  - quota:metadata_resolver
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - metadata_resolution_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: parse_structure_grobid
+  purpose: Parse scholarly structure, references, and citation contexts with a pinned
+    GROBID profile
+  executor_type: parser
+  executor_ref: epistemic_foundry.ingest.grobid:parse
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - scan_source_integrity
+  read_scope:
+  - object_store/source/**
+  write_scope:
+  - artifacts/ingest/grobid/**
+  capabilities:
+  - object_store_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: deterministic
+  timeout_seconds: 1800
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - parser image/version hash recorded
+  - TEI artifact retained
+  - malformed output becomes typed failure
+  resource_dependencies:
+  - quota:grobid
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - grobid_artifact_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: parse_layout_docling
+  purpose: Parse layout, reading order, tables, figures, captions, and formulas with
+    a pinned Docling profile
+  executor_type: parser
+  executor_ref: epistemic_foundry.ingest.docling:parse
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - scan_source_integrity
+  read_scope:
+  - object_store/source/**
+  write_scope:
+  - artifacts/ingest/docling/**
+  capabilities:
+  - object_store_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: deterministic
+  timeout_seconds: 1800
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - page and bbox retained
+  - table/figure/caption links addressable
+  - parser version recorded
+  resource_dependencies:
+  - quota:docling
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - docling_artifact_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: extract_embedded_artifacts
+  purpose: Inventory attachments, supplementary files, embedded media, and machine-readable
+    tables without executing them
+  executor_type: parser
+  executor_ref: epistemic_foundry.ingest.embedded:extract
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - scan_source_integrity
+  read_scope:
+  - object_store/source/**
+  write_scope:
+  - artifacts/ingest/embedded/**
+  capabilities:
+  - object_store_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - attachments remain non-executable
+  - nested hashes recorded
+  - unsupported formats explicit
+  resource_dependencies:
+  - quota:archive_scanner
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - embedded_artifact_inventory_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: reconcile_document_streams
+  purpose: Reconcile structure, layout, and embedded streams while preserving disagreements
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.ingest.reconcile:reconcile_streams
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - parse_structure_grobid
+  - parse_layout_docling
+  - extract_embedded_artifacts
+  read_scope:
+  - artifacts/ingest/grobid/**
+  - artifacts/ingest/docling/**
+  - artifacts/ingest/embedded/**
+  write_scope:
+  - artifacts/ingest/reconciled/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - reading order conflicts recorded
+  - no source text invented
+  - reconciliation hash deterministic
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - reconciled_document_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: emit_source_spans
+  purpose: Emit immutable SourceSpan records for text, tables, figures, captions,
+    and formulas
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.ingest.spans:emit
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - reconcile_document_streams
+  read_scope:
+  - artifacts/ingest/reconciled/**
+  write_scope:
+  - db.source_spans
+  capabilities:
+  - artifact_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - span hashes verify against normalized source
+  - page/char/bbox locators typed
+  - orphan spans rejected
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - source_spans_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_document_manifest
+  purpose: Create the versioned DocumentManifest and provenance chain
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.ingest.manifest:build
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - emit_source_spans
+  - resolve_metadata
+  - scan_source_integrity
+  read_scope:
+  - db.documents
+  - db.document_metadata
+  - db.source_spans
+  - db.source_integrity_reports
+  write_scope:
+  - db.document_manifests
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - source/parser/metadata hashes linked
+  - lifecycle status recorded
+  - manifest hash reproducible
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - document_manifest_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: ingest_quality_gate
+  purpose: Apply deterministic completeness, trust, provenance, and license gates
+  executor_type: policy
+  executor_ref: epistemic_foundry.policy.ingest:gate
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_document_manifest
+  read_scope:
+  - db.document_manifests
+  - db.source_integrity_reports
+  - config/policy_bundle.yaml
+  write_scope:
+  - db.gate_decisions/ingest
+  capabilities:
+  - database_read
+  - database_write
+  - filesystem_read
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - non-waivable source integrity failures block promotion
+  - license restrictions propagate
+  - all expected artifacts reconciled
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - ingest_gate_decision_created
+  required_policy_checks:
+  - ingest_release_policy
+  - license_policy
+  - source_trust_policy
+- node_id: commit_ingest_projection
+  purpose: Commit approved document and span projections without mutating source artifacts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.ingest.projection:commit
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - ingest_quality_gate
+  read_scope:
+  - db.gate_decisions/ingest
+  - db.document_manifests
+  - db.source_spans
+  write_scope:
+  - db.projections/documents
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - only PASS manifests projected
+  - projection is rebuildable from ledger
+  - event sequence monotonic
+  resource_dependencies:
+  - exclusive:document_projection
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - document_projection_updated
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

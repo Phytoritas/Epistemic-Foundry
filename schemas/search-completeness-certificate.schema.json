@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/search-completeness-certificate.schema.json",
+  "title": "SearchCompletenessCertificate",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "certificate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "query_plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_lanes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "lane_receipt_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "completed_lanes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "blocked_lanes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "searched_scope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "unsearched_scope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "completion_state": {
+      "enum": [
+        "COMPLETE",
+        "PARTIAL",
+        "BLOCKED",
+        "NOT_ASSESSED"
+      ]
+    },
+    "absence_claim_ceiling": {
+      "enum": [
+        "NONE",
+        "LOCAL_CORPUS_ONLY",
+        "CORPUS_CONDITIONAL",
+        "EXTERNAL_CONDITIONAL"
+      ]
+    },
+    "novelty_claim_ceiling": {
+      "enum": [
+        "NOT_ASSESSED",
+        "CORPUS_NOVEL_ONLY",
+        "SEARCH_CONDITIONAL",
+        "PRIOR_ART_FOUND"
+      ]
+    },
+    "known_failures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "certificate_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "certificate_id",
+    "run_id",
+    "subject_ref",
+    "query_plan_id",
+    "required_lanes",
+    "lane_receipt_ids",
+    "completed_lanes",
+    "blocked_lanes",
+    "searched_scope",
+    "unsearched_scope",
+    "completion_state",
+    "absence_claim_ceiling",
+    "novelty_claim_ceiling",
+    "known_failures",
+    "generated_at",
+    "certificate_hash"
+  ]
+}

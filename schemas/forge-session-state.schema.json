@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/forge-session-state.schema.json",
+  "title": "ForgeSessionState",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "phase": {
+      "enum": [
+        "IDLE",
+        "I",
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ]
+    },
+    "work_class": {
+      "enum": [
+        "E0",
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5"
+      ]
+    },
+    "status": {
+      "enum": [
+        "ACTIVE",
+        "PAUSED",
+        "BLOCKED",
+        "COMPLETED",
+        "ABORTED",
+        "STALE"
+      ]
+    },
+    "run_spec_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "hypothesis_revision_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 128
+      },
+      "uniqueItems": true
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 128
+      },
+      "uniqueItems": true
+    },
+    "open_blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "phase_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "from": {
+            "enum": [
+              "IDLE",
+              "I",
+              "F",
+              "O",
+              "R",
+              "G",
+              "E"
+            ]
+          },
+          "to": {
+            "enum": [
+              "IDLE",
+              "I",
+              "F",
+              "O",
+              "R",
+              "G",
+              "E"
+            ]
+          },
+          "event_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "event_id",
+          "at"
+        ]
+      }
+    },
+    "policy_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "corpus_snapshot_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "state_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "session_id",
+    "workspace_id",
+    "revision",
+    "phase",
+    "work_class",
+    "status",
+    "run_spec_id",
+    "hypothesis_revision_ids",
+    "artifact_ids",
+    "open_blockers",
+    "phase_history",
+    "policy_hash",
+    "corpus_snapshot_hash",
+    "updated_at",
+    "state_hash"
+  ]
+}

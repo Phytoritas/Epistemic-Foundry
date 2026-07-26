@@ -1,0 +1,137 @@
+version: 4.0.0
+architecture_name: Epistemic Foundry
+status_of_this_bundle: SPEC_BUNDLE
+release_levels:
+  SPEC_BUNDLE:
+    scope: Architecture, contracts, Shinka source audit, reference plugin blueprint,
+      A-Z implementation graph, and structural validation evidence. No working-runtime
+      claim.
+    gates:
+      canonical_schema_count: '124'
+      matching_example_count: '124'
+      schema_meta_validation_errors: '0'
+      schema_example_validation_errors: '0'
+      canonical_workflow_count: '22'
+      workflow_node_count: '327'
+      workflow_contract_errors: '0'
+      workflow_cycle_or_missing_dependency_errors: '0'
+      work_package_count: '156'
+      work_package_cycle_or_missing_dependency_errors: '0'
+      traceable_invariant_count: '64'
+      prompt_count: '65'
+      role_count: '28'
+      audit_lens_count: '288'
+      audit_fail_count: '0'
+      blueprint_skill_count: '29'
+      blueprint_hook_bundle_count: '7'
+      blueprint_runtime_status: REFERENCE_BLUEPRINT
+      forbidden_implementation_claims: '0'
+      package_manifest_hash_mismatches: '0'
+      zip_crc_errors: '0'
+      zip_unsafe_paths: '0'
+      clean_extract_mismatches: '0'
+  PLUGIN_ALPHA:
+    scope: Locally installable, non-production plugin with working FORGE/EVOLVE state,
+      CLI, skills, hooks/MCP fallbacks, SQLite profile, sandbox and recovery.
+    gates:
+      fresh_install_matrix: PASS
+      pathless_cli: PASS
+      manifest_and_skill_validation: PASS
+      hook_disabled_degraded_mode: PASS
+      mcp_unavailable_cli_fallback: PASS
+      sqlite_wal_crash_recovery: PASS
+      candidate_count_reconciliation: '1.00'
+      evaluator_bundle_immutability: '1.00'
+      hidden_holdout_candidate_access: '0'
+      novelty_outage_false_novel_rate: '0'
+      prompt_current_run_authority_gain: '0'
+      unsafe_candidate_escape: '0'
+      critical_security_findings: '0'
+      upgrade_rollback_uninstall: PASS
+  EVOLUTION_MVP_50:
+    scope: 50-document gold corpus, 30+ hypothesis families, qualified evaluator,
+      hidden/OOD fixtures and bounded quality-diversity evolution.
+    corpus: 50 licensed documents
+    gates:
+      source_grounded_candidate_rate: '>=0.95'
+      falsifiable_candidate_rate: '>=0.90'
+      known_false_rejection_rate: '>=0.85'
+      counter_null_boundary_retrieval_execution: '1.00'
+      hidden_holdout_leakage_rate: '0'
+      evaluator_reward_hack_success_rate: <=0.02
+      adaptive_search_fdr_or_equivalent: within preregistered bound
+      candidate_count_reconciliation: '1.00'
+      lineage_completeness: '1.00'
+      protected_negative_memory_retention: '1.00'
+      replication_plan_compliance: '>=0.95'
+      false_promotion_rate: <=0.05
+      full_v4_vs_scalar_baseline: pre-registered non-inferior quality and better calibration/coverage
+  PILOT_200:
+    scope: 200-document, multi-domain pilot with external prior-art, independent replication,
+      cross-provider and recovery evaluation.
+    gates:
+      gold_claim_span_validity: '>=0.95'
+      external_prior_art_false_novelty_rate: <=0.05
+      ood_calibration_ece: <=0.10
+      known_false_rejection_rate: '>=0.90'
+      replication_success_or_correct_demotion: '>=0.90'
+      challenge_false_refutation_rate: <=0.05
+      checkpoint_recovery_success: '1.00'
+      provider_failure_fallback_visibility: '1.00'
+      cross_workspace_leakage: '0'
+      operator_or_model_dominant_share: <=0.70 unless justified
+      independent_security_review: PASS
+  PRODUCTION_2000:
+    scope: 1,800–2,000-document production qualification with load, cost, security,
+      backup/restore, license and operational SLO evidence.
+    gates:
+      licensed_corpus_coverage: '1.00'
+      production_load_test: PASS
+      p95_run_latency: deployment SLO met
+      hard_budget_overrun_rate: '0'
+      backup_restore_rpo_rto: deployment SLO met
+      critical_security_findings: '0'
+      hidden_holdout_leakage_rate: '0'
+      false_promotion_rate: deployment bound met
+      stale_propagation_retraction: '1.00'
+      audit_and_export_traceability: '1.00'
+      signed_release_or_explicit_unsigned: PASS
+      incident_drill: PASS
+  CROSS_DOMAIN_QUALIFIED:
+    scope: At least three materially different domains with independent DomainPacks,
+      evaluators, gold sets and expert review.
+    gates:
+      qualified_domain_count: '>=3'
+      core_schema_fork_count: '0'
+      domainpack_isolation: PASS
+      measurement_contract_accuracy: '>=0.95'
+      domain_specific_false_promotion: each domain bound met
+      cross_domain_regression: PASS
+      independent_domain_expert_review: PASS
+non_waivable_gates:
+- current-run evaluator immutability
+- candidate-hidden-holdout separation
+- source/evidence provenance
+- no self-approval
+- no scalar promotion authority
+- candidate/effect count reconciliation
+- adaptive-search statistical accounting
+- independent replication or explicit promotion ceiling
+- protected negative-result memory
+- truthful maturity and evidence-class labeling
+conditional_external_values:
+- production corpus license and access policy
+- gold annotation and expert adjudication team
+- first production DomainPack and ontology versions
+- qualified evaluator and hidden/OOD data custodian
+- statistical family/error-control policy by domain
+- production sandbox/container/cluster topology
+- PostgreSQL/object storage/queue/region and disaster-recovery SLOs
+- provider credentials, rate limits, cancellation and hard metering
+- ShinkaEvolve exact implementation-time revision/package digest
+- production signing identity and key custody
+- independent security and privacy review
+- cross-platform Codex/Claude host capability matrix
+- operator training and appeal authority
+- ethics review thresholds for high-risk domains
+- actual 2,000-document cost/latency/quality evidence

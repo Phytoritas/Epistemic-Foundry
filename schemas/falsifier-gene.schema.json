@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/falsifier-gene.schema.json",
+  "title": "FalsifierGene",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "falsifier_gene_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "genome_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger_type": {
+      "enum": [
+        "hard_refutation",
+        "scope_restriction",
+        "mechanism_failure",
+        "predictive_failure",
+        "measurement_failure",
+        "causal_failure"
+      ]
+    },
+    "observable_condition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "enum": [
+        "critical",
+        "major",
+        "minor"
+      ]
+    },
+    "linked_prediction_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "falsifier_gene_id",
+    "genome_id",
+    "statement",
+    "trigger_type",
+    "observable_condition",
+    "decision_rule",
+    "severity",
+    "linked_prediction_ids"
+  ],
+  "description": "가설을 실제로 기각하거나 승격 상한을 낮추는 관측을 정의한다."
+}

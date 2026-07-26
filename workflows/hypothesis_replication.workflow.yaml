@@ -1,0 +1,428 @@
+workflow_id: hypothesis_replication
+version: 4.0.0
+kind: dag
+description: Run independent preregistered replication and propagate its result without
+  rewriting history.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- same-context rerun is not independent replication
+- all deviations from preregistration are explicit
+- failed replication is preserved and invalidates dependent promotion when required
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: qualify_replication_candidate
+  purpose: Verify candidate seal, preregistration, promotion need and unresolved selection
+    bias
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.qualify_replication_candidate:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/replication-plan.schema.json
+  depends_on: []
+  read_scope: []
+  write_scope:
+  - artifacts/replication/qualified/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - qualify_replication_candidate contract valid
+  - qualify_replication_candidate result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - qualify_replication_candidate_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: assign_independent_replication_executor
+  purpose: Select an executor independent of candidate generation and prior implementation
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.assign_independent_replication_executor:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/role-dispatch-plan.schema.json
+  depends_on:
+  - qualify_replication_candidate
+  read_scope: []
+  write_scope:
+  - artifacts/replication/dispatch/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - assign_independent_replication_executor contract valid
+  - assign_independent_replication_executor result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - assign_independent_replication_executor_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: materialize_clean_replication_environment
+  purpose: Create clean pinned environment and verify no candidate cache leakage
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.materialize_clean_replication_environment:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/artifact-manifest.schema.json
+  depends_on:
+  - assign_independent_replication_executor
+  read_scope: []
+  write_scope:
+  - artifacts/replication/environment/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - materialize_clean_replication_environment contract valid
+  - materialize_clean_replication_environment result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - materialize_clean_replication_environment_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: freeze_replication_plan
+  purpose: Freeze metrics, seeds, data, thresholds and deviation policy
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.freeze_replication_plan:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/replication-plan.schema.json
+  depends_on:
+  - materialize_clean_replication_environment
+  read_scope: []
+  write_scope:
+  - db.replication_plans
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - freeze_replication_plan contract valid
+  - freeze_replication_plan result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - freeze_replication_plan_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: execute_multi_seed_replication
+  purpose: Execute preregistered independent multi-seed replication
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.execute_multi_seed_replication:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/stage-evaluation-result.schema.json
+  depends_on:
+  - freeze_replication_plan
+  read_scope: []
+  write_scope:
+  - artifacts/replication/execution/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - execute_multi_seed_replication contract valid
+  - execute_multi_seed_replication result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - execute_multi_seed_replication_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: execute_cross_method_replication
+  purpose: Execute eligible alternative measurement or implementation path
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.execute_cross_method_replication:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/stage-evaluation-result.schema.json
+  depends_on:
+  - freeze_replication_plan
+  read_scope: []
+  write_scope:
+  - artifacts/replication/cross_method/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - execute_cross_method_replication contract valid
+  - execute_cross_method_replication result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - execute_cross_method_replication_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: reconcile_replication_counts
+  purpose: Verify every expected seed, data slice and method produced typed output
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.reconcile_replication_counts:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/artifact-receipt.schema.json
+  depends_on:
+  - execute_multi_seed_replication
+  - execute_cross_method_replication
+  read_scope: []
+  write_scope:
+  - artifacts/replication/reconciliation/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - reconcile_replication_counts contract valid
+  - reconcile_replication_counts result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - reconcile_replication_counts_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: analyze_replication_heterogeneity
+  purpose: Estimate heterogeneity, environment sensitivity and failure causes
+  executor_type: llm
+  executor_ref: prompts/replication_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/replication-result.schema.json
+  depends_on:
+  - reconcile_replication_counts
+  read_scope: []
+  write_scope:
+  - artifacts/replication/analysis/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - analyze_replication_heterogeneity contract valid
+  - analyze_replication_heterogeneity result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - analyze_replication_heterogeneity_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: audit_replication_independence
+  purpose: Audit shared code, data, model, agent and context dependencies
+  executor_type: llm
+  executor_ref: prompts/replication_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evidence-dependency-cluster.schema.json
+  depends_on:
+  - analyze_replication_heterogeneity
+  read_scope: []
+  write_scope:
+  - artifacts/replication/independence/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - audit_replication_independence contract valid
+  - audit_replication_independence result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - audit_replication_independence_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: independent_replication_attestation
+  purpose: Attest results against frozen plan and deviations
+  executor_type: llm
+  executor_ref: prompts/replication_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/attestation.schema.json
+  depends_on:
+  - audit_replication_independence
+  read_scope: []
+  write_scope:
+  - artifacts/replication/attestation/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - independent_replication_attestation contract valid
+  - independent_replication_attestation result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - independent_replication_attestation_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compute_replication_promotion_effect
+  purpose: Set RAISE, UNCHANGED, LOWER or BLOCK effect without rewriting original
+    result
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.compute_replication_promotion_effect:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/replication-result.schema.json
+  depends_on:
+  - independent_replication_attestation
+  read_scope: []
+  write_scope:
+  - db.replication_results
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - compute_replication_promotion_effect contract valid
+  - compute_replication_promotion_effect result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - compute_replication_promotion_effect_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: invalidate_dependent_promotions_if_needed
+  purpose: Propagate failed replication to dependent Passports and archive entries
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.invalidate_dependent_promotions_if_needed:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/update-impact-report.schema.json
+  depends_on:
+  - compute_replication_promotion_effect
+  read_scope: []
+  write_scope:
+  - db.update_impact_reports
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - invalidate_dependent_promotions_if_needed contract valid
+  - invalidate_dependent_promotions_if_needed result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - invalidate_dependent_promotions_if_needed_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

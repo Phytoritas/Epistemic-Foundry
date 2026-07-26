@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/search-lane-receipt.schema.json",
+  "title": "SearchLaneReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lane": {
+      "enum": [
+        "lexical",
+        "semantic",
+        "citation",
+        "entity_variable",
+        "mechanism",
+        "counterevidence",
+        "null",
+        "boundary",
+        "method",
+        "temporal",
+        "external_novelty",
+        "custom"
+      ]
+    },
+    "query_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "query_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "scope_filter": {
+      "$ref": "scope-vector.schema.json"
+    },
+    "corpus_snapshot_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "index_versions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "result_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "result_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "excluded_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stop_reason": {
+      "enum": [
+        "exhausted_query_plan",
+        "budget_exhausted",
+        "time_exhausted",
+        "provider_failure",
+        "policy_blocked",
+        "manual_stop",
+        "saturation_reached"
+      ]
+    },
+    "search_state": {
+      "enum": [
+        "UNSEARCHED",
+        "PARTIAL",
+        "SEARCHED_NONE",
+        "SEARCHED_WITH_RESULTS",
+        "BLOCKED"
+      ]
+    },
+    "recall_proxy": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "receipt_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "run_id",
+    "lane",
+    "query_text",
+    "query_hash",
+    "scope_filter",
+    "corpus_snapshot_hash",
+    "index_versions",
+    "result_ids",
+    "result_count",
+    "excluded_count",
+    "stop_reason",
+    "search_state",
+    "recall_proxy",
+    "errors",
+    "started_at",
+    "finished_at",
+    "receipt_hash"
+  ]
+}

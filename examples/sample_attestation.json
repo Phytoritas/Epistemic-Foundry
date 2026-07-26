@@ -1,0 +1,30 @@
+{
+  "attestation_id": "ATT-0001",
+  "run_id": "RUN-0001",
+  "subject_artifact_id": "PASS-0001",
+  "attestor_id": "AGENT-independent-attestor",
+  "attestor_type": "model",
+  "input_artifact_ids": [
+    "PACK-0001",
+    "ARG-0001",
+    "ADJ-0001"
+  ],
+  "checks": [
+    {
+      "check_id": "provenance_complete",
+      "status": "PASS",
+      "reason": "All cited evidence resolves to source spans."
+    },
+    {
+      "check_id": "gates_respected",
+      "status": "PASS",
+      "reason": "No failed non-waivable gate was bypassed."
+    }
+  ],
+  "overall_status": "PASS",
+  "independence_statement": "The attestor received only structured evidence and gate outputs, not persuasive council prose.",
+  "model_or_identity_version": "provider/model@pinned",
+  "created_at": "2026-07-25T12:01:00Z",
+  "attestation_hash": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+  "signature": null
+}

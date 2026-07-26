@@ -1,0 +1,23 @@
+{
+  "operator_id": "OP-FALSIFIER-1",
+  "version": "4.0.0",
+  "operator_class": "falsifier",
+  "input_genome_types": [
+    "hypothesis"
+  ],
+  "output_genome_type": "hypothesis",
+  "preconditions": [
+    "At least one prediction exists."
+  ],
+  "preserved_invariants": [
+    "Source evidence remains unchanged.",
+    "Original lineage is retained."
+  ],
+  "required_audits": [
+    "grounding",
+    "scope"
+  ],
+  "prompt_ref": "prompts/falsifier_strengthener.md",
+  "risk_class": "medium",
+  "operator_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

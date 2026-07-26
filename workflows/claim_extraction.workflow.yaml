@@ -1,0 +1,537 @@
+workflow_id: claim_extraction
+version: 4.0.0
+kind: dag
+description: Select evidence units, extract atomic claims, verify grounding, and create
+  dependency-aware evidence nodes.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- the atomic unit is a source-grounded claim, not a paper summary
+- claims without valid SourceSpan anchors cannot be promoted
+- author stance and evidence layer are preserved
+- scope and measurement constructs are first-class
+- claim revisions are append-only lifecycle events
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: select_evidence_units
+  purpose: Select results passages with linked captions, tables, figures, and necessary
+    method context
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.claim_forge.units:select
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - db.source_spans
+  - db.document_manifests
+  write_scope:
+  - artifacts/claim_forge/evidence_units/**
+  capabilities:
+  - database_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - selection policy versioned
+  - results-caption links retained
+  - introduction-only units labeled
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - evidence_units_selected
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: detect_claim_candidates
+  purpose: Detect high-recall candidate propositions without promoting them
+  executor_type: llm
+  executor_ref: prompts/claim_extractor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - select_evidence_units
+  read_scope:
+  - artifacts/claim_forge/evidence_units/**
+  write_scope:
+  - artifacts/claim_forge/candidates/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: economy
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - candidate spans cited
+  - uncertain and negative findings retained
+  - candidate is not yet evidence
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - claim_candidates_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: atomicize_claims
+  purpose: Split compound candidates into atomic propositions and preserve logical
+    links
+  executor_type: llm
+  executor_ref: prompts/claim_extractor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - detect_claim_candidates
+  read_scope:
+  - artifacts/claim_forge/candidates/**
+  write_scope:
+  - artifacts/claim_forge/atomic/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - one principal relation per claim
+  - quantifiers and negation retained
+  - split provenance recorded
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - atomic_claim_drafts_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: extract_scope
+  purpose: Extract domain-neutral ScopeVector and unresolved scope fields
+  executor_type: llm
+  executor_ref: prompts/scope_normalizer.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - atomicize_claims
+  read_scope:
+  - artifacts/claim_forge/atomic/**
+  - domain_packs/**
+  write_scope:
+  - artifacts/claim_forge/scope/**
+  capabilities:
+  - artifact_read
+  - filesystem_read
+  - artifact_write
+  - llm_inference
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - missing scope remains null/unknown
+  - scope extension fields namespaced
+  - no domain field guessed
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - scope_vectors_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: extract_method_quant
+  purpose: Extract design, method construct, population/sample, quantitative results,
+    uncertainty, and confounds
+  executor_type: llm
+  executor_ref: prompts/method_quant_extractor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - atomicize_claims
+  read_scope:
+  - artifacts/claim_forge/atomic/**
+  - artifacts/claim_forge/evidence_units/**
+  - domain_packs/**
+  write_scope:
+  - artifacts/claim_forge/method_quant/**
+  capabilities:
+  - artifact_read
+  - filesystem_read
+  - artifact_write
+  - llm_inference
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - reported and inferred values distinguished
+  - units and uncertainty sourced
+  - missing statistics not fabricated
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - method_quant_records_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: classify_author_stance_layer
+  purpose: Classify author commitment, section provenance, claim type, and evidence
+    layer
+  executor_type: llm
+  executor_ref: prompts/claim_extractor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - atomicize_claims
+  read_scope:
+  - artifacts/claim_forge/atomic/**
+  - artifacts/claim_forge/evidence_units/**
+  write_scope:
+  - artifacts/claim_forge/stance/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: economy
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - speculation not upgraded to finding
+  - review/introduction claims isolated
+  - hedging recorded
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - stance_layers_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: normalize_ontology_constructs
+  purpose: Normalize entities, variables, units, aliases, and measured constructs
+    under a versioned DomainPack or core-only profile
+  executor_type: llm
+  executor_ref: prompts/ontology_normalizer.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - extract_scope
+  - extract_method_quant
+  read_scope:
+  - artifacts/claim_forge/scope/**
+  - artifacts/claim_forge/method_quant/**
+  - domain_packs/**
+  write_scope:
+  - artifacts/claim_forge/normalized/**
+  capabilities:
+  - artifact_read
+  - filesystem_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - measurement construct distinct from label
+  - normalization confidence retained
+  - unmapped concepts remain explicit
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - normalized_constructs_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: verify_grounding
+  purpose: Verify each proposition against exact source spans and reject citation
+    laundering
+  executor_type: llm
+  executor_ref: prompts/grounding_verifier.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - atomicize_claims
+  - extract_scope
+  - extract_method_quant
+  - classify_author_stance_layer
+  - normalize_ontology_constructs
+  read_scope:
+  - artifacts/claim_forge/atomic/**
+  - artifacts/claim_forge/scope/**
+  - artifacts/claim_forge/method_quant/**
+  - artifacts/claim_forge/stance/**
+  - artifacts/claim_forge/normalized/**
+  - db.source_spans
+  write_scope:
+  - artifacts/claim_forge/grounding/**
+  capabilities:
+  - artifact_read
+  - database_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - entailment between span and claim assessed
+  - span IDs resolve
+  - unsupported attribution rejected
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - grounding_reports_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: register_claim_lifecycle
+  purpose: Register ClaimCard revisions, supersession, invalidation dependencies,
+    and review status
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.claim_forge.lifecycle:register
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - verify_grounding
+  read_scope:
+  - artifacts/claim_forge/grounding/**
+  - db.claims
+  write_scope:
+  - db.claims
+  - db.claim_lifecycle_events
+  capabilities:
+  - artifact_read
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - revisions never overwrite prior claim
+  - source-version dependency recorded
+  - invalid claims cannot be current
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - claim_cards_created
+  - claim_lifecycle_events_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_evidence_nodes
+  purpose: Build typed EvidenceNodes only from grounded ClaimCards
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.claim_forge.evidence:build
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - register_claim_lifecycle
+  read_scope:
+  - db.claims
+  - artifacts/claim_forge/method_quant/**
+  - artifacts/claim_forge/stance/**
+  - db.document_manifests
+  write_scope:
+  - db.evidence_nodes
+  capabilities:
+  - database_read
+  - artifact_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - evidence class preserved
+  - quality vector dimensions separate
+  - source integrity status propagated
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - evidence_nodes_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: cluster_dependencies
+  purpose: Cluster shared datasets, samples, experiments, publication families, models,
+    and citation ancestry
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.claim_forge.dependencies:cluster
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_evidence_nodes
+  read_scope:
+  - db.evidence_nodes
+  - db.document_metadata
+  - db.claims
+  write_scope:
+  - db.dependency_clusters
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - preprint/final not double counted
+  - shared sample edges explicit
+  - uncertain clusters carry confidence
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - dependency_clusters_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: extraction_release_gate
+  purpose: Validate atomicity, grounding, scope, method, lifecycle, dependency, and
+    provenance contracts
+  executor_type: policy
+  executor_ref: epistemic_foundry.policy.claims:gate
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - cluster_dependencies
+  read_scope:
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  - db.claim_lifecycle_events
+  - config/policy_bundle.yaml
+  write_scope:
+  - db.gate_decisions/claim_extraction
+  capabilities:
+  - database_read
+  - database_write
+  - filesystem_read
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - span-or-reject enforced
+  - introduction/review ceiling enforced
+  - failed checks cannot be waived by model
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - claim_gate_decision_created
+  required_policy_checks:
+  - claim_promotion_policy
+  - grounding_policy
+  - evidence_layer_policy
+- node_id: commit_claim_projection
+  purpose: Commit approved Claim/Evidence graph projections from ledger state
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.claim_forge.projection:commit
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - extraction_release_gate
+  read_scope:
+  - db.gate_decisions/claim_extraction
+  - db.claims
+  - db.evidence_nodes
+  - db.dependency_clusters
+  write_scope:
+  - db.projections/evidence_graph
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - only approved current revisions projected
+  - projection rebuild succeeds
+  - invalidated nodes excluded without deletion
+  resource_dependencies:
+  - exclusive:evidence_projection
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - evidence_projection_updated
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

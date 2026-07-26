@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/fitness-evidence-receipt.schema.json",
+  "title": "FitnessEvidenceReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fitness_vector_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dimension": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluator_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage_result_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "holdout_used": {
+      "type": "boolean"
+    },
+    "calculation_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "value": {
+      "type": "number"
+    },
+    "uncertainty": {
+      "type": "number",
+      "minimum": 0
+    },
+    "receipt_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "fitness_vector_id",
+    "dimension",
+    "evaluator_bundle_id",
+    "stage_result_ids",
+    "evidence_ids",
+    "holdout_used",
+    "calculation_ref",
+    "value",
+    "uncertainty",
+    "receipt_hash"
+  ],
+  "description": "각 fitness 차원이 어떤 평가·홀드아웃·증거에 의해 계산됐는지 연결한다."
+}

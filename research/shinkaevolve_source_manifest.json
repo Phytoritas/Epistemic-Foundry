@@ -1,0 +1,161 @@
+{
+  "research_id": "EF4-SHINKA-2026-07-26",
+  "inspected_at": "2026-07-26T07:00:00Z",
+  "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+  "branch": "main",
+  "latest_release_observed": {
+    "tag": "v0.0.7",
+    "released": "2026-06-02",
+    "commit_short": "c4568ad",
+    "source": "GitHub releases search result"
+  },
+  "repository_state_note": "Main was inspected through public GitHub HTML/raw views. A local clone and byte-complete repository audit were not available in this environment; exact adoption claims are limited to listed files.",
+  "license": "Apache-2.0",
+  "paper": "arXiv:2509.19349 / ICLR 2026",
+  "sources": [
+    {
+      "path": "README.md",
+      "url": "https://github.com/SakanaAI/ShinkaEvolve",
+      "observations": [
+        "population of programs",
+        "LLM ensemble mutation operators",
+        "parallel local/Slurm evaluation",
+        "global archive and islands",
+        "headless Codex/Claude mutation models",
+        "four agent skills"
+      ]
+    },
+    {
+      "path": "pyproject.toml",
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/blob/main/pyproject.toml",
+      "observations": [
+        "Python >=3.10",
+        "Apache-2.0",
+        "console scripts shinka_launch, shinka_models, shinka_run, shinka_visualize",
+        "alpha classifier"
+      ]
+    },
+    {
+      "path": "docs/core_concepts.md",
+      "url": "https://raw.githubusercontent.com/SakanaAI/ShinkaEvolve/main/docs/core_concepts.md",
+      "observations": [
+        "initial program + evaluator + results directory",
+        "proposal/evaluation/persistence loop",
+        "archives/islands",
+        "bandit model selection",
+        "prompt co-evolution",
+        "decoupled execution environments"
+      ]
+    },
+    {
+      "path": "docs/async_evolution.md",
+      "url": "https://raw.githubusercontent.com/SakanaAI/ShinkaEvolve/main/docs/async_evolution.md",
+      "observations": [
+        "unified ShinkaEvolveRunner",
+        "concurrent proposal, evaluation, database and side-effect paths",
+        "controlled oversubscription and resume concerns"
+      ]
+    },
+    {
+      "path": "docs/bandit_selection.md",
+      "url": "https://raw.githubusercontent.com/SakanaAI/ShinkaEvolve/main/docs/bandit_selection.md",
+      "observations": [
+        "AsymmetricUCB-style reward/exploration/cost blend",
+        "epsilon-greedy tie handling"
+      ]
+    },
+    {
+      "path": "shinka/core/config.py",
+      "url": "https://raw.githubusercontent.com/SakanaAI/ShinkaEvolve/main/shinka/core/config.py",
+      "observations": [
+        "combined score",
+        "novelty controls",
+        "prompt co-evolution",
+        "dynamic model selection",
+        "cost and concurrency knobs"
+      ]
+    },
+    {
+      "path": "shinka/core/sampler.py",
+      "url": "https://raw.githubusercontent.com/SakanaAI/ShinkaEvolve/main/shinka/core/sampler.py",
+      "observations": [
+        "diff/full/cross proposal types",
+        "parent and inspiration context",
+        "fix mode"
+      ]
+    },
+    {
+      "path": "shinka/core/async_runner.py",
+      "url": "https://raw.githubusercontent.com/SakanaAI/ShinkaEvolve/main/shinka/core/async_runner.py",
+      "observations": [
+        "async proposal/evaluation/database orchestration",
+        "novelty checks",
+        "prompt evolution",
+        "resume and side-effect handling"
+      ]
+    },
+    {
+      "path": "shinka/core/novelty_judge.py",
+      "url": "https://raw.githubusercontent.com/SakanaAI/ShinkaEvolve/main/shinka/core/novelty_judge.py",
+      "observations": [
+        "embedding similarity within island",
+        "optional LLM novelty judgment",
+        "high-similarity rejection sampling",
+        "LLM novelty empty/exception paths return novel"
+      ]
+    },
+    {
+      "path": "shinka/database/dbase.py",
+      "url": "https://raw.githubusercontent.com/SakanaAI/ShinkaEvolve/main/shinka/database/dbase.py",
+      "observations": [
+        "SQLite/WAL state",
+        "Program lineage and score fields",
+        "archive/island state",
+        "attempt/event-related persistence",
+        "source_job_id idempotency paths"
+      ]
+    },
+    {
+      "path": "shinka/database/parents.py",
+      "url": "https://raw.githubusercontent.com/SakanaAI/ShinkaEvolve/main/shinka/database/parents.py",
+      "observations": [
+        "weighted parent selection",
+        "sigmoid score normalization",
+        "1/(1+children_count) exploration bonus",
+        "beam and other strategies"
+      ]
+    },
+    {
+      "path": "skills/*/SKILL.md",
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/main/skills",
+      "observations": [
+        "shinka-setup",
+        "shinka-convert",
+        "shinka-run",
+        "shinka-inspect",
+        "agentic setup-run-inspect workflow"
+      ]
+    },
+    {
+      "path": "CHANGELOG.md",
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/blob/main/CHANGELOG.md",
+      "observations": [
+        "async and prompt-coevolution changes",
+        "headless model support",
+        "language targets",
+        "WebUI/docs improvements",
+        "current main has unreleased TBD changes"
+      ]
+    },
+    {
+      "path": "paper",
+      "url": "https://arxiv.org/abs/2509.19349",
+      "observations": [
+        "adaptive parent sampling",
+        "novelty rejection",
+        "bandit allocation across LLMs",
+        "sample-efficient program evolution claims"
+      ]
+    }
+  ]
+}

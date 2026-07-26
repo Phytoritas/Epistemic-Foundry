@@ -1,0 +1,553 @@
+version: 4.0.0
+roles:
+- role_id: evidence_scout
+  mission: Retrieve balanced relevant evidence and search receipts; no verdict.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: balanced
+  codex_agent_type: explorer
+  claude_agent_name: ef-evidence-scout
+  tool_acl:
+  - search.read
+  - artifact.read
+  evidence_acl:
+  - support
+  - counter
+  - 'null'
+  - boundary
+  - method
+  write_scope: []
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: claim_extractor
+  mission: Extract atomic source-grounded claims; no synthesis or promotion.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: balanced
+  codex_agent_type: worker
+  claude_agent_name: ef-claim-extractor
+  tool_acl:
+  - artifact.read
+  - artifact.write
+  evidence_acl:
+  - source_span
+  - methods
+  - results
+  write_scope:
+  - artifacts/claims/**
+  output_schema_ref: schemas/claim-card.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: defender
+  mission: Construct the strongest bounded support case and expose weak links.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-defender
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - support
+  - mechanism
+  write_scope:
+  - artifacts/parliament/defender/**
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: prosecutor
+  mission: Seek decisive counter, null, boundary, alternative and failure evidence.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-prosecutor
+  tool_acl:
+  - artifact.read
+  - search.read
+  evidence_acl:
+  - counter
+  - 'null'
+  - boundary
+  - method
+  write_scope:
+  - artifacts/parliament/prosecutor/**
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: method_auditor
+  mission: Assess whether measurements/design/statistics can support the claim; may
+    veto promotion.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-method-auditor
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - method
+  - primary_results
+  write_scope:
+  - artifacts/parliament/method/**
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: scope_auditor
+  mission: Assess population, setting, time, scale and construct extrapolation.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: balanced
+  codex_agent_type: explorer
+  claude_agent_name: ef-scope-auditor
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - support
+  - counter
+  - boundary
+  write_scope:
+  - artifacts/parliament/scope/**
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: inductivist
+  mission: Synthesize direction, heterogeneity, dependency and moderators; no causal
+    promotion.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-inductivist
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - support
+  - counter
+  - 'null'
+  - boundary
+  write_scope:
+  - artifacts/reason/inductive/**
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: deductivist
+  mission: Build proof traces, expose assumptions and identify broken logical edges.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-deductivist
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - mechanism
+  - theory
+  - primary_results
+  write_scope:
+  - artifacts/reason/deductive/**
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: causal_auditor
+  mission: Construct candidate DAGs and determine identification status without overclaim.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-causal-auditor
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - primary_results
+  - method
+  - boundary
+  write_scope:
+  - artifacts/reason/causal/**
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: novelty_examiner
+  mission: Assess prior art only within explicit searched scope and time boundary.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-novelty-examiner
+  tool_acl:
+  - artifact.read
+  - search.read
+  evidence_acl:
+  - external_novelty
+  - citation
+  - temporal
+  write_scope:
+  - artifacts/parliament/novelty/**
+  output_schema_ref: schemas/novelty-assessment.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: abductive_mediator
+  mission: Generate competing explanations and discriminating tests from contradictions.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-abductive-mediator
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - support
+  - counter
+  - 'null'
+  - boundary
+  write_scope:
+  - artifacts/reason/abductive/**
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: minority_reporter
+  mission: Preserve the strongest well-grounded dissent and unresolved test.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-minority-reporter
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - all_permitted
+  write_scope:
+  - artifacts/parliament/minority/**
+  output_schema_ref: schemas/minority-report.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: judge
+  mission: Apply the rubric after deterministic gates; cannot override veto or failed
+    gate.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-judge
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - adjudication_pack
+  write_scope:
+  - artifacts/parliament/judge/**
+  output_schema_ref: schemas/adjudication.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1200
+- role_id: independent_attestor
+  mission: Review structured evidence and gate outputs without persuasive transcript.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-independent-attestor
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - attestation_pack
+  write_scope:
+  - artifacts/attestations/**
+  output_schema_ref: schemas/attestation.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1200
+- role_id: validation_executor
+  mission: Execute only a preregistered plan under a capability lease and emit effect
+    receipts.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: balanced
+  codex_agent_type: worker
+  claude_agent_name: ef-validation-executor
+  tool_acl:
+  - sandbox.execute
+  - artifact.read
+  - artifact.write
+  evidence_acl:
+  - validation_plan
+  write_scope:
+  - artifacts/validation/**
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1200
+- role_id: contract_reviewer
+  mission: Review code/spec diff and objective checks independently of the author.
+  forbidden:
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-contract-reviewer
+  tool_acl:
+  - filesystem.read
+  - artifact.read
+  evidence_acl:
+  - implementation_contract
+  write_scope:
+  - artifacts/reviews/**
+  output_schema_ref: schemas/result-envelope.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1200
+- role_id: evolution_governor
+  mission: Own the bounded EVOLVE protocol, population accounting and stop rules;
+    no scientific self-promotion.
+  forbidden: &id001
+  - invent evidence
+  - change canonical state directly
+  - self-approve
+  - expand scope without record
+  - read hidden holdout unless explicitly assigned
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-evolution-governor
+  tool_acl:
+  - artifact.read
+  - search.read
+  evidence_acl:
+  - evolution_state
+  write_scope:
+  - artifacts/evolution/governor/**
+  output_schema_ref: schemas/evolution-stop-certificate.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1800
+- role_id: hypothesis_mutator
+  mission: Generate one typed, lineage-preserving hypothesis mutation under a declared
+    operator.
+  forbidden: *id001
+  model_tier: frontier
+  codex_agent_type: worker
+  claude_agent_name: ef-hypothesis-mutator
+  tool_acl:
+  - artifact.read
+  - artifact.write
+  - llm.inference
+  evidence_acl:
+  - candidate_parent
+  - evidence_pack
+  write_scope:
+  - artifacts/evolution/candidates/**
+  output_schema_ref: schemas/hypothesis-genome.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1800
+- role_id: challenge_evolver
+  mission: Evolve safe counterexamples, nulls, confounders and OOD challenges without
+    holdout access.
+  forbidden: *id001
+  model_tier: frontier
+  codex_agent_type: worker
+  claude_agent_name: ef-challenge-evolver
+  tool_acl:
+  - artifact.read
+  - artifact.write
+  - llm.inference
+  evidence_acl:
+  - candidate_public
+  - challenge_archive
+  write_scope:
+  - artifacts/evolution/challenges/**
+  output_schema_ref: schemas/challenge-genome.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1800
+- role_id: experiment_evolver
+  mission: Design discriminating experiments or analyses ranked by information gain
+    and feasibility.
+  forbidden: *id001
+  model_tier: frontier
+  codex_agent_type: worker
+  claude_agent_name: ef-experiment-evolver
+  tool_acl:
+  - artifact.read
+  - artifact.write
+  evidence_acl:
+  - candidate_public
+  - measurement_contract
+  write_scope:
+  - artifacts/evolution/experiments/**
+  output_schema_ref: schemas/experiment-genome.schema.json
+  independent_review_required: false
+  default_timeout_seconds: 1800
+- role_id: parent_selection_auditor
+  mission: Audit eligible set, acquisition components, lineage saturation, cost and
+    random seed.
+  forbidden: *id001
+  model_tier: balanced
+  codex_agent_type: explorer
+  claude_agent_name: ef-parent-selector-auditor
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - fitness_public
+  - archive_public
+  write_scope:
+  - artifacts/evolution/selection/**
+  output_schema_ref: schemas/parent-selection-receipt.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1800
+- role_id: verifier_firewall_auditor
+  mission: Qualify immutable evaluator bundles, hidden holdouts, leakage controls
+    and metamorphic tests.
+  forbidden: *id001
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-verifier-firewall-auditor
+  tool_acl:
+  - artifact.read
+  - filesystem.read
+  evidence_acl:
+  - evaluator_public
+  - holdout_metadata
+  write_scope:
+  - artifacts/evolution/verifier/**
+  output_schema_ref: schemas/evaluator-qualification-report.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1800
+- role_id: statistical_governor
+  mission: Audit adaptive search, multiple testing, sequential decisions and selective
+    inference.
+  forbidden: *id001
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-statistical-governor
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - evaluation_results
+  - selection_events
+  write_scope:
+  - artifacts/evolution/statistics/**
+  output_schema_ref: schemas/selective-inference-report.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1800
+- role_id: archive_curator
+  mission: Maintain quality-diversity niches while preserving negative, null, unsafe
+    and minority memory.
+  forbidden: *id001
+  model_tier: balanced
+  codex_agent_type: worker
+  claude_agent_name: ef-archive-curator
+  tool_acl:
+  - artifact.read
+  - artifact.write
+  evidence_acl:
+  - archive_public
+  - fitness_public
+  write_scope:
+  - artifacts/evolution/archive/**
+  output_schema_ref: schemas/archive-rebalance-plan.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1800
+- role_id: replication_auditor
+  mission: Assess independent replication plans/results and promotion effects.
+  forbidden: *id001
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-replication-auditor
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - replication_pack
+  write_scope:
+  - artifacts/evolution/replication_reviews/**
+  output_schema_ref: schemas/replication-result.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1800
+- role_id: prompt_genome_auditor
+  mission: Audit co-evolved mutation prompts in quarantine; cannot activate them.
+  forbidden: *id001
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-prompt-genome-auditor
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - prompt_quarantine
+  write_scope:
+  - artifacts/evolution/prompt_reviews/**
+  output_schema_ref: schemas/prompt-mutation-proposal.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1800
+- role_id: shinka_adapter_auditor
+  mission: Audit the optional ShinkaEvolve backend mapping, pinning, sandbox and receipt
+    completeness.
+  forbidden: *id001
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-shinka-adapter-auditor
+  tool_acl:
+  - artifact.read
+  - filesystem.read
+  evidence_acl:
+  - backend_manifest
+  - adapter_test_results
+  write_scope:
+  - artifacts/evolution/shinka_reviews/**
+  output_schema_ref: schemas/backend-adapter-qualification.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1800
+- role_id: evolution_promotion_attestor
+  mission: Independently attest sealed candidates after holdout, statistics, replication
+    and Parliament.
+  forbidden: *id001
+  model_tier: frontier
+  codex_agent_type: explorer
+  claude_agent_name: ef-evolution-promotion-attestor
+  tool_acl:
+  - artifact.read
+  evidence_acl:
+  - sealed_promotion_pack
+  write_scope:
+  - artifacts/evolution/attestations/**
+  output_schema_ref: schemas/promotion-decision.schema.json
+  independent_review_required: true
+  default_timeout_seconds: 1800

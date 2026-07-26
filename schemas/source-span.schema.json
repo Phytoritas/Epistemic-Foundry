@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/source-span.schema.json",
+  "title": "SourceSpan",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "span_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "document_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paper_version_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "page": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "section": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "semantic_unit": {
+      "enum": [
+        "title",
+        "abstract",
+        "introduction",
+        "methods",
+        "results",
+        "discussion",
+        "conclusion",
+        "figure_caption",
+        "table_caption",
+        "table_cell",
+        "equation",
+        "footnote",
+        "reference",
+        "other"
+      ]
+    },
+    "bbox": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "number"
+      },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "char_start": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "char_end": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "verbatim_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "text_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "parser_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parser_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "coordinate_system": {
+      "enum": [
+        "pdf_points_bottom_left",
+        "pdf_points_top_left",
+        "normalized_top_left",
+        "not_available"
+      ]
+    },
+    "reconciliation_status": {
+      "enum": [
+        "single_parser",
+        "agreed",
+        "conflict_recorded",
+        "human_resolved"
+      ]
+    },
+    "provenance_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "span_id",
+    "document_id",
+    "paper_version_id",
+    "page",
+    "section",
+    "semantic_unit",
+    "bbox",
+    "char_start",
+    "char_end",
+    "verbatim_text",
+    "text_hash",
+    "parser_name",
+    "parser_version",
+    "coordinate_system",
+    "reconciliation_status",
+    "provenance_manifest_id"
+  ]
+}

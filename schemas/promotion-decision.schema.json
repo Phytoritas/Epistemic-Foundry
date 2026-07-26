@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/promotion-decision.schema.json",
+  "title": "PromotionDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requested_level": {
+      "type": "string",
+      "minLength": 1
+    },
+    "granted_level": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hard_gate_status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "PARTIAL"
+      ]
+    },
+    "fitness_vector_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parliament_adjudication_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replication_result_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "selective_inference_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "minority_report_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "decision": {
+      "enum": [
+        "PROMOTE",
+        "CONDITIONAL",
+        "REJECT",
+        "UNDERDETERMINED",
+        "BLOCKED"
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "decision_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "decision_id",
+    "candidate_id",
+    "requested_level",
+    "granted_level",
+    "hard_gate_status",
+    "fitness_vector_id",
+    "parliament_adjudication_id",
+    "replication_result_ids",
+    "selective_inference_report_id",
+    "minority_report_ids",
+    "decision",
+    "rationale",
+    "approval_record_ids",
+    "decision_hash"
+  ],
+  "description": "진화 결과의 과학적 승격을 Parliament·홀드아웃·복제·통계 보정과 연결한다."
+}

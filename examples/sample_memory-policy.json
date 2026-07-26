@@ -1,0 +1,22 @@
+{
+  "policy_id": "MP-001",
+  "workspace_id": "WS-001",
+  "allowed_classes": [
+    "SESSION",
+    "WORKSPACE",
+    "EVIDENCE"
+  ],
+  "default_retention_days": 90,
+  "class_rules": [
+    {
+      "class": "WORKSPACE",
+      "retention_days": 365,
+      "requires_consent": true,
+      "external_sync": "DENY",
+      "redaction_profile": "default"
+    }
+  ],
+  "cross_workspace_retrieval": "DENY",
+  "policy_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "effective_at": "2026-07-26T04:00:00+09:00"
+}

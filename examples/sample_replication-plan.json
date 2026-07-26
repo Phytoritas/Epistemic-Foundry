@@ -1,0 +1,26 @@
+{
+  "replication_plan_id": "RP-1",
+  "candidate_id": "HG-0002",
+  "replication_class": "independent_code",
+  "executor_independence": "Different implementation agent and clean environment.",
+  "environment_ids": [
+    "ENV-2"
+  ],
+  "data_ids": [
+    "DATA-REP-1"
+  ],
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "preregistered_metrics": [
+    "predictive_accuracy",
+    "calibration_error"
+  ],
+  "success_rule": "Accuracy and calibration meet frozen thresholds.",
+  "failure_rule": "Two or more seeds fail threshold.",
+  "plan_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evaluator-qualification-report.schema.json",
+  "title": "EvaluatorQualificationReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluator_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "baseline_comparison": {
+      "type": "string",
+      "minLength": 1
+    },
+    "metamorphic_pass_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "adversarial_pass_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "leakage_audit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "calibration_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "known_blind_spots": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "qualification_status": {
+      "enum": [
+        "QUALIFIED",
+        "CONDITIONAL",
+        "REJECTED",
+        "NOT_ASSESSED"
+      ]
+    },
+    "promotion_ceiling": {
+      "type": "string",
+      "minLength": 1
+    },
+    "report_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "report_id",
+    "evaluator_bundle_id",
+    "baseline_comparison",
+    "metamorphic_pass_rate",
+    "adversarial_pass_rate",
+    "leakage_audit_id",
+    "calibration_report_id",
+    "known_blind_spots",
+    "qualification_status",
+    "promotion_ceiling",
+    "report_hash"
+  ],
+  "description": "평가자의 타당성·누수·안정성·공정성·게임 가능성을 독립 심사한다."
+}

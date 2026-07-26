@@ -1,0 +1,35 @@
+{
+  "evaluation_id": "EVAL-0001",
+  "system_version": "2.0.0",
+  "evaluation_suite_version": "1.0.0",
+  "dataset_manifest_id": "DATASET-GOLD-50",
+  "split": "hidden_holdout",
+  "metrics": {
+    "claim_span_f1": 0.94,
+    "known_false_rejection_rate": 0.88
+  },
+  "subgroup_metrics": {
+    "results_sections": {
+      "claim_span_f1": 0.96
+    }
+  },
+  "cost_metrics": {
+    "tokens": 120000,
+    "cost_units": 42.0
+  },
+  "latency_metrics": {
+    "p50_seconds": 3.4,
+    "p95_seconds": 11.2
+  },
+  "failure_counts": {
+    "schema_invalid": 0,
+    "silent_partial": 0
+  },
+  "environment_artifact_id": "ART-ENV-0001",
+  "result_artifact_ids": [
+    "ART-EVAL-RESULT-0001"
+  ],
+  "started_at": "2026-07-25T12:00:00Z",
+  "finished_at": "2026-07-25T12:01:00Z",
+  "evaluation_hash": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+}

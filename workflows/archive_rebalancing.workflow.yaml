@@ -1,0 +1,392 @@
+workflow_id: archive_rebalancing
+version: 4.0.0
+kind: dag
+description: Rebalance quality-diversity archives without erasing negative scientific
+  memory.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- raw score cannot evict protected failure or minority memory
+- niche changes are versioned and replayable
+- archive updates are transactional and independently audited
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: load_archive_snapshot
+  purpose: Load content-addressed archive, niches, lineages, challenges and negative
+    memory
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.load_archive_snapshot:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/quality-diversity-map.schema.json
+  depends_on: []
+  read_scope: []
+  write_scope:
+  - artifacts/archive/input/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - load_archive_snapshot contract valid
+  - load_archive_snapshot result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - load_archive_snapshot_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: recompute_niche_assignments
+  purpose: Recompute semantic niche assignment under pinned DomainPack and ontology
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.recompute_niche_assignments:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/epistemic-niche.schema.json
+  depends_on:
+  - load_archive_snapshot
+  read_scope: []
+  write_scope:
+  - artifacts/archive/niches/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - recompute_niche_assignments contract valid
+  - recompute_niche_assignments result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - recompute_niche_assignments_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: measure_lineage_and_operator_collapse
+  purpose: Measure lineage, model, prompt and operator entropy
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.measure_lineage_and_operator_collapse:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/lineage-diversity-report.schema.json
+  depends_on:
+  - load_archive_snapshot
+  read_scope: []
+  write_scope:
+  - artifacts/archive/diversity/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - measure_lineage_and_operator_collapse contract valid
+  - measure_lineage_and_operator_collapse result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - measure_lineage_and_operator_collapse_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: identify_stagnant_and_sparse_niches
+  purpose: Identify coverage debt, stagnation and overcapacity
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.identify_stagnant_and_sparse_niches:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/quality-diversity-map.schema.json
+  depends_on:
+  - recompute_niche_assignments
+  - measure_lineage_and_operator_collapse
+  read_scope: []
+  write_scope:
+  - artifacts/archive/diagnostics/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - identify_stagnant_and_sparse_niches contract valid
+  - identify_stagnant_and_sparse_niches result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - identify_stagnant_and_sparse_niches_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: protect_negative_and_minority_memory
+  purpose: Mark nulls, counterexamples, failed replication, unsafe and minority entries
+    non-evictable by raw score
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.protect_negative_and_minority_memory:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/epistemic-archive-entry.schema.json
+  depends_on:
+  - load_archive_snapshot
+  read_scope: []
+  write_scope:
+  - artifacts/archive/protected/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - protect_negative_and_minority_memory contract valid
+  - protect_negative_and_minority_memory result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - protect_negative_and_minority_memory_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: propose_archive_rebalance
+  purpose: Propose niche capacity, migration and eviction changes
+  executor_type: llm
+  executor_ref: prompts/archive_curator.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/archive-rebalance-plan.schema.json
+  depends_on:
+  - identify_stagnant_and_sparse_niches
+  - protect_negative_and_minority_memory
+  read_scope: []
+  write_scope:
+  - artifacts/archive/plan/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - propose_archive_rebalance contract valid
+  - propose_archive_rebalance result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - propose_archive_rebalance_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: audit_rebalance_for_history_loss
+  purpose: Independently detect erased failure modes, lineage collapse or metric monoculture
+  executor_type: llm
+  executor_ref: prompts/archive_curator.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/attestation.schema.json
+  depends_on:
+  - propose_archive_rebalance
+  read_scope: []
+  write_scope:
+  - artifacts/archive/audit/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - audit_rebalance_for_history_loss contract valid
+  - audit_rebalance_for_history_loss result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - audit_rebalance_for_history_loss_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: apply_approved_rebalance
+  purpose: Apply exact approved plan transactionally
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.apply_approved_rebalance:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/effect-receipt.schema.json
+  depends_on:
+  - audit_rebalance_for_history_loss
+  read_scope: []
+  write_scope:
+  - db.evolution_archive
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - apply_approved_rebalance contract valid
+  - apply_approved_rebalance result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - apply_approved_rebalance_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: verify_archive_invariants
+  purpose: Verify capacity, protected entries, referential integrity and niche counts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.verify_archive_invariants:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/artifact-receipt.schema.json
+  depends_on:
+  - apply_approved_rebalance
+  read_scope: []
+  write_scope:
+  - artifacts/archive/verification/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - verify_archive_invariants contract valid
+  - verify_archive_invariants result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - verify_archive_invariants_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: emit_archive_map_snapshot
+  purpose: Emit updated quality-diversity map and coverage debt
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.emit_archive_map_snapshot:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/quality-diversity-map.schema.json
+  depends_on:
+  - verify_archive_invariants
+  read_scope: []
+  write_scope:
+  - db.quality_diversity_maps
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - emit_archive_map_snapshot contract valid
+  - emit_archive_map_snapshot result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - emit_archive_map_snapshot_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: checkpoint_archive_state
+  purpose: Checkpoint archive and migration history for replay
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.checkpoint_archive_state:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evolution-checkpoint.schema.json
+  depends_on:
+  - emit_archive_map_snapshot
+  read_scope: []
+  write_scope:
+  - object_store/archive_checkpoints/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - checkpoint_archive_state contract valid
+  - checkpoint_archive_state result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - checkpoint_archive_state_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

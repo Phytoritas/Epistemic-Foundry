@@ -1,0 +1,42 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/dist/hook-runner.mjs\" stop",
+            "timeout": 10,
+            "statusMessage": "(Epistemic Foundry) Checking completion obligations"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/dist/hook-runner.mjs\" pre-compact",
+            "timeout": 10,
+            "statusMessage": "(Epistemic Foundry) Freezing the FORGE cursor"
+          }
+        ],
+        "matcher": "manual|auto"
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/dist/hook-runner.mjs\" session-end",
+            "timeout": 10,
+            "statusMessage": "(Epistemic Foundry) Recording session closure"
+          }
+        ],
+        "matcher": "other"
+      }
+    ]
+  }
+}

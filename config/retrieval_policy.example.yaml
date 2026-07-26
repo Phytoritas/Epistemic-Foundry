@@ -1,0 +1,56 @@
+policy_id: retrieval-policy-v2.0.0
+lanes:
+  lexical:
+    required: true
+    budget: 40
+  semantic:
+    required: true
+    budget: 40
+  citation:
+    required: true
+    budget: 20
+  entity_variable:
+    required: true
+    budget: 30
+  mechanism:
+    required: true
+    budget: 30
+  counter:
+    required: true
+    budget: 40
+  'null':
+    required: true
+    budget: 30
+  boundary:
+    required: true
+    budget: 30
+  method:
+    required: true
+    budget: 20
+  temporal:
+    required: true
+    budget: 20
+  external_novelty:
+    required_for_promotion: true
+    budget: 40
+pack_targets:
+  direct_support:
+  - 2
+  - 4
+  counter:
+  - 2
+  - 4
+  'null':
+  - 1
+  - 3
+  boundary:
+  - 2
+  - 3
+  method:
+  - 1
+  - 2
+rules:
+- do not infer none-exist from no-result
+- preserve unsearched scopes
+- cluster dependencies before counting evidence
+- retain strongest counterevidence even in support verdict

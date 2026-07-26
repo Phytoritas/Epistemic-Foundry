@@ -1,0 +1,494 @@
+workflow_id: evaluator_update_governance
+version: 4.0.0
+kind: dag
+description: Govern evaluator evolution in quarantine and apply changes only to future
+  sealed runs.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- candidate and evaluator evolution are authority-separated
+- current scores are never retroactively repaired by mutable evaluators
+- every evaluator change requires full independent qualification
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: receive_evaluator_mutation_proposal
+  purpose: Receive evaluator defect evidence as a quarantined proposal for future
+    runs
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.receive_evaluator_mutation_proposal:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-mutation-proposal.schema.json
+  depends_on: []
+  read_scope: []
+  write_scope:
+  - artifacts/evaluator_updates/incoming/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - receive_evaluator_mutation_proposal contract valid
+  - receive_evaluator_mutation_proposal result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - receive_evaluator_mutation_proposal_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: verify_no_retroactive_effect
+  purpose: Prohibit changes to current or completed run judgments
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.verify_no_retroactive_effect:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - receive_evaluator_mutation_proposal
+  read_scope: []
+  write_scope:
+  - artifacts/evaluator_updates/retroactive_gate/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - verify_no_retroactive_effect contract valid
+  - verify_no_retroactive_effect result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - verify_no_retroactive_effect_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: triage_defect_evidence
+  purpose: Classify false positive, false negative, leakage, misalignment, instability,
+    security or coverage gap
+  executor_type: llm
+  executor_ref: prompts/evaluator_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-mutation-proposal.schema.json
+  depends_on:
+  - verify_no_retroactive_effect
+  read_scope: []
+  write_scope:
+  - artifacts/evaluator_updates/triage/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - triage_defect_evidence contract valid
+  - triage_defect_evidence result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - triage_defect_evidence_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: design_candidate_evaluator_change
+  purpose: Create minimal evaluator candidate change and rollback plan
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.design_candidate_evaluator_change:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/schema-migration.schema.json
+  depends_on:
+  - triage_defect_evidence
+  read_scope: []
+  write_scope:
+  - artifacts/evaluator_updates/design/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - design_candidate_evaluator_change contract valid
+  - design_candidate_evaluator_change result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - design_candidate_evaluator_change_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_shadow_evaluator_bundle
+  purpose: Build new evaluator alongside current qualified bundle
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.build_shadow_evaluator_bundle:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-bundle.schema.json
+  depends_on:
+  - design_candidate_evaluator_change
+  read_scope: []
+  write_scope:
+  - artifacts/evaluator_updates/shadow/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - build_shadow_evaluator_bundle contract valid
+  - build_shadow_evaluator_bundle result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - build_shadow_evaluator_bundle_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_shadow_qualification_workflow
+  purpose: Run full verifier firewall qualification on shadow bundle
+  executor_type: subworkflow
+  executor_ref: workflows/verifier_firewall_qualification.workflow.yaml
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-qualification-report.schema.json
+  depends_on:
+  - build_shadow_evaluator_bundle
+  read_scope: []
+  write_scope:
+  - artifacts/evaluator_updates/qualification/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_shadow_qualification_workflow contract valid
+  - run_shadow_qualification_workflow result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_shadow_qualification_workflow_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: backtest_against_historical_archive
+  purpose: Measure verdict changes, rescued false negatives and introduced false positives
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.backtest_against_historical_archive:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluation-run.schema.json
+  depends_on:
+  - run_shadow_qualification_workflow
+  read_scope: []
+  write_scope:
+  - artifacts/evaluator_updates/backtest/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - backtest_against_historical_archive contract valid
+  - backtest_against_historical_archive result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - backtest_against_historical_archive_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: audit_distributional_and_domain_effects
+  purpose: Audit whether change benefits only one niche, scope or method
+  executor_type: llm
+  executor_ref: prompts/evaluator_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/bias-risk-register.schema.json
+  depends_on:
+  - backtest_against_historical_archive
+  read_scope: []
+  write_scope:
+  - artifacts/evaluator_updates/bias/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - audit_distributional_and_domain_effects contract valid
+  - audit_distributional_and_domain_effects result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - audit_distributional_and_domain_effects_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: independent_evaluator_change_review
+  purpose: Review defect evidence, shadow results, regressions and rollback
+  executor_type: llm
+  executor_ref: prompts/evaluator_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/attestation.schema.json
+  depends_on:
+  - audit_distributional_and_domain_effects
+  read_scope: []
+  write_scope:
+  - artifacts/evaluator_updates/review/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - independent_evaluator_change_review contract valid
+  - independent_evaluator_change_review result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - independent_evaluator_change_review_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: human_governance_decision
+  purpose: Approve only for a future evaluator version or reject
+  executor_type: human_gate
+  executor_ref: epistemic_foundry.governance.evaluator:update_decision
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/human-decision.schema.json
+  depends_on:
+  - independent_evaluator_change_review
+  read_scope: []
+  write_scope:
+  - db.human_decisions
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - human_governance_decision contract valid
+  - human_governance_decision result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - human_governance_decision_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: publish_future_evaluator_bundle
+  purpose: Publish exact new version without altering prior bundle hashes
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.publish_future_evaluator_bundle:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-bundle.schema.json
+  depends_on:
+  - human_governance_decision
+  read_scope: []
+  write_scope:
+  - db.evaluator_bundles
+  - object_store/evaluator_bundles/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - publish_future_evaluator_bundle contract valid
+  - publish_future_evaluator_bundle result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - publish_future_evaluator_bundle_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compute_reassessment_scope
+  purpose: Identify prior artifacts eligible for optional reassessment, never silent
+    rewrite
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.compute_reassessment_scope:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/update-impact-report.schema.json
+  depends_on:
+  - publish_future_evaluator_bundle
+  read_scope: []
+  write_scope:
+  - db.update_impact_reports
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - compute_reassessment_scope contract valid
+  - compute_reassessment_scope result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - compute_reassessment_scope_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: schedule_optional_reassessment
+  purpose: Schedule explicit new runs with new evaluator version
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.schedule_optional_reassessment:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/run-spec.schema.json
+  depends_on:
+  - compute_reassessment_scope
+  read_scope: []
+  write_scope:
+  - db.run_specs
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - schedule_optional_reassessment contract valid
+  - schedule_optional_reassessment result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - schedule_optional_reassessment_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: close_evaluator_update_proposal
+  purpose: Close proposal with approvals, qualification and migration receipts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.close_evaluator_update_proposal:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-mutation-proposal.schema.json
+  depends_on:
+  - schedule_optional_reassessment
+  read_scope: []
+  write_scope:
+  - db.evaluator_mutation_proposals
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - close_evaluator_update_proposal contract valid
+  - close_evaluator_update_proposal result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - close_evaluator_update_proposal_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

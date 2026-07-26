@@ -1,0 +1,932 @@
+workflow_id: evolution_chamber_cycle
+version: 4.0.0
+kind: dag
+description: Run one governed quality-diversity hypothesis evolution cycle under immutable
+  evaluators and evidence gates.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- evolution proposes and ranks but never owns promotion authority
+- candidate-visible context excludes hidden holdout and evaluator secrets
+- single scalar fitness cannot authorize promotion
+- negative, null, failed replication and minority lineages remain retainable
+- every generated, evaluated, selected and promoted candidate is lineage- and receipt-bound
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: qualify_evolution_run
+  purpose: Validate immutable EvolutionRunSpec, authority, candidate classes, budget
+    and stop rules
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.qualify_evolution_run:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evolution-run-spec.schema.json
+  depends_on: []
+  read_scope: []
+  write_scope:
+  - db.evolution_runs
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run spec hash verified
+  - evaluator authority excluded from candidate mutation
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - qualify_evolution_run_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: seal_evaluator_bundle
+  purpose: Resolve and seal the immutable evaluator, holdout and policy bundle for
+    this run
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.seal_evaluator_bundle:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evaluator-bundle.schema.json
+  depends_on:
+  - qualify_evolution_run
+  read_scope: []
+  write_scope:
+  - db.evaluator_bundles
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - bundle content-addressed
+  - candidate ACL excludes holdout
+  - bundle immutable during run
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - seal_evaluator_bundle_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: bootstrap_candidate_populations
+  purpose: Create typed hypothesis, experiment and challenge seed populations
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.bootstrap_candidate_populations:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/candidate-lineage.schema.json
+  depends_on:
+  - qualify_evolution_run
+  read_scope: []
+  write_scope:
+  - db.evolution_candidates
+  - db.candidate_lineages
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - bootstrap_candidate_populations contract valid
+  - bootstrap_candidate_populations result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - bootstrap_candidate_populations_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: map_initial_epistemic_niches
+  purpose: Assign eligible seeds to mechanism × scope × evidence × testability niches
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.map_initial_epistemic_niches:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/quality-diversity-map.schema.json
+  depends_on:
+  - bootstrap_candidate_populations
+  read_scope: []
+  write_scope:
+  - db.epistemic_niches
+  - db.quality_diversity_maps
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - map_initial_epistemic_niches contract valid
+  - map_initial_epistemic_niches result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - map_initial_epistemic_niches_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: audit_initial_lineage_diversity
+  purpose: Measure lineage, operator and model diversity before selection
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.audit_initial_lineage_diversity:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/lineage-diversity-report.schema.json
+  depends_on:
+  - bootstrap_candidate_populations
+  read_scope: []
+  write_scope:
+  - db.lineage_diversity_reports
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - audit_initial_lineage_diversity contract valid
+  - audit_initial_lineage_diversity result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - audit_initial_lineage_diversity_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: select_epistemic_parents
+  purpose: Select parents using information gain, uncertainty, coverage debt, replication
+    debt, saturation and cost
+  executor_type: llm
+  executor_ref: prompts/parent_selector.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/parent-selection-receipt.schema.json
+  depends_on:
+  - map_initial_epistemic_niches
+  - audit_initial_lineage_diversity
+  - seal_evaluator_bundle
+  read_scope: []
+  write_scope:
+  - db.parent_selection_receipts
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - select_epistemic_parents contract valid
+  - select_epistemic_parents result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - select_epistemic_parents_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: route_mutation_models
+  purpose: Route mutation work through a safe delayed-reward model bandit
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.route_mutation_models:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/model-routing-receipt.schema.json
+  depends_on:
+  - select_epistemic_parents
+  read_scope: []
+  write_scope:
+  - db.model_routing_receipts
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - route_mutation_models contract valid
+  - route_mutation_models result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - route_mutation_models_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: choose_mutation_operators
+  purpose: Choose typed operators compatible with each selected parent and niche deficit
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.choose_mutation_operators:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/mutation-operator-spec.schema.json
+  depends_on:
+  - select_epistemic_parents
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/operator_assignments/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - choose_mutation_operators contract valid
+  - choose_mutation_operators result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - choose_mutation_operators_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: generate_hypothesis_candidates
+  purpose: Generate one lineage-preserving typed hypothesis mutation per assignment
+  executor_type: llm
+  executor_ref: prompts/hypothesis_mutator.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/hypothesis-genome.schema.json
+  depends_on:
+  - route_mutation_models
+  - choose_mutation_operators
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/generated/hypotheses/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - generate_hypothesis_candidates contract valid
+  - generate_hypothesis_candidates result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - generate_hypothesis_candidates_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: generate_experiment_candidates
+  purpose: Generate discriminating experiment candidates for eligible hypothesis families
+  executor_type: llm
+  executor_ref: prompts/prediction_mutator.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/experiment-genome.schema.json
+  depends_on:
+  - route_mutation_models
+  - choose_mutation_operators
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/generated/experiments/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - generate_experiment_candidates contract valid
+  - generate_experiment_candidates result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - generate_experiment_candidates_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: generate_challenge_candidates
+  purpose: Generate safe Red Queen challenges without hidden-holdout access
+  executor_type: llm
+  executor_ref: prompts/red_queen_challenger.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/challenge-genome.schema.json
+  depends_on:
+  - route_mutation_models
+  - choose_mutation_operators
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/generated/challenges/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - generate_challenge_candidates contract valid
+  - generate_challenge_candidates result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - generate_challenge_candidates_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: validate_candidate_contracts
+  purpose: Validate schemas, lineage, scope, evidence references and authority isolation
+    for all generated candidates
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.validate_candidate_contracts:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/mutation-receipt.schema.json
+  depends_on:
+  - generate_hypothesis_candidates
+  - generate_experiment_candidates
+  - generate_challenge_candidates
+  read_scope: []
+  write_scope:
+  - db.mutation_receipts
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - validate_candidate_contracts contract valid
+  - validate_candidate_contracts result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validate_candidate_contracts_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: audit_typed_crossovers
+  purpose: Reject semantic collage and require scope, measurement, unit and causal
+    compatibility
+  executor_type: llm
+  executor_ref: prompts/crossover_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/crossover-compatibility-report.schema.json
+  depends_on:
+  - validate_candidate_contracts
+  read_scope: []
+  write_scope:
+  - db.crossover_compatibility_reports
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - audit_typed_crossovers contract valid
+  - audit_typed_crossovers result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - audit_typed_crossovers_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_contract_and_static_stages
+  purpose: Run S0 contract and S1 static/logic/security stages under bounded compute
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.run_contract_and_static_stages:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/stage-evaluation-result.schema.json
+  depends_on:
+  - audit_typed_crossovers
+  - seal_evaluator_bundle
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/evaluation/s0_s1/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_contract_and_static_stages contract valid
+  - run_contract_and_static_stages result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_contract_and_static_stages_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: retrieve_candidate_evidence
+  purpose: Assemble support, counter, null, boundary, method and prior-art evidence
+    with search receipts
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.evolution.retrieve_candidate_evidence:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evidence-pack.schema.json
+  depends_on:
+  - run_contract_and_static_stages
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/evidence_packs/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - database_read
+  - network_read
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - retrieve_candidate_evidence contract valid
+  - retrieve_candidate_evidence result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - retrieve_candidate_evidence_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_evidence_simulation_adversarial_stages
+  purpose: Run S2 evidence, S3 simulation/metamorphic and S4 adversarial stages
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.run_evidence_simulation_adversarial_stages:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/stage-evaluation-result.schema.json
+  depends_on:
+  - retrieve_candidate_evidence
+  - seal_evaluator_bundle
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/evaluation/s2_s4/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_evidence_simulation_adversarial_stages contract valid
+  - run_evidence_simulation_adversarial_stages result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_evidence_simulation_adversarial_stages_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: assess_multilayer_novelty
+  purpose: Assess claim, mechanism, prediction, falsifier, scope, experiment, evidence
+    and external prior-art novelty
+  executor_type: llm
+  executor_ref: prompts/novelty_vector_assessor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/novelty-vector.schema.json
+  depends_on:
+  - retrieve_candidate_evidence
+  read_scope: []
+  write_scope:
+  - db.novelty_vectors
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - assess_multilayer_novelty contract valid
+  - assess_multilayer_novelty result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - assess_multilayer_novelty_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compute_constrained_fitness_vectors
+  purpose: Compute hard-gate status and multi-objective values with uncertainty and
+    dimension receipts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.compute_constrained_fitness_vectors:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/fitness-vector.schema.json
+  depends_on:
+  - run_evidence_simulation_adversarial_stages
+  - assess_multilayer_novelty
+  read_scope: []
+  write_scope:
+  - db.fitness_vectors
+  - db.fitness_evidence_receipts
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - compute_constrained_fitness_vectors contract valid
+  - compute_constrained_fitness_vectors result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - compute_constrained_fitness_vectors_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: rank_pareto_and_update_niches
+  purpose: Create Pareto front and candidate niche placement without a universal promotion
+    score
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.rank_pareto_and_update_niches:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/pareto-front-snapshot.schema.json
+  depends_on:
+  - compute_constrained_fitness_vectors
+  read_scope: []
+  write_scope:
+  - db.pareto_fronts
+  - db.quality_diversity_maps
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - rank_pareto_and_update_niches contract valid
+  - rank_pareto_and_update_niches result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - rank_pareto_and_update_niches_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_red_queen_matches
+  purpose: Pit Pareto/niche candidates against diverse challenge population and preserve
+    boundary discoveries
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.run_red_queen_matches:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/red-queen-round.schema.json
+  depends_on:
+  - rank_pareto_and_update_niches
+  - generate_challenge_candidates
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/red_queen/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_red_queen_matches contract valid
+  - run_red_queen_matches result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_red_queen_matches_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: audit_adaptive_selection_statistics
+  purpose: Apply sequential-testing, multiplicity and selective-inference accounting
+  executor_type: llm
+  executor_ref: prompts/statistical_selection_auditor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/selective-inference-report.schema.json
+  depends_on:
+  - rank_pareto_and_update_niches
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/statistics/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - audit_adaptive_selection_statistics contract valid
+  - audit_adaptive_selection_statistics result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - audit_adaptive_selection_statistics_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: replicate_surviving_elites
+  purpose: Run independent hidden/OOD and replication stages for qualified survivors
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.replicate_surviving_elites:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/replication-result.schema.json
+  depends_on:
+  - run_red_queen_matches
+  - audit_adaptive_selection_statistics
+  - seal_evaluator_bundle
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/replications/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - replicate_surviving_elites contract valid
+  - replicate_surviving_elites result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - replicate_surviving_elites_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_evidence_parliament_promotion
+  purpose: Adjudicate sealed candidates with strongest challenge, holdout, statistics,
+    replication and minority report
+  executor_type: llm
+  executor_ref: prompts/promotion_attestor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/promotion-decision.schema.json
+  depends_on:
+  - replicate_surviving_elites
+  read_scope: []
+  write_scope:
+  - artifacts/evolution/promotion/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_evidence_parliament_promotion contract valid
+  - run_evidence_parliament_promotion result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_evidence_parliament_promotion_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: issue_hypothesis_passport_revisions
+  purpose: Issue or update immutable Hypothesis Passports only within granted promotion
+    level
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.issue_hypothesis_passport_revisions:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/hypothesis-passport.schema.json
+  depends_on:
+  - run_evidence_parliament_promotion
+  read_scope: []
+  write_scope:
+  - db.hypothesis_passports
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - issue_hypothesis_passport_revisions contract valid
+  - issue_hypothesis_passport_revisions result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - issue_hypothesis_passport_revisions_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: evaluate_evolution_stop_conditions
+  purpose: Evaluate dry rounds, Pareto stability, coverage, safety, budget and human
+    stop conditions
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.evaluate_evolution_stop_conditions:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evolution-stop-certificate.schema.json
+  depends_on:
+  - run_evidence_parliament_promotion
+  - rank_pareto_and_update_niches
+  read_scope: []
+  write_scope:
+  - db.evolution_stop_certificates
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - evaluate_evolution_stop_conditions contract valid
+  - evaluate_evolution_stop_conditions result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - evaluate_evolution_stop_conditions_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: commit_evolution_checkpoint
+  purpose: Atomically checkpoint populations, archive, bandit, budget, testing ledger
+    and evaluator hash
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.commit_evolution_checkpoint:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/evolution-checkpoint.schema.json
+  depends_on:
+  - issue_hypothesis_passport_revisions
+  - evaluate_evolution_stop_conditions
+  read_scope: []
+  write_scope:
+  - db.evolution_checkpoints
+  - object_store/evolution_checkpoints/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - commit_evolution_checkpoint contract valid
+  - commit_evolution_checkpoint result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - commit_evolution_checkpoint_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

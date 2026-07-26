@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/document-manifest.schema.json",
+  "title": "DocumentManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "document_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paper_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paper_version_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "original_filename": {
+      "type": "string",
+      "minLength": 1
+    },
+    "media_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_uri": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "doi": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "bibliographic_version": {
+      "enum": [
+        "preprint",
+        "accepted_manuscript",
+        "version_of_record",
+        "correction",
+        "retraction_notice",
+        "other"
+      ]
+    },
+    "supersedes_version_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "active",
+        "corrected",
+        "retracted",
+        "withdrawn",
+        "quarantined",
+        "unknown"
+      ]
+    },
+    "license_status": {
+      "enum": [
+        "licensed",
+        "open_access",
+        "fair_use_metadata_only",
+        "restricted",
+        "unknown"
+      ]
+    },
+    "access_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parser_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_integrity_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "malware_scan_status": {
+      "enum": [
+        "not_run",
+        "clean",
+        "suspicious",
+        "malicious"
+      ]
+    },
+    "prompt_injection_scan_status": {
+      "enum": [
+        "not_run",
+        "clean",
+        "suspicious",
+        "quarantined"
+      ]
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "provenance_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "document_id",
+    "paper_id",
+    "paper_version_id",
+    "content_hash",
+    "original_filename",
+    "media_type",
+    "source_uri",
+    "doi",
+    "bibliographic_version",
+    "supersedes_version_id",
+    "status",
+    "license_status",
+    "access_policy_ref",
+    "parser_artifact_ids",
+    "source_integrity_report_id",
+    "malware_scan_status",
+    "prompt_injection_scan_status",
+    "ingested_at",
+    "provenance_manifest_id"
+  ]
+}

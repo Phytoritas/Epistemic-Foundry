@@ -1,0 +1,25 @@
+{
+  "cascade_plan_id": "VCP-1",
+  "candidate_class": "hypothesis",
+  "stages": [
+    {
+      "stage_id": "S0",
+      "stage_class": "contract",
+      "entry_rule": "always",
+      "pass_rule": "all hard contracts valid",
+      "failure_action": "reject",
+      "budget_fraction": 0.02
+    },
+    {
+      "stage_id": "S5",
+      "stage_class": "holdout",
+      "entry_rule": "top Pareto candidates only",
+      "pass_rule": "preregistered threshold met",
+      "failure_action": "restrict",
+      "budget_fraction": 0.45
+    }
+  ],
+  "max_total_budget": 100.0,
+  "early_stop_policy": "Stop on non-waivable hard failure or dominated confidence bound.",
+  "plan_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

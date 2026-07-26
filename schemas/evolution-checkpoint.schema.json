@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evolution-checkpoint.schema.json",
+  "title": "EvolutionCheckpoint",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "checkpoint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "population_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "archive_snapshot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "island_state_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "operator_bandit_state_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluator_bundle_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "budget_state_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sequential_testing_ledger_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "checkpoint_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "checkpoint_id",
+    "evolution_run_id",
+    "generation",
+    "population_artifact_ids",
+    "archive_snapshot_id",
+    "island_state_ids",
+    "operator_bandit_state_id",
+    "evaluator_bundle_hash",
+    "budget_state_id",
+    "sequential_testing_ledger_id",
+    "checkpoint_hash",
+    "created_at"
+  ],
+  "description": "population·archive·bandit·budget·evaluator 해시를 원자적 재개 지점으로 고정한다."
+}

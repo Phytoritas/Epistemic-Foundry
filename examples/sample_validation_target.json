@@ -1,0 +1,136 @@
+{
+  "target_id": "delayed_recall_pipeline",
+  "version": "1.0.0",
+  "target_type": "analysis_pipeline",
+  "interface_version": "efoundry-validation-target-v1",
+  "entrypoint": "python -m validators.delayed_recall",
+  "inputs": [
+    {
+      "id": "baseline_score",
+      "data_type": "number",
+      "unit": "score",
+      "required": true,
+      "schema_ref": null,
+      "temporal_support": "pre-intervention"
+    },
+    {
+      "id": "treatment_group",
+      "data_type": "category",
+      "unit": null,
+      "required": true,
+      "schema_ref": null,
+      "temporal_support": "assignment"
+    },
+    {
+      "id": "delayed_recall_score",
+      "data_type": "number",
+      "unit": "score",
+      "required": true,
+      "schema_ref": null,
+      "temporal_support": "post-intervention"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "adjusted_effect",
+      "data_type": "number",
+      "unit": "standardized_difference",
+      "required": true,
+      "schema_ref": null,
+      "temporal_support": "analysis"
+    },
+    {
+      "id": "confidence_interval",
+      "data_type": "array",
+      "unit": "standardized_difference",
+      "required": true,
+      "schema_ref": null,
+      "temporal_support": "analysis"
+    }
+  ],
+  "parameters": [],
+  "state_variables": [],
+  "constraints": [
+    "group labels must be assigned before outcome analysis",
+    "preregistered exclusions must be applied deterministically"
+  ],
+  "supported_actions": [
+    "validate_input",
+    "fit_preregistered_model",
+    "run_holdout_analysis",
+    "export_receipt"
+  ],
+  "validation_scope": {
+    "domain": "learning_science",
+    "population": "adult learners",
+    "entity_type": "participant",
+    "entity_subtype": null,
+    "unit_of_analysis": "individual learner",
+    "setting": "controlled course-based study",
+    "geography": null,
+    "jurisdiction": null,
+    "language": "English",
+    "lifecycle_stage": null,
+    "spatial_scale": "individual",
+    "temporal_scale": "14-day delayed outcome",
+    "time_period": null,
+    "measurement_time": "immediate to 30 days",
+    "intervention_or_exposure": {
+      "name": "spaced retrieval practice",
+      "category": "learning intervention",
+      "min_value": 3,
+      "max_value": 3,
+      "unit": "sessions",
+      "duration": "one week",
+      "frequency": "three sessions",
+      "rate": null,
+      "route_or_delivery": "computer-based practice"
+    },
+    "comparator": "rereading with matched total study time",
+    "inclusion_criteria": [
+      "completed baseline assessment",
+      "completed all assigned sessions"
+    ],
+    "exclusion_criteria": [
+      "missing delayed outcome"
+    ],
+    "conditions": {
+      "outcome_type": [
+        "recall",
+        "recognition"
+      ]
+    },
+    "domain_extensions": {
+      "supported_design": [
+        "randomized",
+        "quasi_experimental"
+      ]
+    }
+  },
+  "identifiability_notes": [
+    "observational inputs do not identify a causal treatment effect without additional assumptions"
+  ],
+  "capability_requirements": [
+    "filesystem_read",
+    "sandbox_execute",
+    "artifact_write"
+  ],
+  "safety_class": "bounded_compute",
+  "approval_policy": "none",
+  "artifact_hashes": [
+    "sha256:da59aaabc770df11c7341ae7440edf9ef9c4ec1dccb189d916895e8ef05331e3"
+  ],
+  "provenance_manifest_id": "PM-VT-0001",
+  "sandbox_profile": "bounded-compute-v1",
+  "network_policy": "disabled",
+  "supply_chain_attestation_artifact_id": "ART-SLSA-0001",
+  "reproducibility_contract": {
+    "container_digest_required": true,
+    "seed_control": true,
+    "environment_capture": true
+  },
+  "allowed_data_classes": [
+    "public",
+    "internal"
+  ]
+}

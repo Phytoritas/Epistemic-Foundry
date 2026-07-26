@@ -1,0 +1,499 @@
+workflow_id: red_queen_challenge_coevolution
+version: 4.0.0
+kind: dag
+description: Co-evolve a diverse falsifier population against hypotheses without turning
+  attacks into authority.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- challenge success must reproduce and remain relevant to the claim
+- hidden holdout remains inaccessible
+- boundary discoveries are preserved instead of mislabeled as total refutations
+- challenge population is itself audited for overfitting
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: load_hypothesis_and_challenge_archives
+  purpose: Load typed public candidate views and prior challenge outcomes
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.load_hypothesis_and_challenge_archives:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/red-queen-round.schema.json
+  depends_on: []
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/input/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - load_hypothesis_and_challenge_archives contract valid
+  - load_hypothesis_and_challenge_archives result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - load_hypothesis_and_challenge_archives_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: measure_challenge_coverage
+  purpose: Map uncovered failure surfaces and overused challenge families
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.measure_challenge_coverage:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/quality-diversity-map.schema.json
+  depends_on:
+  - load_hypothesis_and_challenge_archives
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/coverage/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - measure_challenge_coverage contract valid
+  - measure_challenge_coverage result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - measure_challenge_coverage_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: select_challenge_parents
+  purpose: Select challenge parents by failure-surface coverage, reproducibility and
+    nonredundancy
+  executor_type: llm
+  executor_ref: prompts/parent_selector.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/parent-selection-receipt.schema.json
+  depends_on:
+  - measure_challenge_coverage
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/selection/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - select_challenge_parents contract valid
+  - select_challenge_parents result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - select_challenge_parents_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: mutate_counterexample_challenges
+  purpose: Generate candidate counterexamples and null models
+  executor_type: llm
+  executor_ref: prompts/red_queen_challenger.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/challenge-genome.schema.json
+  depends_on:
+  - select_challenge_parents
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/generated/counterexample/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - mutate_counterexample_challenges contract valid
+  - mutate_counterexample_challenges result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - mutate_counterexample_challenges_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: mutate_method_and_measurement_challenges
+  purpose: Generate measurement artifact and method-failure challenges
+  executor_type: llm
+  executor_ref: prompts/red_queen_challenger.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/challenge-genome.schema.json
+  depends_on:
+  - select_challenge_parents
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/generated/method/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - mutate_method_and_measurement_challenges contract valid
+  - mutate_method_and_measurement_challenges result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - mutate_method_and_measurement_challenges_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: mutate_ood_and_scope_challenges
+  purpose: Generate safe OOD and boundary-shift challenges
+  executor_type: llm
+  executor_ref: prompts/red_queen_challenger.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/challenge-genome.schema.json
+  depends_on:
+  - select_challenge_parents
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/generated/ood/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - mutate_ood_and_scope_challenges contract valid
+  - mutate_ood_and_scope_challenges result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - mutate_ood_and_scope_challenges_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: validate_challenge_contracts
+  purpose: Validate safety, reproducibility, relevance and no-holdout-access constraints
+  executor_type: policy
+  executor_ref: epistemic_foundry.evolution.validate_challenge_contracts:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/challenge-genome.schema.json
+  depends_on:
+  - mutate_counterexample_challenges
+  - mutate_method_and_measurement_challenges
+  - mutate_ood_and_scope_challenges
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/validated/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - validate_challenge_contracts contract valid
+  - validate_challenge_contracts result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - validate_challenge_contracts_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: deduplicate_by_attack_surface
+  purpose: Deduplicate challenge semantics and causal failure signatures, not wording
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.deduplicate_by_attack_surface:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/quality-diversity-map.schema.json
+  depends_on:
+  - validate_challenge_contracts
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/deduplicated/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - deduplicate_by_attack_surface contract valid
+  - deduplicate_by_attack_surface result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - deduplicate_by_attack_surface_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: schedule_red_queen_matches
+  purpose: Create balanced candidate–challenge matches with resource limits
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.schedule_red_queen_matches:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/red-queen-round.schema.json
+  depends_on:
+  - deduplicate_by_attack_surface
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/schedule/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - schedule_red_queen_matches contract valid
+  - schedule_red_queen_matches result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - schedule_red_queen_matches_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: execute_red_queen_matches
+  purpose: Execute matches in isolated sandboxes and reconcile expected counts
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.execute_red_queen_matches:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/challenge-result.schema.json
+  depends_on:
+  - schedule_red_queen_matches
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/results/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - execute_red_queen_matches contract valid
+  - execute_red_queen_matches result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - execute_red_queen_matches_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: replicate_successful_challenges
+  purpose: Reproduce apparent failures on independent fixtures or seeds
+  executor_type: sandbox
+  executor_ref: epistemic_foundry.evolution.replicate_successful_challenges:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/replication-result.schema.json
+  depends_on:
+  - execute_red_queen_matches
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/replication/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - sandbox_execute
+  model_tier: balanced
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - replicate_successful_challenges contract valid
+  - replicate_successful_challenges result receipt present
+  resource_dependencies: []
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - replicate_successful_challenges_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: classify_refutation_or_boundary
+  purpose: Distinguish true refutation, scope restriction, method failure and irrelevant
+    exploit
+  executor_type: llm
+  executor_ref: prompts/challenge_curator.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/challenge-result.schema.json
+  depends_on:
+  - replicate_successful_challenges
+  read_scope: []
+  write_scope:
+  - artifacts/red_queen/classification/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - classify_refutation_or_boundary contract valid
+  - classify_refutation_or_boundary result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - classify_refutation_or_boundary_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: update_challenge_archive
+  purpose: Preserve reproducible challenges, past false positives and discovered boundaries
+  executor_type: llm
+  executor_ref: prompts/archive_curator.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/archive-rebalance-plan.schema.json
+  depends_on:
+  - classify_refutation_or_boundary
+  read_scope: []
+  write_scope:
+  - db.challenge_archive
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - update_challenge_archive contract valid
+  - update_challenge_archive result receipt present
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - update_challenge_archive_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: emit_red_queen_round
+  purpose: Freeze round counts, survivors, refutations, boundaries and challenge-overfit
+    checks
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.evolution.emit_red_queen_round:run
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/red-queen-round.schema.json
+  depends_on:
+  - update_challenge_archive
+  read_scope: []
+  write_scope:
+  - db.red_queen_rounds
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 1200
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - emit_red_queen_round contract valid
+  - emit_red_queen_round result receipt present
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - emit_red_queen_round_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

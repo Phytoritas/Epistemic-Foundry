@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/hook-event-envelope.schema.json",
+  "title": "HookEventEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "host": {
+      "enum": [
+        "codex",
+        "claude",
+        "other"
+      ]
+    },
+    "event_type": {
+      "enum": [
+        "SessionStart",
+        "UserPromptSubmit",
+        "PermissionRequest",
+        "PreToolUse",
+        "PostToolUse",
+        "SubagentStart",
+        "SubagentStop",
+        "Stop",
+        "PreCompact",
+        "PostCompact",
+        "SessionEnd"
+      ]
+    },
+    "session_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tool_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "raw_payload_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "normalized_payload": {
+      "type": "object"
+    },
+    "decision": {
+      "enum": [
+        "ALLOW",
+        "BLOCK",
+        "REWRITE",
+        "ADVISORY",
+        "NOT_APPLICABLE",
+        "ERROR"
+      ]
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "action_intent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "effect_receipt_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "coverage": {
+      "enum": [
+        "OBSERVED",
+        "PARTIAL",
+        "UNOBSERVED"
+      ]
+    },
+    "envelope_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "event_id",
+    "host",
+    "event_type",
+    "session_id",
+    "tool_name",
+    "received_at",
+    "raw_payload_hash",
+    "normalized_payload",
+    "decision",
+    "reasons",
+    "action_intent_id",
+    "effect_receipt_id",
+    "coverage",
+    "envelope_hash"
+  ]
+}

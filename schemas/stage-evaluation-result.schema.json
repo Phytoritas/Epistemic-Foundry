@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/stage-evaluation-result.schema.json",
+  "title": "StageEvaluationResult",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "stage_result_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cascade_plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "PARTIAL",
+        "BLOCKED",
+        "ERROR",
+        "NOT_RUN"
+      ]
+    },
+    "metric_values": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {}
+    },
+    "uncertainty_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "effect_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "result_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "stage_result_id",
+    "cascade_plan_id",
+    "candidate_id",
+    "stage_id",
+    "status",
+    "metric_values",
+    "uncertainty_summary",
+    "artifact_ids",
+    "effect_receipt_ids",
+    "started_at",
+    "completed_at",
+    "result_hash"
+  ],
+  "description": "각 validation cascade 단계의 입력·메트릭·불확실성·효과를 기록한다."
+}

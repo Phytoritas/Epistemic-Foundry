@@ -1,0 +1,486 @@
+workflow_id: evidence_update_reassessment
+version: 4.0.0
+kind: dag
+description: Detect evidence or policy changes, compute impact, invalidate stale state,
+  rerun affected workflows, and record decision deltas.
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- updates, corrections, retractions, policy changes, and schema changes invalidate
+  downstream artifacts by dependency
+- stale does not mean deleted
+- reassessment is targeted, version-pinned, and replayable
+- decision deltas preserve prior adjudications and human decisions
+- affected users and dependent artifacts receive explicit notifications
+terminal_states:
+- PASS
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: detect_updates
+  purpose: Detect new versions, corrections, retractions, metadata changes, DomainPack
+    changes, policy changes, and schema migrations
+  executor_type: retrieval
+  executor_ref: epistemic_foundry.updates.detector:detect
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on: []
+  read_scope:
+  - db.document_manifests
+  - db.domain_packs
+  - db.policy_bundles
+  - db.schema_migrations
+  write_scope:
+  - artifacts/updates/detected/**
+  capabilities:
+  - database_read
+  - approved_external_search
+  - artifact_write
+  model_tier: balanced
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - source and observed-at time recorded
+  - no-change run is typed
+  - events deduplicated by hash
+  resource_dependencies:
+  - quota:update_sources
+  determinism_class: seeded_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - update_candidates_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_update_impact_report
+  purpose: Traverse document→span→claim→evidence→pack→decision→passport dependencies
+    and classify impact
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.updates.impact:build
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - detect_updates
+  read_scope:
+  - artifacts/updates/detected/**
+  - db.graph_edges
+  - db.claims
+  - db.evidence_nodes
+  - db.passports
+  write_scope:
+  - db.update_impact_reports
+  capabilities:
+  - artifact_read
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - affected and unaffected artifacts listed
+  - impact reason traceable
+  - blast radius bounded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - update_impact_report_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: invalidate_stale_artifacts
+  purpose: Append staleness and invalidation events without deleting historical artifacts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.updates.invalidation:mark
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - build_update_impact_report
+  read_scope:
+  - db.update_impact_reports
+  write_scope:
+  - db.event_records
+  - db.claim_lifecycle_events
+  - db.staleness_index
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - historical revisions remain readable
+  - current projections exclude invalid state
+  - event chain monotonic
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - downstream_artifacts_marked_stale
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compile_reassessment_plan
+  purpose: Compile minimal subworkflow reruns and schema migration steps for affected
+    entities
+  executor_type: policy
+  executor_ref: epistemic_foundry.updates.planner:compile
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - invalidate_stale_artifacts
+  read_scope:
+  - db.update_impact_reports
+  - db.staleness_index
+  - db.schema_migrations
+  - config/policy_bundle.yaml
+  write_scope:
+  - db.reassessment_plans
+  capabilities:
+  - database_read
+  - filesystem_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - unaffected artifacts reused by hash
+  - required migration precedes rerun
+  - human-only decisions identified
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - reassessment_plan_created
+  required_policy_checks:
+  - update_reassessment_policy
+  - schema_migration_policy
+- node_id: refresh_documents
+  purpose: Rerun corpus ingest for affected document versions or emit an idempotent
+    no-op receipt
+  executor_type: subworkflow
+  executor_ref: workflows/corpus_ingest.workflow.yaml
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compile_reassessment_plan
+  read_scope:
+  - db.reassessment_plans
+  write_scope:
+  - artifacts/subworkflows/reassess_ingest/**
+  capabilities:
+  - workflow_dispatch
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 7200
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - affected set bounded by plan
+  - child run linked
+  - no-op explicitly receipted
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - affected_documents_refreshed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: refresh_claims
+  purpose: Rerun Claim Forge for affected spans and descendants
+  executor_type: subworkflow
+  executor_ref: workflows/claim_extraction.workflow.yaml
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - refresh_documents
+  read_scope:
+  - db.reassessment_plans
+  write_scope:
+  - artifacts/subworkflows/reassess_claims/**
+  capabilities:
+  - workflow_dispatch
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 14400
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - supersession events created
+  - unchanged claim hashes reused
+  - failed re-extraction visible
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - affected_claims_refreshed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: refresh_retrieval
+  purpose: Rerun retrieval only for affected query plans and Passports
+  executor_type: subworkflow
+  executor_ref: workflows/evidence_retrieval.workflow.yaml
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - refresh_claims
+  read_scope:
+  - db.reassessment_plans
+  write_scope:
+  - artifacts/subworkflows/reassess_retrieval/**
+  capabilities:
+  - workflow_dispatch
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 14400
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - new search snapshot recorded
+  - old EvidencePack retained
+  - lane deltas available
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - affected_retrieval_refreshed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: refresh_deliberation
+  purpose: Rerun Evidence Parliament for affected insights under the current pinned
+    policy
+  executor_type: subworkflow
+  executor_ref: workflows/insight_deliberation.workflow.yaml
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - refresh_retrieval
+  read_scope:
+  - db.reassessment_plans
+  write_scope:
+  - artifacts/subworkflows/reassess_deliberation/**
+  capabilities:
+  - workflow_dispatch
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 21600
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - new council run independent
+  - prior adjudication preserved
+  - policy version recorded
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - affected_deliberations_refreshed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: compare_decision_delta
+  purpose: Compare old and new coverage, evidence, gates, statuses, stability, and
+    recommended actions
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.updates.delta:compare
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - refresh_deliberation
+  read_scope:
+  - db.update_impact_reports
+  - db.passports
+  - db.adjudications
+  - db.coverage_snapshots
+  - artifacts/subworkflows/reassess_deliberation/**
+  write_scope:
+  - artifacts/updates/decision_delta/**
+  capabilities:
+  - database_read
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - status changes and unchanged dimensions shown
+  - causal and epistemic deltas separate
+  - reason chain resolvable
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - decision_delta_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: record_supersession
+  purpose: Append supersession and reconciliation records for changed decisions and
+    artifacts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.updates.supersession:record
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - compare_decision_delta
+  read_scope:
+  - artifacts/updates/decision_delta/**
+  - db.update_impact_reports
+  write_scope:
+  - db.event_records
+  - db.evidence_reconciliation_records
+  capabilities:
+  - artifact_read
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - old IDs remain resolvable
+  - new current revision unique
+  - retraction effects explicit
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - supersession_records_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: notify_dependents
+  purpose: Notify owners, subscribers, downstream runs, and governance roles of material
+    decision changes
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.updates.notifications:emit
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - record_supersession
+  read_scope:
+  - artifacts/updates/decision_delta/**
+  - db.update_impact_reports
+  - db.human_decisions
+  write_scope:
+  - db.notification_events
+  capabilities:
+  - artifact_read
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - materiality policy applied
+  - delivery failures visible
+  - sensitive content redacted
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - update_notifications_created
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: reassessment_release_gate
+  purpose: Verify all affected dependencies were handled and no stale current artifact
+    survives
+  executor_type: policy
+  executor_ref: epistemic_foundry.policy.updates:gate
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
+  depends_on:
+  - notify_dependents
+  read_scope:
+  - db.reassessment_plans
+  - db.staleness_index
+  - db.update_impact_reports
+  - db.notification_events
+  write_scope:
+  - db.gate_decisions/reassessment
+  capabilities:
+  - database_read
+  - database_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - affected set fully reconciled
+  - stale current projections zero
+  - partial child failures block release
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - reassessment_gate_decision_created
+  required_policy_checks:
+  - update_reassessment_policy
+  - staleness_policy
+  - notification_policy
