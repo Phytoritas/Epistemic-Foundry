@@ -566,6 +566,17 @@ NON_BUNDLE_SUFFIXES = (".pyc", ".pyo", ".egg-info")
 #: Root-level files that belong to the checkout rather than the bundle.
 NON_BUNDLE_FILES = {".gitignore", "pyproject.toml"}
 
+#: Reports this validator rewrites on every run. Their bytes change as a result
+#: of validating, so hashing them against a manifest recorded before the run
+#: makes a second consecutive run fail by construction. They stay in the
+#: manifest inventory (they are shipped) but are exempt from the hash check.
+SELF_WRITTEN_REPORTS = {
+    "reports/spec_validation_results.json",
+    "reports/288_lens_evolution_audit_results.json",
+    "reports/216_lens_plugin_audit_results.json",
+    "reports/144_lens_audit_results.json",
+}
+
 
 def _is_non_bundle_path(rel: str) -> bool:
     """True when `rel` is local working-tree infrastructure."""
@@ -603,6 +614,9 @@ def validate_package_manifest(root: Path, errors: list[str], report: dict[str, A
         path = root / rel
         if not path.exists():
             mismatches.append(f"missing {rel}")
+        elif rel in SELF_WRITTEN_REPORTS:
+            # Present and inventoried, but its bytes are produced by this run.
+            continue
         elif sha256_file(path) != entry.get("sha256") or path.stat().st_size != entry.get("bytes"):
             mismatches.append(f"hash/size mismatch {rel}")
     actual = {
