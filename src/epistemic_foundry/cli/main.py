@@ -60,6 +60,7 @@ IMPLEMENTED_COMPONENTS = (
     "ingest",
     "memory",
     "observability",
+    "security",
 )
 
 #: Capabilities the bundle specifies that this runtime does not implement.
