@@ -51,6 +51,7 @@ IMPLEMENTED_COMPONENTS = (
     "evolution_chamber",
     "red_queen_lab",
     "epistemic_species_archive",
+    "shinka_adapter",
 )
 
 SPECIFIED_ONLY_COMPONENTS = (
@@ -58,7 +59,6 @@ SPECIFIED_ONLY_COMPONENTS = (
     "epistemic_atlas",
     "aporia_engine",
     "hypothesis_passport",
-    "shinka_adapter",
 )
 
 
