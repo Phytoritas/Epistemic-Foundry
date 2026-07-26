@@ -37,6 +37,24 @@ def test_status_does_not_list_a_component_as_both_states(capsys) -> None:
     assert not set(payload["implemented"]) & set(payload["specified_only"])
 
 
+def test_implemented_list_matches_the_shipped_packages(capsys) -> None:
+    """The maturity report must track the code, not a stale hand-edited list.
+
+    Claiming a component is implemented when no package exists is exactly the
+    overclaim `docs/status_taxonomy.md` separates SPECIFIED from IMPLEMENTED to
+    prevent, so the claim is checked against the filesystem.
+    """
+    main(["--json", "status"])
+    payload = json.loads(capsys.readouterr().out)
+    package_root = repo_root() / "src" / "epistemic_foundry"
+    for name in payload["implemented"]:
+        assert (package_root / name).is_dir(), f"{name} is claimed implemented but has no package"
+    for name in payload["specified_only"]:
+        assert not (package_root / name).is_dir(), (
+            f"{name} is listed specified_only but a package exists; update the maturity report"
+        )
+
+
 def test_validate_passes_a_conformant_artifact(capsys) -> None:
     sample = repo_root() / "examples" / "sample_forge-session-state.json"
     assert main(["--json", "validate", "forge-session-state", str(sample)]) == 0

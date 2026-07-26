@@ -45,15 +45,15 @@ IMPLEMENTED_COMPONENTS = (
     "foundry_kernel",
     "verifier_firewall",
     "governance",
+    "claim_forge",
+    "evidence_parliament",
+    "validation_bay",
 )
 
 SPECIFIED_ONLY_COMPONENTS = (
     "plugin_shell",
-    "claim_forge",
     "epistemic_atlas",
-    "evidence_parliament",
     "aporia_engine",
-    "validation_bay",
     "hypothesis_passport",
     "evolution_chamber",
     "red_queen_lab",
