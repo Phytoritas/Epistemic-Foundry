@@ -58,6 +58,8 @@ IMPLEMENTED_COMPONENTS = (
     "plugin_shell",
     "retrieval",
     "ingest",
+    "memory",
+    "observability",
 )
 
 #: Capabilities the bundle specifies that this runtime does not implement.
