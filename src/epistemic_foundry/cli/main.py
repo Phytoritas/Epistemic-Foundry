@@ -52,12 +52,12 @@ IMPLEMENTED_COMPONENTS = (
     "red_queen_lab",
     "epistemic_species_archive",
     "shinka_adapter",
+    "aporia_engine",
 )
 
 SPECIFIED_ONLY_COMPONENTS = (
     "plugin_shell",
     "epistemic_atlas",
-    "aporia_engine",
     "hypothesis_passport",
 )
 
