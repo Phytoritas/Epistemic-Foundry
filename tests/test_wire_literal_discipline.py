@@ -39,6 +39,8 @@ DECLARING_MODULES: frozenset[str] = frozenset(
         "evolution_chamber/mutation.py",
         "evolution_chamber/genome.py",
         "evolution_chamber/crossover.py",
+        "evolution_chamber/checkpoint.py",
+        "evolution_chamber/reconciliation.py",
         "epistemic_species_archive/archive.py",
         "red_queen_lab/challenges.py",
         "evidence_parliament/adjudication.py",
