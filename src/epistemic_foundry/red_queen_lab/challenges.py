@@ -27,6 +27,16 @@ ADVERSE_OUTCOMES = frozenset({"REFUTED", "SCOPE_RESTRICTED"})
 #: Outcomes that resolve nothing. They must never read as survival.
 UNRESOLVED_OUTCOMES = frozenset({"INCONCLUSIVE", "ERROR", "METHOD_FAILURE"})
 
+#: How many independent runs an apparent refutation needs before it counts
+#: (EF4-I51). One adverse result can be a flake in the challenge itself, and
+#: retracting a hypothesis on an unreplicated failure is as wrong as promoting on
+#: an unreplicated success.
+REFUTATION_REPLICATION_REQUIRED = 2
+
+
+class RefutationNotReplicated(RuntimeError):
+    """An apparent refutation has not been reproduced enough to stand."""
+
 
 class ChallengeContractViolation(ValueError):
     """A challenge artifact or round violates the co-evolution contract."""
@@ -124,6 +134,63 @@ def survived_challenges(
 def unresolved_matches(results: Sequence[Mapping[str, Any]]) -> list[Mapping[str, Any]]:
     """Matches that resolved nothing and still owe a rerun."""
     return [result for result in results if str(result.get("outcome")) in UNRESOLVED_OUTCOMES]
+
+
+def refutation_stands(
+    challenge_genome_id: str,
+    candidate_id: str,
+    results: Sequence[Mapping[str, Any]],
+) -> bool:
+    """True only when the same challenge refuted the candidate repeatedly.
+
+    Counts independent runs of one challenge against one candidate. A single
+    adverse result may be a flake in the challenge rather than a defect in the
+    hypothesis, so `REFUTATION_REPLICATION_REQUIRED` runs must agree before the
+    refutation is treated as established.
+    """
+    matching = [
+        result
+        for result in results
+        if str(result.get("challenge_genome_id")) == challenge_genome_id
+        and str(result.get("target_candidate_id")) == candidate_id
+        and str(result.get("outcome")) in ADVERSE_OUTCOMES
+    ]
+    return len(matching) >= REFUTATION_REPLICATION_REQUIRED
+
+
+def require_replicated_refutation(
+    challenge_genome_id: str,
+    candidate_id: str,
+    results: Sequence[Mapping[str, Any]],
+) -> None:
+    """Raise unless an apparent refutation has replicated."""
+    if not refutation_stands(challenge_genome_id, candidate_id, results):
+        raise RefutationNotReplicated(
+            f"challenge {challenge_genome_id} against {candidate_id} has not replicated "
+            f"{REFUTATION_REPLICATION_REQUIRED} times; retracting on an unreplicated failure is "
+            "as wrong as promoting on an unreplicated success"
+        )
+
+
+def partition_adverse_outcomes(
+    results: Sequence[Mapping[str, Any]],
+) -> dict[str, list[str]]:
+    """Split adverse results into refutations and boundary restrictions.
+
+    A `SCOPE_RESTRICTED` outcome narrows where a claim holds; `REFUTED` says it
+    does not hold. Returning them as separate lists keeps the boundary knowledge a
+    restriction produces, which a single "failed" bucket would erase.
+    """
+    refuted: list[str] = []
+    restricted: list[str] = []
+    for result in results:
+        outcome = str(result.get("outcome"))
+        target = str(result.get("target_candidate_id"))
+        if outcome == "REFUTED":
+            refuted.append(target)
+        elif outcome == "SCOPE_RESTRICTED":
+            restricted.append(target)
+    return {"refuted": sorted(set(refuted)), "scope_restricted": sorted(set(restricted))}
 
 
 def build_red_queen_round(

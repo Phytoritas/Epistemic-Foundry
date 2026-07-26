@@ -37,6 +37,7 @@ DECLARING_MODULES: frozenset[str] = frozenset(
         "budgets/envelope.py",
         "ingest/comparability.py",
         "evolution_chamber/mutation.py",
+        "evolution_chamber/genome.py",
         "epistemic_species_archive/archive.py",
         "red_queen_lab/challenges.py",
         "evidence_parliament/adjudication.py",
