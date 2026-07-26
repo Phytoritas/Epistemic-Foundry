@@ -58,6 +58,8 @@ DECLARING_MODULES: frozenset[str] = frozenset(
         "evaluation/fitness.py",
         "statistics/sequential.py",
         "statistics/selective.py",
+        "release/replay.py",
+        "release/integrity.py",
         "verifier_firewall/firewall.py",
         "aporia_engine/argument.py",
         "plugin_shell/capabilities.py",
