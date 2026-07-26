@@ -1,4 +1,4 @@
-"""Atomic resume checkpoints and stop certificates (EF4-I60, EF4-I61).
+"""Atomic resume checkpoints and stop certificates (EF4-I61, EF4-I62).
 
 Contract sources: `schemas/evolution-checkpoint.schema.json` and
 `schemas/evolution-stop-certificate.schema.json`.

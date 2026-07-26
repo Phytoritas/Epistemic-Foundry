@@ -1,4 +1,4 @@
-"""Crossover compatibility (EF4-I50).
+"""Typed crossover compatibility (EF4-I51).
 
 Contract source: `schemas/crossover-compatibility-report.schema.json`.
 

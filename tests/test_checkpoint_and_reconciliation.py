@@ -40,10 +40,10 @@ def _checkpoint(**overrides) -> dict:
     return build_evolution_checkpoint(**kwargs)
 
 
-# -- EF4-I60 atomic resume point ----------------------------------------
+# -- EF4-I61 atomic resume point ----------------------------------------
 
 
-def test_i60_complete_checkpoint_binds_every_component() -> None:
+def test_i61_complete_checkpoint_binds_every_component() -> None:
     checkpoint = _checkpoint()
     for component in CHECKPOINT_COMPONENTS:
         assert checkpoint[component]
@@ -51,7 +51,7 @@ def test_i60_complete_checkpoint_binds_every_component() -> None:
 
 
 @pytest.mark.parametrize("component", CHECKPOINT_COMPONENTS)
-def test_i60_partial_capture_is_refused(component: str) -> None:
+def test_i61_partial_capture_is_refused(component: str) -> None:
     """Resuming from a partial capture yields a configuration that never existed."""
     blank: object = [] if component.endswith("_ids") else ""
     with pytest.raises(CheckpointIncomplete) as excinfo:
@@ -60,7 +60,7 @@ def test_i60_partial_capture_is_refused(component: str) -> None:
     assert "never existed" in str(excinfo.value)
 
 
-def test_i60_missing_components_are_reportable() -> None:
+def test_i61_missing_components_are_reportable() -> None:
     """Gaps are reported in component order, not alphabetically.
 
     Declaration order matches the pipeline, so a reader sees which stage of the
@@ -71,12 +71,12 @@ def test_i60_missing_components_are_reportable() -> None:
     assert gaps[0] == "population_artifact_ids"
 
 
-def test_i60_evaluator_hash_is_bound_into_the_resume_point() -> None:
+def test_i61_evaluator_hash_is_bound_into_the_resume_point() -> None:
     """Resuming under a different evaluator would silently change the judge."""
     assert _checkpoint()["evaluator_bundle_hash"] == HASH
 
 
-# -- EF4-I61 stop certificate preserves partial work ---------------------
+# -- EF4-I62 stop certificate preserves partial work ---------------------
 
 
 def _certificate(**overrides) -> dict:
@@ -92,20 +92,20 @@ def _certificate(**overrides) -> dict:
     return build_stop_certificate(**kwargs)
 
 
-def test_i61_partial_results_are_always_visible() -> None:
+def test_i62_partial_results_are_always_visible() -> None:
     """Hiding where the search got to discards its most reusable output."""
     params = inspect.signature(build_stop_certificate).parameters
     assert "partial_results_visible" not in params
     assert _certificate()["partial_results_visible"] is True
 
 
-def test_i61_unresolved_work_is_carried_on_the_certificate() -> None:
+def test_i62_unresolved_work_is_carried_on_the_certificate() -> None:
     certificate = _certificate()
     assert certificate["unresolved_candidates"] == ["HG-7"]
     assert certificate["unassessed_niches"] == ["NICHE-4"]
 
 
-def test_i61_unexplained_stop_is_refused() -> None:
+def test_i62_unexplained_stop_is_refused() -> None:
     """An unexplained stop cannot be distinguished from a crash."""
     with pytest.raises(ValueError) as excinfo:
         _certificate(conditions_observed=[])
@@ -115,34 +115,34 @@ def test_i61_unexplained_stop_is_refused() -> None:
 @pytest.mark.parametrize(
     "reason", ["budget_exhausted", "max_generations", "dry_rounds", "human_stop"]
 )
-def test_i61_orderly_stops_are_classified_as_such(reason: str) -> None:
+def test_i62_orderly_stops_are_classified_as_such(reason: str) -> None:
     assert stop_was_orderly(_certificate(stop_reason=reason)) is True
 
 
 @pytest.mark.parametrize("reason", ["safety_stop", "blocked", "failed"])
-def test_i61_adverse_stops_are_not_orderly(reason: str) -> None:
+def test_i62_adverse_stops_are_not_orderly(reason: str) -> None:
     assert stop_was_orderly(_certificate(stop_reason=reason)) is False
 
 
-def test_i61_budget_exhaustion_does_not_prove_scope_coverage() -> None:
+def test_i62_budget_exhaustion_does_not_prove_scope_coverage() -> None:
     """Running out of budget is a different statement from covering the scope."""
     assert search_exhausted_within_scope(_certificate()) is False
 
 
-def test_i61_coverage_saturation_with_no_gaps_proves_scope_coverage() -> None:
+def test_i62_coverage_saturation_with_no_gaps_proves_scope_coverage() -> None:
     certificate = _certificate(stop_reason="coverage_saturation", unassessed_niches=[])
     assert search_exhausted_within_scope(certificate) is True
 
 
-def test_i61_adverse_stop_never_proves_coverage() -> None:
+def test_i62_adverse_stop_never_proves_coverage() -> None:
     certificate = _certificate(stop_reason="failed", unassessed_niches=[])
     assert search_exhausted_within_scope(certificate) is False
 
 
-# -- EF4-I59 fan-out reconciliation -------------------------------------
+# -- EF4-I60 fan-out reconciliation -------------------------------------
 
 
-def test_i59_clean_fan_out_reconciles() -> None:
+def test_i60_clean_fan_out_reconciles() -> None:
     report = reconcile_candidates(
         proposed=["C1", "C2"],
         generated=["C1", "C2"],
@@ -153,7 +153,7 @@ def test_i59_clean_fan_out_reconciles() -> None:
     require_reconciled(report)
 
 
-def test_i59_terminal_dispositions_account_for_a_candidate() -> None:
+def test_i60_terminal_dispositions_account_for_a_candidate() -> None:
     report = reconcile_candidates(
         proposed=["C1", "C2"],
         generated=["C1"],
@@ -164,7 +164,7 @@ def test_i59_terminal_dispositions_account_for_a_candidate() -> None:
     assert report["reconciled"] is True
 
 
-def test_i59_vanished_candidate_is_reported_as_missing() -> None:
+def test_i60_vanished_candidate_is_reported_as_missing() -> None:
     """A silently dropped candidate is indistinguishable from an empty result."""
     report = reconcile_candidates(
         proposed=["C1", "C2"], generated=["C1"], evaluated=["C1"], persisted=["C1"]
@@ -175,7 +175,7 @@ def test_i59_vanished_candidate_is_reported_as_missing() -> None:
     assert "vanished" in str(excinfo.value)
 
 
-def test_i59_storage_failure_is_distinct_from_a_generator_failure() -> None:
+def test_i60_storage_failure_is_distinct_from_a_generator_failure() -> None:
     """Each gap names a different failure class and must stay separate."""
     storage = reconcile_candidates(
         proposed=["C1"], generated=["C1"], evaluated=["C1"], persisted=[]
@@ -188,14 +188,14 @@ def test_i59_storage_failure_is_distinct_from_a_generator_failure() -> None:
     assert "evaluated_not_persisted" not in generator["gaps"]
 
 
-def test_i59_scheduling_failure_is_named_separately() -> None:
+def test_i60_scheduling_failure_is_named_separately() -> None:
     report = reconcile_candidates(
         proposed=["C1"], generated=["C1"], evaluated=[], persisted=[]
     )
     assert "generated_not_evaluated" in report["gaps"]
 
 
-def test_i59_candidate_appearing_without_provenance_is_refused() -> None:
+def test_i60_candidate_appearing_without_provenance_is_refused() -> None:
     """A result with no proposal upstream has no provenance."""
     report = reconcile_candidates(
         proposed=["C1"], generated=["C1", "GHOST"], evaluated=["C1"], persisted=["C1"]
@@ -206,7 +206,7 @@ def test_i59_candidate_appearing_without_provenance_is_refused() -> None:
     assert "no provenance" in str(excinfo.value)
 
 
-def test_i59_report_uses_identity_sets_not_only_counts() -> None:
+def test_i60_report_uses_identity_sets_not_only_counts() -> None:
     report = reconcile_candidates(
         proposed=["C1", "C2"], generated=["C1"], evaluated=["C1"], persisted=["C1"]
     )

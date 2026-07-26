@@ -1,4 +1,4 @@
-"""Independent preregistered replication (EF4-I57).
+"""Independent preregistered replication (EF4-I58).
 
 Contract source: `schemas/replication-plan.schema.json`.
 

@@ -1,4 +1,4 @@
-"""Candidate fan-out reconciliation (EF4-I59).
+"""Candidate fan-out reconciliation (EF4-I60).
 
 `Every fan-out reconciles proposed, generated, evaluated, persisted, failed,
 cancelled and missing candidate identities.`

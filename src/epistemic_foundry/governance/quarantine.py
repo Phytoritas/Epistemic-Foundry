@@ -1,4 +1,4 @@
-"""Prompt and evaluator mutation quarantine (EF4-I54, EF4-I55).
+"""Prompt and evaluator mutation quarantine (EF4-I55, EF4-I56).
 
 Contract sources: `schemas/prompt-mutation-proposal.schema.json` and
 `schemas/evaluator-mutation-proposal.schema.json`.

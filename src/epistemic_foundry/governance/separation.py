@@ -1,12 +1,13 @@
 """Role separation and evidence-class integrity.
 
-* EF4-I11: makers cannot approve their own work, claim promotion, validation, or
-  release. Self-approval is the cheapest way to bypass every other gate, so the
-  check is on actor identity rather than on declared role.
-* EF4-I12 (relabeling): simulation, formal derivation, benchmark, and
-  review-derived evidence never become empirical observation by relabeling. An
-  upgrade across the empirical boundary is refused; a downgrade is honest and
+* EF4-I11 (evidence-class separation): simulation, formal derivation, benchmark,
+  and review-derived evidence never become empirical observation by relabeling.
+  An upgrade across the empirical boundary is refused; a downgrade is honest and
   allowed.
+* EF4-I12 (no self-approval): makers cannot approve their own work, claim
+  promotion, validation, or release. Self-approval is the cheapest way to bypass
+  every other gate, so the check is on actor identity rather than on declared
+  role.
 """
 
 from __future__ import annotations

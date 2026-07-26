@@ -109,7 +109,7 @@ def test_complete_genome_passes_the_gate() -> None:
     require_evolvable(_genome())
 
 
-# -- EF4-I51 refutation replication -------------------------------------
+# -- EF4-I52 refutation replication -------------------------------------
 
 
 def _result(outcome: str, *, candidate: str = "CAND-1", challenge: str = "CG-1") -> dict:

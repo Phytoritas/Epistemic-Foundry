@@ -244,38 +244,38 @@ def test_i10_inference_modes_stay_separate() -> None:
     assert reasoning_mode_separation_holds(nodes, declared) is True
 
 
-# -- EF4-I11 No self-approval --------------------------------------------
+# -- EF4-I12 No self-approval --------------------------------------------
 
 
-def test_i11_maker_cannot_approve_own_work() -> None:
+def test_i12_maker_cannot_approve_own_work() -> None:
     with pytest.raises(SelfApprovalRefused) as excinfo:
         require_independent_approval(author_ids=["AG-maker"], approver_id="AG-maker")
     assert "cannot approve it" in str(excinfo.value)
     require_independent_approval(author_ids=["AG-maker"], approver_id="AG-reviewer")
 
 
-def test_i11_unrecorded_authorship_cannot_be_approved() -> None:
+def test_i12_unrecorded_authorship_cannot_be_approved() -> None:
     """Independence cannot be verified when no author is recorded."""
     with pytest.raises(SelfApprovalRefused):
         require_independent_approval(author_ids=[], approver_id="AG-reviewer")
 
 
-def test_i11_approval_independence_check_is_non_raising() -> None:
+def test_i12_approval_independence_check_is_non_raising() -> None:
     assert approval_is_independent({"author_ids": ["A"], "approver_id": "B"}) is True
     assert approval_is_independent({"author_ids": ["A"], "approver_id": "A"}) is False
 
 
-# -- EF4-I12 No empirical relabeling -------------------------------------
+# -- EF4-I11 Evidence-class separation (no empirical relabeling) ---------
 
 
 @pytest.mark.parametrize("origin", ["modeling", "formal", "benchmark", "review"])
-def test_i12_derived_evidence_cannot_be_relabeled_empirical(origin: str) -> None:
+def test_i11_derived_evidence_cannot_be_relabeled_empirical(origin: str) -> None:
     with pytest.raises(RelabelingRefused) as excinfo:
         require_no_empirical_relabeling(origin, "primary_empirical")
     assert "by relabeling" in str(excinfo.value)
 
 
-def test_i12_downgrade_is_an_honest_correction() -> None:
+def test_i11_downgrade_is_an_honest_correction() -> None:
     require_no_empirical_relabeling("primary_empirical", "modeling")
     require_no_empirical_relabeling("modeling", "review")
     require_no_empirical_relabeling("modeling", "modeling")

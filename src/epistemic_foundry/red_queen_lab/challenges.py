@@ -28,7 +28,7 @@ ADVERSE_OUTCOMES = frozenset({"REFUTED", "SCOPE_RESTRICTED"})
 UNRESOLVED_OUTCOMES = frozenset({"INCONCLUSIVE", "ERROR", "METHOD_FAILURE"})
 
 #: How many independent runs an apparent refutation needs before it counts
-#: (EF4-I51). One adverse result can be a flake in the challenge itself, and
+#: (EF4-I52). One adverse result can be a flake in the challenge itself, and
 #: retracting a hypothesis on an unreplicated failure is as wrong as promoting on
 #: an unreplicated success.
 REFUTATION_REPLICATION_REQUIRED = 2

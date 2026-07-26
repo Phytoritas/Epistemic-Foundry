@@ -1,4 +1,4 @@
-"""Operator and model bandits (EF4-I53).
+"""Operator and model bandits with delayed reward routing (EF4-I54).
 
 Contract source: `schemas/operator-bandit-state.schema.json`.
 
