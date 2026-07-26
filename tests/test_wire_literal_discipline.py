@@ -56,6 +56,8 @@ DECLARING_MODULES: frozenset[str] = frozenset(
         "updates/migration.py",
         "evaluation/novelty.py",
         "evaluation/fitness.py",
+        "statistics/sequential.py",
+        "statistics/selective.py",
         "verifier_firewall/firewall.py",
         "aporia_engine/argument.py",
         "plugin_shell/capabilities.py",
@@ -98,6 +100,7 @@ GENERIC_VALUES: frozenset[str] = frozenset(
         # match indicates the scan hit an identifier, not a serialized literal.
         "scope",
         "max_generations",
+        "method",
     }
 )
 
