@@ -26,7 +26,7 @@ def test_status_reports_partial_implementation(capsys) -> None:
     payload = json.loads(capsys.readouterr().out)
     assert payload["runtime_status"] == "PARTIAL_IMPLEMENTATION"
     assert payload["release_level"] == "SPEC_BUNDLE"
-    assert "evolution_chamber" in payload["specified_only"]
+    assert "shinka_adapter" in payload["specified_only"]
     assert "noetic_ledger" in payload["implemented"]
     assert payload["canonical_schemas_loaded"] == 124
 

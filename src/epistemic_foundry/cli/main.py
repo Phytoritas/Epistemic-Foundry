@@ -48,6 +48,7 @@ IMPLEMENTED_COMPONENTS = (
     "claim_forge",
     "evidence_parliament",
     "validation_bay",
+    "evolution_chamber",
 )
 
 SPECIFIED_ONLY_COMPONENTS = (
@@ -55,7 +56,6 @@ SPECIFIED_ONLY_COMPONENTS = (
     "epistemic_atlas",
     "aporia_engine",
     "hypothesis_passport",
-    "evolution_chamber",
     "red_queen_lab",
     "epistemic_species_archive",
     "shinka_adapter",
