@@ -19,6 +19,38 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 EXCLUDED = {"PACKAGE_MANIFEST.json", "MANIFEST.sha256"}
+
+#: Working-tree infrastructure that is never shipped bundle content. Kept in
+#: sync with `validate_spec_bundle.NON_BUNDLE_PREFIXES`: if the builder and the
+#: validator disagree about what belongs in the bundle, every local checkout
+#: reports a spurious manifest mismatch.
+NON_BUNDLE_PREFIXES = (
+    ".git/",
+    ".rah/",
+    ".venv/",
+    "__pycache__/",
+    ".pytest_cache/",
+    "build/",
+    "dist/",
+    "docs/architecture/",
+    "src/",
+    "tests/",
+)
+
+NON_BUNDLE_FILES = {".gitignore", "pyproject.toml"}
+
+NON_BUNDLE_SUFFIXES = (".pyc", ".pyo", ".egg-info")
+
+
+def is_non_bundle_path(rel: str) -> bool:
+    """True when `rel` is local infrastructure rather than bundle content."""
+    if rel in NON_BUNDLE_FILES:
+        return True
+    if any(rel == prefix.rstrip("/") or rel.startswith(prefix) for prefix in NON_BUNDLE_PREFIXES):
+        return True
+    if any(f"/{marker}" in f"/{rel}" for marker in ("__pycache__/", ".pytest_cache/")):
+        return True
+    return rel.endswith(NON_BUNDLE_SUFFIXES)
 FIXED_ZIP_TIME = (2026, 7, 26, 0, 0, 0)
 
 
@@ -32,7 +64,13 @@ def sha256_file(path: Path) -> str:
 
 def package_files(root: Path) -> list[Path]:
     return sorted(
-        (p for p in root.rglob("*") if p.is_file() and p.relative_to(root).as_posix() not in EXCLUDED),
+        (
+            p
+            for p in root.rglob("*")
+            if p.is_file()
+            and p.relative_to(root).as_posix() not in EXCLUDED
+            and not is_non_bundle_path(p.relative_to(root).as_posix())
+        ),
         key=lambda p: p.relative_to(root).as_posix(),
     )
 
@@ -102,7 +140,16 @@ def write_manifest(root: Path) -> dict[str, Any]:
 def create_zip(root: Path, output: Path, prefix: str) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     output.unlink(missing_ok=True)
-    files = sorted((p for p in root.rglob("*") if p.is_file()), key=lambda p: p.relative_to(root).as_posix())
+    # Bundle content plus the two manifest files, which package_files excludes
+    # by contract but the archive must still carry.
+    files = sorted(
+        (
+            p
+            for p in root.rglob("*")
+            if p.is_file() and not is_non_bundle_path(p.relative_to(root).as_posix())
+        ),
+        key=lambda p: p.relative_to(root).as_posix(),
+    )
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for path in files:
             rel = path.relative_to(root).as_posix()
@@ -152,7 +199,8 @@ def verify_zip(root: Path, output: Path, prefix: str) -> dict[str, Any]:
         unsafe = sorted(n for n in names if unsafe_zip_name(n))
         expected = {
             f"{prefix}/{p.relative_to(root).as_posix()}": sha256_file(p)
-            for p in root.rglob("*") if p.is_file()
+            for p in root.rglob("*")
+            if p.is_file() and not is_non_bundle_path(p.relative_to(root).as_posix())
         }
         actual = set(names)
         missing = sorted(set(expected) - actual)
@@ -169,6 +217,8 @@ def verify_zip(root: Path, output: Path, prefix: str) -> dict[str, Any]:
             if not p.is_file():
                 continue
             rel = p.relative_to(root)
+            if is_non_bundle_path(rel.as_posix()):
+                continue
             target = extracted / rel
             if not target.exists() or sha256_file(target) != sha256_file(p):
                 extraction_errors.append(rel.as_posix())

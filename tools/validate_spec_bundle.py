@@ -541,6 +541,43 @@ def validate_roles_prompts_and_text(root: Path, errors: list[str], report: dict[
     report["text_and_adapters"] = {"prompts": len(prompts), "roles": len(role_items), "codex_agents": len(codex_agents), "claude_role_profiles": len(claude_profiles), "text_files_scanned": len(set(paths)), "forbidden_domain_hits": len(forbidden_hits), "placeholder_hits": len(placeholder_hits), "secret_hits": len(secret_hits), "markdown_fence_errors": len(fence_errors)}
 
 
+#: Directory prefixes that are working-tree infrastructure, not shipped bundle
+#: content. Version control, harness runtime state, virtualenvs, and build or
+#: test caches exist only in a developer checkout, so counting them as manifest
+#: inventory turns any local implementation work into a spurious FAIL.
+NON_BUNDLE_PREFIXES = (
+    ".git/",
+    ".rah/",
+    ".venv/",
+    "__pycache__/",
+    ".pytest_cache/",
+    "build/",
+    "dist/",
+    # Implementation tree and harness design docs: real project content, but
+    # not part of the released specification bundle inventory.
+    "docs/architecture/",
+    "src/",
+    "tests/",
+)
+
+#: Filename suffixes that are never bundle content.
+NON_BUNDLE_SUFFIXES = (".pyc", ".pyo", ".egg-info")
+
+#: Root-level files that belong to the checkout rather than the bundle.
+NON_BUNDLE_FILES = {".gitignore", "pyproject.toml"}
+
+
+def _is_non_bundle_path(rel: str) -> bool:
+    """True when `rel` is local working-tree infrastructure."""
+    if rel in NON_BUNDLE_FILES:
+        return True
+    if any(rel == prefix.rstrip("/") or rel.startswith(prefix) for prefix in NON_BUNDLE_PREFIXES):
+        return True
+    if any(f"/{prefix}" in f"/{rel}" for prefix in ("__pycache__/", ".pytest_cache/")):
+        return True
+    return rel.endswith(NON_BUNDLE_SUFFIXES)
+
+
 def validate_package_manifest(root: Path, errors: list[str], report: dict[str, Any]) -> None:
     mp, cp = root / "PACKAGE_MANIFEST.json", root / "MANIFEST.sha256"
     if not mp.exists() and not cp.exists():
@@ -568,7 +605,13 @@ def validate_package_manifest(root: Path, errors: list[str], report: dict[str, A
             mismatches.append(f"missing {rel}")
         elif sha256_file(path) != entry.get("sha256") or path.stat().st_size != entry.get("bytes"):
             mismatches.append(f"hash/size mismatch {rel}")
-    actual = {p.relative_to(root).as_posix() for p in root.rglob("*") if p.is_file() and p.relative_to(root).as_posix() not in excluded}
+    actual = {
+        rel
+        for rel in (
+            p.relative_to(root).as_posix() for p in root.rglob("*") if p.is_file()
+        )
+        if rel not in excluded and not _is_non_bundle_path(rel)
+    }
     if listed != actual:
         mismatches.append(f"inventory mismatch missing={sorted(actual-listed)[:10]} extra={sorted(listed-actual)[:10]}")
     if cp.read_text(encoding="utf-8").strip().split()[0] != sha256_file(mp):
