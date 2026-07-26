@@ -54,11 +54,11 @@ IMPLEMENTED_COMPONENTS = (
     "shinka_adapter",
     "aporia_engine",
     "hypothesis_passport",
+    "epistemic_atlas",
 )
 
 SPECIFIED_ONLY_COMPONENTS = (
     "plugin_shell",
-    "epistemic_atlas",
 )
 
 
