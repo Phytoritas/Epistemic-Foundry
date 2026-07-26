@@ -66,6 +66,17 @@ def test_spend_field_matches_the_schema() -> None:
     assert remaining_alpha(0.05, [_look(0.02)]) == pytest.approx(0.03)
 
 
+def test_selection_history_can_actually_be_recorded() -> None:
+    """`selection_events` is an array of strings in the schema.
+
+    It was once annotated and copied as a mapping, which raised on every non-empty
+    list. The only ledger that could be built was one whose selection history was
+    empty, which is the history this invariant exists to preserve.
+    """
+    ledger = _ledger(selection_events=["G5 top-decile cut", "G9 island migration"])
+    assert ledger["selection_events"] == ["G5 top-decile cut", "G9 island migration"]
+
+
 def test_overspent_ledger_is_refused() -> None:
     with pytest.raises(SequentialBudgetExhausted) as excinfo:
         _ledger(entries=[_look(0.04, 1), _look(0.04, 2)])

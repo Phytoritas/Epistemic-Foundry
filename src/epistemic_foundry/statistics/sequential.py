@@ -51,7 +51,7 @@ def build_sequential_ledger(
     testing_policy: str,
     initial_budget: float,
     entries: Sequence[Mapping[str, Any]],
-    selection_events: Sequence[Mapping[str, Any]],
+    selection_events: Sequence[str],
     ledger_id: str | None = None,
 ) -> dict[str, Any]:
     """Record the looks taken and the budget left.
@@ -85,7 +85,10 @@ def build_sequential_ledger(
         "initial_budget": float(initial_budget),
         "entries": [dict(entry) for entry in entries],
         "remaining_budget": remaining_alpha(initial_budget, entries),
-        "selection_events": [dict(event) for event in selection_events],
+        # The schema types these as strings, matching `selective.py`. Treating them
+        # as mappings raised on every non-empty list, so a real ledger could only
+        # ever be recorded with its selection history empty.
+        "selection_events": [str(event) for event in selection_events],
     }
     ledger["ledger_hash"] = hash_excluding(ledger, "ledger_hash")
     validate_artifact("sequential-testing-ledger", ledger)
