@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "epistemic-foundry"
+version = "4.0.0"
+description = "Epistemic Foundry v4 — evolution-governed hypothesis validation kernel"
+requires-python = ">=3.12"
+dependencies = [
+    "jsonschema>=4.23,<5",
+    "PyYAML>=6.0,<7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0,<9"]
+
+[project.scripts]
+efoundry = "epistemic_foundry.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
