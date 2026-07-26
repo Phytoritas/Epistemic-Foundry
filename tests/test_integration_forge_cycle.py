@@ -16,6 +16,7 @@ from epistemic_foundry.foundry_kernel import ForgeKernel, TransitionRejected
 from epistemic_foundry.foundry_kernel.gates import GateSpec, evaluate_gate, gate_decision
 from epistemic_foundry.governance import PromotionRequest, decide_promotion
 from epistemic_foundry.noetic_ledger import NoeticLedger
+from epistemic_foundry.red_queen_lab import build_challenge_result, survived_challenges
 from epistemic_foundry.validation_bay import (
     aggregate_cascade_status,
     build_cascade_plan,
@@ -252,6 +253,60 @@ def test_export_is_refused_without_the_gate_the_parliament_saw(kernel: ForgeKern
     gated = _reach_gate(kernel)
     with pytest.raises(TransitionRejected):
         _advance(kernel, gated, ForgePhase.EXPORT)
+
+
+def _challenge(outcome: str, *, artifacts=("REPRO-1",)) -> dict:
+    return build_challenge_result(
+        challenge_genome_id="CG-1",
+        target_candidate_id="CAND-1",
+        stage_result_id="SER-1",
+        outcome=outcome,
+        severity="major",
+        observed_effect=f"observed {outcome.lower()}",
+        reproduction_artifact_ids=artifacts,
+    )
+
+
+def _promote_with(challenge_results: list[dict]) -> dict:
+    _, cascade_status = _cascade({"S0": "PASS", "S5": "PASS"})
+    return decide_promotion(
+        PromotionRequest(
+            candidate_id="CAND-1",
+            requested_level="SUPPORTED",
+            hard_gate_status=cascade_status,
+            fitness_vector_id="FV-1",
+            parliament_adjudication_id="ADJ-1",
+            selective_inference_report_id="SIR-1",
+            replication_result_ids=("REP-1",),
+            approval_record_ids=("APR-1",),
+            grounded_evidence_ids=("EV-1",),
+            dependency_cluster_ids=("EDC-1",),
+            challenge_survived=survived_challenges("CAND-1", challenge_results),
+        )
+    )
+
+
+def test_unchallenged_candidate_cannot_promote_end_to_end() -> None:
+    """Red Queen survival feeds promotion: no challenge means no credit."""
+    decision = _promote_with([])
+    assert decision["decision"] == "UNDERDETERMINED"
+    assert "Red Queen challenge" in decision["rationale"]
+
+
+def test_refuted_candidate_cannot_promote_end_to_end() -> None:
+    decision = _promote_with([_challenge("SURVIVED"), _challenge("REFUTED")])
+    assert decision["decision"] == "UNDERDETERMINED"
+
+
+def test_inconclusive_challenge_cannot_promote_end_to_end() -> None:
+    """A crashed adversary must not be laundered into survival."""
+    decision = _promote_with([_challenge("INCONCLUSIVE")])
+    assert decision["decision"] == "UNDERDETERMINED"
+
+
+def test_surviving_every_challenge_promotes_end_to_end() -> None:
+    decision = _promote_with([_challenge("SURVIVED"), _challenge("SURVIVED")])
+    assert decision["decision"] == "PROMOTE"
 
 
 def test_every_transition_is_recorded_in_the_ledger(kernel: ForgeKernel) -> None:
