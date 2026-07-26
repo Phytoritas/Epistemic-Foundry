@@ -56,6 +56,8 @@ IMPLEMENTED_COMPONENTS = (
     "hypothesis_passport",
     "epistemic_atlas",
     "plugin_shell",
+    "retrieval",
+    "ingest",
 )
 
 #: Capabilities the bundle specifies that this runtime does not implement.
