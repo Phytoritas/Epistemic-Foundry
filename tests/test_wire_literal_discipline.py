@@ -54,6 +54,8 @@ DECLARING_MODULES: frozenset[str] = frozenset(
         "claim_forge/grounding.py",
         "updates/impact.py",
         "updates/migration.py",
+        "evaluation/novelty.py",
+        "evaluation/fitness.py",
         "verifier_firewall/firewall.py",
         "aporia_engine/argument.py",
         "plugin_shell/capabilities.py",

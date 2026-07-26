@@ -64,6 +64,7 @@ IMPLEMENTED_COMPONENTS = (
     "budgets",
     "providers",
     "updates",
+    "evaluation",
 )
 
 #: Capabilities the bundle specifies that this runtime does not implement.
