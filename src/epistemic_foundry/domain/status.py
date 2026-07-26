@@ -95,3 +95,25 @@ class ExitStatus(_StrEnum):
     UNASSESSED = "UNASSESSED"
     INVALIDATED = "INVALIDATED"
     REPLICATION_FAILED = "REPLICATION_FAILED"
+
+
+class ActorType(_StrEnum):
+    """Who performed an action.
+
+    Shared across transition requests, receipts, and dispatch records so the
+    vocabulary cannot drift between the surfaces that serialize it.
+    """
+
+    HUMAN = "human"
+    AGENT = "agent"
+    SERVICE = "service"
+    TOOL = "tool"
+
+
+class NonconvergenceOutcome(_StrEnum):
+    """What a loop reports when it stops without converging."""
+
+    BLOCK = "BLOCK"
+    PARTIAL = "PARTIAL"
+    ESCALATE = "ESCALATE"
+    FAIL = "FAIL"

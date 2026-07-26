@@ -17,16 +17,11 @@ from __future__ import annotations
 from typing import Any, Mapping, Sequence
 
 from ..contracts import validate_artifact
+from ..domain.vocabularies import PROMOTION_LADDER, promotion_rank
 
-#: Promotion levels ordered from triage to fully replicated.
-PROMOTION_ORDER: tuple[str, ...] = (
-    "INBOX",
-    "CANDIDATE",
-    "LITERATURE_GROUNDED",
-    "VALIDATION_SCREENED",
-    "EMPIRICALLY_TESTED",
-    "REPLICATED",
-)
+#: Promotion levels ordered from triage to fully replicated, shared with method
+#: comparability so the two cannot disagree about the ladder.
+PROMOTION_ORDER = PROMOTION_LADDER
 
 #: Epistemic statuses that cannot support advancement beyond CANDIDATE.
 NON_ADVANCING_EPISTEMIC_STATUSES = frozenset(
@@ -40,9 +35,9 @@ class PassportViolation(ValueError):
 
 def _rank(level: str) -> int:
     try:
-        return PROMOTION_ORDER.index(level)
+        return promotion_rank(level)
     except ValueError as exc:  # pragma: no cover - schema enum guards this
-        raise PassportViolation(f"unknown promotion level {level!r}") from exc
+        raise PassportViolation(str(exc)) from exc
 
 
 def status_dimensions_are_independent(

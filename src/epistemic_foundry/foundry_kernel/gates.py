@@ -25,6 +25,14 @@ from ..domain.time import utc_now_iso
 
 EvaluatorType = Literal["deterministic", "human", "model_assisted", "formal_verifier"]
 
+#: Gate statuses that count as satisfied. Declared once here and imported by
+#: every consumer: three independent copies of this set would drift the moment a
+#: status is added, and the copy that lagged would silently accept or reject the
+#: wrong outcome.
+SATISFIED_GATE_STATUSES: frozenset[str] = frozenset(
+    {GateStatus.PASS.value, GateStatus.WAIVE.value}
+)
+
 
 class WaiverRefused(PermissionError):
     """A waiver was attempted against a non-waivable gate."""
@@ -134,4 +142,4 @@ def all_passed(decisions: Sequence[dict[str, Any]]) -> bool:
 
     FAIL and BLOCK are never absorbed: a blocked gate is a truthful stop.
     """
-    return all(decision.get("status") in {"PASS", "WAIVE"} for decision in decisions)
+    return all(decision.get("status") in SATISFIED_GATE_STATUSES for decision in decisions)

@@ -17,8 +17,12 @@ from typing import Any, Literal, Sequence
 from ..contracts import validate_artifact
 from ..domain.hashing import canonical_json, hash_excluding, sha256_of_payload
 from ..domain.ids import new_id
+from ..domain.status import ActorType
 from ..domain.time import utc_now_iso
 
+#: Actor vocabulary comes from `domain.status.ActorType`; the Literal alias below
+#: exists only for type checking and is kept in step with that enum by
+#: `tests/test_wire_literal_discipline.py`.
 ArtifactActorType = Literal["human", "agent", "service", "tool"]
 EffectStatus = Literal["SUCCEEDED", "FAILED", "UNKNOWN", "ROLLED_BACK", "NOT_EXECUTED"]
 ValidationStatus = Literal["PASS", "FAIL", "NOT_RUN"]
@@ -31,7 +35,7 @@ def build_artifact_receipt(
     locator: str,
     media_type: str,
     actor_id: str,
-    actor_type: ArtifactActorType = "service",
+    actor_type: ArtifactActorType = ActorType.SERVICE.value,  # type: ignore[assignment]
     schema_ref: str | None = None,
     action_intent_id: str | None = None,
     validation_results: Sequence[dict[str, str]] | None = None,

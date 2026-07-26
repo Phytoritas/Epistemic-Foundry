@@ -22,10 +22,10 @@ from typing import Any, Sequence
 from ..contracts import validate_artifact
 from ..domain.hashing import hash_excluding
 from ..domain.ids import new_id
-from ..domain.status import ForgePhase, SessionStatus, WorkClass
+from ..domain.status import ActorType, ForgePhase, SessionStatus, WorkClass
 from ..domain.time import utc_now_iso
 from ..noetic_ledger import NoeticLedger
-from .gates import all_passed
+from .gates import SATISFIED_GATE_STATUSES, all_passed
 from .transitions import (
     ILLEGAL_TRANSITION_REASON,
     allowed_targets,
@@ -105,7 +105,7 @@ class ForgeKernel:
         actor_id: str,
         actor_role: str,
         reason: str,
-        actor_type: str = "agent",
+        actor_type: str = ActorType.AGENT.value,
         artifact_receipt_ids: Sequence[str] = (),
         gate_result_ids: Sequence[str] = (),
         human_decision_id: str | None = None,
@@ -191,7 +191,7 @@ class ForgeKernel:
                 failing = [
                     f"{decision.get('name')}={decision.get('status')}"
                     for decision in gate_decisions
-                    if decision.get("status") not in {"PASS", "WAIVE"}
+                    if decision.get("status") not in SATISFIED_GATE_STATUSES
                 ]
                 raise TransitionRejected(
                     f"refusing {to_phase}: unsatisfied gate(s) {', '.join(failing)}"

@@ -18,21 +18,17 @@ from ..contracts import validate_artifact
 from ..domain.hashing import hash_excluding
 from ..domain.ids import new_id
 from ..domain.time import utc_now_iso
+from ..domain.vocabularies import PROMOTION_LADDER
+from ..foundry_kernel.gates import SATISFIED_GATE_STATUSES
 
 #: Verdicts that assert the hypothesis holds to some degree.
 POSITIVE_VERDICTS = frozenset({"ENTAILED", "SUPPORTED", "CONDITIONAL"})
 
 #: Recommendations above plain triage. Reaching any of these while a
-#: deterministic gate failed is an override attempt.
-ADVANCING_RECOMMENDATIONS = frozenset(
-    {
-        "CANDIDATE",
-        "LITERATURE_GROUNDED",
-        "VALIDATION_SCREENED",
-        "EMPIRICALLY_TESTED",
-        "REPLICATED",
-    }
-)
+#: deterministic gate failed is an override attempt. Derived from the shared
+#: ladder (everything above INBOX) so a new level is advancing by default rather
+#: than silently exempt.
+ADVANCING_RECOMMENDATIONS = frozenset(PROMOTION_LADDER[1:])
 
 
 class GateOverrideAttempted(PermissionError):
@@ -44,7 +40,7 @@ def _gates_failed(gate_decisions: Sequence[dict[str, Any]]) -> list[str]:
     return [
         str(decision.get("name"))
         for decision in gate_decisions
-        if decision.get("status") not in {"PASS", "WAIVE"}
+        if decision.get("status") not in SATISFIED_GATE_STATUSES
     ]
 
 

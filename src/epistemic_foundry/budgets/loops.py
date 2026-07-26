@@ -16,6 +16,7 @@ from typing import Any, Mapping
 from ..contracts import validate_artifact
 from ..domain.hashing import hash_excluding
 from ..domain.ids import new_id
+from ..domain.status import NonconvergenceOutcome
 
 
 class LoopContractViolation(ValueError):
@@ -36,7 +37,7 @@ def build_loop_contract(
     dry_rounds_required: int,
     dedupe_key: str,
     seen_set_scope: str = "run",
-    on_nonconvergence: str = "ESCALATE",
+    on_nonconvergence: str = NonconvergenceOutcome.ESCALATE.value,
     loop_id: str | None = None,
 ) -> dict[str, Any]:
     """Seal a loop contract with every stop condition present.

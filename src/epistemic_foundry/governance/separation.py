@@ -13,14 +13,19 @@ from __future__ import annotations
 
 from typing import Any, Mapping, Sequence
 
+from ..domain.vocabularies import (
+    EMPIRICAL_EVIDENCE_CLASSES,
+    NON_EMPIRICAL_EVIDENCE_CLASSES,
+)
+
 #: Evidence classes that record direct empirical observation.
-EMPIRICAL_CLASSES: frozenset[str] = frozenset({"primary_empirical", "secondary_empirical"})
+EMPIRICAL_CLASSES = EMPIRICAL_EVIDENCE_CLASSES
 
 #: Classes that are derived, simulated, formal, or secondhand. Promoting one of
-#: these into an empirical class is relabeling, not reclassification.
-NON_EMPIRICAL_CLASSES: frozenset[str] = frozenset(
-    {"modeling", "formal", "benchmark", "review", "background", "methodological", "user_generated"}
-)
+#: these into an empirical class is relabeling, not reclassification. Derived
+#: from the shared vocabulary so a new evidence class cannot be silently absent
+#: from this boundary.
+NON_EMPIRICAL_CLASSES = NON_EMPIRICAL_EVIDENCE_CLASSES
 
 
 class SelfApprovalRefused(PermissionError):
