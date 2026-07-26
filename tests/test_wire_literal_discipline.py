@@ -52,6 +52,8 @@ DECLARING_MODULES: frozenset[str] = frozenset(
         "hypothesis_passport/passport.py",
         "claim_forge/evidence.py",
         "claim_forge/grounding.py",
+        "updates/impact.py",
+        "updates/migration.py",
         "verifier_firewall/firewall.py",
         "aporia_engine/argument.py",
         "plugin_shell/capabilities.py",

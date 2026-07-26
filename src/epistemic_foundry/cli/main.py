@@ -63,6 +63,7 @@ IMPLEMENTED_COMPONENTS = (
     "security",
     "budgets",
     "providers",
+    "updates",
 )
 
 #: Capabilities the bundle specifies that this runtime does not implement.
