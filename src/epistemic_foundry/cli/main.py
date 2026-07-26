@@ -55,11 +55,15 @@ IMPLEMENTED_COMPONENTS = (
     "aporia_engine",
     "hypothesis_passport",
     "epistemic_atlas",
-)
-
-SPECIFIED_ONLY_COMPONENTS = (
     "plugin_shell",
 )
+
+#: Capabilities the bundle specifies that this runtime does not implement.
+#: Empty means every named v4 component has a package with passing gates; it does
+#: NOT mean the release level advances. `PLUGIN_ALPHA` and above additionally
+#: require install-matrix, sandbox, UI, and deployment evidence that no unit test
+#: can supply (`manifests/acceptance_matrix.yaml`).
+SPECIFIED_ONLY_COMPONENTS: tuple[str, ...] = ()
 
 
 def _emit(payload: dict[str, Any], *, as_json: bool) -> None:

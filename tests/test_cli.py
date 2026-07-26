@@ -26,9 +26,23 @@ def test_status_reports_partial_implementation(capsys) -> None:
     payload = json.loads(capsys.readouterr().out)
     assert payload["runtime_status"] == "PARTIAL_IMPLEMENTATION"
     assert payload["release_level"] == "SPEC_BUNDLE"
-    assert "plugin_shell" in payload["specified_only"]
     assert "noetic_ledger" in payload["implemented"]
     assert payload["canonical_schemas_loaded"] == 124
+
+
+def test_status_still_refuses_to_claim_plugin_alpha(capsys) -> None:
+    """Every component having a package does not advance the release level.
+
+    PLUGIN_ALPHA requires install-matrix, sandbox, hook-degradation, and UI
+    evidence that no unit test supplies, so the runtime must keep reporting
+    SPEC_BUNDLE and PARTIAL_IMPLEMENTATION.
+    """
+    main(["--json", "status"])
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["specified_only"] == []
+    assert payload["release_level"] == "SPEC_BUNDLE"
+    assert payload["runtime_status"] == "PARTIAL_IMPLEMENTATION"
+    assert "production" in payload["note"] or "working-plugin" in payload["note"]
 
 
 def test_status_does_not_list_a_component_as_both_states(capsys) -> None:
