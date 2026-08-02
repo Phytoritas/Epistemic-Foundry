@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "skill": "recursive-architecture-refactoring-auto",
-  "generated_at_utc": "2026-08-02T10:17:41+00:00",
-  "updated_at_utc": "2026-08-02T10:17:41+00:00",
+  "generated_at_utc": "2026-08-02T10:32:16+00:00",
+  "updated_at_utc": "2026-08-02T10:32:16+00:00",
   "repo_root": "C:\\dev\\insight\\Epistemic-Foundry",
   "goal_id": "ralph-continue-epistemic-foundry-v4-0-0-under-product-owner-decision-hd-ef4-b04-sg002-20260730-001-preserve-b04-0006-projection-pass-and-package-spec-gap-plus-every-prior-attempt-report-review-command-receipt-rah-evidence-and-generation-and-the-dirty-worktree-in-the-primary-session-without-fleet-or-subagents-execute-serially-c03-0003-f04-0002-j02-0003-s04-0003-b04-0007-projection-and-regression-revalidation-c04-0002-full-conformance-b04-0008-final-packaging-then-recompute-the-156-package-dag-and-continue-dependency-ready-packages-until-the-verified-external-goal-is-terminal-keep-completion-ready-false-until-all-objective-gates-pass",
   "goal": "Implement the complete Epistemic Foundry v4.0.0 specification under product-owner decisions including HD-EF4-S04-SG001-20260731-001. Preserve S04-0004 as immutable SPEC_GAP history and preserve every prior attempt, HumanDecision, RAH evidence and generation, report, review, receipt, command record, and the dirty worktree. In the primary session without Fleet or subagents, seal S04-0005 PASS, then execute serially C01-0009, C02-0004, B04-0009, O02-0002, C04-0004, and the next-unused final B04 packaging attempt; recompute the 156-package DAG and continue the next dependency-ready package. Keep completion_ready false until every objective, source-coverage, PRD, review, validation, and closeout gate actually passes.",
@@ -18,7 +18,7 @@
   "harness_phase": "execution",
   "blocked_reason": null,
   "completion_readiness": {
-    "ready": true,
+    "ready": false,
     "missing_acceptance_ids": [],
     "missing_validation_ids": [],
     "missing_closeout_ids": [],
@@ -26,8 +26,8 @@
     "missing_acceptance_evidence_ids": [],
     "missing_validation_evidence_ids": [],
     "missing_closeout_evidence_ids": [],
-    "missing_review": false,
-    "review_status": "approved",
+    "missing_review": true,
+    "review_status": "stale",
     "review_required": true,
     "evidence_count": 381,
     "source_coverage_present": true,
@@ -111,7 +111,7 @@
     "skill": "recursive-architecture-refactoring-auto",
     "goal_id": "ralph-continue-epistemic-foundry-v4-0-0-under-product-owner-decision-hd-ef4-b04-sg002-20260730-001-preserve-b04-0006-projection-pass-and-package-spec-gap-plus-every-prior-attempt-report-review-command-receipt-rah-evidence-and-generation-and-the-dirty-worktree-in-the-primary-session-without-fleet-or-subagents-execute-serially-c03-0003-f04-0002-j02-0003-s04-0003-b04-0007-projection-and-regression-revalidation-c04-0002-full-conformance-b04-0008-final-packaging-then-recompute-the-156-package-dag-and-continue-dependency-ready-packages-until-the-verified-external-goal-is-terminal-keep-completion-ready-false-until-all-objective-gates-pass",
     "required": true,
-    "status": "approved",
+    "status": "stale",
     "reviewer": "reviewer",
     "attempts": [
       {
@@ -319,7 +319,7 @@
       "pending_no_response_allows_fallback": false,
       "fallback_requires_explicit_tool_or_runtime_failure": true
     },
-    "updated_at_utc": "2026-08-02T10:17:41+00:00",
+    "updated_at_utc": "2026-08-02T10:32:16+00:00",
     "requested_at_utc": "2026-08-02T10:16:37+00:00",
     "current_attempt": null,
     "review_snapshot": {
@@ -339,7 +339,8 @@
       "E0384"
     ],
     "approval_evidence_id": "E0386",
-    "state_generation": "000377-adbbd7a8"
+    "state_generation": "000379-e97890cb",
+    "stale_reason": "review subject changed after approval: git_head, tracked_diff_sha256, untracked_manifest_sha256"
   },
   "review_wait_policy": {
     "pending_is_wait_state": true,
@@ -361,9 +362,9 @@
   },
   "stagnation": {
     "last_loop_phase": "bounded-implementation",
-    "same_phase_without_evidence_count": 2,
-    "pivot_required": false,
-    "pivot_reason": null
+    "same_phase_without_evidence_count": 4,
+    "pivot_required": true,
+    "pivot_reason": "same loop phase repeated without new evidence"
   },
   "state_machine": {
     "states": [
@@ -378,8 +379,12 @@
       "cancelled",
       "failed"
     ],
-    "current_state": "done",
-    "allowed_next_states": []
+    "current_state": "act",
+    "allowed_next_states": [
+      "verify",
+      "plan",
+      "blocked"
+    ]
   },
   "autonomous_completion_contract": {
     "mode": "exhaustive",
@@ -426,9 +431,9 @@
     ".rah/ralph/source_requirement_coverage.json"
   ],
   "next_actions": [
-    "Run the structured closeout audit before persisting done.",
-    "If closeout passes, persist done atomically with the closeout evidence attached.",
-    "If closeout fails, fix the failed closeout sections and retry --mark-done --closeout-check."
+    "Complete the missing source-material coverage, acceptance, validation, closeout, and review rows before marking the goal done.",
+    "Record concrete evidence with --record-evidence or --record-gap.",
+    "Re-run RALPH with --acceptance-met, --validation-passed, --closeout-met, and reviewer gate row ids when observed."
   ],
   "stop_conditions": [
     "definition_of_done_satisfied",
@@ -468,11 +473,9 @@
     "source_update": "python <active-skill-root>/automation/rah.py source \"C:\\\\dev\\\\insight\\\\Epistemic-Foundry\" update <row-id> --status analyzed --evidence \"<analysis evidence>\" --validation \"<coverage validation>\"",
     "ops": "python <active-skill-root>/automation/rah.py ops \"C:\\\\dev\\\\insight\\\\Epistemic-Foundry\" driver-status"
   },
-  "closeout_pending": false,
-  "mark_done_candidate": true,
   "closeout_check": {
     "ready": false,
     "path": ".rah/ralph/closeout_check.json",
-    "updated_at_utc": "2026-08-02T10:17:41+00:00"
+    "updated_at_utc": "2026-08-02T10:32:16+00:00"
   }
 }

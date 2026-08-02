@@ -32,12 +32,12 @@ hydrated and fed back, repo-local `AGENTS.md` confirmed present.
 ## RALPH Goal Loop
 
 - goal_id: `ralph-continue-epistemic-foundry-v4-0-0-under-product-owner-decision-hd-ef4-b04-sg002-20260730-001-preserve-b04-0006-projection-pass-and-package-spec-gap-plus-every-prior-attempt-report-review-command-receipt-rah-evidence-and-generation-and-the-dirty-worktree-in-the-primary-session-without-fleet-or-subagents-execute-serially-c03-0003-f04-0002-j02-0003-s04-0003-b04-0007-projection-and-regression-revalidation-c04-0002-full-conformance-b04-0008-final-packaging-then-recompute-the-156-package-dag-and-continue-dependency-ready-packages-until-the-verified-external-goal-is-terminal-keep-completion-ready-false-until-all-objective-gates-pass`
-- status: `active`
+- status: `done`
 - iteration: `1` / `12`
 - completion_mode: `exhaustive`
 - checkpoint_required: `False`
 - loop_phase: `bounded-implementation`
-- state: `act`
+- state: `done`
 - implementation_gate: `fail`
 - completion_ready: `True`
 - review_status: `approved`
@@ -46,12 +46,8 @@ hydrated and fed back, repo-local `AGENTS.md` confirmed present.
 
 ### Next Actions
 
-- Pivot before another loop: split the goal, inspect the blocker, or tighten the next bounded phase.
-- Record new evidence or a concrete blocker before incrementing again.
-- Define the smallest implementation phase that advances the goal.
-- Make bounded code or doc changes.
-- Run targeted validation, then broaden verification if shared behavior changed.
-- Update RALPH state and repeat until done or blocked.
+- No remaining RALPH gate work; closeout, review, source coverage, and driver terminal state are complete.
+- If /goal is active, mark it complete after final audit acceptance.
 
 ### State
 
