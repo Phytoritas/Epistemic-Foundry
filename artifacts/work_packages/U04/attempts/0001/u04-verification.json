@@ -1,0 +1,39 @@
+{
+  "attempt_id": "U04-0001",
+  "declared_required_checks": [
+    "accessibility_test",
+    "packaged_ui_parity_test"
+  ],
+  "declaring_sources": {
+    "packaged_surface": "tests/ui/ui-surface.mjs binds the sealed U02/U03 view projections, their packaged export-surface barrels, and the recorded route manifest; parity and accessibility are measured over that sealed code and frozen data, never over a running site"
+  },
+  "exit_criteria": {
+    "vite_and_packaged_paths_behave_identically": {
+      "mechanism": "for every U02/U03 view the record and rendered HTML built through the packaged export-surface barrels are byte-for-byte identical to the ones built through the source path a Vite build compiles, and their canonical hashes re-derive; every packaged barrel re-exports exactly the source implementations and adds nothing that traces to no source module; the packaged client route table matches the recorded route manifest and the packaged navigation binds only manifest-declared operations; a forked or invented barrel export is each refused",
+      "status": "PASS"
+    },
+    "wcag_critical_failures_zero": {
+      "mechanism": "every rendered console panel carries one main/header/h1 landmark and an unbroken heading hierarchy, every section has a unique data-section id and an h2 accessible name, the rendered focus order equals the accessible projection order, status is conveyed as non-empty text rather than colour alone and empty results are rendered as text; the record-only health and navigation surfaces expose titled, textual, visible sections; each rule refuses a deliberately broken surface; the check is a deterministic property of the HTML and frozen records, with no running browser or axe engine",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "accessibility_test": {
+      "junit": "artifacts/work_packages/U04/attempts/0001/accessibility-test.junit.xml",
+      "status": "PASS",
+      "test_count": 21
+    },
+    "packaged_ui_parity_test": {
+      "junit": "artifacts/work_packages/U04/attempts/0001/packaged-ui-parity-test.junit.xml",
+      "status": "PASS",
+      "test_count": 20
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "accessibility_test": 21,
+    "full_node_suite": 1233,
+    "full_python_suite": 1261,
+    "packaged_ui_parity_test": 20
+  }
+}

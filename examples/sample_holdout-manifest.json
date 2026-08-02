@@ -1,15 +1,33 @@
 {
-  "holdout_manifest_id": "HO-1",
-  "dataset_or_fixture_ids": [
-    "DATA-HIDDEN-1"
+  "holdout_id": "HO-FIXTURE-0001",
+  "evaluator_id": "EVAL-FIXTURE-0001",
+  "split_strategy": "time-sliced with sealed OOD and adversarial strata",
+  "public_partition_refs": [
+    "ART-HOLDOUT-PUBLIC-0001"
   ],
-  "split_strategy": "time-sliced plus OOD strata",
-  "selection_cutoff": "2024-12-31",
-  "access_principal_ids": [
-    "ROLE-EVALUATOR"
+  "hidden_partition_handles": [
+    "opaque://holdout/hidden/0001"
   ],
-  "candidate_access": "NONE",
-  "unblinding_policy": "After run freeze and promotion decision only.",
-  "rotation_policy": "Rotate after defined exposure budget.",
-  "manifest_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  "ood_partition_handles": [
+    "opaque://holdout/ood/0001"
+  ],
+  "adversarial_partition_handles": [
+    "opaque://holdout/adversarial/0001"
+  ],
+  "content_hashes": [
+    "sha256:5e6e5ecee9c35b2268dd7c78f91f250d5e2f61e1fe96f8c3821273596cf51839",
+    "sha256:59adf528478b7d637d1a79995f99aad31e2ef798471af8b67d9424433c0c0f5c",
+    "sha256:d84b23f28d3ebfc7d4530d36c5ae6fb1ac90e2def9fcc4e9d6092b62e2ba83ba",
+    "sha256:82a1b973910d6e7ef78173eea8952132f1ec9f1150fc5c9234be949a0429b9ee"
+  ],
+  "acl_policy_hash": "sha256:1c8458b75884986044d34c03020c55a069da1917dcebbdb44fa21c37b8e34961",
+  "candidate_access": false,
+  "mutation_model_access": false,
+  "prompt_access": false,
+  "backend_access": false,
+  "log_redaction_policy": "Redact partition handles and all hidden content from ordinary logs.",
+  "cache_isolation_policy": "Use evaluator-only content-addressed caches with no candidate-visible keys.",
+  "unblinding_approval_required": true,
+  "sealed_at": "2026-07-30T00:00:00Z",
+  "manifest_hash": "sha256:8b9a0f2230f016dcf7581eb3a041f8df0aed5d96fd21d8ced8ae1bb1a63c2e40"
 }

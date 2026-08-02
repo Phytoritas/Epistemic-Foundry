@@ -1,0 +1,21 @@
+{
+  "check": "cache_key_audit",
+  "status": "PASS",
+  "workflow": ".github/workflows/ci.yml",
+  "cache_action": "actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+  "paths": [
+    "${{ runner.temp }}/efoundry-cache/npm",
+    "${{ runner.temp }}/efoundry-cache/uv"
+  ],
+  "key": "efoundry-deps-v1-${{ matrix.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json', 'uv.lock', 'toolchains/toolchain-lock.json', 'toolchains/python-build-constraints.txt') }}",
+  "hash_inputs": [
+    "package-lock.json",
+    "toolchains/python-build-constraints.txt",
+    "toolchains/toolchain-lock.json",
+    "uv.lock"
+  ],
+  "exact_restore_only": true,
+  "cross_os_archive": false,
+  "cache_miss_is_fatal": false,
+  "failures": []
+}

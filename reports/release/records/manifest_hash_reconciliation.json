@@ -1,0 +1,99 @@
+{
+  "canonical_hashing_deterministic": true,
+  "canonical_manifest_sha256": {
+    "manifests/acceptance_matrix.yaml": "sha256:2da1e3d569a6a854d7bf1df6974886aec54412bca7288322b61f0622fc0b28e5",
+    "manifests/development_manifest.yaml": "sha256:f9b3fe0aefebd3b36e34ac08c20f180a25069ce19dfef912732b1b3342de3c2b",
+    "manifests/product_invariants.yaml": "sha256:2ad55b98bf9904d3f65c6a16bd04fa9f9f0ddb2935a6396ae3762a6af21464eb",
+    "manifests/role_registry.yaml": "sha256:e18695a2f10720d18736f7878efed1ded0f69b048e8a08d2ef618289a1747809"
+  },
+  "declaring_sources": [
+    "manifests/development_manifest.yaml",
+    "manifests/acceptance_matrix.yaml",
+    "manifests/product_invariants.yaml",
+    "manifests/role_registry.yaml",
+    "PACKAGE_MANIFEST.json"
+  ],
+  "final_status": "PASS",
+  "generated_at": "1970-01-01T00:00:00Z",
+  "honesty_note": "The PACKAGE_MANIFEST byte pins for changed manifests are stale because later sealed packages modified those files within their own write scope; regenerating the snapshot is owned outside Z04, and no conformance test enforces the pin, so this is tracked debt, not a gate failure.",
+  "pin_enforcement_references": [],
+  "pin_reconciliation": [
+    {
+      "current_byte_sha256": "6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+      "disposition": "tracked_debt",
+      "matches": false,
+      "owner": "B04/canonical-registry regeneration (out of Z04 scope)",
+      "path": "manifests/development_manifest.yaml",
+      "pinned_byte_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7"
+    },
+    {
+      "current_byte_sha256": "36fa1c030c6789c43175e4f28ccc19e13873249498dd059ae4e0a44db6b2be0c",
+      "disposition": "tracked_debt",
+      "matches": false,
+      "owner": "B04/canonical-registry regeneration (out of Z04 scope)",
+      "path": "manifests/acceptance_matrix.yaml",
+      "pinned_byte_sha256": "5b089aaf1ae1e0c524d395df0308592e98b5c7663c21655d7d60a98ce8f5d00a"
+    },
+    {
+      "current_byte_sha256": "de74929aed1566bf2487dcdeba54cea68aa75e09a29add7c2010af6d84d32871",
+      "disposition": "tracked_debt",
+      "matches": false,
+      "owner": "B04/canonical-registry regeneration (out of Z04 scope)",
+      "path": "manifests/product_invariants.yaml",
+      "pinned_byte_sha256": "5c65fb028365ab907532df0606e6382106bf074d5ea66e87f1b69a742b722e95"
+    },
+    {
+      "current_byte_sha256": "511e5074b5fdfbfd8e5e3781c09130951b153167e67d27229fa891f3489f035b",
+      "matches": true,
+      "path": "manifests/role_registry.yaml",
+      "pinned_byte_sha256": "511e5074b5fdfbfd8e5e3781c09130951b153167e67d27229fa891f3489f035b"
+    },
+    {
+      "current_byte_sha256": "e27e2bcb433928263d56a503160dc9d7202ba553839136d2ae15cf2fdafde654",
+      "disposition": "tracked_debt",
+      "matches": false,
+      "owner": "B04/canonical-registry regeneration (out of Z04 scope)",
+      "path": "manifests/compatibility_matrix.yaml",
+      "pinned_byte_sha256": "320bf41268ee25c212030ca8c0edd9ea7a146e2f0069cb175f918a7fd7e99ca7"
+    }
+  ],
+  "record_sha256": "sha256:2397a66bc054721f54bde930333fc6533b30eb02ab03ad3738115b93097c87b7",
+  "schema_version": "z04-manifest-hash-reconciliation/v1",
+  "stale_pin_count": 4,
+  "stale_pins": [
+    {
+      "current_byte_sha256": "6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+      "disposition": "tracked_debt",
+      "matches": false,
+      "owner": "B04/canonical-registry regeneration (out of Z04 scope)",
+      "path": "manifests/development_manifest.yaml",
+      "pinned_byte_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7"
+    },
+    {
+      "current_byte_sha256": "36fa1c030c6789c43175e4f28ccc19e13873249498dd059ae4e0a44db6b2be0c",
+      "disposition": "tracked_debt",
+      "matches": false,
+      "owner": "B04/canonical-registry regeneration (out of Z04 scope)",
+      "path": "manifests/acceptance_matrix.yaml",
+      "pinned_byte_sha256": "5b089aaf1ae1e0c524d395df0308592e98b5c7663c21655d7d60a98ce8f5d00a"
+    },
+    {
+      "current_byte_sha256": "de74929aed1566bf2487dcdeba54cea68aa75e09a29add7c2010af6d84d32871",
+      "disposition": "tracked_debt",
+      "matches": false,
+      "owner": "B04/canonical-registry regeneration (out of Z04 scope)",
+      "path": "manifests/product_invariants.yaml",
+      "pinned_byte_sha256": "5c65fb028365ab907532df0606e6382106bf074d5ea66e87f1b69a742b722e95"
+    },
+    {
+      "current_byte_sha256": "e27e2bcb433928263d56a503160dc9d7202ba553839136d2ae15cf2fdafde654",
+      "disposition": "tracked_debt",
+      "matches": false,
+      "owner": "B04/canonical-registry regeneration (out of Z04 scope)",
+      "path": "manifests/compatibility_matrix.yaml",
+      "pinned_byte_sha256": "320bf41268ee25c212030ca8c0edd9ea7a146e2f0069cb175f918a7fd7e99ca7"
+    }
+  ],
+  "stale_pins_are_tracked_debt": true,
+  "work_package_id": "Z04"
+}

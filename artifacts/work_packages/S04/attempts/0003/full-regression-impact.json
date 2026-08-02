@@ -1,0 +1,64 @@
+{
+  "additional_checks": {
+    "git_diff_check": "PASS_WITH_EXISTING_LINE_ENDING_NOTICES_ONLY",
+    "node_syntax_check": "PASS",
+    "npm_check_boundaries": "PASS",
+    "npm_check_structure": "PASS",
+    "s04_red_team": "7/7 PASS",
+    "s04_traceability": "4/4 PASS"
+  },
+  "attempt_id": "S04-0003",
+  "diagnostic_command": {
+    "classification": "WINDOWS_CONSOLE_SCRIPT_IMPORT_PATH_DIAGNOSTIC",
+    "command_shape": "uv run ... pytest",
+    "exit_code": 2,
+    "failure": "ModuleNotFoundError: No module named 'scripts'",
+    "product_failure": false,
+    "successful_replacement": "uv run --frozen --extra dev --group skill-context python -B -m pytest"
+  },
+  "full_node": {
+    "cancelled": 0,
+    "collected": 460,
+    "failed": 0,
+    "junit": "artifacts/work_packages/S04/attempts/0003/full-node-suite.junit.xml",
+    "junit_sha256": "sha256:ff3baa7d905ace127ba704787e95e17efb7eca0d2d9c25c3b0a440d78705979a",
+    "passed": 460,
+    "semantic_counter_authority": "node_test_footer",
+    "skipped": 0,
+    "todo": 0,
+    "xml_errors": 0,
+    "xml_failures": 0,
+    "xml_skipped": 0,
+    "xml_testcase_count": 457
+  },
+  "full_python": {
+    "collected": 990,
+    "errors": 0,
+    "failed": 0,
+    "junit": "artifacts/work_packages/S04/attempts/0003/full-python-suite.junit.xml",
+    "junit_sha256": "sha256:dc93cd3e75429f5e53be66e77c31d012c2a542dcbec3dabdd1013de0d5888ac5",
+    "passed": 990,
+    "semantic_counter_authority": "pytest_testsuite_attributes",
+    "skipped": 0,
+    "xml_testcase_count": 990
+  },
+  "s04_owned_failure_count": 0,
+  "status": "PASS",
+  "targeted_security": {
+    "cancelled": 0,
+    "collected": 67,
+    "failed": 0,
+    "junit": "artifacts/work_packages/S04/attempts/0003/targeted-security-suite.junit.xml",
+    "junit_sha256": "sha256:a9ce7be122dc9d80bb4d674f6c39995ebeb0751aa1e85df716dc8f483be565e6",
+    "passed": 67,
+    "semantic_counter_authority": "node_test_footer",
+    "skipped": 0,
+    "todo": 0,
+    "xml_errors": 0,
+    "xml_failures": 0,
+    "xml_skipped": 0,
+    "xml_testcase_count": 67
+  },
+  "unexpected_failure_count": 0,
+  "unexpected_skip_or_xfail_count": 0
+}

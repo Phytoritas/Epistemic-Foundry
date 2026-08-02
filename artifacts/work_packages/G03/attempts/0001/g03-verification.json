@@ -1,0 +1,56 @@
+{
+  "attempt_id": "G03-0001",
+  "boundary_separation": {
+    "create_on_read_only_root_denied": true,
+    "installed_code_boundary_is_read_only": true,
+    "plugin_data_and_workspace_pairwise_disjoint": true,
+    "plugin_root_and_writable_data_disjoint": true,
+    "workspace_state_cannot_nest_under_installed_code": true
+  },
+  "determinism": {
+    "caller_supplied_absolute_roots_only": true,
+    "frozen_resolution_record": true,
+    "no_cwd_home_env_or_path_fallback": true,
+    "non_ascii_and_spaces_preserved_via_realpath_native": true,
+    "returned_path_requires_effect_time_reresolution": true
+  },
+  "exit_criteria": {
+    "installed_code_and_writable_data_separated": {
+      "evidence": [
+        "packages/plugin-host/src/paths/path-resolution.test.mjs",
+        "packages/plugin-host/src/paths/path-traversal.test.mjs"
+      ],
+      "mechanism": "resolvePluginPaths inspects each caller-supplied absolute root with lstat no-follow plus realpath canonical equality, then assertDisjoint proves PLUGIN_ROOT, PLUGIN_DATA, and the workspace boundary share no directory identity and do not nest; PLUGIN_ROOT and WORKSPACE_ROOT are read-only, so resolveBoundaryPath denies CREATE against them with BOUNDARY_WRITE_DENIED while writable targets are limited to PLUGIN_DATA and WORKSPACE_STATE",
+      "status": "PASS"
+    },
+    "non_ascii_and_spaces_paths_supported": {
+      "evidence": [
+        "packages/plugin-host/src/paths/path-resolution.test.mjs",
+        "packages/plugin-host/src/paths/path-traversal.test.mjs"
+      ],
+      "mechanism": "roots and portable relative children containing spaces and non-ASCII (Hangul) segments resolve through realpathSync.native to their exact canonical path, while traversal, absolute, mixed-separator, stream, Windows-reserved, trailing dot/space, and NUL inputs fail closed with INVALID_PATH/PATH_ESCAPE_DENIED",
+      "status": "PASS"
+    }
+  },
+  "fail_closed_traversal": {
+    "copied_resolution_loses_authority_via_weakmap": true,
+    "links_junctions_reparse_and_mount_crossing_denied": true,
+    "root_toctou_replacement_denied": true,
+    "traversal_absolute_mixed_separator_and_nul_denied": true,
+    "windows_reserved_stream_and_trailing_dot_space_denied": true
+  },
+  "required_checks": {
+    "path_resolution_test": {
+      "module": "packages/plugin-host/src/paths/path-resolution.test.mjs",
+      "status": "PASS",
+      "test_count": 8
+    },
+    "path_traversal_test": {
+      "module": "packages/plugin-host/src/paths/path-traversal.test.mjs",
+      "status": "PASS",
+      "test_count": 5
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 13
+}

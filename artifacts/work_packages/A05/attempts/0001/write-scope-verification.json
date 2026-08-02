@@ -1,0 +1,51 @@
+{
+  "approved_scope_roots": [
+    "src/epistemic_foundry/governance/evolution_authority/ (package boundary; 13 enumerated filenames are the maximal writable surface, not a mandatory per-file split -- OBS-A05-01)",
+    "workflows/evolution_promotion.workflow.yaml",
+    "workflows/verifier_firewall_qualification.workflow.yaml",
+    "workflows/hypothesis_replication.workflow.yaml",
+    "workflows/insight_deliberation.workflow.yaml",
+    "docs/v4_a05/**",
+    "tests/fixtures/a05/**",
+    "tests/governance/a05/**",
+    "artifacts/work_packages/A05/**"
+  ],
+  "attempt_id": "A05-0001",
+  "authored_by": "the bounded implementation agent (product code); the parent seal-prep session authored only this attempt's evidence scripts",
+  "component_files": [
+    "src/epistemic_foundry/governance/evolution_authority/__init__.py",
+    "src/epistemic_foundry/governance/evolution_authority/nodes.py",
+    "src/epistemic_foundry/governance/evolution_authority/registry.py"
+  ],
+  "consolidation_observation": {
+    "id": "OBS-A05-01",
+    "note": "The manifest enumerated 13 discrete module filenames (models.py, gate_registry.py, ... errors.py); the impl consolidated the identical constitutional semantics into __init__.py + registry.py + nodes.py, all inside the permitted evolution_authority/ package. No file was written outside the A05 scope roots. Non-blocking, disclosed.",
+    "severity": "non-blocking"
+  },
+  "marker_observation": {
+    "id": "OBS-A05-02",
+    "note": "tests/governance/__init__.py is the mandatory parent-package marker one level above the tests/governance/a05/** grant; it carries no logic and is pinned like the other product bytes.",
+    "severity": "non-blocking"
+  },
+  "product_file_hashes": {
+    "artifacts/work_packages/A05/attempts/0001/run_a05_0001_checks.py": "sha256:d70c849eb264fcc895b2f9bb79d6be39d4bf38b66c859b60faaa68710521da01",
+    "src/epistemic_foundry/governance/evolution_authority/__init__.py": "sha256:b8e1e4ca4d0b9918593b3d094211206de5fd955797147d72e1bd29d3c160aaa0",
+    "src/epistemic_foundry/governance/evolution_authority/nodes.py": "sha256:b95dbaf39a5b0bc54c7f3c81335b5296b77d95baea755a902828b3706a95cc93",
+    "src/epistemic_foundry/governance/evolution_authority/registry.py": "sha256:b7585a5dc9efd0d153eab67560c326183b72730107fe2630186473a9ea0b2072",
+    "tests/governance/__init__.py": "sha256:a1ee34ffe218d1f1e22cdf26bf1c9a0f9f16d412d93df87ced75681123b38718",
+    "tests/governance/a05/__init__.py": "sha256:086d5d64855dfeb44335a2df0e4696dbaf527962fa59d5ebbc8cb9ed26bc36b9",
+    "tests/governance/a05/test_a05_gate_registry.py": "sha256:9566d13fe31bd1ca9696ab0bf8946268ca90db077645d737d55f89f4811408fe",
+    "tests/governance/a05/test_a05_negative_cases.py": "sha256:3919d98633ae649f4b5b97579840a6aff87027b6c8cdcd22008ae58a4fd9640e",
+    "tests/governance/a05/test_a05_positive_cases.py": "sha256:c191cc527ad562111f9564eb22dcc4f114e6ae48819e4c4b2adf2e4cedf60ad4",
+    "workflows/evolution_promotion.workflow.yaml": "sha256:a1049d89b4c314a1123e1c98f5a08cea0fffd4a102503b748f801768d1e4334f",
+    "workflows/hypothesis_replication.workflow.yaml": "sha256:3c02eb15f7f08dbec76369ff26a4808a6a824644366fb93bffc763f7ee93fec3",
+    "workflows/insight_deliberation.workflow.yaml": "sha256:6a62df95af16e8e6d2a6efe56b714a50271b6bdfbf84ae0f2347bdcd0e324ead",
+    "workflows/verifier_firewall_qualification.workflow.yaml": "sha256:f6fb8b2c05b5ec9361583ce7d434eb8418ed99da0ed2bb49ca192c3f01b2f7e0"
+  },
+  "reset_clean_stash_commit_push_performed": false,
+  "reviewed_by": "the parent seal-prep session as a distinct actor from the bounded implementation author (INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK)",
+  "root_canonical_source_mutation_count": 0,
+  "schema_or_test_weakening_count": 0,
+  "status": "PASS",
+  "write_scope_violation_count": 0
+}

@@ -1,0 +1,138 @@
+{
+  "attempt_id": "J02-0001",
+  "authority_hashes": {
+    "AGENTS.md": "sha256:858e537ed3e49754b8e60d31c985467ee1246ed258c7763d6de4ef0767e381ea",
+    "MASTER_SPEC.md": "sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3",
+    "artifacts/work_packages/J01/attempts/0001/dependency-status.json": "sha256:0d99cf5da1c532d678ea7b73cc665e7c48525be9d1bd9d1710c8a6a4796eadf1",
+    "artifacts/work_packages/J01/report.json": "sha256:7a8f000e4915f5715441ec31cb054489c85254d2ce5d3657ef54a4e3d5da8e05",
+    "docs/v3_plugin_architecture.md": "sha256:a4a33cf60350378bcba5d0abaee99ecf4341665c0523ac430e9d7ab6b7b9de96",
+    "docs/v4_plugin_architecture.md": "sha256:6ff8f66cd7ffe8878d1901a0f49d3932b172316a74a93f3beeff05b7fa43a13f",
+    "manifests/development_manifest.yaml": "sha256:fb9656cce2fd4d0147571bc85726ebbbbb3f26a59ac644c5a12040007475d938",
+    "packages/plugin-host/src/skill-router/skill-router.mjs": "sha256:6320ea8bb09eb3b69b9b2ea180b3d14bb8dbbf501f3a5afbe5dea63060a9b737",
+    "schemas/skill-routing-decision.schema.json": "sha256:31bb0c22e5070ae2647322c19f1a7c02281e7f57cca1bea35664be691a485af7"
+  },
+  "classification": {
+    "not_blocked_reason": "No required host capability, credential, licensed source, tool, or external service is unavailable.",
+    "not_fail_reason": "No implementation was attempted because the loader, inventory, budget accounting, reachability semantics, and acceptance oracle are undefined.",
+    "typed_outcome": "SPEC_GAP"
+  },
+  "completion_ready": false,
+  "contract_surface": {
+    "authoritative_numeric_budget_threshold_count": 0,
+    "authoritative_tokenizer_version_count": 0,
+    "canonical_reference_inventory_count": 0,
+    "inherited_on_demand_statement_present": true,
+    "loader_owner_contract_count": 0,
+    "master_spec_operational_rule_count": 0,
+    "reachability_declaration_contract_count": 0,
+    "reference_mapping_contract_count": 0,
+    "required_check_definitions_outside_manifest": 0,
+    "required_check_mentions": {
+      "context_budget_test": 1,
+      "reference_reachability_test": 1
+    },
+    "router_budget_behavior": "CALLER_PROVIDED_FIELD_ONLY",
+    "router_enforces_or_calculates_budget": false
+  },
+  "implementation": {
+    "authorized_product_reference_files_created": 0,
+    "implementation_files_modified_by_attempt": 0,
+    "manifest_schema_router_or_skill_metadata_modified_by_attempt": 0,
+    "out_of_scope_product_changes": 0,
+    "tests_or_fixtures_created_by_attempt": 0
+  },
+  "inventory": {
+    "blueprint_reference_file_count": 0,
+    "blueprint_skill_ids": [
+      "foundry",
+      "foundry-admin",
+      "foundry-aporia",
+      "foundry-archive",
+      "foundry-atlas",
+      "foundry-challenge",
+      "foundry-claim-forge",
+      "foundry-domain-pack",
+      "foundry-evaluator-audit",
+      "foundry-evolution-replay",
+      "foundry-evolution-stop",
+      "foundry-evolve",
+      "foundry-evolve-convert",
+      "foundry-evolve-inspect",
+      "foundry-evolve-run",
+      "foundry-evolve-setup",
+      "foundry-intake",
+      "foundry-map",
+      "foundry-observe",
+      "foundry-parliament",
+      "foundry-passport",
+      "foundry-plugin-dev",
+      "foundry-promote-evolved",
+      "foundry-reason",
+      "foundry-recall",
+      "foundry-replay",
+      "foundry-replicate",
+      "foundry-shinka-adapter",
+      "foundry-validation"
+    ],
+    "blueprint_skill_md_count": 29,
+    "blueprint_skill_tree_file_count": 30,
+    "blueprint_status": "REFERENCE_BLUEPRINT_NOT_IMPLEMENTED",
+    "installed_files": [
+      "plugins/epistemic-foundry/skills/foundry/agents/openai.yaml",
+      "plugins/epistemic-foundry/skills/foundry/SKILL.md"
+    ],
+    "installed_reference_file_count": 0,
+    "installed_skill_md_count": 1,
+    "installed_skill_tree_file_count": 2
+  },
+  "manifest_contract": {
+    "dependency": "J01",
+    "exit_criteria": [
+      "only needed references load",
+      "initial skill metadata fits host budget"
+    ],
+    "required_checks": [
+      "context_budget_test",
+      "reference_reachability_test"
+    ],
+    "spec_gap_stop_condition": true,
+    "write_scope": [
+      "plugins/epistemic-foundry/skills/**/references/**"
+    ]
+  },
+  "missing_contracts": [
+    "numeric initial-metadata budget profile and accounting unit",
+    "tokenizer identity/version or byte accounting algorithm",
+    "included/excluded metadata fields and canonical encoding",
+    "fail-closed over-budget behavior",
+    "canonical installed child-skill/reference inventory and source authority",
+    "deterministic skill/request/state-to-reference selection mapping",
+    "reachability declaration, ordering, deduplication, transitive-load, cycle, missing-file, and traversal rules",
+    "loader/runtime owner, exact implementation paths, and write authority",
+    "authorized test paths, fixtures, and exact pass thresholds",
+    "product disposition of the 29 blueprint child SKILL.md files"
+  ],
+  "required_checks": {
+    "context_budget_test": {
+      "reason": "No authoritative budget threshold, accounting algorithm, tokenizer/version, included field set, or failure semantics exists.",
+      "status": "NOT_DEFINABLE"
+    },
+    "reference_reachability_test": {
+      "reason": "No canonical reference inventory, selection mapping, reachability declaration, loader contract, or pass threshold exists.",
+      "status": "NOT_DEFINABLE"
+    }
+  },
+  "required_product_owner_decisions": [
+    "Define exact initial-metadata budget profile(s), numeric thresholds, accounting unit, tokenizer/version if token-based, included fields, encoding, and over-budget failure semantics.",
+    "Designate the canonical installed child-skill/reference inventory and its source authority, including the disposition of the 29 blueprint child skills.",
+    "Define a closed deterministic reference-selection vocabulary and mapping from routed skill, request state, and policy to selected references.",
+    "Define the reachability declaration format and deterministic ordering, deduplication, transitive loading, missing reference, cycle, and path-traversal behavior.",
+    "Assign the loader/runtime owner and authorize exact implementation paths and write scope.",
+    "Authorize exact test/fixture paths and freeze objective pass thresholds for context_budget_test and reference_reachability_test."
+  ],
+  "schema_version": 1,
+  "spec_gap_id": "J02-SG001",
+  "status": "SPEC_GAP",
+  "subagents_or_fleet_used": false,
+  "work_package_id": "J02"
+}

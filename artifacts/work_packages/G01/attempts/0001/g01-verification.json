@@ -1,0 +1,532 @@
+{
+  "attempt_id": "G01-0001",
+  "checks": {
+    "asset_path_test": {
+      "negative_case_count": 7,
+      "negative_case_pass_count": 7,
+      "status": "PASS"
+    },
+    "plugin_manifest_validation": {
+      "error_count": 0,
+      "status": "PASS"
+    }
+  },
+  "errors": [],
+  "manifest": {
+    "capabilities": [],
+    "declared_component_fields": [],
+    "name": "epistemic-foundry",
+    "path": "plugins/epistemic-foundry/.codex-plugin/plugin.json",
+    "sha256": "sha256:1b1ec359ab93733114c95acb34c4a74615974456ddab52fa7c1c538159318a87",
+    "version": "4.0.0"
+  },
+  "negative_cases": [
+    {
+      "case_id": "parent_traversal",
+      "expected_code": "ASSET_PATH_UNSAFE",
+      "observed_codes": [
+        "ASSET_PATH_UNSAFE"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case_id": "windows_absolute_path",
+      "expected_code": "ASSET_PATH_UNSAFE",
+      "observed_codes": [
+        "ASSET_PATH_PREFIX_INVALID",
+        "ASSET_PATH_UNSAFE"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case_id": "missing_asset",
+      "expected_code": "ASSET_FILE_MISSING",
+      "observed_codes": [
+        "ASSET_FILE_MISSING"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case_id": "ungated_component",
+      "expected_code": "UNGATED_COMPONENT_DECLARATION",
+      "observed_codes": [
+        "UNGATED_COMPONENT_DECLARATION"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case_id": "capability_overclaim",
+      "expected_code": "CAPABILITY_OVERCLAIM",
+      "observed_codes": [
+        "CAPABILITY_OVERCLAIM"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case_id": "version_drift",
+      "expected_code": "VERSION_MISMATCH",
+      "observed_codes": [
+        "VERSION_MISMATCH"
+      ],
+      "status": "PASS"
+    },
+    {
+      "case_id": "missing_active_svg_fixture",
+      "expected_code": "ASSET_FILE_MISSING",
+      "observed_codes": [
+        "ASSET_FILE_MISSING"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "package_inventory": [
+    {
+      "byte_size": 970,
+      "path": "plugins/epistemic-foundry/.codex-plugin/plugin.json",
+      "sha256": "sha256:1b1ec359ab93733114c95acb34c4a74615974456ddab52fa7c1c538159318a87"
+    },
+    {
+      "byte_size": 229,
+      "path": "plugins/epistemic-foundry/.mcp.json",
+      "sha256": "sha256:4a9502ac75f5cd159e3d6b9c3be568ecb02073f8224b62383798611d7816ccda"
+    },
+    {
+      "byte_size": 234,
+      "path": "plugins/epistemic-foundry/assets/composer-icon.svg",
+      "sha256": "sha256:ca04da7e14c09211ee56fd8568f11f757837e7490fb8c059e5907889ccf22cfd"
+    },
+    {
+      "byte_size": 246,
+      "path": "plugins/epistemic-foundry/assets/logo.svg",
+      "sha256": "sha256:ed2847842f2108ec64cd98700ffa1d0ef4d4195095b1b92c47fe9783b4b9a4d4"
+    },
+    {
+      "byte_size": 734,
+      "path": "plugins/epistemic-foundry/bin/efoundry.mjs",
+      "sha256": "sha256:17723d450644508b755e725300a600f3792c05714056c794517bd9de2d005e05"
+    },
+    {
+      "byte_size": 698,
+      "path": "plugins/epistemic-foundry/hooks/delegation.json",
+      "sha256": "sha256:05fb9047ce62d00d296e47843c2130bbeb550ea43aa9d009dbcc8c2ce82cd4b6"
+    },
+    {
+      "byte_size": 348,
+      "path": "plugins/epistemic-foundry/hooks/prompt.json",
+      "sha256": "sha256:a2f8e95358c377dd7344c4702f65fb06e666afeddb76beb26df0d0639929818b"
+    },
+    {
+      "byte_size": 758,
+      "path": "plugins/epistemic-foundry/hooks/session.json",
+      "sha256": "sha256:d3030145bd0943125ccaea7d566a795e0b26501ce44813f8f329f826536f3a6e"
+    },
+    {
+      "byte_size": 1162,
+      "path": "plugins/epistemic-foundry/hooks/tools.json",
+      "sha256": "sha256:7bd22606fa69ebc447d538c682d2175547e56247fe66755b4c2ac33f0ab31007"
+    },
+    {
+      "byte_size": 498,
+      "path": "plugins/epistemic-foundry/skills/foundry-admin/SKILL.md",
+      "sha256": "sha256:9568fb2cbbe4c0c57d88aad142cadfc6f9576441fee4ce985e98f2962e7f1513"
+    },
+    {
+      "byte_size": 330,
+      "path": "plugins/epistemic-foundry/skills/foundry-admin/agents/openai.yaml",
+      "sha256": "sha256:01f96598cb172703fcadef153a2f5ecd9229da6c5af1124c70782b009ea08579"
+    },
+    {
+      "byte_size": 498,
+      "path": "plugins/epistemic-foundry/skills/foundry-aporia/SKILL.md",
+      "sha256": "sha256:bd3431ef71616c8d8db7cd1ec55abf3adb8c4d6bfc849bddbda8f37d7eb7c383"
+    },
+    {
+      "byte_size": 337,
+      "path": "plugins/epistemic-foundry/skills/foundry-aporia/agents/openai.yaml",
+      "sha256": "sha256:2c6f03b93f2066314834df6f83930575d6f1ef79964f37e74c72a7c8045de6fe"
+    },
+    {
+      "byte_size": 484,
+      "path": "plugins/epistemic-foundry/skills/foundry-archive/SKILL.md",
+      "sha256": "sha256:393a20cee1cd9a557f3db3401b3dc479d054396de6ca5c57174d4d3edf44e975"
+    },
+    {
+      "byte_size": 339,
+      "path": "plugins/epistemic-foundry/skills/foundry-archive/agents/openai.yaml",
+      "sha256": "sha256:af6215c2be4da71ebe9625ba69b02b71c65a9752cec1963b2acf7cd16183ce07"
+    },
+    {
+      "byte_size": 446,
+      "path": "plugins/epistemic-foundry/skills/foundry-atlas/SKILL.md",
+      "sha256": "sha256:ad479d73cd57504aaba2d1e1b43a96bc369566d721c3688875aed9210d2e1735"
+    },
+    {
+      "byte_size": 327,
+      "path": "plugins/epistemic-foundry/skills/foundry-atlas/agents/openai.yaml",
+      "sha256": "sha256:68a9fd28f44be0b906771f062c9d4571d2f82a80f19d1515033a99121e733652"
+    },
+    {
+      "byte_size": 486,
+      "path": "plugins/epistemic-foundry/skills/foundry-challenge/SKILL.md",
+      "sha256": "sha256:0e8b786d2b9e05b1fb7588bcbd471ec5d80fbfae1f9672b133e56c87219af77b"
+    },
+    {
+      "byte_size": 318,
+      "path": "plugins/epistemic-foundry/skills/foundry-challenge/agents/openai.yaml",
+      "sha256": "sha256:6df86428906cc8afc8b121062903dfea49832923438e0465c13678af52176657"
+    },
+    {
+      "byte_size": 470,
+      "path": "plugins/epistemic-foundry/skills/foundry-claim-forge/SKILL.md",
+      "sha256": "sha256:ce8c523a1acd509ee7753d6c852598d6e6526a03ea815ee1b767f2a45d73c65a"
+    },
+    {
+      "byte_size": 329,
+      "path": "plugins/epistemic-foundry/skills/foundry-claim-forge/agents/openai.yaml",
+      "sha256": "sha256:6edf654a679b5bc8af98ed1d3f8d7c493c58316e02f68bd59f7b4cbe938fc624"
+    },
+    {
+      "byte_size": 498,
+      "path": "plugins/epistemic-foundry/skills/foundry-domain-pack/SKILL.md",
+      "sha256": "sha256:3d2456905dc313c0c0c92c8b3e6dd2fc9864b57a98b42ddae6bb538f75fe2b91"
+    },
+    {
+      "byte_size": 347,
+      "path": "plugins/epistemic-foundry/skills/foundry-domain-pack/agents/openai.yaml",
+      "sha256": "sha256:cbc83703b231b9bc3043c00c0e8a8cd8f37b2a8f786c91a15ec87b007ea20d5f"
+    },
+    {
+      "byte_size": 552,
+      "path": "plugins/epistemic-foundry/skills/foundry-evaluator-audit/SKILL.md",
+      "sha256": "sha256:79b1701a5945df4a060644cecca4a2fcb304585a95a03b4c8e636cd520d4e053"
+    },
+    {
+      "byte_size": 337,
+      "path": "plugins/epistemic-foundry/skills/foundry-evaluator-audit/agents/openai.yaml",
+      "sha256": "sha256:600fb5554170e7c954ed9fcf07a7824839d3d28adcf5f38e2ac5c022fcb1ee8a"
+    },
+    {
+      "byte_size": 533,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolution-replay/SKILL.md",
+      "sha256": "sha256:c98a116d675c59ecfe826d53fa3f879aaf42d3c965301d62bbbc9e17cc4c437b"
+    },
+    {
+      "byte_size": 352,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolution-replay/agents/openai.yaml",
+      "sha256": "sha256:217fb80941d8154b8de3dfb1312f4706d0ba9a3f2ef46b282e627c150ac3b8c4"
+    },
+    {
+      "byte_size": 509,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolution-stop/SKILL.md",
+      "sha256": "sha256:fc0ba7646923333803ad318f7be9964a1552fc4f90c7a797aa7ed045526ce7bf"
+    },
+    {
+      "byte_size": 322,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolution-stop/agents/openai.yaml",
+      "sha256": "sha256:46e643a9c45ba67ccfbf902394e230653839aa62db14655be69eafa9489ad332"
+    },
+    {
+      "byte_size": 568,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolve-convert/SKILL.md",
+      "sha256": "sha256:c8e19d7e898d2966958312d6d6e988ad9a0bc98bd6d38078ebd0d5b57e1ef2bc"
+    },
+    {
+      "byte_size": 335,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolve-convert/agents/openai.yaml",
+      "sha256": "sha256:fb4a26aaba62578efcc8d333f76004b07d66cb8269def3e4dea6782a5d013d5a"
+    },
+    {
+      "byte_size": 559,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolve-inspect/SKILL.md",
+      "sha256": "sha256:9fd453a2741d818098df432632e86dee282dbad9b6e8a8f6369945d2d556d672"
+    },
+    {
+      "byte_size": 354,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolve-inspect/agents/openai.yaml",
+      "sha256": "sha256:b9bcfb860870eecb07d06122313500b0a26dafe1fb24c2926273c87bcad233f0"
+    },
+    {
+      "byte_size": 598,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolve-run/SKILL.md",
+      "sha256": "sha256:c4ffb46f13fd41820bc7dcc002d842a233ff733c87cc0d30b44f9cff6bafd2ca"
+    },
+    {
+      "byte_size": 355,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolve-run/agents/openai.yaml",
+      "sha256": "sha256:a3c2978adb53f4ac142a7dfffb1ab1cffcfa86fe25a2225ee659657620ba7d36"
+    },
+    {
+      "byte_size": 574,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolve-setup/SKILL.md",
+      "sha256": "sha256:eefae162083b13ad72c30a93215407846a104549fd9123e3fa0ec1e0c2d43c85"
+    },
+    {
+      "byte_size": 348,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolve-setup/agents/openai.yaml",
+      "sha256": "sha256:d45154035aea1337b33b30577b0453ff07bfc625085091971bc2cb45c5d80645"
+    },
+    {
+      "byte_size": 531,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolve/SKILL.md",
+      "sha256": "sha256:d435236f9057af36c52b37f2e9545e6f50d6a4a7f323b43c2da70893b3aafdb5"
+    },
+    {
+      "byte_size": 312,
+      "path": "plugins/epistemic-foundry/skills/foundry-evolve/agents/openai.yaml",
+      "sha256": "sha256:c92bfd620144f5e3da67be8d27ec9212d2c72eac330985fd4d60527f921db781"
+    },
+    {
+      "byte_size": 488,
+      "path": "plugins/epistemic-foundry/skills/foundry-intake/SKILL.md",
+      "sha256": "sha256:82310d63a144fdd8e47e918937a258b3a74d94367a9a5b797ac231f9b3a197b0"
+    },
+    {
+      "byte_size": 339,
+      "path": "plugins/epistemic-foundry/skills/foundry-intake/agents/openai.yaml",
+      "sha256": "sha256:a52ca2010bfc50d37707c8cf26d09b15cb5333f0145396d3bd84ce354e393776"
+    },
+    {
+      "byte_size": 466,
+      "path": "plugins/epistemic-foundry/skills/foundry-map/SKILL.md",
+      "sha256": "sha256:2ef28ae2ba17f86421b0bc57dfd307a46e5f6ce6fcbbc421d23ab40ed7008f11"
+    },
+    {
+      "byte_size": 325,
+      "path": "plugins/epistemic-foundry/skills/foundry-map/agents/openai.yaml",
+      "sha256": "sha256:6ed0a7c746c4757e0c241932a3382e42d654042afd53800d276e74741131f666"
+    },
+    {
+      "byte_size": 479,
+      "path": "plugins/epistemic-foundry/skills/foundry-observe/SKILL.md",
+      "sha256": "sha256:71b4bd46693198569012bbc7ea995fd6c6bf05882e47de5e8e768508d312b5ee"
+    },
+    {
+      "byte_size": 345,
+      "path": "plugins/epistemic-foundry/skills/foundry-observe/agents/openai.yaml",
+      "sha256": "sha256:49be2b342b40fa17186943f22e34fd5c035057ee98ff00f1b567dfb3ac4d5bfd"
+    },
+    {
+      "byte_size": 532,
+      "path": "plugins/epistemic-foundry/skills/foundry-parliament/SKILL.md",
+      "sha256": "sha256:3b855aa4e813e452e12fd83f50ced20704210000758c7791323ef76caa126c29"
+    },
+    {
+      "byte_size": 347,
+      "path": "plugins/epistemic-foundry/skills/foundry-parliament/agents/openai.yaml",
+      "sha256": "sha256:167543d61fd21147489675d6fcbc2f11cf57b77ef2a7c7530143a3c4894aa951"
+    },
+    {
+      "byte_size": 509,
+      "path": "plugins/epistemic-foundry/skills/foundry-passport/SKILL.md",
+      "sha256": "sha256:d479c581fa3231a68fbe78b31dc145714f794fb6574861ad771b313c92d7e958"
+    },
+    {
+      "byte_size": 319,
+      "path": "plugins/epistemic-foundry/skills/foundry-passport/agents/openai.yaml",
+      "sha256": "sha256:fda9b10c27d8847bd89db711c0ad408b64eefceaaff3ed9fc919c67e717e08a0"
+    },
+    {
+      "byte_size": 546,
+      "path": "plugins/epistemic-foundry/skills/foundry-plugin-dev/SKILL.md",
+      "sha256": "sha256:e8fac51adb775d94df061a686673d0a9faf20001172aa6fbe7792ffcf09a72eb"
+    },
+    {
+      "byte_size": 347,
+      "path": "plugins/epistemic-foundry/skills/foundry-plugin-dev/agents/openai.yaml",
+      "sha256": "sha256:dbb677e36b0ac4ab8d216d0937b59cc1e7757bd97a0aa68902ee4673995b683b"
+    },
+    {
+      "byte_size": 582,
+      "path": "plugins/epistemic-foundry/skills/foundry-promote-evolved/SKILL.md",
+      "sha256": "sha256:8af3edaa5a13e52657718482ab2cedaee177b73fa062b9899971825efb272bf6"
+    },
+    {
+      "byte_size": 349,
+      "path": "plugins/epistemic-foundry/skills/foundry-promote-evolved/agents/openai.yaml",
+      "sha256": "sha256:bdc8bdd0a4d0e857e86dce6595e590e0e99c2f371f94a9115e0f22de0b0c6962"
+    },
+    {
+      "byte_size": 519,
+      "path": "plugins/epistemic-foundry/skills/foundry-reason/SKILL.md",
+      "sha256": "sha256:85c262604aa224e8d9b9d5619bdaab074ad2be1fc4e95a7c4ae84fe64f9e80e8"
+    },
+    {
+      "byte_size": 345,
+      "path": "plugins/epistemic-foundry/skills/foundry-reason/agents/openai.yaml",
+      "sha256": "sha256:10231bcf12d49053ad0957db9d7f0f98f345bed71a66bc881084ca8cea4aa0cd"
+    },
+    {
+      "byte_size": 431,
+      "path": "plugins/epistemic-foundry/skills/foundry-recall/SKILL.md",
+      "sha256": "sha256:481cc79ff6d34090d171bdfa5af8c620bf34a434255318843e7d476bcddbca63"
+    },
+    {
+      "byte_size": 309,
+      "path": "plugins/epistemic-foundry/skills/foundry-recall/agents/openai.yaml",
+      "sha256": "sha256:303771a2b48a3d0555aa55e62a94a645afbca5f26b1b45e451faa2a0e395d636"
+    },
+    {
+      "byte_size": 468,
+      "path": "plugins/epistemic-foundry/skills/foundry-replay/SKILL.md",
+      "sha256": "sha256:16e7e22b310ff013e58501bc4711f0346b9520c2e5c394aabaee6af49d38aaf9"
+    },
+    {
+      "byte_size": 332,
+      "path": "plugins/epistemic-foundry/skills/foundry-replay/agents/openai.yaml",
+      "sha256": "sha256:5cef7c5703cb1c665c87006880705a8b2a067686b7c2fadfe2d9f7930a99fc9f"
+    },
+    {
+      "byte_size": 460,
+      "path": "plugins/epistemic-foundry/skills/foundry-replicate/SKILL.md",
+      "sha256": "sha256:f9e227b52839678b20c0fbf0ef993cb5560bdfd86005d7fb479ad46203cd05a9"
+    },
+    {
+      "byte_size": 330,
+      "path": "plugins/epistemic-foundry/skills/foundry-replicate/agents/openai.yaml",
+      "sha256": "sha256:977d3bd8abd7b5e7f1c0bea40e31152f5bc9f4a35412c340c7350465cbddf872"
+    },
+    {
+      "byte_size": 594,
+      "path": "plugins/epistemic-foundry/skills/foundry-shinka-adapter/SKILL.md",
+      "sha256": "sha256:6b741ccc1e31e2019ad63d6e4a9e63a9ff5a42a70cbf8b7c2a324a7d1ad66237"
+    },
+    {
+      "byte_size": 322,
+      "path": "plugins/epistemic-foundry/skills/foundry-shinka-adapter/agents/openai.yaml",
+      "sha256": "sha256:f5e19ae5ed62776cb1109728fae20a82dbcee4334bd0a0c1539f56d0caeb933a"
+    },
+    {
+      "byte_size": 556,
+      "path": "plugins/epistemic-foundry/skills/foundry-validation/SKILL.md",
+      "sha256": "sha256:c7b7138b9ec9cb921db2ce1c29d96bab23b429c52dff5fe9296d1cc5c60403a1"
+    },
+    {
+      "byte_size": 351,
+      "path": "plugins/epistemic-foundry/skills/foundry-validation/agents/openai.yaml",
+      "sha256": "sha256:e0b15cb9c37357ec78b91d11aba51e1a1b79e98f906f99dfd27863921b514ed7"
+    },
+    {
+      "byte_size": 1670,
+      "path": "plugins/epistemic-foundry/skills/foundry/SKILL.md",
+      "sha256": "sha256:307998d6997fdf1932b0a9ec3e8ef424db87b3247a7c53b96d51f293b0ccc4d9"
+    },
+    {
+      "byte_size": 823,
+      "path": "plugins/epistemic-foundry/skills/foundry/agents/openai.yaml",
+      "sha256": "sha256:a2a3674c8ec63d9e076808928d13b9a8d4f27966c5500b89cfaf41ac0b726df8"
+    },
+    {
+      "byte_size": 635,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/backends/shinka.md",
+      "sha256": "sha256:93ebece376fe12f694c7f73ddf599a2c7093e29294df3d53e1d99f201c1e96ec"
+    },
+    {
+      "byte_size": 700,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/context/memory-replay.md",
+      "sha256": "sha256:461263eeca29802fce1975227c906d16130ea066726affbf38c1ee75e0716582"
+    },
+    {
+      "byte_size": 757,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/core/constitution.md",
+      "sha256": "sha256:cdf37add731e666906156bce01db27c648765aa4eb97bb749096544cab42f10d"
+    },
+    {
+      "byte_size": 710,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/core/status-receipts.md",
+      "sha256": "sha256:eed12e5a6da3115987ae4e7fd7b773fd16ad0adaa6bdd90d54f2ab97beb2caf2"
+    },
+    {
+      "byte_size": 646,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/evidence/claim-search.md",
+      "sha256": "sha256:a62f68dfd4b718c0a8c77868455245c89cd514f19e01b746f01ddf7ac0d8607b"
+    },
+    {
+      "byte_size": 728,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/evidence/scope-method-dependency.md",
+      "sha256": "sha256:72c1aeebf8f795480f8b712feb684641c2b5cdf36d4a6c392aa5711f12c26c52"
+    },
+    {
+      "byte_size": 658,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/evolution/archive-red-queen.md",
+      "sha256": "sha256:42bec5859aeee20b53623a9b25cd931f424b11251b15b9414efa654c31efbaf6"
+    },
+    {
+      "byte_size": 690,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/evolution/run-genomes.md",
+      "sha256": "sha256:eb7c232a5b6a1ae9e1451ce4203a87613f0ffe1a91e1e2de5f83ca8e73e29f82"
+    },
+    {
+      "byte_size": 668,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/evolution/verifier-statistics.md",
+      "sha256": "sha256:76580211d67b669eb992bc731cdeca3c1df51fba88198950c7e7fe5e23b981ca"
+    },
+    {
+      "byte_size": 677,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/extensions/map-domain-pack.md",
+      "sha256": "sha256:f4761cd7fba2a1c5dd0246070936247969152df1febdd4d87db7ad73ec5eed11"
+    },
+    {
+      "byte_size": 642,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/parliament/asymmetric-gates.md",
+      "sha256": "sha256:717cd415a892091fd9b5fe8bb145a63a30a1370a2b4fb8851199fca712748ee2"
+    },
+    {
+      "byte_size": 716,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/passport/promotion.md",
+      "sha256": "sha256:e1b525e01a26013ee06b2ada0941b55ae23ef7a9c1a1a5eddb9ac3a3e3521ea6"
+    },
+    {
+      "byte_size": 669,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/plugin/development-release.md",
+      "sha256": "sha256:c652afe02362adb32195b5c78bdac47b6a234b204de45f519548e7fa27aa3fd5"
+    },
+    {
+      "byte_size": 678,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/plugin/security-administration.md",
+      "sha256": "sha256:8e5c519df8527e137fb590ae67c2f7d9965ce116f83e4ca3c1586485ba6e3ff9"
+    },
+    {
+      "byte_size": 639,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/reasoning/typed-modes.md",
+      "sha256": "sha256:7b84605eae8d36ccda0d59700957a9a567c897f0f906964108ed956a0a4139eb"
+    },
+    {
+      "byte_size": 673,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/router/e0-e5-routing.md",
+      "sha256": "sha256:22df0b2aeec0dfeeb70d49d09f3c172737ad42e182cd3ad5e3490d3686b83b31"
+    },
+    {
+      "byte_size": 666,
+      "path": "plugins/epistemic-foundry/skills/foundry/references/validation/replication.md",
+      "sha256": "sha256:68f5c7d4846826e9cb20d95a264ab1fb9f814712309c072a6a48d3ace3af244e"
+    },
+    {
+      "byte_size": 42587,
+      "path": "plugins/epistemic-foundry/skills/skill-inventory.json",
+      "sha256": "sha256:2c608ef57735c5f72de39c491763b68572c0802989627ddab86743f5b8b28c54"
+    }
+  ],
+  "resolved_assets": [
+    {
+      "byte_size": 234,
+      "height": 64,
+      "path": "plugins/epistemic-foundry/assets/composer-icon.svg",
+      "sha256": "sha256:ca04da7e14c09211ee56fd8568f11f757837e7490fb8c059e5907889ccf22cfd",
+      "width": 64
+    },
+    {
+      "byte_size": 246,
+      "height": 256,
+      "path": "plugins/epistemic-foundry/assets/logo.svg",
+      "sha256": "sha256:ed2847842f2108ec64cd98700ffa1d0ef4d4195095b1b92c47fe9783b4b9a4d4",
+      "width": 256
+    }
+  ],
+  "source_contracts": [
+    "MASTER_SPEC.md#G01",
+    "manifests/development_manifest.yaml#G01",
+    "Codex Manual: Package your plugin / Plugin structure / Path rules"
+  ],
+  "status": "PASS",
+  "verifier_version": "g01-verifier/1.0.0"
+}

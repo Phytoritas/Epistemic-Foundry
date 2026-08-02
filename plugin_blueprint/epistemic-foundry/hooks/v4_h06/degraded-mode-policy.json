@@ -1,0 +1,16 @@
+{
+  "policy_id": "EF-H06-DEGRADED-MODE-GATE-V4",
+  "policy_version": "4.0.0-h06.1",
+  "degraded_modes": ["BLOCKED", "DEGRADED", "READ_ONLY", "SAFE_MODE"],
+  "enabled_capability_states": ["SUPPORTED"],
+  "full_modes": ["FULL"],
+  "hook_capability_name": "plugin_hooks",
+  "host_bindings": [
+    { "capability_report_host": "chatgpt_work", "gateway_host": "other" },
+    { "capability_report_host": "claude_code", "gateway_host": "claude" },
+    { "capability_report_host": "codex_cli", "gateway_host": "codex" },
+    { "capability_report_host": "codex_desktop", "gateway_host": "codex" },
+    { "capability_report_host": "other", "gateway_host": "other" }
+  ],
+  "hosted_tool_capability_name": "hosted_tool_hooks"
+}

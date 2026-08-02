@@ -1,0 +1,60 @@
+{
+  "attempt_id": "B04-0007",
+  "attempt_level_dependencies": {
+    "C01": {
+      "attempt_id": "C01-0006",
+      "report": "artifacts/work_packages/C01/attempts/0006/report.json",
+      "report_sha256": "sha256:35c9f323ab976c60448e9d4138833d9dd67570fb26e99d8b4298be5e2424ac30",
+      "status": "PASS"
+    },
+    "C02": {
+      "attempt_id": "C02-0002",
+      "report": "artifacts/work_packages/C02/attempts/0002/report.json",
+      "report_sha256": "sha256:f89f0f3bc82697716f7833a57acabd6a3a9666196e3c4ec310f406d6576b45cf",
+      "status": "PASS"
+    },
+    "C03": {
+      "attempt_id": "C03-0003",
+      "report": "artifacts/work_packages/C03/attempts/0003/report.json",
+      "report_sha256": "sha256:624ee1ef8fb21ee33670e19b6262d3226e8350aaf291da8d90e94e8c46273a56",
+      "status": "PASS"
+    },
+    "F04": {
+      "attempt_id": "F04-0002",
+      "report": "artifacts/work_packages/F04/attempts/0002/report.json",
+      "report_sha256": "sha256:5a2414ebb79c923af7425b87d614faa088ba9fbd4e6950406948b2eb86d6ab46",
+      "status": "PASS"
+    },
+    "J02": {
+      "attempt_id": "J02-0003",
+      "report": "artifacts/work_packages/J02/attempts/0003/report.json",
+      "report_sha256": "sha256:d348ddc7c8b2d476d3424a6459079f0011d9fc69e29056131832b3ae2fc2d184",
+      "status": "PASS"
+    },
+    "S04": {
+      "attempt_id": "S04-0003",
+      "report": "artifacts/work_packages/S04/attempts/0003/report.json",
+      "report_sha256": "sha256:bf76a387c229769e568e650b150b5ede6b2136c3294d792a551a9802904cadd4",
+      "status": "PASS"
+    }
+  },
+  "authorized_order": [
+    "C03-0003",
+    "F04-0002",
+    "J02-0003",
+    "S04-0003",
+    "B04-0007",
+    "C01_GATE_DECISION_HASH_CORRECTION",
+    "C04-0002",
+    "B04-0008"
+  ],
+  "completion_ready": false,
+  "next_state": {
+    "B04-0007": "PASS",
+    "B04-0008": "WAITING_ON_C04_0002",
+    "C01_GATE_DECISION_HASH_CORRECTION": "READY",
+    "C04-0002": "WAITING_ON_C01_HASH_CORRECTION"
+  },
+  "static_dependency_cycle_added": false,
+  "status": "PASS"
+}

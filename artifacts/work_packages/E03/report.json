@@ -1,0 +1,241 @@
+{
+  "work_package_id": "E03",
+  "attempt_id": "E03-0001",
+  "title": "Capability leases, fencing and approval policy",
+  "status": "PASS",
+  "package_status": "PASS",
+  "completion_ready": false,
+  "dependencies": {
+    "E01": {
+      "status": "PASS",
+      "attempt_id": "E01-0001",
+      "report": "artifacts/work_packages/E01/report.json",
+      "report_sha256": "beddc2a3019fcf680435ea6d5f907b5e7b50b0fa8a384673917c6198f49f32e1",
+      "core_evidence_id": "E0024",
+      "final_closeout_evidence_id": "E0025"
+    }
+  },
+  "write_scope": [
+    "packages/foundry-kernel/src/capabilities/**",
+    "artifacts/work_packages/E03/**"
+  ],
+  "changed_files": [
+    {
+      "path": "packages/foundry-kernel/src/capabilities/capability-authority.mjs",
+      "sha256": "a8e3376568350229ca1a997aafbc1c4c138f2f01fbee945c916d390283a3720a",
+      "byte_size": 83266
+    },
+    {
+      "path": "packages/foundry-kernel/src/capabilities/capability-test-support.mjs",
+      "sha256": "6b08085736247a17b3c477617aa820274a09ca8206d616acc44cd12a1358e2fa",
+      "byte_size": 6095
+    },
+    {
+      "path": "packages/foundry-kernel/src/capabilities/fencing.test.mjs",
+      "sha256": "e66558d061c74f2c3be7c5a648b1230ad22f566359d608c6135b62f626940884",
+      "byte_size": 19428
+    },
+    {
+      "path": "packages/foundry-kernel/src/capabilities/lease-expiry.test.mjs",
+      "sha256": "ec179fea28039c9e53cc1df8d6d39e1b97ce45b8d60edb0193f64f472ac2f640",
+      "byte_size": 9546
+    }
+  ],
+  "implementation": {
+    "canonical_public_artifacts": [
+      "CapabilityLease",
+      "ApprovalRecord"
+    ],
+    "sealed_policy_projection": "exact principals, identity classes, subjects, makers, runs, capabilities, resource scopes, approval rules, and capability rules are canonicalized, frozen, and content-hashed",
+    "fencing": "D01 global monotonic token plus per-resource current heads; overlap on one scope stales the entire older multi-scope lease",
+    "lease_binding": "exact run, principal identity/type, capability set, resource-scope set, issue/expiry interval, approval IDs, policy hash/projection hash, and fencing token",
+    "approval_binding": "server-derived authority identity/role, exact subject/run/type/decision/evidence/conditions/expiry, immutable record hash, and latest decision head",
+    "atomic_commit": "pre-check lease, run synchronous callback through a private-record-denying D01 facade, post-check time/lease/approval/fencing, then persist mutation, lease-use, and outbox in one transaction",
+    "idempotency": {
+      "same_id_same_request": "returns the existing immutable logical result even after expiry",
+      "same_id_different_request": "conflict",
+      "revoked_lease_retry": "returns the current revoked revision without allocating a token",
+      "committed_operation_retry": "returns the prior result without invoking the callback"
+    },
+    "approval_invalidation": "a later DENY/EXPIRE/REVOKE head makes an older APPROVE ineligible; distinct heads require strictly increasing authority time",
+    "publication_protocol": "D01 canonical commit followed by idempotent D03/E01 outbox publication and explicit reconciliation",
+    "transport_capability_mapping_implemented": false,
+    "domain_record_authorization_implemented": false,
+    "schema_or_dependency_implementation_modified": false,
+    "current_working_directory_fallback": false
+  },
+  "exit_criteria": {
+    "leases_are_scoped_and_expiring": "PASS",
+    "stale_fencing_tokens_rejected": "PASS"
+  },
+  "required_checks": {
+    "lease_expiry_test": {
+      "status": "PASS",
+      "passed": 11,
+      "failed": 0
+    },
+    "fencing_test": {
+      "status": "PASS",
+      "passed": 19,
+      "failed": 0
+    },
+    "combined_targeted_gate": {
+      "status": "PASS",
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0
+    },
+    "final_repetitions": {
+      "status": "PASS",
+      "runs": 5,
+      "test_executions": 150,
+      "failed_runs": 0
+    },
+    "coverage": {
+      "status": "PASS",
+      "target": "packages/foundry-kernel/src/capabilities/capability-authority.mjs",
+      "line_percent": 90.27,
+      "branch_percent": 72.05,
+      "function_percent": 97.12
+    }
+  },
+  "regression": {
+    "python": {
+      "status": "PASS",
+      "passed": 913,
+      "failed": 0
+    },
+    "repository_wide_node_final": {
+      "status": "FAIL_OUTSIDE_E03",
+      "passed": 219,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "actual_manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+      "expected_legacy_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+      "owner_scope": "S04"
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix": "PASS",
+    "cache_key_audit": "PASS",
+    "ci_policy_mutation_tests": {
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0
+    },
+    "syntax_and_text_integrity": "PASS",
+    "debug_marker_audit": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "artifact": "artifacts/work_packages/E03/review.md",
+    "artifact_sha256": "7d4d91e6802156bcca2687bbd8e712189dad6e6129766fb1f0ce9f330ba1d428",
+    "blocking_findings": 0,
+    "resolved_finding_ids": [
+      "E03-RF001_POLICY_PROJECTION_REBIND",
+      "E03-RF002_REVOKED_ISSUANCE_RETRY",
+      "E03-RF003_APPROVAL_SCHEMA_PROOF",
+      "E03-RF004_APPROVAL_CLOCK_REGRESSION",
+      "E03-RF005_APPROVAL_TIMESTAMP_CONFLICT",
+      "E03-RF006_EXPIRED_EXACT_RETRY"
+    ],
+    "assurance_limitation": "The final pass is procedurally separate within the primary session under the product owner's serial no-Fleet/no-subagent decision; it is not external actor-independent certification."
+  },
+  "residual_integration_failures": [
+    {
+      "check": "repository-wide Node tests",
+      "status": "FAIL_OUTSIDE_E03",
+      "passed": 219,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "owner_scope": "S04"
+    },
+    {
+      "check": "scripts/build/double_build.py",
+      "status": "FAIL_OUTSIDE_E03",
+      "failure": "staged source build omits scripts required by the existing build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  ],
+  "preserved_limitations": [
+    "E03 proves local D01/D03/E01 capability coordination, not distributed consensus, remote-clock trust, or cross-region exactly-once execution.",
+    "The callback facade denies E03 private records; domain packages still own the capability-to-domain-record mapping verified by later integration gates.",
+    "E03 seals its exact capability-policy projection but does not redefine or recompute the full canonical PolicyBundle hash.",
+    "Transport approval capabilities remain adapter mappings rather than E03 kernel vocabulary.",
+    "The existing S04-TM004 stale manifest-hash binding and staged-source double-build failure remain outside E03."
+  ],
+  "historical_and_worktree_preservation": {
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "failed_results_preserved_in_commands": true,
+    "unrelated_processes_terminated": false,
+    "implementation_write_scope_violations": 0
+  },
+  "verification_artifacts": [
+    {
+      "path": "artifacts/work_packages/E03/e03-verification.json",
+      "sha256": "a6dc580028246a49094bd36ad07568cc0073530f33e2c570de01b64fd3ae2e3d"
+    },
+    {
+      "path": "artifacts/work_packages/E03/rah-core-integrity.json",
+      "sha256": "49812deda9e44ebf56933d37d95c065069be32fd739a9265628c19f108f91600"
+    },
+    {
+      "path": "artifacts/work_packages/E03/dependency-status.json",
+      "sha256": "ff43dbfc31d92a4320c1c06ef323349ac248dcd2639e0645d49f3b2fd102ebfc"
+    },
+    {
+      "path": "artifacts/work_packages/E03/e03-rah-integrity.py",
+      "sha256": "6b5d042bb85671c83eac750e5d6005b57bc5108cf90675657ad4fe42afcf00f7"
+    },
+    {
+      "path": "artifacts/work_packages/E03/e03-dag-reconciliation.py",
+      "sha256": "ad9b8f96ae494b2a76beb294052097b5e4cc9f8c4dc8777a30609b170711cffc"
+    },
+    {
+      "path": "artifacts/work_packages/E03/e03-rah-seal.py",
+      "sha256": "fc35ca33883a37d92bc661ef6b901ffae5f5050666f10c0039ae625855039e01"
+    }
+  ],
+  "evidence_artifacts": [
+    "artifacts/work_packages/E03/report.json",
+    "artifacts/work_packages/E03/commands.jsonl",
+    "artifacts/work_packages/E03/review.md",
+    "artifacts/work_packages/E03/e03-verification.json",
+    "artifacts/work_packages/E03/rah-core-integrity.json",
+    "artifacts/work_packages/E03/dependency-status.json"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000026-2804dbd8",
+    "core_generation": "000027-e15b5d62",
+    "core_generation_manifest_sha256": "b63c991444a4b1fa59b4c478f8c9604904bd557bf568419b4f26141d825c43a2",
+    "core_evidence_id": "E0028",
+    "final_closeout_evidence_id": "E0029",
+    "retained_generation_manifest_count_after_core": 27,
+    "generation_file_hashes_verified_after_core": 162,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "flat_snapshot_content_matches_after_core": 6,
+    "parse_errors": {},
+    "completion_ready": false
+  },
+  "dag_reconciliation": {
+    "status": "PASS",
+    "manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+    "work_package_count": 156,
+    "unique_work_package_count": 156,
+    "unknown_dependency_count": 0,
+    "cycle_count": 0,
+    "completed_package_count": 24,
+    "ready_packages_manifest_order": [
+      "E04",
+      "G01",
+      "K01",
+      "A06"
+    ],
+    "next_package": "E04",
+    "completion_ready": false
+  }
+}

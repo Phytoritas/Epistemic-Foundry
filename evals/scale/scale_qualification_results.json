@@ -1,0 +1,140 @@
+{
+  "report_id": "Y04-SCALE-CORPUS-0001-SCALE",
+  "dataset_id": "Y04-SCALE-CORPUS-0001",
+  "synthetic": true,
+  "licensed_corpus": false,
+  "release_gate_certified": false,
+  "status": "PASS",
+  "tiers": [
+    {
+      "tier": "EVOLUTION_MVP_50",
+      "size": 50,
+      "budget_enforcement": "HARD_METERED",
+      "budget_bounds_spend": true,
+      "breach_policy": "MARK_PARTIAL",
+      "measured": {
+        "tokens": 4921,
+        "calls": 50,
+        "wall_seconds": 1,
+        "concurrency": 8,
+        "storage_bytes": 51200,
+        "network_bytes": 51200
+      },
+      "hard_limits": {
+        "tokens": 8000,
+        "calls": 50,
+        "wall_seconds": 4,
+        "concurrency": 8,
+        "storage_bytes": 2000000,
+        "network_bytes": 2000000
+      },
+      "budget_overruns": {},
+      "within_budget": true,
+      "latency_p95_ms": 48,
+      "latency_p95_budget_ms": 60,
+      "latency_ok": true,
+      "reconciliation": {
+        "expected": 50,
+        "processed": 50,
+        "persisted": 50,
+        "reconciled": true
+      },
+      "quality_state": {
+        "state": "OK",
+        "sample_count": 50,
+        "good_count": 50,
+        "observed_ratio": 1.0,
+        "objective": 1.0
+      },
+      "qualified": true,
+      "breach_applied": null
+    },
+    {
+      "tier": "PILOT_200",
+      "size": 200,
+      "budget_enforcement": "HARD_METERED",
+      "budget_bounds_spend": true,
+      "breach_policy": "MARK_PARTIAL",
+      "measured": {
+        "tokens": 20486,
+        "calls": 200,
+        "wall_seconds": 1,
+        "concurrency": 16,
+        "storage_bytes": 204800,
+        "network_bytes": 204800
+      },
+      "hard_limits": {
+        "tokens": 30000,
+        "calls": 200,
+        "wall_seconds": 14,
+        "concurrency": 16,
+        "storage_bytes": 8000000,
+        "network_bytes": 8000000
+      },
+      "budget_overruns": {},
+      "within_budget": true,
+      "latency_p95_ms": 47,
+      "latency_p95_budget_ms": 60,
+      "latency_ok": true,
+      "reconciliation": {
+        "expected": 200,
+        "processed": 200,
+        "persisted": 200,
+        "reconciled": true
+      },
+      "quality_state": {
+        "state": "OK",
+        "sample_count": 200,
+        "good_count": 200,
+        "observed_ratio": 1.0,
+        "objective": 1.0
+      },
+      "qualified": true,
+      "breach_applied": null
+    },
+    {
+      "tier": "PRODUCTION_2000",
+      "size": 2000,
+      "budget_enforcement": "HARD_METERED",
+      "budget_bounds_spend": true,
+      "breach_policy": "MARK_PARTIAL",
+      "measured": {
+        "tokens": 200424,
+        "calls": 2000,
+        "wall_seconds": 2,
+        "concurrency": 32,
+        "storage_bytes": 2048000,
+        "network_bytes": 2048000
+      },
+      "hard_limits": {
+        "tokens": 260000,
+        "calls": 2000,
+        "wall_seconds": 130,
+        "concurrency": 32,
+        "storage_bytes": 80000000,
+        "network_bytes": 80000000
+      },
+      "budget_overruns": {},
+      "within_budget": true,
+      "latency_p95_ms": 48,
+      "latency_p95_budget_ms": 60,
+      "latency_ok": true,
+      "reconciliation": {
+        "expected": 2000,
+        "processed": 2000,
+        "persisted": 2000,
+        "reconciled": true
+      },
+      "quality_state": {
+        "state": "OK",
+        "sample_count": 2000,
+        "good_count": 2000,
+        "observed_ratio": 1.0,
+        "objective": 1.0
+      },
+      "qualified": true,
+      "breach_applied": null
+    }
+  ],
+  "report_hash": "sha256:d8efeeb1f315ae4aaec6e56e88dac4322b3f623b7b3ed5f327b07df9fd5ae59a"
+}

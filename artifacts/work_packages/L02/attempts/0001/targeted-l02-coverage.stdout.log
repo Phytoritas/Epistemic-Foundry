@@ -1,0 +1,68 @@
+✔ memory_scope_test: index partitions all six canonical stores and seals identity (5.7139ms)
+✔ memory_scope_test: duplicate memory IDs fail closed across stores (0.8983ms)
+✔ memory_scope_test: an unknown memory class cannot create an implicit store (0.2374ms)
+✔ memory_scope_test: malformed record shape and accessors are rejected (0.2605ms)
+✔ memory_scope_test: store or index tamper is detected (2.697ms)
+✔ memory_scope_test: query plan partitions searched and excluded classes (4.8733ms)
+✔ memory_scope_test: L01 denial occurs before the index is opened (2.0923ms)
+✔ memory_scope_test: the workflow rejects allowed but non-retrievable stores before index access (2.3522ms)
+✔ memory_scope_test: only requested stores contribute hits (3.8285ms)
+✔ memory_scope_test: target workspace is an exact store filter (2.8525ms)
+✔ memory_scope_test: each record is rechecked for retention before text scoring (2.6968ms)
+✔ memory_scope_test: future-dated records are policy exclusions (2.7523ms)
+✔ memory_scope_test: cross-workspace retrieval remains denied by default (1.1863ms)
+✔ memory_scope_test: explicit USER cross-workspace retrieval requires all L01 gates (3.4105ms)
+✔ memory_scope_test: cross-workspace opt-in cannot authorize a non-USER store (1.3791ms)
+✔ memory_scope_test: missing, revoked, or scope-mismatched consent is denied (3.0525ms)
+✔ memory_scope_test: deterministic score, cap, and tie-break are stable (3.9286ms)
+✔ memory_scope_test: Unicode NFKC token matching is deterministic (3.9634ms)
+✔ memory_scope_test: punctuation-only queries and invalid caps fail closed (1.4671ms)
+✔ memory_scope_test: request wrappers cannot use getters, Proxies, or extra fields (2.1639ms)
+✔ memory_scope_test: same inputs replay to byte-identical execution (7.0629ms)
+✔ memory_scope_test: end-to-end retrieval emits no raw search text (6.3027ms)
+✔ retrieval_receipt_test: receipt has the exact canonical fields and a valid seal (15.8472ms)
+✔ retrieval_receipt_test: zero hits are SEARCHED_NONE, not unsearched (5.8434ms)
+✔ retrieval_receipt_test: searched and excluded classes form a complete partition (5.5862ms)
+✔ retrieval_receipt_test: hit provenance is retained without raw memory text (6.979ms)
+✔ retrieval_receipt_test: same execution replays to the same ID, hash, and timestamp (5.7789ms)
+✔ retrieval_receipt_test: query mutation is an integrity failure (5.1168ms)
+✔ retrieval_receipt_test: result hash and receipt ID tamper fail closed (9.1922ms)
+✔ retrieval_receipt_test: an excluded-class hit cannot be inserted (5.3046ms)
+✔ retrieval_receipt_test: receipt emission rejects a hit not produced by search (4.1052ms)
+✔ retrieval_receipt_test: selected hits must preserve deterministic search order (4.8711ms)
+✔ retrieval_receipt_test: L03 may redact or select a deterministic subset (4.7394ms)
+✔ retrieval_receipt_test: redaction count cannot under-report redacted hits (4.8681ms)
+✔ retrieval_receipt_test: policy evaluation time and retrieval time are one sealed boundary (5.1168ms)
+✔ retrieval_receipt_test: consent and ContextCapsule bindings remain explicit (7.6146ms)
+✔ retrieval_receipt_test: extra fields, accessors, and Proxy wrappers fail closed (13.4044ms)
+✔ retrieval_receipt_test: non-canonical hit order is rejected during validation (6.0792ms)
+✔ retrieval_receipt_test: end-to-end helper returns execution and matching receipt (5.532ms)
+✔ retrieval_receipt_test: score or provenance mutation is detected (16.3955ms)
+✔ retrieval_receipt_test: a record outside retention is absent and accounted as policy exclusion (3.0678ms)
+ℹ tests 41
+ℹ suites 0
+ℹ pass 41
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 840.1483
+ℹ start of coverage report
+ℹ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ file                               | line % | branch % | funcs % | uncovered lines
+ℹ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ packages                           |        |          |         | 
+ℹ  foundry-kernel                    |        |          |         | 
+ℹ   src                              |        |          |         | 
+ℹ    memory                          |        |          |         | 
+ℹ     index                          |        |          |         | 
+ℹ      index.mjs                     | 100.00 |   100.00 |  100.00 | 
+ℹ      memory-index-test-support.mjs | 100.00 |    92.86 |  100.00 | 
+ℹ      memory-index.mjs              |  91.49 |    75.97 |   97.73 | 158-160 162-163 201-202 207-208 211-212 218-219 236-237 249-250 256-257 411-412 455-456 464-465 472-473 493-494 497-498 507-508 567-573 584-585 609-610 638-639 677-678 680-681 688-689 691-695 723-724 737-738 751-752 754-755 763-764 772-773 784-785 799-800 826-827 894-895 979-980 982-986 991-992 1003-1004
+ℹ     policy                         |        |          |         | 
+ℹ      index.mjs                     | 100.00 |   100.00 |  100.00 | 
+ℹ      memory-policy.mjs             |  84.56 |    69.08 |   91.30 | 101-105 109 116-118 120-121 135-136 141-142 145-146 159-160 165-166 169-170 176-177 194-195 214-215 265-266 270-271 283-284 287-288 291-292 333-334 343-346 349-350 353-354 380-381 389-390 396-397 414-415 418-422 451-452 455-456 474-475 478-482 503-504 527-535 568-569 617-618 621-622 630-631 633-634 636-637 649-653
+ℹ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ all files                          |  89.89 |    73.60 |   95.74 | 
+ℹ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ end of coverage report

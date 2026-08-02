@@ -1,0 +1,735 @@
+FFFFFFFFFFFF........FFFFFFFFFFFF........................................ [ 65%]
+......................................                                   [100%]
+================================== FAILURES ===================================
+__ test_document_registry_test_registers_exact_source_and_canonical_manifest __
+
+    def test_document_registry_test_registers_exact_source_and_canonical_manifest() -> None:
+        registry = DocumentRegistry()
+    
+>       result = register_document(registry, source(), manifest())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:508: in register_document
+    return registry.register_document(source_bytes, manifest)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+________ test_document_registry_test_source_hash_mismatch_fails_closed ________
+
+    def test_document_registry_test_source_hash_mismatch_fails_closed() -> None:
+        with pytest.raises(DocumentRegistryError) as raised:
+            DocumentRegistry().register_document(b"different", manifest())
+    
+>       assert raised.value.code == "DOCUMENT_SOURCE_HASH_MISMATCH"
+E       AssertionError: assert 'DOCUMENT_MANIFEST_INVALID' == 'DOCUMENT_SOU...HASH_MISMATCH'
+E         
+E         - DOCUMENT_SOURCE_HASH_MISMATCH
+E         + DOCUMENT_MANIFEST_INVALID
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:65: AssertionError
+____ test_document_registry_test_copies_mutable_source_and_manifest_inputs ____
+
+    def test_document_registry_test_copies_mutable_source_and_manifest_inputs() -> None:
+        registry = DocumentRegistry()
+        mutable_source = bytearray(source())
+        mutable_manifest = manifest()
+        before = copy.deepcopy(mutable_manifest)
+    
+>       record = registry.register_document(mutable_source, mutable_manifest).record
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+_____ test_document_registry_test_returned_manifest_is_a_fresh_projection _____
+
+    def test_document_registry_test_returned_manifest_is_a_fresh_projection() -> None:
+>       record = DocumentRegistry().register_document(source(), manifest()).record
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+_______ test_document_registry_test_exact_retry_reuses_original_record ________
+
+    def test_document_registry_test_exact_retry_reuses_original_record() -> None:
+        registry = DocumentRegistry()
+>       first = registry.register_document(source(), manifest())
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+___ test_document_registry_test_identity_rebinding_is_rejected[document_id] ___
+
+identity = 'document_id'
+
+    @pytest.mark.parametrize("identity", ["document_id", "paper_version_id"])
+    def test_document_registry_test_identity_rebinding_is_rejected(identity: str) -> None:
+        registry = DocumentRegistry()
+>       registry.register_document(source(), manifest())
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+_ test_document_registry_test_identity_rebinding_is_rejected[paper_version_id] _
+
+identity = 'paper_version_id'
+
+    @pytest.mark.parametrize("identity", ["document_id", "paper_version_id"])
+    def test_document_registry_test_identity_rebinding_is_rejected(identity: str) -> None:
+        registry = DocumentRegistry()
+>       registry.register_document(source(), manifest())
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+______ test_document_registry_test_valid_version_lineage_is_append_only _______
+
+    def test_document_registry_test_valid_version_lineage_is_append_only() -> None:
+        registry = DocumentRegistry()
+>       first = registry.register_document(source(), manifest()).record
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+_ test_document_registry_test_missing_predecessor_is_rejected_without_partial_append _
+
+    def test_document_registry_test_missing_predecessor_is_rejected_without_partial_append() -> None:
+        registry = DocumentRegistry()
+    
+        with pytest.raises(DocumentRegistryError) as raised:
+            registry.register_document(
+                source("v2"), manifest("v2", supersedes_version_id="PV-missing")
+            )
+    
+>       assert raised.value.code == "DOCUMENT_PREDECESSOR_NOT_FOUND"
+E       AssertionError: assert 'DOCUMENT_MANIFEST_INVALID' == 'DOCUMENT_PRE...SOR_NOT_FOUND'
+E         
+E         - DOCUMENT_PREDECESSOR_NOT_FOUND
+E         + DOCUMENT_MANIFEST_INVALID
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:146: AssertionError
+______ test_document_registry_test_cross_paper_supersession_is_rejected _______
+
+    def test_document_registry_test_cross_paper_supersession_is_rejected() -> None:
+        registry = DocumentRegistry()
+>       registry.register_document(source(), manifest())
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:152: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+__________ test_document_registry_test_self_supersession_is_rejected __________
+
+    def test_document_registry_test_self_supersession_is_rejected() -> None:
+        with pytest.raises(DocumentRegistryError) as raised:
+            DocumentRegistry().register_document(
+                source(), manifest(supersedes_version_id="PV-v1")
+            )
+    
+>       assert raised.value.code == "DOCUMENT_LINEAGE_INVALID"
+E       AssertionError: assert 'DOCUMENT_MANIFEST_INVALID' == 'DOCUMENT_LINEAGE_INVALID'
+E         
+E         - DOCUMENT_LINEAGE_INVALID
+E         ?          ^ ^ ^^^
+E         + DOCUMENT_MANIFEST_INVALID
+E         ?          ^^^ ^ ^^
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:170: AssertionError
+_ test_document_registry_test_same_bytes_may_have_distinct_explicit_identity __
+
+    def test_document_registry_test_same_bytes_may_have_distinct_explicit_identity() -> None:
+        registry = DocumentRegistry()
+        first_manifest = manifest()
+>       registry.register_document(source(), first_manifest)
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+_ test_document_registry_test_direct_record_construction_cannot_bypass_hash_gate _
+
+    def test_document_registry_test_direct_record_construction_cannot_bypass_hash_gate() -> None:
+        canonical = json.dumps(
+            manifest(), ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+    
+        with pytest.raises(DocumentRegistryError) as raised:
+            DocumentRecord(
+                registry_version=DOCUMENT_REGISTRY_VERSION,
+                _manifest_json=canonical,
+                _source_bytes=b"forged source bytes",
+            )
+    
+>       assert raised.value.code == "DOCUMENT_RECORD_INVALID"
+E       AssertionError: assert 'DOCUMENT_MANIFEST_INVALID' == 'DOCUMENT_RECORD_INVALID'
+E         
+E         - DOCUMENT_RECORD_INVALID
+E         ?          ^ ^^^^
+E         + DOCUMENT_MANIFEST_INVALID
+E         ?          ^^^^^ ^^
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:247: AssertionError
+_ test_document_registry_test_direct_record_requires_canonical_manifest_bytes _
+
+    def test_document_registry_test_direct_record_requires_canonical_manifest_bytes() -> None:
+        noncanonical = json.dumps(manifest(), ensure_ascii=False, indent=2).encode("utf-8")
+    
+        with pytest.raises(DocumentRegistryError) as raised:
+            DocumentRecord(
+                registry_version=DOCUMENT_REGISTRY_VERSION,
+                _manifest_json=noncanonical,
+                _source_bytes=source(),
+            )
+    
+>       assert raised.value.code == "DOCUMENT_RECORD_INVALID"
+E       AssertionError: assert 'DOCUMENT_MANIFEST_INVALID' == 'DOCUMENT_RECORD_INVALID'
+E         
+E         - DOCUMENT_RECORD_INVALID
+E         ?          ^ ^^^^
+E         + DOCUMENT_MANIFEST_INVALID
+E         ?          ^^^^^ ^^
+
+python\epistemic_foundry\ingest\registry\test_document_registry.py:260: AssertionError
+__ test_license_propagation_test_preserves_every_canonical_status[licensed] ___
+
+license_status = 'licensed'
+
+    @pytest.mark.parametrize(
+        "license_status",
+        ["licensed", "open_access", "fair_use_metadata_only", "restricted", "unknown"],
+    )
+    def test_license_propagation_test_preserves_every_canonical_status(
+        license_status: str,
+    ) -> None:
+>       record = DocumentRegistry().register_document(
+            source(),
+            manifest(license_status=license_status, access_policy_ref=f"POL-{license_status}"),
+        ).record
+
+python\epistemic_foundry\ingest\registry\test_license_propagation.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+_ test_license_propagation_test_preserves_every_canonical_status[open_access] _
+
+license_status = 'open_access'
+
+    @pytest.mark.parametrize(
+        "license_status",
+        ["licensed", "open_access", "fair_use_metadata_only", "restricted", "unknown"],
+    )
+    def test_license_propagation_test_preserves_every_canonical_status(
+        license_status: str,
+    ) -> None:
+>       record = DocumentRegistry().register_document(
+            source(),
+            manifest(license_status=license_status, access_policy_ref=f"POL-{license_status}"),
+        ).record
+
+python\epistemic_foundry\ingest\registry\test_license_propagation.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+_ test_license_propagation_test_preserves_every_canonical_status[fair_use_metadata_only] _
+
+license_status = 'fair_use_metadata_only'
+
+    @pytest.mark.parametrize(
+        "license_status",
+        ["licensed", "open_access", "fair_use_metadata_only", "restricted", "unknown"],
+    )
+    def test_license_propagation_test_preserves_every_canonical_status(
+        license_status: str,
+    ) -> None:
+>       record = DocumentRegistry().register_document(
+            source(),
+            manifest(license_status=license_status, access_policy_ref=f"POL-{license_status}"),
+        ).record
+
+python\epistemic_foundry\ingest\registry\test_license_propagation.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+_ test_license_propagation_test_preserves_every_canonical_status[restricted] __
+
+license_status = 'restricted'
+
+    @pytest.mark.parametrize(
+        "license_status",
+        ["licensed", "open_access", "fair_use_metadata_only", "restricted", "unknown"],
+    )
+    def test_license_propagation_test_preserves_every_canonical_status(
+        license_status: str,
+    ) -> None:
+>       record = DocumentRegistry().register_document(
+            source(),
+            manifest(license_status=license_status, access_policy_ref=f"POL-{license_status}"),
+        ).record
+
+python\epistemic_foundry\ingest\registry\test_license_propagation.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+___ test_license_propagation_test_preserves_every_canonical_status[unknown] ___
+
+license_status = 'unknown'
+
+    @pytest.mark.parametrize(
+        "license_status",
+        ["licensed", "open_access", "fair_use_metadata_only", "restricted", "unknown"],
+    )
+    def test_license_propagation_test_preserves_every_canonical_status(
+        license_status: str,
+    ) -> None:
+>       record = DocumentRegistry().register_document(
+            source(),
+            manifest(license_status=license_status, access_policy_ref=f"POL-{license_status}"),
+        ).record
+
+python\epistemic_foundry\ingest\registry\test_license_propagation.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+_______ test_license_propagation_test_restricted_source_is_not_upgraded _______
+
+    def test_license_propagation_test_restricted_source_is_not_upgraded() -> None:
+>       record = DocumentRegistry().register_document(
+            source(),
+            manifest(license_status="restricted", access_policy_ref="POL-RAW-CONTENT-DENIED"),
+        ).record
+
+python\epistemic_foundry\ingest\registry\test_license_propagation.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+________ test_license_propagation_test_unknown_source_is_not_defaulted ________
+
+    def test_license_propagation_test_unknown_source_is_not_defaulted() -> None:
+>       record = DocumentRegistry().register_document(
+            source(), manifest(license_status="unknown", access_policy_ref="POL-REVIEW-REQUIRED")
+        ).record
+
+python\epistemic_foundry\ingest\registry\test_license_propagation.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+_______ test_license_propagation_test_retry_cannot_change_restrictions ________
+
+    def test_license_propagation_test_retry_cannot_change_restrictions() -> None:
+        registry = DocumentRegistry()
+        original = manifest(license_status="restricted", access_policy_ref="POL-RESTRICTED")
+>       registry.register_document(source(), original)
+
+python\epistemic_foundry\ingest\registry\test_license_propagation.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+___ test_license_propagation_test_retraction_and_trust_state_remain_visible ___
+
+    def test_license_propagation_test_retraction_and_trust_state_remain_visible() -> None:
+>       record = DocumentRegistry().register_document(
+            source(),
+            manifest(
+                bibliographic_version="retraction_notice",
+                status="retracted",
+                license_status="restricted",
+                access_policy_ref="POL-RETRACTED",
+                malware_scan_status="suspicious",
+                prompt_injection_scan_status="quarantined",
+            ),
+        ).record
+
+python\epistemic_foundry\ingest\registry\test_license_propagation.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+____ test_license_propagation_test_binding_projection_cannot_mutate_record ____
+
+    def test_license_propagation_test_binding_projection_cannot_mutate_record() -> None:
+>       record = DocumentRegistry().register_document(source(), manifest()).record
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+python\epistemic_foundry\ingest\registry\test_license_propagation.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+python\epistemic_foundry\ingest\registry\registry.py:407: in register_document
+    normalized, manifest_json = _manifest_snapshot(manifest)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+python\epistemic_foundry\ingest\registry\registry.py:196: in _manifest_snapshot
+    _fail(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'DOCUMENT_MANIFEST_INVALID'
+message = 'manifest must contain exactly the canonical DocumentManifest fields'
+details = {'missing': [], 'unexpected': ['derived_from_registration_id', 'lineage_event_ids', 'registration_artifact_receipt_id', 'registration_hash', 'registration_id', 'source_artifact_receipt_id', ...]}
+
+    def _fail(
+        code: str,
+        message: str,
+        details: Mapping[str, object] | None = None,
+    ) -> None:
+>       raise DocumentRegistryError(code, message, details)
+E       registry.registry.DocumentRegistryError: manifest must contain exactly the canonical DocumentManifest fields
+
+python\epistemic_foundry\ingest\registry\registry.py:101: DocumentRegistryError
+- generated xml file: C:\dev\insight\Epistemic-Foundry\artifacts\work_packages\K04\attempts\0001\predecessor-component-python.junit.xml -
+=========================== short test summary info ===========================
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_registers_exact_source_and_canonical_manifest
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_source_hash_mismatch_fails_closed
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_copies_mutable_source_and_manifest_inputs
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_returned_manifest_is_a_fresh_projection
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_exact_retry_reuses_original_record
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_identity_rebinding_is_rejected[document_id]
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_identity_rebinding_is_rejected[paper_version_id]
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_valid_version_lineage_is_append_only
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_missing_predecessor_is_rejected_without_partial_append
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_cross_paper_supersession_is_rejected
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_self_supersession_is_rejected
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_same_bytes_may_have_distinct_explicit_identity
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_direct_record_construction_cannot_bypass_hash_gate
+FAILED python/epistemic_foundry/ingest/registry/test_document_registry.py::test_document_registry_test_direct_record_requires_canonical_manifest_bytes
+FAILED python/epistemic_foundry/ingest/registry/test_license_propagation.py::test_license_propagation_test_preserves_every_canonical_status[licensed]
+FAILED python/epistemic_foundry/ingest/registry/test_license_propagation.py::test_license_propagation_test_preserves_every_canonical_status[open_access]
+FAILED python/epistemic_foundry/ingest/registry/test_license_propagation.py::test_license_propagation_test_preserves_every_canonical_status[fair_use_metadata_only]
+FAILED python/epistemic_foundry/ingest/registry/test_license_propagation.py::test_license_propagation_test_preserves_every_canonical_status[restricted]
+FAILED python/epistemic_foundry/ingest/registry/test_license_propagation.py::test_license_propagation_test_preserves_every_canonical_status[unknown]
+FAILED python/epistemic_foundry/ingest/registry/test_license_propagation.py::test_license_propagation_test_restricted_source_is_not_upgraded
+FAILED python/epistemic_foundry/ingest/registry/test_license_propagation.py::test_license_propagation_test_unknown_source_is_not_defaulted
+FAILED python/epistemic_foundry/ingest/registry/test_license_propagation.py::test_license_propagation_test_retry_cannot_change_restrictions
+FAILED python/epistemic_foundry/ingest/registry/test_license_propagation.py::test_license_propagation_test_retraction_and_trust_state_remain_visible
+FAILED python/epistemic_foundry/ingest/registry/test_license_propagation.py::test_license_propagation_test_binding_projection_cannot_mutate_record
+24 failed, 86 passed in 1.18s

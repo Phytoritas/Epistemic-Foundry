@@ -1,0 +1,43 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "K02-0001-PARSER-VERIFICATION",
+  "byte_size": 1408,
+  "content_hash": "sha256:5126b4c2227e126226c1f6c30ef9279512449d704da9dcc7f053288ec46e0e66",
+  "created_at": "2026-07-30T21:44:47.829Z",
+  "created_by": {
+    "actor_id": "K02-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/K02/attempts/0001/parser-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:c4df3944b1922222b13c6b74d1552b3df7d660380704fbd8bf9783deefb202a9",
+  "receipt_id": "AR-K02-0001-PARSER-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "parser_fixture_benchmark",
+      "details": "40/40 fixed parser and fallback fixtures passed with exact deterministic projections",
+      "status": "PASS"
+    },
+    {
+      "check": "parser_versions_pinned",
+      "details": "exact version, executable digest, profile hash, and adapter version are mandatory; floating refs fail closed",
+      "status": "PASS"
+    },
+    {
+      "check": "fallback_status_test",
+      "details": "primary failure/blocking is retained and fallback never silently upgrades authority",
+      "status": "PASS"
+    },
+    {
+      "check": "disagreement_retention",
+      "details": "both parser observations and missing observations remain explicit and unresolved",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Python 1054/1054, Node 470/470, codegen 126/126, structure/boundaries/Ruff/diff checks passed",
+      "status": "PASS"
+    }
+  ]
+}

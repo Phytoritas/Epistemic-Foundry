@@ -1,0 +1,51 @@
+{
+  "attempt_id": "R01-0001",
+  "causal_discipline": {
+    "causal_identification_reported": "NOT_ASSESSED",
+    "identification_owner": "R04",
+    "relation_kind": "ASSOCIATION"
+  },
+  "exit_criteria": {
+    "independence_adjustment_applied": {
+      "evidence": [
+        "python/epistemic_foundry/reasoning/induction/test_induction_fixture.py",
+        "python/epistemic_foundry/reasoning/induction/test_heterogeneity.py"
+      ],
+      "mechanism": "each finding carries its O03 cluster weight support_count_adjusted / support_count_raw; the recomputed effective independent count is cross-checked against the pack",
+      "status": "PASS"
+    },
+    "moderators_and_nulls_retained": {
+      "evidence": [
+        "python/epistemic_foundry/reasoning/induction/test_heterogeneity.py",
+        "python/epistemic_foundry/reasoning/induction/test_induction_fixture.py"
+      ],
+      "mechanism": "every observed moderator and level survives whatever its status, and a declared null without a finding fails closed",
+      "status": "PASS"
+    }
+  },
+  "heterogeneity_semantics": {
+    "bands": [
+      "LOW",
+      "MODERATE",
+      "SUBSTANTIAL",
+      "CONSIDERABLE"
+    ],
+    "boundary_resolves_to_the_more_cautious_band": true,
+    "estimator": "independence-weighted Cochran Q, I-squared, DerSimonian-Laird tau-squared",
+    "insufficient_data_is_undetermined_not_low": true
+  },
+  "required_checks": {
+    "heterogeneity_test": {
+      "module": "python/epistemic_foundry/reasoning/induction/test_heterogeneity.py",
+      "status": "PASS",
+      "test_count": 21
+    },
+    "induction_fixture_test": {
+      "module": "python/epistemic_foundry/reasoning/induction/test_induction_fixture.py",
+      "status": "PASS",
+      "test_count": 23
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 44
+}

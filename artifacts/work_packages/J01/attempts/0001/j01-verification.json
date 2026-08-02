@@ -1,0 +1,59 @@
+{
+  "attempt_id": "J01-0001",
+  "authority_boundary": {
+    "always_visible_input_metadata_only": true,
+    "candidate_and_phrase_order_hash_invariant": true,
+    "canonical_schema_count": 127,
+    "canonical_schema_modified_by_j01": false,
+    "decision_hash_binds_exact_metadata_content_hash": true,
+    "emitted_decision_draft_2020_12_validation": "PASS",
+    "implicit_invocation_requires_single_unambiguous_bundled_match": true,
+    "implicit_policy_must_be_explicitly_true": true,
+    "input_mutation_performed": false,
+    "proxy_accessor_sparse_array_dup_id_and_invalid_hash_rejected": true,
+    "remote_explicit_route_requires_s03_branded_exact_authorization": true,
+    "remote_skills_implicit_denied": true,
+    "returned_decision_deep_frozen": true,
+    "routing_grants_no_activation_approval_state_or_effect_authority": true,
+    "sensitive_skills_explicit_only": true,
+    "side_effecting_skills_explicit_only": true,
+    "skill_body_and_reference_input_rejected": true,
+    "trigger_absence_exclusion_and_tie_abstain": true,
+    "unknown_explicit_skill_fails_closed": true
+  },
+  "exit_criteria": {
+    "implicit_invocation_is_bounded": {
+      "evidence": [
+        "packages/plugin-host/src/skill-router/skill-router.test.mjs",
+        "packages/plugin-host/src/skill-router/skill-metadata-lint.test.mjs"
+      ],
+      "mechanism": "the deterministic parent router selects at most one bundled candidate whose metadata explicitly sets allow_implicit_invocation=true, is non-sensitive and non-side-effecting, matches a bounded trigger phrase, and hits no exclusion; missing or unspecified policy, absent triggers, exclusion hits, remote source, and tied candidates all abstain into mode none with no selected skill",
+      "status": "PASS"
+    },
+    "sensitive_skills_explicit_only": {
+      "evidence": [
+        "packages/plugin-host/src/skill-router/skill-router.test.mjs"
+      ],
+      "mechanism": "sensitive, side-effecting, administrative, and remote skills are denied implicit invocation and require an exact explicit skill id; a remote explicit route additionally requires the exact S03-branded activation authorization bound to the skill id, content hash, policy hash, approval, conformance, rollback, and no-effect state, and an unknown explicit id fails closed",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "skill_metadata_lint": {
+      "module": "packages/plugin-host/src/skill-router/skill-metadata-lint.test.mjs",
+      "scope": [
+        "plugins/epistemic-foundry/skills/foundry/SKILL.md",
+        "plugins/epistemic-foundry/skills/foundry/agents/openai.yaml"
+      ],
+      "status": "PASS",
+      "test_count": 4
+    },
+    "skill_routing_eval": {
+      "module": "packages/plugin-host/src/skill-router/skill-router.test.mjs",
+      "status": "PASS",
+      "test_count": 15
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 19
+}

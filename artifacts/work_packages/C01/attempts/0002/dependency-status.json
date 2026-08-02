@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "calculated_at_utc": "2026-07-27T14:12:43.8633194Z",
+  "manifest_path": "manifests/development_manifest.yaml",
+  "manifest_sha256": "9ae9090a8d02973198492f271a9e46a352ca030eaa8b272e696bf6cd9ec1896e",
+  "fixed_execution_order": [
+    "A05",
+    "C01",
+    "B04"
+  ],
+  "packages": {
+    "A05": {
+      "status": "PASS",
+      "resolving_report": "artifacts/work_packages/A05/attempts/0002/report.json",
+      "report_sha256": "c9c550de22f55d32898f0d33489bc9b0480de6eef4bca7baeb09fcf047c6062c"
+    },
+    "C01": {
+      "status": "SPEC_GAP",
+      "attempt": "C01-0002",
+      "gap_id": "C01-SG002",
+      "dependencies": {
+        "A04": "PASS",
+        "A05": "PASS"
+      },
+      "prior_report": "artifacts/work_packages/C01/report.json",
+      "prior_report_sha256": "14d1815150ba37ebc416d637afbb1514fbbb024f9fe6940ed7b976ce33b60d68"
+    },
+    "B04": {
+      "status": "WAITING",
+      "dependencies": {
+        "B02": "PASS",
+        "B03": "PASS",
+        "C01": "SPEC_GAP"
+      },
+      "reason": "The user-fixed serial execution order and manifest both require C01 PASS before B04 begins."
+    }
+  },
+  "direct_c01_dependents": [
+    "B04",
+    "C02",
+    "C03"
+  ],
+  "next_action": {
+    "type": "HIGHER_ORDER_DECISION_REQUIRED",
+    "minimum_manifest_correction": [
+      "examples/sample_evolution-run-spec.json",
+      "examples/sample_promotion-decision.json"
+    ],
+    "resume_package": "C01"
+  }
+}

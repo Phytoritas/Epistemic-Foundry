@@ -1,0 +1,41 @@
+{
+  "attempt_id": "K04-0001",
+  "authority_runtime": "packages/foundry-kernel/src/security/trust/trust-boundary.mjs",
+  "authority_runtime_sha256": "sha256:a25b5f4daa7cd8f1d98e66ba721728bb6fe333498117c830b1caa46b20bb8c75",
+  "clean_scan_authority_grant_count": 0,
+  "data_only_context_instruction_channel_count": 0,
+  "forged_sidecar_acceptance_count": 0,
+  "hostile_signal_classes": [
+    "authority_claim",
+    "role_override",
+    "tool_execution_request"
+  ],
+  "hostile_source_classes": [
+    "dataset",
+    "pdf_text",
+    "web_page"
+  ],
+  "instruction_or_execution_authority_grant_count": 0,
+  "junit": {
+    "cancelled": 0,
+    "collected": 6,
+    "failed": 0,
+    "junit": "artifacts/work_packages/K04/attempts/0001/targeted-k04-node.junit.xml",
+    "junit_sha256": "sha256:a4909db7561a72a81c248074b8769b12e5a62c6cc5f5620f088278216b9592e0",
+    "passed": 6,
+    "skipped": 0,
+    "todo": 0,
+    "xml_testcase_count": 6
+  },
+  "required_denied_uses": [
+    "alter_policy",
+    "approve",
+    "execute",
+    "instruction"
+  ],
+  "source_test": "tests/security/corpus/corpus-injection.test.mjs",
+  "source_test_sha256": "sha256:3fa4011bd25c7148a83f202efa97a414f58fab954bcaab1717533a93b462dceb",
+  "status": "PASS",
+  "trusted_label_authority_grant_count": 0,
+  "untrusted_origin_denial_count": 12
+}

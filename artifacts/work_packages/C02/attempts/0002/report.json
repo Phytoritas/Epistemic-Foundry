@@ -1,0 +1,123 @@
+{
+  "attempt_id": "C02-0002",
+  "authority_decision_id": "HD-EF4-C01-SG004-20260730-001",
+  "canonical_contract": {
+    "document_registration_models_present": true,
+    "example_count": 126,
+    "generated_file_count": 9,
+    "generated_manifest_sha256": "sha256:96acd5a496ac234eaf8bffdda8dbf0c87db3e4130822b8cbeab6522b82e3fdcf",
+    "generated_python_model_count": 126,
+    "schema_count": 126,
+    "schema_example_one_to_one": true,
+    "status": "PASS"
+  },
+  "canonical_projection_status": "WAITING_ON_PRE_C04_B04",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "B04_final": "WAITING_ON_C04",
+    "B04_pre_C04": "WAITING_ON_C03",
+    "C01": "PASS",
+    "C02": "PASS",
+    "C03": "DEPENDENCY_READY",
+    "C04": "WAITING_ON_C03_AND_FRESH_PROJECTION",
+    "full_156_package_dag_recomputed": false,
+    "next_package": "C03-0002"
+  },
+  "full_python_regression": {
+    "artifact": "artifacts/work_packages/C02/attempts/0002/full-python-regression.junit.xml",
+    "artifact_sha256": "sha256:dcc9f942c057b91526be1896a233142949beaad7a7f3e58640eb997cdaf5b44d",
+    "errors": 0,
+    "failed": 19,
+    "failure_owner_counts": {
+      "B04": 18,
+      "J02": 1
+    },
+    "new_c02_failure_count": 0,
+    "passed": 951,
+    "skipped": 0,
+    "status": "EXPECTED_DOWNSTREAM_AND_PREEXISTING_FAILURES",
+    "suite_reported_pass": false,
+    "tests": 970
+  },
+  "generated_projection": {
+    "codegen_clean_diff": "PASS",
+    "cross_language_fixture_parity": "PASS",
+    "deterministic_double_replay": "PASS",
+    "example_bundle_sha256": "sha256:ac8047fbfdd488fe82dedd55fe466efb329915c33cc93fe6a316de640f7441f0",
+    "manifest_copy_count": 3,
+    "manifest_copies_byte_identical": true,
+    "node_package_export_fixture": "PASS",
+    "schema_bundle_sha256": "sha256:5788bcf163d7a4ca20f5991935d425d7cc18ff8a5fbc43485c93de73e3c42de3",
+    "typescript_5_9_3_strict_nodenext": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "C01_0001_through_C01_0006_preserved": true,
+    "C02_0001_preserved": true,
+    "dirty_worktree_preserved": true,
+    "prior_RAH_evidence_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "not_claimed": [
+    "repository-wide Python suite green",
+    "handwritten runtime migration complete",
+    "package canonical projection current",
+    "C04 full conformance",
+    "B04 final packaging complete",
+    "external actor-independent certification",
+    "completion_ready=true"
+  ],
+  "open_risks": [
+    "The full Python suite has exactly 18 B04-owned pre-C04 projection failures and one pre-existing J02 tokenizer-lock debt; it is not reported PASS.",
+    "Handwritten runtime compatibility remains pending C03-0002.",
+    "The package snapshot remains stale until the authorized pre-C04 B04-0006 attempt runs after C03 passes.",
+    "Review is primary-session procedural review rather than actor-independent assurance because Fleet and subagents are prohibited."
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/C02/attempts/0002/build_c02_0002_evidence.py",
+    "artifacts/work_packages/C02/attempts/0002/c02_0002_rah_seal.py",
+    "artifacts/work_packages/C02/attempts/0002/c02-contract-codegen-verification.json",
+    "artifacts/work_packages/C02/attempts/0002/dependency-status.json",
+    "artifacts/work_packages/C02/attempts/0002/full-python-regression.junit.xml",
+    "artifacts/work_packages/C02/attempts/0002/rah-core-integrity.json",
+    "artifacts/work_packages/C02/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/C02/attempts/0002/review.md",
+    "artifacts/work_packages/C02/attempts/0002/report.json"
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0102",
+    "core_generation": "000094-4a1a5233",
+    "core_parent_generation": "000093-d788a6f7",
+    "final_closeout_evidence_id": "E0103",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 96,
+    "generation_manifest_sha256": "sha256:edafd7b5bb7e1e46bc8fbec47647c247d1e70d25ac175ae33a9ed2f98b92be63",
+    "implementation_gate": "fail",
+    "retained_generation_manifest_count": 16,
+    "status": "active"
+  },
+  "repository_full_suite_status": "EXPECTED_DOWNSTREAM_AND_PREEXISTING_FAILURES",
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_c02_owned_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "PASS"
+  },
+  "runtime_migration_status": "PENDING_C03",
+  "status": "PASS",
+  "work_package_id": "C02",
+  "write_scope_audit": {
+    "canonical_schema_or_example_change_count": 0,
+    "derived_snapshot_change_count": 0,
+    "generated_file_count": 9,
+    "status": "PASS",
+    "violation_count": 0
+  }
+}

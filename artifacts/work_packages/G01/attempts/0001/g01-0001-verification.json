@@ -1,0 +1,54 @@
+{
+  "attempt_id": "G01-0001",
+  "attestation_scope": {
+    "attested_not_authored": "G01 attests the native plugin manifest and the two brand assets the plugin already carries; it does not re-author or edit their content",
+    "product_files": [
+      "plugins/epistemic-foundry/.codex-plugin/plugin.json",
+      "plugins/epistemic-foundry/assets/composer-icon.svg",
+      "plugins/epistemic-foundry/assets/logo.svg"
+    ]
+  },
+  "exit_criteria": {
+    "manifest_paths_remain_inside_plugin_root": {
+      "mechanism": "plugin_manifest_validation and asset_path_test resolve both interface asset paths inside the plugin root and reject traversal, Windows-absolute, and outside-root shapes",
+      "status": "PASS"
+    },
+    "version_and_capabilities_accurate": {
+      "mechanism": "plugin_manifest_validation asserts version is strict semver pinned to 4.0.0, interface.capabilities is exactly [], and no ungated component field (skills/hooks/mcpServers/apps) is declared before its downstream gate passes",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "asset_path_test": {
+      "negative_case_count": 7,
+      "negative_case_pass_count": 7,
+      "status": "PASS"
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded implementation agent(s) that authored plugin.json, the two SVG brand assets and g01_verify.py; reviewer: the sealing session, a distinct actor that did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "plugin_manifest_validation": {
+      "error_count": 0,
+      "status": "PASS"
+    }
+  },
+  "resolved_assets": [
+    {
+      "byte_size": 234,
+      "height": 64,
+      "path": "plugins/epistemic-foundry/assets/composer-icon.svg",
+      "sha256": "sha256:ca04da7e14c09211ee56fd8568f11f757837e7490fb8c059e5907889ccf22cfd",
+      "width": 64
+    },
+    {
+      "byte_size": 246,
+      "height": 256,
+      "path": "plugins/epistemic-foundry/assets/logo.svg",
+      "sha256": "sha256:ed2847842f2108ec64cd98700ffa1d0ef4d4195095b1b92c47fe9783b4b9a4d4",
+      "width": 256
+    }
+  ],
+  "status": "PASS",
+  "verifier_version": "g01-verifier/1.0.0"
+}

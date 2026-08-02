@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/mutation-error-details.schema.json",
+  "title": "MutationErrorDetails",
+  "description": "Closed mutation subcode carried inside the sealed T01 error envelope's details. The sealed top-level error_code enum is neither extended nor duplicated by a parallel same-version envelope.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "mutation_error_code": {
+      "enum": [
+        "APPROVAL_REQUIRED",
+        "APPROVAL_DENIED",
+        "APPROVAL_INVALID",
+        "SELF_APPROVAL_FORBIDDEN",
+        "LEASE_DENIED",
+        "LEASE_INVALID",
+        "REVISION_CONFLICT",
+        "RECONCILIATION_FAILED"
+      ]
+    },
+    "intent_candidate_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "action_intent_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "effect_receipt_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "reconciliation_required": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "mutation_error_code",
+    "intent_candidate_id",
+    "action_intent_id",
+    "effect_receipt_id",
+    "reconciliation_required"
+  ]
+}

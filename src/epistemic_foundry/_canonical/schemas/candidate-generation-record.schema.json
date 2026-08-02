@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/candidate-generation-record.schema.json",
+  "title": "CandidateGenerationRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "generation_record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_selection_receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_routing_receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prompt_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "raw_output_artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "cost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "latency_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "generation_record_id",
+    "evolution_run_id",
+    "candidate_id",
+    "parent_selection_receipt_id",
+    "operator_id",
+    "model_routing_receipt_id",
+    "context_manifest_id",
+    "prompt_hash",
+    "raw_output_artifact_id",
+    "candidate_hash",
+    "cost",
+    "latency_ms",
+    "created_at"
+  ],
+  "description": "후보 생성 시 사용한 문맥·모델·연산자·입출력·비용을 기록한다."
+}

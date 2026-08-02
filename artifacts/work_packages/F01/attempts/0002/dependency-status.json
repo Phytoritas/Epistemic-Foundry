@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "work_package_id": "F01",
+  "attempt_id": "F01-0002",
+  "status": "SPEC_GAP",
+  "spec_gap_id": "F01-SG002",
+  "completion_ready": false,
+  "dependency_inputs": {
+    "C04": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/C04/report.json",
+      "report_sha256": "sha256:eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f"
+    },
+    "E04": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/E04/report.json",
+      "report_sha256": "sha256:841dcf60989cfc7ab0eff7be95e1ae721ae18ac513cae653ab6ac8a44942f6c1"
+    }
+  },
+  "package_states": {
+    "F01": "SPEC_GAP_F01_SG002",
+    "F02": "WAITING_ON_F01",
+    "F03": "WAITING_ON_F01",
+    "F04": "WAITING_ON_F02_AND_F03"
+  },
+  "dag_recomputed_after_f01": false,
+  "downstream_package_started": false,
+  "reason": "F01 cannot PASS while its authorized canonical schema change leaves the B04-owned packaged canonical projection stale, and no authority defines the reprojection owner/timing or whether the F01 gate may transfer this failure as explicit downstream debt.",
+  "existing_unrelated_integration_debt": {
+    "id": "S04-TM004",
+    "status": "PRE_EXISTING",
+    "included_in_f01_sg002": false
+  },
+  "minimum_product_owner_decisions": [
+    "Assign the owner and execution point for synchronizing the packaged canonical snapshot after any later canonical schema or OpenAPI change.",
+    "Choose whether B04 must run as a new resolving attempt after F01 or whether a distinct integration work package owns reprojection and verification.",
+    "Decide whether F01 PASS must wait for successful reprojection or may transfer the exact projection failure as bounded downstream migration debt."
+  ],
+  "resume_condition": "Record a product-owner HumanDecision resolving F01-SG002 without modifying F01-0002 history, then execute the newly authorized integration sequence before declaring F01 PASS or starting F02/F03."
+}

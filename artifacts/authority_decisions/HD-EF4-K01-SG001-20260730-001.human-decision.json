@@ -1,0 +1,36 @@
+{
+  "decision_id": "HD-EF4-K01-SG001-20260730-001",
+  "run_id": null,
+  "subject_id": "K01-SG001",
+  "decision_type": "correct",
+  "decision": "Resolve K01-SG001 prospectively by defining immutable DocumentRegistrationRequest and DocumentRegistration contracts distinct from the final DocumentManifest. Authorize exactly two new canonical schemas, raising the schema and example count from 124 to 126, assign canonical schema and OpenAPI work to C01, generated projections to C02, compatibility to C03, conformance to C04, packaged projection to B04, and the exact registration workflow, runtime, documentation, fixture, test, and evidence paths to K01-0002. K01 must reuse D03 and E01-E03 primitives and fail closed on missing bytes, receipts, lineage, authorization, or resolvable legacy evidence.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "K01-0001 correctly found that a final DocumentManifest cannot truthfully exist at initial source-byte registration. The decision separates staging registration from downstream manifest construction, fixes lifecycle lineage and effect ownership, and supplies a 22-case deterministic oracle without permitting K01 to reimplement shared persistence or effect primitives.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/K01/attempts/0001/report.json",
+    "artifacts/work_packages/K01/attempts/0001/shared-contract-gap-verification.json",
+    "artifacts/work_packages/K01/attempts/0001/review.md",
+    "workflows/corpus_ingest.workflow.yaml",
+    "schemas/document-manifest.schema.json"
+  ],
+  "affected_artifact_ids": [
+    "schemas/document-registration-request.schema.json",
+    "schemas/document-registration.schema.json",
+    "schemas/document-manifest.schema.json",
+    "examples/sample_document-registration-request.json",
+    "examples/sample_document-registration.json",
+    "examples/sample_document-manifest.json",
+    "openapi/epistemic-foundry-v1.openapi.yaml",
+    "C01-correction",
+    "C02-correction",
+    "C03-correction",
+    "C04-correction",
+    "B04-correction",
+    "K01-0002"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-30T00:00:00Z",
+  "decision_hash": "sha256:62c7e6885c051e92846bb6580f385efcffca744cd45c531f768f8324bdacaa30"
+}

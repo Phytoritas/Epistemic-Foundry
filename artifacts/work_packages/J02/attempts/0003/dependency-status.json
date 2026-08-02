@@ -1,0 +1,52 @@
+{
+  "attempt_id": "J02-0003",
+  "authority": {
+    "effective_attempt_order": [
+      "F04-0002",
+      "J02-0003",
+      "S04-0003"
+    ],
+    "j02_repair_decision": {
+      "decision_hash": "sha256:6c3f062ef83523a986d660ca5250a14fc3a93554ebc0fc1cef9dba00c5956409",
+      "decision_id": "HD-EF4-J02-SG002-20260730-001",
+      "file_sha256": "sha256:ad7c8345bbcaa813c641ba139913728dabfe969fb1fef06a3e2209949939cc90",
+      "path": "artifacts/authority_decisions/HD-EF4-J02-SG002-20260730-001.human-decision.json"
+    },
+    "latest_serial_order_decision": {
+      "decision_hash": "sha256:421c238aa3bdb2a2e961a1c4c1a87f3c580a4affec1253439ddd842d8bbb4448",
+      "decision_id": "HD-EF4-B04-SG002-20260730-001",
+      "file_sha256": "sha256:13feb432b4504e11fecabfed4b6fc51c17db315b7a7124106baa82ff1cd63ffe",
+      "path": "artifacts/authority_decisions/HD-EF4-B04-SG002-20260730-001.human-decision.json"
+    },
+    "s04_residual_disposition": "BOUNDED_LATER_ATTEMPT_DEBT"
+  },
+  "dependencies": {
+    "B02-0002": {
+      "exact_tiktoken_lock": "PASS",
+      "report_path": "artifacts/work_packages/B02/attempts/0002/report.json",
+      "report_sha256": "sha256:3c2259e7d4b7ce987960b82f2fb161914637567eacf3030d24899e44f462b33a",
+      "status": "PASS"
+    },
+    "B04-0005": {
+      "dependency_build_revalidation": "PASS",
+      "report_path": "artifacts/work_packages/B04/attempts/0005/report.json",
+      "report_sha256": "sha256:ff7e1f1fa7836fe612284542353e5aefe5f26ab644e2ac40c5f79c09f06ca1e2",
+      "status": "PASS"
+    },
+    "F04-0002": {
+      "report_path": "artifacts/work_packages/F04/attempts/0002/report.json",
+      "report_sha256": "sha256:5a2414ebb79c923af7425b87d614faa088ba9fbd4e6950406948b2eb86d6ab46",
+      "status": "PASS"
+    },
+    "J01": {
+      "manifest_dependency": true,
+      "status": "PASS"
+    }
+  },
+  "next_state": {
+    "B04-0007": "WAITING_ON_S04_0003",
+    "J02": "PASS",
+    "S04": "READY_FOR_ATTEMPT_0003"
+  },
+  "status": "PASS"
+}

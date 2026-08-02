@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/plugin-capability-manifest.schema.json",
+  "title": "PluginCapabilityManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "plugin_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "host_surfaces": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "codex_cli",
+          "codex_desktop",
+          "chatgpt_work",
+          "claude_code"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "optional_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "degraded_modes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "missing_capability": {
+            "type": "string"
+          },
+          "mode": {
+            "enum": [
+              "DEGRADED",
+              "READ_ONLY",
+              "SAFE_MODE",
+              "BLOCKED"
+            ]
+          },
+          "behavior": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "missing_capability",
+          "mode",
+          "behavior"
+        ]
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "hook_bundles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "mcp_servers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "cli_commands": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "plugin_id",
+    "version",
+    "schema_version",
+    "host_surfaces",
+    "required_capabilities",
+    "optional_capabilities",
+    "degraded_modes",
+    "skills",
+    "hook_bundles",
+    "mcp_servers",
+    "cli_commands"
+  ]
+}

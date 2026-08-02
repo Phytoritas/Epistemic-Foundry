@@ -1,0 +1,288 @@
+{
+  "attempt_id": "Y01-0001",
+  "attempt_type": "Y01_TYPED_BUDGETS_ADAPTIVE_FLEET",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "Y01-0001",
+    "dependencies": {
+      "B04": {
+        "attempt_id": "B04-0002",
+        "report": "artifacts/work_packages/B04/attempts/0002/report.json",
+        "report_sha256": "sha256:a75e724b453bf58ce2745af174e96d7f08616bd09467e3b047b78f31b8add643",
+        "status": "PASS"
+      },
+      "D04": {
+        "attempt_id": "D04-0001",
+        "report": "artifacts/work_packages/D04/report.json",
+        "report_sha256": "sha256:b47c194e230f4b08ab96b6153e9fc0e170eafb1054318cfaedd8e1ddeb4c5fde",
+        "status": "PASS"
+      },
+      "Q04": {
+        "attempt_id": "Q04-0001",
+        "report": "artifacts/work_packages/Q04/attempts/0001/report.json",
+        "report_sha256": "sha256:f2f8216af551eeeb3ffaa266a773ff065c6e88ea498b9000d80831fc5ce732fd",
+        "status": "PASS"
+      },
+      "W04": {
+        "attempt_id": "W04-0001",
+        "report": "artifacts/work_packages/W04/attempts/0001/report.json",
+        "report_sha256": "sha256:b07687917d9bf5a150d78c9fd1580e24308823f95e1c8713302b7e4af3c75688",
+        "status": "PASS"
+      },
+      "X04": {
+        "attempt_id": "X04-0001",
+        "report": "artifacts/work_packages/X04/attempts/0001/report.json",
+        "report_sha256": "sha256:87d60e7bae4b75588f4c3093a0ec2425912eba4e7ed15d3db9587bf6ff7312a2",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_Y01_0001_THEN_CONTINUE_DAG",
+    "note": "B04 is sealed at attempt B04-0002 (PASS); its legacy root report.json is a preserved SPEC_GAP and is not the sealed attempt.",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "fan_out_bounded": "PASS",
+    "hard_soft_unmetered_states_truthful": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false
+  },
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "observability, SLO, or telemetry surface (Y02)",
+    "backup, disaster recovery, or operational runbooks (Y03)",
+    "cross-process or distributed budget enforcement",
+    "external actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 1686,
+      "path": "artifacts/work_packages/Y01/attempts/0001/adaptive-fleet-test.junit.xml",
+      "sha256": "sha256:25c8d2b386dcddb35eb05951caefbcbf80550c4473906bbe700a508e91cb0c0f"
+    },
+    {
+      "byte_size": 2520,
+      "path": "artifacts/work_packages/Y01/attempts/0001/budget-enforcement-test.junit.xml",
+      "sha256": "sha256:35d3a13951a4476ac61ef2caf47c1258df24bf861710b7126b0229244ba9224f"
+    },
+    {
+      "byte_size": 35618,
+      "path": "artifacts/work_packages/Y01/attempts/0001/build_y01_0001_evidence.py",
+      "sha256": "sha256:19f7bc5d1a467f79022a2c9c396469f4b4b6c8115a2b51f5c4676a6b5be7e966"
+    },
+    {
+      "byte_size": 9191,
+      "path": "artifacts/work_packages/Y01/attempts/0001/commands.jsonl",
+      "sha256": "sha256:b8b51d2a2ca177c4a354f98a42acfc39d9fadb9a03dea7c2ff012a3e9c1c0369"
+    },
+    {
+      "byte_size": 1481,
+      "path": "artifacts/work_packages/Y01/attempts/0001/dependency-status.json",
+      "sha256": "sha256:c7b76d4c6a2b5b0c843fcc24a20845901d325ef660faa89602a6104df8630fe9"
+    },
+    {
+      "byte_size": 237599,
+      "path": "artifacts/work_packages/Y01/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:42e27882126095ad774e785651fd969a304835662138d102c252737be8982edd"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/Y01/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 2737,
+      "path": "artifacts/work_packages/Y01/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:13f87b5edf9728629f25ce19a26686de4dcd08211387f2f812790b7e899082ae"
+    },
+    {
+      "byte_size": 7183,
+      "path": "artifacts/work_packages/Y01/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:46632372eaed1d9e8792bd359eaf08d13b6ec19ff756cf30ba76123591540410"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/Y01/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:c75437faba0f4fb8158cadacde5af525fdcf3ce7e929864085df5002c7599e6e"
+    },
+    {
+      "byte_size": 3549,
+      "path": "artifacts/work_packages/Y01/attempts/0001/review.md",
+      "sha256": "sha256:bc4bda9b283c6c36a3951ef56a4161cf2888a5d3a99067bcadff098a3d00e1bc"
+    },
+    {
+      "byte_size": 5899,
+      "path": "artifacts/work_packages/Y01/attempts/0001/run_y01_0001_checks.py",
+      "sha256": "sha256:87f60df7d282bc24ffd65992a42cc09ad9cace88dfd3e07f80fef6ee08e391e4"
+    },
+    {
+      "byte_size": 4010,
+      "path": "artifacts/work_packages/Y01/attempts/0001/targeted-budget.junit.xml",
+      "sha256": "sha256:0ce196fc6a0c00f43ce58ab8404ac01d33161c4e161eaf1d9d37ca0e5bd753c7"
+    },
+    {
+      "byte_size": 1994,
+      "path": "artifacts/work_packages/Y01/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:6fc7d296a6c21c473555642c1f6598c6fd624e25fc4fb8619a7c671ab6844a05"
+    },
+    {
+      "byte_size": 2663,
+      "path": "artifacts/work_packages/Y01/attempts/0001/y01-verification.json",
+      "sha256": "sha256:d0a31a6d8762f1532cfc8962481c9427141cacfe0596bd1b72cc5c5348b8671a"
+    },
+    {
+      "byte_size": 26103,
+      "path": "artifacts/work_packages/Y01/attempts/0001/y01_0001_rah_seal.py",
+      "sha256": "sha256:3c75a01d832c44fabd947d2855ac0beaaa976eb3aab8e002a5b8b4eb75cd3147"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0303",
+    "core_generation": "000301-f4013bfc",
+    "final_closeout_evidence_id": "E0304",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1806,
+    "implementation_gate": "fail",
+    "retained_generation_count": 301,
+    "status": "active"
+  },
+  "regression": {
+    "adaptive_fleet_test": {
+      "cancelled": 0,
+      "collected": 8,
+      "failed": 0,
+      "junit": "artifacts/work_packages/Y01/attempts/0001/adaptive-fleet-test.junit.xml",
+      "junit_sha256": "sha256:25c8d2b386dcddb35eb05951caefbcbf80550c4473906bbe700a508e91cb0c0f",
+      "passed": 8,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 8
+    },
+    "attempt_id": "Y01-0001",
+    "budget_enforcement_test": {
+      "cancelled": 0,
+      "collected": 12,
+      "failed": 0,
+      "junit": "artifacts/work_packages/Y01/attempts/0001/budget-enforcement-test.junit.xml",
+      "junit_sha256": "sha256:35d3a13951a4476ac61ef2caf47c1258df24bf861710b7126b0229244ba9224f",
+      "passed": 12,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 12
+    },
+    "component_tests_are_targeted_only": true,
+    "full_node": {
+      "cancelled": 0,
+      "collected": 1253,
+      "failed": 0,
+      "junit": "artifacts/work_packages/Y01/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:42e27882126095ad774e785651fd969a304835662138d102c252737be8982edd",
+      "passed": 1253,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 1248
+    },
+    "full_python": {
+      "collected": 1261,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/Y01/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+      "passed": 1261,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1261
+    },
+    "new_failure_count": 0,
+    "status": "PASS",
+    "targeted_budget": {
+      "cancelled": 0,
+      "collected": 20,
+      "failed": 0,
+      "junit": "artifacts/work_packages/Y01/attempts/0001/targeted-budget.junit.xml",
+      "junit_sha256": "sha256:0ce196fc6a0c00f43ce58ab8404ac01d33161c4e161eaf1d9d37ca0e5bd753c7",
+      "passed": 20,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 20
+    },
+    "unexpected_skip_xfail_todo_or_cancellation_count": 0
+  },
+  "required_checks": {
+    "adaptive_fleet_test": {
+      "module": "packages/foundry-kernel/src/budget/adaptive-fleet.test.mjs",
+      "status": "PASS",
+      "test_count": 8
+    },
+    "budget_enforcement_test": {
+      "module": "packages/foundry-kernel/src/budget/budget-enforcement.test.mjs",
+      "status": "PASS",
+      "test_count": 12
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Independent review of bounded-agent work by a distinct actor in this seal-prep session; not external actor-independent certification.",
+    "author": "bounded implementation agent",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "reviewer": "independent seal-prep session (distinct actor)",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "Y01",
+  "write_scope": {
+    "approved_scope": [
+      "packages/foundry-kernel/src/budget/**",
+      "artifacts/work_packages/Y01/**"
+    ],
+    "attempt_id": "Y01-0001",
+    "component_files": [
+      "packages/foundry-kernel/src/budget/adaptive-fleet.mjs",
+      "packages/foundry-kernel/src/budget/adaptive-fleet.test.mjs",
+      "packages/foundry-kernel/src/budget/budget-enforcement.test.mjs",
+      "packages/foundry-kernel/src/budget/budget-meter.mjs",
+      "packages/foundry-kernel/src/budget/budget-primitives.mjs",
+      "packages/foundry-kernel/src/budget/budget-test-support.mjs",
+      "packages/foundry-kernel/src/budget/budget-vocabulary.mjs",
+      "packages/foundry-kernel/src/budget/index.mjs"
+    ],
+    "product_file_hashes": {
+      "packages/foundry-kernel/src/budget/adaptive-fleet.mjs": "sha256:5285d09d3a98c2a525bc14a7fd058869f50b5c192237b6672e159484d76d3546",
+      "packages/foundry-kernel/src/budget/adaptive-fleet.test.mjs": "sha256:950a98c08a7915011b27e5355bcafa3f1e708663a496a3ada1e23611813a6d71",
+      "packages/foundry-kernel/src/budget/budget-enforcement.test.mjs": "sha256:c728f9061691ab62f4df9f5f8f668974903342ebb89704c17ad47338cd7cf489",
+      "packages/foundry-kernel/src/budget/budget-meter.mjs": "sha256:8339d116c46091e52e3649be3e337aa3e33ef8c3b4578d87feadb1092792377b",
+      "packages/foundry-kernel/src/budget/budget-primitives.mjs": "sha256:a2e69702cbbdd437dfc4c706101fccd35e188577e8fbd778eee2841bff28e458",
+      "packages/foundry-kernel/src/budget/budget-test-support.mjs": "sha256:72c5268714b7e735d3c5dd01ba99682503dc582167020afcb39ddb253230172f",
+      "packages/foundry-kernel/src/budget/budget-vocabulary.mjs": "sha256:e2946efc425f2b7e64503c47fb9ed0de8db3f4b2db86740415f53ea3d0e7c9b9",
+      "packages/foundry-kernel/src/budget/index.mjs": "sha256:5ba478957b147a2b8ab21a78a2a9fef408b2f69070ef419c49f3164e36fc575f"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "write_scope_violation_count": 0
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/parliament-execute.input.schema.json",
+  "title": "ParliamentExecuteInput",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "../common-mutation-input.schema.json"
+    }
+  ],
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dry_run": {
+      "type": "boolean"
+    },
+    "expected_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "approval_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "target_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "arguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role_dispatch_plan_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "role_dispatch_plan_id",
+        "subject_id"
+      ]
+    }
+  },
+  "required": [
+    "workspace_id",
+    "dry_run",
+    "expected_revision",
+    "idempotency_key",
+    "approval_record_ids",
+    "target_ref",
+    "arguments"
+  ]
+}

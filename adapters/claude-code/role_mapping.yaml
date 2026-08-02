@@ -1,0 +1,120 @@
+version: 4.0.0
+strategy: compile canonical RoleSpec into a Claude Code custom agent with a tool grant derived from write scope and worktree isolation for every writer
+roles:
+  evidence_scout:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: shared
+  claim_extractor:
+    surface: custom_agent
+    result_schema: schemas/claim-card.schema.json
+    isolation: worktree
+  defender:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: worktree
+  prosecutor:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: worktree
+  method_auditor:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: worktree
+  scope_auditor:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: worktree
+  inductivist:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: worktree
+  deductivist:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: worktree
+  causal_auditor:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: worktree
+  novelty_examiner:
+    surface: custom_agent
+    result_schema: schemas/novelty-assessment.schema.json
+    isolation: worktree
+  abductive_mediator:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: worktree
+  minority_reporter:
+    surface: custom_agent
+    result_schema: schemas/minority-report.schema.json
+    isolation: worktree
+  judge:
+    surface: custom_agent
+    result_schema: schemas/adjudication.schema.json
+    isolation: worktree
+  independent_attestor:
+    surface: custom_agent
+    result_schema: schemas/attestation.schema.json
+    isolation: worktree
+  validation_executor:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: worktree
+  contract_reviewer:
+    surface: custom_agent
+    result_schema: schemas/result-envelope.schema.json
+    isolation: worktree
+  evolution_governor:
+    surface: custom_agent
+    result_schema: schemas/evolution-stop-certificate.schema.json
+    isolation: worktree
+  hypothesis_mutator:
+    surface: custom_agent
+    result_schema: schemas/hypothesis-genome.schema.json
+    isolation: worktree
+  challenge_evolver:
+    surface: custom_agent
+    result_schema: schemas/challenge-genome.schema.json
+    isolation: worktree
+  experiment_evolver:
+    surface: custom_agent
+    result_schema: schemas/experiment-genome.schema.json
+    isolation: worktree
+  parent_selection_auditor:
+    surface: custom_agent
+    result_schema: schemas/parent-selection-receipt.schema.json
+    isolation: worktree
+  verifier_firewall_auditor:
+    surface: custom_agent
+    result_schema: schemas/evaluator-qualification-report.schema.json
+    isolation: worktree
+  statistical_governor:
+    surface: custom_agent
+    result_schema: schemas/selective-inference-report.schema.json
+    isolation: worktree
+  archive_curator:
+    surface: custom_agent
+    result_schema: schemas/archive-rebalance-plan.schema.json
+    isolation: worktree
+  replication_auditor:
+    surface: custom_agent
+    result_schema: schemas/replication-result.schema.json
+    isolation: worktree
+  prompt_genome_auditor:
+    surface: custom_agent
+    result_schema: schemas/prompt-mutation-proposal.schema.json
+    isolation: worktree
+  shinka_adapter_auditor:
+    surface: custom_agent
+    result_schema: schemas/backend-adapter-qualification.schema.json
+    isolation: worktree
+  evolution_promotion_attestor:
+    surface: custom_agent
+    result_schema: schemas/promotion-decision.schema.json
+    isolation: worktree
+constraints:
+- canonical scientific semantics remain in RoleSpec
+- host surface and tool grant are adapter details
+- write-capable roles run in disjoint isolated worktrees
+- resolved model and adapter version are recorded

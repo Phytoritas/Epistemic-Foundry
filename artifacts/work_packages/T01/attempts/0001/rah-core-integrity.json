@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "work_package_id": "T01",
+  "attempt_id": "T01-0001",
+  "status": "PASS_READ_ONLY_SNAPSHOT",
+  "mode": "READ_ONLY",
+  "completion_ready": false,
+  "current_pointer": ".rah/ralph/current.json",
+  "current_generation": "000081-843d5565",
+  "generation_manifest_sha256": "sha256:0aa10f1d9e112955401c56e4b7f07c6aedc490c973c27a2b4c872bd8c8869413",
+  "generation_payload_count": 6,
+  "generation_payload_hashes_verified": 6,
+  "generation_payload_hash_mismatches": 0,
+  "latest_evidence_id": "E0084",
+  "issued_evidence_id_high_water": 84,
+  "active_generation_directory_count": 3,
+  "ralph_status": "blocked",
+  "implementation_gate": "fail",
+  "blockers": [
+    {
+      "owner": "J02",
+      "summary": "The executable dependency graph does not lock exact tiktoken==0.13.0."
+    },
+    {
+      "owner": "S04",
+      "debt_id": "S04-TM004",
+      "summary": "The development manifest hash no longer matches the sealed S04 traceability fingerprint."
+    }
+  ],
+  "preservation": {
+    "rah_lifecycle_command_run_by_t01": false,
+    "evidence_appended_by_t01": false,
+    "generation_created_by_t01": false,
+    "flat_projection_rewritten_by_t01": false,
+    "prior_generations_and_evidence_preserved": true,
+    "dirty_worktree_preserved": true
+  },
+  "limitations": {
+    "flat_snapshot_reseal_or_resume_verification": "NOT_RUN_DUE_FORENSIC_BLOCK",
+    "rah_completion_claim": false,
+    "reason": "Advancing or resealing RAH while its implementation gate is failed would misrepresent unresolved J02 and S04 evidence."
+  }
+}

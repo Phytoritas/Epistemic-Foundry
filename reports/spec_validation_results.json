@@ -3,10 +3,10 @@
   "version": "4.0.0",
   "scope": "specification_bundle_and_reference_blueprint_only",
   "schemas": {
-    "count": 124,
-    "examples": 124,
-    "valid_examples": 124,
-    "unique_ids": 124
+    "count": 126,
+    "examples": 126,
+    "valid_examples": 126,
+    "unique_ids": 126
   },
   "workflows": {
     "count": 22,
@@ -148,7 +148,7 @@
   },
   "development": {
     "work_packages": 156,
-    "layers": 39,
+    "layers": 42,
     "max_width": 10,
     "invariants": 64,
     "release_levels": [
@@ -176,20 +176,55 @@
     "roles": 28,
     "codex_agents": 10,
     "claude_role_profiles": 28,
-    "text_files_scanned": 337,
+    "text_files_scanned": 351,
     "forbidden_domain_hits": 0,
     "placeholder_hits": 0,
     "secret_hits": 0,
     "markdown_fence_errors": 0
   },
   "package_manifest": {
-    "status": "valid",
+    "status": "invalid",
     "files": 543,
-    "mismatches": 0
+    "mismatches": 31
   },
   "summary": {
-    "status": "PASS",
-    "error_count": 0
+    "status": "FAIL",
+    "error_count": 34
   },
-  "errors": []
+  "errors": [
+    "schema count 126 != 124",
+    "example count 126 != 124",
+    "C:\\dev\\insight\\Epistemic-Foundry\\prompts\\plugin\\classify_epistemic_work.md: prompt lacks evidence grounding language",
+    "package manifest hash/size mismatch CLAUDE.md",
+    "package manifest hash/size mismatch MASTER_SPEC.md",
+    "package manifest hash/size mismatch docs/api_contract.md",
+    "package manifest hash/size mismatch docs/cache_contract.md",
+    "package manifest hash/size mismatch docs/forge_protocol.md",
+    "package manifest hash/size mismatch docs/product_constitution.md",
+    "package manifest hash/size mismatch docs/schema_evolution.md",
+    "package manifest hash/size mismatch docs/status_taxonomy.md",
+    "package manifest hash/size mismatch examples/sample_document-manifest.json",
+    "package manifest hash/size mismatch examples/sample_epistemic-work-classification.json",
+    "package manifest hash/size mismatch examples/sample_evaluator-bundle.json",
+    "package manifest hash/size mismatch examples/sample_evolution-run-spec.json",
+    "package manifest hash/size mismatch examples/sample_gate_decision.json",
+    "package manifest hash/size mismatch examples/sample_holdout-manifest.json",
+    "package manifest hash/size mismatch examples/sample_promotion-decision.json",
+    "package manifest hash/size mismatch manifests/acceptance_matrix.yaml",
+    "package manifest hash/size mismatch manifests/development_manifest.yaml",
+    "package manifest hash/size mismatch manifests/product_invariants.yaml",
+    "package manifest hash/size mismatch manifests/requirements_traceability.yaml",
+    "package manifest hash/size mismatch prompts/plugin/classify_epistemic_work.md",
+    "package manifest hash/size mismatch schemas/document-manifest.schema.json",
+    "package manifest hash/size mismatch schemas/epistemic-work-classification.schema.json",
+    "package manifest hash/size mismatch schemas/evaluator-bundle.schema.json",
+    "package manifest hash/size mismatch schemas/evolution-run-spec.schema.json",
+    "package manifest hash/size mismatch schemas/gate-decision.schema.json",
+    "package manifest hash/size mismatch schemas/holdout-manifest.schema.json",
+    "package manifest hash/size mismatch schemas/phase-artifact-set.schema.json",
+    "package manifest hash/size mismatch schemas/promotion-decision.schema.json",
+    "package manifest hash/size mismatch workflows/corpus_ingest.workflow.yaml",
+    "package manifest hash/size mismatch workflows/forge_research_cycle.workflow.yaml",
+    "package manifest inventory mismatch missing=['.github/workflows/ci.yml', '.ruff_cache/.gitignore', '.ruff_cache/0.15.17/13028231126801474968', '.ruff_cache/CACHEDIR.TAG', 'B04-SG002_무엇을_승인해야_하는가.md', 'C01-SG004_무엇을_승인해야_하는가.md', 'artifacts/authority_decisions/EF4-A05-C01-B04-SHARED-CONTRACT.human-decision.json', 'artifacts/authority_decisions/EF4-A05-C01-B04-SHARED-CONTRACT.md', 'artifacts/authority_decisions/HD-EF4-A06-RM001-20260730-001.human-decision.json', 'artifacts/authority_decisions/HD-EF4-B04-MECH-CORRECTION-20260729-001.human-decision.json'] extra=[]"
+  ]
 }

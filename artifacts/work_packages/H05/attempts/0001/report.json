@@ -1,0 +1,367 @@
+{
+  "attempt_id": "H05-0001",
+  "attempt_type": "H05_EVOLUTION_OBSERVABILITY_HOOKS",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "H05-0001",
+    "dependencies": {
+      "G05": {
+        "attempt_id": "G05-0001",
+        "core_evidence_id": "E0169",
+        "final_closeout_evidence_id": "E0170",
+        "report": "artifacts/work_packages/G05/attempts/0001/report.json",
+        "report_sha256": "sha256:c854b5ec890ed3783c55665fafc02f965ccf3616c2bd4d8071ea8101f12484d0",
+        "status": "PASS"
+      },
+      "H04": {
+        "attempt_id": "H04-0001",
+        "core_evidence_id": "E0066",
+        "final_closeout_evidence_id": "E0067",
+        "report": "artifacts/work_packages/H04/report.json",
+        "report_sha256": "sha256:cf61978263c39eddfc90bc6107d714ed27201d7094fb45ef882d62dd736bb3fb",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_H05_0001_THEN_CONTINUE_DAG",
+    "regression_baseline": {
+      "attempt_id": "S05-0001",
+      "core_evidence_id": "E0175",
+      "final_closeout_evidence_id": "E0176",
+      "report": "artifacts/work_packages/S05/attempts/0001/report.json",
+      "report_sha256": "sha256:dbcb94e77fd885f18aa36a00dc352a9d5a788d265b979ff7a23fafd5f261c727",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": "PASS",
+    "governing_schemas_authority_boundaries_failure_states_exact": "PASS",
+    "happy_negative_crash_resume_adversarial_coverage": "PASS",
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "U01-0001",
+  "not_claimed": [
+    "hook delivery guarantees: it observes events a host already delivered and hook coverage remains non-exhaustive per the gateway's own contract",
+    "enforcement of any kind: observer decisions only",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 32097,
+      "path": "artifacts/work_packages/H05/attempts/0001/build_h05_0001_evidence.py",
+      "sha256": "sha256:2ac602a250f8052607749370d6b3457cf00ab38324f10011a8c9c3a1143acbaa"
+    },
+    {
+      "byte_size": 11080,
+      "path": "artifacts/work_packages/H05/attempts/0001/commands.jsonl",
+      "sha256": "sha256:344ccdab009e566a57e9594cd8f28f057581b92ebfd79f64c9399aa7443eee5e"
+    },
+    {
+      "byte_size": 16146,
+      "path": "artifacts/work_packages/H05/attempts/0001/dependency-regression-g05.junit.xml",
+      "sha256": "sha256:bade1590c9c2a2550b38674a588dc8b3f8f34ddb4521882f1fe6784dcd6c7f9a"
+    },
+    {
+      "byte_size": 2440,
+      "path": "artifacts/work_packages/H05/attempts/0001/dependency-regression-gateway.junit.xml",
+      "sha256": "sha256:f2ec4308ac9acce46e496b9c2c52597cd3d9f1b43ea404ef7c8adb3009ea9ea1"
+    },
+    {
+      "byte_size": 1091,
+      "path": "artifacts/work_packages/H05/attempts/0001/dependency-status.json",
+      "sha256": "sha256:7d9e6e49cb5346db7fa7083bc6d69070fa137ee64374da90035bec338f2b2661"
+    },
+    {
+      "byte_size": 245479,
+      "path": "artifacts/work_packages/H05/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:59954ee7b5688876760cd32318c54a35fe79ce4fa1f3e09c70a042c3ab374b6a"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/H05/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 2732,
+      "path": "artifacts/work_packages/H05/attempts/0001/h05-verification.json",
+      "sha256": "sha256:d3b45d150cdf4501499dbb79603843a47cf974770db1595c07e9564cf7674041"
+    },
+    {
+      "byte_size": 23317,
+      "path": "artifacts/work_packages/H05/attempts/0001/h05_0001_rah_seal.py",
+      "sha256": "sha256:6038d8b8cfce32b8a01f7a6485fee93773d04d3bdd791ca59408de6f8ba707ac"
+    },
+    {
+      "byte_size": 4805,
+      "path": "artifacts/work_packages/H05/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:692bf5cbd2c33de916081368cb5dfe80787232efd2078efe1e824efa5d0a963d"
+    },
+    {
+      "byte_size": 9214,
+      "path": "artifacts/work_packages/H05/attempts/0001/negative-and-adversarial-tests.junit.xml",
+      "sha256": "sha256:86793f30e30a4a4324e94ae0a5f47bea3d363f7545c60ae12feaf72a3d420aed"
+    },
+    {
+      "byte_size": 7177,
+      "path": "artifacts/work_packages/H05/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:c06b6f46f204c67037514c0b1582ad6ab91ee12ec4af4ebe2912c4d021016f5b"
+    },
+    {
+      "byte_size": 3499,
+      "path": "artifacts/work_packages/H05/attempts/0001/provenance-and-receipt-audit.junit.xml",
+      "sha256": "sha256:76e526db6ca56f8b2db7f62be00c88632ae8d9cb907b0f792896b77a0748c748"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/H05/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:c5850c0f5d938e49c13d68b324d90069b73d18fe258cfbb0b986380700c4f2a6"
+    },
+    {
+      "byte_size": 1266,
+      "path": "artifacts/work_packages/H05/attempts/0001/review.md",
+      "sha256": "sha256:7df8a9873b5dc867d93e9608dcda1ff4f76db53360a382501c5c0e5d924643bd"
+    },
+    {
+      "byte_size": 8114,
+      "path": "artifacts/work_packages/H05/attempts/0001/run_h05_0001_checks.py",
+      "sha256": "sha256:5e2f6cec4c65f1dac81a721198b568f6762580ca670b8da82239f8f666fe37bb"
+    },
+    {
+      "byte_size": 3580,
+      "path": "artifacts/work_packages/H05/attempts/0001/schema-and-type-check.junit.xml",
+      "sha256": "sha256:14a849cdc91db8e4f069fb950c8cf5089c23fb4c97abdcf19dfed80b70bfe4c3"
+    },
+    {
+      "byte_size": 19727,
+      "path": "artifacts/work_packages/H05/attempts/0001/targeted-h05-observability.junit.xml",
+      "sha256": "sha256:335dba9ff515e6fdaf7172e2e1282144c6956f112f2b75e85fa8a14eb0475b5e"
+    },
+    {
+      "byte_size": 4028,
+      "path": "artifacts/work_packages/H05/attempts/0001/unit-and-contract-tests.junit.xml",
+      "sha256": "sha256:25a0d0f78dc26ed718b75601bd7a33300ccd294da6e47ca84bbc9f4f5caea541"
+    },
+    {
+      "byte_size": 2119,
+      "path": "artifacts/work_packages/H05/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:e33d791e9349a2215e3afe0ad6d31c89227f0e643e90b4847ebc0e1eb2e43726"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0197",
+    "core_generation": "000195-7501e549",
+    "final_closeout_evidence_id": "E0198",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1170,
+    "implementation_gate": "fail",
+    "retained_generation_count": 195,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "H05-0001",
+    "baseline_attempt": "S05-0001",
+    "component_tests_are_targeted_only": true,
+    "new_failure_count": 0,
+    "status": "PASS",
+    "suites": {
+      "dependency_regression_g05": {
+        "cancelled": 0,
+        "collected": 81,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H05/attempts/0001/dependency-regression-g05.junit.xml",
+        "junit_sha256": "sha256:bade1590c9c2a2550b38674a588dc8b3f8f34ddb4521882f1fe6784dcd6c7f9a",
+        "passed": 81,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 81
+      },
+      "dependency_regression_gateway": {
+        "cancelled": 0,
+        "collected": 11,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H05/attempts/0001/dependency-regression-gateway.junit.xml",
+        "junit_sha256": "sha256:f2ec4308ac9acce46e496b9c2c52597cd3d9f1b43ea404ef7c8adb3009ea9ea1",
+        "passed": 11,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 11
+      },
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1276,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H05/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:59954ee7b5688876760cd32318c54a35fe79ce4fa1f3e09c70a042c3ab374b6a",
+        "passed": 1276,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1271
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H05/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "negative_and_adversarial_tests": {
+        "cancelled": 0,
+        "collected": 43,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H05/attempts/0001/negative-and-adversarial-tests.junit.xml",
+        "junit_sha256": "sha256:86793f30e30a4a4324e94ae0a5f47bea3d363f7545c60ae12feaf72a3d420aed",
+        "passed": 43,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 43
+      },
+      "provenance_and_receipt_audit": {
+        "cancelled": 0,
+        "collected": 16,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H05/attempts/0001/provenance-and-receipt-audit.junit.xml",
+        "junit_sha256": "sha256:76e526db6ca56f8b2db7f62be00c88632ae8d9cb907b0f792896b77a0748c748",
+        "passed": 16,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 16
+      },
+      "schema_and_type_check": {
+        "cancelled": 0,
+        "collected": 16,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H05/attempts/0001/schema-and-type-check.junit.xml",
+        "junit_sha256": "sha256:14a849cdc91db8e4f069fb950c8cf5089c23fb4c97abdcf19dfed80b70bfe4c3",
+        "passed": 16,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 16
+      },
+      "targeted_h05_observability": {
+        "cancelled": 0,
+        "collected": 93,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H05/attempts/0001/targeted-h05-observability.junit.xml",
+        "junit_sha256": "sha256:335dba9ff515e6fdaf7172e2e1282144c6956f112f2b75e85fa8a14eb0475b5e",
+        "passed": 93,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 93
+      },
+      "unit_and_contract_tests": {
+        "cancelled": 0,
+        "collected": 18,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H05/attempts/0001/unit-and-contract-tests.junit.xml",
+        "junit_sha256": "sha256:25a0d0f78dc26ed718b75601bd7a33300ccd294da6e47ca84bbc9f4f5caea541",
+        "passed": 18,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 18
+      }
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 43
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 16
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 16
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 18
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Author/reviewer separation holds (parallel agent authored, primary session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_REVIEW_OF_PARALLEL_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "H05",
+  "write_scope": {
+    "approved_scope": [
+      "plugin_blueprint/epistemic-foundry/hooks/v4_h05/**",
+      "artifacts/work_packages/H05/**"
+    ],
+    "attempt_id": "H05-0001",
+    "authored_by": "bounded parallel implementation agent under the product owner's explicit parallel-execution instruction",
+    "authority_decision": null,
+    "composed_modules_modified": false,
+    "product_file_hashes": {
+      "artifacts/work_packages/H05/attempts/0001/run_h05_0001_checks.py": "sha256:5e2f6cec4c65f1dac81a721198b568f6762580ca670b8da82239f8f666fe37bb",
+      "plugin_blueprint/epistemic-foundry/hooks/v4_h05/index.mjs": "sha256:978fbe13dfc7849f253526cf002343d3971c155e33ac79497877f30db2dd83a2",
+      "plugin_blueprint/epistemic-foundry/hooks/v4_h05/observability-adversarial.test.mjs": "sha256:e0d929915465b7f20e13729ee6e841933673c702d7f77a0f7b1b0c7c24d091ee",
+      "plugin_blueprint/epistemic-foundry/hooks/v4_h05/observability-contract.test.mjs": "sha256:ae9cdfd23d71f15886ad40ec0e9a71ff112c918c37598bd2bf2758b2ffd2f660",
+      "plugin_blueprint/epistemic-foundry/hooks/v4_h05/observability-fixtures.mjs": "sha256:386bc1524f89de6324adf3f45fb388c8e9677fc772386069e872ff7d0b36f100",
+      "plugin_blueprint/epistemic-foundry/hooks/v4_h05/observability-receipts.test.mjs": "sha256:2e2c045f0e9b76254bbbb769ccb245751126df2c8b6f2eae3730c089a785e499",
+      "plugin_blueprint/epistemic-foundry/hooks/v4_h05/observability-registrations.json": "sha256:357b7e9fa48c0352e6d752043b7922d572de478cb1330a5908e20034fdbcd104",
+      "plugin_blueprint/epistemic-foundry/hooks/v4_h05/observability-schema.test.mjs": "sha256:a238ec7e1a39b637a1a1e12152128566e104ae7ac82a8cae9ff7c15cda9e1c82",
+      "plugin_blueprint/epistemic-foundry/hooks/v4_h05/observability.mjs": "sha256:f21087c056de8c4ec4cb4818dbe9175cf80cf918c9e36830907be66569885a0d"
+    },
+    "pyproject_modified": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "primary session (Parent Architect), separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "attempt_id": "X04-0001",
+  "declaring_sources": {
+    "adapter_surfaces": "adapters/codex (X01) and adapters/claude-code (X02) committed surfaces are evaluated as they stand; parity is measured over the sealed adapter role maps, never over live provider calls",
+    "parity_surface": "manifests/role_registry.yaml (the canonical role set is read from the registry, never restated in the eval)"
+  },
+  "exit_criteria": {
+    "canonical_outputs_comparable": {
+      "mechanism": "both the Codex and Claude Code adapters are measured against the canonical role registry: the role set aligns, each role carries the registry output-schema reference on both adapters, the host agent type and Claude surface are uniform, and write-capable roles stay isolation-tracked; a dropped role, a rebound output schema, an unnamed host descriptor, or isolation that stops tracking a write scope is each refused with its own typed finding",
+      "status": "PASS"
+    },
+    "vendor_diversity_not_assumed_independent": {
+      "mechanism": "provider diversity is reported as a number, not an assumption: the 2x2 error contingency and phi coefficient are recomputed from the raw synthetic trials, the observed joint-error rate is shown to exceed the rate independence would predict, and a fixture asserting independence or a provider presented as live is each refused; the committed results artifact is re-derived from the sealed surfaces and any drift breaks its own hash",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "error_correlation_eval": {
+      "status": "PASS",
+      "test_count": 8
+    },
+    "independent_review": {
+      "evidence": "review.md (author: bounded X04 implementation agent; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "provider_parity_eval": {
+      "status": "PASS",
+      "test_count": 8
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "error_correlation_eval": 8,
+    "full_node_suite": 1233,
+    "full_python_suite": 1261,
+    "provider_parity_eval": 8
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "auth": {
+    "principal_id": "PRIN-mcp-fixture",
+    "workspace_id": "WS-1"
+  },
+  "planning_examples": {
+    "foundry.frame.compile": "examples/sample_insight.json",
+    "foundry.search.plan": "examples/sample_query-plan.json",
+    "foundry.parliament.plan": "examples/sample_role-dispatch-plan.json",
+    "foundry.validation.plan": "examples/sample_validation_plan.json"
+  },
+  "read_records": {
+    "read_status": {
+      "found": true,
+      "state": "READY",
+      "data": {
+        "plugin_version": "4.0.0",
+        "kernel_state": "IDLE",
+        "capability_labels": {
+          "mcp_read_tools": "IMPLEMENTED_T01_SURFACE"
+        }
+      }
+    },
+    "read_health": {
+      "found": true,
+      "state": "DEGRADED",
+      "data": {
+        "components": [
+          {
+            "component": "sqlite_store",
+            "state": "READY"
+          },
+          {
+            "component": "postgres_store",
+            "state": "UNAVAILABLE"
+          }
+        ]
+      },
+      "reason": "postgres_store probe failed"
+    },
+    "read_session": {
+      "found": true,
+      "state": "READY",
+      "data": {
+        "session_ref": "FS-0001"
+      }
+    },
+    "read_artifact": {
+      "found": true,
+      "state": "READY",
+      "data": {
+        "artifact_ref": "ART-0001"
+      }
+    },
+    "read_claim": {
+      "found": true,
+      "state": "READY",
+      "data": {
+        "claim_ref": "CLM-0001"
+      }
+    },
+    "read_atlas": {
+      "found": true,
+      "state": "EMPTY_CONFIRMED",
+      "data": null
+    },
+    "read_passport": {
+      "found": true,
+      "state": "READY",
+      "data": {
+        "passport_ref": "HP-0001"
+      }
+    },
+    "read_replay_diff": {
+      "found": true,
+      "state": "READY",
+      "data": {
+        "replay_ref": "RR-0001"
+      }
+    },
+    "read_map": {
+      "found": true,
+      "state": "READY",
+      "data": {
+        "map_ref": "WM-0001"
+      }
+    }
+  }
+}

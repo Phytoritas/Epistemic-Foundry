@@ -1,0 +1,281 @@
+{
+  "authority_bindings": {
+    "MASTER_EXECUTION_PROMPT.md": "9b6cff656c62383229c5836c260b48a6f3fd024db7dc71ff04521ab7b539b855",
+    "MASTER_SPEC.md": "43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3",
+    "manifests/development_manifest.yaml": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+    "prompts/promotion_attestor.md": "cba0bf56de963541abb5231e7ac3d7ae213bcdab856ebd825dc3efaba4f0b224",
+    "schemas/evolution-run-spec.schema.json": "29fe472309463865f58413c9e6566d6b3bcb71be7f6f7c74dfe1176f6a407ee9",
+    "schemas/promotion-decision.schema.json": "a71a125155f5690f7367b800d88ef7c49ef1f132cb607b37abb04e820924ebdc",
+    "schemas/run-spec.schema.json": "91a8ee9e05bb3fb264f355b93ddad07d1e47b2829f6f960ade4c46a04011c64c",
+    "src/epistemic_foundry/governance/promotion.py": "a05013fdd9ea83a51071f376075b540a2fc371bb7e9f2ff12f786feb0ba90e71",
+    "workflows/evolution_chamber_cycle.workflow.yaml": "d3a611dc7c18dfdd8353cc49fa73bf0145465a245b00d22c945e5aa55ab40688"
+  },
+  "decision": {
+    "gap_ids": [
+      "A05-SG001",
+      "A05-SG002"
+    ],
+    "reason": "A05 cannot repair higher-authority canonical schemas or workflows from its docs-and-evidence-only write scope without inventing shared semantics.",
+    "typed_outcome": "SPEC_GAP"
+  },
+  "evolution_run_spec_probe": {
+    "additional_properties_allowed": false,
+    "base_run_has_evolution_run_type": false,
+    "base_run_property_names": [
+      "allowed_capabilities",
+      "approval_policy",
+      "budget",
+      "convergence_policy",
+      "corpus_snapshot_hash",
+      "created_at",
+      "domain_pack_refs",
+      "expected_node_ids",
+      "input_artifact_ids",
+      "model_policy_version",
+      "ontology_version",
+      "policy_bundle_id",
+      "retention_policy_version",
+      "run_hash",
+      "run_id",
+      "run_type",
+      "schema_bundle_version",
+      "security_profile_version",
+      "workflow_id",
+      "workflow_version"
+    ],
+    "binding_audit": [
+      {
+        "available_direct_fields": [
+          "objective"
+        ],
+        "higher_authority_requirement": "target claim or research objective",
+        "status": "BOUND"
+      },
+      {
+        "available_direct_fields": [
+          "population_types"
+        ],
+        "higher_authority_requirement": "mutable genome classes and forbidden authority fields",
+        "missing_semantics": [
+          "forbidden authority fields"
+        ],
+        "status": "PARTIAL"
+      },
+      {
+        "available_direct_fields": [
+          "seed_genome_ids"
+        ],
+        "higher_authority_requirement": "initial population and lineage",
+        "missing_semantics": [
+          "initial lineage binding"
+        ],
+        "status": "PARTIAL"
+      },
+      {
+        "available_direct_fields": [],
+        "higher_authority_requirement": "semantic islands and migration rules",
+        "status": "MISSING"
+      },
+      {
+        "available_direct_fields": [
+          "operator_registry_version"
+        ],
+        "higher_authority_requirement": "mutation and crossover operators",
+        "status": "BOUND"
+      },
+      {
+        "available_direct_fields": [
+          "selection_policy"
+        ],
+        "higher_authority_requirement": "parent and model routing policy",
+        "indirect_base_run_fields": [
+          "model_policy_version"
+        ],
+        "missing_semantics": [
+          "explicit parent policy binding",
+          "explicit model-routing binding"
+        ],
+        "status": "AMBIGUOUS"
+      },
+      {
+        "available_direct_fields": [
+          "evaluator_bundle_id"
+        ],
+        "higher_authority_requirement": "evaluator bundle and qualification report",
+        "missing_semantics": [
+          "evaluator qualification report binding"
+        ],
+        "status": "PARTIAL"
+      },
+      {
+        "available_direct_fields": [
+          "holdout_manifest_id"
+        ],
+        "higher_authority_requirement": "public, hidden, OOD, adversarial and replication stages",
+        "missing_semantics": [
+          "public stage plan",
+          "hidden stage plan",
+          "OOD stage plan",
+          "adversarial stage plan",
+          "replication stage plan"
+        ],
+        "status": "PARTIAL"
+      },
+      {
+        "available_direct_fields": [],
+        "higher_authority_requirement": "novelty vector and prior-art boundary",
+        "status": "MISSING"
+      },
+      {
+        "available_direct_fields": [],
+        "higher_authority_requirement": "fitness vector and hard gates",
+        "status": "MISSING"
+      },
+      {
+        "available_direct_fields": [],
+        "higher_authority_requirement": "adaptive-search statistical policy",
+        "status": "MISSING"
+      },
+      {
+        "available_direct_fields": [],
+        "higher_authority_requirement": "archive and negative-knowledge retention",
+        "status": "MISSING"
+      },
+      {
+        "available_direct_fields": [
+          "budget_envelope_id",
+          "max_generations",
+          "max_candidates",
+          "stop_policy"
+        ],
+        "higher_authority_requirement": "hard/soft budgets, concurrency and stop rules",
+        "indirect_base_run_fields": [
+          "budget.max_concurrency"
+        ],
+        "missing_semantics": [
+          "declared EvolutionRunSpec-to-RunSpec resolution contract"
+        ],
+        "status": "AMBIGUOUS"
+      }
+    ],
+    "direct_property_names": [
+      "base_run_spec_id",
+      "budget_envelope_id",
+      "evaluator_bundle_id",
+      "evolution_run_id",
+      "holdout_manifest_id",
+      "max_candidates",
+      "max_generations",
+      "objective",
+      "operator_registry_version",
+      "population_types",
+      "random_seed",
+      "seed_genome_ids",
+      "selection_policy",
+      "spec_hash",
+      "stop_policy"
+    ],
+    "explicit_required_pin_fields_absent": [
+      "archive_policy_id",
+      "evaluator_qualification_report_id",
+      "fitness_policy_id",
+      "forbidden_authority_fields",
+      "hard_gate_policy_id",
+      "island_policy_id",
+      "max_concurrency",
+      "migration_policy_id",
+      "model_routing_policy_id",
+      "negative_memory_policy_id",
+      "novelty_policy_id",
+      "parent_selection_policy_id",
+      "prior_art_boundary_id",
+      "statistical_policy_id",
+      "validation_cascade_plan_id"
+    ],
+    "finding": "EvolutionRunSpec is closed to additional properties but does not explicitly bind most mandatory per-run search, evaluator-qualification, stage, statistics, archive, and concurrency semantics; the base RunSpec link has no canonical resolution rule and its run_type vocabulary has no evolve value.",
+    "non_bound_binding_count": 11
+  },
+  "probe_id": "A05-P001",
+  "promotion_schema_probe": {
+    "all_unsafe_fixtures_schema_valid": true,
+    "conditional_constraint_keywords_present": [],
+    "finding": "The canonical schema accepts PROMOTE with FAIL or PARTIAL hard gates, and accepts promotion with empty replication and approval arrays.",
+    "unsafe_fixtures": [
+      {
+        "approval_record_count": 0,
+        "decision": "PROMOTE",
+        "errors": [],
+        "granted_level": "REPLICATED",
+        "hard_gate_status": "FAIL",
+        "replication_result_count": 0,
+        "schema_result": "ACCEPTED"
+      },
+      {
+        "approval_record_count": 0,
+        "decision": "PROMOTE",
+        "errors": [],
+        "granted_level": "REPLICATED",
+        "hard_gate_status": "PARTIAL",
+        "replication_result_count": 0,
+        "schema_result": "ACCEPTED"
+      },
+      {
+        "approval_record_count": 0,
+        "decision": "PROMOTE",
+        "errors": [],
+        "granted_level": "REPLICATED",
+        "hard_gate_status": "PASS",
+        "replication_result_count": 0,
+        "schema_result": "ACCEPTED"
+      }
+    ]
+  },
+  "runtime_contrast": {
+    "finding": "governance/promotion.py refuses failed gates and missing evidence, but the canonical workflow does not bind that helper as its promotion executor or a post-LLM deterministic gate.",
+    "safe_runtime_path": "src/epistemic_foundry/governance/promotion.py",
+    "workflow_references_safe_runtime": false
+  },
+  "schema_meta_validation": {
+    "base_run_spec": "PASS",
+    "evolution_run_spec": "PASS",
+    "promotion_decision": "PASS"
+  },
+  "status": "SPEC_GAP",
+  "work_package_id": "A05",
+  "workflow_probe": {
+    "adjudication_artifact_produced": false,
+    "approval_artifact_produced": false,
+    "attestation_artifact_produced": false,
+    "finding": "A provider-nondeterministic LLM node emits PromotionDecision and directly unlocks deterministic Passport issuance. The workflow produces no separate Parliament adjudication, independent attestation, or human approval artifact, and it does not reference the safe governance promotion function.",
+    "human_authority_nodes": [],
+    "passport_node": {
+      "depends_on": [
+        "run_evidence_parliament_promotion"
+      ],
+      "executor_type": "policy",
+      "node_id": "issue_hypothesis_passport_revisions",
+      "required_policy_checks": [
+        "policy_bundle_valid",
+        "capability_scope_valid"
+      ]
+    },
+    "promotion_node": {
+      "depends_on": [
+        "replicate_surviving_elites"
+      ],
+      "determinism_class": "provider_nondeterministic",
+      "executor_ref": "prompts/promotion_attestor.md",
+      "executor_type": "llm",
+      "node_id": "run_evidence_parliament_promotion",
+      "output_schema_ref": "schemas/promotion-decision.schema.json",
+      "required_policy_checks": [
+        "policy_bundle_valid",
+        "capability_scope_valid"
+      ]
+    },
+    "promotion_to_passport_is_direct_edge": true,
+    "safe_runtime_gate_referenced": false,
+    "standalone_attestation_nodes": [],
+    "standalone_parliament_nodes": []
+  }
+}

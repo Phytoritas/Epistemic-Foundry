@@ -1,0 +1,52 @@
+{
+  "attempt_id": "G04-0001",
+  "clean_uninstall_leaves_no_residue": {
+    "installed_cache_absent_after_remove": true,
+    "installed_selector_and_marketplace_removed_from_config": true,
+    "marketplace_removed_and_absent_from_listing": true,
+    "real_user_config_toml_byte_identical_before_and_after": true,
+    "real_user_selector_cache_never_created": true,
+    "residue_counts_are_zero": true,
+    "temporary_root_torn_down_after_run": true
+  },
+  "exit_criteria": {
+    "install_enable_disable_uninstall": {
+      "evidence": [
+        "tests/install/local-marketplace/g04-lifecycle.test.mjs"
+      ],
+      "mechanism": "The real codex host adds the disposable local marketplace, lists it as available without the personal marketplace, installs the epistemic-foundry plugin into an isolated CODEX_HOME cache, and reports the initial enabled, headless-disabled, and re-enabled states; plugin remove and marketplace remove then leave zero cache or config residue",
+      "status": "PASS"
+    },
+    "repository_checkout_not_required": {
+      "evidence": [
+        "tests/install/local-marketplace/g04-lifecycle.test.mjs"
+      ],
+      "mechanism": "The installed cache is enumerated after the marketplace source is detached, and the absolute installed dispatcher is invoked from an empty cwd with an empty PATH; the fail-closed exit names the installed dist target with zero repository-checkout fallback and no fabricated command success",
+      "status": "PASS"
+    }
+  },
+  "fresh_install_is_functional": {
+    "available_listing_excludes_personal_marketplace": true,
+    "disable_then_reenable_state_observed_through_host": true,
+    "installed_cache_is_byte_for_byte_hash_equal_copy_of_source": true,
+    "installed_cache_survives_marketplace_source_detachment": true,
+    "installed_manifest_valid_with_empty_capabilities": true,
+    "no_repository_checkout_or_leftover_state_assumed": true,
+    "path_less_dispatcher_invocation_fails_honestly_not_fabricated": true,
+    "plugin_installed_into_isolated_codex_home_cache": true
+  },
+  "required_checks": {
+    "clean_uninstall_test": {
+      "module": "tests/install/local-marketplace/g04-lifecycle.test.mjs",
+      "status": "PASS",
+      "test_count": 1
+    },
+    "fresh_install_test": {
+      "module": "tests/install/local-marketplace/g04-lifecycle.test.mjs",
+      "status": "PASS",
+      "test_count": 1
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 1
+}

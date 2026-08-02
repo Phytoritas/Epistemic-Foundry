@@ -1,0 +1,298 @@
+{
+  "attempt_id": "C04-0002",
+  "attempt_type": "FULL_C_PHASE_CONFORMANCE_GATE",
+  "completion_ready": false,
+  "contract_status": "GENERATED_PROJECTION_DRIFT",
+  "dependency_state": {
+    "attempt_id": "C04-0002",
+    "dependencies": {
+      "B04": {
+        "attempt_id": "B04-0007",
+        "report": "artifacts/work_packages/B04/attempts/0007/report.json",
+        "report_sha256": "sha256:156c205ac874d5399dd68ec0a285e32fd5d6921bcc42eb6c180b242617fa8dd3",
+        "status": "PASS"
+      },
+      "C01": {
+        "attempt_id": "C01-0007",
+        "report": "artifacts/work_packages/C01/attempts/0007/report.json",
+        "report_sha256": "sha256:13e989701aab58b670e467c20b35cee9fd77ac7852b56a2a4dd4b5aa7ffc447e",
+        "status": "PASS"
+      },
+      "C02": {
+        "attempt_id": "C02-0002",
+        "report": "artifacts/work_packages/C02/attempts/0002/report.json",
+        "report_sha256": "sha256:f89f0f3bc82697716f7833a57acabd6a3a9666196e3c4ec310f406d6576b45cf",
+        "status": "PASS"
+      },
+      "C03": {
+        "attempt_id": "C03-0003",
+        "report": "artifacts/work_packages/C03/attempts/0003/report.json",
+        "report_sha256": "sha256:624ee1ef8fb21ee33670e19b6262d3226e8350aaf291da8d90e94e8c46273a56",
+        "status": "PASS"
+      },
+      "F04": {
+        "attempt_id": "F04-0002",
+        "report": "artifacts/work_packages/F04/attempts/0002/report.json",
+        "report_sha256": "sha256:5a2414ebb79c923af7425b87d614faa088ba9fbd4e6950406948b2eb86d6ab46",
+        "status": "PASS"
+      },
+      "J02": {
+        "attempt_id": "J02-0003",
+        "report": "artifacts/work_packages/J02/attempts/0003/report.json",
+        "report_sha256": "sha256:d348ddc7c8b2d476d3424a6459079f0011d9fc69e29056131832b3ae2fc2d184",
+        "status": "PASS"
+      },
+      "S04": {
+        "attempt_id": "S04-0003",
+        "report": "artifacts/work_packages/S04/attempts/0003/report.json",
+        "report_sha256": "sha256:bf76a387c229769e568e650b150b5ede6b2136c3294d792a551a9802904cadd4",
+        "status": "PASS"
+      }
+    },
+    "development_manifest_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "fixed_repair_order": [
+      "C04-0002_FAIL",
+      "C02-0003_GENERATED_PROJECTION_CORRECTION",
+      "C04-0003_FULL_CONFORMANCE",
+      "B04-0008_FINAL_PACKAGING"
+    ],
+    "next_package": "C02-0003",
+    "states": {
+      "B04-0007": "PASS_PRE_C04_PROJECTION",
+      "B04-0008": "WAITING_ON_C04_PASS",
+      "C01-0007": "PASS",
+      "C02-0003": "READY_FOR_CORRECTION",
+      "C04-0002": "FAIL_IMMUTABLE_HISTORY_AFTER_SEAL",
+      "C04-0003": "WAITING_ON_C02_0003"
+    },
+    "status": "RETURN_TO_C02"
+  },
+  "failure_classification": "FAIL",
+  "failure_owner": "C02",
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "C04_0001_preserved": true,
+    "dirty_worktree_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "NO_C04_IMPLEMENTATION_CHANGE",
+  "next_package": "C02-0003",
+  "not_claimed": [
+    "C04 package PASS",
+    "generated-contract conformance",
+    "B04-0008 final packaging",
+    "release or production readiness",
+    "completion_ready=true",
+    "external actor-independent certification"
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/C04/attempts/0002/build_c04_0002_evidence.py",
+    "artifacts/work_packages/C04/attempts/0002/c04_0002_rah_seal.py",
+    "artifacts/work_packages/C04/attempts/0002/c04-conformance-verification.json",
+    "artifacts/work_packages/C04/attempts/0002/dependency-status.json",
+    "artifacts/work_packages/C04/attempts/0002/full-regression-impact.json",
+    "artifacts/work_packages/C04/attempts/0002/write-scope-verification.json",
+    "artifacts/work_packages/C04/attempts/0002/junit-normalization-verification.json",
+    "artifacts/work_packages/C04/attempts/0002/full-python-suite.junit.xml",
+    "artifacts/work_packages/C04/attempts/0002/full-node-suite.junit.xml",
+    "artifacts/work_packages/C04/attempts/0002/targeted-contract-conformance.junit.xml",
+    "artifacts/work_packages/C04/attempts/0002/rah-core-integrity.json",
+    "artifacts/work_packages/C04/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/C04/attempts/0002/review.md",
+    "artifacts/work_packages/C04/attempts/0002/report.json"
+  ],
+  "package_status": "FAIL",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0016",
+    "core_generation": "000016-eb4451b0",
+    "final_closeout_evidence_id": "E0017",
+    "implementation_gate": "fail",
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "C04-0002",
+    "full_node": {
+      "cancelled": 0,
+      "collected": 460,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C04/attempts/0002/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:3de4c74091c3ea372b1b6cda113eda3f24e8973ac7cb4ae02ea99b1d05cdc072",
+      "passed": 460,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 457
+    },
+    "full_python": {
+      "collected": 990,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C04/attempts/0002/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:c03d5e119144aaac24b5e60da9d9ce3c3b8e7221ad24fe7ee1f305f9a0a339a4",
+      "passed": 990,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 990
+    },
+    "generated_contract_failure_count": 2,
+    "new_python_or_node_failure_count": 0,
+    "status": "FAIL_GENERATED_CONTRACT_DRIFT_ONLY",
+    "targeted_contracts": {
+      "collected": 287,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C04/attempts/0002/targeted-contract-conformance.junit.xml",
+      "junit_sha256": "sha256:07b81019dbc1f9f8c7e1d6a114676eb2b7b0f7d492a0f663e93a8249a982fb8f",
+      "passed": 287,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 287
+    },
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "review": {
+    "actor_independence": false,
+    "blocking_finding_count": 1,
+    "finding_id": "C04-RF003",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_INTEGRATION_REVIEW",
+    "status": "FAIL_RETURN_TO_C02"
+  },
+  "status": "FAIL",
+  "verification": {
+    "attempt_id": "C04-0002",
+    "canonical_contract": {
+      "draft": "2020-12",
+      "example_count": 126,
+      "legacy_promotion_value_hits": [],
+      "mapped_example_count": 126,
+      "meta_schema_validation": "PASS",
+      "schema_count": 126,
+      "schema_example_one_to_one": true,
+      "status": "PASS",
+      "unique_schema_id_count": 126,
+      "valid_example_count": 126
+    },
+    "canonical_projection": {
+      "B04_attempt_id": "B04-0007",
+      "B04_projection_receipt_id": "AR-B04-0007-CANONICAL-PROJECTION",
+      "B04_projection_receipt_sha256": "sha256:7a6a210ed72056e4047818a648b21a7b03e98229ff78942ebdd7c4b56477f9ff",
+      "B04_report_sha256": "sha256:156c205ac874d5399dd68ec0a285e32fd5d6921bcc42eb6c180b242617fa8dd3",
+      "expected_root_source_bundle_hash": "sha256:1557b03db2ad7e7d23b014d4c9d5fd643803f6613696c966d9b0379573259e7f",
+      "expected_snapshot_bundle_hash": "sha256:d01bda0057584e235331b649238fc2507c60cab329fd6b8e8b6a115fac912559",
+      "freshness_verdict": "PASS",
+      "observed_registry_hash": "sha256:6b4fcade707639e537744be4075e71d3f7e068cd42eaaaddb20ef084851175d5",
+      "observed_root_source_bundle_hash": "sha256:1557b03db2ad7e7d23b014d4c9d5fd643803f6613696c966d9b0379573259e7f",
+      "observed_snapshot_bundle_hash": "sha256:d01bda0057584e235331b649238fc2507c60cab329fd6b8e8b6a115fac912559",
+      "resource_count": 127,
+      "schema_count": 126,
+      "status": "PASS"
+    },
+    "completion_ready": false,
+    "failure_classification": "FAIL",
+    "failure_owner": "C02",
+    "failures": [
+      {
+        "code": "GENERATED_CONTRACT_DRIFT",
+        "details": [
+          "stale generated file: packages/contracts/src/generated/contract-manifest.json",
+          "stale generated file: packages/contracts/src/generated/models.d.ts",
+          "stale generated file: packages/contracts/src/generated/registry.mjs",
+          "stale generated file: python/epistemic_foundry/contracts/contract-manifest.json",
+          "stale generated file: python/epistemic_foundry/contracts/models.py",
+          "stale generated file: web/src/generated/contract-manifest.json",
+          "stale generated file: web/src/generated/contracts.ts"
+        ],
+        "owner": "C02"
+      },
+      {
+        "code": "CROSS_LANGUAGE_FIXTURE_DRIFT",
+        "details": [
+          "examples/sample_gate_decision.json: example hash mismatch"
+        ],
+        "owner": "C02"
+      }
+    ],
+    "generated_contract": {
+      "cross_language_fixture": {
+        "example_count": 126,
+        "failures": [
+          "examples/sample_gate_decision.json: example hash mismatch"
+        ],
+        "schema_count": 126,
+        "status": "FAIL"
+      },
+      "expected_example_bundle_sha256": "sha256:899f7c7af8f7de5dc3479adf5c270c7eb80047bd84bf28214bfe6e596cbbf54e",
+      "generated_artifact_hashes_before_c02_correction": {
+        "packages/contracts/src/generated/contract-manifest.json": "sha256:96acd5a496ac234eaf8bffdda8dbf0c87db3e4130822b8cbeab6522b82e3fdcf",
+        "packages/contracts/src/generated/models.d.ts": "sha256:b6921eb4214aaf90296a4112a4683428467ba2bead86b4309ad2b540325df0a9",
+        "packages/contracts/src/generated/registry.mjs": "sha256:17bce5beea2d1a35b2c5601c97f361f8075a8952772f74af86d8a2d72c343107",
+        "python/epistemic_foundry/contracts/__init__.py": "sha256:29a58cf958579f9a2165222059603ea1c4898d85379473b00872ce237dd92095",
+        "python/epistemic_foundry/contracts/contract-manifest.json": "sha256:96acd5a496ac234eaf8bffdda8dbf0c87db3e4130822b8cbeab6522b82e3fdcf",
+        "python/epistemic_foundry/contracts/models.py": "sha256:7f6d33fa16c0d0653c34cb4145974565fa749a7f59716ca5c7ceac2e3fa6f1f6",
+        "python/epistemic_foundry/contracts/py.typed": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "web/src/generated/contract-manifest.json": "sha256:96acd5a496ac234eaf8bffdda8dbf0c87db3e4130822b8cbeab6522b82e3fdcf",
+        "web/src/generated/contracts.ts": "sha256:a8daa36ddf89f3c2a23b74ad5546a194c5f700c133c08ab523d14d542e28dcc9"
+      },
+      "generated_file_count": 9,
+      "generator_check": {
+        "failures": [
+          "stale generated file: packages/contracts/src/generated/contract-manifest.json",
+          "stale generated file: packages/contracts/src/generated/models.d.ts",
+          "stale generated file: packages/contracts/src/generated/registry.mjs",
+          "stale generated file: python/epistemic_foundry/contracts/contract-manifest.json",
+          "stale generated file: python/epistemic_foundry/contracts/models.py",
+          "stale generated file: web/src/generated/contract-manifest.json",
+          "stale generated file: web/src/generated/contracts.ts"
+        ],
+        "stale_file_count": 7,
+        "status": "FAIL"
+      },
+      "owner": "C02",
+      "status": "FAIL"
+    },
+    "openapi_contract": {
+      "all_mutations_require_idempotency_key": true,
+      "all_operations_have_explicit_security_and_capabilities": true,
+      "canonical_file": "openapi/epistemic-foundry-v1.openapi.yaml",
+      "document_registration_request_ref": "../schemas/document-registration-request.schema.json",
+      "document_registration_result_ref": "../schemas/document-registration.schema.json",
+      "document_sha256": "sha256:43429ad9c583b1026bd2445fb77d38b12410d2f6db065cffad45c64297db2cd7",
+      "external_schema_ref_count": 24,
+      "json_schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+      "openapi_version": "3.1.1",
+      "operation_count": 33,
+      "reference_resolution_failures": [],
+      "status": "PASS",
+      "unique_operation_id_count": 33
+    },
+    "package_status": "FAIL",
+    "passing_checks": {
+      "external_openapi_validation": "PASS",
+      "repository_boundaries": "PASS_10_COMPONENTS_18_EDGES",
+      "repository_structure": "PASS_10_NODE_COMPONENTS",
+      "typescript_5_9_3_strict_compile": "PASS_CURRENT_BYTES"
+    },
+    "status": "FAIL",
+    "verdict": "RETURN_TO_C02_FOR_CANONICAL_REGENERATION"
+  },
+  "work_package_id": "C04",
+  "write_scope": {
+    "approved_scope": [
+      "artifacts/work_packages/C04/**"
+    ],
+    "attempt_id": "C04-0002",
+    "dirty_worktree_preserved": true,
+    "product_change_count": 0,
+    "product_files_modified_by_attempt": [],
+    "reset_clean_stash_commit_push_performed": false,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-B04-0005-CANONICAL-PROJECTION",
+  "byte_size": 62561,
+  "content_hash": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+  "created_at": "2026-07-30T05:30:00Z",
+  "created_by": {
+    "actor_id": "B04-0005-packaging-revalidator",
+    "actor_type": "tool"
+  },
+  "locator": "src/epistemic_foundry/_canonical/canonical-registry.json",
+  "media_type": "application/vnd.epistemic-foundry.canonical-registry+json",
+  "receipt_hash": "sha256:40f0665099975986651e5f22338849b1435f2e2ba10e7c1bd79c7d75e9d481d8",
+  "receipt_id": "AR-B04-0005-CANONICAL-PROJECTION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "registry_byte_integrity",
+      "details": "The receipt binds the exact live canonical-registry.json bytes.",
+      "status": "PASS"
+    },
+    {
+      "check": "root_snapshot_convergence",
+      "details": "All 125 resources bind source sha256:47a8d63daadae502bc3fc91c19cebc1f8f04f885e24d6d409c444748e04fd340 to snapshot sha256:dde63a97254b2432d0fc1f917e1bd294210f43e19720386ac4295e317a497ed7 with no fallback.",
+      "status": "PASS"
+    },
+    {
+      "check": "B02_dependency_revalidation",
+      "details": "Exact tiktoken 0.13.0 frozen sync and seven tokenizer vectors pass without runtime metadata exposure.",
+      "status": "PASS"
+    }
+  ]
+}

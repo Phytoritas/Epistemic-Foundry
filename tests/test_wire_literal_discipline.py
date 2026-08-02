@@ -16,7 +16,6 @@ enums are the values a wire format actually pins.
 from __future__ import annotations
 
 import ast
-import json
 from collections import defaultdict
 from pathlib import Path
 
@@ -30,6 +29,17 @@ DECLARING_MODULES: frozenset[str] = frozenset(
     {
         "domain/status.py",
         "domain/vocabularies.py",
+        "application/mcp_common/contracts.py",
+        "governance/evolution_authority/nodes.py",
+        "governance/evolution_authority/registry.py",
+        "application/mcp_common/transport.py",
+        "application/mcp_planning/handlers.py",
+        # T02 mutating surface (HD-EF4-T02-SCOPE-20260801-001): ports.py owns
+        # the effect-status vocabulary, service.py the T02 catalog field names,
+        # and handler_factory.py the read-model state it reports.
+        "application/mcp_mutating/ports.py",
+        "application/mcp_mutating/service.py",
+        "application/mcp_mutating/handler_factory.py",
         "retrieval/search_state.py",
         "observability/result_state.py",
         "observability/ranking.py",

@@ -1,0 +1,71 @@
+{
+  "attempt_id": "I03-0001",
+  "classification": "TRANSIENT_CONCURRENCY_DIAGNOSTICS_NOT_REPRODUCED",
+  "diagnostic_runs": [
+    {
+      "byte_size": 77890,
+      "path": "artifacts/work_packages/I03/attempts/0001/full-node-suite.concurrent-load-diagnostic.junit.xml",
+      "s04_fingerprint_verified": true,
+      "sha256": "sha256:434ce2348acfb0ef774194517a0ec8829f438735d6f23007cbede0a78630d00b",
+      "totals": {
+        "cancelled": 0,
+        "fail": 2,
+        "pass": 359,
+        "skipped": 0,
+        "tests": 361,
+        "todo": 0
+      },
+      "transient_failure_code": "ARTIFACT_STORE_STRUCTURE_INVALID",
+      "transient_failure_test": "orphan_receipt_test: concurrent readers tolerate transient staging and lock handoff"
+    },
+    {
+      "byte_size": 78163,
+      "path": "artifacts/work_packages/I03/attempts/0001/full-node-suite.standalone-concurrency-diagnostic.junit.xml",
+      "s04_fingerprint_verified": true,
+      "sha256": "sha256:2f4a1e895324c5d79fb63cf839c675d4c8e9b8d8317f50543ff825d35e26fead",
+      "totals": {
+        "cancelled": 0,
+        "fail": 2,
+        "pass": 359,
+        "skipped": 0,
+        "tests": 361,
+        "todo": 0
+      },
+      "transient_failure_code": "ARTIFACT_MUTATION_LOCK_FAILED",
+      "transient_failure_test": "orphan_receipt_test: concurrent identical publishers converge"
+    }
+  ],
+  "i03_product_failure_claimed": false,
+  "isolated_reproductions": [
+    {
+      "failed": 0,
+      "passed": 5,
+      "provenance": "commands.jsonl",
+      "runs": 5,
+      "test_name": "orphan_receipt_test: concurrent readers tolerate transient staging and lock handoff",
+      "transient_reproduced": false
+    },
+    {
+      "failed": 0,
+      "passed": 5,
+      "provenance": "commands.jsonl",
+      "runs": 5,
+      "test_name": "orphan_receipt_test: concurrent identical publishers converge",
+      "transient_reproduced": false
+    }
+  ],
+  "serial_full_node": {
+    "path": "artifacts/work_packages/I03/attempts/0001/full-node-suite.junit.xml",
+    "sha256": "sha256:3dc91a3634540ff7e6ce5a2eb9ba759ba565ddf8f157893413e97c226daa1c29",
+    "totals": {
+      "cancelled": 0,
+      "fail": 1,
+      "pass": 360,
+      "skipped": 0,
+      "tests": 361,
+      "todo": 0
+    },
+    "transient_failure_count": 0
+  },
+  "status": "DIAGNOSTICS_RECONCILED"
+}

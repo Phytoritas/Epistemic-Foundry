@@ -1,0 +1,153 @@
+{
+  "attempt_id": "B04-0010",
+  "attempt_type": "FINAL_POST_C04_PACKAGING_GATE_127",
+  "canonical_projection": {
+    "duplicate_schema_id_count": 0,
+    "extra_path_count": 0,
+    "hash_mismatch_count": 0,
+    "missing_path_count": 0,
+    "openapi_operation_count": 33,
+    "openapi_resource_count": 1,
+    "openapi_version": "3.1.1",
+    "projected_snapshot_bundle_hash": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+    "registry_hash": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+    "resource_count": 128,
+    "schema_count": 127,
+    "source_bundle_hash": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5"
+  },
+  "completion_ready": false,
+  "dependency_state": {
+    "attempt_id": "B04-0010",
+    "dependencies": {
+      "B02": {
+        "report": "artifacts/work_packages/B02/report.json",
+        "report_sha256": "sha256:98abe689dbfb9399d2f50f87a18376ca9a85ed4a50c938513778e312e3e67dad",
+        "status": "PASS"
+      },
+      "B03": {
+        "report": "artifacts/work_packages/B03/report.json",
+        "report_sha256": "sha256:baa07e997402a290f2602cea39a78a1acdeeb69dd7ea8c89331c84e78976338f",
+        "status": "PASS"
+      },
+      "C04": {
+        "attempt_id": "C04-0004",
+        "core_evidence_id": "E0107",
+        "final_closeout_evidence_id": "E0108",
+        "report": "artifacts/work_packages/C04/attempts/0004/report.json",
+        "report_sha256": "sha256:28cded86378c3ad189839296bd00dc5c29395dce3d31a6db590de67a7ac008ab",
+        "status": "PASS",
+        "verification_sha256": "sha256:cba6b210059542a50e439317009e5ccb2e6f86decbbb7bbfa63d1f6dd8988aa9"
+      }
+    },
+    "next_action": "RECOMPUTE_156_PACKAGE_DAG_AFTER_RAH_SEAL",
+    "status": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "B04_0002_through_0009_preserved": true,
+    "C04_0004_preserved": true,
+    "dirty_worktree_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_state": {
+    "B04-0010": "PASS_FINAL_PACKAGING_AFTER_RAH_SEAL",
+    "next_action": "RECOMPUTE_156_PACKAGE_DAG"
+  },
+  "not_claimed": [
+    "156-package DAG terminal completion",
+    "release or production readiness",
+    "completion_ready=true",
+    "external actor-independent certification"
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/B04/attempts/0010/run_b04_0010_checks.py",
+    "artifacts/work_packages/B04/attempts/0010/build_b04_0010_evidence.py",
+    "artifacts/work_packages/B04/attempts/0010/b04_0010_rah_seal.py",
+    "artifacts/work_packages/B04/attempts/0010/canonical-projection-verification.json",
+    "artifacts/work_packages/B04/attempts/0010/source-inventory.json",
+    "artifacts/work_packages/B04/attempts/0010/snapshot-inventory.json",
+    "artifacts/work_packages/B04/attempts/0010/installed-wheel-verification.json",
+    "artifacts/work_packages/B04/attempts/0010/packaging-summary.json",
+    "artifacts/work_packages/B04/attempts/0010/packaging-verification-run.json",
+    "artifacts/work_packages/B04/attempts/0010/projection.artifact-receipt.json",
+    "artifacts/work_packages/B04/attempts/0010/wheel.artifact-receipt.json",
+    "artifacts/work_packages/B04/attempts/0010/sdist.artifact-receipt.json",
+    "artifacts/work_packages/B04/attempts/0010/phase-artifact-reconciliation.json",
+    "artifacts/work_packages/B04/attempts/0010/full-regression-impact.json",
+    "artifacts/work_packages/B04/attempts/0010/dependency-status.json",
+    "artifacts/work_packages/B04/attempts/0010/node-test-inventory.json",
+    "artifacts/work_packages/B04/attempts/0010/junit-normalization-verification.json",
+    "artifacts/work_packages/B04/attempts/0010/prior-history-verification.json",
+    "artifacts/work_packages/B04/attempts/0010/write-scope-verification.json",
+    "artifacts/work_packages/B04/attempts/0010/targeted-projection.junit.xml",
+    "artifacts/work_packages/B04/attempts/0010/full-python-suite.junit.xml",
+    "artifacts/work_packages/B04/attempts/0010/full-node-suite.junit.xml",
+    "artifacts/work_packages/B04/attempts/0010/commands.jsonl",
+    "artifacts/work_packages/B04/attempts/0010/review.md",
+    "artifacts/work_packages/B04/attempts/0010/report.json",
+    "artifacts/work_packages/B04/attempts/0010/rah-core-integrity.json"
+  ],
+  "package_status": "PASS",
+  "product_files_modified_by_attempt": [],
+  "projection_status": "PASS_CURRENT",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0109",
+    "core_generation": "000107-71117d4c",
+    "final_closeout_evidence_id": "E0110",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 642,
+    "implementation_gate": "fail",
+    "retained_generation_count": 107,
+    "status": "active"
+  },
+  "regression": {
+    "node": "PASS_819_OF_819",
+    "node_test_files": 79,
+    "python": "PASS_1115_OF_1115",
+    "targeted_projection": "PASS_41_OF_41",
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_INTEGRATION_REVIEW",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "B04",
+  "write_scope": {
+    "approved_scope": [
+      "src/epistemic_foundry/_canonical/**",
+      "src/epistemic_foundry/contracts/registry.py",
+      "scripts/build/canonical_registry/**",
+      "tests/packaging/**",
+      "tests/test_contracts.py",
+      "tests/test_cli.py",
+      "artifacts/work_packages/B04/**"
+    ],
+    "attempt_id": "B04-0010",
+    "dirty_worktree_preserved": true,
+    "product_change_count": 0,
+    "product_file_baseline_hashes": {
+      "scripts/build/canonical_registry/materialize.py": "sha256:ae10176b2ab1d9e1d13f6f501fb78b328774e2a828a8acddc1d8534d3273cf6f",
+      "scripts/build/canonical_registry/verify_packaging.py": "sha256:60fc75bec8d95e9dd186b9117a22fe2704bf1b74f3b480e518448d0dacb29c59",
+      "src/epistemic_foundry/_canonical/canonical-registry.json": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+      "tests/packaging/test_canonical_registry.py": "sha256:1cf1b30f8fd4243714d7cb8cac7b50d61604d87c9420442dde3da835aef0418b",
+      "tests/test_cli.py": "sha256:e3a791f3d94f9eadc03f65cff67eff4a73bade6902e0e7c6326a0024af0d3146",
+      "tests/test_contracts.py": "sha256:3fd45129acf1a340b7aecf71d45292c6b6a2daa963a43ea016aa7ca1f8e445fb"
+    },
+    "product_files_modified_by_attempt": [],
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

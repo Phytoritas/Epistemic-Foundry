@@ -1,0 +1,132 @@
+{
+  "benchmark_id": "Q04-TIME-SLICED",
+  "counts": {
+    "documents": 7,
+    "items": 12,
+    "slices": 3
+  },
+  "dataset_hash": "sha256:db9665fd6b2c8ab378d581617c022574340028fbfbf1814d9a0dfd6c385c0710",
+  "evaluated_at": "2026-08-01T00:00:00Z",
+  "gold_corpus_ref": {
+    "corpus_id": "GOLD-INSIGHT-V1",
+    "corpus_version": "1.0.0",
+    "path": "evals/gold/insight_gold_cases.json"
+  },
+  "label_vocabulary": [
+    "BOUNDARY",
+    "FALSE_INSIGHT",
+    "TRUE_INSIGHT"
+  ],
+  "leakage": {
+    "documents_checked": 20,
+    "future_documents_admitted": 0,
+    "withheld_document_total": 9
+  },
+  "overall": {
+    "accuracy": 0.6666666666666666,
+    "correct": 8,
+    "item_count": 12
+  },
+  "report_hash": "sha256:0e8e8de2699ee96e0e233227805fec618a713ee59db59bc62c28e2d6edc0961a",
+  "report_id": "Q04-TS-REPORT-1",
+  "slices": [
+    {
+      "accuracy": 0.5,
+      "as_of": "2023-12-31T23:59:59Z",
+      "correct": 2,
+      "date_checks": 6,
+      "eligible_document_count": 2,
+      "eligible_document_ids": [
+        "DOC-2023-A",
+        "DOC-2023-B"
+      ],
+      "item_count": 4,
+      "item_ids": [
+        "TS-2023-001",
+        "TS-2023-002",
+        "TS-2023-003",
+        "TS-2023-004"
+      ],
+      "missed_item_ids": [
+        "TS-2023-003",
+        "TS-2023-004"
+      ],
+      "slice_id": "SLICE-2023",
+      "withheld_document_count": 5,
+      "withheld_document_ids": [
+        "DOC-2024-A",
+        "DOC-2024-B",
+        "DOC-2025-A",
+        "DOC-2025-B",
+        "DOC-2026-A"
+      ]
+    },
+    {
+      "accuracy": 0.75,
+      "as_of": "2024-12-31T23:59:59Z",
+      "correct": 3,
+      "date_checks": 7,
+      "eligible_document_count": 4,
+      "eligible_document_ids": [
+        "DOC-2023-A",
+        "DOC-2023-B",
+        "DOC-2024-A",
+        "DOC-2024-B"
+      ],
+      "item_count": 4,
+      "item_ids": [
+        "TS-2024-001",
+        "TS-2024-002",
+        "TS-2024-003",
+        "TS-2024-004"
+      ],
+      "missed_item_ids": [
+        "TS-2024-004"
+      ],
+      "slice_id": "SLICE-2024",
+      "withheld_document_count": 3,
+      "withheld_document_ids": [
+        "DOC-2025-A",
+        "DOC-2025-B",
+        "DOC-2026-A"
+      ]
+    },
+    {
+      "accuracy": 0.75,
+      "as_of": "2025-12-31T23:59:59Z",
+      "correct": 3,
+      "date_checks": 7,
+      "eligible_document_count": 6,
+      "eligible_document_ids": [
+        "DOC-2023-A",
+        "DOC-2023-B",
+        "DOC-2024-A",
+        "DOC-2024-B",
+        "DOC-2025-A",
+        "DOC-2025-B"
+      ],
+      "item_count": 4,
+      "item_ids": [
+        "TS-2025-001",
+        "TS-2025-002",
+        "TS-2025-003",
+        "TS-2025-004"
+      ],
+      "missed_item_ids": [
+        "TS-2025-004"
+      ],
+      "slice_id": "SLICE-2025",
+      "withheld_document_count": 1,
+      "withheld_document_ids": [
+        "DOC-2026-A"
+      ]
+    }
+  ],
+  "status": "PASS",
+  "system_under_test": {
+    "name": "q04-time-sliced-fixture",
+    "synthetic": true,
+    "version": "1.0.0"
+  },
+  "version": "1.0.0"
+}

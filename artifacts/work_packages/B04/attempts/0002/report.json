@@ -1,0 +1,299 @@
+{
+  "work_package_id": "B04",
+  "attempt_id": "B04-0002",
+  "base_checkpoint": "B02:PASS+B03:PASS+C04:PASS",
+  "status": "PASS",
+  "package_status": "PASS",
+  "build_status": "SOURCE_DIST_CONFORMANT",
+  "canonical_registry_status": "INTEGRITY_VERIFIED",
+  "completion_ready": false,
+  "authority_decision_ids": [
+    "HD-EF4-A05-C01-B04-20260727-001",
+    "HD-EF4-C01-SG003-20260728-001"
+  ],
+  "authority_boundary": {
+    "source_authority": [
+      "schemas/**",
+      "openapi/**"
+    ],
+    "packaged_runtime_snapshot": "src/epistemic_foundry/_canonical/**",
+    "runtime_registry": "src/epistemic_foundry/contracts/registry.py",
+    "build_backend": "setuptools.build_meta",
+    "build_backend_requirement": "setuptools==82.0.1",
+    "root_canonical_sources_modified_by_B04": false,
+    "duplicate_registry_implementation_created": false
+  },
+  "changed_files": [
+    "pyproject.toml",
+    "src/epistemic_foundry/_canonical/**",
+    "src/epistemic_foundry/contracts/registry.py",
+    "scripts/build/canonical_registry/**",
+    "tests/packaging/**",
+    "artifacts/work_packages/B04/attempts/0002/**"
+  ],
+  "dependencies": {
+    "B02": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/B02/report.json",
+      "report_sha256": "98abe689dbfb9399d2f50f87a18376ca9a85ed4a50c938513778e312e3e67dad"
+    },
+    "B03": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/B03/report.json",
+      "report_sha256": "baa07e997402a290f2602cea39a78a1acdeeb69dd7ea8c89331c84e78976338f"
+    },
+    "C04": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/C04/report.json",
+      "report_sha256": "eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f"
+    }
+  },
+  "implementation": {
+    "canonical_resource_layout": "src/epistemic_foundry/_canonical/{canonical-registry.json,schemas/**,openapi/**}",
+    "resource_api": "importlib.resources",
+    "working_directory_dependency": false,
+    "repository_root_fallback": false,
+    "editable_install_only_path": false,
+    "silent_source_tree_substitution": false,
+    "fail_closed_codes": [
+      "CANONICAL_REGISTRY_MISSING",
+      "CANONICAL_REGISTRY_HASH_MISMATCH",
+      "CANONICAL_REGISTRY_DUPLICATE_ID"
+    ],
+    "returned_object_mutation_isolated": true,
+    "destination_symlink_junction_rejected": true,
+    "unrelated_destination_files_preserved_and_rejected": true,
+    "owned_stale_files_only_removed": true,
+    "user_empty_directories_preserved": true,
+    "manual_prebuild_sync_required": false
+  },
+  "canonical_registry": {
+    "bundle_version": "4.0.0",
+    "source_bundle_hash": "sha256:7dc06f09278471a136d2675801495bfe72efe7784a67fa040b77a07187dee8b0",
+    "source_snapshot_sha256": "3a42e16e97e02c34b4fe3904a322d21c1d7c411e62cad7d0f6139f8353f7c6fe",
+    "schema_count": 124,
+    "openapi_document_count": 1,
+    "resource_count": 125,
+    "duplicate_document_id_count": 0,
+    "missing_resource_count": 0,
+    "extra_resource_count": 0,
+    "hash_mismatch_count": 0
+  },
+  "verification": {
+    "status": "PASS",
+    "artifact": "artifacts/work_packages/B04/attempts/0002/b04-packaging-verification.json",
+    "sha256": "sha256:6f07659db311b9689e45b9bd3643dc5a0c148a152ce1d1ef6e43002df02e2739",
+    "verifier": "scripts/build/canonical_registry/verify_packaging.py",
+    "verifier_sha256": "sha256:d1a4fc94edcc21275d84bbc540d09db78d1298c4a194e4392e47118d0457bd3f",
+    "clean_checkout_equivalent_build": "PASS",
+    "source_dist_convergence": "PASS",
+    "registry_comparison_count": 8,
+    "registry_comparisons_clean": 8,
+    "two_clean_wheels_byte_equal": true,
+    "two_clean_sdists_byte_equal": true,
+    "sdist_derived_wheel_byte_equal": true,
+    "sdist_constraint_embedded": true,
+    "source_sdist_constraint_byte_equal": true,
+    "constraint_sha256": "cfa3ae583cf955843a6d2370005d65587afe021f73ac93af8aaec586580d22b7",
+    "installed_wheel_clean_venv": "PASS",
+    "installed_wheel_arbitrary_empty_cwd": "PASS",
+    "installed_wheel_schema_enumeration": 124,
+    "installed_wheel_representative_validation": "PASS",
+    "installed_wheel_openapi_load": "PASS",
+    "complete_decoy_source_present": true,
+    "fallback_attempt_count": 1,
+    "fallback_success_count": 0,
+    "missing_resource_error": "CANONICAL_REGISTRY_MISSING",
+    "tamper_error": "CANONICAL_REGISTRY_HASH_MISMATCH",
+    "b01_structure_regression": "PASS",
+    "b01_boundary_regression": "PASS",
+    "lock_regression": "PASS",
+    "failures": []
+  },
+  "full_python_suite": {
+    "status": "PASS",
+    "collected": 912,
+    "passed": 912,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit": "artifacts/work_packages/B04/attempts/0002/full-python-suite.junit.xml",
+    "junit_sha256": "sha256:6000a3ce26bff3ed54daa5defab3f1f4950f9ddc1b039242b8150dee073c33ac",
+    "hostname_metadata_present": false,
+    "independent_replay": "PASS"
+  },
+  "packaging_test_suite": {
+    "status": "PASS",
+    "passed": 14,
+    "failed": 0
+  },
+  "distribution_artifacts": [
+    {
+      "artifact_id": "ART-B04-0002-WHEEL",
+      "path": "artifacts/work_packages/B04/attempts/0002/dist/epistemic_foundry-4.0.0-py3-none-any.whl",
+      "byte_size": 301117,
+      "content_hash": "sha256:ac6fc720b2df29ef8ebb73c429e6ef484e7dd844ed863e55e1d744a691a73756",
+      "receipt": "artifacts/work_packages/B04/attempts/0002/wheel.artifact-receipt.json",
+      "receipt_hash": "sha256:4d5068a7786096010f878bab9f863132db360e85bef12da66f91076b0f5a9660",
+      "receipt_file_sha256": "sha256:42be19558ed802ea14150c9557bc5c93a1941d0e76624075a8e550ab6ebb03c0"
+    },
+    {
+      "artifact_id": "ART-B04-0002-SDIST",
+      "path": "artifacts/work_packages/B04/attempts/0002/dist/epistemic_foundry-4.0.0.tar.gz",
+      "byte_size": 246149,
+      "content_hash": "sha256:dc5a40c8e9a92f58219e3b031038b745a00c30ce381cf43478f591d3041464d1",
+      "receipt": "artifacts/work_packages/B04/attempts/0002/sdist.artifact-receipt.json",
+      "receipt_hash": "sha256:485567bb10a85f2829463f686c97182dfc839d0de762779ac231df4555f71a5d",
+      "receipt_file_sha256": "sha256:7c922b3c8cdfa3d8c31457e77167859dd02206d1841b72223bd8f44f63d60c2c"
+    }
+  ],
+  "phase_artifact_reconciliation": {
+    "status": "PASS",
+    "artifact": "artifacts/work_packages/B04/attempts/0002/phase-artifact-reconciliation.json",
+    "sha256": "sha256:abf14c868f7e109abd4e5c547f36a72263b7596c47dd6974e6452e0477428632",
+    "failures": []
+  },
+  "review": {
+    "reviewer": "actor-separated read-only reviewer context",
+    "mode": "ACTOR_SEPARATED_SHARED_WORKSPACE_TECHNICAL_REVIEW",
+    "status": "PASS",
+    "artifact": "artifacts/work_packages/B04/attempts/0002/review.md",
+    "sha256": "sha256:d379140efd9ceea2f386fc06af62381434d64ea52deaa202847e241e266cab4d",
+    "blocking_findings": [],
+    "resolved_findings": [
+      "B04-RF001",
+      "B04-RF002",
+      "B04-RF003",
+      "B04-RF004"
+    ],
+    "assurance_limitation": "The review was separated from implementation but used the same Codex model family and shared worktree. It is not external actor-independent certification."
+  },
+  "historical_preservation": {
+    "historical_root_status": "SPEC_GAP",
+    "historical_root_artifacts_immutable": true,
+    "historical_root_hashes": {
+      "report.json": "3b239d90f30257ef79e95caedbeb5d2b020e34710b4ddac3d5ebb07e981d775a",
+      "build-smoke.json": "e9184f3d59b1b7b1d90cfc5ff5b418038a1fb6058fab3b369b325488befc2591",
+      "reconciliation.json": "73b9671d6622a42e892e4aab7f4b29b171d3da7b46f42bb818230cc22001e258",
+      "commands.jsonl": "77d10bbf83fb9b734f9a5e6767e7c8a1579ca83964d7df36365006de85c80102",
+      "review.md": "5c32fb9c7e811d23ee569bd3202a2176137202e073ef5d357fa72f3de33a819d"
+    },
+    "initial_resolving_failure": "artifacts/work_packages/B04/attempts/0002/verification-runs/0001-sdist-reproducibility-fail.json",
+    "initial_resolving_failure_sha256": "sha256:4964199846af15826922d0f3c72ddb469ac031d57bd59f118aa6d9e568b53c83",
+    "initial_resolving_failure_status": "FAIL",
+    "history_rewritten": false,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false
+  },
+  "dag_reconciliation": {
+    "status": "PASS",
+    "artifact": "artifacts/work_packages/B04/attempts/0002/dependency-status.json",
+    "sha256": "sha256:d363e99e5e13a64c629ad5d1fddbf8912e889c4a213105b74b48fc24a0712a6b",
+    "work_package_count": 156,
+    "unique_work_package_count": 156,
+    "unknown_dependency_count": 0,
+    "cycle_count": 0,
+    "topological_layer_count": 42,
+    "maximum_layer_width": 10,
+    "completed_package_count": 17,
+    "ready_packages_manifest_order": [
+      "D01",
+      "G01",
+      "A06"
+    ],
+    "next_package": "D01",
+    "completion_ready": false
+  },
+  "checks": [
+    {
+      "command_id": "B04-0002-C004",
+      "name": "formal packaging build_smoke and convergence",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B04/attempts/0002/b04-packaging-verification.json"
+    },
+    {
+      "command_id": "B04-0002-C005",
+      "name": "full Python regression",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B04/attempts/0002/full-python-suite.junit.xml"
+    },
+    {
+      "command_id": "B04-0002-C017",
+      "name": "phase artifact reconciliation",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B04/attempts/0002/phase-artifact-reconciliation.json"
+    },
+    {
+      "command_id": "B04-0002-C018",
+      "name": "full 156-package DAG recomputation",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B04/attempts/0002/dependency-status.json"
+    },
+    {
+      "command_id": "B04-0002-C020",
+      "name": "B04 core RAH evidence append",
+      "exit_code": 0,
+      "artifact": ".rah/ralph/generations/000013-74ed49e0/evidence_ledger.json#/entries/13"
+    },
+    {
+      "command_id": "B04-0002-C021",
+      "name": "post-core RAH resume and generation verification",
+      "exit_code": 0,
+      "artifact": ".rah/ralph/generations/000013-74ed49e0/generation-manifest.json"
+    }
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/B04/attempts/0002/b04-packaging-verification.json",
+    "artifacts/work_packages/B04/attempts/0002/full-python-suite.junit.xml",
+    "artifacts/work_packages/B04/attempts/0002/wheel.artifact-receipt.json",
+    "artifacts/work_packages/B04/attempts/0002/sdist.artifact-receipt.json",
+    "artifacts/work_packages/B04/attempts/0002/phase-artifact-reconciliation.json",
+    "artifacts/work_packages/B04/attempts/0002/dependency-status.json",
+    "artifacts/work_packages/B04/attempts/0002/review.md",
+    "artifacts/work_packages/B04/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/B04/attempts/0002/report.json",
+    "artifacts/work_packages/B04/attempts/0002/b04-rah-seal.py"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000012-47c7beaa",
+    "core_generation": "000013-74ed49e0",
+    "core_evidence_id": "E0014",
+    "final_closeout_evidence_id": "E0015",
+    "generation_manifest_verified": true,
+    "retained_generation_manifest_count": 13,
+    "generation_file_hashes_verified": 78,
+    "flat_snapshot_stamps_verified": 6,
+    "flat_snapshot_content_matches": 6,
+    "current_generation_manifest_sha256": "sha256:ee96467ee37a517b0ab863a1e2c86f922d9fb82699c981098ecea55fbbc61374",
+    "parse_errors": {},
+    "status": "active",
+    "completion_ready": false,
+    "next_package": "D01"
+  },
+  "tool_policy_rejections": [
+    {
+      "operation": "proposed recursive removal of two verified __pycache__ directories",
+      "executed": false,
+      "repository_mutation": false,
+      "resolution": "Inventory each directory, remove exactly four known regular .pyc files with LiteralPath, then remove exactly two verified empty non-reparse directories non-recursively."
+    }
+  ],
+  "open_risks": [
+    "A malformed ownership marker whose top-level JSON value is not an object can raise TypeError before JSON-formatted domain-error normalization; it fails before destination mutation and is a non-blocking future error-normalization improvement.",
+    "The actor-separated review is not external actor-independent certification.",
+    "The verified build and installed-wheel isolation evidence was produced on the current Windows host; cross-platform hosted execution remains later integration/release evidence."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "external actor-independent certification",
+    "hosted Linux/macOS/Windows CI execution for this exact resolving attempt",
+    "release signing, SBOM publication, or public deployment",
+    "downstream D01/G01/A06 and later work-package behavior"
+  ],
+  "next_ready": [
+    "D01",
+    "G01",
+    "A06"
+  ],
+  "next_package": "D01"
+}

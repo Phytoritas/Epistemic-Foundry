@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/session-transition.input.schema.json",
+  "title": "SessionTransitionInput",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "../common-mutation-input.schema.json"
+    }
+  ],
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dry_run": {
+      "type": "boolean"
+    },
+    "expected_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "approval_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "target_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "arguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to_phase": {
+          "enum": [
+            "FRAME",
+            "OBSERVE",
+            "REASON",
+            "GATE",
+            "EXPORT",
+            "IDLE"
+          ]
+        },
+        "transition_request_artifact_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "session_id",
+        "to_phase",
+        "transition_request_artifact_id"
+      ]
+    }
+  },
+  "required": [
+    "workspace_id",
+    "dry_run",
+    "expected_revision",
+    "idempotency_key",
+    "approval_record_ids",
+    "target_ref",
+    "arguments"
+  ]
+}

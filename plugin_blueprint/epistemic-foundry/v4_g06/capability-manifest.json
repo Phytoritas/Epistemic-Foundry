@@ -1,0 +1,90 @@
+{
+  "plugin_id": "epistemic-foundry",
+  "version": "4.0.0",
+  "schema_version": "4",
+  "host_surfaces": ["chatgpt_work", "claude_code", "codex_cli", "codex_desktop"],
+  "required_capabilities": ["plugin_cli", "plugin_hooks", "plugin_skills"],
+  "optional_capabilities": ["hosted_tool_hooks", "plugin_mcp"],
+  "degraded_modes": [
+    {
+      "missing_capability": "hosted_tool_hooks",
+      "mode": "READ_ONLY",
+      "behavior": "Hosted-tool observation is unavailable; affected tool paths are surfaced read-only and gated by the kernel rather than by host hooks."
+    },
+    {
+      "missing_capability": "plugin_hooks",
+      "mode": "DEGRADED",
+      "behavior": "Host hook enforcement is unavailable; kernel gates and the explicit CLI remain the authoritative control path."
+    },
+    {
+      "missing_capability": "plugin_mcp",
+      "mode": "DEGRADED",
+      "behavior": "The MCP transport is unavailable; the projected CLI surface remains the invocation path for every command."
+    }
+  ],
+  "skills": [
+    "foundry",
+    "foundry-admin",
+    "foundry-aporia",
+    "foundry-archive",
+    "foundry-atlas",
+    "foundry-challenge",
+    "foundry-claim-forge",
+    "foundry-domain-pack",
+    "foundry-evaluator-audit",
+    "foundry-evolution-replay",
+    "foundry-evolution-stop",
+    "foundry-evolve",
+    "foundry-evolve-convert",
+    "foundry-evolve-inspect",
+    "foundry-evolve-run",
+    "foundry-evolve-setup",
+    "foundry-intake",
+    "foundry-map",
+    "foundry-observe",
+    "foundry-parliament",
+    "foundry-passport",
+    "foundry-plugin-dev",
+    "foundry-promote-evolved",
+    "foundry-reason",
+    "foundry-recall",
+    "foundry-replay",
+    "foundry-replicate",
+    "foundry-shinka-adapter",
+    "foundry-validation"
+  ],
+  "hook_bundles": [
+    "delegation",
+    "evolution",
+    "holdout",
+    "lifecycle",
+    "prompt",
+    "session",
+    "tools"
+  ],
+  "mcp_servers": ["epistemic-foundry"],
+  "cli_commands": [
+    "artifact get",
+    "atlas query",
+    "claim get",
+    "claim promote",
+    "corpus register",
+    "frame compile",
+    "health",
+    "map query",
+    "memory write",
+    "parliament execute",
+    "parliament plan",
+    "passport get",
+    "passport publish",
+    "replay diff",
+    "search execute",
+    "search plan",
+    "session get",
+    "session transition",
+    "skill activate",
+    "status",
+    "validation execute",
+    "validation plan"
+  ]
+}

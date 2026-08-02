@@ -1,0 +1,68 @@
+{
+  "attempt_id": "O05-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every record is content-addressed: the plan id/hash cover the plan, the receipt id/hash cover the receipt, the layered novelty and acquisition ids/hashes cover their records, and each identifier is a sha256 of the record's own body with no clock or random draw, so replaying build_coverage_debt_acquisition_plan over the same inputs reproduces the plan byte for byte (acquisition_plan_is_rederivable)",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "lane names, lane order, receipt states and kinds, sentinel and stop reasons, plan dispositions and novelty layers are read from the canonical search-lane-receipt, search-completeness-certificate and novelty-vector schemas rather than restated (EF4-I22); every receipt and niche is validated against its canonical schema; and each FINDING_CODE names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the refusals carry the weight: a document outside the snapshot or after the as-of bound, a lane disposition/receipt conflict, a receipt bound to a different plan, an external layer declared complete while sources stay unsearched, a coverage debt out of range, and a selected adversarial lane never conclusively searched are each refused; the happy path and the replay check still reproduce deterministically",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; the corpus-bounded ladder and its capped status/ceiling are inherited from K05, the per-layer vector from the evaluation owner and coverage debt from the sealed M05 niche map, and O05 only records where a run may look, what it learned per layer, and where it is still blind",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent dispatched in parallel; reviewer: this sealing session as an independent, actor-independent reviewer distinct from the implementer; verdict PASS, blocking_finding_count=0; external actor-independent certification does not hold)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 40
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 14
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 15
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 22
+    }
+  },
+  "retrieval_semantics": {
+    "coverage_debt_source": "sealed M05 niche map (descending debt, niche id tie-break)",
+    "novelty_layers_source": "novelty-vector schema dimensions via evaluation.novelty_layers",
+    "produces": "content-addressed retrieval plan, lane receipts, layered novelty and coverage-debt acquisition plan; no score, selection or promotion",
+    "refusals_are_by_path": true,
+    "search_state_projection": "six receipt states projected onto four coverage states; inconclusive states never become SEARCHED_NONE"
+  },
+  "schema_binding": {
+    "coverage_debt": "sealed M05 niche map via epistemic_foundry.cartography.v4_m05",
+    "lane_vocabulary": "search-lane-receipt and search-completeness-certificate (cross-checked for the same members and order)",
+    "novelty_ladder": "K05 assess_novelty_within_boundary (capped status and ceiling inherited, never recomputed)",
+    "novelty_layers": "novelty-vector schema dimensions (re-read per call)"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_c05": 132,
+    "dependency_regression_k05": 95,
+    "dependency_regression_o04": 18,
+    "full_node_suite": 1129,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 40,
+    "provenance_and_receipt_audit": 14,
+    "schema_and_type_check": 15,
+    "unit_and_contract_tests": 22
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-B04-0008-WHEEL",
+  "byte_size": 308644,
+  "content_hash": "sha256:906ca7477c421941a8ceacf5b732740ec27bff73d6c3b25c1b3c763a6ce536f9",
+  "created_at": "2026-07-30T17:00:00.000Z",
+  "created_by": {
+    "actor_id": "B04-0008-final-packaging-verifier",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/B04/attempts/0008/dist/epistemic_foundry-4.0.0-py3-none-any.whl",
+  "media_type": "application/vnd.python.wheel",
+  "receipt_hash": "sha256:116ecec3eaffd838de45c5d9a33de39fb328ee7e4b4dfd8e7b9ddd4e2e5732dc",
+  "receipt_id": "AR-B04-0008-WHEEL",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "installed_wheel_only",
+      "details": "Clean isolated install, empty cwd, schema validation, OpenAPI load, no source fallback, missing-resource rejection, and tamper rejection pass.",
+      "status": "PASS"
+    },
+    {
+      "check": "wheel_reproducibility",
+      "details": "Two clean wheels and the sdist-derived wheel are byte-identical.",
+      "status": "PASS"
+    }
+  ]
+}

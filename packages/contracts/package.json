@@ -1,0 +1,20 @@
+{
+  "name": "@epistemic-foundry/contracts",
+  "version": "0.0.0-scaffold",
+  "private": true,
+  "type": "module",
+  "description": "Generated provider-neutral transport contracts; source authority remains schemas/",
+  "types": "./src/generated/models.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/generated/models.d.ts",
+      "import": "./src/generated/registry.mjs"
+    },
+    "./manifest": "./src/generated/contract-manifest.json"
+  },
+  "scripts": {
+    "generate": "python codegen/generate.py --write",
+    "check:generated": "python codegen/generate.py --check",
+    "check:parity": "python codegen/verify.py"
+  }
+}

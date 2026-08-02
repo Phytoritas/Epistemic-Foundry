@@ -1,0 +1,21 @@
+{
+  "attempt_id": "S04-0005",
+  "completion_ready": false,
+  "dependencies": {
+    "HD-EF4-S04-SG001-20260731-001": "VALID_RESOLVING_HUMAN_DECISION",
+    "J02-0004": "PASS_ORDERED_PREDECESSOR",
+    "S02": "PASS",
+    "S03": "PASS",
+    "S04-0004": "IMMUTABLE_SPEC_GAP_S04_SG001"
+  },
+  "next_state": {
+    "B04-0009": "WAITING_ON_C01_0009_AND_C02_0004",
+    "B04-final": "WAITING_ON_C04_0004",
+    "C01-0009": "DEPENDENCY_READY",
+    "C02-0004": "WAITING_ON_C01_0009",
+    "C04-0004": "WAITING_ON_O02_0002_AND_FRESH_PROJECTION",
+    "O02-0002": "WAITING_ON_B04_0009",
+    "S04": "PASS_ACTIVE_SOURCE_BINDING_CURRENT"
+  },
+  "status": "PASS"
+}

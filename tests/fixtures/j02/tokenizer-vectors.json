@@ -1,0 +1,56 @@
+{
+  "fixture_version": "J02-0002",
+  "tokenizer": {
+    "package": "tiktoken",
+    "version": "0.13.0",
+    "encoding": "o200k_base",
+    "disallowed_special": []
+  },
+  "vectors": [
+    {
+      "id": "english",
+      "text": "Epistemic Foundry",
+      "encoded_text": "Epistemic Foundry",
+      "token_ids": [72940, 51756, 291, 7283, 1102]
+    },
+    {
+      "id": "korean",
+      "text": "인식론적 파운드리",
+      "encoded_text": "인식론적 파운드리",
+      "token_ids": [5544, 17087, 39168, 9871, 36349, 15435, 9389, 4960]
+    },
+    {
+      "id": "mixed",
+      "text": "Evidence 근거 2026",
+      "encoded_text": "Evidence 근거 2026",
+      "token_ids": [141151, 71124, 17077, 220, 1323, 21]
+    },
+    {
+      "id": "nfc",
+      "text": "Café",
+      "encoded_text": "Café",
+      "normalize_nfc": true,
+      "token_ids": [34, 103112]
+    },
+    {
+      "id": "crlf",
+      "text": "line1\r\nline2",
+      "encoded_text": "line1\r\nline2",
+      "canonical_file_error": "REFERENCE_CONTENT_DRIFT",
+      "token_ids": [1137, 16, 370, 1137, 17]
+    },
+    {
+      "id": "tab_newline",
+      "text": "field\tvalue\n",
+      "encoded_text": "field\tvalue\n",
+      "metadata_error": "INITIAL_SKILL_METADATA_BUDGET_EXCEEDED",
+      "token_ids": [4735, 33049, 198]
+    },
+    {
+      "id": "special_literal",
+      "text": "<|endoftext|>",
+      "encoded_text": "<|endoftext|>",
+      "token_ids": [27, 91, 419, 1440, 919, 91, 29]
+    }
+  ]
+}

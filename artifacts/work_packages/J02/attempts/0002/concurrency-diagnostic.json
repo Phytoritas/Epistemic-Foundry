@@ -1,0 +1,33 @@
+{
+  "attempt_id": "J02-0002",
+  "disposition": "The lock handoff observation was transient and is not counted as a J02 product failure; the serial full-suite artifact is authoritative.",
+  "final_serial_full_node": {
+    "concurrent_identical_publishers_status": "PASS",
+    "failed": 1,
+    "junit": "artifacts/work_packages/J02/attempts/0002/full-node-suite.junit.xml",
+    "junit_sha256": "sha256:6b6704504f244e598298944e9357b54361a4e796d5b37f37a53095d5c14602c6",
+    "passed": 436,
+    "sole_failure": "S04-TM004",
+    "tests": 437
+  },
+  "initial_parallel_full_node_observation": {
+    "artifact_claimed": false,
+    "failed": 2,
+    "failures": [
+      "S04-TM004",
+      "orphan_receipt_test: concurrent identical publishers converge"
+    ],
+    "passed": 435,
+    "provenance": "PRIMARY_SESSION_COMMAND_OBSERVATION_NO_PRESERVED_JUNIT",
+    "tests": 437,
+    "transient_error_code": "ARTIFACT_MUTATION_LOCK_FAILED"
+  },
+  "isolated_reconciliation": {
+    "failed": 0,
+    "passed": 5,
+    "provenance": "PRIMARY_SESSION_ISOLATED_COMMAND_OBSERVATION",
+    "runs": 5,
+    "test": "orphan_receipt_test: concurrent identical publishers converge"
+  },
+  "status": "DIAGNOSTIC_RECONCILED_NOT_A_PRODUCT_FAILURE"
+}

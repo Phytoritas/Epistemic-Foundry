@@ -1,0 +1,261 @@
+{
+  "attempt_id": "H02-0001",
+  "attempt_type": "H02_SESSION_AND_PROMPT_LIFECYCLE_HOOKS",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "H02-0001",
+    "dependencies": {
+      "H01": {
+        "attempt_id": "H01-0001",
+        "core_evidence_id": "E0339",
+        "core_generation": "000337-e6ffe2e7",
+        "final_closeout_evidence_id": "E0340",
+        "report": "artifacts/work_packages/H01/attempts/0001/report.json",
+        "report_sha256": "sha256:42530e1c2242ffde9df65619f2d88505df6ea59cd902f8323e9e81298414094a",
+        "status": "PASS"
+      }
+    },
+    "dependency_note": "H02 depends on H01; the sealed H01-0001 attempt is the build dependency",
+    "next_action": "SEAL_H02_0001_THEN_RECOMPUTE_DAG",
+    "regression_baseline": {
+      "attempt_id": "H01-0001",
+      "core_evidence_id": "E0339",
+      "core_generation": "000337-e6ffe2e7",
+      "final_closeout_evidence_id": "E0340",
+      "report": "artifacts/work_packages/H01/attempts/0001/report.json",
+      "report_sha256": "sha256:42530e1c2242ffde9df65619f2d88505df6ea59cd902f8323e9e81298414094a",
+      "status": "PASS"
+    },
+    "regression_baseline_note": "H01-0001 is the sealed PASS attempt H02 depends on, bound as the regression baseline. The live ledger frontier advances under concurrent sealing; the parent reconciles the exact frontier when it fills the ledger pins at seal time.",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "prompt_classification_cannot_change_state_directly": "PASS",
+    "session_bootstrap_is_bounded": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "editing the session or prompt hook declarations: H02 attests plugins/epistemic-foundry/hooks/session.json and prompt.json (byte-equal to the plugin blueprint) and makes zero substantive change to them",
+    "any runtime hook execution, hook runner, plugin-manifest hook registration, or host capability probing: H02 declares static hook config only; dist/hook-runner.mjs is absent and the plugin manifest declares no hooks key and empty capabilities. Runtime integration is deferred to H04/X01/G06",
+    "any product-maturity, runtime-executability or release readiness of the v4 plugin or ShinkaEvolve integration",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 39978,
+      "path": "artifacts/work_packages/H02/attempts/0001/build_h02_0001_evidence.py",
+      "sha256": "sha256:461fb218775eaec016a803611b6e5efdc409e0bf3626b2a94576771ff38859e7"
+    },
+    {
+      "byte_size": 8752,
+      "path": "artifacts/work_packages/H02/attempts/0001/commands.jsonl",
+      "sha256": "sha256:91c7b4f544fb53f7d243830b155d9b09f6517d4bb2f41c7581d6b18214e76aab"
+    },
+    {
+      "byte_size": 1226,
+      "path": "artifacts/work_packages/H02/attempts/0001/dependency-status.json",
+      "sha256": "sha256:afbddfe8da541301dc555cd6bcaa2a1ef993718be59cdb8fdeccf895b0a413f4"
+    },
+    {
+      "byte_size": 244544,
+      "path": "artifacts/work_packages/H02/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:c57ec049ff8875d65d1edc4c55b98fa95b68eb84b6242548ba74f7552fd9286c"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/H02/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 8504,
+      "path": "artifacts/work_packages/H02/attempts/0001/h02-hook-contract-tests.mjs",
+      "sha256": "sha256:fcf6a0773d7b35b98ca3d76355de530f262866414b0941b3e818cf4ea8aed9fb"
+    },
+    {
+      "byte_size": 4086,
+      "path": "artifacts/work_packages/H02/attempts/0001/h02-verification.json",
+      "sha256": "sha256:d29d746d1d3cfeada179a01481da98f97ed990fa6c223c4e532b53f060b08df5"
+    },
+    {
+      "byte_size": 27221,
+      "path": "artifacts/work_packages/H02/attempts/0001/h02_0001_rah_seal.py",
+      "sha256": "sha256:f8897468a83f8bc51613b84adef3e34c2ac8a6c96b2b5fdd096b42621877d15c"
+    },
+    {
+      "byte_size": 1887,
+      "path": "artifacts/work_packages/H02/attempts/0001/hook-contract-tests.junit.xml",
+      "sha256": "sha256:943730bcfa980e444bf016b1ff45b14f0aba85c5f908060f1fdab97f8f3a81af"
+    },
+    {
+      "byte_size": 1772,
+      "path": "artifacts/work_packages/H02/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:1e52e69828ee61f28513c95b2fdc715ffb8dd1d23c4bbe7d2c90a9db7a5317e4"
+    },
+    {
+      "byte_size": 7566,
+      "path": "artifacts/work_packages/H02/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:b9cbef8ca2fb31d06fb5034c4dc19c5ed13c8fd56c8f591ef50dab1b162afb2b"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/H02/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:9a3c31c08e12805bce4ab25d71128446bcfc52dd7131fd9094b2223824d7904b"
+    },
+    {
+      "byte_size": 3998,
+      "path": "artifacts/work_packages/H02/attempts/0001/review.md",
+      "sha256": "sha256:46c2e3b3b9b9138656b2b8efdd14875256b9d8857d815fc0638df7f521d18dea"
+    },
+    {
+      "byte_size": 12658,
+      "path": "artifacts/work_packages/H02/attempts/0001/run_h02_0001_checks.py",
+      "sha256": "sha256:a0573a9e42ad47670c52b6e604ce79e85f1ee35d4a0a7d3423bc28c6a54281da"
+    },
+    {
+      "byte_size": 1454,
+      "path": "artifacts/work_packages/H02/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:86c69cb408d92be84cee9fcd5bb354f5b355523272089a17aa3b9e3bbb84e890"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0345",
+    "core_generation": "000343-761467df",
+    "final_closeout_evidence_id": "E0346",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 2058,
+    "implementation_gate": "fail",
+    "retained_generation_count": 343,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "H02-0001",
+    "count_authority": "derived_from_measured_junit_expected_equals_measured",
+    "full_node_gate": "zero_failures_with_live_inventory_count",
+    "full_node_inventory_count": 115,
+    "full_node_passed": 1291,
+    "full_python_passed": 1261,
+    "hook_contract_harness": "hook_contract_tests",
+    "hook_contract_harness_passed": 8,
+    "new_failure_count": 0,
+    "regression_baseline_attempt": "H01-0001",
+    "status": "PASS",
+    "suites": {
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1291,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H02/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:c57ec049ff8875d65d1edc4c55b98fa95b68eb84b6242548ba74f7552fd9286c",
+        "passed": 1291,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1286
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H02/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "hook_contract_tests": {
+        "cancelled": 0,
+        "collected": 8,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H02/attempts/0001/hook-contract-tests.junit.xml",
+        "junit_sha256": "sha256:943730bcfa980e444bf016b1ff45b14f0aba85c5f908060f1fdab97f8f3a81af",
+        "passed": 8,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 8
+      }
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: the bounded implementation agent(s) that authored the session and prompt hook declarations and the contract harness; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "prompt_hook_test": {
+      "cases": [
+        "prompt_hook_test: direct state mutation and authority fields fail closed",
+        "prompt_hook_test: installed declaration is byte-equivalent to the authority blueprint",
+        "prompt_hook_test: prompt declaration cannot register tool, completion, or delegation events",
+        "prompt_hook_test: prompt intake is one bounded classification request"
+      ],
+      "harness": "node --test artifacts/work_packages/H02/attempts/0001/h02-hook-contract-tests.mjs",
+      "status": "PASS",
+      "test_count": 4
+    },
+    "session_hook_test": {
+      "cases": [
+        "session_hook_test: canonical session lifecycle routes are exact and bounded",
+        "session_hook_test: current package shell does not prematurely claim hook runtime integration",
+        "session_hook_test: installed declaration is byte-equivalent to the authority blueprint",
+        "session_hook_test: timeout expansion and extra lifecycle work fail closed"
+      ],
+      "harness": "node --test artifacts/work_packages/H02/attempts/0001/h02-hook-contract-tests.mjs",
+      "status": "PASS",
+      "test_count": 4
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (bounded implementation agent(s) authored the hook declarations and contract harness, the sealing session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "role": "contract_reviewer",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "H02",
+  "write_scope": {
+    "approved_scope": [
+      "plugins/epistemic-foundry/hooks/session.json",
+      "plugins/epistemic-foundry/hooks/prompt.json"
+    ],
+    "attempt_id": "H02-0001",
+    "attestation_only_no_hook_config_edits": true,
+    "attested_product_files": [
+      "plugins/epistemic-foundry/hooks/prompt.json",
+      "plugins/epistemic-foundry/hooks/session.json"
+    ],
+    "authored_by": "the bounded implementation agent(s) that authored the H02 session and prompt lifecycle hook declarations (plugins/epistemic-foundry/hooks/session.json, plugins/epistemic-foundry/hooks/prompt.json), byte-equal to the plugin blueprint, and the eight-case hook-contract test harness (artifacts/work_packages/H02/attempts/0001/h02-hook-contract-tests.mjs); this sealing session attests these authored files without editing them",
+    "checked_file_count": 2,
+    "product_file_hashes": {
+      "plugins/epistemic-foundry/hooks/prompt.json": "sha256:a2f8e95358c377dd7344c4702f65fb06e666afeddb76beb26df0d0639929818b",
+      "plugins/epistemic-foundry/hooks/session.json": "sha256:d3030145bd0943125ccaea7d566a795e0b26501ce44813f8f329f826536f3a6e"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "the sealing session acting as an independent contract-reviewer, a distinct actor separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

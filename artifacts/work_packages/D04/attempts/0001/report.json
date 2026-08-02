@@ -1,0 +1,261 @@
+{
+  "attempt_id": "D04-0001",
+  "attempt_type": "D04_BACKUP_CORRUPTION_RECOVERY_GATE",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "D04-0001",
+    "dependencies": {
+      "D02": {
+        "attempt_id": "D02-0001",
+        "report": "artifacts/work_packages/D02/report.json",
+        "report_sha256": "sha256:b843adb04258b3e72d3a2f21591441bd94f2a16ea409b014c8b49f1200eb004b",
+        "status": "PASS"
+      },
+      "D03": {
+        "attempt_id": "D03-0001",
+        "report": "artifacts/work_packages/D03/report.json",
+        "report_sha256": "sha256:10f6c29d27bbd68ace5a86fa21d019037b8a7bcec82c92c9f0922d66106eaf33",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_D04_0001_THEN_CONTINUE_DAG",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "crash_and_corruption_fixtures_recover_safely": "PASS",
+    "no_data_loss_hidden_by_reset": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false
+  },
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "storage-device power-loss durability beyond host and SQLite guarantees",
+    "a shipped backup CLI or production recovery service",
+    "PostgreSQL physical backup, PITR, cross-region recovery, or production RPO/RTO",
+    "external actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 568,
+      "path": "artifacts/work_packages/D04/attempts/0001/backup-restore-test.junit.xml",
+      "sha256": "sha256:cc9b0b5c1d25f9c66c00b431b94ca413b36e423f27e7574cf04288a2606ec6bb"
+    },
+    {
+      "byte_size": 33931,
+      "path": "artifacts/work_packages/D04/attempts/0001/build_d04_0001_evidence.py",
+      "sha256": "sha256:cb5d0f00ab3de2e275369a8497c09d3633bc55a548454e3bfa1fd19bdd8329c6"
+    },
+    {
+      "byte_size": 9125,
+      "path": "artifacts/work_packages/D04/attempts/0001/commands.jsonl",
+      "sha256": "sha256:21f20f1b2171032139d914ade2ca1f721318e167c9ee2d099a7e1d516a154c85"
+    },
+    {
+      "byte_size": 933,
+      "path": "artifacts/work_packages/D04/attempts/0001/crash-recovery-test.junit.xml",
+      "sha256": "sha256:f7a6cf59118e30a8ec58b5cf3df6dd5088f5ec521e4ce1ab2ee1417348d2969e"
+    },
+    {
+      "byte_size": 2394,
+      "path": "artifacts/work_packages/D04/attempts/0001/d04-verification.json",
+      "sha256": "sha256:88826c8c7646a6549eb03bce428e93f9cf37b8a715b05899dadcc4c7cce44392"
+    },
+    {
+      "byte_size": 26123,
+      "path": "artifacts/work_packages/D04/attempts/0001/d04_0001_rah_seal.py",
+      "sha256": "sha256:1b18adba8e9bbe1eff247bdb709bf88829ecbfed5b9722b967364ccf1673f97e"
+    },
+    {
+      "byte_size": 591,
+      "path": "artifacts/work_packages/D04/attempts/0001/dependency-status.json",
+      "sha256": "sha256:06ce30a24d54e36320c5cb2c0cdd89ae3e154be07c65eb8a43f1daa9f986f1fe"
+    },
+    {
+      "byte_size": 237598,
+      "path": "artifacts/work_packages/D04/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:fe0c047c1f1d962337b2d6ca3724582908f33406ec987baf1f105991db193036"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/D04/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 2729,
+      "path": "artifacts/work_packages/D04/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:ad4b9a3e63da261e14f81d8ac644ea28465185da2a02e80f6c49c449902ed80b"
+    },
+    {
+      "byte_size": 7183,
+      "path": "artifacts/work_packages/D04/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:bee39e5222719f27ab1f68eaa54bd65366d9e07b919d4a9f7f79a08ebbcacc03"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/D04/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:03095538f22e508f18daea506caab136c320336218cb09496eef2bf2d571d673"
+    },
+    {
+      "byte_size": 4277,
+      "path": "artifacts/work_packages/D04/attempts/0001/review.md",
+      "sha256": "sha256:5d6bca97807b9e8c6a2c7b89285c713b4f9212bca3a8c2e64e149be5ed28b6b3"
+    },
+    {
+      "byte_size": 6032,
+      "path": "artifacts/work_packages/D04/attempts/0001/run_d04_0001_checks.py",
+      "sha256": "sha256:4e831e50599f268ec387a4fb1aaffe6df5ef64d7a21a7201bb2f87d2a1bedee6"
+    },
+    {
+      "byte_size": 1305,
+      "path": "artifacts/work_packages/D04/attempts/0001/targeted-recovery.junit.xml",
+      "sha256": "sha256:0f742eed9d38810751d86ff2a06c71bf5f8315061492263f71b2aa7583f5102a"
+    },
+    {
+      "byte_size": 1104,
+      "path": "artifacts/work_packages/D04/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:f552291260ad5d19cc8d63ca0c0ad4f8d36a1f52406445f350d14749d4741b29"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0301",
+    "core_generation": "000299-f684975e",
+    "final_closeout_evidence_id": "E0302",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1794,
+    "implementation_gate": "fail",
+    "retained_generation_count": 299,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "D04-0001",
+    "backup_restore_test": {
+      "cancelled": 0,
+      "collected": 2,
+      "failed": 0,
+      "junit": "artifacts/work_packages/D04/attempts/0001/backup-restore-test.junit.xml",
+      "junit_sha256": "sha256:cc9b0b5c1d25f9c66c00b431b94ca413b36e423f27e7574cf04288a2606ec6bb",
+      "passed": 2,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 2
+    },
+    "component_tests_are_targeted_only": true,
+    "crash_recovery_test": {
+      "cancelled": 0,
+      "collected": 4,
+      "failed": 0,
+      "junit": "artifacts/work_packages/D04/attempts/0001/crash-recovery-test.junit.xml",
+      "junit_sha256": "sha256:f7a6cf59118e30a8ec58b5cf3df6dd5088f5ec521e4ce1ab2ee1417348d2969e",
+      "passed": 4,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 4
+    },
+    "full_node": {
+      "cancelled": 0,
+      "collected": 1253,
+      "failed": 0,
+      "junit": "artifacts/work_packages/D04/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:fe0c047c1f1d962337b2d6ca3724582908f33406ec987baf1f105991db193036",
+      "passed": 1253,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 1248
+    },
+    "full_python": {
+      "collected": 1261,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/D04/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+      "passed": 1261,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1261
+    },
+    "new_failure_count": 0,
+    "status": "PASS",
+    "targeted_recovery": {
+      "cancelled": 0,
+      "collected": 6,
+      "failed": 0,
+      "junit": "artifacts/work_packages/D04/attempts/0001/targeted-recovery.junit.xml",
+      "junit_sha256": "sha256:0f742eed9d38810751d86ff2a06c71bf5f8315061492263f71b2aa7583f5102a",
+      "passed": 6,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 6
+    },
+    "unexpected_skip_xfail_todo_or_cancellation_count": 0
+  },
+  "required_checks": {
+    "backup_restore_test": {
+      "module": "tests/recovery/state/backup-restore.test.mjs",
+      "status": "PASS",
+      "test_count": 2
+    },
+    "crash_recovery_test": {
+      "module": "tests/recovery/state/crash-recovery.test.mjs",
+      "status": "PASS",
+      "test_count": 4
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Independent review of bounded-agent work by a distinct actor in this seal-prep session; not external actor-independent certification.",
+    "author": "bounded implementation agent",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "reviewer": "independent seal-prep session (distinct actor)",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "D04",
+  "write_scope": {
+    "approved_scope": [
+      "tests/recovery/state/**",
+      "artifacts/work_packages/D04/**"
+    ],
+    "attempt_id": "D04-0001",
+    "component_files": [
+      "tests/recovery/state/backup-restore.test.mjs",
+      "tests/recovery/state/crash-recovery.test.mjs",
+      "tests/recovery/state/recovery-fixtures.mjs",
+      "tests/recovery/state/test_postgres_backup_restore.py"
+    ],
+    "product_file_hashes": {
+      "tests/recovery/state/backup-restore.test.mjs": "sha256:f7e780cf3f3a4b15bfd70054bcf06c91ee9ccaa131cc4d7cadc98372a3f6ac66",
+      "tests/recovery/state/crash-recovery.test.mjs": "sha256:73ec38611cd9cb8e93ea531065ff8e885c044f0c8a11a4dcb8a5500e85729cdf",
+      "tests/recovery/state/recovery-fixtures.mjs": "sha256:a09eca4e977092e99500a8e146196831fb64a155e6b04a23e0c576f81b034b66",
+      "tests/recovery/state/test_postgres_backup_restore.py": "sha256:877fd187e1f2360fe0afec008e2cec9bb4e85733206e4d61089386ad83ad6141"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "write_scope_violation_count": 0
+  }
+}

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="canonical in-root paths are authorized with scoped operations" time="0.006517" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="traversal, absolute, mixed-separator, alias, and platform-ambiguous paths are denied" time="0.006465" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="existing symlink or junction components are denied by no-follow policy" time="0.004154" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="linked resource roots and non-directory traversal are denied" time="0.003563" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="egress uses exact canonical origins and defaults to denial" time="0.003123" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="allowlist and sandbox contracts reject inconsistent or unsupported policy" time="0.002535" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="policy and request Proxies, accessors, and serialized lookalikes fail without execution" time="0.002660" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="resource root identity is revalidated after policy issue" time="0.004979" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="egress rejects fragments and requires each redirect hop to be reauthorized" time="0.002285" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="opaque secret handles expose no serializable identifier or secret material" time="0.001295" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="secret handle construction rejects material-bearing and executable inputs" time="0.000349" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="handles are denied at every prohibited outbound boundary" time="0.000636" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="raw secret-shaped fields and values fail closed" time="0.000211" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="payload inspection rejects accessors, Proxies, cycles, and non-JSON values without execution" time="0.000571" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="ordinary egress cannot carry handles or secret-shaped payloads" time="0.000885" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="last-mile secret use requires both policy and handle destination bindings" time="0.000373" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="foreign boundaries cannot mint handles, policies, or decisions accepted here" time="0.000214" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="secret handles reject cleartext HTTP destination bindings" time="0.000121" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="model output receives typed denials for every authority-bearing request" time="0.001289" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="unknown sidecar authority fields are rejected instead of interpreted" time="0.000339" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="host or control-plane source claims cannot enter through the untrusted constructor" time="0.000166" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="segments are immutable and copied or JSON-round-tripped objects lose the runtime brand" time="0.000443" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="accessor-bearing input is denied before content is accepted" time="0.000154" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="Proxy input is denied without invoking its traps" time="0.000121" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="invalid trust-label values are denied without coercion" time="0.000110" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="context assembly denies Proxy arrays without invoking their traps" time="0.000095" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="context assembly denies accessor elements without invoking them" time="0.000243" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: role override" time="0.003073" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: role delimiter escape" time="0.000301" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: forged authority" time="0.000111" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: tool execution" time="0.000084" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: secret exfiltration" time="0.000098" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: policy rewrite" time="0.000077" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="a clean scan and trusted extraction label do not confer authority" time="0.000142" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="context assembly preserves evidence and model output as separate data planes" time="0.000587" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="remote bytes remain quarantined and non-executable before approval" time="0.002978" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="install hooks, dynamic evaluation, and self-approval claims block approval" time="0.001068" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="path traversal, absolute paths, and portable name collisions fail closed" time="0.000277" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="symlinks are inventoried without following them and remain critical" time="0.000336" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="a failed signature is independently critical and cannot be approved" time="0.000266" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="script-shaped files are inventoried and require process permission even without an executable bit" time="0.000579" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="remote signature metadata is only a claim; review must attest a status explicitly" time="0.000214" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="copied and foreign candidates or scans cannot gain local approval" time="0.000213" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="a review must bind the exact source, revision, content hash, and inferred permissions" time="0.000302" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="name collisions remain visible and cannot receive passing conformance" time="0.002676" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="Proxy and accessor-bearing hostile records are rejected without invoking getters" time="0.000207" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="SkillLockfile pins exact source, revision, hash, license, permissions, and approvers" time="0.005193" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="lock hashing is deterministic across review, permission, and approver input order" time="0.001716" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="serialized lockfiles can be integrity-checked but do not acquire runtime authority" time="0.000731" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="rejected decisions remain locked as rejected and cannot be installed" time="0.000370" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="disabled installation requires the exact approved content hash" time="0.000372" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="passing conformance cannot report permissions outside the lockfile" time="0.000399" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="activation cannot request a locked permission absent from conformance observations" time="0.000437" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="activation requires exact policy, passing conformance, and a non-expanding scope" time="0.000576" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="activation artifacts cannot be mixed across independent vault boundaries" time="0.000463" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="non-canonical or accessor-bearing lock snapshots fail closed" time="0.000648" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="S04-RT001 untrusted text cannot cross from evidence/model data into approval or policy authority" time="0.006053" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT002 opaque handles and secret-shaped payloads cannot bypass outbound boundaries" time="0.001559" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT003 path, egress, sandbox-profile, and foreign-policy bypasses fail closed" time="0.004391" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT004 malicious package hooks, symlinks, signature claims, and obfuscation remain critical" time="0.000832" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT005 signature claims, copied lockfiles, and permission expansion cannot authorize activation" time="0.002148" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT006 name shadowing, implicit invocation, and unverifiable uninstall block conformance" time="0.000880" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT007 authority brands remain non-fungible across security compartments" time="0.000463" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-TM001 traceability matrix covers every S04-owned audit lens without inflating deferred controls" time="0.016497" classname="test" file="tests\security\s04-threat-model-traceability.test.mjs"/>
+	<testcase name="S04-TM002 every plugin threat has a control, a verification path, and an honest residual limit" time="0.009858" classname="test" file="tests\security\s04-threat-model-traceability.test.mjs"/>
+	<testcase name="S04-TM003 hook bypass and primitive enforcement limitations are explicit and release-safe" time="0.000255" classname="test" file="tests\security\s04-threat-model-traceability.test.mjs"/>
+	<testcase name="S04-TM004 traceability source bindings fail on undocumented contract drift" time="0.011882" classname="test" file="tests\security\s04-threat-model-traceability.test.mjs"/>
+	<!-- tests 67 -->
+	<!-- suites 0 -->
+	<!-- pass 67 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 840.2393 -->
+</testsuites>

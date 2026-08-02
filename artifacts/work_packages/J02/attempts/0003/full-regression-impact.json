@@ -1,0 +1,99 @@
+{
+  "attempt_id": "J02-0003",
+  "bounded_later_attempt_debt_count": 1,
+  "full_node": {
+    "byte_size": 105679,
+    "failures": [
+      {
+        "file": "tests/security/s04-threat-model-traceability.test.mjs",
+        "message": "active manifest does not match the bound successor\n+ actual - expected\n\n+ '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n- '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'\n\n[Error [ERR_TEST_FAILURE]: active manifest does not match the bound successor\n+ actual - expected\n\n+ '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n- '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'\n] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: AssertionError [ERR_ASSERTION]: active manifest does not match the bound successor\n  + actual - expected\n  \n  + '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n  - '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'\n  \n      at validateActiveManifestBinding (file:///C:/dev/insight/Epistemic-Foundry/tests/security/s04-threat-model-traceability.test.mjs:89:10)\n      at TestContext.<anonymous> (file:///C:/dev/insight/Epistemic-Foundry/tests/security/s04-threat-model-traceability.test.mjs:362:20)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12',\n    expected: '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n}\n\t\t",
+        "name": "S04-TM004 traceability source bindings fail on undocumented contract drift"
+      }
+    ],
+    "path": "artifacts/work_packages/J02/attempts/0003/full-node-suite.junit.xml",
+    "semantic_totals_authority": "node_junit_footer_comments",
+    "sha256": "sha256:1ee0a32d5b80e2901e8d8c0c83d6b4d406d5eed0b5726b8349a57190c40e12ab",
+    "test_file_count": 52,
+    "totals": {
+      "cancelled": 0,
+      "fail": 1,
+      "pass": 459,
+      "skipped": 0,
+      "tests": 460,
+      "todo": 0
+    },
+    "xml_footer_testcase_delta": 3,
+    "xml_testcase_count": 457
+  },
+  "full_node_test_file_count": 52,
+  "full_python": {
+    "byte_size": 126901,
+    "failures": [],
+    "path": "artifacts/work_packages/J02/attempts/0003/full-python-suite.junit.xml",
+    "sha256": "sha256:ab53c845aeda8a0ff60b503bb198a14030614c4a9bd569c21462e6d61d1595eb",
+    "totals": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 990,
+      "skipped": 0,
+      "tests": 990
+    },
+    "xml_testcase_count": 990
+  },
+  "j01_node_regression": {
+    "byte_size": 4679,
+    "failures": [],
+    "path": "artifacts/work_packages/J02/attempts/0003/j01-regression-node-suite.junit.xml",
+    "semantic_totals_authority": "node_junit_footer_comments",
+    "sha256": "sha256:489631a9d362ffc87f0a020d2e886199ec4460a5c51c3705ef1bde9cb5ca47ea",
+    "test_file_count": 2,
+    "totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 19,
+      "skipped": 0,
+      "tests": 19,
+      "todo": 0
+    },
+    "xml_footer_testcase_delta": 0,
+    "xml_testcase_count": 19
+  },
+  "j02_causal_failure_count": 0,
+  "new_skip_or_xfail_count": 0,
+  "node_failure_count": 1,
+  "python_failure_count": 0,
+  "repository_fully_green": false,
+  "status": "PASS_WITH_BOUNDED_LATER_ATTEMPT_DEBT",
+  "targeted_node": {
+    "byte_size": 4689,
+    "failures": [],
+    "path": "artifacts/work_packages/J02/attempts/0003/targeted-node-suite.junit.xml",
+    "semantic_totals_authority": "node_junit_footer_comments",
+    "sha256": "sha256:5ba097b4554c7c667adfe41e80a6f465f4b666fa80670d72accf39cfce92c574",
+    "test_file_count": 2,
+    "totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 25,
+      "skipped": 0,
+      "tests": 25,
+      "todo": 0
+    },
+    "xml_footer_testcase_delta": 1,
+    "xml_testcase_count": 24
+  },
+  "targeted_python": {
+    "byte_size": 2945,
+    "failures": [],
+    "path": "artifacts/work_packages/J02/attempts/0003/targeted-python-suite.junit.xml",
+    "sha256": "sha256:117e3121be75c7b9b0d255c68358d31529d70728b91ceaa89d0f295142aa0bc5",
+    "totals": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 20,
+      "skipped": 0,
+      "tests": 20
+    },
+    "xml_testcase_count": 20
+  }
+}

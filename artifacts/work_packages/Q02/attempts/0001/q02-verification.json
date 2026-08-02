@@ -1,0 +1,54 @@
+{
+  "attempt_id": "Q02-0001",
+  "corpus": {
+    "documents": 2,
+    "gold_claims": 8,
+    "parsers_pinned": 2,
+    "predicted_claims": 8,
+    "spans": 10
+  },
+  "declaring_sources": {
+    "claim_vocabularies": "schemas/claim-card.schema.json",
+    "span_contract": "schemas/source-span.schema.json"
+  },
+  "exit_criteria": {
+    "precision_recall_and_unsupported_promotion_measured": {
+      "evidence": [
+        "evals/parsing_claims/test_claim_eval.py"
+      ],
+      "mechanism": "precision, recall and F1 are computed from an exact match key the report states, and every value is recomputable from the true/false positive and false negative counts beside it; unsupported evidence promotion is counted separately with its numerator, denominator and offending claim ids, and is reported undefined rather than zero when no matched pair exists",
+      "status": "PASS"
+    },
+    "table_figure_spans_included": {
+      "evidence": [
+        "evals/parsing_claims/test_grounding_audit.py"
+      ],
+      "mechanism": "the corpus must ground at least one gold claim in a table cell and one in a figure caption, every span must satisfy the canonical SourceSpan schema with its text_hash recomputed from the verbatim bytes, and a claim whose text does not appear in a cited span is refused rather than scored",
+      "status": "PASS"
+    }
+  },
+  "measured": {
+    "f1": 0.75,
+    "false_negative": 2,
+    "false_positive": 2,
+    "precision": 0.75,
+    "recall": 0.75,
+    "true_positive": 6,
+    "unsupported_promotion_count": 2,
+    "unsupported_promotion_denominator": 6
+  },
+  "required_checks": {
+    "claim_eval": {
+      "module": "evals/parsing_claims/test_claim_eval.py",
+      "status": "PASS",
+      "test_count": 23
+    },
+    "grounding_audit": {
+      "module": "evals/parsing_claims/test_grounding_audit.py",
+      "status": "PASS",
+      "test_count": 23
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 46
+}

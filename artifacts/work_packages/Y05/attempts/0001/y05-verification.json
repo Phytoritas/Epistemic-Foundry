@@ -1,0 +1,69 @@
+{
+  "attempt_id": "Y05-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every scaling, triage, budget and load-shed decision mints a content-derived identifier and a self-hash over its own published fields, with no clock or random draw on the identified path, so two runs over equal inputs produce byte-equal receipts and each replays exactly",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the one triage token the surface reasons about is read positionally out of the surrogate schema (EF4-I22) and a reshaped vocabulary fails closed as VOCABULARY_DRIFT; every quality-diversity map, rebalance plan, surrogate report and budget envelope is validated against its canonical schema; and each FINDING_CODE names an exact refusal that the schema suite proves is internally closed",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the happy paths replay deterministically and every declared FINDING_CODE is provoked under attack: an eviction that would drop protected negative memory or empty an occupied niche, a surrogate used to skip a stage or to promote, a promotion decision not carrying the gate verdict, a budget that only forecasts spend, and a run that sheds load without recording it are each refused under their exact code",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the surrogate is triage-only: triage_at_scale forces direct_evaluation_required, require_surrogate_never_promotes refuses any stage-skip or promotion routing (SURROGATE_SKIPS_REQUIRED_STAGE / SURROGATE_DRIVES_PROMOTION / SURROGATE_DIRECT_EVALUATION_WAIVED), and bind_triage_to_gate keeps promotion-review authority with the sealed Q05 ADMIT/REFUSE verdict (PROMOTION_AUTHORITY_NOT_FROM_GATE); nothing here scores, selects, promotes or evaluates",
+      "status": "PASS"
+    }
+  },
+  "integrity_boundaries": {
+    "budgets_bounded_for_production": "require_bounded_production_budget composes the Y01 spend_is_bounded owner predicate; a forecast label is refused as BUDGET_NOT_BOUNDED_FOR_PRODUCTION (EF4-I28)",
+    "diversity_preserved_under_scaling": "plan_diversity_preserving_rebalance never evicts a protected class and never empties an occupied niche (REBALANCE_EVICTS_PROTECTED_MEMORY / DIVERSITY_COLLAPSE_UNDER_SCALING, EF4-I48)",
+    "load_shed_honest": "reconcile_shed_load drives the N05 schedule gate and requires every shed candidate to be recorded as cancelled (LOAD_SHED_FANIN_UNACCOUNTED / LOAD_SHED_DISHONEST_COMPLETION, EF4-I26)",
+    "surrogate_triage_only": "a surrogate fitted on past evaluations orders work but never removes a stage or promotes a candidate (EF4-I45 / EF4-I57)"
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md",
+      "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "steps": {
+        "negative-and-adversarial-tests": 22
+      }
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "steps": {
+        "provenance-and-receipt-audit": 8
+      }
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "steps": {
+        "schema-and-type-check": 7
+      }
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "steps": {
+        "unit-and-contract-tests": 10
+      }
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "a03-boundary-regression": 6,
+    "full-node-suite": 1291,
+    "full-python-suite": 1261,
+    "negative-and-adversarial-tests": 22,
+    "provenance-and-receipt-audit": 8,
+    "schema-and-type-check": 7,
+    "unit-and-contract-tests": 10,
+    "wire-literal-discipline": 5
+  }
+}

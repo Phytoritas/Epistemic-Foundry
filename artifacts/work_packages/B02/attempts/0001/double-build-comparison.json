@@ -1,0 +1,138 @@
+{
+  "artifact_count": 11,
+  "artifact_inventory_equal": true,
+  "artifacts": {
+    "epistemic-foundry-context-capsule-0.0.0-scaffold.tgz": {
+      "bytes": 10200,
+      "sha256": "a9797d72d4a2f64bde881d21a1d43343184aab42cb6127749a964fa263edc83e"
+    },
+    "epistemic-foundry-contracts-0.0.0-scaffold.tgz": {
+      "bytes": 169296,
+      "sha256": "e73472c0121e16483f8981ba4edfd7274f6583ec73d11dbed71e6c07948bfb2a"
+    },
+    "epistemic-foundry-foundry-kernel-0.0.0-scaffold.tgz": {
+      "bytes": 274760,
+      "sha256": "f3996d644c180fae5235dcc7633d38668d4d967a1a1fd454a1f431dfb6f3d35e"
+    },
+    "epistemic-foundry-plugin-host-0.0.0-scaffold.tgz": {
+      "bytes": 70375,
+      "sha256": "64f8fc50bba109f3f0f50c34d4239f6752054762838971f5bce4aa81c726effd"
+    },
+    "epistemic-foundry-repo-checks-0.0.0-scaffold.tgz": {
+      "bytes": 2744,
+      "sha256": "2b91ec44502ec90f48bc28c590d48ca7c93407494d1afca821c8fe685efb0053"
+    },
+    "epistemic-foundry-role-router-0.0.0-scaffold.tgz": {
+      "bytes": 29676,
+      "sha256": "475514ebe093aad6a86f299beeb832d3cc356e752641640ecb99407c60d5997c"
+    },
+    "epistemic-foundry-skill-vault-0.0.0-scaffold.tgz": {
+      "bytes": 15657,
+      "sha256": "6fb54bf6e7ae08bd0f1c9b57af7130c95d30a0a4cd50eaa5dbd1e65d481d75c9"
+    },
+    "epistemic-foundry-transport-kernel-0.0.0-scaffold.tgz": {
+      "bytes": 273,
+      "sha256": "ee4fdbb49f033f89bff41a4f51a2d8aea7af41084f082a801c3f34ea535ec8b6"
+    },
+    "epistemic-foundry-ui-api-0.0.0-scaffold.tgz": {
+      "bytes": 21421,
+      "sha256": "aa0b30345223bb9317e71c6d93c9408b366982dc010520c3f295f0d56273299f"
+    },
+    "epistemic-foundry-workspace-map-0.0.0-scaffold.tgz": {
+      "bytes": 36606,
+      "sha256": "a509c22c2edd16e5499712916b01a9921bbb9ff1792a2d94217d89edd91896e6"
+    },
+    "epistemic_foundry-4.0.0-py3-none-any.whl": {
+      "bytes": 716991,
+      "sha256": "32344453b3e73b6e6c02ebb6cdc51261939db9830779ca5956056e26bad554ff"
+    }
+  },
+  "attempt_id": "B02-0001",
+  "builds": [
+    {
+      "commands": [
+        {
+          "command": [
+            "npm",
+            "pack",
+            "--workspaces",
+            "--ignore-scripts",
+            "--pack-destination",
+            "<BUILD_OUTPUT>",
+            "--json"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "uv",
+            "build",
+            "--wheel",
+            "--build-constraints",
+            "toolchains/python-build-constraints.txt",
+            "--require-hashes",
+            "--no-python-downloads",
+            "--no-build-logs",
+            "--out-dir",
+            "<BUILD_OUTPUT>",
+            "."
+          ],
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "commands": [
+        {
+          "command": [
+            "npm",
+            "pack",
+            "--workspaces",
+            "--ignore-scripts",
+            "--pack-destination",
+            "<BUILD_OUTPUT>",
+            "--json"
+          ],
+          "exit_code": 0
+        },
+        {
+          "command": [
+            "uv",
+            "build",
+            "--wheel",
+            "--build-constraints",
+            "toolchains/python-build-constraints.txt",
+            "--require-hashes",
+            "--no-python-downloads",
+            "--no-build-logs",
+            "--out-dir",
+            "<BUILD_OUTPUT>",
+            "."
+          ],
+          "exit_code": 0
+        }
+      ]
+    }
+  ],
+  "check": "double_build_comparison",
+  "current_build_inputs": [
+    "packages",
+    "src",
+    "toolchains",
+    "scripts",
+    "schemas",
+    "openapi"
+  ],
+  "harness_mode": "ATTEMPT_LOCAL_CURRENT_INPUT_ADAPTER",
+  "historical_build_inputs": [
+    "packages",
+    "src",
+    "toolchains"
+  ],
+  "mismatches": [],
+  "production_helper_modified": false,
+  "source_date_epoch": 1767225600,
+  "source_snapshot_sha256": "33f15df3d208cb0b10c69797713e9a7ccb838c2f15f3312093600be3648153a3",
+  "source_snapshots_equal": true,
+  "status": "PASS"
+}

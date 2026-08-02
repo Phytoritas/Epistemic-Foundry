@@ -1,0 +1,110 @@
+{
+  "bundle_id": "v4-c06-integration-gate",
+  "compatibility": {
+    "binding": "schemas/v4_c06/evolution-compatibility-binding.schema.json",
+    "binding_sha256": "sha256:b6e91931bb88712fba857b45680c2df56c46618321896a56ee80506f80d62435",
+    "members": {
+      "compatibility_matrix": "compatibility-matrix",
+      "impact_report": "update-impact-report",
+      "migration": "schema-migration"
+    },
+    "required": [
+      "compatibility_matrix",
+      "migration"
+    ]
+  },
+  "fixtures": {
+    "composite_bound": {
+      "archive-rebalance-plan": "archive-preservation-record.schema.json",
+      "backend-adapter-qualification": "external-backend-binding.schema.json",
+      "challenge-genome": "evolution-candidate.schema.json",
+      "challenge-result": "evaluator-authority-surface.schema.json",
+      "decision-stability-report": "adaptive-search-statistics.schema.json",
+      "epistemic-archive-entry": "archive-preservation-record.schema.json",
+      "epistemic-niche": "archive-preservation-record.schema.json",
+      "evaluation-run": "evaluator-authority-surface.schema.json",
+      "evaluator-bundle": "evaluator-authority-surface.schema.json",
+      "evaluator-mutation-proposal": "evaluator-authority-surface.schema.json",
+      "evaluator-qualification-report": "evaluator-authority-surface.schema.json",
+      "experiment-genome": "evolution-candidate.schema.json",
+      "fitness-evidence-receipt": "evaluator-authority-surface.schema.json",
+      "fitness-vector": "evaluator-authority-surface.schema.json",
+      "holdout-manifest": "evaluator-authority-surface.schema.json",
+      "hypothesis-genome": "evolution-candidate.schema.json",
+      "imported-run-record": "external-backend-binding.schema.json",
+      "island-state": "archive-preservation-record.schema.json",
+      "leakage-audit": "evaluator-authority-surface.schema.json",
+      "lineage-diversity-report": "archive-preservation-record.schema.json",
+      "multiple-testing-adjustment": "adaptive-search-statistics.schema.json",
+      "novelty-assessment": "archive-preservation-record.schema.json",
+      "novelty-vector": "archive-preservation-record.schema.json",
+      "pareto-front-snapshot": "archive-preservation-record.schema.json",
+      "prompt-genome": "evolution-candidate.schema.json",
+      "quality-diversity-map": "archive-preservation-record.schema.json",
+      "selective-inference-report": "adaptive-search-statistics.schema.json",
+      "sequential-testing-ledger": "adaptive-search-statistics.schema.json",
+      "shinka-backend-manifest": "external-backend-binding.schema.json",
+      "stage-evaluation-result": "evaluator-authority-surface.schema.json",
+      "surrogate-triage-report": "adaptive-search-statistics.schema.json"
+    },
+    "composites": [
+      "adaptive-search-statistics.schema.json",
+      "archive-preservation-record.schema.json",
+      "evaluator-authority-surface.schema.json",
+      "evolution-candidate.schema.json",
+      "external-backend-binding.schema.json"
+    ],
+    "member_count": 42,
+    "schema_only": {
+      "candidate-generation-record": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)",
+      "candidate-lineage": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)",
+      "crossover-compatibility-report": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)",
+      "falsifier-gene": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)",
+      "model-routing-receipt": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)",
+      "mutation-operator-spec": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)",
+      "mutation-receipt": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)",
+      "operator-bandit-state": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)",
+      "parent-selection-receipt": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)",
+      "prediction-gene": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)",
+      "prompt-mutation-proposal": "genome-family record that describes candidate variation without being a candidate the Evolution Chamber may mutate (EF4-I41)"
+    },
+    "status": "PASS",
+    "validations": 84
+  },
+  "generator": {
+    "path": "artifacts/work_packages/C06/attempts/0001/c06_integration_gate.py",
+    "sha256": "sha256:9117d79598bf8341947a9630b1b0e431711967ca7830ed0999c3b7783d3b2323"
+  },
+  "index_hash": "sha256:7181d5cf01885f81c0562a6f7c4a2957ed05298b71096f90a374cbb5c76a856d",
+  "member_count": 42,
+  "outputs": {
+    "schemas/v4_c06/evolution-compatibility-binding.schema.json": "sha256:b6e91931bb88712fba857b45680c2df56c46618321896a56ee80506f80d62435",
+    "schemas/v4_c06/generated-projection-parity.json": "sha256:cc7d5c3e9f7733103b1f13890bd3b8bdb13d278589d42fecb034700aeaa79dba"
+  },
+  "projections": {
+    "python": {
+      "contract_count": 127,
+      "manifest": "python/epistemic_foundry/contracts/contract-manifest.json",
+      "manifest_sha256": "sha256:5208eb39b70ab43cd099ee867fa391fc2c218c559302e68a682b1558f6d94ce3",
+      "schema_bundle_sha256": "sha256:907570a9fe2a346c0c8f1795362bd64ad1521388065935089333224751c44000"
+    },
+    "typescript": {
+      "contract_count": 127,
+      "manifest": "packages/contracts/src/generated/contract-manifest.json",
+      "manifest_sha256": "sha256:5208eb39b70ab43cd099ee867fa391fc2c218c559302e68a682b1558f6d94ce3",
+      "schema_bundle_sha256": "sha256:907570a9fe2a346c0c8f1795362bd64ad1521388065935089333224751c44000"
+    },
+    "web": {
+      "contract_count": 127,
+      "manifest": "web/src/generated/contract-manifest.json",
+      "manifest_sha256": "sha256:5208eb39b70ab43cd099ee867fa391fc2c218c559302e68a682b1558f6d94ce3",
+      "schema_bundle_sha256": "sha256:907570a9fe2a346c0c8f1795362bd64ad1521388065935089333224751c44000"
+    }
+  },
+  "sources": {
+    "packages/contracts/src/generated/contract-manifest.json": "sha256:5208eb39b70ab43cd099ee867fa391fc2c218c559302e68a682b1558f6d94ce3",
+    "python/epistemic_foundry/contracts/contract-manifest.json": "sha256:5208eb39b70ab43cd099ee867fa391fc2c218c559302e68a682b1558f6d94ce3",
+    "schemas/v4_c05/family-index.json": "sha256:e4365a2e46b28d782bffbc35ffadb0301087fda787270898eb38b1477d7cf36e",
+    "web/src/generated/contract-manifest.json": "sha256:5208eb39b70ab43cd099ee867fa391fc2c218c559302e68a682b1558f6d94ce3"
+  }
+}

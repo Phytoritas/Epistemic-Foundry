@@ -1,0 +1,346 @@
+{
+  "attempt_id": "V01-0001",
+  "attempt_type": "V01_VALIDATION_TARGET_MANIFESTS",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "V01-0001",
+    "dependencies": {
+      "E04": {
+        "attempt_id": "E04-0001",
+        "core_evidence_id": "E0030",
+        "final_closeout_evidence_id": "E0031",
+        "report": "artifacts/work_packages/E04/report.json",
+        "report_sha256": "sha256:841dcf60989cfc7ab0eff7be95e1ae721ae18ac513cae653ab6ac8a44942f6c1",
+        "status": "PASS"
+      },
+      "F04": {
+        "attempt_id": "F04-0002",
+        "core_evidence_id": "E0006",
+        "final_closeout_evidence_id": "E0007",
+        "report": "artifacts/work_packages/F04/report.json",
+        "report_sha256": "sha256:5a2414ebb79c923af7425b87d614faa088ba9fbd4e6950406948b2eb86d6ab46",
+        "status": "PASS"
+      },
+      "R04": {
+        "attempt_id": "R04-0001",
+        "core_evidence_id": "E0135",
+        "final_closeout_evidence_id": "E0136",
+        "report": "artifacts/work_packages/R04/attempts/0001/report.json",
+        "report_sha256": "sha256:bc7080d66ced6dd68672995e60549b066b1290161b665bfd5b05aa48eb54d135",
+        "status": "PASS"
+      },
+      "T04": {
+        "attempt_id": "T04-0001",
+        "core_evidence_id": "E0151",
+        "final_closeout_evidence_id": "E0152",
+        "report": "artifacts/work_packages/T04/attempts/0001/report.json",
+        "report_sha256": "sha256:ef86645d7ca5058df3047b6b53fbb3dd4c56af41b27db481b773d205e96c6272",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_V01_0001_THEN_CONTINUE_DAG",
+    "regression_baseline": {
+      "attempt_id": "S05-0001",
+      "core_evidence_id": "E0175",
+      "final_closeout_evidence_id": "E0176",
+      "report": "artifacts/work_packages/S05/attempts/0001/report.json",
+      "report_sha256": "sha256:dbcb94e77fd885f18aa36a00dc352a9d5a788d265b979ff7a23fafd5f261c727",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": "PASS",
+    "governing_schemas_authority_boundaries_failure_states_exact": "PASS",
+    "happy_negative_crash_resume_adversarial_coverage": "PASS",
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "X01-0001",
+  "not_claimed": [
+    "validation planning or execution: V02/V03 territory",
+    "schema caching: every call re-reads the schema files, mirroring T04's no-cache stance",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 31762,
+      "path": "artifacts/work_packages/V01/attempts/0001/build_v01_0001_evidence.py",
+      "sha256": "sha256:d7b2392e4cd1fe7f3277fc2ebb52fce625fd8b6940d0adde2a7b9dd73e274707"
+    },
+    {
+      "byte_size": 10935,
+      "path": "artifacts/work_packages/V01/attempts/0001/commands.jsonl",
+      "sha256": "sha256:a4fd958615bb76082603a2bbe7fc73e0e866671cb9f07618129bdc0d62a54ff1"
+    },
+    {
+      "byte_size": 12442,
+      "path": "artifacts/work_packages/V01/attempts/0001/dependency-regression-t04.junit.xml",
+      "sha256": "sha256:34fa6247b7305885930cb82e111bbd24923f591c6c98b8584ef4b02b7d6630b3"
+    },
+    {
+      "byte_size": 1729,
+      "path": "artifacts/work_packages/V01/attempts/0001/dependency-status.json",
+      "sha256": "sha256:9cbcc925e08aeca4430027e09595767d0dfb2af48bdafa3c7e99a35219a4ef6a"
+    },
+    {
+      "byte_size": 245479,
+      "path": "artifacts/work_packages/V01/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:6d5eae0c6676d58e0a03f512e59a8c179a8879ecea3884bc3375e4e81f905613"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/V01/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 4305,
+      "path": "artifacts/work_packages/V01/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:de98bf7d0a304f81f7de1f61c0a0fdb1ea1f0388eece3a886593020a3e430be7"
+    },
+    {
+      "byte_size": 6267,
+      "path": "artifacts/work_packages/V01/attempts/0001/negative-and-adversarial-tests.junit.xml",
+      "sha256": "sha256:e6c1517083313940379120ae756f69026dffc6a69f15742d0f5414f120abe265"
+    },
+    {
+      "byte_size": 7177,
+      "path": "artifacts/work_packages/V01/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:f9b5454dda7984db7e0d82d64ec7708a06a2c824af0953c02fd59d3151a0e166"
+    },
+    {
+      "byte_size": 1470,
+      "path": "artifacts/work_packages/V01/attempts/0001/provenance-and-receipt-audit.junit.xml",
+      "sha256": "sha256:862e13528985ac58ad16891b8629f0e53d11c70aa151209ce17112475868e626"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/V01/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:7dae5b99f652e5e541f451232b6bfecf5a7efc13be4ffa1327194f79089f1554"
+    },
+    {
+      "byte_size": 1329,
+      "path": "artifacts/work_packages/V01/attempts/0001/review.md",
+      "sha256": "sha256:91725dcc5a5f7cca6532190668f6839c33278f17892cf6c3df0bd8043bdded67"
+    },
+    {
+      "byte_size": 6947,
+      "path": "artifacts/work_packages/V01/attempts/0001/run_v01_0001_checks.py",
+      "sha256": "sha256:6eaf1acb5fbd4c76281f622d923705c5a23f931defb04e177d256b5d9795eaa9"
+    },
+    {
+      "byte_size": 1955,
+      "path": "artifacts/work_packages/V01/attempts/0001/schema-and-type-check.junit.xml",
+      "sha256": "sha256:c9ab966497f9f8a89750ac3e6977ced4a387e50b38144b1b177cd0fba5c5915e"
+    },
+    {
+      "byte_size": 11079,
+      "path": "artifacts/work_packages/V01/attempts/0001/targeted-v01-validation-targets.junit.xml",
+      "sha256": "sha256:2a0fd386051451dc27a779a4273b5a872289c77f4db70f0800117480f02b0371"
+    },
+    {
+      "byte_size": 1888,
+      "path": "artifacts/work_packages/V01/attempts/0001/unit-and-contract-tests.junit.xml",
+      "sha256": "sha256:322179f42f755242bae49a23e9f0e64824f03b7571c4266071aef134a9f0c10f"
+    },
+    {
+      "byte_size": 2686,
+      "path": "artifacts/work_packages/V01/attempts/0001/v01-verification.json",
+      "sha256": "sha256:1b6fbdc05d06e73e82bd78b36449b09201c64a0727d8b87646ebd884700e1c53"
+    },
+    {
+      "byte_size": 23200,
+      "path": "artifacts/work_packages/V01/attempts/0001/v01_0001_rah_seal.py",
+      "sha256": "sha256:f464ed888a592fbbede43ec3cae9a6b385b71f10018e7a37b936c3607a083500"
+    },
+    {
+      "byte_size": 2017,
+      "path": "artifacts/work_packages/V01/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:ab7fe3685028c357720fcf600e4b4711bf230f4250ad802fd0e146037715b192"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0201",
+    "core_generation": "000199-16ed9eeb",
+    "final_closeout_evidence_id": "E0202",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1194,
+    "implementation_gate": "fail",
+    "retained_generation_count": 199,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "V01-0001",
+    "baseline_attempt": "S05-0001",
+    "component_tests_are_targeted_only": true,
+    "new_failure_count": 0,
+    "status": "PASS",
+    "suites": {
+      "dependency_regression_t04": {
+        "collected": 115,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/V01/attempts/0001/dependency-regression-t04.junit.xml",
+        "junit_sha256": "sha256:34fa6247b7305885930cb82e111bbd24923f591c6c98b8584ef4b02b7d6630b3",
+        "passed": 115,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 115
+      },
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1276,
+        "failed": 0,
+        "junit": "artifacts/work_packages/V01/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:6d5eae0c6676d58e0a03f512e59a8c179a8879ecea3884bc3375e4e81f905613",
+        "passed": 1276,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1271
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/V01/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "negative_and_adversarial_tests": {
+        "collected": 47,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/V01/attempts/0001/negative-and-adversarial-tests.junit.xml",
+        "junit_sha256": "sha256:e6c1517083313940379120ae756f69026dffc6a69f15742d0f5414f120abe265",
+        "passed": 47,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 47
+      },
+      "provenance_and_receipt_audit": {
+        "collected": 12,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/V01/attempts/0001/provenance-and-receipt-audit.junit.xml",
+        "junit_sha256": "sha256:862e13528985ac58ad16891b8629f0e53d11c70aa151209ce17112475868e626",
+        "passed": 12,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 12
+      },
+      "schema_and_type_check": {
+        "collected": 17,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/V01/attempts/0001/schema-and-type-check.junit.xml",
+        "junit_sha256": "sha256:c9ab966497f9f8a89750ac3e6977ced4a387e50b38144b1b177cd0fba5c5915e",
+        "passed": 17,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 17
+      },
+      "targeted_v01_validation_targets": {
+        "collected": 92,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/V01/attempts/0001/targeted-v01-validation-targets.junit.xml",
+        "junit_sha256": "sha256:2a0fd386051451dc27a779a4273b5a872289c77f4db70f0800117480f02b0371",
+        "passed": 92,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 92
+      },
+      "unit_and_contract_tests": {
+        "collected": 16,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/V01/attempts/0001/unit-and-contract-tests.junit.xml",
+        "junit_sha256": "sha256:322179f42f755242bae49a23e9f0e64824f03b7571c4266071aef134a9f0c10f",
+        "passed": 16,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 16
+      }
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 47
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 12
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 17
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 16
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Author/reviewer separation holds (parallel agent authored, primary session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_REVIEW_OF_PARALLEL_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "V01",
+  "write_scope": {
+    "approved_scope": [
+      "python/epistemic_foundry/validation/targets/**",
+      "artifacts/work_packages/V01/**"
+    ],
+    "attempt_id": "V01-0001",
+    "authored_by": "bounded parallel implementation agent under the product owner's explicit parallel-execution instruction",
+    "authority_decision": null,
+    "composed_modules_modified": false,
+    "product_file_hashes": {
+      "artifacts/work_packages/V01/attempts/0001/run_v01_0001_checks.py": "sha256:6eaf1acb5fbd4c76281f622d923705c5a23f931defb04e177d256b5d9795eaa9",
+      "python/epistemic_foundry/validation/targets/__init__.py": "sha256:d9e7b996d768d7efc9d57dc7073eeebe20d7d8fd00cf23fe21dfae1d6569629c",
+      "python/epistemic_foundry/validation/targets/contracts.py": "sha256:65e2ce98ddca6314284a645a9c6a02a9b1ec1a6c85ba1326e12695cc8a16b1fa",
+      "python/epistemic_foundry/validation/targets/fixtures.py": "sha256:ccb22a99956d6141d5f4d4144124a2ce1a4e8cfe1878003e4bd9074ef540980a",
+      "python/epistemic_foundry/validation/targets/pytest.ini": "sha256:071558d996e8ff164084e63be2b65ad7b3b242f7903ba13e2b6fb20f020fcfb6",
+      "python/epistemic_foundry/validation/targets/test_negative_adversarial.py": "sha256:6d3fc286ed08594b1022bfbf548261b3d6214f208155d4a8c7597610f07bf814",
+      "python/epistemic_foundry/validation/targets/test_provenance_receipts.py": "sha256:410f6e5324fd2a1b3c89c55753e3b5e881b862c13ce0a4d53cd86a34d6c4d92b",
+      "python/epistemic_foundry/validation/targets/test_schema_and_type.py": "sha256:df240fb231073d09691ffea2c9b89ee128b3a7173d5486c96be8778111dcbf88",
+      "python/epistemic_foundry/validation/targets/test_unit_contract.py": "sha256:15208adfecabcae8824f1ca58bd3781b4cb3a4da84233e2dac66034ac0b23d97"
+    },
+    "pyproject_modified": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "primary session (Parent Architect), separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

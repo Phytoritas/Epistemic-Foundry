@@ -1,0 +1,55 @@
+{
+  "attempt_id": "T03-0001",
+  "command_surface": {
+    "command_count": 22,
+    "derived_from": "contracts/mcp/catalog-set.yaml",
+    "mapping_is_reversible": true,
+    "mutating_command_count": 9
+  },
+  "error_codes": {
+    "declaring_source": "contracts/mcp/t01/foundry-mcp-tool-error.schema.json",
+    "exit_code_range": "1..125",
+    "reserved_codes_avoided": [
+      126,
+      127
+    ],
+    "table_covers_vocabulary_exactly": true,
+    "unmapped_code_refused": true
+  },
+  "exit_criteria": {
+    "commands_round_trip_contracts": {
+      "evidence": [
+        "packages/plugin-host/src/cli/cli-contract.test.mjs"
+      ],
+      "mechanism": "commands are projected from the sealed catalogs, and every envelope is proved to survive render, parse, and re-render byte-identically before any bytes are written",
+      "status": "PASS"
+    },
+    "stable_error_codes": {
+      "evidence": [
+        "packages/plugin-host/src/cli/cli-contract.test.mjs"
+      ],
+      "mechanism": "the exit-code table is checked at load against the sealed error vocabulary, codes are distinct and outside the shell-reserved range, and an unmapped code is refused rather than folded into a generic failure",
+      "status": "PASS"
+    }
+  },
+  "pathless_surface": {
+    "child_env_allowlisted": true,
+    "only_executable": "process.execPath",
+    "shell_disabled": true,
+    "sources_scanned_for_lookup": true
+  },
+  "required_checks": {
+    "cli_contract_test": {
+      "module": "packages/plugin-host/src/cli/cli-contract.test.mjs",
+      "status": "PASS",
+      "test_count": 22
+    },
+    "pathless_cli_test": {
+      "module": "packages/plugin-host/src/cli/pathless-cli.test.mjs",
+      "status": "PASS",
+      "test_count": 16
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 38
+}

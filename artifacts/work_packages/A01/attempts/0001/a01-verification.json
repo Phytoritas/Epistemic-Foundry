@@ -1,0 +1,47 @@
+{
+  "attempt_id": "A01-0001",
+  "attestation_scope": {
+    "attested_not_authored": "A01 attests the authority chain the documents already carry; it does not re-author or edit them",
+    "authority_documents": [
+      "MASTER_SPEC.md",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "docs/status_taxonomy.md"
+    ]
+  },
+  "exit_criteria": {
+    "authority_order_unambiguous": {
+      "mechanism": "instructions_lint reads MASTER_SPEC.md, AGENTS.md and CLAUDE.md, extracts the numbered authority order from each, and asserts items 1..8 match the identical pinned source tokens with MASTER_SPEC.md the single top authority in every document, each source appearing exactly once, and the 'lower source cannot override a higher source' precedence clause present",
+      "status": "PASS"
+    },
+    "conflict_returns_spec_gap": {
+      "mechanism": "instructions_lint asserts every authority document declares the SPEC_GAP stop clause tied to absent/inconsistent/conflicting shared semantics and the BLOCKED external-prerequisite outcome, so an unresolved authority conflict returns SPEC_GAP rather than a convenient lower source",
+      "status": "PASS"
+    },
+    "specified_not_implemented": {
+      "mechanism": "status_claim_audit asserts the status taxonomy and the maturity clauses keep SPECIFIED and REFERENCE_BLUEPRINT disjoint from IMPLEMENTED, forbid emitting PASS from tests alone, and scans every authority document so no un-negated production-maturity overclaim survives",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded A01 implementation agent; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "instructions_lint": {
+      "status": "PASS",
+      "test_count": 4
+    },
+    "status_claim_audit": {
+      "status": "PASS",
+      "test_count": 6
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1233,
+    "full_python_suite": 1261,
+    "instructions_lint": 4,
+    "status_claim_audit": 6
+  }
+}

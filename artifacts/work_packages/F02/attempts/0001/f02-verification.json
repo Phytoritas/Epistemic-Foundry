@@ -1,0 +1,53 @@
+{
+  "attempt_id": "F02-0001",
+  "exit_criteria": {
+    "deterministic_transitions": {
+      "evidence": [
+        "packages/foundry-kernel/src/forge/fsm/fsm-property.test.mjs"
+      ],
+      "mechanism": "compileForgePlan derives the legal I/F/O/R/G/E graph solely from the sealed F01 classification's hash-bound required_phases projection: forward edges are chained from the class projection, the fixed legal return set (F/O/R/G->I, R/G->O, G->R, E->F) is filtered to reachable phases, and E->IDLE closes only when E is reachable. describeForgeTransition classifies every phase pair as FORWARD/RETURN/CLOSE, PHASE_NOT_REACHABLE_FOR_CLASSIFICATION (phase outside the class projection), or ILLEGAL_FORGE_TRANSITION (unreachable edge between reachable phases). A forged required_phases fails INVALID_CLASSIFICATION_PROJECTION and a tampered classification fails CLASSIFICATION_INTEGRITY_FAILED. reduceForgeTransition refuses illegal, stale-revision (STALE_REVISION), wrong-from-phase (FROM_PHASE_MISMATCH), cross-session (SESSION_MISMATCH), and non-transitionable (FORGE_SESSION_NOT_TRANSITIONABLE) requests before mutating, is immutable, revision-bound, and hash-bound over request, event, prior/current state, plan, and phase sets, and strict event replay reproduces the direct reducer chain exactly",
+      "status": "PASS"
+    },
+    "return_edges_stale_downstream_artifacts": {
+      "evidence": [
+        "packages/foundry-kernel/src/forge/fsm/stale-propagation.test.mjs"
+      ],
+      "mechanism": "on a RETURN edge projectReturnStaleness marks the return target and every downstream execution phase reachable for the class STALE under the RETURN_TARGET_INCLUSIVE rule, re-deriving PAS-STALE-<digest> set ids bound to the event and source set, a fresh set_hash, complete=false, and STALE artifact status; the superseded source sets are emitted explicitly and the stale phase and artifact ids are recorded on the transition. Source PhaseArtifactSets remain immutable history, projection identity is deterministic and event-bound, and FORWARD and CLOSE edges stale nothing. Cross-session (PHASE_ARTIFACT_SESSION_MISMATCH), unretained (PHASE_ARTIFACT_NOT_IN_STATE), and tampered (PHASE_ARTIFACT_SET_HASH_MISMATCH) phase sets fail closed",
+      "status": "PASS"
+    }
+  },
+  "f01_integrity_reverified": {
+    "forged_required_phases_fails_invalid_classification_projection": true,
+    "tampered_classification_fails_classification_integrity_failed": true
+  },
+  "legal_transitions_and_return_edges": {
+    "close_edge_only_when_e_reachable": true,
+    "forward_edges_chained_from_f01_projection": true,
+    "illegal_edge_between_reachable_phases_is_illegal_forge_transition": true,
+    "phase_outside_projection_is_not_reachable_for_classification": true,
+    "reducer_refuses_illegal_edges_fail_closed": true,
+    "return_edge_set_is_fixed_and_filtered_to_reachable_phases": true
+  },
+  "required_checks": {
+    "fsm_property_test": {
+      "module": "packages/foundry-kernel/src/forge/fsm/fsm-property.test.mjs",
+      "status": "PASS",
+      "test_count": 8
+    },
+    "stale_propagation_test": {
+      "module": "packages/foundry-kernel/src/forge/fsm/stale-propagation.test.mjs",
+      "status": "PASS",
+      "test_count": 6
+    }
+  },
+  "stale_propagation_invalidates_downstream": {
+    "cross_session_and_tampered_sets_fail_closed": true,
+    "forward_and_close_edges_stale_nothing": true,
+    "re_derived_pas_stale_ids_and_fresh_set_hash": true,
+    "return_marks_target_and_downstream_execution_phases_stale": true,
+    "source_phase_artifact_sets_remain_immutable": true,
+    "superseded_sets_emitted_with_stale_phase_and_artifact_ids": true
+  },
+  "status": "PASS",
+  "targeted_test_count": 14
+}

@@ -93,16 +93,24 @@ def gate_decision(
     run_id: str,
     policy_version: str,
     inputs: Any,
+    gate_version: str,
+    input_artifact_ids: Sequence[str],
+    policy_bundle_hash: str,
+    blocker_ids: Sequence[str],
     evaluator_type: EvaluatorType = "deterministic",
     waiver_authority: str | None = None,
     waiver_reason: str | None = None,
+    gate_id: str | None = None,
     evaluated_at: str | None = None,
 ) -> dict[str, Any]:
     """Render a schema-valid `GateDecision` from an evaluation.
 
-    Supplying a waiver flips the recorded status to `WAIVE`, but only for a
-    waivable gate and only with both an authority and a reason: an anonymous or
-    unexplained waiver leaves no accountable party in the audit trail.
+    The caller must supply every immutable authority binding.  In particular,
+    input artifacts, policy content, blockers, and the gate contract version
+    are never inferred from ambient state.  Supplying a waiver flips the
+    recorded status to `WAIVE`, but only for a waivable gate and only with both
+    an authority and a reason: an anonymous or unexplained waiver leaves no
+    accountable party in the audit trail.
     """
     status = evaluation.status
     reasons = list(evaluation.reasons)
@@ -117,16 +125,23 @@ def gate_decision(
         status = GateStatus.WAIVE
         reasons.append(f"waived by {waiver_authority}: {waiver_reason}")
 
+    timestamp = evaluated_at or utc_now_iso()
     decision: dict[str, Any] = {
-        "gate_id": new_id("GD"),
+        "gate_id": gate_id or new_id("GD"),
+        "gate_version": gate_version,
         "run_id": run_id,
         "name": evaluation.name,
-        "status": str(status),
+        "status": status.value,
         "reasons": reasons,
         "evidence_ids": list(evaluation.evidence_ids),
+        "input_artifact_ids": list(input_artifact_ids),
+        "policy_bundle_hash": policy_bundle_hash,
+        "decision": status.value,
+        "blocker_ids": list(blocker_ids),
         "waiver_authority": waiver_authority,
         "waiver_reason": waiver_reason,
-        "evaluated_at": evaluated_at or utc_now_iso(),
+        "evaluated_at": timestamp,
+        "created_at": timestamp,
         "policy_version": policy_version,
         "non_waivable": evaluation.non_waivable,
         "evaluator_type": evaluator_type,

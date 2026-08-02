@@ -1,0 +1,65 @@
+{
+  "attempt_id": "F04-0002",
+  "completed": [
+    "C03-0003",
+    "F03-0002",
+    "F04-0002"
+  ],
+  "completion_ready": false,
+  "dependencies": {
+    "F02": {
+      "attempt_id": "F02-0001",
+      "report": "artifacts/work_packages/F02/attempts/0001/report.json",
+      "report_sha256": "sha256:4d6dae9525ac559cba26e59ff1ab93f7e94918e21076030c50c55f7022b3b152",
+      "status": "PASS"
+    },
+    "F03": {
+      "attempt_id": "F03-0002",
+      "contract_status": "CONFORMANT",
+      "report": "artifacts/work_packages/F03/attempts/0002/report.json",
+      "report_sha256": "sha256:bb70fa7718bac42169c4b529e52861733dac2d6c129482b9155f97154d9c44b9",
+      "status": "PASS"
+    }
+  },
+  "manifest": {
+    "depends_on": [
+      "F02",
+      "F03"
+    ],
+    "exit_criteria": [
+      "minimum paths and full paths pass",
+      "UNDERDETERMINED is accepted outcome"
+    ],
+    "package_count": 156,
+    "path": "manifests/development_manifest.yaml",
+    "required_checks": [
+      "forge_golden_flows",
+      "phase_artifact_reconciliation"
+    ],
+    "sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "write_scope": [
+      "tests/golden/forge/**",
+      "artifacts/work_packages/F04/**"
+    ]
+  },
+  "next_attempt": "J02-0003",
+  "ordered_repair_sequence": [
+    "C03-0003",
+    "F03-0002",
+    "F04-0002",
+    "J02-0003",
+    "S04-0003",
+    "B04-0007",
+    "C04-0002",
+    "B04-0008"
+  ],
+  "schema_version": 1,
+  "static_dag_changed": false,
+  "status": "PASS",
+  "waiting": [
+    "S04-0003",
+    "B04-0007",
+    "C04-0002",
+    "B04-0008"
+  ]
+}

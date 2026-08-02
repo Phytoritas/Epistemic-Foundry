@@ -1,0 +1,317 @@
+{
+  "attempt_id": "T02-0001",
+  "attempt_type": "T02_MCP_MUTATING_TOOLS_WITH_INTENTS_AND_RECEIPTS",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "T02-0001",
+    "dependencies": {
+      "T01": {
+        "attempt_id": "T01-0002",
+        "core_evidence_id": "E0113",
+        "final_closeout_evidence_id": "E0114",
+        "report": "artifacts/work_packages/T01/attempts/0002/report.json",
+        "report_sha256": "sha256:474def1666b367e5a9da3bdbf622b78211046a88e2d2110aa3176a775f016ea4",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_T02_0001_THEN_CONTINUE_DAG",
+    "regression_baseline": {
+      "attempt_id": "W03-0001",
+      "core_evidence_id": "E0125",
+      "final_closeout_evidence_id": "E0126",
+      "report": "artifacts/work_packages/W03/attempts/0001/report.json",
+      "report_sha256": "sha256:e43a43d65fb0177131fc23b0a966dfcd1111e1b9e2eaeb809bda6a57148c3a58",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "effects_reconcile": "PASS",
+    "no_mutation_without_lease": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_package": "T03-0001",
+  "not_claimed": [
+    "kernel binding of policy, approval, lease, revision, intent, or receipt stores",
+    "live external effect execution or reconciliation probing",
+    "actor-independent certification of this implementation review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 2305,
+      "path": "artifacts/work_packages/T02/attempts/0001/approval-test.junit.xml",
+      "sha256": "sha256:54a81fba984bcc60995c8cf9aca1a64e226f4f0f27426f9c429db3f82abd3ccf"
+    },
+    {
+      "byte_size": 34640,
+      "path": "artifacts/work_packages/T02/attempts/0001/build_t02_0001_evidence.py",
+      "sha256": "sha256:205b064cdb15904c4207d8af1905ab027aa5d84b618553416f94ad0305078a05"
+    },
+    {
+      "byte_size": 8535,
+      "path": "artifacts/work_packages/T02/attempts/0001/commands.jsonl",
+      "sha256": "sha256:e758ebfc5551281ec5677ea1c9e8f0b329ea1d5c4e54ffd1b21d403fd6d60e04"
+    },
+    {
+      "byte_size": 779,
+      "path": "artifacts/work_packages/T02/attempts/0001/dependency-status.json",
+      "sha256": "sha256:feadee8bd2eafec454731a497072a2cdebd8b3b3cbd46a91d918dcfc13cef950"
+    },
+    {
+      "byte_size": 175155,
+      "path": "artifacts/work_packages/T02/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:2f24ddd8f28a70f58d275a2d9fdb206aa0eb438a14554516e9c614a6b616f2ec"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/T02/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 3213,
+      "path": "artifacts/work_packages/T02/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:cd12327584ebbd02d28380cd585eb72bfa13ba95afba3269b3933875bb3282bf"
+    },
+    {
+      "byte_size": 2988,
+      "path": "artifacts/work_packages/T02/attempts/0001/mcp-effect-test.junit.xml",
+      "sha256": "sha256:6ea56eeca3b42d74ecf02e66ed7a3f7f39905153df019ff86f38b285edc39376"
+    },
+    {
+      "byte_size": 5852,
+      "path": "artifacts/work_packages/T02/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:cf4041f635071d5bce00317dbd7c0fbfb21126fcbda0d9cc9766d3f8a8584109"
+    },
+    {
+      "byte_size": 553,
+      "path": "artifacts/work_packages/T02/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:95d3fa10e65872c650642e86900729bb742c59036c0b72cf895806816322df37"
+    },
+    {
+      "byte_size": 2851,
+      "path": "artifacts/work_packages/T02/attempts/0001/review.md",
+      "sha256": "sha256:bc5844de12f966a24eb51e68a113b6ab606bf1daa6cfa2b07d171eb4132e6d01"
+    },
+    {
+      "byte_size": 5965,
+      "path": "artifacts/work_packages/T02/attempts/0001/run_t02_0001_checks.py",
+      "sha256": "sha256:ed8817e5e58181a66cee1a3425940b8a640cf8f6eb51373b96a3086040cc8c1d"
+    },
+    {
+      "byte_size": 13398,
+      "path": "artifacts/work_packages/T02/attempts/0001/sealed-t01-regression.junit.xml",
+      "sha256": "sha256:8a09b55f7306d1646010fe21f79e64bb9b7f8ee90bbeba389c2ed27a6bf3f728"
+    },
+    {
+      "byte_size": 1487,
+      "path": "artifacts/work_packages/T02/attempts/0001/t02-verification.json",
+      "sha256": "sha256:28881e95e7b7e093a1dc52b58f658596341af9f2b9881a4506b38af56e972ede"
+    },
+    {
+      "byte_size": 22317,
+      "path": "artifacts/work_packages/T02/attempts/0001/t02_0001_rah_seal.py",
+      "sha256": "sha256:0999f1d6aed2a598b5f41d7bda147406e69d2373e34a8b71b9fbb5a28d16fd64"
+    },
+    {
+      "byte_size": 7892,
+      "path": "artifacts/work_packages/T02/attempts/0001/targeted-mcp-mutating.junit.xml",
+      "sha256": "sha256:19c4da5e2f3136f3ea3f3b5cfb51694ba156a005858be74a7ce552da359a9eeb"
+    },
+    {
+      "byte_size": 5382,
+      "path": "artifacts/work_packages/T02/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:bf96c63ef901755eb3194da074284867c0c37aa6fd7c6654e18fc218c75318e7"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0127",
+    "core_generation": "000125-5d676ba4",
+    "final_closeout_evidence_id": "E0128",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 750,
+    "implementation_gate": "fail",
+    "retained_generation_count": 125,
+    "status": "active"
+  },
+  "regression": {
+    "approval_test": {
+      "collected": 18,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T02/attempts/0001/approval-test.junit.xml",
+      "junit_sha256": "sha256:54a81fba984bcc60995c8cf9aca1a64e226f4f0f27426f9c429db3f82abd3ccf",
+      "passed": 18,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 18
+    },
+    "attempt_id": "T02-0001",
+    "baseline_attempt": "W03-0001",
+    "full_node": {
+      "cancelled": 0,
+      "collected": 903,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T02/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:2f24ddd8f28a70f58d275a2d9fdb206aa0eb438a14554516e9c614a6b616f2ec",
+      "passed": 903,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 898
+    },
+    "full_python": {
+      "collected": 1261,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T02/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+      "passed": 1261,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1261
+    },
+    "mcp_effect_test": {
+      "collected": 24,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T02/attempts/0001/mcp-effect-test.junit.xml",
+      "junit_sha256": "sha256:6ea56eeca3b42d74ecf02e66ed7a3f7f39905153df019ff86f38b285edc39376",
+      "passed": 24,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 24
+    },
+    "new_failure_count": 0,
+    "prior_baseline_counts": {
+      "full_node": 887,
+      "full_python": 1196
+    },
+    "sealed_t01_regression": {
+      "collected": 106,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T02/attempts/0001/sealed-t01-regression.junit.xml",
+      "junit_sha256": "sha256:8a09b55f7306d1646010fe21f79e64bb9b7f8ee90bbeba389c2ed27a6bf3f728",
+      "passed": 106,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 106
+    },
+    "status": "PASS",
+    "targeted_mcp_mutating": {
+      "collected": 65,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T02/attempts/0001/targeted-mcp-mutating.junit.xml",
+      "junit_sha256": "sha256:19c4da5e2f3136f3ea3f3b5cfb51694ba156a005858be74a7ce552da359a9eeb",
+      "passed": 65,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 65
+    },
+    "unexpected_skip_xfail_todo_or_cancellation_count": 0
+  },
+  "required_checks": {
+    "approval_test": {
+      "module": "tests/mcp/t02/test_approval.py",
+      "status": "PASS",
+      "test_count": 18
+    },
+    "mcp_effect_test": {
+      "module": "tests/mcp/t02/test_mcp_effect.py",
+      "status": "PASS",
+      "test_count": 24
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "T02",
+  "write_scope": {
+    "approved_scope": [
+      "contracts/mcp/catalog-set.yaml",
+      "contracts/mcp/t02/**",
+      "src/epistemic_foundry/application/mcp_mutating/**",
+      "packages/plugin-host/src/mcp/write/**",
+      "tests/mcp/t02/**",
+      "tests/node/t02-mcp-write-surface.test.mjs",
+      "tests/test_wire_literal_discipline.py",
+      "docs/t02_mutating_tool_architecture.md",
+      "artifacts/authority_decisions/HD-EF4-T02-SCOPE-20260801-002.human-decision.json",
+      "artifacts/work_packages/T02/**"
+    ],
+    "attempt_id": "T02-0001",
+    "component_files": [
+      "src/epistemic_foundry/application/mcp_mutating/__init__.py",
+      "src/epistemic_foundry/application/mcp_mutating/handler_factory.py",
+      "src/epistemic_foundry/application/mcp_mutating/ports.py",
+      "src/epistemic_foundry/application/mcp_mutating/reconciliation.py",
+      "src/epistemic_foundry/application/mcp_mutating/service.py"
+    ],
+    "product_file_hashes": {
+      "contracts/mcp/catalog-set.yaml": "sha256:283cbdd9ac17756483f908bd8fa13904dd262660a2a2272de4e212e292b81744",
+      "contracts/mcp/t02/schemas/common-mutation-input.schema.json": "sha256:dfcb1aa6d53f2c27979df9b176d606e20db2abd64526c1c617cc11694338adde",
+      "contracts/mcp/t02/schemas/mutation-error-details.schema.json": "sha256:edd167e2c27cfe29fe584a94126491d2c54fdcaa35a21c4f72ee8886f7a7eb71",
+      "contracts/mcp/t02/schemas/mutation-result.schema.json": "sha256:aa1bf2b6335e41ed2240ef92f98fc754448f5fcc2e92b6f84f2be7ccba3de386",
+      "contracts/mcp/t02/schemas/tools/claim-promote.input.schema.json": "sha256:3e6b0eb85ad5ea0bd10f0b47900a783d02126bfc190274b75ee4630d900c7d42",
+      "contracts/mcp/t02/schemas/tools/corpus-register.input.schema.json": "sha256:208512d777cefa9cf0f4211d7bbf697cb2f8be34b6a6efb9c61c746a26564fe0",
+      "contracts/mcp/t02/schemas/tools/memory-write.input.schema.json": "sha256:1688f599e854854f7eb042d3a7fff0f144d923a7ea2f6f2825f0d29de68ef21f",
+      "contracts/mcp/t02/schemas/tools/parliament-execute.input.schema.json": "sha256:8520d23cdfd81c2f086f7c6d26a84e7d327b9850ff2bbe53d3493998656a9c01",
+      "contracts/mcp/t02/schemas/tools/passport-publish.input.schema.json": "sha256:3ef74a823286d5b3f2bd581edd508104e9ef7fd3ccfb144e4f5eaf2bf85a868f",
+      "contracts/mcp/t02/schemas/tools/search-execute.input.schema.json": "sha256:48ff0a18cdc7acc73f63e7658762eed382987cb0dc6a2b007c64b7b0774c388b",
+      "contracts/mcp/t02/schemas/tools/session-transition.input.schema.json": "sha256:0d32bf1c97b9a3308f9939e05fdecd8e0a68cd8651b505d14ed39f91cea00e63",
+      "contracts/mcp/t02/schemas/tools/skill-activate.input.schema.json": "sha256:ba6b7ef577a133a6fb865cd02c5efa1b8ca1902cdcb541681428cc7ab3967b6f",
+      "contracts/mcp/t02/schemas/tools/validation-execute.input.schema.json": "sha256:ffe409c755d2f291d445df3a2fe16ec06cecfed88846dd6be1e3b712f08bc704",
+      "contracts/mcp/t02/tool-catalog.yaml": "sha256:20d05890e664eadd3b3afc7c9a82fb6a5d358fd91ad1a4fd29d09f00ad8afea6",
+      "packages/plugin-host/src/mcp/write/adapter.mjs": "sha256:27ed7d49de208bd4df27b1169204bb3ccca9171d4ea10c751e15b4f07b0a992b",
+      "packages/plugin-host/src/mcp/write/catalog-set.mjs": "sha256:f017c9b2c0dbec571e29348446be3b7764ae48b277044c06b1dcd24f9cf59f1d",
+      "packages/plugin-host/src/mcp/write/generated/t02-tool-descriptors.json": "sha256:70f8f2cd93479055fa34072852af87796fef859d899773438890b17fd23fde91",
+      "src/epistemic_foundry/application/mcp_mutating/__init__.py": "sha256:67082d7551e78bb7255157556c435fe8f1a920a1085221559f3a197f7fab4bc9",
+      "src/epistemic_foundry/application/mcp_mutating/handler_factory.py": "sha256:2722f26540e272629de8f34316d6e76f8a67ed917913bedaf3abead87dd70684",
+      "src/epistemic_foundry/application/mcp_mutating/ports.py": "sha256:10fb6af0d03a684670faaa0eaf2815867d3013f5a366704ec4c76426aa03dc5e",
+      "src/epistemic_foundry/application/mcp_mutating/reconciliation.py": "sha256:3aea319bafe359a8c1c57c057ca491e36c450b1eef5b909a75b42effd028ab0f",
+      "src/epistemic_foundry/application/mcp_mutating/service.py": "sha256:7111d6db50556844c9922d534b76b429fc1e185bd14529301d5c81e81165a52d",
+      "tests/mcp/t02/conftest.py": "sha256:76e80c0e433e3507ec7e0a1c627f4dd247e384fa77e5f3efe40fb349ad1a9dda",
+      "tests/mcp/t02/harness.py": "sha256:8db93901d3f58fb51e76efd99e3c8e752168ae65f45af25e12e02034644a655a",
+      "tests/mcp/t02/test_approval.py": "sha256:53a68c380beda9d2a86671f7fb127e83dfa143c63c146a65664a32b464923598",
+      "tests/mcp/t02/test_mcp_effect.py": "sha256:472b7deefb029294ebcd90624e7ea82cec356d55ff131e618b6a1022475c2812",
+      "tests/mcp/t02/test_tool_catalog.py": "sha256:84bcc363be37583becc333720e500e4cb9229a6d6429b2e44bf3bc1b89a8506f",
+      "tests/mcp/t02/test_tools_list.py": "sha256:f618d967c1d1a9e12ad7d1c40534755d41d252142419a7b0fc21677a6d9e4f53",
+      "tests/node/t02-mcp-write-surface.test.mjs": "sha256:e1916a84e20b604d84a7545ccb853a5fc06cd2d52224e3c5f52762a11f8dca19"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "sealed_t01_surface_untouched": [
+      "contracts/mcp/t01/foundry-mcp-tool-error.schema.json",
+      "contracts/mcp/t01/foundry-mcp-tool-result.schema.json",
+      "contracts/mcp/t01/tool-catalog.yaml",
+      "packages/plugin-host/src/mcp/generated/tool-descriptors.json",
+      "packages/plugin-host/src/mcp/read/mcp-server.mjs"
+    ],
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

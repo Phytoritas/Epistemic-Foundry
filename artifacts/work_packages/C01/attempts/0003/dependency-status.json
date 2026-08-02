@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "calculated_at_utc": "2026-07-27T17:20:55.1622563Z",
+  "manifest_path": "manifests/development_manifest.yaml",
+  "manifest_sha256": "2af2704c5e518e3b86b3fcfc8887fe2fad6ccd3c74f36c95c652a0cfddc16b6c",
+  "fixed_execution_order": [
+    "C01",
+    "B04",
+    "FULL_DAG_RECOMPUTATION"
+  ],
+  "packages": {
+    "A04": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/A04/report.json",
+      "report_sha256": "f34f72c561a6eb1696a524c1910d83a338847536e3c497c5d3038e7a1d2855ab"
+    },
+    "A05": {
+      "status": "PASS",
+      "attempt": "A05-0002",
+      "report": "artifacts/work_packages/A05/attempts/0002/report.json",
+      "report_sha256": "c9c550de22f55d32898f0d33489bc9b0480de6eef4bca7baeb09fcf047c6062c"
+    },
+    "B02": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/B02/report.json",
+      "report_sha256": "98abe689dbfb9399d2f50f87a18376ca9a85ed4a50c938513778e312e3e67dad"
+    },
+    "B03": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/B03/report.json",
+      "report_sha256": "baa07e997402a290f2602cea39a78a1acdeeb69dd7ea8c89331c84e78976338f"
+    },
+    "C01": {
+      "status": "SPEC_GAP",
+      "attempt": "C01-0003",
+      "gap_id": "C01-SG003",
+      "authorized_contract_surface": "PASS",
+      "full_python_regression": {
+        "status": "FAIL",
+        "passed": 824,
+        "failed": 24,
+        "collected": 848
+      },
+      "dependencies": {
+        "A04": "PASS",
+        "A05": "PASS"
+      },
+      "evidence": "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verification.json",
+      "evidence_sha256": "c0bf2ba5e156845731229bced427af3f390bcc3f77891fcd7e3075701fa27ee0"
+    },
+    "B04": {
+      "status": "WAITING_ON_C01",
+      "started": false,
+      "dependencies": {
+        "B02": "PASS",
+        "B03": "PASS",
+        "C01": "SPEC_GAP"
+      },
+      "reason": "The product-owner fixed sequence and development manifest both require C01 PASS before B04 starts."
+    },
+    "C02": {
+      "status": "WAITING_ON_C01",
+      "started": false
+    },
+    "C03": {
+      "status": "WAITING_ON_C01",
+      "started": false
+    }
+  },
+  "direct_c01_dependents": [
+    "B04",
+    "C02",
+    "C03"
+  ],
+  "full_156_package_dag_recomputed": false,
+  "subsequent_dag_execution_started": false,
+  "next_action": {
+    "type": "HIGHER_ORDER_DECISION_REQUIRED",
+    "gap_id": "C01-SG003",
+    "requirements": [
+      "Assign a migration owner and exact write scope for the five affected runtime and regression-test paths.",
+      "Define the canonical granted_level semantics for a non-promotion decision when no current Passport level is supplied.",
+      "Choose whether the migration must pass before C01 or whether the full-suite gate belongs to an explicitly named migration package."
+    ],
+    "resume_package": "C01"
+  }
+}

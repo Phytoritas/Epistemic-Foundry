@@ -1,0 +1,24 @@
+{
+  "$id": "https://epistemic-foundry.local/schemas/v4_c05/external-backend-binding.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "External backend isolation (EF4-I63): an imported run cannot validate without the exact pinned backend manifest and its qualification, and nothing a backend reports becomes Foundry authority by validating here.",
+  "properties": {
+    "backend_manifest": {
+      "$ref": "https://epistemic-foundry.local/schemas/shinka-backend-manifest.schema.json"
+    },
+    "imported_run": {
+      "$ref": "https://epistemic-foundry.local/schemas/imported-run-record.schema.json"
+    },
+    "qualification": {
+      "$ref": "https://epistemic-foundry.local/schemas/backend-adapter-qualification.schema.json"
+    }
+  },
+  "required": [
+    "backend_manifest",
+    "imported_run",
+    "qualification"
+  ],
+  "title": "ExternalBackendBinding",
+  "type": "object"
+}

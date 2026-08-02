@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-B04-0004-SDIST",
+  "byte_size": 252462,
+  "content_hash": "sha256:560ce3afa19da1fe885785826336276315b26d1e57f248dddcbb71bc1bc6ce76",
+  "created_at": "2026-07-29T00:00:00Z",
+  "created_by": {
+    "actor_id": "B04-0004-packaging-verifier",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/B04/attempts/0004/dist/epistemic_foundry-4.0.0.tar.gz",
+  "media_type": "application/gzip",
+  "receipt_hash": "sha256:bd2db6c6a2de25a8c66e26c9e2e3fdb8606abf237f85448fc90af32b0c3d1456",
+  "receipt_id": "AR-B04-0004-SDIST",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "raw_byte_hash_and_size",
+      "details": "Raw distribution SHA-256 and byte size match the formal B04-0004 packaging verification artifact.",
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_source_projection_convergence",
+      "details": "All 125 canonical resources match the root authority with zero missing, extra, duplicate-ID, or hash-mismatched resources.",
+      "status": "PASS"
+    },
+    {
+      "check": "deterministic_build_and_installed_isolation",
+      "details": "Two clean builds and the sdist-derived wheel are byte-equal; installed-only loading, arbitrary-cwd operation, no-source-fallback, missing-resource rejection, and tamper rejection pass.",
+      "status": "PASS"
+    }
+  ]
+}

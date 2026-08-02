@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "N04-0001-FAN-IN-VERIFICATION",
+  "byte_size": 12185,
+  "content_hash": "sha256:d6ab6a35467daa9ffbcda42b8437c23bdd6064eeadfc199dca7c2ab800677004",
+  "created_at": "2026-07-31T03:48:42.404Z",
+  "created_by": {
+    "actor_id": "N04-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/N04/attempts/0001/fan-in-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:1dd7aed72092e85964181b8d3c5831632dcde0dbbb23c67f557123f0a242a6a6",
+  "receipt_id": "AR-N04-0001-FAN-IN-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "missing_node_detection_test",
+      "details": "14/14 exact count, identity, replay, receipt, completeness, and missing-node cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "independent_review_test",
+      "details": "12/12 reviewer independence, scope, ordering, hash, verdict, and output-binding cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Node 819/819 across 79 files, Python 1064/1064, codegen 126/126, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

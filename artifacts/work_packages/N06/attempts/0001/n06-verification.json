@@ -1,0 +1,59 @@
+{
+  "attempt_id": "N06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every gated run re-derives byte for byte from its own published fields: the integration record hash covers the record, the schedule side is not re-opinionated but chained by carrying the sealed scheduler's own verdict hash, and there is no clock or random draw on the path, so replaying a declaration reproduces the identical report and record",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "every lane, lane action and stage the gate reasons about is imported from the sealed N05 scheduler that derives it, the module holds no canonical schema enum value as a string literal (EF4-I22), each finding is a documented uppercase code keyed on a real report field, and the two backpressure policies and two lock actions are the only members of their closed sets",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "a clean run integrates with no findings; work shed from a full lane, a policy contradicted in either direction, a lane stalled past its horizon, in-flight work no worker holds, an overcommitted or retained or unheld resource and a declared wait cycle are each refused by their own code; and a prefix that never fanned in is re-raised under N05's own FANIN_INCOMPLETE rather than restated here",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the gate takes no evaluator, holdout, fitness or promotion input, names no such thing in any finding, and derives integrated as a plain conjunction of a valid schedule and no finding rather than from a score that could be optimised into a pass; it verifies scheduling integrity and decides nothing",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "composes": "N05 lane verdict per schedule prefix; no second lane walk",
+    "integrated_rule": "schedule.valid AND no finding fired (a conjunction, not a score)",
+    "lane_vocabulary_source": "sealed N05 scheduler (imported, not restated)",
+    "produces": "a re-derivable integration record; no score, selection or promotion"
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: an independent reviewer that did not author the gate; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 15
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 8
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 11
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 8
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_n05": 104,
+    "full_node_suite": 1129,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 15,
+    "provenance_and_receipt_audit": 8,
+    "schema_and_type_check": 11,
+    "unit_and_contract_tests": 8
+  }
+}

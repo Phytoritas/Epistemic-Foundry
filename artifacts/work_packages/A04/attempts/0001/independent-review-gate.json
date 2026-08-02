@@ -1,0 +1,54 @@
+{
+  "actor_independent_certification_claimed": false,
+  "adr034_genuine_tightening": {
+    "closed_fingerprinted_exemption_list": true,
+    "status": "Accepted",
+    "tightening_language_present": true,
+    "weakenings_recorded_as_rejected": [
+      "Weaken `boundary_cycle_policy_check` to ignore top-level cycles",
+      "Open-ended waiver for \"any L3 cycle.\""
+    ]
+  },
+  "attempt_id": "A04-0001",
+  "attested_preconditions": [
+    "authority_chain_intact",
+    "no_adapter_authority_inversion",
+    "adr034_genuine_tightening"
+  ],
+  "authority_chain_intact": {
+    "authority_order": [
+      "MASTER_SPEC.md",
+      "manifests/development_manifest.yaml",
+      "manifests/acceptance_matrix.yaml",
+      "manifests/product_invariants.yaml",
+      "applicable schemas/*.schema.json and workflows/*.workflow.yaml",
+      "manifests/role_registry.yaml",
+      "AGENTS.md or this file",
+      "work-package-local notes"
+    ],
+    "lower_cannot_override_higher": true,
+    "role_registry_above_agents": true,
+    "spec_gap_conflict_clause": true
+  },
+  "check": "independent_review_gate",
+  "no_adapter_authority_inversion": {
+    "a03_boundary_cycle_policy_check": "PASS",
+    "adapter_components": [
+      "plugin-host",
+      "ui-api"
+    ],
+    "adapter_layer_index": 4,
+    "adr034_authority_and_adapter_cycles_fail": true,
+    "authority_components": [
+      "foundry-kernel"
+    ],
+    "authority_inward_of_adapter": true,
+    "authority_layer_index": 2
+  },
+  "phase": "P00-A",
+  "review_role": "integration_reviewer",
+  "schema_version": 1,
+  "seal_time_independent_review_required": true,
+  "status": "PASS",
+  "work_package_id": "A04"
+}

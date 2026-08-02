@@ -1,0 +1,65 @@
+{
+  "attempt_id": "X06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every decision re-derives byte for byte from its own content: each identifier is the prefix over the digest of the record's body and each hash covers the record, and there is no clock or random draw, so replaying a call reproduces the receipt",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "every canonical token is read positionally from the schema that declares it (model-routing-receipt, operator-bandit-state) or delegated to the sealed X05 surface and the bandit module that own it, the gate holds no wire literal of its own, and each FINDING_CODE names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the refusals carry the weight: a single-provider set, a selection outside its eligible set, a tampered routing receipt, a reward on the immediate proxy, a laundered reward claiming promotion, a reward routed outside the attested set, a laundered fallback denying neutrality, an unsafe bandit policy and a backend reaching for authority are each refused, and the happy path still replays deterministically",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; the reward is drawn from a validated basis and refused when it drives a promotion (EF4-I45), cost is descriptive bookkeeping never gated on a threshold, and no external backend field binds onto a Foundry authority surface (EF4-I63)",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "composes": "sealed X05 routing, safe bandit, neutral fallback and backend boundary",
+    "cost_is": "descriptive bookkeeping, never a threshold authority",
+    "produces": "one re-derivable integration receipt; no score, selection or promotion",
+    "refusals_are_by_path": true,
+    "reward_basis": "validated basis only via the sealed safe bandit; promotion-routed reward refused"
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: an independent seal-prep session that is a distinct actor from the author; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 19
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 8
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 8
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 7
+    }
+  },
+  "schema_binding": {
+    "bandit_state_schema": "operator-bandit-state (validated before use)",
+    "routing_receipt_schema": "model-routing-receipt (validated before use)",
+    "safe_policy_source": "epistemic_foundry.evaluation.bandits.policy_bounds_safety"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_x05": 51,
+    "full_node_suite": 1253,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 19,
+    "provenance_and_receipt_audit": 8,
+    "schema_and_type_check": 8,
+    "unit_and_contract_tests": 7
+  }
+}

@@ -1,0 +1,344 @@
+{
+  "attempt_id": "B02-0001",
+  "attempt_type": "B02_PINNED_TOOLCHAINS_LOCKFILES_AND_DETERMINISTIC_BUILD",
+  "changed_product_files": [],
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "B02-0001",
+    "dependencies": {
+      "B01": {
+        "attempt_id": "B01-0001",
+        "core_evidence_id": "E0295",
+        "core_generation": "000293-7ff781e9",
+        "final_closeout_evidence_id": "E0296",
+        "report": "artifacts/work_packages/B01/attempts/0001/report.json",
+        "report_sha256": "sha256:9bc65c52408117105ee5da16f2d7b04995fd54a3a679f1fe341566f409d110bd",
+        "status": "PASS"
+      }
+    },
+    "dependency_note": "B02 depends on B01; the sealed B01-0001 polyglot-scaffold attempt is the build dependency",
+    "next_action": "SEAL_B02_0001_THEN_RECOMPUTE_DAG",
+    "regression_baseline": {
+      "attempt_id": "B01-0001",
+      "core_evidence_id": "E0295",
+      "core_generation": "000293-7ff781e9",
+      "final_closeout_evidence_id": "E0296",
+      "report": "artifacts/work_packages/B01/attempts/0001/report.json",
+      "report_sha256": "sha256:9bc65c52408117105ee5da16f2d7b04995fd54a3a679f1fe341566f409d110bd",
+      "status": "PASS"
+    },
+    "regression_baseline_note": "B01-0001 is the sealed PASS scaffold/boundary checkpoint (B02's direct dependency) bound as the regression baseline. The live ledger frontier advances under concurrent sealing; the parent reconciles the exact frontier when it fills the ledger pins at seal time.",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "all_shipped_dependencies_pinned": "PASS",
+    "clean_builds_are_reproducible": "PASS",
+    "frozen_sync_no_unrelated_change": "PASS",
+    "skill_context_declares_exact_tiktoken": "PASS",
+    "tokenizer_vectors_pass": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "production_double_build_helper_modified": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "integration_handoff": {
+    "B04_revalidation_pending": true,
+    "current_input_semantic_double_build": "PASS_11_BYTE_IDENTICAL_ARTIFACTS",
+    "production_helper": "PRESERVED_STALE_STAGING_FAILURE",
+    "production_helper_modified": false,
+    "production_helper_owner": "B04_REVALIDATION"
+  },
+  "lock_correction": {
+    "dependency_group": "skill-context",
+    "direct_dependency": "tiktoken==0.13.0",
+    "installed_version": "0.13.0",
+    "new_lock_hash": "sha256:5c3798ff0323f9352d73f17fa93913590d7dbb5382dd0de26b1619e775b58caa",
+    "old_lock_hash": "sha256:728e9d36f966b38a0f86ea5300210760b889110ba5adce5e646efa439ea2efac",
+    "runtime_dependency_exposure": false,
+    "transitive_additions": [
+      "certifi",
+      "charset-normalizer",
+      "idna",
+      "regex",
+      "requests",
+      "urllib3"
+    ],
+    "unrelated_dependency_change_count": 0
+  },
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "editing pyproject.toml or uv.lock: B02-0001 attests the already-correct pinned dependency lock and makes zero edit to either file",
+    "authorship of the dependency-lock correction or the attempt-local adapters: bounded agent(s) authored them and this session attests and reviews them",
+    "correction of the production double-build helper scripts/build/double_build.py: it is a preserved B04 integration handoff outside B02's write scope",
+    "B04 dependency/build revalidation PASS",
+    "any product-maturity, runtime-executability or release readiness of the v4 plugin or ShinkaEvolve integration",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 4292,
+      "path": "artifacts/work_packages/B02/attempts/0001/b02-verification.json",
+      "sha256": "sha256:3c90dde9a68b02b614b2442fe225fff4a15a05ed50f6a3c15f5549c5904ffd10"
+    },
+    {
+      "byte_size": 27232,
+      "path": "artifacts/work_packages/B02/attempts/0001/b02_0001_rah_seal.py",
+      "sha256": "sha256:e5ba3b6750355e32fd2492faf724f5da7c7266682f264f75ffefc8e3d8a2e873"
+    },
+    {
+      "byte_size": 43412,
+      "path": "artifacts/work_packages/B02/attempts/0001/build_b02_0001_evidence.py",
+      "sha256": "sha256:c92a004d6e9e2fd791262f3c11c29cccbcad48df8177884305ca6f50c5c3925a"
+    },
+    {
+      "byte_size": 3017,
+      "path": "artifacts/work_packages/B02/attempts/0001/commands.jsonl",
+      "sha256": "sha256:1af2a753dda563891918cbd38c919cd3b1aa56dff8a596f51d8c1dd6c01f3641"
+    },
+    {
+      "byte_size": 1275,
+      "path": "artifacts/work_packages/B02/attempts/0001/dependency-status.json",
+      "sha256": "sha256:7e8ad1fc2cd6178244b02023660e298bc7c71f05adfa7e99f960c27d54048147"
+    },
+    {
+      "byte_size": 3962,
+      "path": "artifacts/work_packages/B02/attempts/0001/double-build-comparison.json",
+      "sha256": "sha256:284567a6164e25e89bb6e6675ce79f9059fc4a0fce4f9212822bdec042235cbc"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/B02/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 2611,
+      "path": "artifacts/work_packages/B02/attempts/0001/j02-tokenizer-vector-test.junit.xml",
+      "sha256": "sha256:524dfec79978d017e9b58cea6df82eff78bc83ab5aa37104c2841623c6f6e78c"
+    },
+    {
+      "byte_size": 1182,
+      "path": "artifacts/work_packages/B02/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:db37e51bbb0eefc6886740218eeedb71b30ade95cf40501d4170b1cc90ca32df"
+    },
+    {
+      "byte_size": 1662,
+      "path": "artifacts/work_packages/B02/attempts/0001/lock-diff-verification.json",
+      "sha256": "sha256:ff0316b150365548ba347add5110972a75842d20864a6a5bd433901e30c86c12"
+    },
+    {
+      "byte_size": 592,
+      "path": "artifacts/work_packages/B02/attempts/0001/lockfile-check.json",
+      "sha256": "sha256:25424500ca42b0459e2e01cb4eec78571f357e2fe967e758f2e2c77b6147e6a8"
+    },
+    {
+      "byte_size": 156,
+      "path": "artifacts/work_packages/B02/attempts/0001/node-boundaries-check.json",
+      "sha256": "sha256:91803a68de7ff36e0a159b45167bda287d1efcad9da196eb34606066676faedd"
+    },
+    {
+      "byte_size": 218,
+      "path": "artifacts/work_packages/B02/attempts/0001/node-structure-check.json",
+      "sha256": "sha256:cc43efd3f6a1f5884508c193b81c28e0d106bb45301a9d03b9b7448b7d7ecce4"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/B02/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:dad042278ece4b7138e908fd8ff02ea7755af8c49274d96367a94238119daee3"
+    },
+    {
+      "byte_size": 4274,
+      "path": "artifacts/work_packages/B02/attempts/0001/review.md",
+      "sha256": "sha256:4d448e6a45bba47d20cbfd9dd86349626cb971f0ba0b8dd364af319bfbd7c866"
+    },
+    {
+      "byte_size": 22725,
+      "path": "artifacts/work_packages/B02/attempts/0001/run_b02_0001_checks.py",
+      "sha256": "sha256:b42be177b9c3e15286402350eea707668c973540379a0245e455bf972062c3d1"
+    },
+    {
+      "byte_size": 3601,
+      "path": "artifacts/work_packages/B02/attempts/0001/run_double_build_current_inputs.py",
+      "sha256": "sha256:17f83190c8145a9592933c384b22ad50c5907d06270e3c5f48d9e0026971352f"
+    },
+    {
+      "byte_size": 556,
+      "path": "artifacts/work_packages/B02/attempts/0001/skill-context-frozen-sync.json",
+      "sha256": "sha256:79ea521fac99ef23055915afe1fe2b315008a085561552bcabf5217f57ada1d8"
+    },
+    {
+      "byte_size": 337,
+      "path": "artifacts/work_packages/B02/attempts/0001/tiktoken-exact-lock-check.json",
+      "sha256": "sha256:b522780ee3f6f51f2892b14a7b7ff71f03939af2b9a753eff8f986499bd18436"
+    },
+    {
+      "byte_size": 12627,
+      "path": "artifacts/work_packages/B02/attempts/0001/verify_lock_correction.py",
+      "sha256": "sha256:5dcca6a5f464ed2af4296b0e7fa9396c4bba1164ab16250538e10d6efa456507"
+    },
+    {
+      "byte_size": 1547,
+      "path": "artifacts/work_packages/B02/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:60fcb7bdfc8e553478ebf3a42c979a77e0a1c39be2e78e157c62b09ecad9bb81"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0311",
+    "core_generation": "000309-72b9a5df",
+    "final_closeout_evidence_id": "E0312",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1854,
+    "implementation_gate": "fail",
+    "retained_generation_count": 309,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "B02-0001",
+    "count_authority": "derived_from_measured_junit_expected_equals_measured",
+    "full_python_passed": 1261,
+    "new_failure_count": 0,
+    "node_boundaries_check": "PASS",
+    "node_structure_check": "PASS",
+    "regression_baseline_attempt": "B01-0001",
+    "status": "PASS",
+    "suites": {
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/B02/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "j02_tokenizer_vector_test": {
+        "collected": 20,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/B02/attempts/0001/j02-tokenizer-vector-test.junit.xml",
+        "junit_sha256": "sha256:524dfec79978d017e9b58cea6df82eff78bc83ab5aa37104c2841623c6f6e78c",
+        "passed": 20,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 20
+      }
+    },
+    "tokenizer_suite": "j02_tokenizer_vector_test",
+    "tokenizer_suite_passed": 20
+  },
+  "required_checks": {
+    "double_build_comparison": {
+      "artifact_count": 11,
+      "harness": "artifacts/work_packages/B02/attempts/0001/run_double_build_current_inputs.py",
+      "mismatch_count": 0,
+      "production_helper": "PRESERVED_UNMODIFIED_B04_HANDOFF",
+      "status": "PASS"
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded agent(s) that authored the B02 dependency-lock correction and the attempt-local adapters; reviewer: this seal-prep session, a distinct actor that did not author this attempt; actor_independence holds, external certification does not)",
+      "status": "PASS"
+    },
+    "j02_tokenizer_vector_test": {
+      "harness": "uv run --locked --extra dev --group skill-context pytest tests/test_j02_context_budget.py",
+      "passed": 20,
+      "status": "PASS",
+      "tokenizer_vectors": 7
+    },
+    "lockfile_check": {
+      "harness": "scripts/build/check_locks.py",
+      "python_packages": 21,
+      "registry_packages": 20,
+      "status": "PASS",
+      "uv_lock_check": "PASS"
+    },
+    "skill_context_frozen_sync": {
+      "harness": "uv sync --frozen --group skill-context --offline",
+      "runtime_dependency_exposure": false,
+      "status": "PASS",
+      "unrelated_dependency_change_count": 0
+    },
+    "tiktoken_exact_lock_check": {
+      "harness": "artifacts/work_packages/B02/attempts/0001/run_b02_0001_checks.py tiktoken-exact-lock-check",
+      "status": "PASS",
+      "version": "0.13.0"
+    },
+    "write_scope_audit": {
+      "attributed_product_changes": [
+        "pyproject.toml",
+        "uv.lock"
+      ],
+      "production_helper_modified": false,
+      "status": "PASS",
+      "violations": 0
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (bounded agent(s) authored the dependency-lock correction and adapters, this seal-prep session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "disclosed_scope_boundary": "scripts/build/double_build.py is a preserved, unmodified stale B04 integration handoff; byte-reproducibility is proven via the attempt-local current-input adapter",
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "role": "contract_reviewer",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "verification": {
+    "artifact_count": 11,
+    "double_build_mismatches": 0,
+    "frozen_sync": "PASS",
+    "full_python_passed": 1261,
+    "lock_packages": 21,
+    "lock_registry_packages": 20,
+    "tokenizer_vectors": "7/7",
+    "unrelated_dependency_changes": 0,
+    "write_scope_violations": 0
+  },
+  "work_package_id": "B02",
+  "write_scope": {
+    "approved_scope": [
+      "pyproject.toml",
+      "uv.lock",
+      "artifacts/work_packages/B02/**"
+    ],
+    "attempt_id": "B02-0001",
+    "attestation_only_no_new_edits": true,
+    "attributed_product_changes": [
+      "pyproject.toml",
+      "uv.lock"
+    ],
+    "authored_by": "the bounded agent(s) that authored the B02 dependency-lock correction (the exact skill-context group tiktoken==0.13.0 in pyproject.toml and its resolved uv.lock closure) and the two attempt-local build/lock adapters; B02-0001 attests those already-correct product bytes and makes zero new edit to them",
+    "product_file_hashes": {
+      "pyproject.toml": "sha256:31cf5dffa4703052d70536dbbb6e64d917900c70d52b039f9c9cbf09920353db",
+      "uv.lock": "sha256:5c3798ff0323f9352d73f17fa93913590d7dbb5382dd0de26b1619e775b58caa"
+    },
+    "product_write_scope_violation_count": 0,
+    "product_write_scope_violations": [],
+    "production_double_build_helper": {
+      "modified": false,
+      "owner": "B04_REVALIDATION",
+      "path": "scripts/build/double_build.py",
+      "sha256": "sha256:99f223bd8d4a3d397cf9c560274c498a3a51c15116e094f9896278640aca32df",
+      "status": "PRESERVED_STALE_STAGING_HANDOFF"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "this seal-prep session acting as an independent contract-reviewer, a distinct actor from the author",
+    "root_canonical_source_mutation_count": 0,
+    "runtime_dependency_exposure": false,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "unrelated_dependency_change_count": 0
+  }
+}

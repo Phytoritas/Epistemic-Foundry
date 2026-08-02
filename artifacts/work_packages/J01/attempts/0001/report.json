@@ -1,0 +1,326 @@
+{
+  "attempt_id": "J01-0001",
+  "attempt_type": "J01_PARENT_SKILL_ROUTER_AND_TRIGGER_BOUNDARIES",
+  "authority_boundary": {
+    "always_visible_input_metadata_only": true,
+    "candidate_and_phrase_order_hash_invariant": true,
+    "canonical_schema_count": 127,
+    "canonical_schema_modified_by_j01": false,
+    "decision_hash_binds_exact_metadata_content_hash": true,
+    "emitted_decision_draft_2020_12_validation": "PASS",
+    "implicit_invocation_requires_single_unambiguous_bundled_match": true,
+    "implicit_policy_must_be_explicitly_true": true,
+    "input_mutation_performed": false,
+    "proxy_accessor_sparse_array_dup_id_and_invalid_hash_rejected": true,
+    "remote_explicit_route_requires_s03_branded_exact_authorization": true,
+    "remote_skills_implicit_denied": true,
+    "returned_decision_deep_frozen": true,
+    "routing_grants_no_activation_approval_state_or_effect_authority": true,
+    "sensitive_skills_explicit_only": true,
+    "side_effecting_skills_explicit_only": true,
+    "skill_body_and_reference_input_rejected": true,
+    "trigger_absence_exclusion_and_tie_abstain": true,
+    "unknown_explicit_skill_fails_closed": true
+  },
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "J01-0001",
+    "dependencies": {
+      "C04": {
+        "attempt_id": "C04-0001",
+        "legacy_report_shape": false,
+        "report": "artifacts/work_packages/C04/report.json",
+        "report_sha256": "sha256:eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f",
+        "status": "PASS"
+      },
+      "G04": {
+        "attempt_id": "G04-0001",
+        "legacy_report_shape": false,
+        "report": "artifacts/work_packages/G04/report.json",
+        "report_sha256": "sha256:a92fc172579ebe5bda130f6aa25c04953caa5ffdb14c7467cb2f12c3089383cd",
+        "status": "PASS"
+      },
+      "H01": {
+        "attempt_id": "H01-0001",
+        "legacy_report_shape": false,
+        "report": "artifacts/work_packages/H01/report.json",
+        "report_sha256": "sha256:6985995d5b57b7f2d4fff0993a73a0db06e278949b31b14c5894c275077bfb52",
+        "status": "PASS"
+      },
+      "S03": {
+        "attempt_id": "S03-0001",
+        "legacy_report_shape": true,
+        "report": "artifacts/work_packages/S03/report.json",
+        "report_sha256": "sha256:d8d8edfb86803cb2630f9cece0b1df10d223295b754b855f1618e0a3f47538c7",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_J01_0001_THEN_CONTINUE_DAG",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "implicit_invocation_is_bounded": "PASS",
+    "sensitive_skills_explicit_only": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false
+  },
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "progressive reference loading, child skill body loading, or ContextCapsule assembly",
+    "skill activation, remote installation, authorization issuance, FORGE state mutation, or effect execution",
+    "the J02 progressive-references and context-budget gate",
+    "ownership or repair of other downstream skill packages' metadata",
+    "external actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 38634,
+      "path": "artifacts/work_packages/J01/attempts/0001/build_j01_0001_evidence.py",
+      "sha256": "sha256:e4bece5353e261abc041c35ae1ba00141528fb382837c4b80d3b3816ad643b66"
+    },
+    {
+      "byte_size": 9448,
+      "path": "artifacts/work_packages/J01/attempts/0001/commands.jsonl",
+      "sha256": "sha256:41941b3f9e5f5fb60dbea462f89b6e18361261ecf3aaa907cd3e0f4ab6338a86"
+    },
+    {
+      "byte_size": 1198,
+      "path": "artifacts/work_packages/J01/attempts/0001/dependency-status.json",
+      "sha256": "sha256:5cbf343e7c19d9cc5011321d94e3dd8c49a8fe6f66a7aaf11533d048d3c07dd0"
+    },
+    {
+      "byte_size": 244544,
+      "path": "artifacts/work_packages/J01/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:1c33ff4a9a62a463b2cc1a0a8029a938182554d2f5a7988e4b66092b0ebd6203"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/J01/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 2890,
+      "path": "artifacts/work_packages/J01/attempts/0001/j01-verification.json",
+      "sha256": "sha256:fe202780ee9983dce002bf662fb0c589915b456c8899261b76d0dcad97434b2a"
+    },
+    {
+      "byte_size": 26130,
+      "path": "artifacts/work_packages/J01/attempts/0001/j01_0001_rah_seal.py",
+      "sha256": "sha256:be26cdf4fb4081d960466670fd131a2aa7af7f3ffd36fd643d5f64caf50f738f"
+    },
+    {
+      "byte_size": 2742,
+      "path": "artifacts/work_packages/J01/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:3f70783b46019fb98a8caf2b5f60faebac4d04e7ec0025d7eda470b1984300d0"
+    },
+    {
+      "byte_size": 7445,
+      "path": "artifacts/work_packages/J01/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:c06a7fc39a0625988c86c74b30d625162e311a47d684d07e7f9663967c8ae0d2"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/J01/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:e90c57570fe015b1a4a0911229d188ac91adae8853b59c7bc1036ab0dbc62080"
+    },
+    {
+      "byte_size": 4376,
+      "path": "artifacts/work_packages/J01/attempts/0001/review.md",
+      "sha256": "sha256:e89832f4375d168049ccafb29e55ec75c56449099bd4b1a4a5c8735ff94d5301"
+    },
+    {
+      "byte_size": 6347,
+      "path": "artifacts/work_packages/J01/attempts/0001/run_j01_0001_checks.py",
+      "sha256": "sha256:996083226ddeeaff8aa2709684cdd975af79edc76327610e6908a22a9e39d9bd"
+    },
+    {
+      "byte_size": 1046,
+      "path": "artifacts/work_packages/J01/attempts/0001/skill-metadata-lint.junit.xml",
+      "sha256": "sha256:586365f3c04acfb44d6df9033121395c31da88066795fc92d45698c5611f2bf0"
+    },
+    {
+      "byte_size": 3170,
+      "path": "artifacts/work_packages/J01/attempts/0001/skill-routing-eval.junit.xml",
+      "sha256": "sha256:973c471d98ae353d20b6e5f0708e266e11a6de5a601bf0e07f0197b3c91d1460"
+    },
+    {
+      "byte_size": 4020,
+      "path": "artifacts/work_packages/J01/attempts/0001/targeted-skill-router.junit.xml",
+      "sha256": "sha256:a03344bbb565f3ed17b7853c207bd69ba609a83f4d27811d6520472a0bf9bfe8"
+    },
+    {
+      "byte_size": 3328,
+      "path": "artifacts/work_packages/J01/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:1ab63ab5ae000c1c2530fc1e2f243787bc336fdf68bc10a88d6cb9b74df8f62f"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0343",
+    "core_generation": "000341-bcffb55a",
+    "final_closeout_evidence_id": "E0344",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 2046,
+    "implementation_gate": "fail",
+    "retained_generation_count": 341,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "J01-0001",
+    "component_tests_are_targeted_only": true,
+    "full_node": {
+      "cancelled": 0,
+      "collected": 1291,
+      "failed": 0,
+      "junit": "artifacts/work_packages/J01/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:1c33ff4a9a62a463b2cc1a0a8029a938182554d2f5a7988e4b66092b0ebd6203",
+      "passed": 1291,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 1286
+    },
+    "full_python": {
+      "collected": 1261,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/J01/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+      "passed": 1261,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1261
+    },
+    "new_failure_count": 0,
+    "skill_metadata_lint": {
+      "cancelled": 0,
+      "collected": 4,
+      "failed": 0,
+      "junit": "artifacts/work_packages/J01/attempts/0001/skill-metadata-lint.junit.xml",
+      "junit_sha256": "sha256:586365f3c04acfb44d6df9033121395c31da88066795fc92d45698c5611f2bf0",
+      "passed": 4,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 4
+    },
+    "skill_routing_eval": {
+      "cancelled": 0,
+      "collected": 15,
+      "failed": 0,
+      "junit": "artifacts/work_packages/J01/attempts/0001/skill-routing-eval.junit.xml",
+      "junit_sha256": "sha256:973c471d98ae353d20b6e5f0708e266e11a6de5a601bf0e07f0197b3c91d1460",
+      "passed": 15,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 15
+    },
+    "status": "PASS",
+    "targeted_skill_router": {
+      "cancelled": 0,
+      "collected": 19,
+      "failed": 0,
+      "junit": "artifacts/work_packages/J01/attempts/0001/targeted-skill-router.junit.xml",
+      "junit_sha256": "sha256:a03344bbb565f3ed17b7853c207bd69ba609a83f4d27811d6520472a0bf9bfe8",
+      "passed": 19,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 19
+    },
+    "unexpected_skip_xfail_todo_or_cancellation_count": 0
+  },
+  "required_checks": {
+    "skill_metadata_lint": {
+      "module": "packages/plugin-host/src/skill-router/skill-metadata-lint.test.mjs",
+      "scope": [
+        "plugins/epistemic-foundry/skills/foundry/SKILL.md",
+        "plugins/epistemic-foundry/skills/foundry/agents/openai.yaml"
+      ],
+      "status": "PASS",
+      "test_count": 4
+    },
+    "skill_routing_eval": {
+      "module": "packages/plugin-host/src/skill-router/skill-router.test.mjs",
+      "status": "PASS",
+      "test_count": 15
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Independent review of bounded-agent work by a distinct actor in this seal-prep session; not external actor-independent certification.",
+    "author": "bounded implementation agent",
+    "blocking_finding_count": 0,
+    "downstream_validator_disclosure": "A whole-plugin external metadata validator flags other downstream skill packages' agents/openai.yaml and the J02-owned foundry/references/** files; both are outside J01's write scope and required checks. skill_metadata_lint covers only the foundry skill, which is clean. Disclosed, not a J01 defect, not gated, not masked.",
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "reviewer": "independent seal-prep session (distinct actor)",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "J01",
+  "write_scope": {
+    "approved_scope": [
+      "packages/plugin-host/src/skill-router/**",
+      "plugins/epistemic-foundry/skills/foundry/**"
+    ],
+    "attempt_id": "J01-0001",
+    "foundry_downstream_reference_files": [
+      "plugins/epistemic-foundry/skills/foundry/references/backends/shinka.md",
+      "plugins/epistemic-foundry/skills/foundry/references/context/memory-replay.md",
+      "plugins/epistemic-foundry/skills/foundry/references/core/constitution.md",
+      "plugins/epistemic-foundry/skills/foundry/references/core/status-receipts.md",
+      "plugins/epistemic-foundry/skills/foundry/references/evidence/claim-search.md",
+      "plugins/epistemic-foundry/skills/foundry/references/evidence/scope-method-dependency.md",
+      "plugins/epistemic-foundry/skills/foundry/references/evolution/archive-red-queen.md",
+      "plugins/epistemic-foundry/skills/foundry/references/evolution/run-genomes.md",
+      "plugins/epistemic-foundry/skills/foundry/references/evolution/verifier-statistics.md",
+      "plugins/epistemic-foundry/skills/foundry/references/extensions/map-domain-pack.md",
+      "plugins/epistemic-foundry/skills/foundry/references/parliament/asymmetric-gates.md",
+      "plugins/epistemic-foundry/skills/foundry/references/passport/promotion.md",
+      "plugins/epistemic-foundry/skills/foundry/references/plugin/development-release.md",
+      "plugins/epistemic-foundry/skills/foundry/references/plugin/security-administration.md",
+      "plugins/epistemic-foundry/skills/foundry/references/reasoning/typed-modes.md",
+      "plugins/epistemic-foundry/skills/foundry/references/router/e0-e5-routing.md",
+      "plugins/epistemic-foundry/skills/foundry/references/validation/replication.md"
+    ],
+    "foundry_downstream_reference_note": "progressive-reference files under plugins/epistemic-foundry/skills/foundry/references/** are owned by J02 and later skills-and-context packages; they are within the J01 write-scope prefix but are neither J01's changed product nor part of the skill_metadata_lint check, which lints only this skill's own SKILL.md and agents/openai.yaml",
+    "j01_product_file_hashes": {
+      "packages/plugin-host/src/skill-router/skill-metadata-lint.test.mjs": "sha256:07ff87d2f46d41cc82edc88e7f95e7a0a2c24119e7b5a89a30c98303713bdb34",
+      "packages/plugin-host/src/skill-router/skill-router.mjs": "sha256:6320ea8bb09eb3b69b9b2ea180b3d14bb8dbbf501f3a5afbe5dea63060a9b737",
+      "packages/plugin-host/src/skill-router/skill-router.test.mjs": "sha256:484920cf57202a2134011c95443bb3361242843e4e042bc82bb3fb6eb938b5ee",
+      "plugins/epistemic-foundry/skills/foundry/SKILL.md": "sha256:307998d6997fdf1932b0a9ec3e8ef424db87b3247a7c53b96d51f293b0ccc4d9",
+      "plugins/epistemic-foundry/skills/foundry/agents/openai.yaml": "sha256:a2a3674c8ec63d9e076808928d13b9a8d4f27966c5500b89cfaf41ac0b726df8"
+    },
+    "j01_product_files": [
+      "packages/plugin-host/src/skill-router/skill-metadata-lint.test.mjs",
+      "packages/plugin-host/src/skill-router/skill-router.mjs",
+      "packages/plugin-host/src/skill-router/skill-router.test.mjs",
+      "plugins/epistemic-foundry/skills/foundry/SKILL.md",
+      "plugins/epistemic-foundry/skills/foundry/agents/openai.yaml"
+    ],
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "write_scope_violation_count": 0
+  }
+}

@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="artifact_hash_test: exact bytes address an opaque artifact and resolving receipt" time="0.127881" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: empty bytes have a real content address" time="0.112377" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: artifact ID satisfies the manifest/receipt schema intersection" time="0.281626" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: emitted manifest and receipt pass canonical Draft 2020-12 schemas" time="0.743670" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: identical registration and receipt replay is idempotent" time="0.085807" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: one byte object supports multiple artifacts and receipts" time="0.287447" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: artifact ID cannot be rebound to different bytes" time="0.088898" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: receipt ID cannot be rebound" time="0.069196" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: immutable artifact metadata cannot be overwritten" time="0.057362" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: distinct byte sequences never alias" time="0.118228" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: hostile metadata and byte views fail before accessors run" time="0.009022" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: canonical metadata validation is strict and non-mutating" time="0.065188" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: exact content tamper enters SAFE_MODE and denies reuse" time="0.062382" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: noncanonical manifest and receipt tamper fail closed" time="0.132607" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: hard-linked record file is rejected" time="0.054163" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: linked root is never accepted as canonical authority" time="0.005851" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: unexpected tree entries fail integrity and mutation admission" time="0.010962" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: content references are strict while opaque IDs cannot traverse" time="0.009851" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: replacing the root after open is detected by identity" time="0.012889" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: public surface has no deletion or overwrite operation" time="0.004932" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="artifact_hash_test: duplicate artifact IDs copied across objects fail closed" time="0.124110" classname="test" file="packages\foundry-kernel\src\artifacts\artifact-hash.test.mjs"/>
+	<testcase name="orphan_receipt_test: registrations without content fail closed" time="0.053733" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: receipts without manifest fail closed" time="0.053033" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: bytes and manifest without receipt are incomplete" time="0.074523" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: receipt pointing at another artifact cannot resolve" time="0.208324" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: copied manifest cannot relabel addressed bytes" time="0.208479" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: uncommitted staging material is never canonical" time="0.024148" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: malformed or linked staging entry blocks open" time="0.044483" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: mutation scans unrelated corruption before publishing" time="0.085236" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: reopening a corrupt tree fails closed before read" time="0.089450" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: unknown files at every canonical layer are rejected" time="0.306833" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: moved record cannot remain addressable under old digest" time="0.169056" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: concurrent identical publishers converge" time="0.207821" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: concurrent distinct registrations share one object" time="0.229064" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: concurrent readers tolerate transient staging and lock handoff" time="21.184494" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: disappearing Windows mutation lock EPERM is a bounded handoff" time="0.036740" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: persistent Windows mutation lock EPERM fails closed" time="0.165215" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: complete record copied under wrong address is rejected" time="0.033525" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: hard-linked manifest and receipt are rejected" time="0.053860" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="orphan_receipt_test: same artifact may retain multiple resolving receipts" time="0.061024" classname="test" file="packages\foundry-kernel\src\artifacts\orphan-receipt.test.mjs"/>
+	<testcase name="fencing_test: newer overlapping lease makes the old fencing token stale" time="0.525237" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: replacing one scope invalidates the whole multi-scope lease" time="0.327760" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: failed callback rolls back result, lease-use, and event outbox" time="0.423328" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: operation retry is idempotent and does not rerun callback" time="0.315257" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval role is server-derived and client assertion is rejected" time="0.683110" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: exact approval retry returns its immutable result after expiry" time="0.145418" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: self-approval is a non-waivable denial" time="0.047261" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: promotion commit lease fails without approval and passes with exact approval" time="0.339553" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: candidate/model/backend policy cannot grant privileged authority" time="0.000293" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: forged lease fields or hash cannot reach the mutation callback" time="0.149792" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: callback cannot access authority-private scope-head state" time="0.261749" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: async callback is denied and its pre-await mutation rolls back" time="0.137012" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: lease use and revocation are bound to the sealed run" time="0.141131" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval authority role without approval:issue capability is denied" time="0.045077" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: later REVOKE head invalidates an earlier APPROVE-bound lease" time="0.577702" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval head rejects clock regression and rolls back the proposed record" time="0.138776" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval head rejects distinct decisions at the same instant" time="0.138951" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: committed state survives E01 outage and reconciles exactly once" time="0.140681" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: same PolicyBundle hash with a different capability projection is rejected" time="0.163438" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="lease_expiry_test: issued leases are canonical, scoped, expiring, and schema-valid" time="0.859770" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: active lease checks and result persistence share one transaction" time="0.403396" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: expiry boundary rejects commit without invoking or persisting callback" time="0.314601" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: a clock before issued_at rejects a not-yet-valid lease" time="0.170555" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: issue rejects zero or negative lifetime before state mutation" time="0.039583" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: policy changes invalidate an otherwise unexpired lease" time="0.129069" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: revocation is explicit and prevents later commits" time="0.266180" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: exact lease issuance retry returns the first logical lease" time="0.127091" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: expiry after callback rolls back the protected mutation" time="0.154107" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: authority clock regression during commit fails closed" time="0.122426" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: lease issuance is bound to declared subject run and scope" time="0.036325" classname="test" file="packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="effect_reconciliation_test: UNKNOWN blocks retry until an observed reconciliation resolves it" time="2.340592" classname="test" file="packages\foundry-kernel\src\effects\effect-reconciliation.test.mjs"/>
+	<testcase name="effect_reconciliation_test: crash before receipt is unresolved, not narrated failure or success" time="0.979951" classname="test" file="packages\foundry-kernel\src\effects\effect-reconciliation.test.mjs"/>
+	<testcase name="effect_reconciliation_test: executor narration cannot replace an evidence-bound EffectReceipt" time="0.627830" classname="test" file="packages\foundry-kernel\src\effects\effect-reconciliation.test.mjs"/>
+	<testcase name="effect_reconciliation_test: a durable receipt missing its ledger event is not completion" time="1.696954" classname="test" file="packages\foundry-kernel\src\effects\effect-reconciliation.test.mjs"/>
+	<testcase name="effect_reconciliation_test: receipt mutation and cross-intent binding fail closed" time="0.522664" classname="test" file="packages\foundry-kernel\src\effects\effect-reconciliation.test.mjs"/>
+	<testcase name="effect_reconciliation_test: attempt chronology cannot precede intent or prior reconciliation" time="0.516367" classname="test" file="packages\foundry-kernel\src\effects\effect-reconciliation.test.mjs"/>
+	<testcase name="effect_reconciliation_test: an attempt event crash blocks receipt creation until exact replay repairs it" time="0.418072" classname="test" file="packages\foundry-kernel\src\effects\effect-reconciliation.test.mjs"/>
+	<testcase name="effect_reconciliation_test: reconciliation retains external operation identity" time="0.481051" classname="test" file="packages\foundry-kernel\src\effects\effect-reconciliation.test.mjs"/>
+	<testcase name="effect_reconciliation_test: crash after ledger append requires durable confirmation replay" time="0.444184" classname="test" file="packages\foundry-kernel\src\effects\effect-reconciliation.test.mjs"/>
+	<testcase name="effect_reconciliation_test: emitted ActionIntent and EffectReceipt pass canonical schemas" time="0.542697" classname="test" file="packages\foundry-kernel\src\effects\effect-reconciliation.test.mjs"/>
+	<testcase name="idempotency_test: same key and same canonical intent replays one logical registration" time="0.404629" classname="test" file="packages\foundry-kernel\src\effects\idempotency.test.mjs"/>
+	<testcase name="idempotency_test: same key with a different canonical request is a conflict" time="0.460595" classname="test" file="packages\foundry-kernel\src\effects\idempotency.test.mjs"/>
+	<testcase name="idempotency_test: an intent ID cannot be rebound under a different key" time="0.471878" classname="test" file="packages\foundry-kernel\src\effects\idempotency.test.mjs"/>
+	<testcase name="idempotency_test: retrying one attempt never grants a second execution" time="0.626517" classname="test" file="packages\foundry-kernel\src\effects\idempotency.test.mjs"/>
+	<testcase name="idempotency_test: retrying one receipt returns the existing logical result" time="1.291137" classname="test" file="packages\foundry-kernel\src\effects\idempotency.test.mjs"/>
+	<testcase name="idempotency_test: attempt and receipt IDs are immutable identities" time="1.349139" classname="test" file="packages\foundry-kernel\src\effects\idempotency.test.mjs"/>
+	<testcase name="idempotency_test: hashes reject mutation, accessors, and hostile coercion" time="0.106616" classname="test" file="packages\foundry-kernel\src\effects\idempotency.test.mjs"/>
+	<testcase name="idempotency_test: immutable older attempt and receipt replays remain idempotent" time="2.211877" classname="test" file="packages\foundry-kernel\src\effects\idempotency.test.mjs"/>
+	<testcase name="idempotency_test: concurrent same-attempt callers grant execution once" time="0.433071" classname="test" file="packages\foundry-kernel\src\effects\idempotency.test.mjs"/>
+	<testcase name="classification committer: commit, retry, replay, reclassification, and override preserve immutable identity" time="1.290162" classname="test" file="packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: same idempotency key with a changed preimage fails closed" time="0.209985" classname="test" file="packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: same-revision lowering and stale override are rejected without mutation" time="0.324805" classname="test" file="packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: only a resolved canonical HumanDecision can authorize override" time="0.476579" classname="test" file="packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: non-correct or non-human decisions cannot authorize override" time="0.372716" classname="test" file="packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testsuite name="classifier_adversarial_test: all 16 fixed attacks fail closed or preserve the exact projection" time="0.951058" disabled="0" errors="0" tests="16" failures="0" skipped="0">
+		<testcase name="A01_USER_DEMANDS_E0" time="0.003142" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A02_PROMPT_INJECTION_IN_SOURCE" time="0.000552" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A03_LLM_OMITS_HARD_SIGNAL" time="0.000744" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A04_LLM_PROPOSES_UNKNOWN_SIGNAL" time="0.000452" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A05_UNSUPPORTED_LLM_PROPOSAL" time="0.000363" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A06_SIGNAL_ORDER_PERMUTATION" time="0.002339" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A07_DUPLICATE_SIGNALS" time="0.000392" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A08_MONOTONIC_ADDITION" time="0.000629" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A09_OVERRIDE_LOWERING" time="0.001496" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A10_OVERRIDE_RAISE" time="0.659883" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A11_RESULT_ENVELOPE_ONLY" time="0.000271" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A12_CAPABILITY_ALIAS" time="0.000177" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A13_RETRY_IDENTITY" time="0.189644" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A14_HASH_SELF_FIELD_MUTATION" time="0.000554" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A15_AMBIGUITY_REMOVAL_SAME_REVISION" time="0.000477" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A16_LLM_DIRECT_CLASS_OUTPUT" time="0.000329" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+	</testsuite>
+	<testcase name="classifier authority guards reject a forged request hash and any non-frozen version" time="0.000274" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+	<testcase name="classifier_gold_test: all 14 fixed cases have exact deterministic projections" time="0.007405" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-gold.test.mjs"/>
+	<testcase name="classifier_gold_test: input ordering and duplicate signals do not change identity" time="0.000568" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-gold.test.mjs"/>
+	<testcase name="classifier_hash_vector_test: every frozen preimage has the exact SHA-256 and ID" time="0.002314" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-hash-vector.test.mjs"/>
+	<testcase name="classifier_hash_vector_test: volatile and self fields are outside the semantic preimage" time="0.000223" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-hash-vector.test.mjs"/>
+	<testcase name="classifier_immutable_override_test: every fixed override is upward-only and immutable" time="0.007493" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-override.test.mjs"/>
+	<testcase name="underprocessing_guard: all 1023 non-empty subsets use the exact maximum floor" time="0.160439" classname="test" file="packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: every non-empty subset-to-superset pair preserves protection" time="0.178393" classname="test" file="packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: empty input injects sticky AMBIGUOUS and cannot lose Interview" time="0.001221" classname="test" file="packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: trusted unknown signals fail input validation" time="0.000461" classname="test" file="packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: any class, gate, Interview, role, or phase regression fails" time="0.000579" classname="test" file="packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: append owns sequence, payload digest, and per-run hash links" time="0.390237" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: emitted records validate against canonical EventRecord schema" time="0.756071" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: exact event retry is idempotent and conflicting reuse is denied" time="0.209281" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: missing payload and invalid event input leave no partial ledger state" time="0.067536" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: gaps, reordering, hash tamper, and mixed runs fail closed" time="0.320521" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: hash validation never executes coercion hooks" time="0.128708" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: direct mutation of an immutable stored event is detected" time="0.119308" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: a coherently revised stream that references no event fails closed" time="0.109449" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: sealed payload hash catches a provider-neutral adapter byte change" time="0.076749" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: stream commit failure rolls back the new immutable event" time="0.188983" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: simultaneous writers serialize into one contiguous run chain" time="0.383397" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="ledger_hash_chain_test: independent runs each start at sequence one" time="0.234996" classname="test" file="packages\foundry-kernel\src\ledger\ledger-hash-chain.test.mjs"/>
+	<testcase name="reducer_replay_test: verified events rebuild byte-stable materialized state" time="0.756298" classname="test" file="packages\foundry-kernel\src\ledger\reducer-replay.test.mjs"/>
+	<testcase name="reducer_replay_test: reopening both durable stores reproduces identical state" time="0.686100" classname="test" file="packages\foundry-kernel\src\ledger\reducer-replay.test.mjs"/>
+	<testcase name="reducer_replay_test: a reducer must be deterministic at every event boundary" time="0.132743" classname="test" file="packages\foundry-kernel\src\ledger\reducer-replay.test.mjs"/>
+	<testcase name="reducer_replay_test: async reducers and non-JSON outputs are rejected" time="0.139147" classname="test" file="packages\foundry-kernel\src\ledger\reducer-replay.test.mjs"/>
+	<testcase name="reducer_replay_test: reducer inputs are isolated and immutable" time="0.150346" classname="test" file="packages\foundry-kernel\src\ledger\reducer-replay.test.mjs"/>
+	<testcase name="reducer_replay_test: artifact tamper fails before reducer execution" time="0.141990" classname="test" file="packages\foundry-kernel\src\ledger\reducer-replay.test.mjs"/>
+	<testcase name="reducer_replay_test: an empty run deterministically preserves canonical initial state" time="0.047129" classname="test" file="packages\foundry-kernel\src\ledger\reducer-replay.test.mjs"/>
+	<testcase name="reducer_replay_test: JSON payload decoding rejects invalid UTF-8, BOM, and syntax" time="0.000429" classname="test" file="packages\foundry-kernel\src\ledger\reducer-replay.test.mjs"/>
+	<testcase name="reducer_replay_test: state hashing rejects hidden array properties" time="0.049413" classname="test" file="packages\foundry-kernel\src\ledger\reducer-replay.test.mjs"/>
+	<testcase name="canonical in-root paths are authorized with scoped operations" time="0.029407" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="traversal, absolute, mixed-separator, alias, and platform-ambiguous paths are denied" time="0.027539" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="existing symlink or junction components are denied by no-follow policy" time="0.021360" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="linked resource roots and non-directory traversal are denied" time="0.020932" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="egress uses exact canonical origins and defaults to denial" time="0.014706" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="allowlist and sandbox contracts reject inconsistent or unsupported policy" time="0.009806" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="policy and request Proxies, accessors, and serialized lookalikes fail without execution" time="0.020458" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="resource root identity is revalidated after policy issue" time="0.028863" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="egress rejects fragments and requires each redirect hop to be reauthorized" time="0.013345" classname="test" file="packages\foundry-kernel\src\security\execution\path-escape.test.mjs"/>
+	<testcase name="opaque secret handles expose no serializable identifier or secret material" time="0.001479" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="secret handle construction rejects material-bearing and executable inputs" time="0.000469" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="handles are denied at every prohibited outbound boundary" time="0.001014" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="raw secret-shaped fields and values fail closed" time="0.000471" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="payload inspection rejects accessors, Proxies, cycles, and non-JSON values without execution" time="0.000989" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="ordinary egress cannot carry handles or secret-shaped payloads" time="0.000597" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="last-mile secret use requires both policy and handle destination bindings" time="0.001426" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="foreign boundaries cannot mint handles, policies, or decisions accepted here" time="0.000367" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="secret handles reject cleartext HTTP destination bindings" time="0.000258" classname="test" file="packages\foundry-kernel\src\security\execution\secret-exfiltration.test.mjs"/>
+	<testcase name="model output receives typed denials for every authority-bearing request" time="0.002080" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="unknown sidecar authority fields are rejected instead of interpreted" time="0.000429" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="host or control-plane source claims cannot enter through the untrusted constructor" time="0.000238" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="segments are immutable and copied or JSON-round-tripped objects lose the runtime brand" time="0.000513" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="accessor-bearing input is denied before content is accepted" time="0.000140" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="Proxy input is denied without invoking its traps" time="0.000102" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="invalid trust-label values are denied without coercion" time="0.000117" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="context assembly denies Proxy arrays without invoking their traps" time="0.000236" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="context assembly denies accessor elements without invoking them" time="0.000227" classname="test" file="packages\foundry-kernel\src\security\trust\authority-escalation.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: role override" time="0.005032" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: role delimiter escape" time="0.000485" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: forged authority" time="0.000228" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: tool execution" time="0.000161" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: secret exfiltration" time="0.000203" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="prompt injection fixture remains data: policy rewrite" time="0.000171" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="a clean scan and trusted extraction label do not confer authority" time="0.000225" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="context assembly preserves evidence and model output as separate data planes" time="0.000834" classname="test" file="packages\foundry-kernel\src\security\trust\prompt-injection.test.mjs"/>
+	<testcase name="two writers with the same expected revision produce one update and one stale no-op" time="0.197367" classname="test" file="packages\foundry-kernel\src\state\sqlite\concurrent-revision.test.mjs"/>
+	<testcase name="concurrent first opens initialize one canonical WAL schema" time="0.150121" classname="test" file="packages\foundry-kernel\src\state\sqlite\concurrent-revision.test.mjs"/>
+	<testcase name="integrity failure enters SAFE_MODE and denies every mutation path" time="0.069561" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: missing composite primary key with duplicate rows" time="0.103823" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: non-STRICT table" time="0.063303" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: wrong revision type" time="0.075674" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: nullable record identifier" time="0.066433" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: reversed primary-key order" time="0.075013" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: missing non-negative revision check" time="0.056619" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: missing safe-integer revision ceiling" time="0.057697" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: missing JSON validity check" time="0.083553" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="invalid persisted JSON enters SAFE_MODE during reopen" time="0.074347" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="checkIntegrity detects runtime JSON corruption and enters SAFE_MODE" time="0.065443" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="runtime JSON corruption fails the read and immediately enters SAFE_MODE" time="0.055916" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="runtime revision corruption is detected on read and enters SAFE_MODE" time="0.131944" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="runtime schema-version drift enters SAFE_MODE before read" time="0.074936" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="runtime schema-version drift enters SAFE_MODE before integrity check" time="0.081606" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="runtime schema-version drift enters SAFE_MODE before mutation" time="0.055900" classname="test" file="packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="SQLite store uses WAL and committed state survives reopen" time="0.079000" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="transaction rollback leaves no partial records or revisions" time="0.078531" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="transaction rejects then accessors without executing them and revokes the handle" time="0.063960" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected async transaction cannot write before or after its await boundary" time="0.074507" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected async transaction is observed while its continuation remains revoked" time="0.075912" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="cross-realm async rejection is observed without running constructor or species hooks" time="0.067961" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected Promise subclass is observed without running inherited hooks" time="0.058219" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected preventExtensions Promise is observed without becoming extensible" time="0.075434" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected seal Promise is observed without becoming extensible" time="0.089827" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected freeze Promise is observed without becoming extensible" time="0.052373" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="native Promise results remain denied after Promise then-method tampering" time="0.052667" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="an unconfirmed transaction outcome enters SAFE_MODE and denies reuse" time="0.041889" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="record values reject lossy or non-JSON JavaScript values" time="0.144136" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="record encoding ignores inherited object and array toJSON hooks" time="0.076534" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="record encoding ignores inherited array join hooks" time="0.081644" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="record encoding ignores inherited string and number helper hooks" time="0.065858" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="record validation ignores inherited RegExp test hooks" time="0.040326" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="explicit close remains distinct from SAFE_MODE" time="0.049852" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="compare-and-swap reports revision exhaustion without modifying the record" time="0.097117" classname="test" file="packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="remote bytes remain quarantined and non-executable before approval" time="0.004669" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="install hooks, dynamic evaluation, and self-approval claims block approval" time="0.002157" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="path traversal, absolute paths, and portable name collisions fail closed" time="0.000942" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="symlinks are inventoried without following them and remain critical" time="0.000702" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="a failed signature is independently critical and cannot be approved" time="0.000411" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="script-shaped files are inventoried and require process permission even without an executable bit" time="0.000878" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="remote signature metadata is only a claim; review must attest a status explicitly" time="0.000355" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="copied and foreign candidates or scans cannot gain local approval" time="0.000378" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="a review must bind the exact source, revision, content hash, and inferred permissions" time="0.000866" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="name collisions remain visible and cannot receive passing conformance" time="0.005278" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="Proxy and accessor-bearing hostile records are rejected without invoking getters" time="0.000314" classname="test" file="packages\skill-vault\src\malicious-skill-fixture.test.mjs"/>
+	<testcase name="SkillLockfile pins exact source, revision, hash, license, permissions, and approvers" time="0.012008" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="lock hashing is deterministic across review, permission, and approver input order" time="0.002408" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="serialized lockfiles can be integrity-checked but do not acquire runtime authority" time="0.001149" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="rejected decisions remain locked as rejected and cannot be installed" time="0.000726" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="disabled installation requires the exact approved content hash" time="0.000775" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="passing conformance cannot report permissions outside the lockfile" time="0.001061" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="activation cannot request a locked permission absent from conformance observations" time="0.001174" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="activation requires exact policy, passing conformance, and a non-expanding scope" time="0.000932" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="activation artifacts cannot be mixed across independent vault boundaries" time="0.000936" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="non-canonical or accessor-bearing lock snapshots fail closed" time="0.000866" classname="test" file="packages\skill-vault\src\skill-lockfile.test.mjs"/>
+	<testcase name="backup_restore_test: live SQLite WAL backup restores one verified snapshot" time="0.192360" classname="test" file="tests\recovery\state\backup-restore.test.mjs"/>
+	<testcase name="backup_restore_test: artifact snapshot excludes crash residue and restores exact graph" time="0.417634" classname="test" file="tests\recovery\state\backup-restore.test.mjs"/>
+	<testcase name="crash_recovery_test: SQLite replays committed WAL after abrupt process death" time="0.293688" classname="test" file="tests\recovery\state\crash-recovery.test.mjs"/>
+	<testcase name="crash_recovery_test: SQLite rolls back an interrupted transaction without reset" time="0.249045" classname="test" file="tests\recovery\state\crash-recovery.test.mjs"/>
+	<testcase name="crash_recovery_test: corrupted SQLite remains preserved and enters SAFE_MODE" time="0.069385" classname="test" file="tests\recovery\state\crash-recovery.test.mjs"/>
+	<testcase name="crash_recovery_test: artifact crash residue stays quarantined from canonical state" time="0.373845" classname="test" file="tests\recovery\state\crash-recovery.test.mjs"/>
+	<testcase name="semantic_replay_report: distinct run and event identities are semantic, never strict exact" time="0.003439" classname="test" file="tests\replay\effects\semantic-replay.test.mjs"/>
+	<testcase name="semantic_replay_report: model pin drift remains visible across equivalent outcomes" time="0.619643" classname="test" file="tests\replay\effects\semantic-replay.test.mjs"/>
+	<testcase name="semantic_replay_report: multiple changed pins are classified without erasure" time="0.000547" classname="test" file="tests\replay\effects\semantic-replay.test.mjs"/>
+	<testcase name="semantic_replay_report: gate and verdict changes are explicit semantic DRIFT" time="0.624747" classname="test" file="tests\replay\effects\semantic-replay.test.mjs"/>
+	<testcase name="semantic_replay_report: changed semantic state is DRIFT even when gates and verdicts match" time="0.000590" classname="test" file="tests\replay\effects\semantic-replay.test.mjs"/>
+	<testcase name="semantic_replay_report: missing required pins make the runs NOT_COMPARABLE" time="0.000409" classname="test" file="tests\replay\effects\semantic-replay.test.mjs"/>
+	<testcase name="semantic_replay_report: report hash excludes itself and rejects mutation or placeholders" time="0.000813" classname="test" file="tests\replay\effects\semantic-replay.test.mjs"/>
+	<testcase name="semantic_replay_report: floating or malformed pins are rejected before comparison" time="0.000220" classname="test" file="tests\replay\effects\semantic-replay.test.mjs"/>
+	<testcase name="semantic_replay_report: strict identity cannot be empty or detached from replay state" time="0.000362" classname="test" file="tests\replay\effects\semantic-replay.test.mjs"/>
+	<testcase name="semantic_replay_report: canonical hashing rejects accessors and invalid Unicode without execution" time="0.000354" classname="test" file="tests\replay\effects\semantic-replay.test.mjs"/>
+	<testcase name="strict_replay_test: E02 and E03 durable events rebuild exactly and match live projections" time="3.667387" classname="test" file="tests\replay\effects\strict-replay.test.mjs"/>
+	<testcase name="strict_replay_test: reopening both durable stores preserves stream and reducer identity" time="2.386042" classname="test" file="tests\replay\effects\strict-replay.test.mjs"/>
+	<testcase name="strict_replay_test: exact retries append no events and do not change replay state" time="2.281362" classname="test" file="tests\replay\effects\strict-replay.test.mjs"/>
+	<testcase name="strict_replay_test: exact pins and identical stream identity produce a schema-valid EXACT report" time="1.187469" classname="test" file="tests\replay\effects\strict-replay.test.mjs"/>
+	<testcase name="strict_replay_test: tampered payload bytes fail closed before equivalence" time="0.872603" classname="test" file="tests\replay\effects\strict-replay.test.mjs"/>
+	<testcase name="strict_replay_test: missing payload bytes fail closed before equivalence" time="0.934090" classname="test" file="tests\replay\effects\strict-replay.test.mjs"/>
+	<testcase name="strict_replay_test: duplicate logical payload identities fail closed" time="1.277614" classname="test" file="tests\replay\effects\strict-replay.test.mjs"/>
+	<testcase name="strict_replay_test: event envelopes cannot rebind a valid payload to another aggregate" time="1.022068" classname="test" file="tests\replay\effects\strict-replay.test.mjs"/>
+	<testcase name="S04-RT001 untrusted text cannot cross from evidence/model data into approval or policy authority" time="0.010421" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT002 opaque handles and secret-shaped payloads cannot bypass outbound boundaries" time="0.002165" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT003 path, egress, sandbox-profile, and foreign-policy bypasses fail closed" time="0.026817" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT004 malicious package hooks, symlinks, signature claims, and obfuscation remain critical" time="0.001078" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT005 signature claims, copied lockfiles, and permission expansion cannot authorize activation" time="0.008267" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT006 name shadowing, implicit invocation, and unverifiable uninstall block conformance" time="0.001307" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-RT007 authority brands remain non-fungible across security compartments" time="0.000747" classname="test" file="tests\security\s04-red-team.test.mjs"/>
+	<testcase name="S04-TM001 traceability matrix covers every S04-owned audit lens without inflating deferred controls" time="0.097262" classname="test" file="tests\security\s04-threat-model-traceability.test.mjs"/>
+	<testcase name="S04-TM002 every plugin threat has a control, a verification path, and an honest residual limit" time="0.061498" classname="test" file="tests\security\s04-threat-model-traceability.test.mjs"/>
+	<testcase name="S04-TM003 hook bypass and primitive enforcement limitations are explicit and release-safe" time="0.000470" classname="test" file="tests\security\s04-threat-model-traceability.test.mjs"/>
+	<testcase name="S04-TM004 traceability source bindings fail on undocumented contract drift" time="0.003588" classname="test" file="tests\security\s04-threat-model-traceability.test.mjs" failure="manifests/development_manifest.yaml&#10;+ actual - expected&#10;&#10;+ 'fb9656cce2fd4d0147571bc85726ebbbbb3f26a59ac644c5a12040007475d938'&#10;- '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7'&#10;">
+		<failure type="testCodeFailure" message="manifests/development_manifest.yaml&#10;+ actual - expected&#10;&#10;+ 'fb9656cce2fd4d0147571bc85726ebbbbb3f26a59ac644c5a12040007475d938'&#10;- '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7'">
+[Error [ERR_TEST_FAILURE]: manifests/development_manifest.yaml
++ actual - expected
+
++ 'fb9656cce2fd4d0147571bc85726ebbbbb3f26a59ac644c5a12040007475d938'
+- '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7'
+] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: manifests/development_manifest.yaml
+  + actual - expected
+  
+  + 'fb9656cce2fd4d0147571bc85726ebbbbb3f26a59ac644c5a12040007475d938'
+  - '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7'
+  
+      at TestContext.&lt;anonymous> (repo:///tests/security/s04-threat-model-traceability.test.mjs:207:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'fb9656cce2fd4d0147571bc85726ebbbbb3f26a59ac644c5a12040007475d938',
+    expected: '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+}
+		</failure>
+	</testcase>
+	<!-- tests 271 -->
+	<!-- suites 0 -->
+	<!-- pass 270 -->
+	<!-- fail 1 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 23442.6477 -->
+</testsuites>

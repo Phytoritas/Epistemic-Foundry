@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="log_redaction_test: sensitive keys are dropped whole and the input is not mutated" time="0.003257" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\log-redaction.test.mjs"/>
+	<testcase name="log_redaction_test: secret- and PII-shaped values are redacted in place" time="0.000354" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\log-redaction.test.mjs"/>
+	<testcase name="log_redaction_test: nested records and arrays are redacted recursively" time="0.000356" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\log-redaction.test.mjs"/>
+	<testcase name="log_redaction_test: a clean record produces zero redactions honestly" time="0.000200" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\log-redaction.test.mjs"/>
+	<testcase name="log_redaction_test: required redactions that were not applied fail closed" time="0.000576" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\log-redaction.test.mjs"/>
+	<testcase name="log_redaction_test: malformed input and options fail closed" time="0.000232" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\log-redaction.test.mjs"/>
+	<testcase name="log_redaction_test: redaction is order-independent and deterministic" time="0.000316" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\log-redaction.test.mjs"/>
+	<testcase name="log_redaction_test: residual-secret assertion catches an unredacted leak" time="0.000234" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\log-redaction.test.mjs"/>
+	<testcase name="otel_trace_test: a span is well-formed with W3C trace context and a traceparent" time="0.002255" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: an unsampled span sets the not-sampled trace flag" time="0.000199" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: malformed trace/span identifiers fail closed" time="0.000345" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: end time may not precede start time" time="0.000109" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: a span cannot be its own parent and rejects unknown fields" time="0.000199" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: a child span inherits the trace and links to its parent" time="0.000340" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: secret and PII attributes are redacted before storage" time="0.000762" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: span status cannot dishonestly claim OK over an exception" time="0.000362" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: an ERROR span without cause or message is refused" time="0.000156" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: a span correlates to an effect receipt by id and hash" time="0.000333" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: receipt correlation fails closed on mismatch or absence" time="0.000419" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: an SLO with no samples reports UNKNOWN, never fabricated health" time="0.000152" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<testcase name="otel_trace_test: honest SLO states track real measurements" time="0.000127" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\observability\otel-trace.test.mjs"/>
+	<!-- tests 21 -->
+	<!-- suites 0 -->
+	<!-- pass 21 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 239.3444 -->
+</testsuites>

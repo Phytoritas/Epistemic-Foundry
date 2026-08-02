@@ -1,0 +1,98 @@
+{
+  "attempt_id": "B02-0001",
+  "attestation_scope": {
+    "attested_not_authored": "B02 attests the pinned dependency manifest and resolved lock the repository already carries; it makes ZERO edit to pyproject.toml or uv.lock and does not modify the production build helper, which B04 owns",
+    "product_files": [
+      "pyproject.toml",
+      "uv.lock"
+    ]
+  },
+  "exit_criteria": {
+    "all_shipped_dependencies_pinned": {
+      "mechanism": "lockfile_check runs uv lock --check and the fail-closed repository validator; uv.lock resolves 21 packages with 20 registry packages carrying exact versions and sha256 artifact hashes, and the Python build backend is pinned",
+      "status": "PASS"
+    },
+    "clean_builds_are_reproducible": {
+      "mechanism": "double_build_comparison stages the exact current source inputs and produces two byte-identical build snapshots over 11 artifacts with zero mismatches via the attempt-local current-input adapter; the production helper is preserved unmodified as a B04 handoff",
+      "status": "PASS"
+    },
+    "frozen_sync_no_unrelated_change": {
+      "mechanism": "skill_context_frozen_sync runs uv sync --frozen --group skill-context --offline and a structural old/new lock reconstruction proving the group added only tiktoken plus its mandatory closure ['certifi', 'charset-normalizer', 'idna', 'regex', 'requests', 'urllib3'] with zero unrelated dependency changes",
+      "status": "PASS"
+    },
+    "skill_context_declares_exact_tiktoken": {
+      "mechanism": "tiktoken_exact_lock_check asserts uv.lock pins exactly tiktoken==0.13.0 as the sole skill-context dev-group member from the PyPI registry with hashed artifacts, never a runtime dependency",
+      "status": "PASS"
+    },
+    "tokenizer_vectors_pass": {
+      "mechanism": "j02_tokenizer_vector_test runs tests/test_j02_context_budget.py green (20 tests) under the frozen skill-context group, including the seven exact o200k_base tokenizer vectors with the installed tiktoken 0.13.0",
+      "status": "PASS"
+    }
+  },
+  "node_regression": {
+    "node_boundaries_check": {
+      "components": 10,
+      "harness": "npm run check:boundaries",
+      "internal_package_edges": 18,
+      "source_import_policy": "public-package-api-only",
+      "status": "PASS"
+    },
+    "node_structure_check": {
+      "harness": "npm run check:structure",
+      "node_components": 10,
+      "python_runtime_root": "src/epistemic_foundry",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "double_build_comparison": {
+      "artifact_count": 11,
+      "harness": "artifacts/work_packages/B02/attempts/0001/run_double_build_current_inputs.py",
+      "mismatch_count": 0,
+      "production_helper": "PRESERVED_UNMODIFIED_B04_HANDOFF",
+      "status": "PASS"
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded agent(s) that authored the B02 dependency-lock correction and the attempt-local adapters; reviewer: this seal-prep session, a distinct actor that did not author this attempt; actor_independence holds, external certification does not)",
+      "status": "PASS"
+    },
+    "j02_tokenizer_vector_test": {
+      "harness": "uv run --locked --extra dev --group skill-context pytest tests/test_j02_context_budget.py",
+      "passed": 20,
+      "status": "PASS",
+      "tokenizer_vectors": 7
+    },
+    "lockfile_check": {
+      "harness": "scripts/build/check_locks.py",
+      "python_packages": 21,
+      "registry_packages": 20,
+      "status": "PASS",
+      "uv_lock_check": "PASS"
+    },
+    "skill_context_frozen_sync": {
+      "harness": "uv sync --frozen --group skill-context --offline",
+      "runtime_dependency_exposure": false,
+      "status": "PASS",
+      "unrelated_dependency_change_count": 0
+    },
+    "tiktoken_exact_lock_check": {
+      "harness": "artifacts/work_packages/B02/attempts/0001/run_b02_0001_checks.py tiktoken-exact-lock-check",
+      "status": "PASS",
+      "version": "0.13.0"
+    },
+    "write_scope_audit": {
+      "attributed_product_changes": [
+        "pyproject.toml",
+        "uv.lock"
+      ],
+      "production_helper_modified": false,
+      "status": "PASS",
+      "violations": 0
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_python_suite": 1261,
+    "j02_tokenizer_vector_test": 20
+  }
+}

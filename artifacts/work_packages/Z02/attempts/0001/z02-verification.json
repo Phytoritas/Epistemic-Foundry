@@ -1,0 +1,46 @@
+{
+  "attempt_id": "Z02-0001",
+  "declaring_sources": {
+    "build_check_names": "manifests/product_invariants.yaml (EF4-I32) and workflows/plugin_release.workflow.yaml release nodes",
+    "payload_identity": "plugins/epistemic-foundry/.codex-plugin/plugin.json cross-checked against manifests/compatibility_matrix.yaml",
+    "provenance_record": "schemas/plugin-release-provenance.schema.json, built and validated through the canonical epistemic_foundry.release.provenance runtime (composed, not reimplemented)",
+    "signing_status": "src/epistemic_foundry/release/provenance.py derive_signing_status / release_is_shippable"
+  },
+  "exit_criteria": {
+    "bundle_clean_extracts": {
+      "mechanism": "zip_integrity_test builds a deterministic ZIP_STORED bundle from the in-repo payload and proves it clean-extracts byte-identically into a temp root, refusing absolute, parent-traversal, backslash and drive-colon members before extraction and refusing content-tampered or surplus members",
+      "status": "PASS"
+    },
+    "signatures_and_provenance_verify": {
+      "mechanism": "signature_test derives the signing status from the signatures actually present (fail-closed UNSIGNED and not-shippable for the reference bundle) and refuses any SIGNED over-claim, while the provenance record is built by the canonical runtime and validated against plugin-release-provenance.schema.json with every embedded digest re-derivable",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "sbom_test": {
+      "status": "PASS",
+      "test_count": 8
+    },
+    "signature_test": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "zip_integrity_test": {
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1740,
+    "full_python_suite": 1312,
+    "sbom_test": 8,
+    "signature_test": 9,
+    "wire_literal_discipline": 5,
+    "zip_integrity_test": 9
+  }
+}

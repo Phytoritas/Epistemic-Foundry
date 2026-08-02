@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "work_package_id": "B04",
+  "attempt_id": "B04-0003",
+  "status": "FAIL",
+  "failure_classification": "FAIL",
+  "completion_ready": false,
+  "authority_decision_id": "HD-EF4-F01-SG002-20260729-001",
+  "correction_flow": {
+    "F01-0002": "IMMUTABLE_SPEC_GAP_HISTORY",
+    "B04-0003": "FAIL_NON_WAIVABLE_PROJECTION_MECHANISM_DEFECTS",
+    "F01-0003": "NOT_STARTED_WAITING_ON_B04_PASS"
+  },
+  "package_states": {
+    "B04": "FAIL_B04_0003",
+    "F01": "WAITING_ON_B04_PROJECTION",
+    "F02": "WAITING_ON_F01",
+    "F03": "WAITING_ON_F01"
+  },
+  "blocking_defect_codes": [
+    "B04-MECH001_SOURCE_BUNDLE_ALGORITHM_MISMATCH",
+    "B04-MECH002_PROJECTED_SNAPSHOT_HASH_MISSING",
+    "B04-MECH003_DISTINCT_SOURCE_PACKAGE_PATHS_MISSING",
+    "B04-MECH004_PROJECTION_TOOL_IDENTITY_MISSING",
+    "B04-MECH005_ATOMIC_TREE_REPLACEMENT_MISSING",
+    "B04-MECH006_SOURCE_CHANGE_ERROR_MISSING"
+  ],
+  "package_failure_reason": "The contract is explicit, but the existing projection mechanism violates six non-waivable requirements. This is an implementation FAIL, not SPEC_GAP or BLOCKED.",
+  "external_goal_blocker": "The current HumanDecision permits B04-0003 to write only src/epistemic_foundry/_canonical/** and its own attempt artifacts while treating the existing projection/build mechanism and packaging tests as read-only. Correcting the verified mechanism defects therefore requires a new product-owner correction decision before another B04 attempt can begin.",
+  "resume_condition": "Preserve B04-0003 as immutable FAIL history, then record a product-owner HumanDecision authorizing the exact generator and related packaging-test correction paths for a new B04 attempt. F01-0003 may start only after that new B04 attempt produces a verified matching projection receipt and PASS.",
+  "full_156_package_dag_recomputed": false,
+  "downstream_package_started": false,
+  "F01_0003_started": false,
+  "F02_started": false,
+  "F03_started": false,
+  "existing_unrelated_integration_debt": {
+    "id": "S04-TM004",
+    "status": "PRE_EXISTING",
+    "included_in_B04_0003": false
+  }
+}

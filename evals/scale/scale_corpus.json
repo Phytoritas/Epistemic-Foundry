@@ -1,0 +1,104 @@
+{
+  "dataset_id": "Y04-SCALE-CORPUS-0001",
+  "title": "Y-phase 50/200/2000 synthetic scale-qualification corpus",
+  "synthetic": true,
+  "licensed_corpus": false,
+  "release_gate_certified": false,
+  "notes": [
+    "This corpus is SYNTHETIC and DETERMINISTIC. It qualifies system BEHAVIOUR",
+    "(correctness plus budget) at the 50/200/2000 tier sizes; it is not the",
+    "PRODUCTION_2000 release certification, which MASTER_SPEC line 1371 lists as",
+    "conditional external evidence requiring a licensed corpus. Any dataset that",
+    "sets licensed_corpus or release_gate_certified true is refused as an",
+    "overclaim (SCALE_OVERCLAIM).",
+    "Every document is generated from (seed, index) with no clock and no",
+    "randomness, so a tier's result hash is reproducible on replay."
+  ],
+  "generator": {
+    "seed": "ef4-y04-scale-2026",
+    "base_token_cost": 40,
+    "token_spread": 120,
+    "base_latency_ms": 5,
+    "latency_spread": 45,
+    "poison_modulus": 7
+  },
+  "tiers": [
+    {
+      "name": "EVOLUTION_MVP_50",
+      "size": 50,
+      "quality_objective": 1.0,
+      "latency_p95_budget_ms": 60,
+      "budget": {
+        "enforcement": "HARD_METERED",
+        "breach_policy": "MARK_PARTIAL",
+        "hard_limits": {
+          "tokens": 8000,
+          "calls": 50,
+          "wall_seconds": 4,
+          "concurrency": 8,
+          "storage_bytes": 2000000,
+          "network_bytes": 2000000
+        }
+      }
+    },
+    {
+      "name": "PILOT_200",
+      "size": 200,
+      "quality_objective": 1.0,
+      "latency_p95_budget_ms": 60,
+      "budget": {
+        "enforcement": "HARD_METERED",
+        "breach_policy": "MARK_PARTIAL",
+        "hard_limits": {
+          "tokens": 30000,
+          "calls": 200,
+          "wall_seconds": 14,
+          "concurrency": 16,
+          "storage_bytes": 8000000,
+          "network_bytes": 8000000
+        }
+      }
+    },
+    {
+      "name": "PRODUCTION_2000",
+      "size": 2000,
+      "quality_objective": 1.0,
+      "latency_p95_budget_ms": 60,
+      "budget": {
+        "enforcement": "HARD_METERED",
+        "breach_policy": "MARK_PARTIAL",
+        "hard_limits": {
+          "tokens": 260000,
+          "calls": 2000,
+          "wall_seconds": 130,
+          "concurrency": 32,
+          "storage_bytes": 80000000,
+          "network_bytes": 80000000
+        }
+      }
+    }
+  ],
+  "overload_scenario": {
+    "name": "PRODUCTION_2000_OVERLOAD",
+    "offered_load": 2600,
+    "hard_admission_capacity": 2000,
+    "admission_enforcement": "HARD_PREALLOCATED",
+    "breach_policy": "MARK_PARTIAL",
+    "shed_reason": "CAPACITY_HARD_LIMIT",
+    "per_item_token_cost": 60,
+    "per_item_latency_ms": 12,
+    "admitted_budget": {
+      "enforcement": "HARD_METERED",
+      "breach_policy": "MARK_PARTIAL",
+      "hard_limits": {
+        "tokens": 130000,
+        "calls": 2000,
+        "wall_seconds": 130,
+        "concurrency": 32,
+        "storage_bytes": 80000000,
+        "network_bytes": 80000000
+      }
+    }
+  },
+  "dataset_hash": "sha256:bbb378142a221c64e64fea7753a47e0fe0db17344ca20345070c08c0e2380791"
+}

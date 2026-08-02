@@ -1,0 +1,27 @@
+{
+  "approved_scope": [
+    "src/epistemic_foundry/parliament/v4_p06/**",
+    "artifacts/work_packages/P06/**"
+  ],
+  "attempt_id": "P06-0001",
+  "authored_by": "a bounded implementation subagent (gate) and the sealing agent (runner, evidence and seal) across bounded turns",
+  "authority_decision": "P06's manifest write_scope is src/epistemic_foundry/parliament/v4_p06/**; every product file this attempt is accountable for (src/epistemic_foundry/parliament/v4_p06/__init__.py and gate.py) lies fully within that glob. The enclosing src/epistemic_foundry/parliament/__init__.py namespace marker predates P06 and is owned by the sealed P05 gate that created it, so P06 created no marker outside its own write scope and modified no sealed sibling file. That v4_p06 actually reaches the wheel rather than only importing from the checkout is proven by check_packaging.py.",
+  "component_files": [
+    "src/epistemic_foundry/parliament/v4_p06/__init__.py",
+    "src/epistemic_foundry/parliament/v4_p06/gate.py"
+  ],
+  "composed_modules_modified": false,
+  "product_file_hashes": {
+    "artifacts/work_packages/P06/attempts/0001/run_p06_0001_checks.py": "sha256:4b576fbecf01518d3301c8add671f57640d31ffd08620fecc26f636f467ee179",
+    "src/epistemic_foundry/parliament/v4_p06/__init__.py": "sha256:62d32efe110b2c676a1a6b7fdb83379c6989cee49ec166cff6eb9af13cf2eb9c",
+    "src/epistemic_foundry/parliament/v4_p06/gate.py": "sha256:e087efa4174455d2c2acdca977f3d35f4f00fa99510ff5fc7c78098f8b9d500a"
+  },
+  "pyproject_modified": false,
+  "reset_clean_stash_commit_push_performed": false,
+  "reviewed_by": "the sealing agent, actor-independent from the bounded implementation subagent that authored the gate",
+  "root_canonical_source_mutation_count": 0,
+  "schema_or_test_weakening_count": 0,
+  "status": "PASS",
+  "subagents_or_fleet_used": true,
+  "write_scope_violation_count": 0
+}

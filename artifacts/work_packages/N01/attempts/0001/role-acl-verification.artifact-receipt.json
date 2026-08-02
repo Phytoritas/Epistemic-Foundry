@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "N01-0001-ROLE-ACL-VERIFICATION",
+  "byte_size": 7140,
+  "content_hash": "sha256:81c698a6719e511991d28fdd181b54e3c60a2d1aa2e7546cd5eeb8203fb451e7",
+  "created_at": "2026-07-31T01:57:34.661Z",
+  "created_by": {
+    "actor_id": "N01-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/N01/attempts/0001/role-acl-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:03b478b7e29f2e8de539f1fb20931fbe4cacd12fd4da67268a47507d3bd7b34f",
+  "receipt_id": "AR-N01-0001-ROLE-ACL-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "role_schema_test",
+      "details": "10/10 mission, identity, canonicalization, projection, immutability, and hostile-input cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "acl_test",
+      "details": "11/11 explicit grant, deny-by-default, asymmetry, vocabulary, path, network, and tamper cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Node 740/740 across 73 files, Python 1064/1064, codegen 126/126, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

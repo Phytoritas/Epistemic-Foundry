@@ -1,0 +1,39 @@
+{
+  "attempt_id": "D02-0001",
+  "declaring_sources": {
+    "contract_metadata": "epistemic_foundry.store_metadata seeds contract_id 'epistemic-foundry-postgres-team-store/v1', schema_version 1, revision_genesis 0, revision_ceiling 9007199254740991, identifier_encoding 'utf16be-lowerhex-v1', and the principal+tenant+workspace+transaction-local isolation policy in migrations/postgres/0001_team_store.sql, each mirrored by the adapter constants in python/epistemic_foundry/storage/postgres/store.py",
+    "finding_codes": "RECORD_NOT_FOUND, RECORD_ALREADY_EXISTS, STALE_REVISION, REVISION_EXHAUSTED, INVALID_INPUT, INVALID_REVISION, INVALID_RECORD_VALUE, SCOPE_NOT_AUTHORIZED, PRIVILEGED_PRINCIPAL_DENIED, POSTGRES_PRINCIPAL_INVALID, POSTGRES_PRINCIPAL_PRIVILEGE_MISMATCH, POSTGRES_PRINCIPAL_ROLE_MEMBERSHIP_DENIED, ROLE_SWITCH_DENIED, TENANT_CONTEXT_BINDING_FAILED, BOUND_SCOPE_CONTEXT_CHANGED, ASYNC_TRANSACTION_DENIED, NESTED_TRANSACTION_DENIED, CONCURRENT_TRANSACTION_ACCESS_DENIED, POSTGRES_WRITER_LOCK_FAILED, POSTGRES_TRANSACTION_OUTCOME_UNCERTAIN, POSTGRES_INTEGRITY_FAILED, POSTGRES_RLS_CONFIGURATION_MISMATCH, POSTGRES_RLS_FUNCTION_MISMATCH, POSTGRES_RLS_POLICY_MISMATCH, POSTGRES_SCHEMA_RELATION_MISMATCH, POSTGRES_SCHEMA_COLUMN_MISMATCH, POSTGRES_SCHEMA_CONSTRAINT_MISMATCH, POSTGRES_SCHEMA_INDEX_MISMATCH, POSTGRES_SCHEMA_TRIGGER_MISMATCH, POSTGRES_SCHEMA_ACL_MISMATCH, POSTGRES_PERSISTED_IDENTIFIER_INVALID, POSTGRES_PERSISTED_IDENTITY_DUPLICATE, POSTGRES_PERSISTED_JSON_INVALID, POSTGRES_PERSISTED_REVISION_INVALID, STORE_SAFE_MODE, STORE_CLOSED"
+  },
+  "exit_criteria": {
+    "team_store_matches_local_semantics": {
+      "mechanism": "the store reuses the D01 logical identity (tenant_id, workspace_id, record_type, record_id) with revision genesis zero, one atomic compare-and-swap that increments by exactly one, stale/duplicate/missing refusals (STALE_REVISION, RECORD_ALREADY_EXISTS, RECORD_NOT_FOUND), REVISION_EXHAUSTED at the 9007199254740991 ceiling, unbounded JavaScript-string identity via the reversible utf16be-lowerhex-v1 projection, and PostgreSQL json (not jsonb) with fail-closed integrity validation so member order, control characters, and lone UTF-16 surrogates round-trip while non-finite numbers such as 1e400 are rejected",
+      "status": "PASS"
+    },
+    "tenant_workspace_isolation_enforced": {
+      "mechanism": "revisioned_records carries ENABLE plus FORCE ROW LEVEL SECURITY so even the non-superuser table owner is bound; access requires the runtime role's administrative principal_scopes binding on session_user, the transaction-local epistemic_foundry.tenant_id/workspace_id GUCs, and scope_is_authorized, so a missing context is default-deny and a GUC set for an unauthorized scope raises 42501/InsufficientPrivilege; the four fixed SECURITY DEFINER functions pin search_path=pg_catalog with PUBLIC EXECUTE revoked, and superuser/BYPASSRLS principals or privilege, column, policy, role-membership and catalog drift enter fail-closed SAFE_MODE",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: the sealing agent, a distinct actor; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "postgres_contract_test": {
+      "status": "PASS",
+      "test_count": 30
+    },
+    "tenant_isolation_test": {
+      "status": "PASS",
+      "test_count": 13
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1702,
+    "full_python_suite": 1261,
+    "postgres_contract_test": 30,
+    "tenant_isolation_test": 13,
+    "wire_literal_discipline": 5
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "work_package_id": "E01",
+  "attempt_id": "E01-0001",
+  "status": "PASS",
+  "recorded_at_utc": "2026-07-28T14:11:06Z",
+  "dependencies": {
+    "C04": {
+      "attempt_id": "C04-0001",
+      "status": "PASS",
+      "report": "artifacts/work_packages/C04/report.json",
+      "report_sha256": "eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f"
+    },
+    "D04": {
+      "attempt_id": "D04-0001",
+      "status": "PASS",
+      "report": "artifacts/work_packages/D04/report.json",
+      "report_sha256": "b47c194e230f4b08ab96b6153e9fc0e170eafb1054318cfaedd8e1ddeb4c5fde",
+      "core_evidence_id": "E0022",
+      "closeout_evidence_id": "E0023"
+    }
+  },
+  "source_files": [
+    {
+      "path": "packages/foundry-kernel/src/ledger/noetic-ledger.mjs",
+      "sha256": "58ea9dc0d52d9c20720b33970ee3b8d8d05703ba7dd0fb4f51a483d9f505f1ed",
+      "byte_size": 34686
+    },
+    {
+      "path": "packages/foundry-kernel/src/ledger/ledger-test-support.mjs",
+      "sha256": "4954d4dd7bc985136d744f0689b91316419fb376e842dba2a428c66c9813d6e9",
+      "byte_size": 2613
+    },
+    {
+      "path": "packages/foundry-kernel/src/ledger/ledger-hash-chain.test.mjs",
+      "sha256": "e478e71b48d74a139a10023033b3fd2d73fcbdf92660feeb920a6c3953e4eb82",
+      "byte_size": 17551
+    },
+    {
+      "path": "packages/foundry-kernel/src/ledger/reducer-replay.test.mjs",
+      "sha256": "a1f9848e08c1231de29ada86236b6a1ffef19d867ce412d16737a8ce44222029",
+      "byte_size": 7575
+    }
+  ],
+  "authority_hashes": {
+    "event_record_schema": "538cf66a8d006aa6895dc52fc0761747c9b18bba7ea857eda4f8385364880588",
+    "development_manifest": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+    "sqlite_state_store": "6619dccb72f40e92fdaae3d023a2d6591f8d63bdfe789ba5c36b53ce7dbe1380",
+    "artifact_store": "75e69756d30ab5b5112fd908f3fec312660f30e603fe1201566db2ad263c8c8e"
+  },
+  "required_checks": {
+    "ledger_hash_chain_test": {
+      "status": "PASS",
+      "passed": 12,
+      "failed": 0
+    },
+    "reducer_replay_test": {
+      "status": "PASS",
+      "passed": 9,
+      "failed": 0
+    },
+    "combined_targeted_gate": {
+      "status": "PASS",
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0
+    },
+    "repeatability": {
+      "status": "PASS",
+      "runs": 10,
+      "test_executions": 210,
+      "failed_runs": 0
+    }
+  },
+  "coverage": {
+    "tool": "node --experimental-test-coverage",
+    "target": "packages/foundry-kernel/src/ledger/noetic-ledger.mjs",
+    "line_percent": 86.67,
+    "branch_percent": 74.60,
+    "function_percent": 97.87
+  },
+  "adversarial_cases": {
+    "sequence_gap_or_reorder_rejected": true,
+    "cross_run_event_rejected": true,
+    "event_hash_tamper_rejected": true,
+    "payload_hash_tamper_rejected": true,
+    "hash_coercion_hook_not_executed": true,
+    "immutable_event_revision_mutation_rejected": true,
+    "missing_stream_event_rejected": true,
+    "stream_cas_failure_rolls_back_event": true,
+    "concurrent_writers_contiguous": true,
+    "nondeterministic_reducer_rejected": true,
+    "async_reducer_rejected": true,
+    "mutating_reducer_rejected": true,
+    "noncanonical_state_rejected": true,
+    "artifact_corruption_precedes_reducer": true
+  },
+  "regression": {
+    "python": {
+      "status": "PASS",
+      "passed": 913,
+      "failed": 0
+    },
+    "repository_wide_node": {
+      "status": "FAIL_OUTSIDE_E01",
+      "passed": 170,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "actual_manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+      "expected_legacy_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+      "owner_scope": "S04"
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix": "PASS",
+    "cache_key_audit": "PASS",
+    "ci_policy_mutation_tests": {
+      "status": "PASS",
+      "passed": 10
+    },
+    "text_integrity": {
+      "status": "PASS",
+      "files": 4,
+      "strict_utf8": true,
+      "bom_absent": true,
+      "nul_absent": true,
+      "replacement_character_absent": true
+    },
+    "git_diff_check": "PASS",
+    "double_build": {
+      "status": "FAIL_OUTSIDE_E01",
+      "failure": "staged source omits scripts/ required by the existing build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "blocking_findings": 0,
+    "assurance_limitation": "Procedurally separate primary-session review is not external actor-independent certification; reducer side effects are not sandboxed by E01."
+  },
+  "scope_and_preservation": {
+    "implementation_write_scope_violations": 0,
+    "schema_or_dependency_implementation_modified_by_e01": false,
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "completion_ready": false
+  }
+}

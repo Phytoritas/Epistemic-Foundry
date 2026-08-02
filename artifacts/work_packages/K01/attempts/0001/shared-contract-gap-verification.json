@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "work_package_id": "K01",
+  "attempt_id": "K01-0001",
+  "status": "SPEC_GAP",
+  "spec_gap_id": "K01-SG001",
+  "completion_ready": false,
+  "authority_hashes": {
+    "MASTER_SPEC.md": "sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3",
+    "AGENTS.md": "sha256:858e537ed3e49754b8e60d31c985467ee1246ed258c7763d6de4ef0767e381ea",
+    "manifests/development_manifest.yaml": "sha256:de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940",
+    "workflows/corpus_ingest.workflow.yaml": "sha256:492674e133702becf07092c78eee27635ca46e935a7fdbe1b658f7d6d797c5fe",
+    "schemas/document-manifest.schema.json": "sha256:9841f1ad1d431e974daa83292d05514d6fd84d5d7c9ef1613a8c44b76bb2368f"
+  },
+  "manifest_contract": {
+    "dependencies": [
+      "B04",
+      "C04",
+      "D04",
+      "S01"
+    ],
+    "write_scope": [
+      "python/epistemic_foundry/ingest/registry/**"
+    ],
+    "exit_criteria": [
+      "source bytes immutable",
+      "license/retraction/version status retained"
+    ],
+    "required_checks": [
+      "document_registry_test",
+      "license_propagation_test"
+    ],
+    "spec_gap_stop_condition": true
+  },
+  "canonical_workflow_facts": {
+    "register_document_index": 0,
+    "register_document_input_schema_ref": "schemas/node-invocation.schema.json",
+    "register_document_output_schema_ref": "schemas/result-envelope.schema.json",
+    "register_document_expected_effects": [
+      "document_registered",
+      "source_blob_created"
+    ],
+    "build_document_manifest_index": 8,
+    "build_document_manifest_dependencies": [
+      "emit_source_spans",
+      "resolve_metadata",
+      "scan_source_integrity"
+    ],
+    "final_manifest_constructed_after_registration": true
+  },
+  "canonical_schema_facts": {
+    "artifact": "DocumentManifest",
+    "additional_properties": false,
+    "required_field_count": 20,
+    "downstream_only_required_fields": [
+      "bibliographic_version",
+      "supersedes_version_id",
+      "status",
+      "parser_artifact_ids",
+      "source_integrity_report_id",
+      "malware_scan_status",
+      "prompt_injection_scan_status",
+      "provenance_manifest_id"
+    ]
+  },
+  "provisional_runtime_facts": {
+    "entry_point": "epistemic_foundry.ingest.registry:register_document",
+    "actual_business_inputs": [
+      "DocumentRegistry",
+      "source_bytes",
+      "complete DocumentManifest"
+    ],
+    "actual_business_output": "DocumentRegistration",
+    "durable_persistence_implemented": false,
+    "effect_receipt_implemented": false,
+    "ledger_event_implemented": false,
+    "installable_src_adapter_defined": false
+  },
+  "contradictions": [
+    {
+      "id": "K01-SG001-LIFECYCLE",
+      "description": "register_document executes before the only canonical final DocumentManifest can be constructed, yet the provisional registry requires all of that final artifact's required fields."
+    },
+    {
+      "id": "K01-SG001-ENVELOPE",
+      "description": "The workflow binds NodeInvocation and ResultEnvelope, but no contract maps them to source bytes, initial registration state, DocumentRegistration, artifact IDs, or receipts."
+    },
+    {
+      "id": "K01-SG001-AUTHORITY",
+      "description": "Durable source persistence, registry projection, effect, receipt, and ledger ownership are not assigned across K01, D03, and the workflow caller."
+    },
+    {
+      "id": "K01-SG001-RUNTIME",
+      "description": "The manifest-owned python component root has no authorized projection or adapter into the installable src runtime used by the workflow executor_ref."
+    }
+  ],
+  "provisional_verification": {
+    "targeted_passed": 34,
+    "targeted_failed": 0,
+    "document_registry_passed": 22,
+    "license_propagation_passed": 12,
+    "source_bytes_immutable": true,
+    "source_hash_verified": true,
+    "version_lineage_append_only": true,
+    "license_and_access_tuple_exact": true,
+    "schema_or_workflow_weakened": false
+  },
+  "classification": {
+    "typed_outcome": "SPEC_GAP",
+    "not_fail_reason": "All behavior currently definable inside K01 passes; no resolving implementation is authorized for the contradictory shared contract.",
+    "not_blocked_reason": "No external resource or host capability is unavailable.",
+    "prohibited_shortcuts": [
+      "make final DocumentManifest fields optional",
+      "invent placeholder scan, parser, metadata, or provenance values",
+      "silently treat in-memory state as durable persistence",
+      "claim ResultEnvelope success without the canonical business artifact and receipts",
+      "add repository-root or editable-install runtime fallback"
+    ]
+  },
+  "required_product_owner_decisions": [
+    "canonical initial source-registration artifact and exact field contract",
+    "immutable relationship from initial registration to final DocumentManifest",
+    "register_document business and envelope input/output contract",
+    "persistence, effect, receipt, and ledger owner assignment",
+    "installable runtime adapter or package projection owner",
+    "minimum exact write-scope corrections and resolving acceptance tests"
+  ],
+  "subagents_or_fleet_used": false
+}

@@ -1,0 +1,70 @@
+{
+  "attempt_id": "U05-0001",
+  "console_semantics": {
+    "produces": "deep-frozen, hash-re-derivable view records; no score, selection, promotion or holdout exposure",
+    "refusals_are_by_code": true,
+    "surfaces": [
+      "pareto_front",
+      "niche_map",
+      "lineages",
+      "challenge_board"
+    ],
+    "vocabulary_source": "canonical schemas; challenge outcomes/severities read from the challenge-result schema (EF4-I22)"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every view's view_id and view_hash are a pure function of its own content with no clock or random draw, so two projections of equal input are byte-equal and any projected field is bound into the receipt and detectably tampered",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "every projected input is validated against its canonical schema before it is read, each sealed hash is re-derived, the two authority markers readonly=true/grants_authority=false never change, and each FINDING_CODE names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "every finding code is driven by a negative, a persisted view re-derives its identity after reload (crash/resume), a tampered view and an authority grab are refused, and the four surfaces replay deterministically on the happy path",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the console projects sealed state and confers no authority: any authority_request is refused before a surface is touched, it never scores, selects, promotes or exposes a holdout, and no candidate/model/prompt/backend/hook reaches an evaluator, holdout or promotion surface through it",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent; reviewer: an independent contract-reviewer session; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 23
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 11
+    }
+  },
+  "schema_binding": {
+    "challenge_board": "challenge-genome and challenge-result schemas; result_hash re-derived; outcome/severity buckets read from the schema",
+    "lineages": "candidate-lineage schema",
+    "niche_map": "epistemic-niche schema via the sealed M05 cartographer; each niche_hash re-derived",
+    "pareto_front": "pareto-front-snapshot schema; snapshot_hash re-derived; front pairing and reference-point integrity checked"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1253,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 23,
+    "provenance_and_receipt_audit": 7,
+    "schema_and_type_check": 7,
+    "unit_and_contract_tests": 11,
+    "wire_literal_discipline": 5
+  }
+}

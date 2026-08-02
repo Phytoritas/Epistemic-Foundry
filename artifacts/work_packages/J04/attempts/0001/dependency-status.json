@@ -1,0 +1,62 @@
+{
+  "attempt_id": "J04-0001",
+  "dependencies": {
+    "J02": {
+      "attempt_id": "J02-0003",
+      "report": "artifacts/work_packages/J02/attempts/0003/report.json",
+      "report_sha256": "sha256:d348ddc7c8b2d476d3424a6459079f0011d9fc69e29056131832b3ae2fc2d184",
+      "status": "PASS"
+    },
+    "J03": {
+      "attempt_id": "J03-0001",
+      "report": "artifacts/work_packages/J03/attempts/0001/report.json",
+      "report_sha256": "sha256:ce6223287b0c59a086527fcbd8fddfe3ad18c127f70cc36f91c66fa32c069a40",
+      "status": "PASS"
+    }
+  },
+  "manifest": {
+    "depends_on": [
+      "J02",
+      "J03"
+    ],
+    "exit_criteria": [
+      "phase cursor and blockers recover",
+      "prose summary cannot replace artifacts"
+    ],
+    "independent_review": "required",
+    "manifest_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "package_count": 156,
+    "required_checks": [
+      "compaction_resume_test",
+      "context_poisoning_test"
+    ],
+    "status": "PASS",
+    "write_scope": [
+      "tests/golden/compaction/**",
+      "artifacts/work_packages/J04/**"
+    ]
+  },
+  "post_j04_projection": {
+    "blocked_package_count": 106,
+    "completed_package_count": 45,
+    "completion_ready": false,
+    "next_package": "K01",
+    "ready_package_count": 5,
+    "ready_packages_manifest_order": [
+      "K01",
+      "L01",
+      "N01",
+      "T01",
+      "A06"
+    ],
+    "status": "PASS"
+  },
+  "pre_j04_sealed_projection": {
+    "artifact": "artifacts/work_packages/B04/attempts/0008/post-b04-0008-dag-reconciliation.json",
+    "artifact_sha256": "sha256:1fb31d38ee74a7ad01c403e40248a281e0c97e53a960df48478f210c7b079426",
+    "completed_package_count": 44,
+    "next_package": "J04",
+    "status": "PASS"
+  },
+  "status": "PASS"
+}

@@ -19,6 +19,8 @@ from epistemic_foundry.noetic_ledger import NoeticLedger
 
 POLICY_HASH = "sha256:" + "a" * 64
 CORPUS_HASH = "sha256:" + "b" * 64
+GATE_INPUT_ARTIFACT_IDS = ("ART-GATE-INPUT-0001",)
+GATE_VERSION = "4.0.0"
 
 
 @pytest.fixture()
@@ -148,6 +150,10 @@ def test_export_with_failing_gate_is_refused(kernel: ForgeKernel, session: dict)
         run_id="RUN-0001",
         policy_version="4.0.0",
         inputs={},
+        gate_version=GATE_VERSION,
+        input_artifact_ids=GATE_INPUT_ARTIFACT_IDS,
+        policy_bundle_hash=POLICY_HASH,
+        blocker_ids=(),
     )
     assert failing["status"] == "FAIL"
     with pytest.raises(TransitionRejected) as excinfo:
@@ -168,6 +174,10 @@ def test_export_succeeds_only_with_a_resolving_passing_gate(kernel: ForgeKernel,
         run_id="RUN-0001",
         policy_version="4.0.0",
         inputs={"evidence_ids": ["EV-1"]},
+        gate_version=GATE_VERSION,
+        input_artifact_ids=GATE_INPUT_ARTIFACT_IDS,
+        policy_bundle_hash=POLICY_HASH,
+        blocker_ids=(),
     )
     assert passing["status"] == "PASS"
     exported = _advance(
@@ -189,6 +199,10 @@ def test_unresolved_gate_ids_are_refused(kernel: ForgeKernel, session: dict) -> 
         run_id="RUN-0001",
         policy_version="4.0.0",
         inputs={},
+        gate_version=GATE_VERSION,
+        input_artifact_ids=GATE_INPUT_ARTIFACT_IDS,
+        policy_bundle_hash=POLICY_HASH,
+        blocker_ids=(),
     )
     with pytest.raises(TransitionRejected) as excinfo:
         _advance(
@@ -217,6 +231,10 @@ def test_non_waivable_gate_refuses_a_waiver() -> None:
             run_id="RUN-0001",
             policy_version="4.0.0",
             inputs={},
+            gate_version=GATE_VERSION,
+            input_artifact_ids=GATE_INPUT_ARTIFACT_IDS,
+            policy_bundle_hash=POLICY_HASH,
+            blocker_ids=(),
             waiver_authority="HUMAN-1",
             waiver_reason="deadline",
         )
@@ -230,6 +248,10 @@ def test_waivable_gate_requires_authority_and_reason() -> None:
             run_id="RUN-0001",
             policy_version="4.0.0",
             inputs={},
+            gate_version=GATE_VERSION,
+            input_artifact_ids=GATE_INPUT_ARTIFACT_IDS,
+            policy_bundle_hash=POLICY_HASH,
+            blocker_ids=(),
             waiver_authority="HUMAN-1",
         )
 
@@ -242,6 +264,11 @@ def test_gate_decisions_are_deterministic_for_equal_inputs() -> None:
         run_id="RUN-0001",
         policy_version="4.0.0",
         inputs=inputs,
+        gate_version=GATE_VERSION,
+        input_artifact_ids=GATE_INPUT_ARTIFACT_IDS,
+        policy_bundle_hash=POLICY_HASH,
+        blocker_ids=(),
+        gate_id="GD-DETERMINISTIC-0001",
         evaluated_at="2026-07-27T00:00:00+00:00",
     )
     second = gate_decision(
@@ -249,9 +276,17 @@ def test_gate_decisions_are_deterministic_for_equal_inputs() -> None:
         run_id="RUN-0001",
         policy_version="4.0.0",
         inputs={"evidence_ids": ["EV-1"]},
+        gate_version=GATE_VERSION,
+        input_artifact_ids=GATE_INPUT_ARTIFACT_IDS,
+        policy_bundle_hash=POLICY_HASH,
+        blocker_ids=(),
+        gate_id="GD-DETERMINISTIC-0001",
         evaluated_at="2026-07-27T00:00:00+00:00",
     )
     assert first["input_hash"] == second["input_hash"]
+    assert first["decision_hash"] == second["decision_hash"]
+    assert first["evaluated_at"] == first["created_at"]
+    assert first == second
 
 
 def test_fail_and_block_are_never_absorbed() -> None:

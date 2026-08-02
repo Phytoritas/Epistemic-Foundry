@@ -791,12 +791,13 @@ nodes:
   - policy_bundle_valid
   - capability_scope_valid
 - node_id: run_evidence_parliament_promotion
-  purpose: Adjudicate sealed candidates with strongest challenge, holdout, statistics,
-    replication and minority report
-  executor_type: llm
-  executor_ref: prompts/promotion_attestor.md
+  purpose: Delegate promotion to the canonical receipt-bound evolution_promotion
+    subworkflow (deterministic G00-G14, Parliament, attestation, approval, atomic
+    commit)
+  executor_type: subworkflow
+  executor_ref: workflows/evolution_promotion.workflow.yaml
   input_schema_ref: schemas/node-invocation.schema.json
-  output_schema_ref: schemas/promotion-decision.schema.json
+  output_schema_ref: schemas/result-envelope.schema.json
   depends_on:
   - replicate_surviving_elites
   read_scope: []
@@ -805,16 +806,16 @@ nodes:
   capabilities:
   - artifact_read
   - artifact_write
-  - llm_inference
-  model_tier: frontier
-  timeout_seconds: 1200
+  model_tier: deterministic
+  timeout_seconds: 3600
   max_attempts: 2
   failure_policy: fail_run
   acceptance_checks:
   - run_evidence_parliament_promotion contract valid
-  - run_evidence_parliament_promotion result receipt present
+  - evolution_promotion subworkflow completed with reconciled receipts
+  - no scalar score, majority vote, or model confidence promoted a candidate
   resource_dependencies: []
-  determinism_class: provider_nondeterministic
+  determinism_class: deterministic
   idempotency_key_fields:
   - run_id
   - node_id

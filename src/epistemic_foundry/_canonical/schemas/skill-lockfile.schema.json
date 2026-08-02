@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/skill-lockfile.schema.json",
+  "title": "SkillLockfile",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "lock_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "skill_id": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "string"
+          },
+          "content_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "signature_status": {
+            "enum": [
+              "VERIFIED",
+              "UNVERIFIED",
+              "NOT_PROVIDED",
+              "FAILED"
+            ]
+          },
+          "license": {
+            "type": "string"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "review_status": {
+            "enum": [
+              "QUARANTINED",
+              "APPROVED",
+              "REJECTED",
+              "DISABLED"
+            ]
+          },
+          "approved_by_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 128
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "skill_id",
+          "source",
+          "revision",
+          "content_hash",
+          "signature_status",
+          "license",
+          "permissions",
+          "review_status",
+          "approved_by_ids"
+        ]
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "policy_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "lock_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "lock_version",
+    "workspace_id",
+    "skills",
+    "generated_at",
+    "policy_hash",
+    "lock_hash"
+  ]
+}

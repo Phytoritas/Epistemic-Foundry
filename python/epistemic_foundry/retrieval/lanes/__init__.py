@@ -1,0 +1,68 @@
+"""Deterministic O02 retrieval-lane contracts.
+
+The component tree is deliberately separate from the installed ``src``
+runtime.  O02 produces provider-neutral ``RetrievalCandidate`` business
+artifacts; O01 remains the owner of QueryPlan and SearchLaneReceipt sealing.
+"""
+
+from .contracts import (
+    CANDIDATE_HASH_FIELDS,
+    CANDIDATE_IDENTITY_FIELDS,
+    LANE_QUERY_FAMILIES,
+    NON_VECTOR_CHANNELS,
+    CandidateSetResult,
+    QueryFamily,
+    RelationDirection,
+    ReleaseGuardResult,
+    RetrievalChannel,
+    RetrievalContractError,
+    SealedBackendRequest,
+    TerminalOutcome,
+    assert_benchmark_thresholds,
+    build_candidate_set,
+    canonical_json,
+    classify_relation_direction,
+    compute_candidate_hash,
+    compute_candidate_id,
+    evaluate_non_vector_release,
+    evaluate_retrieval_benchmark,
+    ndcg_at_k,
+    rank_fixture_corpus,
+    recall_at_k,
+    seal_backend_request,
+    seal_backend_response,
+    sha256_bytes,
+    validate_backend_response,
+    validate_retrieval_candidate,
+)
+
+__all__ = [
+    "CANDIDATE_HASH_FIELDS",
+    "CANDIDATE_IDENTITY_FIELDS",
+    "LANE_QUERY_FAMILIES",
+    "NON_VECTOR_CHANNELS",
+    "CandidateSetResult",
+    "QueryFamily",
+    "RelationDirection",
+    "ReleaseGuardResult",
+    "RetrievalChannel",
+    "RetrievalContractError",
+    "SealedBackendRequest",
+    "TerminalOutcome",
+    "assert_benchmark_thresholds",
+    "build_candidate_set",
+    "canonical_json",
+    "classify_relation_direction",
+    "compute_candidate_hash",
+    "compute_candidate_id",
+    "evaluate_non_vector_release",
+    "evaluate_retrieval_benchmark",
+    "ndcg_at_k",
+    "rank_fixture_corpus",
+    "recall_at_k",
+    "seal_backend_request",
+    "seal_backend_response",
+    "sha256_bytes",
+    "validate_backend_response",
+    "validate_retrieval_candidate",
+]

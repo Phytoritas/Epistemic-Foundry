@@ -1,0 +1,38 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "J04-0001-COMPACTION-RECOVERY-VERIFICATION",
+  "byte_size": 2868,
+  "content_hash": "sha256:5b4f698be79188fa8d55b6e664b30f7d9c2051c496b6e6a33971088a9850953e",
+  "created_at": "2026-07-30T17:20:00.000Z",
+  "created_by": {
+    "actor_id": "J04-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/J04/attempts/0001/compaction-recovery-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:10cf3f39c5a34024468ccc1d3d80cc5bfa2428383e7f4310203e9647493f6c92",
+  "receipt_id": "AR-J04-0001-COMPACTION-RECOVERY-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "compaction_resume_test",
+      "details": "5/5 phase, blocker, receipt, tamper, and artifact-drift cases passed",
+      "status": "PASS"
+    },
+    {
+      "check": "context_poisoning_test",
+      "details": "5/5 prose, attacker-rehash, exclusion, policy, and hostile-input cases passed",
+      "status": "PASS"
+    },
+    {
+      "check": "j03_capsule_regression",
+      "details": "21/21; sealed J03 implementation hashes unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Python 990/990 and Node 470/470; unexpected suppression or failure count zero",
+      "status": "PASS"
+    }
+  ]
+}

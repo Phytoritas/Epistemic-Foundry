@@ -1,0 +1,57 @@
+{
+  "attempt_id": "C01-0008",
+  "files": {
+    "node": {
+      "case_count": 815,
+      "normalized_sha256": "sha256:1879a91eb8052b7d20a96dc2ffb1146f14f89fdc31172072d43a63830377d421",
+      "raw_sha256": "sha256:01e12e9941d4ac3378ea8636175eac9e15dfd287d62701eab505239fe9f95719",
+      "removed": {
+        "duration_comments": 1,
+        "hostname_attributes": 0,
+        "repository_prefixes": 825,
+        "time_attributes": 0,
+        "timestamp_attributes": 0
+      },
+      "semantic_signature_preserved": true
+    },
+    "python": {
+      "case_count": 1073,
+      "normalized_sha256": "sha256:6614ba213489d37833a18a110afa1b481133e4eee788166f1f3eaa8eba35b310",
+      "raw_sha256": "sha256:da39f64da3764ec5c98a94a27f27a7f64682007e0ff15a7e11df15a3e4ee0b3f",
+      "removed": {
+        "duration_comments": 0,
+        "hostname_attributes": 1,
+        "repository_prefixes": 13,
+        "time_attributes": 1074,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true
+    },
+    "targeted": {
+      "case_count": 104,
+      "normalized_sha256": "sha256:8a0b74d464cc087883486be1325d55cc1054dcc2fabb652cade82bc6feae6ac8",
+      "raw_sha256": "sha256:6a56ea1b23b9a80a9af28f526ad1078baded5c90399c3cf55cea7dd5f1d2453e",
+      "removed": {
+        "duration_comments": 0,
+        "hostname_attributes": 1,
+        "repository_prefixes": 0,
+        "time_attributes": 105,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true
+    }
+  },
+  "normalization_scope": [
+    "remove pytest hostname, timestamp, and suite/testcase time attributes",
+    "remove absolute repository prefixes from all JUnit evidence",
+    "remove Node duration_ms while preserving authoritative footer counters"
+  ],
+  "preserved": [
+    "testcase identity",
+    "failure, error, and skip state",
+    "failure type and message",
+    "Node footer counters"
+  ],
+  "recorded_at_utc": "2026-07-31T07:20:00.000Z",
+  "status": "PASS"
+}

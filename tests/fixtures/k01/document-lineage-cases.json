@@ -1,0 +1,25 @@
+{
+  "fixture_version": "K01-0002",
+  "cases": [
+    {
+      "case_id": "VALID_SUPERSESSION",
+      "expected": "PASS"
+    },
+    {
+      "case_id": "UNKNOWN_PREDECESSOR",
+      "expected": "DOCUMENT_LINEAGE_UNKNOWN"
+    },
+    {
+      "case_id": "CROSS_SCOPE_PREDECESSOR",
+      "expected": "DOCUMENT_LINEAGE_SCOPE_MISMATCH"
+    },
+    {
+      "case_id": "CYCLIC_PREDECESSOR",
+      "expected": "DOCUMENT_LINEAGE_CYCLE"
+    },
+    {
+      "case_id": "IMMUTABLE_HISTORY_REWRITE",
+      "expected": "DOCUMENT_IMMUTABLE_HISTORY_MUTATION"
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+{
+  "attempt_id": "B03-0001",
+  "attempt_type": "B03_CROSS_PLATFORM_CI_AND_CACHE_POLICY",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "B03-0001",
+    "dependencies": {
+      "B01": {
+        "attempt_id": "B01-0001",
+        "core_evidence_id": "E0295",
+        "core_generation": "000293-7ff781e9",
+        "final_closeout_evidence_id": "E0296",
+        "report": "artifacts/work_packages/B01/attempts/0001/report.json",
+        "report_sha256": "sha256:9bc65c52408117105ee5da16f2d7b04995fd54a3a679f1fe341566f409d110bd",
+        "status": "PASS"
+      }
+    },
+    "dependency_note": "B03 depends on B01; the sealed B01-0001 attempt is the build dependency",
+    "next_action": "SEAL_B03_0001_THEN_RECOMPUTE_DAG",
+    "regression_baseline": {
+      "attempt_id": "B01-0001",
+      "core_evidence_id": "E0295",
+      "core_generation": "000293-7ff781e9",
+      "final_closeout_evidence_id": "E0296",
+      "report": "artifacts/work_packages/B01/attempts/0001/report.json",
+      "report_sha256": "sha256:9bc65c52408117105ee5da16f2d7b04995fd54a3a679f1fe341566f409d110bd",
+      "status": "PASS"
+    },
+    "regression_baseline_note": "B01-0001 is the sealed PASS attempt B03 depends on, bound as the regression baseline. The live ledger frontier advances under concurrent sealing; the parent reconciles the exact frontier when it fills the ledger pins at seal time.",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "caches_are_disposable_and_hash_keyed": "PASS",
+    "linux_macos_windows_lanes_defined": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "editing the cross-platform CI workflow, the validators, the mutation suite or the cache contract: B03 attests .github/workflows/ci.yml, scripts/ci/ci_matrix_lint.py, scripts/ci/cache_key_audit.py, scripts/ci/test_ci_policy.py and docs/cache_contract.md and makes zero substantive change to them",
+    "GitHub-hosted execution of the ubuntu-24.04, macos-15 and windows-2025 lanes: the required checks prove the workflow definition only; hosted-run evidence is the B04 integration gate",
+    "any product-maturity, runtime-executability or release readiness of the v4 plugin or ShinkaEvolve integration",
+    "SBOM, signing, clean-release extraction or release provenance, which are Z-phase scope",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 3915,
+      "path": "artifacts/work_packages/B03/attempts/0001/b03-verification.json",
+      "sha256": "sha256:0523b3662f26944e0860568b1f3fc648e599c5f1e517c1708ff6fca1785ccbd6"
+    },
+    {
+      "byte_size": 27078,
+      "path": "artifacts/work_packages/B03/attempts/0001/b03_0001_rah_seal.py",
+      "sha256": "sha256:0fae5330c24314f49f35658d856ae93653d70077da31b8f08cc5a7774bf3ea07"
+    },
+    {
+      "byte_size": 39121,
+      "path": "artifacts/work_packages/B03/attempts/0001/build_b03_0001_evidence.py",
+      "sha256": "sha256:4f422261dffe2a3d489161cbfa6f26d0496101d0af25eefe3ad21f7d9168e02b"
+    },
+    {
+      "byte_size": 725,
+      "path": "artifacts/work_packages/B03/attempts/0001/cache-key-audit.json",
+      "sha256": "sha256:265e056fed569fec46b190cac99d63ce3c7a63047a20074033cb764cb19dfc4d"
+    },
+    {
+      "byte_size": 1238,
+      "path": "artifacts/work_packages/B03/attempts/0001/ci-matrix-lint.json",
+      "sha256": "sha256:5a13f9b1de1913a589950bbb6a307de7f979b1bf96bfabd30274bda7a4b54b14"
+    },
+    {
+      "byte_size": 8699,
+      "path": "artifacts/work_packages/B03/attempts/0001/commands.jsonl",
+      "sha256": "sha256:e72f5fcae98c0d5fd68fdf78a4c7972735d6db9609415fa33fc6d23d6249ba39"
+    },
+    {
+      "byte_size": 1226,
+      "path": "artifacts/work_packages/B03/attempts/0001/dependency-status.json",
+      "sha256": "sha256:6f8c223caa377e5e460bb8b20c4b630b7c3dc1f8fb08b23e719d098f8139acf6"
+    },
+    {
+      "byte_size": 237598,
+      "path": "artifacts/work_packages/B03/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:c5f5353cd5a651498c0abeed231b40e8777112b4e53ed17e06bec1093e08840a"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/B03/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 1769,
+      "path": "artifacts/work_packages/B03/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:d7936e4470df95014bbad73c2ff76b0212e3d3d9e16d98f5f9f6bc43cef12428"
+    },
+    {
+      "byte_size": 7304,
+      "path": "artifacts/work_packages/B03/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:a20e1fd3de96edcbe012c2e4ebeb0b694ac1e74a1be83456d7684118680179a9"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/B03/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:0d0e33aefa97db5d681a20dde8a11ba155e9e1f349e1f90167901605942ec014"
+    },
+    {
+      "byte_size": 4279,
+      "path": "artifacts/work_packages/B03/attempts/0001/review.md",
+      "sha256": "sha256:a2f47611ce0f9e116db7f052335f02c83be7cba8176cd419b313d6030825e61c"
+    },
+    {
+      "byte_size": 13504,
+      "path": "artifacts/work_packages/B03/attempts/0001/run_b03_0001_checks.py",
+      "sha256": "sha256:3268f4f30c477cd1e8c2ed22c98345a7d932794f9690ac5ac7ce7f50cd643d89"
+    },
+    {
+      "byte_size": 1314,
+      "path": "artifacts/work_packages/B03/attempts/0001/test-ci-policy.junit.xml",
+      "sha256": "sha256:76892b4eb307a55c4b6ff38db956058f26c05d0d2013145f967c063af98c9fe8"
+    },
+    {
+      "byte_size": 1782,
+      "path": "artifacts/work_packages/B03/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:c47aca0bbb06d27c719e56600f963a66d1eafe73d3ad8bc3063fdad8d26e71ff"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0305",
+    "core_generation": "000303-7c7a155e",
+    "final_closeout_evidence_id": "E0306",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1818,
+    "implementation_gate": "fail",
+    "retained_generation_count": 303,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "B03-0001",
+    "count_authority": "derived_from_measured_junit_expected_equals_measured",
+    "fail_closed_policy_suite": "test_ci_policy",
+    "fail_closed_policy_suite_passed": 10,
+    "full_node_gate": "zero_failures_with_live_inventory_count",
+    "full_node_inventory_count": 111,
+    "full_node_passed": 1253,
+    "full_python_passed": 1261,
+    "new_failure_count": 0,
+    "regression_baseline_attempt": "B01-0001",
+    "status": "PASS",
+    "suites": {
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1253,
+        "failed": 0,
+        "junit": "artifacts/work_packages/B03/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:c5f5353cd5a651498c0abeed231b40e8777112b4e53ed17e06bec1093e08840a",
+        "passed": 1253,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1248
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/B03/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "test_ci_policy": {
+        "collected": 10,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/B03/attempts/0001/test-ci-policy.junit.xml",
+        "junit_sha256": "sha256:76892b4eb307a55c4b6ff38db956058f26c05d0d2013145f967c063af98c9fe8",
+        "passed": 10,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 10
+      }
+    }
+  },
+  "required_checks": {
+    "cache_key_audit": {
+      "cache_action": "actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+      "cache_miss_is_fatal": false,
+      "cross_os_archive": false,
+      "exact_restore_only": true,
+      "failures": [],
+      "key": "efoundry-deps-v1-${{ matrix.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json', 'uv.lock', 'toolchains/toolchain-lock.json', 'toolchains/python-build-constraints.txt') }}",
+      "paths": [
+        "${{ runner.temp }}/efoundry-cache/npm",
+        "${{ runner.temp }}/efoundry-cache/uv"
+      ],
+      "status": "PASS",
+      "validator": "python scripts/ci/cache_key_audit.py"
+    },
+    "ci_matrix_lint": {
+      "action_pins": {
+        "actions/cache": "caa296126883cff596d87d8935842f9db880ef25",
+        "actions/checkout": "d23441a48e516b6c34aea4fa41551a30e30af803",
+        "actions/setup-node": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+        "actions/setup-python": "ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "astral-sh/setup-uv": "94527f2e458b27549849d47d273a16bec83a01e9"
+      },
+      "failures": [],
+      "runners": [
+        "ubuntu-24.04",
+        "macos-15",
+        "windows-2025"
+      ],
+      "status": "PASS",
+      "validator": "python scripts/ci/ci_matrix_lint.py"
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded implementation agent(s) that authored the cross-platform workflow, the two validators, the mutation suite and the cache contract; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (bounded implementation agent(s) authored the CI config and validators, the sealing session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "role": "contract_reviewer",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "B03",
+  "write_scope": {
+    "approved_scope": [
+      ".github/workflows/**",
+      "scripts/ci/**",
+      "docs/cache_contract.md"
+    ],
+    "attempt_id": "B03-0001",
+    "attestation_only_no_ci_config_edits": true,
+    "attested_product_files": [
+      ".github/workflows/ci.yml",
+      "docs/cache_contract.md",
+      "scripts/ci/cache_key_audit.py",
+      "scripts/ci/ci_matrix_lint.py",
+      "scripts/ci/test_ci_policy.py"
+    ],
+    "authored_by": "the bounded implementation agent(s) that authored the B03 cross-platform CI workflow (.github/workflows/ci.yml), the two required-check validators (scripts/ci/ci_matrix_lint.py, scripts/ci/cache_key_audit.py), the ten-test fail-closed mutation suite (scripts/ci/test_ci_policy.py) and the cache/reproducibility contract (docs/cache_contract.md); this sealing session attests these authored files without editing them",
+    "checked_file_count": 5,
+    "product_file_hashes": {
+      ".github/workflows/ci.yml": "sha256:cb296023a66880b758fee201f0bd3a51a8a29943e8bea8cdb96b6694e22108fa",
+      "docs/cache_contract.md": "sha256:d64a2331ae8f2db076903eed3058b301ec2d2d9f98e6edcb115d2d9de9557f3d",
+      "scripts/ci/cache_key_audit.py": "sha256:151fcfbb182e62967503e6e5a987dc4875949efd40f2ba58c4d67c093360b449",
+      "scripts/ci/ci_matrix_lint.py": "sha256:580fa21b83325dbec00e623d0779edfb0008f3c269e51a465a4fbb541c902606",
+      "scripts/ci/test_ci_policy.py": "sha256:1b76fae609a1a259ae305439938f8d1940af11e0bd43d08b67309c8938d8fb4d"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "the sealing session acting as an independent contract-reviewer, a distinct actor separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "attempt_id": "I03-0001",
+  "concurrency_diagnostic": {
+    "attempt_id": "I03-0001",
+    "classification": "TRANSIENT_CONCURRENCY_DIAGNOSTICS_NOT_REPRODUCED",
+    "diagnostic_runs": [
+      {
+        "byte_size": 77890,
+        "path": "artifacts/work_packages/I03/attempts/0001/full-node-suite.concurrent-load-diagnostic.junit.xml",
+        "s04_fingerprint_verified": true,
+        "sha256": "sha256:434ce2348acfb0ef774194517a0ec8829f438735d6f23007cbede0a78630d00b",
+        "totals": {
+          "cancelled": 0,
+          "fail": 2,
+          "pass": 359,
+          "skipped": 0,
+          "tests": 361,
+          "todo": 0
+        },
+        "transient_failure_code": "ARTIFACT_STORE_STRUCTURE_INVALID",
+        "transient_failure_test": "orphan_receipt_test: concurrent readers tolerate transient staging and lock handoff"
+      },
+      {
+        "byte_size": 78163,
+        "path": "artifacts/work_packages/I03/attempts/0001/full-node-suite.standalone-concurrency-diagnostic.junit.xml",
+        "s04_fingerprint_verified": true,
+        "sha256": "sha256:2f4a1e895324c5d79fb63cf839c675d4c8e9b8d8317f50543ff825d35e26fead",
+        "totals": {
+          "cancelled": 0,
+          "fail": 2,
+          "pass": 359,
+          "skipped": 0,
+          "tests": 361,
+          "todo": 0
+        },
+        "transient_failure_code": "ARTIFACT_MUTATION_LOCK_FAILED",
+        "transient_failure_test": "orphan_receipt_test: concurrent identical publishers converge"
+      }
+    ],
+    "i03_product_failure_claimed": false,
+    "isolated_reproductions": [
+      {
+        "failed": 0,
+        "passed": 5,
+        "provenance": "commands.jsonl",
+        "runs": 5,
+        "test_name": "orphan_receipt_test: concurrent readers tolerate transient staging and lock handoff",
+        "transient_reproduced": false
+      },
+      {
+        "failed": 0,
+        "passed": 5,
+        "provenance": "commands.jsonl",
+        "runs": 5,
+        "test_name": "orphan_receipt_test: concurrent identical publishers converge",
+        "transient_reproduced": false
+      }
+    ],
+    "serial_full_node": {
+      "path": "artifacts/work_packages/I03/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:3dc91a3634540ff7e6ce5a2eb9ba759ba565ddf8f157893413e97c226daa1c29",
+      "totals": {
+        "cancelled": 0,
+        "fail": 1,
+        "pass": 360,
+        "skipped": 0,
+        "tests": 361,
+        "todo": 0
+      },
+      "transient_failure_count": 0
+    },
+    "status": "DIAGNOSTICS_RECONCILED"
+  },
+  "i03_caused_node_failure_count": 0,
+  "i03_caused_python_failure_count": 0,
+  "new_skip_or_xfail_count": 0,
+  "node": {
+    "byte_size": 75683,
+    "execution_mode": "--test-concurrency=1",
+    "failure": {
+      "actual_manifest_sha256": "fb9656cce2fd4d0147571bc85726ebbbbb3f26a59ac644c5a12040007475d938",
+      "debt_id": "S04-TM004",
+      "expected_manifest_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+      "test_file": "repo:///tests/security/s04-threat-model-traceability.test.mjs",
+      "test_name": "S04-TM004 traceability source bindings fail on undocumented contract drift"
+    },
+    "path": "artifacts/work_packages/I03/attempts/0001/full-node-suite.junit.xml",
+    "semantic_source_of_truth": "node_junit_footer",
+    "sha256": "sha256:3dc91a3634540ff7e6ce5a2eb9ba759ba565ddf8f157893413e97c226daa1c29",
+    "totals": {
+      "cancelled": 0,
+      "fail": 1,
+      "pass": 360,
+      "skipped": 0,
+      "tests": 361,
+      "todo": 0
+    },
+    "xml_footer_testcase_delta": 2,
+    "xml_testcase_count": 359
+  },
+  "node_junit_reporter_reconciliation": {
+    "failure_element_count": 1,
+    "failure_fingerprint_verified": true,
+    "footer_test_count": 361,
+    "semantic_source_of_truth": "node_junit_footer",
+    "xml_testcase_element_count": 359
+  },
+  "official_full_python": {
+    "byte_size": 120469,
+    "official_repository_gate_scope": "tests/**",
+    "path": "artifacts/work_packages/I03/attempts/0001/full-python-suite.junit.xml",
+    "sha256": "sha256:e00a6756ef31c30fbfdbae78a42f4e209acbda4c09ad74951adfcf41d8b892aa",
+    "totals": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 947
+    }
+  },
+  "optional_postgres_diagnostic": {
+    "byte_size": 1154,
+    "classification": "OPTIONAL_POSTGRES_FIXTURE_DEPENDENCY_UNAVAILABLE",
+    "i03_product_causal_impact": "NONE",
+    "missing_dependency": "psycopg",
+    "official_947_test_gate_impact": "NONE",
+    "package_status_effect": "DIAGNOSTIC_ONLY",
+    "path": "artifacts/work_packages/I03/attempts/0001/full-python-suite.optional-postgres-diagnostic.junit.xml",
+    "sha256": "sha256:686cffe8dfdb47ece9767babd91c7118d73c40f706cffa66f68b8e34683e1a62",
+    "totals": {
+      "errors": 1,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 1
+    }
+  },
+  "preexisting_debt_ids": [
+    "S04-TM004"
+  ],
+  "status": "PASS_WITH_BOUNDED_PREEXISTING_DEBT_AND_DIAGNOSTICS",
+  "targeted_python": {
+    "byte_size": 7154,
+    "measurement_identity_case_count": 23,
+    "ontology_fixture_case_count": 16,
+    "path": "artifacts/work_packages/I03/attempts/0001/targeted-python-suite.junit.xml",
+    "sha256": "sha256:fdff252051e3cdaf9a0383bc9debf9f3891b55d224ff3bd7682885130f489cc8",
+    "test_names": [
+      "test_ontology_fixture_test_unique_exact_context_resolves",
+      "test_ontology_fixture_test_same_label_different_construct_is_not_merged",
+      "test_ontology_fixture_test_explicit_method_disambiguates_same_label",
+      "test_ontology_fixture_test_missing_required_context_for_one_candidate_abstains",
+      "test_ontology_fixture_test_string_similarity_is_not_mapping_authority",
+      "test_ontology_fixture_test_nfkc_case_and_spacing_are_compatibility_normalization",
+      "test_ontology_fixture_test_alias_is_explicit_not_inferred",
+      "test_ontology_fixture_test_high_impact_unique_mapping_waits_for_approval",
+      "test_ontology_fixture_test_high_frequency_ambiguous_mapping_enters_queue",
+      "test_ontology_fixture_test_routine_low_frequency_ambiguity_stays_visible",
+      "test_ontology_fixture_test_unknown_high_impact_term_enters_queue_not_catalog",
+      "test_ontology_fixture_test_catalog_order_does_not_change_resolution_or_ids",
+      "test_ontology_fixture_test_other_domain_pack_does_not_supply_authority",
+      "test_ontology_fixture_test_duplicate_construct_id_fails_closed",
+      "test_ontology_fixture_test_mutable_catalog_is_rejected",
+      "test_ontology_fixture_test_queue_id_binds_full_mapping_context",
+      "test_measurement_identity_test_complete_identical_semantics_are_direct",
+      "test_measurement_identity_test_same_id_with_different_semantics_fails_closed",
+      "test_measurement_identity_test_distinct_construct_ids_are_not_pooled",
+      "test_measurement_identity_test_different_methods_are_stratified",
+      "test_measurement_identity_test_unit_difference_requires_explicit_bridge",
+      "test_measurement_identity_test_missing_method_context_is_unknown",
+      "test_measurement_identity_test_explicit_directional_bridge_allows_conversion",
+      "test_measurement_identity_test_bridge_is_not_silently_reversed",
+      "test_measurement_identity_test_partial_bridge_cannot_remove_ceiling",
+      "test_measurement_identity_test_partial_convertible_bridge_does_not_pool",
+      "test_measurement_identity_test_bridge_ceiling_blocks_pooling[METHOD_BOUNDARY_ONLY]",
+      "test_measurement_identity_test_bridge_ceiling_blocks_pooling[BLOCK_AGGREGATION]",
+      "test_measurement_identity_test_convertible_bridge_requires_transformation",
+      "test_measurement_identity_test_duplicate_matching_bridges_fail_closed",
+      "test_measurement_identity_test_domain_pack_mismatch_is_unknown_without_bridge",
+      "test_measurement_identity_test_scope_or_support_mismatch_blocks_aggregation[population_or_entity-children-POPULATION_OR_ENTITY_MISMATCH]",
+      "test_measurement_identity_test_scope_or_support_mismatch_blocks_aggregation[unit_of_analysis-classroom-UNIT_OF_ANALYSIS_MISMATCH]",
+      "test_measurement_identity_test_scope_or_support_mismatch_blocks_aggregation[timing-P30D-TEMPORAL_SUPPORT_MISMATCH]",
+      "test_measurement_identity_test_protocol_and_calibration_changes_stay_method_bound",
+      "test_measurement_identity_test_proxy_identity_retains_promotion_ceiling",
+      "test_measurement_identity_test_distinct_proxy_targets_are_not_merged",
+      "test_measurement_identity_test_semantic_hash_excludes_record_identifier",
+      "test_measurement_identity_test_mutable_bridge_collection_is_rejected"
+    ],
+    "totals": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 39
+    }
+  }
+}

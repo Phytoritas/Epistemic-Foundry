@@ -1,0 +1,43 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "J02-0003-INVENTORY-AUTHORITY-VERIFICATION",
+  "byte_size": 11808,
+  "content_hash": "sha256:857cc7ee674fed8d6f8bd9ac676dde8f4404edd5481146e3a1b31b8f16c665f8",
+  "created_at": "2026-07-30T13:45:00.000Z",
+  "created_by": {
+    "actor_id": "SVC-FOUNDRY-KERNEL-J02",
+    "actor_type": "service"
+  },
+  "locator": "artifacts/work_packages/J02/attempts/0003/inventory-authority-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:64a821e630627d28ff89cfca17a3134e2ef5901167cd21df3c929479bba7d87c",
+  "receipt_id": "AR-J02-0003-INVENTORY-AUTHORITY-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "context_budget_test",
+      "details": "20/20",
+      "status": "PASS"
+    },
+    {
+      "check": "reference_reachability_test",
+      "details": "25/25",
+      "status": "PASS"
+    },
+    {
+      "check": "inventory_hash_verification",
+      "details": "29 skills / 17 references",
+      "status": "PASS"
+    },
+    {
+      "check": "full_python_suite",
+      "details": "990/990",
+      "status": "PASS"
+    },
+    {
+      "check": "j02_regression_reconciliation",
+      "details": "J02-caused failures 0; exact S04-TM004 later-attempt debt retained",
+      "status": "PASS"
+    }
+  ]
+}

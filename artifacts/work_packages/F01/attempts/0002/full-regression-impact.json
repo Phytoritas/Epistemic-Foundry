@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "work_package_id": "F01",
+  "attempt_id": "F01-0002",
+  "status": "FAIL",
+  "classification": "NEW_CROSS_PACKAGE_PROJECTION_DRIFT",
+  "f01_targeted_contract_status": "PASS",
+  "python": {
+    "command": "uv run --locked python -B -m pytest tests -p no:cacheprovider --tb=no",
+    "collected": 937,
+    "passed": 936,
+    "failed": 1,
+    "errors": 0,
+    "skipped": 0,
+    "xfail": 0,
+    "status": "FAIL",
+    "failures": [
+      {
+        "pytest_node_id": "tests/packaging/test_canonical_registry.py::test_source_projection_is_current_and_complete",
+        "failure_type": "AssertionError",
+        "normalized_failure_fingerprint": "B04_CANONICAL_SOURCE_PROJECTION_DRIFT:canonical-registry.json,schemas/epistemic-work-classification.schema.json",
+        "affected_owner": "B04",
+        "affected_runtime_path": "src/epistemic_foundry/_canonical/**",
+        "canonical_contract_change": "F01-authorized strengthening of schemas/epistemic-work-classification.schema.json",
+        "pre_existing_or_new": "NEW_AFTER_F01",
+        "mismatches": [
+          "canonical-registry.json",
+          "schemas/epistemic-work-classification.schema.json"
+        ]
+      }
+    ]
+  },
+  "node": {
+    "command": "node --test",
+    "collected": 268,
+    "passed": 267,
+    "failed": 1,
+    "skipped": 0,
+    "todo": 0,
+    "status": "EXPECTED_PRE_EXISTING_FAILURE",
+    "failures": [
+      {
+        "node_test_id": "S04-TM004",
+        "failure_type": "AssertionError",
+        "normalized_failure_fingerprint": "S04_STALE_DEVELOPMENT_MANIFEST_HASH",
+        "expected_manifest_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+        "actual_manifest_sha256": "526f744b3ce67ebc3bf4a6e9f82defa83455568c4ae594cbf70d51d0cb436e63",
+        "pre_existing_or_new": "PRE_EXISTING_BEFORE_F01",
+        "first_preserved_prior_evidence": "artifacts/work_packages/D01/commands.jsonl#D01-0001-C017",
+        "f01_spec_gap_member": false
+      }
+    ]
+  },
+  "projection_drift": {
+    "root_schema_path": "schemas/epistemic-work-classification.schema.json",
+    "root_schema_sha256": "dbe8437eae1ec8c956b1290556efa7f2bb89c862134870d80f15e6e49679efa9",
+    "packaged_schema_path": "src/epistemic_foundry/_canonical/schemas/epistemic-work-classification.schema.json",
+    "packaged_schema_sha256": "5c0c574605f4d1d2e8ea42385d6bc40ac273d1cbf1319169f6e26db6656d6049",
+    "packaged_registry_path": "src/epistemic_foundry/_canonical/canonical-registry.json",
+    "packaged_registry_sha256": "6336a5254f8438c1acf063820ad115a8c911567de37531afe9b76ddd3151e57b",
+    "expected_file_count": 126,
+    "missing": [],
+    "extra": [],
+    "mismatches": [
+      "canonical-registry.json",
+      "schemas/epistemic-work-classification.schema.json"
+    ],
+    "source_authority": [
+      "schemas/**",
+      "openapi/**"
+    ],
+    "snapshot_owner": "B04",
+    "f01_write_scope_contains_snapshot": false
+  },
+  "diagnostic_command_observations": [
+    {
+      "command": "node --test packages/foundry-kernel/src/forge/classifier",
+      "exit_code": 1,
+      "classification": "INVALID_TEST_DISCOVERY_COMMAND",
+      "reason": "Node treated the directory path as a module; the command did not execute the classifier test files.",
+      "replacement": "Enumerate every *.test.mjs under the classifier directory and pass the exact file paths to node --test.",
+      "replacement_result": "30 passed, 0 failed, 0 skipped",
+      "product_failure": false
+    }
+  ],
+  "new_repository_failure_count": 1,
+  "new_skip_or_xfail_count": 0,
+  "f01_acceptance_gate": "NOT_SATISFIED",
+  "required_resolution": "A product-owner shared-contract decision must assign ownership, timing, and F01 gate semantics for reprojecting the B04 packaged canonical snapshot after later canonical schema/OpenAPI changes."
+}

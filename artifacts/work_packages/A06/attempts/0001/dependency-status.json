@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "work_package_id": "A06",
+  "attempt_id": "A06-0001",
+  "status": "FAIL",
+  "completion_ready": false,
+  "manifest": {
+    "path": "manifests/development_manifest.yaml",
+    "sha256": "sha256:de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940",
+    "work_package_count": 156,
+    "unique_work_package_count": 156
+  },
+  "dependency_inputs": {
+    "A05": {
+      "status": "PASS",
+      "attempt_id": "A05-0002",
+      "report": "artifacts/work_packages/A05/attempts/0002/report.json",
+      "report_sha256": "sha256:c9c550de22f55d32898f0d33489bc9b0480de6eef4bca7baeb09fcf047c6062c",
+      "historical_top_level_report": "artifacts/work_packages/A05/report.json",
+      "historical_top_level_status": "SPEC_GAP",
+      "historical_top_level_report_sha256": "sha256:9454f609060d652bcb4073e2da85dccfdfce79298337dbf8ae0233ff5c651b13"
+    }
+  },
+  "projection_method": "For each manifest package, use its highest monotonic attempt report when present, otherwise its root report; only latest PASS counts as dependency completion. A06-0001 is included as FAIL.",
+  "current_projection": {
+    "pass_count": 42,
+    "pass_packages": [
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "E01",
+      "E02",
+      "E03",
+      "E04",
+      "F01",
+      "F02",
+      "F03",
+      "F04",
+      "G01",
+      "G02",
+      "G03",
+      "G04",
+      "H01",
+      "H02",
+      "H03",
+      "H04",
+      "I01",
+      "I02",
+      "I03",
+      "I04",
+      "J01",
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "A05"
+    ],
+    "attempted_non_pass_count": 4,
+    "attempted_non_pass": [
+      {
+        "package_id": "J02",
+        "attempt_id": "J02-0002",
+        "status": "FAIL",
+        "report": "artifacts/work_packages/J02/attempts/0002/report.json"
+      },
+      {
+        "package_id": "K01",
+        "attempt_id": "K01-0001",
+        "status": "SPEC_GAP",
+        "report": "artifacts/work_packages/K01/attempts/0001/report.json"
+      },
+      {
+        "package_id": "T01",
+        "attempt_id": "T01-0001",
+        "status": "SPEC_GAP",
+        "report": "artifacts/work_packages/T01/attempts/0001/report.json"
+      },
+      {
+        "package_id": "A06",
+        "attempt_id": "A06-0001",
+        "status": "FAIL",
+        "report": "artifacts/work_packages/A06/attempts/0001/report.json"
+      }
+    ],
+    "ready_package_count": 1,
+    "ready_packages_manifest_order": [
+      "J03"
+    ],
+    "ready_packages": {
+      "J03": {
+        "dependencies": [
+          "J01"
+        ],
+        "status": "READY"
+      }
+    },
+    "unstarted_blocked_count": 109
+  },
+  "direct_a06_dependents": {
+    "count": 7,
+    "packages": [
+      {
+        "package_id": "B05",
+        "unmet_dependencies": [
+          "A06"
+        ],
+        "status": "WAITING_ON_A06_REMEDIATION"
+      },
+      {
+        "package_id": "C05",
+        "unmet_dependencies": [
+          "A06"
+        ],
+        "status": "WAITING_ON_A06_REMEDIATION"
+      },
+      {
+        "package_id": "D05",
+        "unmet_dependencies": [
+          "A06",
+          "C05"
+        ],
+        "status": "WAITING_ON_A06_REMEDIATION"
+      },
+      {
+        "package_id": "E05",
+        "unmet_dependencies": [
+          "A06",
+          "C05"
+        ],
+        "status": "WAITING_ON_A06_REMEDIATION"
+      },
+      {
+        "package_id": "F05",
+        "unmet_dependencies": [
+          "A06",
+          "C05"
+        ],
+        "status": "WAITING_ON_A06_REMEDIATION"
+      },
+      {
+        "package_id": "G05",
+        "unmet_dependencies": [
+          "A06",
+          "C05"
+        ],
+        "status": "WAITING_ON_A06_REMEDIATION"
+      },
+      {
+        "package_id": "S05",
+        "unmet_dependencies": [
+          "A06",
+          "C05"
+        ],
+        "status": "WAITING_ON_A06_REMEDIATION"
+      }
+    ]
+  },
+  "rah_dag_mutated": false,
+  "next_state": {
+    "A06": "FAIL_WAITING_ON_BOUNDED_REMEDIATION_AUTHORITY",
+    "J03": "INDEPENDENT_DEPENDENCY_READY",
+    "completion_ready": false
+  }
+}

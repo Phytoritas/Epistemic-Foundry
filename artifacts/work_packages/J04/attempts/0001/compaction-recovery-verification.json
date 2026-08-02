@@ -1,0 +1,82 @@
+{
+  "attempt_id": "J04-0001",
+  "authority_boundary": {
+    "authority_source": "SEALED_CONTEXT_CAPSULE",
+    "external_receipt_binding_required": true,
+    "narrative_prose_authority": false,
+    "recovery_order": [
+      "verify_context_capsule_integrity",
+      "match_external_sealed_receipt",
+      "require_fresh_context_capsule",
+      "project_recovery_state_from_verified_capsule"
+    ],
+    "runtime_implementation_modified_by_j04": false,
+    "test_only_recovery_oracle": true
+  },
+  "capsule": {
+    "capsule_hash": "sha256:c003c60f81dcb970c17f1878936cad5ca3d5da67676d5ca4bcca8b06fec70fea",
+    "capsule_id": "CAP-J04-0001",
+    "fixture_id": "J04-GOLDEN-POST-COMPACTION-0001",
+    "sealed_receipt_id": "AR-J04-CONTEXT-CAPSULE-0001"
+  },
+  "exit_criteria": {
+    "phase_cursor_and_blockers_recover": "PASS",
+    "prose_summary_cannot_replace_artifacts": "PASS"
+  },
+  "j03_implementation_preservation": [
+    {
+      "path": "packages/context-capsule/src/context-capsule.mjs",
+      "sha256": "sha256:017b9b7d8638df51fa2f5a0a218eaf797bdca1ca64b4c02e2d8fde7f3c2c45a6",
+      "status": "UNCHANGED"
+    },
+    {
+      "path": "packages/context-capsule/src/index.mjs",
+      "sha256": "sha256:f92d0efb43f6bee745e0cfe442cfb0f8f3acc8002f8fecc979837a39d427a5d0",
+      "status": "UNCHANGED"
+    },
+    {
+      "path": "packages/context-capsule/package.json",
+      "sha256": "sha256:f768694a12bac2de3e187770b6f3c0c47b2226246eda22d13226e70cd3b36d4e",
+      "status": "UNCHANGED"
+    }
+  ],
+  "negative_and_adversarial_probes": {
+    "attacker_rehash_external_receipt_binding": true,
+    "direct_capsule_hash_tamper": true,
+    "excluded_content_has_no_authority": true,
+    "missing_changed_unaccounted_artifacts": true,
+    "prompt_injection_cannot_change_authority": true,
+    "runspec_policy_phase_drift": true
+  },
+  "source_files": [
+    {
+      "byte_size": 2613,
+      "path": "tests/golden/compaction/post-compaction-recovery.fixture.json",
+      "sha256": "sha256:a4b21b686aeb20fd6cdbb4036e1ce631fe21f94927b4f28451c9bde2000c7c7c",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 4572,
+      "path": "tests/golden/compaction/recovery-oracle.mjs",
+      "sha256": "sha256:fd72edba5be7044d186ff6b50bd4dedf56f09bc511cf5cfcf1df3c032568d2eb",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 5348,
+      "path": "tests/golden/compaction/compaction-resume.test.mjs",
+      "sha256": "sha256:82a3b41500ca5da28f29b85e49f6d5cd94198d8e4af66eb94e2e0e07a724bd28",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 4777,
+      "path": "tests/golden/compaction/context-poisoning.test.mjs",
+      "sha256": "sha256:edfa0dae0304e3fca1d6f2e678df0aeec55cc7d5469327ce44607dbdf2d25dcf",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    }
+  ],
+  "status": "PASS"
+}

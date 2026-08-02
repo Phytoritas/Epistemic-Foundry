@@ -1,0 +1,63 @@
+{
+  "adjudication_discipline": {
+    "adjudication_owner": "EVIDENCE_PARLIAMENT",
+    "refuted_explanations_retained": true,
+    "selected_explanation_id": null
+  },
+  "attempt_id": "R03-0001",
+  "conflict_taxonomy": {
+    "non_assertive_directions_cannot_conflict": true,
+    "types": [
+      "CONDITION_DIFFERENCE",
+      "DIRECT_CONTRADICTION",
+      "MEASUREMENT_DIFFERENCE",
+      "SCOPE_NESTED"
+    ],
+    "untypable_pair_fails_closed": true
+  },
+  "exit_criteria": {
+    "competing_explanations_survive": {
+      "evidence": [
+        "python/epistemic_foundry/reasoning/aporia/test_abduction_diversity.py"
+      ],
+      "mechanism": "each conflict must keep at least two standing explanation kinds, an explanation with no discriminating test cannot compete, and a refuted explanation is retained with its cited refutation rather than dropped",
+      "status": "PASS"
+    },
+    "condition_differences_classified": {
+      "evidence": [
+        "python/epistemic_foundry/reasoning/aporia/test_contradiction_fixture.py"
+      ],
+      "mechanism": "every conflicting pair is typed as a direct contradiction, a condition difference, a nested scope, or a measurement difference, and a pair the engine cannot type fails closed",
+      "status": "PASS"
+    }
+  },
+  "explanation_diversity": {
+    "counted_over_kinds_not_rows": true,
+    "kinds": [
+      "CHANCE",
+      "CONFOUNDING",
+      "DATA_ERROR",
+      "MEASUREMENT_ARTIFACT",
+      "MECHANISM_DIFFERENCE",
+      "MODERATION",
+      "PUBLICATION_BIAS",
+      "SCOPE_BOUNDARY",
+      "SELECTION"
+    ],
+    "minimum_competing_kinds": 2
+  },
+  "required_checks": {
+    "abduction_diversity_test": {
+      "module": "python/epistemic_foundry/reasoning/aporia/test_abduction_diversity.py",
+      "status": "PASS",
+      "test_count": 20
+    },
+    "contradiction_fixture_test": {
+      "module": "python/epistemic_foundry/reasoning/aporia/test_contradiction_fixture.py",
+      "status": "PASS",
+      "test_count": 24
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 44
+}

@@ -1,0 +1,151 @@
+{
+  "attempt_id": "L01-0001",
+  "canonical_memory_classes": [
+    "EPHEMERAL",
+    "SESSION",
+    "WORKSPACE",
+    "USER",
+    "EVIDENCE",
+    "REGULATED"
+  ],
+  "canonical_schema_validation": {
+    "attempt_id": "L01-0001",
+    "final_status": "PASS",
+    "node_exit_code": 0,
+    "node_stderr": "",
+    "schemas": {
+      "consent-record.schema.json": {
+        "error_count": 0,
+        "errors": [],
+        "status": "PASS"
+      },
+      "memory-policy.schema.json": {
+        "error_count": 0,
+        "errors": [],
+        "status": "PASS"
+      }
+    },
+    "sealed_artifacts": {
+      "consent": {
+        "consent_id": "CONS-L01-SCHEMA",
+        "data_classes": [
+          "research decisions"
+        ],
+        "decision": "GRANTED",
+        "expires_at": "2027-07-01T00:00:00Z",
+        "granted_at": "2026-07-01T00:00:00Z",
+        "policy_hash": "sha256:b7d2c43b2a5ad244828cd9e687c02ad55dbfba8a03851b61ecf2a284ed5ab227",
+        "purposes": [
+          "workspace recall"
+        ],
+        "record_hash": "sha256:cc601348b65974a0ccc7c399e81b77e80efb0371500d18f62aa19cc0dc934ad6",
+        "recorded_by": "USER-L01-SCHEMA",
+        "revoked_at": null,
+        "scopes": [
+          "WORKSPACE"
+        ],
+        "subject_id": "USER-L01-SCHEMA",
+        "workspace_id": "WS-L01-SCHEMA"
+      },
+      "policy": {
+        "allowed_classes": [
+          "WORKSPACE",
+          "USER"
+        ],
+        "class_rules": [
+          {
+            "class": "WORKSPACE",
+            "external_sync": "DENY",
+            "redaction_profile": "workspace-default",
+            "requires_consent": true,
+            "retention_days": 90
+          }
+        ],
+        "cross_workspace_retrieval": "DENY",
+        "default_retention_days": 30,
+        "effective_at": "2026-07-01T00:00:00Z",
+        "policy_hash": "sha256:b7d2c43b2a5ad244828cd9e687c02ad55dbfba8a03851b61ecf2a284ed5ab227",
+        "policy_id": "MP-L01-SCHEMA",
+        "workspace_id": "WS-L01-SCHEMA"
+      }
+    }
+  },
+  "closed_input_shapes": true,
+  "consent_binding": {
+    "data_class": true,
+    "memory_class_scope": true,
+    "policy_hash": true,
+    "purpose": true,
+    "workspace": true
+  },
+  "coverage": {
+    "branch_percent": 80.89,
+    "function_percent": 100.0,
+    "line_percent": 92.05,
+    "status": "PASS",
+    "stderr_empty": true
+  },
+  "cross_workspace": {
+    "default_deny": true,
+    "explicit_opt_in_required": true,
+    "only_user_class_can_cross": true
+  },
+  "hash_integrity": {
+    "consent_record": true,
+    "memory_policy": true
+  },
+  "immediate_denial": {
+    "expired": true,
+    "retention_expired": true,
+    "revoked": true
+  },
+  "scope_boundary": {
+    "l01_recall_admission_only": true,
+    "l02_search_and_retrieval_receipts_not_implemented": true,
+    "l03_redaction_deletion_legal_hold_not_implemented": true
+  },
+  "status": "PASS",
+  "syntax": {
+    "attempt_id": "L01-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/policy/memory-policy.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/policy/index.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/policy/consent-policy.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/policy/retention.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "targeted": {
+    "cancelled": 0,
+    "collected": 27,
+    "failed": 0,
+    "junit": "artifacts/work_packages/L01/attempts/0001/targeted-l01-node.junit.xml",
+    "junit_sha256": "sha256:5578192b750a5d0f73adb8bd5694ebb55a2b5c50854a40764a624d3578758203",
+    "passed": 27,
+    "skipped": 0,
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_testcase_count": 25
+  }
+}

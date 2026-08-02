@@ -1,0 +1,57 @@
+{
+  "patch_plan_id": "MP-EF4-B04-SG002-20260730-001",
+  "source_path": "manifests/development_manifest.yaml",
+  "parent_sha256": "8859303ea2fbe8d71655b2c244daf424a9742d4ce700bb93edddc20e3a06f23b",
+  "successor_sha256": "5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+  "authorizing_decision_ids": [
+    "HD-EF4-B04-SG002-20260730-001"
+  ],
+  "operations": [
+    {
+      "op": "replace",
+      "package_id": "C03",
+      "field": "write_scope",
+      "replacement_value_hash": "sha256:1d7b831e574308259847b4c5b592228029cb8d801eb590894fb09c0764c7f07d"
+    },
+    {
+      "op": "replace",
+      "package_id": "C03",
+      "field": "exit_criteria",
+      "replacement_value_hash": "sha256:6788fa5f0ab7c2909f1cf0194716325e577b055d533e44e1cf55f923733170aa"
+    },
+    {
+      "op": "replace",
+      "package_id": "C03",
+      "field": "required_checks",
+      "replacement_value_hash": "sha256:88df3f5a1dfdae5feac72a46f2430a89590a8d3dd53465ba76dd615168bc1306"
+    }
+  ],
+  "operation_count": 3,
+  "changed_package_ids": [
+    "C03"
+  ],
+  "changed_fields": {
+    "C03": [
+      "write_scope",
+      "exit_criteria",
+      "required_checks"
+    ]
+  },
+  "static_dependency_changes": [],
+  "attempt_level_reconciliation": [
+    "C03-0003",
+    "F04-0002",
+    "J02-0003",
+    "S04-0003",
+    "B04-0007",
+    "C04-0002",
+    "B04-0008"
+  ],
+  "parent_hash_verification": {
+    "status": "PASS",
+    "observed_before_patch": true,
+    "observed_sha256": "8859303ea2fbe8d71655b2c244daf424a9742d4ce700bb93edddc20e3a06f23b"
+  },
+  "created_at": "2026-07-30T11:20:57Z",
+  "patch_plan_hash": "sha256:6605f7bf3d434190f253d291221e7320c4bd9f1d7265568305520694e7736c30"
+}

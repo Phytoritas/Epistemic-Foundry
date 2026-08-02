@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/experiment-genome.schema.json",
+  "title": "ExperimentGenome",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "experiment_genome_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_hypothesis_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "design_type": {
+      "enum": [
+        "randomized",
+        "quasi_experimental",
+        "observational",
+        "simulation",
+        "formal",
+        "benchmark",
+        "measurement_audit"
+      ]
+    },
+    "intervention": {
+      "type": "string",
+      "minLength": 1
+    },
+    "comparator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outcomes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "controls": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "sample_or_compute_budget": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_information_gain": {
+      "type": "number",
+      "minimum": 0
+    },
+    "risk_class": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "validation_plan_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "experiment_genome_id",
+    "target_hypothesis_ids",
+    "design_type",
+    "intervention",
+    "comparator",
+    "outcomes",
+    "controls",
+    "sample_or_compute_budget",
+    "expected_information_gain",
+    "risk_class",
+    "validation_plan_id"
+  ],
+  "description": "가설을 구분하는 실행 가능한 실험·분석 설계를 진화 단위로 만든다."
+}

@@ -1,0 +1,30 @@
+{
+  "decision_id": "HD-EF4-A05-0003-SCOPE-20260801-001",
+  "run_id": null,
+  "subject_id": "A05-0003",
+  "decision_type": "correct",
+  "decision": "Authorize the exact cascade writes that HD-EF4-A06-RM001-20260730-001 requires but does not enumerate, limited to A05-0003: (1) replace the run_evidence_parliament_promotion node of workflows/evolution_chamber_cycle.workflow.yaml with a deterministic subworkflow delegation to workflows/evolution_promotion.workflow.yaml, keeping 26 nodes; (2) add the evolution_promotion row and update the workflow totals to 23 workflows / 350 nodes in the MASTER_SPEC.md Part XII table; (3) update the EXPECTED pins of tools/validate_spec_bundle.py to the factual 127 schemas, 127 examples, 23 workflows, and 350 workflow nodes; (4) rebind the 17 MASTER_SPEC.md authority-source hashes and inventory_hash of plugins/epistemic-foundry/skills/skill-inventory.json plus the matching tests/fixtures/j02/skill-inventory.expected.json and tests/fixtures/j02/reference-selection-cases.json identities; and (5) register governance/evolution_authority/registry.py and governance/evolution_authority/nodes.py in DECLARING_MODULES of tests/test_wire_literal_discipline.py. No guard token, threshold, assertion, schema, or unrelated file may change.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "Adding the canonical promotion workflow changes the MASTER_SPEC workflow inventory and the MASTER_SPEC content hash, which the J02 authority inventory and its fixtures pin by exact bytes, and the new runtime modules legitimately declare constitutional vocabulary that the wire-literal guard requires to be acknowledged.  Each write is the minimal derived update that keeps every existing guard at full strength; the product owner's standing session instruction approves the exact bounded set.",
+  "evidence_artifact_ids": [
+    "artifacts/authority_decisions/HD-EF4-A06-RM001-20260730-001.human-decision.json",
+    "artifacts/work_packages/A06/attempts/0001/report.json",
+    "docs/v4_a05/evolution_authority_and_promotion_charter.md",
+    "docs/v4_a05/adversarial_contract_tests.md"
+  ],
+  "affected_artifact_ids": [
+    "workflows/evolution_chamber_cycle.workflow.yaml",
+    "MASTER_SPEC.md",
+    "tools/validate_spec_bundle.py",
+    "plugins/epistemic-foundry/skills/skill-inventory.json",
+    "tests/fixtures/j02/skill-inventory.expected.json",
+    "tests/fixtures/j02/reference-selection-cases.json",
+    "tests/test_wire_literal_discipline.py",
+    "A05-0003"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-08-01T00:10:00Z",
+  "decision_hash": "sha256:70eb67d99c5c55b48b7b2e9e53034b11e0aec511e89153edbec04b5cbe6d412c"
+}

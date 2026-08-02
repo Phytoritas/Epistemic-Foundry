@@ -1,0 +1,201 @@
+{
+  "work_package_id": "C01",
+  "attempt_id": "C01-0003",
+  "base_checkpoint": "A04:PASS,A05-0002:PASS",
+  "status": "SPEC_GAP",
+  "spec_gap_id": "C01-SG003",
+  "authority_decision_id": "HD-EF4-C01-SG002-20260728-001",
+  "authority_decision_hash": "sha256:2c471aea25a4410c53dffbb793c546de395df4301e1ff98375129c3c79c146d6",
+  "resolved_prior_gap": {
+    "id": "C01-SG002",
+    "relationship": "RESOLVED_BY_DECISION",
+    "decision_id": "HD-EF4-C01-SG002-20260728-001",
+    "history_preserved": true,
+    "prior_attempt_status_unchanged": "SPEC_GAP"
+  },
+  "prior_attempts_preserved": [
+    {
+      "attempt": "C01-0001",
+      "status": "SPEC_GAP",
+      "report": "artifacts/work_packages/C01/report.json",
+      "report_sha256": "14d1815150ba37ebc416d637afbb1514fbbb024f9fe6940ed7b976ce33b60d68"
+    },
+    {
+      "attempt": "C01-0002",
+      "status": "SPEC_GAP",
+      "report": "artifacts/work_packages/C01/attempts/0002/report.json",
+      "report_sha256": "c8100002239cf826c9fe521f86f84295e1cdec3bbe5e49f210c4a7e124d31369"
+    }
+  ],
+  "authorized_contract_surface": {
+    "status": "PASS",
+    "schema_count": 124,
+    "example_count": 124,
+    "valid_example_count": 124,
+    "unique_schema_id_count": 124,
+    "required_resolved_ref_count": 20,
+    "promotion_level_count": 6,
+    "canonical_gate_count": 15,
+    "openapi_version": "3.1.1",
+    "openapi_operation_count": 33,
+    "unique_operation_id_count": 33,
+    "targeted_contract_tests_passed": 64,
+    "legacy_promotion_value_hits": 0,
+    "spec_hash": "sha256:580392a2d791515a6523472372fa3139321807a9fa3a2a0f183e93b4686948df",
+    "decision_hash": "sha256:781e2449498ee9799c8f62b6a8b4cd08289891587a86a795e8f45459e09f9f5f"
+  },
+  "new_spec_gap": {
+    "id": "C01-SG003",
+    "summary": "The strengthened C01 schemas invalidate legacy runtime producers and tests, no work package owns the five required migration paths, and the canonical granted_level semantics for a non-promotion decision are undefined.",
+    "classification": "SPEC_GAP",
+    "not_fail_reason": "The authorized C01 implementation passes its schema, example, OpenAPI, and targeted contract checks; the remaining repair requires authority outside C01 and a missing shared semantic.",
+    "not_blocked_reason": "No external tool, credential, corpus, licensed source, or backend is missing.",
+    "affected_paths": [
+      "src/epistemic_foundry/evolution_chamber/run_spec.py",
+      "src/epistemic_foundry/governance/promotion.py",
+      "tests/test_evolution_chamber.py",
+      "tests/test_governance.py",
+      "tests/test_integration_forge_cycle.py"
+    ],
+    "manifest_owner_count_per_affected_path": 0,
+    "required_decision": [
+      "Assign a migration owner and exact write scope for the five affected paths.",
+      "Define the canonical granted_level semantics for non-promotion decisions.",
+      "Choose whether migration precedes C01 PASS or the full-suite gate moves to an explicitly named migration package."
+    ]
+  },
+  "changed_files": [
+    "manifests/development_manifest.yaml",
+    "schemas/evolution-run-spec.schema.json",
+    "schemas/promotion-decision.schema.json",
+    "schemas/gate-decision.schema.json",
+    "schemas/phase-artifact-set.schema.json",
+    "examples/sample_evolution-run-spec.json",
+    "examples/sample_promotion-decision.json",
+    "openapi/epistemic-foundry-v1.openapi.yaml",
+    "docs/api_contract.md",
+    "tests/contracts/openapi/conftest.py",
+    "tests/contracts/openapi/test_openapi_contract.py",
+    "tests/contracts/openapi/test_scientific_contracts.py",
+    "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verifier.py",
+    "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verification.json",
+    "artifacts/work_packages/C01/attempts/0003/dependency-status.json",
+    "artifacts/work_packages/C01/attempts/0003/commands.jsonl",
+    "artifacts/work_packages/C01/attempts/0003/review.md",
+    "artifacts/work_packages/C01/attempts/0003/report.json"
+  ],
+  "checks": [
+    {
+      "command_id": "C01-0003-C003",
+      "name": "deterministic C01 boundary verification",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verification.json"
+    },
+    {
+      "command_id": "C01-0003-C004",
+      "name": "verifier compilation",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0003/commands.jsonl#C01-0003-C004"
+    },
+    {
+      "command_id": "C01-0003-C005",
+      "name": "targeted C01 contract regression",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verification.json#/c01_contract_validation/targeted_tests"
+    },
+    {
+      "command_id": "C01-0003-C006",
+      "name": "full Python regression",
+      "exit_code": 1,
+      "artifact": "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verification.json#/full_python_regression"
+    },
+    {
+      "command_id": "C01-0003-C007",
+      "name": "whole-bundle diagnostic",
+      "exit_code": 1,
+      "artifact": "artifacts/work_packages/C01/attempts/0003/commands.jsonl#C01-0003-C007"
+    },
+    {
+      "command_id": "C01-0003-C008",
+      "name": "write-scope, history, ownership, and hash audit",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verification.json"
+    },
+    {
+      "command_id": "C01-0003-C009",
+      "name": "user-authorized primary-session separate contract review",
+      "exit_code": 1,
+      "artifact": "artifacts/work_packages/C01/attempts/0003/review.md"
+    }
+  ],
+  "review": {
+    "reviewer": "primary-session contract review",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_PASS",
+    "status": "SPEC_GAP_WITH_USER_AUTHORIZED_PRIMARY_SESSION_REVIEW",
+    "product_owner_review_approval": true,
+    "actor_separate_subagent_used": false,
+    "blocking_findings": [
+      "Five required runtime/test migration paths have no manifest owner and are outside C01 scope.",
+      "The canonical granted_level meaning for a non-promotion decision is undefined when no current Passport level is supplied.",
+      "The full regression has 24 failures and therefore C01 cannot be reported PASS."
+    ],
+    "assurance_limitation": "The product owner prohibited Fleet and subagents. This review is procedurally separate but not actor-independent, and no external certification is claimed."
+  },
+  "full_python_regression": {
+    "baseline_before_c01": 789,
+    "collected": 848,
+    "passed": 824,
+    "failed": 24,
+    "failure_groups": {
+      "tests/test_evolution_chamber.py": 2,
+      "tests/test_governance.py": 14,
+      "tests/test_integration_forge_cycle.py": 8
+    }
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verifier.py",
+    "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verification.json",
+    "artifacts/work_packages/C01/attempts/0003/dependency-status.json",
+    "artifacts/work_packages/C01/attempts/0003/commands.jsonl",
+    "artifacts/work_packages/C01/attempts/0003/review.md",
+    "artifacts/work_packages/C01/attempts/0003/report.json"
+  ],
+  "open_risks": [
+    "The C01 schema/runtime migration has no assigned owner and cannot be completed under the current manifest.",
+    "Non-promotion granted_level semantics require a product-owner decision; choosing a level locally risks laundering a failed request into a scientific label.",
+    "The preserved dirty worktree causes fourteen PACKAGE_MANIFEST hash/inventory diagnostics outside the isolated C01 contract checks.",
+    "Review is user-authorized primary-session procedural review rather than actor-independent assurance because Fleet and subagents were prohibited."
+  ],
+  "not_verified": [
+    "A passing full Python regression under the strengthened canonical schemas",
+    "production REST handlers, runtime authorization, persistence, or transport behavior",
+    "B04 canonical registry packaging and clean-wheel installation",
+    "external actor-independent assurance"
+  ],
+  "dependency_state": {
+    "A05": "PASS",
+    "C01": "SPEC_GAP",
+    "B04": "WAITING_ON_C01",
+    "C02": "WAITING_ON_C01",
+    "C03": "WAITING_ON_C01",
+    "full_156_package_dag_recomputed": false,
+    "subsequent_dag_execution_started": false
+  },
+  "rah_state": {
+    "status": "blocked",
+    "completion_ready": false,
+    "generation": "000002-e90aad20",
+    "generation_manifest_sha256": "ed5e4f9451e42b78f32494d0284a2836095bcdc85edb9bf7286567f2371cb5e6",
+    "six_snapshot_hashes_verified": true,
+    "flat_snapshot_projection_verified": true,
+    "parse_errors": {},
+    "evidence_ids": [
+      "E0001",
+      "E0002",
+      "E0003",
+      "E0004"
+    ],
+    "documented_gap_evidence_id": "E0004"
+  },
+  "resume_condition": "A higher-order decision assigns the exact runtime/test migration scope, defines non-promotion granted_level semantics, and fixes the migration/full-suite gate sequence. Resume C01 with a new attempt; do not modify C01-0001, C01-0002, or C01-0003."
+}

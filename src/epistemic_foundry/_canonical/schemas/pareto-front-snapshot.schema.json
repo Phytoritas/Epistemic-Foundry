@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/pareto-front-snapshot.schema.json",
+  "title": "ParetoFrontSnapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "snapshot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "fitness_vector_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "objective_dimensions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 2
+    },
+    "constraint_policy_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hypervolume": {
+      "type": "number",
+      "minimum": 0
+    },
+    "reference_point": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 1
+    },
+    "snapshot_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "evolution_run_id",
+    "generation",
+    "candidate_ids",
+    "fitness_vector_ids",
+    "objective_dimensions",
+    "constraint_policy_version",
+    "hypervolume",
+    "reference_point",
+    "snapshot_hash"
+  ],
+  "description": "세대별 비지배 후보와 축별 trade-off를 불변 스냅샷으로 보존한다."
+}

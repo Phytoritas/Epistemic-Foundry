@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/mutation-result.schema.json",
+  "title": "MutationResult",
+  "description": "The required data payload of a mutating tool result envelope. committed is boolean|null: an UNKNOWN effect must never be rendered as committed=false, which would falsely claim the effect did not happen. capability_lease_id exposes an identifier only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "mutation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "action_intent_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "capability_lease_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "effect_receipt_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dry_run": {
+          "type": "boolean"
+        },
+        "effect_status": {
+          "enum": [
+            "SUCCEEDED",
+            "FAILED",
+            "UNKNOWN",
+            "ROLLED_BACK",
+            "NOT_EXECUTED"
+          ]
+        },
+        "committed": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "expected_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "observed_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "new_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reconciliation_required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "action_intent_id",
+        "capability_lease_id",
+        "effect_receipt_id",
+        "dry_run",
+        "effect_status",
+        "committed",
+        "expected_revision",
+        "observed_revision",
+        "new_revision",
+        "reconciliation_required"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "effect_status": {
+                "const": "SUCCEEDED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "committed": {
+                "const": true
+              },
+              "new_revision": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reconciliation_required": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "effect_status": {
+                "const": "NOT_EXECUTED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "committed": {
+                "const": false
+              },
+              "new_revision": {
+                "type": "null"
+              },
+              "reconciliation_required": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "effect_status": {
+                "const": "UNKNOWN"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "committed": {
+                "type": "null"
+              },
+              "new_revision": {
+                "type": "null"
+              },
+              "reconciliation_required": {
+                "const": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "effect_status": {
+                "const": "FAILED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "committed": {
+                "const": false
+              },
+              "new_revision": {
+                "type": "null"
+              },
+              "reconciliation_required": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "effect_status": {
+                "const": "ROLLED_BACK"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "committed": {
+                "const": false
+              },
+              "reconciliation_required": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "preview": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "mutation",
+    "preview"
+  ]
+}

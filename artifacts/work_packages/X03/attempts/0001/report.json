@@ -1,0 +1,238 @@
+{
+  "attempt_id": "X03-0001",
+  "attempt_type": "X03_MODEL_ROUTING_FALLBACK_POLICY",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "X03-0001",
+    "dependencies": {
+      "X01": {
+        "attempt_id": "X01-0001",
+        "core_evidence_id": "E0203",
+        "core_generation": "000201-e6bf05b3",
+        "final_closeout_evidence_id": "E0204",
+        "report": "artifacts/work_packages/X01/attempts/0001/report.json",
+        "report_sha256": "sha256:976e23a05d826aa10c3f757d652c3c6fd8f56ed05f9bf0dcba09aa033c2a924c",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_X03_0001_THEN_RECOMPUTE_DAG",
+    "regression_baseline": {
+      "attempt_id": "R06-0001",
+      "core_evidence_id": "E0223",
+      "core_generation": "000221-94e507f2",
+      "final_closeout_evidence_id": "E0224",
+      "report": "artifacts/work_packages/R06/attempts/0001/report.json",
+      "report_sha256": "sha256:ca4f56d06df2e3675c80acccc8c74e35a3b8b1a808294537beeb1f8996e6d4c3",
+      "status": "PASS"
+    },
+    "regression_baseline_note": "R06-0001 is the live latest-sealed attempt (highest core generation on the ledger frontier) at the time this evidence was built.",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "failure_cost_and_eval_data_drive_routing": "PASS",
+    "fallback_recorded_and_policy_approved": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "any route acquiring evaluator, holdout, or promotion authority",
+    "any routing decision invented rather than derived from the declared route table",
+    "provider parity or cross-vendor error independence (X04 scope)",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 29291,
+      "path": "artifacts/work_packages/X03/attempts/0001/build_x03_0001_evidence.py",
+      "sha256": "sha256:0b113c891ee8043f53762b1c5e2adb388410c17725a3835ac8e92ca30826e74a"
+    },
+    {
+      "byte_size": 8032,
+      "path": "artifacts/work_packages/X03/attempts/0001/commands.jsonl",
+      "sha256": "sha256:68da51b58d63f9bd093a59cf2cf535ac5ebb5d46d4c48689f941bf6908e98c41"
+    },
+    {
+      "byte_size": 1028,
+      "path": "artifacts/work_packages/X03/attempts/0001/dependency-status.json",
+      "sha256": "sha256:ff73eb231e13da3dc743b9e43e856f6f63a388cff4c828dcf9831be27b5af7a2"
+    },
+    {
+      "byte_size": 2273,
+      "path": "artifacts/work_packages/X03/attempts/0001/fallback-provenance-test.junit.xml",
+      "sha256": "sha256:6a499cd2d5e664d9c19c56af36fda311106d8da8f79781ba9a020e6039a70e7e"
+    },
+    {
+      "byte_size": 226694,
+      "path": "artifacts/work_packages/X03/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:78661b56d36485e83dcbecfaeead403c0eaf068235b137f8f4ae783f96586f3e"
+    },
+    {
+      "byte_size": 1777,
+      "path": "artifacts/work_packages/X03/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:b27dca08e47a1db6478207568d03942e4eda80e723b454f400256d360c1318f4"
+    },
+    {
+      "byte_size": 7181,
+      "path": "artifacts/work_packages/X03/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:4aa905df2e51166f47fdfcb796aa25b526d5a39faf09c0005715d2d723fbb7f5"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/X03/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:5ddcff192340fe88f12ff7a38f36c52ebc917d53acdd5176d6a489f6940fee72"
+    },
+    {
+      "byte_size": 1829,
+      "path": "artifacts/work_packages/X03/attempts/0001/review.md",
+      "sha256": "sha256:405fb76e7eaae4da0b7ad0be2228301a61a735c391985bbebe63b2da316f708e"
+    },
+    {
+      "byte_size": 2854,
+      "path": "artifacts/work_packages/X03/attempts/0001/routing-policy-test.junit.xml",
+      "sha256": "sha256:46430a7595bb6856167e250c91dcf3eca7bfef32250b71670835df9d5f1d474b"
+    },
+    {
+      "byte_size": 8422,
+      "path": "artifacts/work_packages/X03/attempts/0001/run_x03_0001_checks.py",
+      "sha256": "sha256:87b27b39d8de72fdb967c0ed4d50008afeac4e890ad2b97ac8434de0260a1e2c"
+    },
+    {
+      "byte_size": 1340,
+      "path": "artifacts/work_packages/X03/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:2e59e2731369b96ff6b17b0d36d26092821d231539d1f97bbca59e7c0f3c3932"
+    },
+    {
+      "byte_size": 1917,
+      "path": "artifacts/work_packages/X03/attempts/0001/x03-verification.json",
+      "sha256": "sha256:d4e8a152dd1fcb7daccb3aa417ea536157121267dc5f1c46f0c2fcbad32de948"
+    },
+    {
+      "byte_size": 25622,
+      "path": "artifacts/work_packages/X03/attempts/0001/x03_0001_rah_seal.py",
+      "sha256": "sha256:29d09967680deb9c8e76bc2fdb8c9f3c5fdf224f1ed93c31409c7c9fd125f0c4"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0227",
+    "core_generation": "000225-b908e82f",
+    "final_closeout_evidence_id": "E0228",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1350,
+    "implementation_gate": "fail",
+    "retained_generation_count": 225,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "X03-0001",
+    "full_node_gate": "zero_failures_with_x03_routing_in_inventory",
+    "full_node_inventory_count": 107,
+    "full_node_passed": 1192,
+    "new_failure_count": 0,
+    "regression_baseline_attempt": "R06-0001",
+    "status": "PASS",
+    "suites": {
+      "fallback_provenance_test": {
+        "cancelled": 0,
+        "collected": 10,
+        "failed": 0,
+        "junit": "artifacts/work_packages/X03/attempts/0001/fallback-provenance-test.junit.xml",
+        "junit_sha256": "sha256:6a499cd2d5e664d9c19c56af36fda311106d8da8f79781ba9a020e6039a70e7e",
+        "passed": 10,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 10
+      },
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1192,
+        "failed": 0,
+        "junit": "artifacts/work_packages/X03/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:78661b56d36485e83dcbecfaeead403c0eaf068235b137f8f4ae783f96586f3e",
+        "passed": 1192,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1187
+      },
+      "routing_policy_test": {
+        "cancelled": 0,
+        "collected": 14,
+        "failed": 0,
+        "junit": "artifacts/work_packages/X03/attempts/0001/routing-policy-test.junit.xml",
+        "junit_sha256": "sha256:46430a7595bb6856167e250c91dcf3eca7bfef32250b71670835df9d5f1d474b",
+        "passed": 14,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 14
+      }
+    }
+  },
+  "required_checks": {
+    "fallback_provenance_test": {
+      "status": "PASS",
+      "test_count": 10
+    },
+    "independent_review": {
+      "evidence": "review.md (author: bounded X03 implementation agent; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "routing_policy_test": {
+      "status": "PASS",
+      "test_count": 14
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (a bounded X03 implementation agent authored, the sealing session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "X03",
+  "write_scope": {
+    "approved_scope": [
+      "packages/role-router/src/routing/**"
+    ],
+    "attempt_id": "X03-0001",
+    "authored_by": "bounded implementation agent (X03 maker) under the product owner's explicit parallel-execution instruction",
+    "checked_file_count": 5,
+    "composed_modules_modified": false,
+    "product_file_hashes": {
+      "packages/role-router/src/routing/fallback-provenance.test.mjs": "sha256:6f6916618a207239fae512db58b3de04975cade1e4c213b732844c65da56f75b",
+      "packages/role-router/src/routing/index.mjs": "sha256:2c56b07363c02687e72dbafb72a25246103fdbe56771353915f2684f959330e1",
+      "packages/role-router/src/routing/route-policy-test-support.mjs": "sha256:b6a38c29fe32b48eabf83b740bc65f98654d83a1b611edb2dadbba49a4c48fc5",
+      "packages/role-router/src/routing/route-policy.mjs": "sha256:9092d3214b983c29b3359978a67d9e3c8abefc8bc07cbf39c90ea5dadc793a34",
+      "packages/role-router/src/routing/routing-policy.test.mjs": "sha256:b4a2396940e3cbf47e052fe5f5ae07c7b0e48713dfbcb79d1a8a8b10d0697d72"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "sealing session acting as an independent contract-reviewer, separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

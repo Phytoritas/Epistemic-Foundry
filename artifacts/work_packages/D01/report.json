@@ -1,0 +1,177 @@
+{
+  "work_package_id": "D01",
+  "attempt_id": "D01-0001",
+  "title": "SQLite WAL local canonical store",
+  "status": "PASS",
+  "package_status": "PASS",
+  "completion_ready": false,
+  "dependencies": {
+    "B04": {
+      "status": "PASS",
+      "attempt_id": "B04-0002",
+      "report": "artifacts/work_packages/B04/attempts/0002/report.json",
+      "report_sha256": "a75e724b453bf58ce2745af174e96d7f08616bd09467e3b047b78f31b8add643"
+    },
+    "C04": {
+      "status": "PASS",
+      "attempt_id": "C04-0001",
+      "report": "artifacts/work_packages/C04/report.json",
+      "report_sha256": "eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f"
+    }
+  },
+  "write_scope": [
+    "packages/foundry-kernel/src/state/sqlite/**"
+  ],
+  "changed_files": [
+    {
+      "path": "packages/foundry-kernel/src/state/sqlite/sqlite-state-store.mjs",
+      "sha256": "6619dccb72f40e92fdaae3d023a2d6591f8d63bdfe789ba5c36b53ce7dbe1380",
+      "byte_size": 47741
+    },
+    {
+      "path": "packages/foundry-kernel/src/state/sqlite/sqlite-wal.test.mjs",
+      "sha256": "e9d17526d229edf4e9369cfffd1834bdb9ff761a264f4aa4605edc3d8f3d2bfc",
+      "byte_size": 30544
+    },
+    {
+      "path": "packages/foundry-kernel/src/state/sqlite/concurrent-revision.test.mjs",
+      "sha256": "3df6754b227d32fdfad8c6bc4e7352634fc847bad8ffbe3ffceb030441688bbb",
+      "byte_size": 6978
+    },
+    {
+      "path": "packages/foundry-kernel/src/state/sqlite/integrity-safe-mode.test.mjs",
+      "sha256": "9b6d31b8fb45b17183d3d8a9fe9a3d72d70e047a17f01fd31b2ea516407ac37f",
+      "byte_size": 13864
+    }
+  ],
+  "implementation": {
+    "sqlite_api": "node:sqlite DatabaseSync",
+    "schema_version": 1,
+    "journal_mode": "WAL",
+    "transaction_mode": "BEGIN IMMEDIATE",
+    "synchronous_transaction_callbacks_only": true,
+    "revision_genesis": 0,
+    "revision_ceiling": 9007199254740991,
+    "cas_stale_writer_mutates_state": false,
+    "integrity_failure_mode": "SAFE_MODE",
+    "safe_mode_mutation_policy": "deny all mutation paths",
+    "repository_root_fallback": false,
+    "new_external_dependency": false
+  },
+  "exit_criteria": {
+    "transactions_and_compare_and_swap_revisions_implemented": "PASS",
+    "integrity_failure_enters_SAFE_MODE": "PASS"
+  },
+  "required_checks": {
+    "sqlite_wal_test": {
+      "status": "PASS",
+      "tests": 35,
+      "coverage_with_concurrent_tests": {
+        "total_tests": 37,
+        "line_percent": 83.46,
+        "branch_percent": 76.05,
+        "function_percent": 95.0
+      }
+    },
+    "concurrent_revision_test": {
+      "status": "PASS",
+      "tests": 2,
+      "cas_contention_repetitions": 100,
+      "concurrent_first_open_repetitions": 100,
+      "failed_repetitions": 0
+    }
+  },
+  "regression": {
+    "foundry_kernel_and_security": {
+      "status": "PASS",
+      "passed": 72,
+      "failed": 0,
+      "skipped": 0
+    },
+    "python": {
+      "status": "PASS",
+      "passed": 912,
+      "failed": 0
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix_and_cache_policy": "PASS",
+    "package_dry_run": {
+      "status": "PASS",
+      "entry_count": 13,
+      "d01_files_included": 4
+    },
+    "text_integrity": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "artifact": "artifacts/work_packages/D01/review.md",
+    "blocking_findings": 0,
+    "resolved_finding_ids": [
+      "D01-RF001",
+      "D01-RF002",
+      "D01-RF003",
+      "D01-RF004",
+      "D01-RF005",
+      "D01-RF006",
+      "D01-RF007"
+    ],
+    "assurance_limitation": "The final pass is procedurally separate within the primary session under the product owner's no-subagent/no-Fleet decision; it is not external actor-independent certification."
+  },
+  "residual_integration_failures": [
+    {
+      "check": "repository-wide Node tests",
+      "status": "FAIL_OUTSIDE_D01",
+      "passed": 103,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "owner_scope": "S04"
+    },
+    {
+      "check": "scripts/build/double_build.py",
+      "status": "FAIL_OUTSIDE_D01",
+      "failure": "staged source omits scripts/ required by build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  ],
+  "historical_and_worktree_preservation": {
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "failed_review_and_probe_results_preserved_in_commands": true
+  },
+  "evidence_artifacts": [
+    "artifacts/work_packages/D01/report.json",
+    "artifacts/work_packages/D01/commands.jsonl",
+    "artifacts/work_packages/D01/review.md"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000014-74784c27",
+    "core_generation": "000015-eb60b9b6",
+    "core_evidence_id": "E0016",
+    "final_closeout_evidence_id": "E0017",
+    "retained_generation_manifest_count_after_core": 15,
+    "generation_file_hashes_verified_after_core": 90,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "flat_snapshot_content_matches_after_core": 6,
+    "completion_ready": false
+  },
+  "dag_reconciliation": {
+    "status": "PASS",
+    "work_package_count": 156,
+    "unique_work_package_count": 156,
+    "unknown_dependency_count": 0,
+    "cycle_count": 0,
+    "completed_package_count": 18,
+    "ready_packages_manifest_order": [
+      "D02",
+      "D03",
+      "G01",
+      "A06"
+    ],
+    "next_package": "D02",
+    "completion_ready": false
+  }
+}

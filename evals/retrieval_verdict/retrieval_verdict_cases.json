@@ -1,0 +1,194 @@
+{
+  "corpus_id": "Q03-RETRIEVAL-VERDICT",
+  "queries": [
+    {
+      "insight_id": "INS-Q03-001",
+      "query_id": "Q-001",
+      "relevant": [
+        {
+          "document_id": "DOC-A1",
+          "polarity": "supporting"
+        },
+        {
+          "document_id": "DOC-A2",
+          "polarity": "supporting"
+        },
+        {
+          "document_id": "DOC-A3",
+          "polarity": "counter"
+        },
+        {
+          "document_id": "DOC-A4",
+          "polarity": "counter"
+        },
+        {
+          "document_id": "DOC-A5",
+          "polarity": "null"
+        }
+      ],
+      "retrieved": [
+        "DOC-A1",
+        "DOC-A2",
+        "DOC-A3",
+        "DOC-X9",
+        "DOC-A5"
+      ]
+    },
+    {
+      "insight_id": "INS-Q03-002",
+      "query_id": "Q-002",
+      "relevant": [
+        {
+          "document_id": "DOC-B1",
+          "polarity": "supporting"
+        },
+        {
+          "document_id": "DOC-B2",
+          "polarity": "counter"
+        },
+        {
+          "document_id": "DOC-B3",
+          "polarity": "null"
+        }
+      ],
+      "retrieved": [
+        "DOC-B1",
+        "DOC-B3",
+        "DOC-X8"
+      ]
+    },
+    {
+      "insight_id": "INS-Q03-003",
+      "query_id": "Q-003",
+      "relevant": [
+        {
+          "document_id": "DOC-C1",
+          "polarity": "supporting"
+        },
+        {
+          "document_id": "DOC-C2",
+          "polarity": "counter"
+        },
+        {
+          "document_id": "DOC-C3",
+          "polarity": "null"
+        }
+      ],
+      "retrieved": [
+        "DOC-C1",
+        "DOC-C2",
+        "DOC-C3"
+      ]
+    },
+    {
+      "insight_id": "INS-Q03-004",
+      "query_id": "Q-004",
+      "relevant": [
+        {
+          "document_id": "DOC-D1",
+          "polarity": "null"
+        },
+        {
+          "document_id": "DOC-D2",
+          "polarity": "supporting"
+        }
+      ],
+      "retrieved": [
+        "DOC-D1",
+        "DOC-D2"
+      ]
+    }
+  ],
+  "retriever_under_test": {
+    "name": "q03-synthetic-retriever",
+    "synthetic": true,
+    "version": "1.0.0"
+  },
+  "verdict_cases": [
+    {
+      "case_id": "VC-001",
+      "confidence": 0.95,
+      "gold_verdict": "SUPPORTED",
+      "predicted_verdict": "SUPPORTED",
+      "query_id": "Q-001"
+    },
+    {
+      "case_id": "VC-002",
+      "confidence": 0.88,
+      "gold_verdict": "REFUTED",
+      "predicted_verdict": "REFUTED",
+      "query_id": "Q-001"
+    },
+    {
+      "case_id": "VC-003",
+      "confidence": 0.72,
+      "gold_verdict": "UNDETERMINED",
+      "predicted_verdict": "SUPPORTED",
+      "query_id": "Q-001"
+    },
+    {
+      "case_id": "VC-004",
+      "confidence": 0.81,
+      "gold_verdict": "SUPPORTED",
+      "predicted_verdict": "SUPPORTED",
+      "query_id": "Q-002"
+    },
+    {
+      "case_id": "VC-005",
+      "confidence": 0.64,
+      "gold_verdict": "UNDETERMINED",
+      "predicted_verdict": "UNDETERMINED",
+      "query_id": "Q-002"
+    },
+    {
+      "case_id": "VC-006",
+      "confidence": 0.55,
+      "gold_verdict": "REFUTED",
+      "predicted_verdict": "SUPPORTED",
+      "query_id": "Q-002"
+    },
+    {
+      "case_id": "VC-007",
+      "confidence": 0.91,
+      "gold_verdict": "SUPPORTED",
+      "predicted_verdict": "SUPPORTED",
+      "query_id": "Q-003"
+    },
+    {
+      "case_id": "VC-008",
+      "confidence": 0.77,
+      "gold_verdict": "REFUTED",
+      "predicted_verdict": "REFUTED",
+      "query_id": "Q-003"
+    },
+    {
+      "case_id": "VC-009",
+      "confidence": 0.43,
+      "gold_verdict": "UNDETERMINED",
+      "predicted_verdict": "UNDETERMINED",
+      "query_id": "Q-003"
+    },
+    {
+      "case_id": "VC-010",
+      "confidence": 0.35,
+      "gold_verdict": "UNDETERMINED",
+      "predicted_verdict": "UNDETERMINED",
+      "query_id": "Q-004"
+    },
+    {
+      "case_id": "VC-011",
+      "confidence": 0.28,
+      "gold_verdict": "SUPPORTED",
+      "predicted_verdict": "UNDETERMINED",
+      "query_id": "Q-004"
+    },
+    {
+      "case_id": "VC-012",
+      "confidence": 0.69,
+      "gold_verdict": "SUPPORTED",
+      "predicted_verdict": "SUPPORTED",
+      "query_id": "Q-004"
+    }
+  ],
+  "version": "1.0"
+}

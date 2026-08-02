@@ -1,0 +1,31 @@
+{
+  "decision_id": "HD-EF4-T02-SCOPE-20260801-001",
+  "run_id": null,
+  "subject_id": "T02",
+  "decision_type": "correct",
+  "decision": "Authorize the exact cross-layer paths T02 needs beyond its manifest grant of packages/plugin-host/src/mcp/write/**, and adopt the architecture recorded in docs/t02_mutating_tool_architecture.md. The additional authorized paths are exactly: contracts/mcp/catalog-set.yaml; contracts/mcp/t02/**; src/epistemic_foundry/application/mcp_mutating/**; tests/mcp/t02/**; docs/t02_mutating_tool_architecture.md; and a DECLARING_MODULES registry addition in tests/test_wire_literal_discipline.py. The sealed T01 catalog, its generated descriptor projection, the sealed result and error envelope schemas, and the sealed exact-13 tests must not change. Broad grants such as contracts/mcp/**, src/epistemic_foundry/**, tests/**, or packages/plugin-host/** are refused.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "A Node-only T02 would have to duplicate the shared Python envelope and authorization semantics, make Node authoritative for policy, leases, receipts, and reconciliation, or hide domain logic under the Node write directory. A narrow cross-layer extension keeps the mutation lifecycle provider-neutral, keeps every wire literal in exactly one declaring catalog, and leaves the sealed T01 surface untouched. The architecture was produced by an external reasoning session and then verified locally; one of its assumptions about the Python package root was wrong and has been corrected in the recorded contract.",
+  "evidence_artifact_ids": [
+    "docs/t02_mutating_tool_architecture.md",
+    "contracts/mcp/t01/tool-catalog.yaml",
+    "contracts/mcp/t01/foundry-mcp-tool-result.schema.json",
+    "contracts/mcp/t01/foundry-mcp-tool-error.schema.json",
+    "artifacts/work_packages/T01/attempts/0002/report.json"
+  ],
+  "affected_artifact_ids": [
+    "contracts/mcp/catalog-set.yaml",
+    "contracts/mcp/t02/**",
+    "src/epistemic_foundry/application/mcp_mutating/**",
+    "packages/plugin-host/src/mcp/write/**",
+    "tests/mcp/t02/**",
+    "tests/test_wire_literal_discipline.py",
+    "docs/t02_mutating_tool_architecture.md",
+    "T02-0001"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-08-01T04:40:00Z",
+  "decision_hash": "sha256:28d2ba92c43337f7626ad5d3876059a95fb656cd3059638d3eba0ed6e408b3d7"
+}

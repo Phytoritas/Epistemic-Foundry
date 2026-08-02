@@ -1,0 +1,256 @@
+{
+  "attempt_id": "E02-0001",
+  "attempt_type": "E02_ACTION_INTENT_ATTEMPT_AND_EFFECT_RECEIPT",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "E02-0001",
+    "dependencies": {
+      "E01": {
+        "attempt_id": "E01-0001",
+        "report": "artifacts/work_packages/E01/report.json",
+        "report_sha256": "sha256:beddc2a3019fcf680435ea6d5f907b5e7b50b0fa8a384673917c6198f49f32e1",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_E02_0001_THEN_CONTINUE_DAG",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "side_effects_cannot_complete_by_narration": "PASS",
+    "unknown_effects_reconcile_before_retry": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false
+  },
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "capability leases, fencing, or approval policy (E03)",
+    "the wider scheduler, replay, or strict/semantic replay surface",
+    "truth of arbitrary external-service outcomes beyond supplied evidence",
+    "a universal distributed exactly-once guarantee",
+    "external actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 35541,
+      "path": "artifacts/work_packages/E02/attempts/0001/build_e02_0001_evidence.py",
+      "sha256": "sha256:2e6b5744a3f40327305e024969059a0d7f416b96ad7abff4d8df5efad67e7821"
+    },
+    {
+      "byte_size": 9196,
+      "path": "artifacts/work_packages/E02/attempts/0001/commands.jsonl",
+      "sha256": "sha256:b837b53741164a74f1fc0fb44267ddfcb57cdc0bd9a7a5dee76057b0e5797b20"
+    },
+    {
+      "byte_size": 359,
+      "path": "artifacts/work_packages/E02/attempts/0001/dependency-status.json",
+      "sha256": "sha256:ca1d81b2703f6f2f889f244953c3cc3ba6bd6458372118774fe6e4bdadd00e8a"
+    },
+    {
+      "byte_size": 3019,
+      "path": "artifacts/work_packages/E02/attempts/0001/e02-verification.json",
+      "sha256": "sha256:3f395d9b05e948f7ced5c503ee30c7dfc72204188f34f71634247d84b00817fd"
+    },
+    {
+      "byte_size": 26448,
+      "path": "artifacts/work_packages/E02/attempts/0001/e02_0001_rah_seal.py",
+      "sha256": "sha256:27bee5687ab6ae98a43e1dd2b7c48beadb93b07ed873b17344ceb4359a954c88"
+    },
+    {
+      "byte_size": 2381,
+      "path": "artifacts/work_packages/E02/attempts/0001/effect-reconciliation-test.junit.xml",
+      "sha256": "sha256:977c2e2bf03a5971601e182aa4610072e8a778b2355903f367240b5c341ddeb3"
+    },
+    {
+      "byte_size": 237598,
+      "path": "artifacts/work_packages/E02/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:6701418f5d98dfed6e1a76b5f0377742241f4fc659407306c2feabda695c1155"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/E02/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 1920,
+      "path": "artifacts/work_packages/E02/attempts/0001/idempotency-test.junit.xml",
+      "sha256": "sha256:aa2de7311c98ccdd05b592a4a70dab3b54e3205dc0fa37991677c4c147e40f44"
+    },
+    {
+      "byte_size": 2737,
+      "path": "artifacts/work_packages/E02/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:a03a5be178f178f325042339872810febbf9ef87c0bf0a40a8359689db79b95d"
+    },
+    {
+      "byte_size": 7183,
+      "path": "artifacts/work_packages/E02/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:4e15bf60a68c17ac0fa6d024f4bd540037af4a6bd29b96afe80ed42e21177bd8"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/E02/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:50d23a275a8f9e7bd23275eae05d3c05b161fcb8f179d4cdd31587f190359304"
+    },
+    {
+      "byte_size": 4271,
+      "path": "artifacts/work_packages/E02/attempts/0001/review.md",
+      "sha256": "sha256:45339b076a21688c1a57717b8d14817afe1b58a27a6998c6e66a41bc4fd2721c"
+    },
+    {
+      "byte_size": 6355,
+      "path": "artifacts/work_packages/E02/attempts/0001/run_e02_0001_checks.py",
+      "sha256": "sha256:d3dc70db00e3dcad2fbb5f20daaf0407a5c24651f3b42637204ee2b758297da9"
+    },
+    {
+      "byte_size": 4105,
+      "path": "artifacts/work_packages/E02/attempts/0001/targeted-effects.junit.xml",
+      "sha256": "sha256:b6f1731ca3f6066f9685f1d731dddb4bea1a9636cdc59dee45fb6cbd954122a4"
+    },
+    {
+      "byte_size": 1233,
+      "path": "artifacts/work_packages/E02/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:2883dd294da42b8b196deaccad6e9fcceaeb905a70a5c8965284fb5610f5eb8e"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0315",
+    "core_generation": "000313-1d520a80",
+    "final_closeout_evidence_id": "E0316",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1878,
+    "implementation_gate": "fail",
+    "retained_generation_count": 313,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "E02-0001",
+    "component_tests_are_targeted_only": true,
+    "effect_reconciliation_test": {
+      "cancelled": 0,
+      "collected": 10,
+      "failed": 0,
+      "junit": "artifacts/work_packages/E02/attempts/0001/effect-reconciliation-test.junit.xml",
+      "junit_sha256": "sha256:977c2e2bf03a5971601e182aa4610072e8a778b2355903f367240b5c341ddeb3",
+      "passed": 10,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 10
+    },
+    "full_node": {
+      "cancelled": 0,
+      "collected": 1253,
+      "failed": 0,
+      "junit": "artifacts/work_packages/E02/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:6701418f5d98dfed6e1a76b5f0377742241f4fc659407306c2feabda695c1155",
+      "passed": 1253,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 1248
+    },
+    "full_python": {
+      "collected": 1261,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/E02/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+      "passed": 1261,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1261
+    },
+    "idempotency_test": {
+      "cancelled": 0,
+      "collected": 9,
+      "failed": 0,
+      "junit": "artifacts/work_packages/E02/attempts/0001/idempotency-test.junit.xml",
+      "junit_sha256": "sha256:aa2de7311c98ccdd05b592a4a70dab3b54e3205dc0fa37991677c4c147e40f44",
+      "passed": 9,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 9
+    },
+    "new_failure_count": 0,
+    "status": "PASS",
+    "targeted_effects": {
+      "cancelled": 0,
+      "collected": 19,
+      "failed": 0,
+      "junit": "artifacts/work_packages/E02/attempts/0001/targeted-effects.junit.xml",
+      "junit_sha256": "sha256:b6f1731ca3f6066f9685f1d731dddb4bea1a9636cdc59dee45fb6cbd954122a4",
+      "passed": 19,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 19
+    },
+    "unexpected_skip_xfail_todo_or_cancellation_count": 0
+  },
+  "required_checks": {
+    "effect_reconciliation_test": {
+      "module": "packages/foundry-kernel/src/effects/effect-reconciliation.test.mjs",
+      "status": "PASS",
+      "test_count": 10
+    },
+    "idempotency_test": {
+      "module": "packages/foundry-kernel/src/effects/idempotency.test.mjs",
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Independent review of bounded-agent work by a distinct actor in this seal-prep session; not external actor-independent certification.",
+    "author": "bounded implementation agent",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "reviewer": "independent seal-prep session (distinct actor)",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "E02",
+  "write_scope": {
+    "approved_scope": [
+      "packages/foundry-kernel/src/effects/**",
+      "artifacts/work_packages/E02/**"
+    ],
+    "attempt_id": "E02-0001",
+    "component_files": [
+      "packages/foundry-kernel/src/effects/effect-coordinator.mjs",
+      "packages/foundry-kernel/src/effects/effect-reconciliation.test.mjs",
+      "packages/foundry-kernel/src/effects/effect-test-support.mjs",
+      "packages/foundry-kernel/src/effects/idempotency.test.mjs"
+    ],
+    "product_file_hashes": {
+      "packages/foundry-kernel/src/effects/effect-coordinator.mjs": "sha256:a4d2b9b851f9055869db842d10702e6017a61c18fcc637521fdec398b5abc1f2",
+      "packages/foundry-kernel/src/effects/effect-reconciliation.test.mjs": "sha256:998a962b3e193e3b497aa60078f5f3d650332d88f973d81d3b167be025a13402",
+      "packages/foundry-kernel/src/effects/effect-test-support.mjs": "sha256:df45bdec72a2ed2ffda922189e21f1102cc1cdcf2c50d661f9ac1e98051c0a4a",
+      "packages/foundry-kernel/src/effects/idempotency.test.mjs": "sha256:0d386c1eb2ded877423979838d604e1270ec4112b82f162d2d2222924fda5dec"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "write_scope_violation_count": 0
+  }
+}

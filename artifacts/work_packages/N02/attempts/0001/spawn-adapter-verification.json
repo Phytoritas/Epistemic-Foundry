@@ -1,0 +1,240 @@
+{
+  "adapter_contract_version": "4.0.0-n02.1",
+  "attempt_id": "N02-0001",
+  "canonical_role_authority": "RoleSpec",
+  "canonical_role_preserved_across_hosts": true,
+  "descriptor_content_addressed_and_immutable": true,
+  "descriptor_semantic_revalidation": "PASS",
+  "exact_model_and_runtime_resolution_required": true,
+  "fallback_policy_decision_required": true,
+  "floating_model_or_runtime_reference_rejection": "PASS",
+  "host_capability_report_canonicalization": "PASS",
+  "host_details_alter_canonical_role": false,
+  "host_modes_fail_closed": [
+    "BLOCKED",
+    "SAFE_MODE"
+  ],
+  "manifest_contract": {
+    "depends_on": [
+      "N01"
+    ],
+    "exit_criteria": [
+      "host details do not alter canonical role",
+      "resolved model recorded"
+    ],
+    "independent_review": "required",
+    "required_checks": [
+      "adapter_compilation_test",
+      "prompt_injection_boundary_test"
+    ],
+    "risk_class": "high",
+    "status": "PASS",
+    "write_scope": [
+      "packages/role-router/src/adapters/**"
+    ]
+  },
+  "prompt_injection_boundary": "PASS",
+  "resolved_model_recorded": true,
+  "result_contract": {
+    "business_output_from_role_spec": true,
+    "execution_envelope_schema_ref": "schemas/result-envelope.schema.json",
+    "expected_count_from_role_spec": true,
+    "prose_completion_is_authority": false
+  },
+  "serial_fallback": "EXPLICIT_CAPABILITY_ONLY",
+  "status": "PASS",
+  "supported_hosts": [
+    "claude_code",
+    "codex_cli",
+    "codex_desktop"
+  ],
+  "syntax": {
+    "attempt_id": "N02-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/adapters/adapter-contract.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/adapters/adapter-test-support.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/adapters/adapter-compilation.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/adapters/prompt-injection-boundary.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/adapters/codex-adapter.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/adapters/claude-adapter.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/adapters/index.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "targeted": {
+    "adapter_compilation_test_count": 17,
+    "cancelled": 0,
+    "collected": 29,
+    "failed": 0,
+    "junit": "artifacts/work_packages/N02/attempts/0001/targeted-n02-node.junit.xml",
+    "junit_sha256": "sha256:aab98fd036629c56b50c6678edab631f49df8d6f98e1c7714e13cb5cd51c470a",
+    "observed_file_count": 2,
+    "observed_files": [
+      "packages/role-router/src/adapters/adapter-compilation.test.mjs",
+      "packages/role-router/src/adapters/prompt-injection-boundary.test.mjs"
+    ],
+    "passed": 29,
+    "prompt_injection_boundary_test_count": 12,
+    "skipped": 0,
+    "test_names": [
+      "adapter_compilation_test: Codex compilation is deterministic, immutable, and content-addressed",
+      "adapter_compilation_test: Codex and Claude preserve identical canonical role authority",
+      "adapter_compilation_test: descriptor binds exact runtime, routing receipt, output, and count",
+      "adapter_compilation_test: subagent unavailability uses only explicit serial fallback",
+      "adapter_compilation_test: missing subagent and serial capabilities blocks instead of substituting",
+      "adapter_compilation_test: blocked and safe-mode hosts cannot compile executable work",
+      "adapter_compilation_test: a read-only host cannot receive a write-capable RoleSpec",
+      "adapter_compilation_test: policy-approved RoleSpec fallback tier is explicit and recorded",
+      "adapter_compilation_test: unauthorized or unapproved model fallback fails closed",
+      "adapter_compilation_test: floating model and runtime references are rejected",
+      "adapter_compilation_test: capability report hash and host identity are verified",
+      "adapter_compilation_test: rehashed non-canonical capability reports fail closed",
+      "adapter_compilation_test: a tampered RoleSpec never reaches host compilation",
+      "adapter_compilation_test: serialized descriptor mutation is detected",
+      "adapter_compilation_test: attacker rehash cannot authorize an altered internal binding",
+      "adapter_compilation_test: Codex Desktop is explicit and still preserves RoleSpec authority",
+      "adapter_compilation_test: unknown host and unknown Codex built-in role both fail closed",
+      "prompt_injection_boundary_test: host capability evidence is data, not prompt authority",
+      "prompt_injection_boundary_test: caller-supplied prompt and authority fields are rejected",
+      "prompt_injection_boundary_test: model routing cannot smuggle role semantics",
+      "prompt_injection_boundary_test: only the verified RoleSpec can supply mission and ACL text",
+      "prompt_injection_boundary_test: mutation without a new RoleSpec hash is rejected",
+      "prompt_injection_boundary_test: copied capability state cannot bypass its report hash",
+      "prompt_injection_boundary_test: accessor-backed compile fields never execute",
+      "prompt_injection_boundary_test: Proxy compile requests are rejected without trap execution",
+      "prompt_injection_boundary_test: host-specific target never changes canonical prompt",
+      "prompt_injection_boundary_test: descriptor prompt replacement fails integrity validation",
+      "prompt_injection_boundary_test: prompt replacement plus attacker rehash still fails semantic verification",
+      "prompt_injection_boundary_test: custom prototypes cannot carry hidden authority"
+    ],
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_logical_test_count": 29,
+    "xml_suite_test_count": 0,
+    "xml_testcase_count": 29
+  },
+  "upstream_regressions": {
+    "host_capability": {
+      "cancelled": 0,
+      "collected": 18,
+      "failed": 0,
+      "hook_degraded_mode_test_count": 7,
+      "hook_feature_probe_test_count": 11,
+      "junit": "artifacts/work_packages/N02/attempts/0001/host-capability-regression.junit.xml",
+      "junit_sha256": "sha256:2105c4dff07eafe905f4d803a73a68ab223e1648c0605915d819e5a272af34f2",
+      "observed_file_count": 2,
+      "observed_files": [
+        "tests/compatibility/hooks/hook-degraded-mode.test.mjs",
+        "tests/compatibility/hooks/hook-feature-probe.test.mjs"
+      ],
+      "passed": 18,
+      "skipped": 0,
+      "test_names": [
+        "hook_degraded_mode_test: complete observed support is FULL and health PASS",
+        "hook_degraded_mode_test: unavailable optional hooks select the declared DEGRADED behavior",
+        "hook_degraded_mode_test: a required capability without a fallback is BLOCKED",
+        "hook_degraded_mode_test: explicit READ_ONLY and SAFE_MODE mappings use the strongest mode",
+        "hook_degraded_mode_test: incomplete event coverage cannot remain FULL",
+        "hook_degraded_mode_test: re-trust debt is visible in health and cannot be masked by FULL",
+        "hook_degraded_mode_test: undeclared fallback and report tampering fail closed",
+        "hook_feature_probe_test: report is schema-shaped, hash-bound, and explicit about unobserved paths",
+        "hook_feature_probe_test: declaration order cannot change trust or report hashes",
+        "hook_feature_probe_test: changed active hook bytes require exact re-trust",
+        "hook_feature_probe_test: removed hook hashes also invalidate prior trust",
+        "hook_feature_probe_test: removing every formerly trusted hook remains explicit",
+        "hook_feature_probe_test: a hook observation error cannot be weakened by trust state",
+        "hook_feature_probe_test: disabled changed hooks retain re-trust debt",
+        "hook_feature_probe_test: duplicate active hook hashes fail closed",
+        "hook_feature_probe_test: missing observations fail closed to UNKNOWN rather than optimistic support",
+        "hook_feature_probe_test: empty event and tool scopes never prove FULL coverage",
+        "hook_feature_probe_test: unsupported claims, forged trust, and hostile inputs fail closed"
+      ],
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_logical_test_count": 18,
+      "xml_suite_test_count": 0,
+      "xml_testcase_count": 18
+    },
+    "n01_role_contract": {
+      "cancelled": 0,
+      "collected": 21,
+      "failed": 0,
+      "junit": "artifacts/work_packages/N02/attempts/0001/n01-role-contract-regression.junit.xml",
+      "junit_sha256": "sha256:282e26a56cc4a81c1d92db5962e60c8abd2b653eec74fbe1c5ca04d48605c413",
+      "observed_file_count": 2,
+      "observed_files": [
+        "packages/role-router/src/contracts/acl.test.mjs",
+        "packages/role-router/src/contracts/role-schema.test.mjs"
+      ],
+      "passed": 21,
+      "skipped": 0,
+      "test_names": [
+        "acl_test: explicit tool, path, network, and evidence grants allow access",
+        "acl_test: every known but undeclared access is denied by default",
+        "acl_test: evidence ACLs preserve asymmetric defender and prosecutor views",
+        "acl_test: all_permitted is an explicit privileged grant but never a request class",
+        "acl_test: tool grants do not imply network, evidence, read, or write authority",
+        "acl_test: read and write scopes remain independent",
+        "acl_test: dotted and colon-delimited capability aliases fail closed",
+        "acl_test: unknown tool, evidence, and ACL vocabularies are never treated as denial aliases",
+        "acl_test: network ACLs bind exact canonical HTTPS origins",
+        "acl_test: access requests reject traversal and accessor or proxy wrappers without execution",
+        "acl_test: a tampered RoleSpec cannot authorize any access",
+        "role_schema_test: creates a deterministic content-addressed immutable RoleSpec",
+        "role_schema_test: set-semantic fields canonicalize while fallback precedence is preserved",
+        "role_schema_test: persisted integrity requires canonical ordering, hash, and derived ID",
+        "role_schema_test: mission, forbidden behavior, schemas, budget, and expected count are mandatory",
+        "role_schema_test: closed vocabularies and relationship constraints fail closed",
+        "role_schema_test: scopes reject traversal, absolute paths, separators, and malformed broadening",
+        "role_schema_test: duplicates are rejected rather than silently deduplicated",
+        "role_schema_test: hostile wrappers, accessors, sparse arrays, and custom prototypes are inert",
+        "role_schema_test: RoleDispatchPlan projection is exact, immutable, and provider-neutral",
+        "role_schema_test: canonical JSON rejects cycles and non-canonical numeric values"
+      ],
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_logical_test_count": 21,
+      "xml_suite_test_count": 0,
+      "xml_testcase_count": 21
+    },
+    "status": "PASS"
+  }
+}

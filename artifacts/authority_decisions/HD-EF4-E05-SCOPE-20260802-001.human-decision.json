@@ -1,0 +1,29 @@
+{
+  "affected_artifact_ids": [
+    "src/epistemic_foundry/effects/__init__.py",
+    "src/epistemic_foundry/effects/v4_e05/**",
+    "artifacts/work_packages/E05/**",
+    "E05-0001"
+  ],
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "created_at": "2026-08-02T03:00:00Z",
+  "decision": "Authorize exactly one file beyond the E05 write scope of src/epistemic_foundry/effects/v4_e05/**: the package marker src/epistemic_foundry/effects/__init__.py. No other path outside the grant is added, and the file contains a docstring only — it declares no vocabulary, no API and no behaviour. E05 otherwise writes only under its granted scope and artifacts/work_packages/E05/**; the engine composes the existing evolution_chamber.reconciliation, evolution_chamber.mutation and noetic_ledger.receipts surfaces rather than reimplementing them, and holds no canonical schema enum value as a string literal.",
+  "decision_hash": "sha256:77fa8b8de1a2b42f479644de631cd46ab0c80ccbdcd98857ff0d0852955e61b0",
+  "decision_id": "HD-EF4-E05-SCOPE-20260802-001",
+  "decision_type": "correct",
+  "evidence_artifact_ids": [
+    "pyproject.toml",
+    "manifests/development_manifest.yaml",
+    "artifacts/work_packages/B04/attempts/0010/report.json",
+    "artifacts/work_packages/E04/report.json",
+    "artifacts/work_packages/C05/attempts/0001/report.json",
+    "src/epistemic_foundry/evolution_chamber/reconciliation.py",
+    "src/epistemic_foundry/noetic_ledger/receipts.py"
+  ],
+  "non_mutation_acknowledgement": true,
+  "rationale": "pyproject.toml discovers packages with setuptools find_packages (where = ['src']), which requires __init__.py at every level. Verified empirically: without the marker, find_packages returns nothing for epistemic_foundry.effects.v4_e05 while find_namespace_packages finds it, so the module would import at runtime from a source checkout but be silently omitted from the built wheel. That is precisely the source/dist divergence the sealed B04 build gate exists to prevent, and shipping a runtime module that is absent from the distribution would be a hidden gap rather than an implementation. Changing the discovery mode in pyproject.toml was rejected: pyproject is B04's sealed territory, and switching the whole project to namespace discovery to accommodate one package would alter packaging behaviour repository-wide. Adding the marker is the smaller, local and reversible act.",
+  "run_id": null,
+  "subject_id": "E05",
+  "supersedes_decision_id": null
+}

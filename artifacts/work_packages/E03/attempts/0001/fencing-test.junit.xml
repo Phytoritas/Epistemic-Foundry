@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="fencing_test: newer overlapping lease makes the old fencing token stale" time="0.227658" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: replacing one scope invalidates the whole multi-scope lease" time="0.137435" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: failed callback rolls back result, lease-use, and event outbox" time="0.145184" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: operation retry is idempotent and does not rerun callback" time="0.140147" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval role is server-derived and client assertion is rejected" time="0.429210" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: exact approval retry returns its immutable result after expiry" time="0.075475" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: self-approval is a non-waivable denial" time="0.023568" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: promotion commit lease fails without approval and passes with exact approval" time="0.201967" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: candidate/model/backend policy cannot grant privileged authority" time="0.000373" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: forged lease fields or hash cannot reach the mutation callback" time="0.066645" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: callback cannot access authority-private scope-head state" time="0.113734" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: async callback is denied and its pre-await mutation rolls back" time="0.072578" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: lease use and revocation are bound to the sealed run" time="0.068716" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval authority role without approval:issue capability is denied" time="0.022091" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: later REVOKE head invalidates an earlier APPROVE-bound lease" time="0.275937" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval head rejects clock regression and rolls back the proposed record" time="0.078639" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval head rejects distinct decisions at the same instant" time="0.073167" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: committed state survives E01 outage and reconciles exactly once" time="0.091387" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: same PolicyBundle hash with a different capability projection is rejected" time="0.067501" classname="test" file="packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<!-- tests 19 -->
+	<!-- suites 0 -->
+	<!-- pass 19 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+</testsuites>

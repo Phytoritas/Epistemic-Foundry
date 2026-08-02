@@ -1,0 +1,52 @@
+{
+  "attempt_id": "R04-0001",
+  "exit_criteria": {
+    "colliders_confounders_time_order_assessed": {
+      "evidence": [
+        "python/epistemic_foundry/reasoning/causal/test_causal_overclaim.py"
+      ],
+      "mechanism": "all three assessments run on every evaluation, each can only lower the result, and a declared identification status stronger than the derived one is refused",
+      "status": "PASS"
+    },
+    "inference_modes_remain_separate": {
+      "evidence": [
+        "python/epistemic_foundry/reasoning/causal/test_argument_graph_validation.py"
+      ],
+      "mechanism": "induction, deduction, and abduction each contribute one verdict, none may carry a causal or selected result, and the weakest ceiling any mode leaves is binding",
+      "status": "PASS"
+    }
+  },
+  "identification_semantics": {
+    "assessments": [
+      "collider",
+      "confounding",
+      "time_order"
+    ],
+    "derived_not_declared": true,
+    "ladder": [
+      "NOT_ASSESSED",
+      "NOT_IDENTIFIED",
+      "ASSUMPTION_DEPENDENT",
+      "IDENTIFIED"
+    ],
+    "modes_can_only_lower_the_ceiling": true
+  },
+  "required_checks": {
+    "argument_graph_validation": {
+      "module": "python/epistemic_foundry/reasoning/causal/test_argument_graph_validation.py",
+      "status": "PASS",
+      "test_count": 19
+    },
+    "causal_overclaim_test": {
+      "module": "python/epistemic_foundry/reasoning/causal/test_causal_overclaim.py",
+      "status": "PASS",
+      "test_count": 26
+    }
+  },
+  "schema_binding": {
+    "argument_graph": "schemas/argument-graph.schema.json",
+    "mechanism_graph": "schemas/mechanism-graph.schema.json"
+  },
+  "status": "PASS",
+  "targeted_test_count": 45
+}

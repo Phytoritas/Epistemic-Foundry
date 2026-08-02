@@ -1,0 +1,107 @@
+{
+  "attempt_id": "B04-0007",
+  "attempt_type": "PRE_C04_CANONICAL_PROJECTION_AND_REGRESSION_REVALIDATION",
+  "authority_decision_id": "HD-EF4-B04-SG002-20260730-001",
+  "canonical_projection": {
+    "duplicate_schema_id_count": 0,
+    "extra_path_count": 0,
+    "hash_mismatch_count": 0,
+    "missing_path_count": 0,
+    "openapi_operation_count": 33,
+    "openapi_resource_count": 1,
+    "openapi_version": "3.1.1",
+    "projected_snapshot_bundle_hash": "sha256:d01bda0057584e235331b649238fc2507c60cab329fd6b8e8b6a115fac912559",
+    "registry_hash": "sha256:6b4fcade707639e537744be4075e71d3f7e068cd42eaaaddb20ef084851175d5",
+    "resource_count": 127,
+    "schema_count": 126,
+    "source_bundle_hash": "sha256:1557b03db2ad7e7d23b014d4c9d5fd643803f6613696c966d9b0379573259e7f"
+  },
+  "completion_ready": false,
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "B04_prior_attempts": "IMMUTABLE_HISTORY",
+    "dirty_worktree_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_state": {
+    "B04-0007": "PASS_PRE_C04_CORRECTION",
+    "B04-0008": "WAITING_ON_C04_0002",
+    "C01_GATE_DECISION_HASH_CORRECTION": "READY",
+    "C04-0002": "WAITING_ON_C01_HASH_CORRECTION"
+  },
+  "not_claimed": [
+    "C01-owned sample GateDecision hash debt resolved",
+    "C04-0002 full conformance",
+    "B04-0008 final packaging",
+    "repository release readiness",
+    "completion_ready=true",
+    "external actor-independent certification"
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/B04/attempts/0007/canonical-projection-verification.json",
+    "artifacts/work_packages/B04/attempts/0007/commands.jsonl",
+    "artifacts/work_packages/B04/attempts/0007/dependency-status.json",
+    "artifacts/work_packages/B04/attempts/0007/full-node-suite.junit.xml",
+    "artifacts/work_packages/B04/attempts/0007/full-python-suite.junit.xml",
+    "artifacts/work_packages/B04/attempts/0007/full-regression-impact.json",
+    "artifacts/work_packages/B04/attempts/0007/installed-wheel-verification.json",
+    "artifacts/work_packages/B04/attempts/0007/junit-normalization-verification.json",
+    "artifacts/work_packages/B04/attempts/0007/packaging-verification-run.json",
+    "artifacts/work_packages/B04/attempts/0007/phase-artifact-reconciliation.json",
+    "artifacts/work_packages/B04/attempts/0007/projection.artifact-receipt.json",
+    "artifacts/work_packages/B04/attempts/0007/rah-core-integrity.json",
+    "artifacts/work_packages/B04/attempts/0007/report.json",
+    "artifacts/work_packages/B04/attempts/0007/review.md",
+    "artifacts/work_packages/B04/attempts/0007/snapshot-inventory.json",
+    "artifacts/work_packages/B04/attempts/0007/source-inventory.json",
+    "artifacts/work_packages/B04/attempts/0007/targeted-projection.junit.xml",
+    "artifacts/work_packages/B04/attempts/0007/wheel.artifact-receipt.json",
+    "artifacts/work_packages/B04/attempts/0007/sdist.artifact-receipt.json",
+    "artifacts/work_packages/B04/attempts/0007/write-scope-verification.json",
+    "artifacts/work_packages/B04/attempts/0007/build_b04_0007_evidence.py",
+    "artifacts/work_packages/B04/attempts/0007/b04_0007_rah_seal.py",
+    "artifacts/work_packages/B04/attempts/0007/prior-history-verification.json",
+    "artifacts/work_packages/B04/attempts/0007/packaging-summary.json"
+  ],
+  "package_status": "PASS",
+  "product_files_modified_by_attempt": [],
+  "projection_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0012",
+    "core_generation": "000012-92a55b8e",
+    "final_closeout_evidence_id": "E0013",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 72,
+    "implementation_gate": "fail",
+    "retained_generation_count": 12,
+    "status": "active"
+  },
+  "regression": {
+    "node": "PASS_460_OF_460",
+    "python": "PASS_990_OF_990",
+    "targeted_projection": "PASS_41_OF_41",
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "remaining_debt": {
+    "expected_decision_hash": "sha256:a6a50d4285e844b71093e999b5addccf969d09d4c14221a92531d73172369851",
+    "must_be_resolved_before_c04": true,
+    "owner": "C01_CANONICAL_CONTRACT",
+    "path": "examples/sample_gate_decision.json",
+    "status": "PENDING_NEXT_AUTHORIZED_STEP",
+    "stored_decision_hash": "sha256:816c793545f4c3a194ce6b4fa842856defbcb34d991f27277ea9cd2a082e4be1"
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_B04_0007_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_INTEGRATION_REVIEW",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "B04"
+}

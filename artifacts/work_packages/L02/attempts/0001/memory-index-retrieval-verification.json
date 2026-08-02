@@ -1,0 +1,156 @@
+{
+  "attempt_id": "L02-0001",
+  "canonical_memory_classes": [
+    "EPHEMERAL",
+    "SESSION",
+    "WORKSPACE",
+    "USER",
+    "EVIDENCE",
+    "REGULATED"
+  ],
+  "canonical_schema_validation": {
+    "draft": "2020-12",
+    "error_count": 0,
+    "schema": "schemas/memory-retrieval-receipt.schema.json",
+    "sealed_receipt": {
+      "consent_id": "CONS-L02-001",
+      "context_capsule_id": "CC-L02-001",
+      "excluded_classes": [
+        "EPHEMERAL",
+        "SESSION",
+        "USER",
+        "EVIDENCE",
+        "REGULATED"
+      ],
+      "hits": [
+        {
+          "class": "WORKSPACE",
+          "memory_id": "MEM-L02-001",
+          "redacted": false,
+          "score": 1,
+          "source_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "class": "WORKSPACE",
+          "memory_id": "MEM-L02-002",
+          "redacted": false,
+          "score": 1,
+          "source_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      ],
+      "purpose": "resume research",
+      "query": "prior scope decision",
+      "receipt_id": "MRR-545b90e93c20c286523a6580a1de2c6e84c7403eef25d7ed7e092819cd3af751",
+      "redaction_count": 0,
+      "result_hash": "sha256:224e5955ea9b392636de9f784dd6dae1511fe6b0af7e1aa4f916e0745efd16cd",
+      "retrieved_at": "2026-07-31T00:00:00.000Z",
+      "searched_classes": [
+        "WORKSPACE"
+      ],
+      "workspace_id": "WS-L02-001"
+    },
+    "status": "PASS"
+  },
+  "coverage": {
+    "aggregate": {
+      "branch_percent": 73.6,
+      "function_percent": 95.74,
+      "line_percent": 89.89
+    },
+    "memory_index_implementation": {
+      "branch_percent": 75.97,
+      "function_percent": 97.73,
+      "line_percent": 91.49
+    },
+    "status": "PASS",
+    "stderr_empty": true
+  },
+  "determinism": {
+    "algorithm": "unicode_nfkc_token_overlap_v1",
+    "canonical_score_and_tie_break": true,
+    "maximum_result_count": 200,
+    "replay_identity": true
+  },
+  "fail_closed_integrity": {
+    "index_and_store_hashes": true,
+    "receipt_id_and_result_hash": true,
+    "receipt_time_binding": true,
+    "scope_partition": true,
+    "tamper_and_forged_hit_rejection": true
+  },
+  "l01_policy_binding": {
+    "admission_before_index_access": true,
+    "cross_workspace_default_deny": true,
+    "record_timestamp_retention_recheck": true
+  },
+  "retrieval_receipt": {
+    "complete_searched_excluded_partition": true,
+    "consent_and_context_capsule_explicit": true,
+    "raw_search_text_absent": true,
+    "searched_none_distinct_from_unsearched": true,
+    "source_hash_preserved": true
+  },
+  "scope_boundary": {
+    "l01_policy_authority_reused": true,
+    "l02_index_and_receipt_only": true,
+    "l03_redaction_dedupe_forget_delete_and_legal_hold_not_implemented": true,
+    "retrievable_classes": [
+      "SESSION",
+      "WORKSPACE",
+      "USER",
+      "EVIDENCE"
+    ]
+  },
+  "status": "PASS",
+  "syntax": {
+    "attempt_id": "L02-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/index/memory-index.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/index/index.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/index/memory-index-test-support.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/index/memory-scope.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/index/retrieval-receipt.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "targeted": {
+    "cancelled": 0,
+    "collected": 41,
+    "failed": 0,
+    "junit": "artifacts/work_packages/L02/attempts/0001/targeted-l02-node.junit.xml",
+    "junit_sha256": "sha256:8bbfec2c52ba549ea57f79843cbea75d73b9d885f866de99ea7d1ce11c9e6674",
+    "memory_scope_test_count": 22,
+    "passed": 41,
+    "retrieval_receipt_test_count": 19,
+    "skipped": 0,
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_testcase_count": 41
+  }
+}

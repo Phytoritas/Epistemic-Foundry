@@ -1,0 +1,89 @@
+{
+  "attempt_id": "A01-0001",
+  "authority_documents": [
+    "MASTER_SPEC.md",
+    "CLAUDE.md",
+    "AGENTS.md"
+  ],
+  "blocked_stop_declared": true,
+  "canonical_order_tokens": [
+    "MASTER_SPEC\\.md",
+    "development_manifest\\.yaml",
+    "acceptance_matrix\\.yaml",
+    "product_invariants\\.yaml",
+    "schema|workflow",
+    "role_registry\\.yaml",
+    "AGENTS\\.md|CLAUDE\\.md|this file",
+    "notes"
+  ],
+  "check": "instructions_lint",
+  "cross_document_order_consistent": true,
+  "exit_criterion": "authority order is unambiguous",
+  "per_document": {
+    "AGENTS.md": {
+      "authority_order": {
+        "1": "`MASTER_SPEC.md`",
+        "2": "`manifests/development_manifest.yaml`",
+        "3": "`manifests/acceptance_matrix.yaml`",
+        "4": "`manifests/product_invariants.yaml`",
+        "5": "applicable `schemas/*.schema.json` and `workflows/*.workflow.yaml`",
+        "6": "`manifests/role_registry.yaml`",
+        "7": "this file",
+        "8": "work-package-local notes"
+      },
+      "authority_order_item_count": 8,
+      "blocked_outcome_present": true,
+      "each_source_unique": true,
+      "path": "AGENTS.md",
+      "precedence_clause_present": true,
+      "spec_gap_stop_clause_present": true,
+      "status": "PASS",
+      "top_authority": "`MASTER_SPEC.md`"
+    },
+    "CLAUDE.md": {
+      "authority_order": {
+        "1": "`MASTER_SPEC.md`",
+        "2": "`manifests/development_manifest.yaml`",
+        "3": "`manifests/acceptance_matrix.yaml`",
+        "4": "`manifests/product_invariants.yaml`",
+        "5": "applicable `schemas/*.schema.json` and `workflows/*.workflow.yaml`",
+        "6": "`manifests/role_registry.yaml`",
+        "7": "`AGENTS.md` or this file",
+        "8": "work-package-local notes"
+      },
+      "authority_order_item_count": 8,
+      "blocked_outcome_present": true,
+      "each_source_unique": true,
+      "path": "CLAUDE.md",
+      "precedence_clause_present": true,
+      "spec_gap_stop_clause_present": true,
+      "status": "PASS",
+      "top_authority": "`MASTER_SPEC.md`"
+    },
+    "MASTER_SPEC.md": {
+      "authority_order": {
+        "1": "`MASTER_SPEC.md`",
+        "2": "`manifests/development_manifest.yaml`",
+        "3": "`manifests/acceptance_matrix.yaml`",
+        "4": "`manifests/product_invariants.yaml`",
+        "5": "canonical schemas and workflows",
+        "6": "`manifests/role_registry.yaml`",
+        "7": "`AGENTS.md` or `CLAUDE.md`",
+        "8": "work-package-local notes"
+      },
+      "authority_order_item_count": 8,
+      "blocked_outcome_present": true,
+      "each_source_unique": true,
+      "path": "MASTER_SPEC.md",
+      "precedence_clause_present": true,
+      "spec_gap_stop_clause_present": true,
+      "status": "PASS",
+      "top_authority": "`MASTER_SPEC.md`"
+    }
+  },
+  "schema_version": 1,
+  "single_top_authority": "MASTER_SPEC.md",
+  "spec_gap_stop_declared": true,
+  "status": "PASS",
+  "work_package_id": "A01"
+}

@@ -1,0 +1,50 @@
+{
+  "attempt_id": "Q03-0001",
+  "corpus": {
+    "queries": 4,
+    "relevant_documents": 13,
+    "verdict_cases": 12
+  },
+  "declaring_sources": {
+    "calibration_report": "schemas/calibration-report.schema.json"
+  },
+  "exit_criteria": {
+    "brier_ece_reported": {
+      "evidence": [
+        "evals/retrieval_verdict/test_calibration_eval.py"
+      ],
+      "mechanism": "the Brier score and the expected calibration error derive from the same confidence/outcome pairs and are reported with the reliability bins they came from, so re-adding the bins recovers the ECE; the emitted document is validated against schemas/calibration-report.schema.json, and a sample below the floor is INSUFFICIENT_DATA with both statistics null rather than a flattering number",
+      "status": "PASS"
+    },
+    "counter_null_recall_measured": {
+      "evidence": [
+        "evals/retrieval_verdict/test_retrieval_eval.py"
+      ],
+      "mechanism": "recall is reported per evidence polarity with its numerator, denominator and missed ids, so perfect supporting recall cannot mask a counter-evidence miss; a corpus carrying no counter or null evidence is refused rather than scored a perfect one",
+      "status": "PASS"
+    }
+  },
+  "measured": {
+    "brier_score": 0.1655333333,
+    "calibration_status": "WARN",
+    "counter_recall": 0.5,
+    "expected_calibration_error": 0.305,
+    "null_recall": 1.0,
+    "supporting_recall": 1.0,
+    "verdict_accuracy": 0.75
+  },
+  "required_checks": {
+    "calibration_eval": {
+      "module": "evals/retrieval_verdict/test_calibration_eval.py",
+      "status": "PASS",
+      "test_count": 23
+    },
+    "retrieval_eval": {
+      "module": "evals/retrieval_verdict/test_retrieval_eval.py",
+      "status": "PASS",
+      "test_count": 24
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 47
+}

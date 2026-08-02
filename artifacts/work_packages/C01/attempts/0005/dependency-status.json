@@ -1,0 +1,32 @@
+{
+  "attempt_id": "C01-0005",
+  "completion_ready": false,
+  "fixed_execution_sequence": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "B04",
+    "A05",
+    "A06",
+    "J02",
+    "K01",
+    "T01",
+    "FULL_DAG_RECOMPUTATION"
+  ],
+  "package_states": {
+    "A04": "PASS_HISTORY_PRESERVED",
+    "A05": "PASS_HISTORY_BUT_LATER_CORRECTION_NOT_STARTED",
+    "B04": "WAITING_ON_C04_AND_C01_SG004_RESOLUTION",
+    "C01": "SPEC_GAP_C01_SG004",
+    "C02": "WAITING_ON_C01",
+    "C03": "WAITING_ON_C01_AND_C02",
+    "C04": "WAITING_ON_C02_AND_C03",
+    "J02": "WAITING_ON_CANONICAL_SEQUENCE",
+    "K01": "WAITING_ON_CANONICAL_SEQUENCE"
+  },
+  "resume_condition": "A product-owner HumanDecision assigns exact owners and write paths for the eight stale authority/test surfaces and fixes their gate timing so the 126-schema C01/C04/B04 sequence is executable. Resume with a new C01 attempt; do not modify C01-0001 through C01-0005.",
+  "spec_gap_id": "C01-SG004",
+  "status": "SPEC_GAP",
+  "subsequent_package_started": false
+}

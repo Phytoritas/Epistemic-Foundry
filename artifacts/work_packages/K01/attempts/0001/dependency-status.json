@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "work_package_id": "K01",
+  "attempt_id": "K01-0001",
+  "status": "SPEC_GAP",
+  "spec_gap_id": "K01-SG001",
+  "completion_ready": false,
+  "manifest": {
+    "path": "manifests/development_manifest.yaml",
+    "sha256": "sha256:de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940",
+    "work_package_count": 156
+  },
+  "dependency_inputs": {
+    "B04": {
+      "status": "PASS_CURRENT_PROJECTION",
+      "attempt_id": "B04-0004",
+      "report": "artifacts/work_packages/B04/attempts/0004/report.json",
+      "report_sha256": "sha256:a2a2a3bca9ccf1650145b983d942e3888cfd79aaa3568db71a865b5d410d5e13"
+    },
+    "C04": {
+      "status": "PASS",
+      "attempt_id": "C04-0001",
+      "report": "artifacts/work_packages/C04/report.json",
+      "report_sha256": "sha256:eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f"
+    },
+    "D04": {
+      "status": "PASS",
+      "attempt_id": "D04-0001",
+      "report": "artifacts/work_packages/D04/report.json",
+      "report_sha256": "sha256:b47c194e230f4b08ab96b6153e9fc0e170eafb1054318cfaedd8e1ddeb4c5fde"
+    },
+    "S01": {
+      "status": "PASS",
+      "attempt_id": null,
+      "report": "artifacts/work_packages/S01/report.json",
+      "report_sha256": "sha256:6aa7a2ae6c3c047df6293e227ac3206a2e213b322ef1619eb1814e589f3ea7d6"
+    }
+  },
+  "package_states": {
+    "K01": "SPEC_GAP_K01_SG001",
+    "K02": "WAITING_ON_K01",
+    "J02": "FAIL_PENDING_PRODUCT_OWNER_DECISION",
+    "T01": "INDEPENDENT_DEPENDENCY_READY_CANDIDATE",
+    "A06": "INDEPENDENT_DEPENDENCY_READY_CANDIDATE"
+  },
+  "reason": "K01 dependencies pass, but the canonical corpus-ingest lifecycle has no initial registration artifact or defined mapping from first-node registration to the later final DocumentManifest.",
+  "resume_condition": "A product-owner HumanDecision must resolve K01-SG001 and authorize the exact minimal contract and write-scope corrections; K01 must then execute a new attempt without rewriting K01-0001.",
+  "rah_dag_mutated": false,
+  "later_k_package_started": false
+}

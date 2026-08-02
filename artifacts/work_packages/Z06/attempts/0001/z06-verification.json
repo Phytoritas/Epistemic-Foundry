@@ -1,0 +1,62 @@
+{
+  "attempt_id": "Z06-0001",
+  "declaring_sources": {
+    "composed_gates": "frozen sealed reports of Z05 and the thirteen *06 gates (B06,C06,F06,G06,K06,N06,P06,Q06,S06,T06,V06,W06,Y06)",
+    "maturity_floor": "manifests/acceptance_matrix.yaml status_of_this_bundle (SPEC_BUNDLE) and MASTER_SPEC section 2 maturity statement",
+    "provenance": "epistemic_foundry.release.provenance (sealed surface) and schemas/attestation.schema.json pass token (positional)",
+    "status_and_floor": "release/v4_z05/zero_trust_release.py reconciled_status_token / release_level_floor / require_unsigned_provenance / UNSIGNED_STATUS (composed)"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every decision resolves to a content-addressed receipt (id is the sha256 of the payload, self-hash via hash_excluding), the terminal verdict binds each sub-receipt by hash, receipts are byte-equal across runs, carry no clock, and never mutate inputs",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the module holds no canonical enum literal — the passing status token and maturity floor are read through the composed Z05 surface, the fail-closed UNSIGNED status is derived through the sealed provenance surface, and the forbidden-maturity-claim vocabulary is proven disjoint from every schema enum",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "happy path (unit and provenance), negative and adversarial (23 cases, one per finding code), crash/resume-style composition over the actually-sealed frozen Z05 report and the thirteen real *06 reports, and two dependency-regressions that fail here if a composed surface breaks",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "no candidate, model, prompt, backend or hook can gain evaluator, holdout or promotion authority — the truthful-maturity gate refuses any release-level above floor, any completion claim, any executable/validated/production-ready/signed claim, and any unowned conditional in the accounting",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 23
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 8
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 7
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_operations": 41,
+    "dependency_regression_release": 50,
+    "full_node_suite": 1740,
+    "full_python_suite": 1312,
+    "negative_and_adversarial_tests": 23,
+    "provenance_and_receipt_audit": 9,
+    "schema_and_type_check": 8,
+    "targeted_z06_release": 47,
+    "unit_and_contract_tests": 7,
+    "wire_literal_discipline": 5
+  }
+}

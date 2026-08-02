@@ -1,0 +1,77 @@
+{
+  "attempt_id": "S04-0004",
+  "attempt_type": "ACTIVE_SOURCE_BINDING_CORRECTION",
+  "authority_decision_id": "HD-EF4-C01-SG005-20260731-001",
+  "completion_ready": false,
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "J02_0004_preserved": true,
+    "dirty_worktree_preserved": true,
+    "prior_S04_attempts_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "NOT_STARTED_FAIL_CLOSED",
+  "not_claimed": [
+    "S04-0004 PASS",
+    "C01-0009 start",
+    "repository conformance",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/S04/attempts/0004/binding-only-impossibility-verification.json",
+    "artifacts/work_packages/S04/attempts/0004/dependency-status.json",
+    "artifacts/work_packages/S04/attempts/0004/targeted-source-binding.junit.xml",
+    "artifacts/work_packages/S04/attempts/0004/junit-normalization-verification.json",
+    "artifacts/work_packages/S04/attempts/0004/commands.jsonl",
+    "artifacts/work_packages/S04/attempts/0004/review.md",
+    "artifacts/work_packages/S04/attempts/0004/report.json",
+    "artifacts/work_packages/S04/attempts/0004/rah-core-integrity.json",
+    "artifacts/work_packages/S04/attempts/0004/build_s04_0004_evidence.py",
+    "artifacts/work_packages/S04/attempts/0004/s04_0004_rah_seal.py"
+  ],
+  "package_status": "SPEC_GAP",
+  "product_files_modified_by_attempt": [],
+  "rah_state": {
+    "audit_evidence_id": "E0093",
+    "completion_ready": false,
+    "core_generation": "000092-d414e1d5",
+    "documented_gap_evidence_id": "E0094",
+    "final_closeout_evidence_id": "E0095",
+    "status": "blocked"
+  },
+  "resume_condition": "A product-owner HumanDecision must authorize the exact S04 test and new patch-plan paths and define their revision/lineage relationship; S04 must then run a new attempt.",
+  "spec_gap": {
+    "classification": "SPEC_GAP",
+    "id": "S04-SG001",
+    "required_product_owner_decision": {
+      "minimum_scope_additions": [
+        "tests/security/s04-threat-model-traceability.test.mjs",
+        "artifacts/authority_decisions/<new-decision>.manifest-patch-plan.json"
+      ],
+      "preserve_existing_binding_and_patch_plan_as_immutable_history": true,
+      "required_semantics": [
+        "assign the next immutable binding ID and its supersedes linkage",
+        "authorize a patch plan binding the prior manifest hash to the current manifest hash",
+        "bind the latest HumanDecision in authorizing_decision_ids",
+        "make S04-TM004 validate the active revision rather than fixed revision 002"
+      ]
+    },
+    "summary": "The binding-only correction scope cannot satisfy S04-TM004 because the test also freezes the previous binding ID, immutable patch-plan successor, and authorizing-decision list."
+  },
+  "spec_gap_id": "S04-SG001",
+  "status": "SPEC_GAP",
+  "targeted_validation": {
+    "actual_manifest_sha256": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+    "command_exit_code": 1,
+    "expected_bound_successor_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "failed": 1,
+    "failure_test": "S04-TM004 traceability source bindings fail on undocumented contract drift",
+    "junit": "artifacts/work_packages/S04/attempts/0004/targeted-source-binding.junit.xml",
+    "junit_sha256": "sha256:f9362f3a612c81d577817138912e8368553824e21a962d78c7214d9e3613bf4a",
+    "passed": 3,
+    "skipped": 0,
+    "tests": 4
+  },
+  "work_package_id": "S04"
+}

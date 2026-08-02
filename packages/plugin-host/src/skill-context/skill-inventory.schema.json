@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:epistemic-foundry:internal:skill-inventory:v4.0.1-j02.1",
+  "title": "Internal J02 Skill Inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "inventory_id",
+    "inventory_version",
+    "inventory_hash",
+    "parent_skill_id",
+    "tokenizer",
+    "budgets",
+    "metadata_projection",
+    "skills",
+    "references"
+  ],
+  "properties": {
+    "inventory_id": { "type": "string", "minLength": 1 },
+    "inventory_version": { "const": "4.0.1-j02.1" },
+    "inventory_hash": { "$ref": "#/$defs/hash" },
+    "parent_skill_id": { "const": "foundry" },
+    "tokenizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package", "version", "encoding", "disallowed_special", "dependency_artifact"],
+      "properties": {
+        "package": { "const": "tiktoken" },
+        "version": { "const": "0.13.0" },
+        "encoding": { "const": "o200k_base" },
+        "disallowed_special": { "type": "array", "maxItems": 0 },
+        "dependency_artifact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_kind", "filename", "sha256", "source_url"],
+          "properties": {
+            "artifact_kind": { "const": "sdist" },
+            "filename": { "const": "tiktoken-0.13.0.tar.gz" },
+            "sha256": { "const": "sha256:c9435714c3a84c2319499de9a300c0e604449dd0799ff246458b3bb6a7f433c1" },
+            "source_url": { "const": "https://files.pythonhosted.org/packages/source/t/tiktoken/tiktoken-0.13.0.tar.gz" }
+          }
+        }
+      }
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "initial_metadata_max_utf8_bytes",
+        "initial_metadata_max_o200k_tokens",
+        "skill_body_max_utf8_bytes",
+        "skill_body_max_o200k_tokens",
+        "reference_file_max_utf8_bytes",
+        "reference_file_max_o200k_tokens",
+        "reference_closure_max_count",
+        "reference_closure_max_depth",
+        "reference_closure_max_utf8_bytes",
+        "reference_closure_max_o200k_tokens",
+        "activation_max_utf8_bytes",
+        "activation_max_o200k_tokens"
+      ],
+      "properties": {
+        "initial_metadata_max_utf8_bytes": { "const": 6400 },
+        "initial_metadata_max_o200k_tokens": { "const": 1600 },
+        "skill_body_max_utf8_bytes": { "const": 4096 },
+        "skill_body_max_o200k_tokens": { "const": 1024 },
+        "reference_file_max_utf8_bytes": { "const": 4096 },
+        "reference_file_max_o200k_tokens": { "const": 1024 },
+        "reference_closure_max_count": { "const": 12 },
+        "reference_closure_max_depth": { "const": 5 },
+        "reference_closure_max_utf8_bytes": { "const": 24576 },
+        "reference_closure_max_o200k_tokens": { "const": 6144 },
+        "activation_max_utf8_bytes": { "const": 28672 },
+        "activation_max_o200k_tokens": { "const": 7168 }
+      }
+    },
+    "metadata_projection": { "$ref": "#/$defs/seal" },
+    "skills": {
+      "type": "array",
+      "minItems": 29,
+      "maxItems": 29,
+      "items": { "$ref": "#/$defs/skill" }
+    },
+    "references": {
+      "type": "array",
+      "minItems": 17,
+      "maxItems": 17,
+      "items": { "$ref": "#/$defs/reference" }
+    }
+  },
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "seal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256", "byte_count", "token_count"],
+      "properties": {
+        "sha256": { "$ref": "#/$defs/hash" },
+        "byte_count": { "type": "integer", "minimum": 0 },
+        "token_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "predicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "operator", "value"],
+      "properties": {
+        "key": { "enum": ["work_class", "forge_phase", "request_signal", "artifact_kind", "capability", "backend_id", "candidate_origin", "operation", "status"] },
+        "operator": { "enum": ["EQUALS", "IN", "ANY_OF", "ALL_OF"] },
+        "value": {
+          "oneOf": [
+            { "type": "string", "minLength": 1 },
+            { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+          ]
+        }
+      }
+    },
+    "conditional": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference_id", "mode", "predicate"],
+      "properties": {
+        "reference_id": { "type": "string", "minLength": 1 },
+        "mode": { "const": "CONDITIONAL" },
+        "predicate": { "$ref": "#/$defs/predicate" }
+      }
+    },
+    "skill": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["skill_id", "name", "description", "path", "status", "invocation_disposition", "allow_implicit_invocation", "sha256", "byte_count", "token_count", "direct_references", "conditional_references", "child_skills"],
+      "properties": {
+        "skill_id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "name": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "description": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "pattern": "^skills/[a-z0-9-]+/SKILL\\.md$" },
+        "status": { "const": "ACTIVE" },
+        "invocation_disposition": { "enum": ["PARENT_ROUTER", "IMPLICIT_SAFE", "PARENT_ROUTED", "EXPLICIT_ONLY"] },
+        "allow_implicit_invocation": { "type": "boolean" },
+        "sha256": { "$ref": "#/$defs/hash" },
+        "byte_count": { "type": "integer", "minimum": 1, "maximum": 4096 },
+        "token_count": { "type": "integer", "minimum": 1, "maximum": 1024 },
+        "direct_references": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "conditional_references": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/conditional" } },
+        "child_skills": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "authority_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/hash" }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference_id", "path", "mode", "depends_on", "sha256", "byte_count", "token_count", "authority_sources", "media_type", "status"],
+      "properties": {
+        "reference_id": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "pattern": "^skills/foundry/references/.+\\.md$" },
+        "mode": { "enum": ["REQUIRED", "CONDITIONAL", "EXPLICIT_ONLY", "DISABLED"] },
+        "depends_on": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "sha256": { "$ref": "#/$defs/hash" },
+        "byte_count": { "type": "integer", "minimum": 1, "maximum": 4096 },
+        "token_count": { "type": "integer", "minimum": 1, "maximum": 1024 },
+        "authority_sources": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/authority_source" } },
+        "media_type": { "const": "text/markdown" },
+        "status": { "enum": ["ACTIVE", "DISABLED"] }
+      }
+    }
+  }
+}

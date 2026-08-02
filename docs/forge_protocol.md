@@ -28,16 +28,87 @@ A return edge preserves prior artifacts but marks downstream artifacts stale.
 
 ## 2. Epistemic work classes
 
-| Class | Typical request | Minimum path | Default agents | Promotion |
-|---|---|---|---:|---|
-| E0 | formatting, translation, deterministic transform | no FORGE | 0 | none |
-| E1 | direct fact/source lookup | F → O → E | 0–1 | answer with source receipt |
-| E2 | bounded literature synthesis | F → O → R → G → E | 2–4 | conditional Passport |
-| E3 | cross-source claim/mechanism analysis | full FORGE | 4–8 | Parliament required |
-| E4 | causal/high-stakes/expensive validation | full FORGE + human gates | 6–12 | method/causal veto and attestation |
-| E5 | ambiguous/open novelty research | I + full FORGE | adaptive ≤16 | staged output; underdetermination normal |
+The deterministic Foundry Kernel is the sole final classification authority.
+PolicyBundle typed declarations, typed request metadata, deterministic
+detectors, and non-authoritative LLM SignalProposals contribute signals in
+that authority order. A lower source cannot remove a higher-source signal.
 
-Classification is recorded, explainable, and overridable by an `OverrideRecord`. The class controls process depth, not the desired conclusion.
+The closed signal vocabulary and minimum floors are:
+
+| Signal | Floor |
+|---|---|
+| `TRANSFORM` | E0 |
+| `LOOKUP` | E1 |
+| `SYNTHESIS` | E2 |
+| `MECHANISM` | E3 |
+| `CAUSAL`, `VALIDATION`, `HIGH_STAKES`, `EXPENSIVE` | E4 |
+| `NOVELTY`, `AMBIGUOUS` | E5 |
+
+The effective class is the maximum floor across all accepted signals. A set
+with no recognized signal receives sticky `AMBIGUOUS`, producing E5 with
+Interview. Duplicate signals are removed and the canonical reason order is
+`AMBIGUOUS`, `NOVELTY`, `HIGH_STAKES`, `EXPENSIVE`, `CAUSAL`, `VALIDATION`,
+`MECHANISM`, `SYNTHESIS`, `LOOKUP`, `TRANSFORM`. Signal addition cannot lower
+class, human gate, Interview protection, phases, roles, policy checks, or
+evidence obligations.
+
+| Class | Exact base phases | Logical roles | Human gate |
+|---|---|---:|---|
+| E0 | `[]` | 0 | false |
+| E1 | `F → O → E` | 1 | false |
+| E2 | `F → O → R → G → E` | 3 | false |
+| E3 | `F → O → R → G → E` | 6 | false |
+| E4 | `F → O → R → G → E` | 10 | true |
+| E5 | `F → O → R → G → E` | 12 | true |
+
+E4/E5 prepend `I` only when an I01-I09 rule identifies ambiguity,
+conflicting requirements, a missing goal, scope, falsifier, authority,
+high-risk contract, novelty boundary, or bounded-cost input. An otherwise
+complete novelty request remains E5 without Interview. Missing-contract rules
+that would require Interview below E4 fail closed through `AMBIGUOUS` rather
+than creating a non-canonical lower-class phase sequence. Interview resolves
+the research contract; the E4/E5 human gate separately authorizes risky
+execution, expenditure, validation, promotion, release, or publication-grade
+export.
+
+The default role counts describe logical epistemic roles, not model calls,
+processes, retries, or agents. E1 uses Evidence Scout; E2 adds Synthesis
+Analyst and Counterevidence/Method Auditor; E3 uses Evidence Scout,
+Inductivist, Deductivist, Prosecutor/Falsifier, Method Auditor, and Judge; E4
+adds Scope Auditor, Causal Auditor, Statistician/Replication Auditor, and an
+Independent Attestor; E5 adds Novelty Examiner and Abductive Mediator.
+
+Classification controls minimum research process and protection, never the
+desired conclusion. Every correction or reclassification creates a new
+immutable EpistemicWorkClassification. A same-request HumanDecision may only
+raise class or protection. Lower classification requires a new request
+revision or PolicyBundle.
+
+### 2.1 Classification identity and execution binding
+
+The classifier version introduced by F01 is `4.0.1-f01.1`.
+`classification_hash` is the SHA-256 of RFC 8785 JCS-equivalent canonical JSON
+containing exactly the schema ID, request ID, immutable request input hash,
+classifier version, PolicyBundle hash, normalized signals, ordered reasons and
+risk factors, exact projection, and nullable superseded classification and
+HumanDecision hashes. `classification_id` is `EWC-` plus the digest hex.
+Identity, time, receipt, storage, ledger sequence, retry, duration, and
+provider fields are excluded from that preimage.
+
+The ClassificationCommitter assigns one UTC millisecond timestamp, writes the
+classification artifact and ArtifactReceipt, appends the Noetic Ledger event,
+and compare-and-swaps the active pointer. Equal idempotency key and preimage
+returns the existing ID, hash, time, artifact, and receipt; a changed preimage
+fails `IDEMPOTENCY_CONFLICT`. Strict replay requires exact semantic and
+identity equality or fails `REPLAY_DIVERGENCE`. An override binds the previous
+classification hash and HumanDecision hash, preserves the prior artifact,
+records `SUPERSEDES`, and cannot reduce protection.
+
+`EpistemicWorkClassification` is the classifier node's canonical business
+artifact. `ResultEnvelope` is execution telemetry only and must name that
+artifact in `output_artifact_ids`; envelope-only success fails
+`CLASSIFICATION_ARTIFACT_MISSING`. F01 uses only the canonical capabilities
+`artifact_read` and `artifact_write`; dotted or colon aliases fail closed.
 
 ## 3. Phase contracts
 

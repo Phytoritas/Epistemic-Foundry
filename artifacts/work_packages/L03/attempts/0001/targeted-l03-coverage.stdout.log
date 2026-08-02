@@ -1,0 +1,75 @@
+✔ forget_legal_hold_test: forget creates a new immutable revision, event, and resolving receipt (8.852ms)
+✔ forget_legal_hold_test: delete uses a distinct terminal status without retaining a forbidden tombstone hash (2.0901ms)
+✔ forget_legal_hold_test: a non-reversible tombstone hash is retained only with explicit policy-and-law authority (2.7868ms)
+✔ forget_legal_hold_test: tombstone retention permission requires an authority record (0.6496ms)
+✔ forget_legal_hold_test: active matching legal hold blocks the effect and preserves source state (2.0426ms)
+✔ forget_legal_hold_test: expired, future, and nonmatching holds do not block (2.1942ms)
+✔ forget_legal_hold_test: class-scoped and workspace-scoped holds are deterministic (1.8514ms)
+✔ forget_legal_hold_test: legal holds must be explicitly time-bounded and hash-sealed (0.3923ms)
+✔ forget_legal_hold_test: same request replay returns the exact prior immutable outcome (2.0897ms)
+✔ forget_legal_hold_test: idempotency key reuse with a different request fails closed (2.2932ms)
+✔ forget_legal_hold_test: revision mismatch and target mismatch fail closed (0.9014ms)
+✔ forget_legal_hold_test: action and workspace policy boundaries fail closed (1.0954ms)
+✔ forget_legal_hold_test: a future policy is not silently applied (0.3921ms)
+✔ forget_legal_hold_test: a new request cannot rewrite an immutable terminal revision (1.7449ms)
+✔ forget_legal_hold_test: index or cache eviction cannot masquerade as canonical forgetting (0.1465ms)
+✔ forget_legal_hold_test: first event and previous-event hash semantics are exact (0.294ms)
+✔ forget_legal_hold_test: request, policy, and outcome hashes reject tampering (2.3007ms)
+✔ forget_legal_hold_test: canonical ActionIntent, EventRecord, and EffectReceipt fields are complete (1.4355ms)
+✔ forget_legal_hold_test: legal-hold input order does not change the outcome (3.1042ms)
+✔ forget_legal_hold_test: duplicate hold IDs and duplicate prior keys fail closed (3.1154ms)
+✔ forget_legal_hold_test: proxies, accessors, and extra fields fail closed (0.4209ms)
+✔ forget_legal_hold_test: sealed policy and hold replay canonically (0.2635ms)
+✔ forget_legal_hold_test: emitted hashes match canonical effect and ledger authorities (1.1849ms)
+✔ forget_legal_hold_test: replay rejects a different sealed lifecycle policy (1.9287ms)
+✔ forget_legal_hold_test: replay rejects a different memory lineage (3.6451ms)
+✔ redaction_test: exact byte-span redaction creates a new immutable derived artifact (4.0584ms)
+✔ redaction_test: duplicate source hashes select one representative without score amplification (0.471ms)
+✔ redaction_test: hit and directive permutations produce the same selection hash (0.7835ms)
+✔ redaction_test: multiple non-overlapping spans are counted exactly (0.3878ms)
+✔ redaction_test: overlapping spans fail closed (0.5445ms)
+✔ redaction_test: out-of-range spans fail closed (0.222ms)
+✔ redaction_test: byte spans cannot split UTF-8 code points (0.3732ms)
+✔ redaction_test: stale source content cannot reuse a source hash (0.2322ms)
+✔ redaction_test: profile-only redaction fails closed without authoritative rules (0.1677ms)
+✔ redaction_test: missing, extra, and unused source bindings are rejected (0.9837ms)
+✔ redaction_test: no-op directives and duplicate IDs are rejected (0.3642ms)
+✔ redaction_test: duplicate memory IDs and duplicate source artifacts are rejected (0.2354ms)
+✔ redaction_test: already-redacted hits cannot be silently redacted again (0.1133ms)
+✔ redaction_test: selection hash and derived content hash detect tampering (0.6615ms)
+✔ redaction_test: empty hit input has an explicit deterministic empty selection (0.2337ms)
+✔ redaction_test: accessors, proxies, and extra fields fail closed (0.286ms)
+✔ redaction_test: directive IDs use canonical ID ordering independent of span order (0.471ms)
+✔ redaction_test: replay validation rejects accessor-backed selected hits (0.388ms)
+✔ redaction_test: a self-rehashed duplicate exclusion cannot forge its representative (0.3609ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 44
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 294.2368
+ℹ start of coverage report
+ℹ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ file                                   | line % | branch % | funcs % | uncovered lines
+ℹ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ packages                               |        |          |         | 
+ℹ  foundry-kernel                        |        |          |         | 
+ℹ   src                                  |        |          |         | 
+ℹ    effects                             |        |          |         | 
+ℹ     effect-coordinator.mjs             |  33.09 |    56.59 |   40.54 | 151-155 159 163-166 173-175 177-178 185-186 193-195 211-212 218-219 226-227 231-232 248-249 255-256 266-267 280-281 328-329 333-337 339-340 353-354 359-360 367-368 456-457 468-469 472-473 529 531-542 558-559 567-571 574-575 577-581 593-594 642-646 650 652-656 658 660-671 680-687 691-745 749-758 764-784 788-832 836-871 875-908 912-926 932-938 942-1149 1153-1163 1167-1194 1201-1227 1231-1258 1262-1293 1297-1316 1320-1359 1363-1381 1385-1484 1488-1512 1516-1534 1538-1571 1575-1647 1654 1658-1662 1665-1767 1770-1860 1863-1966 1969-1970 1973-1974 1977-1995 1998-2025 2028-2030 2033-2035 2038-2040
+ℹ    ledger                              |        |          |         | 
+ℹ     noetic-ledger.mjs                  |  26.27 |    62.00 |   23.26 | 86-90 94 101-103 105-106 112-115 119-154 163-165 169-193 200-201 206-207 211-212 214-215 220-240 244-245 250-251 258-259 273-279 302-310 316-349 357-358 367-421 425-474 478-483 487-564 568-626 630-638 642-646 650-655 659-679 683-712 718-740 744-762 766-810 814-821 831-836 839-928 931-933 936-938 941-960 963-1001
+ℹ    memory                              |        |          |         | 
+ℹ     lifecycle                          |        |          |         | 
+ℹ      index.mjs                         | 100.00 |   100.00 |  100.00 | 
+ℹ      memory-lifecycle-test-support.mjs | 100.00 |   100.00 |  100.00 | 
+ℹ      memory-lifecycle.mjs              |  94.53 |    79.95 |   94.79 | 259-261 263-264 308-309 312-313 319-320 337-338 365-366 410-411 464-465 720-721 749-750 752-753 756-757 768-769 775-776 784-785 797-798 800-801 803-804 814 817-818 856-857 860-861 896-897 1012-1013 1142-1145 1155-1158 1160-1161 1172-1175 1177-1178 1192-1193 1221-1224 1242-1243 1257-1258 1270-1271 1278-1279 1329-1330
+ℹ     policy                             |        |          |         | 
+ℹ      index.mjs                         | 100.00 |   100.00 |  100.00 | 
+ℹ      memory-policy.mjs                 |  40.37 |    72.88 |   21.05 | 101-105 109 116-118 120-121 127-151 159-160 165-166 169-170 176-177 184-196 203-209 213-216 222-246 250-251 265-266 270-271 283-284 287-288 291-292 317-324 332-335 339-369 373-423 427-428 432-433 439-483 487-488 492-493 499-523 527-535 541-552 559-645 649-653
+ℹ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ all files                              |  51.73 |    73.54 |   56.92 | 
+ℹ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ end of coverage report

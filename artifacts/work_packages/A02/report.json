@@ -1,0 +1,53 @@
+{
+  "work_package_id": "A02",
+  "base_checkpoint": "A01:PASS",
+  "status": "PASS",
+  "changed_files": [
+    "manifests/product_invariants.yaml",
+    "docs/product_constitution.md",
+    "artifacts/work_packages/A02/commands.jsonl",
+    "artifacts/work_packages/A02/review.md",
+    "artifacts/work_packages/A02/report.json"
+  ],
+  "checks": [
+    {
+      "command": "invariant_schema_check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A02/commands.jsonl#A02-C001"
+    },
+    {
+      "command": "forbidden_claim_scan",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A02/commands.jsonl#A02-C002"
+    },
+    {
+      "command": "python -m pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A02/commands.jsonl#A02-C005"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A02/commands.jsonl#A02-C006"
+    }
+  ],
+  "review": {
+    "agent": "primary_author",
+    "status": "PASS_WITH_RECORDED_PROCEDURE_DEVIATION",
+    "findings_resolved": []
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/A02/commands.jsonl",
+    "artifacts/work_packages/A02/review.md",
+    "artifacts/work_packages/A02/report.json"
+  ],
+  "open_risks": [
+    "Review was performed by the author under explicit user instruction and is not independent assurance.",
+    "Final-byte package manifest regeneration remains deferred until content finalization."
+  ],
+  "spec_gaps": [],
+  "not_verified": [],
+  "next_ready": [
+    "A03"
+  ]
+}

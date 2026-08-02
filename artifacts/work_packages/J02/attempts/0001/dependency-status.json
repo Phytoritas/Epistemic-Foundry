@@ -1,0 +1,28 @@
+{
+  "attempt_id": "J02-0001",
+  "completion_ready": false,
+  "dependency_inputs": {
+    "J01": {
+      "attempt_id": "J01-0001",
+      "report": "artifacts/work_packages/J01/report.json",
+      "report_sha256": "sha256:7a8f000e4915f5715441ec31cb054489c85254d2ce5d3657ef54a4e3d5da8e05",
+      "status": "PASS"
+    }
+  },
+  "later_package_started": false,
+  "package_states": {
+    "A06": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_J02",
+    "J01": "PASS",
+    "J02": "SPEC_GAP_J02_SG001",
+    "J03": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_J02",
+    "J04": "WAITING_ON_J02_AND_J03",
+    "K01": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_J02",
+    "T01": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_J02"
+  },
+  "reason": "The earliest manifest-order package cannot define its required checks without inventing a shared product contract.",
+  "resume_condition": "A product-owner HumanDecision must define the complete J02 budget, inventory, selection, reachability, loader ownership, write scope, and test oracle contract; J02 must then run as a new attempt while preserving J02-0001.",
+  "schema_version": 1,
+  "spec_gap_id": "J02-SG001",
+  "status": "SPEC_GAP",
+  "work_package_id": "J02"
+}

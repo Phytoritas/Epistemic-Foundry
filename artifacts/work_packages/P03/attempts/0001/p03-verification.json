@@ -1,0 +1,49 @@
+{
+  "attempt_id": "P03-0001",
+  "dissent_preservation": {
+    "every_report_retained": true,
+    "strongest_by_expected_information_gain": true,
+    "supersession_requires_cited_evidence": true,
+    "ties_broken_deterministically": true
+  },
+  "exit_criteria": {
+    "attacks_cite_ids": {
+      "evidence": [
+        "python/epistemic_foundry/parliament/cross_exam/test_cross_exam_grounding.py"
+      ],
+      "mechanism": "a challenge must name a brief this round carries, an assertion inside it, and evidence its own attacker context contained; citing nothing, citing withheld evidence, or attacking one's own brief is refused",
+      "status": "PASS"
+    },
+    "strongest_dissent_preserved": {
+      "evidence": [
+        "python/epistemic_foundry/parliament/cross_exam/test_minority_preservation.py"
+      ],
+      "mechanism": "the report with the greatest expected information gain must survive as required or preserved, may be superseded only by cited new evidence, and cannot be dropped from a rehashed round because the strongest is recomputed",
+      "status": "PASS"
+    }
+  },
+  "grounding": {
+    "attacker_context_required": true,
+    "every_attack_cites_evidence": true,
+    "self_attack_forbidden": true,
+    "target_assertion_must_exist_in_target_brief": true
+  },
+  "required_checks": {
+    "cross_exam_grounding_test": {
+      "module": "python/epistemic_foundry/parliament/cross_exam/test_cross_exam_grounding.py",
+      "status": "PASS",
+      "test_count": 23
+    },
+    "minority_preservation_test": {
+      "module": "python/epistemic_foundry/parliament/cross_exam/test_minority_preservation.py",
+      "status": "PASS",
+      "test_count": 20
+    }
+  },
+  "schema_binding": {
+    "cross_examination": "schemas/cross-examination.schema.json",
+    "minority_report": "schemas/minority-report.schema.json"
+  },
+  "status": "PASS",
+  "targeted_test_count": 43
+}

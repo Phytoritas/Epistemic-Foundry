@@ -186,13 +186,30 @@ def check_byte_contracts(root: Path, events: EventLog) -> dict[str, Any]:
 
 
 def collect_test_ids(root: Path, events: EventLog) -> tuple[list[str] | None, dict[str, Any]]:
-    result = run_step(
-        events,
-        "pytest-collect",
-        [sys.executable, "-B", "-m", "pytest", "tests", "--collect-only", "-q"],
-        cwd=root,
-        timeout=300,
-    )
+    # Run outside the closed package tree. Some adversarial tests deliberately
+    # write relative .rah paths, and pytest otherwise creates .pytest_cache at
+    # its rootdir; either artifact invalidates the package manifest that this
+    # verifier is meant to prove.
+    with tempfile.TemporaryDirectory(prefix="rah-verify-collect-") as run_dir:
+        result = run_step(
+            events,
+            "pytest-collect",
+            [
+                sys.executable,
+                "-B",
+                "-m",
+                "pytest",
+                str(root / "tests"),
+                "--rootdir",
+                str(root),
+                "--collect-only",
+                "-q",
+                "-p",
+                "no:cacheprovider",
+            ],
+            cwd=Path(run_dir),
+            timeout=300,
+        )
     if result["timed_out"] or result["exit_code"] not in (0,):
         return None, {"name": "test-baseline", "status": "error", "detail": "collection failed", "stderr": result["stderr"][-800:]}
     ids = [
@@ -224,13 +241,26 @@ def collect_test_ids(root: Path, events: EventLog) -> tuple[list[str] | None, di
 
 def check_pytest(root: Path, events: EventLog, artifacts: Path) -> dict[str, Any]:
     junit = artifacts / "tests.junit.xml"
-    result = run_step(
-        events,
-        "pytest-full",
-        [sys.executable, "-B", "-m", "pytest", "tests", "-q", f"--junit-xml={junit}"],
-        cwd=root,
-        timeout=PYTEST_TIMEOUT_SECONDS,
-    )
+    with tempfile.TemporaryDirectory(prefix="rah-verify-pytest-") as run_dir:
+        result = run_step(
+            events,
+            "pytest-full",
+            [
+                sys.executable,
+                "-B",
+                "-m",
+                "pytest",
+                str(root / "tests"),
+                "--rootdir",
+                str(root),
+                "-q",
+                "-p",
+                "no:cacheprovider",
+                f"--junit-xml={junit}",
+            ],
+            cwd=Path(run_dir),
+            timeout=PYTEST_TIMEOUT_SECONDS,
+        )
     (artifacts / "pytest.stdout.txt").write_text(result["stdout"], encoding="utf-8")
     (artifacts / "pytest.stderr.txt").write_text(result["stderr"], encoding="utf-8")
     if result["timed_out"]:

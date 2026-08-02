@@ -1,0 +1,138 @@
+{
+  "attempt_id": "O01-0001",
+  "authorized_surface": {
+    "evidence_scope": [
+      "artifacts/work_packages/O01/**"
+    ],
+    "out_of_scope_product_change_count": 0,
+    "product_file_change_count": 0,
+    "product_write_scope": [
+      "python/epistemic_foundry/retrieval/planning/**"
+    ]
+  },
+  "completion_ready": false,
+  "dependencies": {
+    "I04": {
+      "attempt_id": "I04-0001",
+      "report": "artifacts/work_packages/I04/report.json",
+      "report_sha256": "sha256:3a4c7220b63d3c59c459ed638b1258743e84d9110571ab8ea294775aae86e22b",
+      "status": "PASS"
+    },
+    "K04": {
+      "attempt_id": "K04-0001",
+      "report": "artifacts/work_packages/K04/attempts/0001/report.json",
+      "report_sha256": "sha256:12d84e70e24fb1f7f9d87619721a27eaf0a77499cfb11b426353bf9c8725c56f",
+      "status": "PASS"
+    },
+    "M04": {
+      "attempt_id": "M04-0001",
+      "report": "artifacts/work_packages/M04/report.json",
+      "report_sha256": "sha256:10dc679144d91bb797fbc4d5d5dddea92420759de53c8b08c7951e3882439ea5",
+      "status": "PASS"
+    }
+  },
+  "dependency_effect": {
+    "A06": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O01",
+    "O01": "SPEC_GAP_O01_SG001",
+    "O02": "WAITING_ON_O01",
+    "O03": "WAITING_ON_O01",
+    "T01": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O01",
+    "W01": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O01"
+  },
+  "historical_and_worktree_preservation": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_evidence_and_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation": {
+    "authorized_product_files_created": 0,
+    "implementation_files_modified_by_attempt": 0,
+    "out_of_scope_product_changes": 0,
+    "product_path_exists": false,
+    "schemas_workflows_config_docs_or_examples_modified_by_attempt": 0,
+    "tests_or_fixtures_created_by_attempt": 0
+  },
+  "implementation_status": "NOT_STARTED_FAIL_CLOSED",
+  "output_artifacts": [
+    "artifacts/work_packages/O01/attempts/0001/shared-contract-gap-verification.json",
+    "artifacts/work_packages/O01/attempts/0001/dependency-status.json",
+    "artifacts/work_packages/O01/attempts/0001/rah-core-integrity.json",
+    "artifacts/work_packages/O01/attempts/0001/review.md",
+    "artifacts/work_packages/O01/attempts/0001/commands.jsonl",
+    "artifacts/work_packages/O01/attempts/0001/report.json"
+  ],
+  "package_status": "SPEC_GAP",
+  "rah_state": {
+    "completion_ready": false,
+    "documented_gap_evidence_id": "E0079",
+    "generation": "000079-344cd519",
+    "generation_manifest_sha256": "sha256:ba09d5ae424d1c5943e764eeb34b37c664fb163cc7aeb624d1f374b0803474c7",
+    "generation_payload_hashes_verified": 474,
+    "parent_generation": "000078-1981c869",
+    "retained_generation_count": 79,
+    "six_flat_snapshot_content_matches": 6,
+    "six_flat_snapshot_stamps_verified": 6,
+    "status": "blocked"
+  },
+  "required_checks": {
+    "query_plan_test": {
+      "reason": "No authoritative class-to-lane matrix, classification binding, applicability rule, or closed required-lane vocabulary exists.",
+      "status": "NOT_RUN_SPEC_GAP"
+    },
+    "receipt_completeness_test": {
+      "reason": "No authoritative all-lane receipt rule, UNSEARCHED representation, failure mapping, or certificate reconciliation oracle exists.",
+      "status": "NOT_RUN_SPEC_GAP"
+    }
+  },
+  "resume_condition": "A product-owner HumanDecision must define the complete O01 class-to-lane, applicability/waiver, vocabulary, receipt-state, classification-binding, reconciliation/failure, exact write-scope, fixture, and threshold contract; O01 must then run as a new attempt while preserving O01-0001.",
+  "review": {
+    "actor_independence": false,
+    "artifact": "artifacts/work_packages/O01/attempts/0001/review.md",
+    "assurance_limitation": "Procedurally separate primary-session adversarial contract review; not actor-independent certification because Fleet and subagents were prohibited.",
+    "blocking_finding_count": 7,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "SPEC_GAP"
+  },
+  "spec_gap": {
+    "classification": "SPEC_GAP",
+    "id": "O01-SG001",
+    "missing_contracts": [
+      "exact E0-E5 to mandatory retrieval-lane matrix",
+      "typed applicability inputs, deterministic authority, waiver vocabulary, and non-waivable lane floor",
+      "one canonical lane vocabulary and explicit counter/counterevidence, novelty/external_novelty, and support mappings",
+      "selected, intentionally unselected, inapplicable, waived, zero-result, partial, provider-failed, and policy-blocked receipt semantics",
+      "whether every canonical lane must always emit a receipt and truthful UNSEARCHED field rules",
+      "QueryPlan binding to immutable EpistemicWorkClassification request/classification revision and hashes",
+      "deterministic required/completed/blocked lane reconciliation and lane/run failure mapping",
+      "exact resolving schema, workflow, policy, example, implementation, test, and evidence write scopes",
+      "objective fixtures and thresholds for query_plan_test and receipt_completeness_test"
+    ],
+    "not_blocked_reason": "No required host capability, credential, licensed source, tool, backend, or external service is unavailable.",
+    "not_fail_reason": "No implementation was attempted because the mandatory-lane selection, applicability, receipt, and reconciliation oracle is undefined and internally inconsistent.",
+    "required_product_owner_decisions": [
+      "Define the exact E0-E5 to mandatory retrieval-lane matrix, including minimum invariant lanes.",
+      "Define typed applicability inputs, decision authority, deterministic rules, waiver vocabulary, evidence requirements, and non-waivable lanes.",
+      "Freeze one canonical lane vocabulary and explicitly map or retire counter, counterevidence, novelty, external_novelty, support, and custom.",
+      "Define receipt requirements and field semantics for selected, intentionally unselected, inapplicable, waived, zero-result, partial, provider-failed, and policy-blocked lanes.",
+      "Define QueryPlan binding to immutable request and EpistemicWorkClassification identifiers, revisions, input hashes, and classification hashes.",
+      "Define deterministic completeness reconciliation, absence/novelty ceilings, and lane-to-run terminal-state mapping.",
+      "Authorize exact schema, workflow, policy, example, implementation, test, and artifact paths and objective fixtures and thresholds for the resolving attempt."
+    ],
+    "summary": "O01 lacks an authoritative class-aware lane selection, applicability, vocabulary, receipt-state, classification-binding, and completeness reconciliation contract."
+  },
+  "spec_gap_id": "O01-SG001",
+  "status": "SPEC_GAP",
+  "title": "QueryPlan and SearchLaneReceipt contracts",
+  "verification": {
+    "authority_hashes": "PASS",
+    "dependency_reports": "3/3 PASS",
+    "external_rah_resume": "PASS_WITH_PARSE_ERRORS_EMPTY",
+    "git_diff_check": "PASS_WITH_PREEXISTING_LINE_ENDING_ADVISORIES",
+    "json_and_jsonl_parse": "PASS",
+    "rah_generation_integrity": "79/79 manifests and 474/474 payload hashes",
+    "utf8_bom_count": 0,
+    "utf8_replacement_character_file_count": 0
+  },
+  "work_package_id": "O01"
+}

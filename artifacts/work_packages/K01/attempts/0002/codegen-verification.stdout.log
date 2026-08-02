@@ -1,0 +1,64 @@
+{
+  "work_package_id": "C02",
+  "check": "c02_contract_codegen_verification",
+  "status": "PASS",
+  "source_authority": "schemas/*.schema.json",
+  "schema_count": 126,
+  "example_count": 126,
+  "schema_bundle_sha256": "sha256:5788bcf163d7a4ca20f5991935d425d7cc18ff8a5fbc43485c93de73e3c42de3",
+  "example_bundle_sha256": "sha256:899f7c7af8f7de5dc3479adf5c270c7eb80047bd84bf28214bfe6e596cbbf54e",
+  "generated_file_count": 9,
+  "codegen_clean_diff": {
+    "status": "PASS",
+    "failures": []
+  },
+  "deterministic_double_replay": "PASS",
+  "manifest_parity": "PASS",
+  "schema_example_validation": {
+    "status": "PASS",
+    "schema_count": 126,
+    "valid_example_count": 126,
+    "invalid": []
+  },
+  "python_models": {
+    "status": "PASS",
+    "model_count": 126,
+    "missing_models": [],
+    "schema_id_count": 126,
+    "bundle_sha256": "sha256:5788bcf163d7a4ca20f5991935d425d7cc18ff8a5fbc43485c93de73e3c42de3"
+  },
+  "node_fixture_check": {
+    "status": "PASS",
+    "exit_code": 0,
+    "schema_count": 126,
+    "example_count": 126,
+    "failures": [],
+    "stderr": ""
+  },
+  "cross_language_fixture_parity": "PASS",
+  "verification_boundary": {
+    "status": "PASS",
+    "codegen_checks_are_attempt_independent": true,
+    "full_repository_regression_owner": "work-package attempt evidence and C04",
+    "cross_package_immutable_history_owner": "RAH and work-package attempt evidence"
+  },
+  "write_scope": [
+    "packages/contracts/**",
+    "python/epistemic_foundry/contracts/**",
+    "web/src/generated/**",
+    "artifacts/work_packages/C02/** (manifest-declared evidence artifacts)"
+  ],
+  "legacy_promotion_value_hits": [],
+  "generated_artifact_hashes": {
+    "packages/contracts/src/generated/contract-manifest.json": "sha256:6e3c9932a07422869a2c6a5c857ec4e6e41bf02bed271fca19b45cd0885c5065",
+    "packages/contracts/src/generated/models.d.ts": "sha256:8b63ca1df4ba5a97a87ee1a451f7e57d8d5e27e0ec88bf4573363061e16f2ccf",
+    "packages/contracts/src/generated/registry.mjs": "sha256:6334d99e6cba011ac4765a7c4175571d0fabb20210c480e7347fb4dcc1a06bd0",
+    "python/epistemic_foundry/contracts/__init__.py": "sha256:29a58cf958579f9a2165222059603ea1c4898d85379473b00872ce237dd92095",
+    "python/epistemic_foundry/contracts/contract-manifest.json": "sha256:6e3c9932a07422869a2c6a5c857ec4e6e41bf02bed271fca19b45cd0885c5065",
+    "python/epistemic_foundry/contracts/models.py": "sha256:e469692d365eb536cab3a66ca06686ec4dcba26888bdada99cecec462247a048",
+    "python/epistemic_foundry/contracts/py.typed": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "web/src/generated/contract-manifest.json": "sha256:6e3c9932a07422869a2c6a5c857ec4e6e41bf02bed271fca19b45cd0885c5065",
+    "web/src/generated/contracts.ts": "sha256:1d9c8236a531a351e9a7e5a32c6643206ebd5f37960d96225495a97b7245ab28"
+  },
+  "failures": []
+}

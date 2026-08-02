@@ -1,0 +1,25 @@
+{
+  "attempt_id": "A05-0001",
+  "check": "provenance-and-receipt-audit",
+  "command": [
+    "uv",
+    "run",
+    "--locked",
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/governance/a05/test_a05_negative_cases.py::test_a05_neg_020_commit_without_effect_receipt_fails",
+    "tests/governance/a05/test_a05_negative_cases.py::test_a05_neg_021_idempotency_key_reuse_with_new_request_conflicts",
+    "tests/governance/a05/test_a05_negative_cases.py::test_a05_neg_022_same_request_retry_replays_without_a_second_effect",
+    "tests/governance/a05/test_a05_negative_cases.py::test_a05_neg_023_crash_between_cas_and_receipt_stays_unknown_then_reconciles",
+    "tests/governance/a05/test_a05_negative_cases.py::test_a05_neg_024_prior_revisions_cannot_be_overwritten_in_place",
+    "tests/governance/a05/test_a05_positive_cases.py::test_a05_pos_005_full_evidence_promotion_commits_atomically",
+    "tests/governance/a05/test_a05_positive_cases.py::test_a05_pos_006_identical_retry_returns_the_same_logical_result",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=C:\\dev\\insight\\Epistemic-Foundry\\artifacts\\work_packages\\A05\\attempts\\0001\\provenance-and-receipt-audit.junit.xml"
+  ],
+  "exit_code": 0,
+  "status": "PASS"
+}

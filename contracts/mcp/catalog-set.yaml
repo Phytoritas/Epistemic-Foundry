@@ -1,0 +1,28 @@
+# Membership, order, and counts for the composed MCP tool surface.
+#
+# This file owns no MCP tool-name literal: each name is declared exactly once
+# in its own catalog (EF4-I22).  tools/list concatenates the generated
+# descriptor projections in merge_order and asserts the counts below.  Every
+# catalog_id and exact_count here is cross-checked against the referenced
+# catalog, so a count can never drift in only one place.
+set_id: MCP-CATALOG-SET
+set_version: 1.0.0
+protocol_version: "2026-07-28"
+catalogs:
+  - catalog_id: MCP-T01-CATALOG
+    ref: contracts/mcp/t01/tool-catalog.yaml
+    descriptor_projection: packages/plugin-host/src/mcp/generated/tool-descriptors.json
+    count_fields:
+      - read_tool_count
+      - planning_tool_count
+    exact_count: 13
+  - catalog_id: MCP-T02-CATALOG
+    ref: contracts/mcp/t02/tool-catalog.yaml
+    descriptor_projection: packages/plugin-host/src/mcp/write/generated/t02-tool-descriptors.json
+    count_fields:
+      - mutating_tool_count
+    exact_count: 9
+merge_order:
+  - MCP-T01-CATALOG
+  - MCP-T02-CATALOG
+global_exact_count: 22

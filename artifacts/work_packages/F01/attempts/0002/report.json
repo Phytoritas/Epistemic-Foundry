@@ -1,0 +1,170 @@
+{
+  "work_package_id": "F01",
+  "attempt_id": "F01-0002",
+  "title": "E0-E5 epistemic work classifier",
+  "status": "SPEC_GAP",
+  "package_status": "SPEC_GAP",
+  "implementation_status": "PASS",
+  "targeted_contract_status": "PASS",
+  "repository_regression_status": "FAIL",
+  "spec_gap_id": "F01-SG002",
+  "completion_ready": false,
+  "authority_decision_id": "HD-EF4-F01-SG001-20260729-001",
+  "base_checkpoint": "C04-0001:PASS,E04-0001:PASS,F01-SG001:RESOLVED_BY_DECISION",
+  "dependencies": {
+    "C04": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/C04/report.json",
+      "report_sha256": "eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f"
+    },
+    "E04": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/E04/report.json",
+      "report_sha256": "841dcf60989cfc7ab0eff7be95e1ae721ae18ac513cae653ab6ac8a44942f6c1"
+    }
+  },
+  "authority_bindings": {
+    "MASTER_SPEC.md": "43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3",
+    "MASTER_EXECUTION_PROMPT.md": "9b6cff656c62383229c5836c260b48a6f3fd024db7dc71ff04521ab7b539b855",
+    "AGENTS.md": "858e537ed3e49754b8e60d31c985467ee1246ed258c7763d6de4ef0767e381ea",
+    "HumanDecision_file": "1a4f8729628ffc6409e0cc7bd36e3aba7913836dabf5e97ecfc9eb061617c196",
+    "HumanDecision_semantic_hash": "sha256:1b6fa81c62d8d34162679496a2459f9634670598f980feecfdc1c957a61e1383",
+    "manifests/development_manifest.yaml": "526f744b3ce67ebc3bf4a6e9f82defa83455568c4ae594cbf70d51d0cb436e63",
+    "manifests/acceptance_matrix.yaml": "004ecdffd791c7dd318704e0595fb675baf596b9c6fb8f88deca96940bf032d3"
+  },
+  "implementation": {
+    "classifier_version": "4.0.1-f01.1",
+    "closed_signal_vocabulary": true,
+    "maximum_floor_rule": true,
+    "exact_class_projection": true,
+    "conditional_interview": true,
+    "human_gate_projection": true,
+    "immutable_upward_only_override": true,
+    "jcs_equivalent_hash_and_id": true,
+    "retry_replay_identity": true,
+    "artifact_receipt_and_outbox": true,
+    "direct_business_artifact_binding": true,
+    "llm_final_authority": false,
+    "live_llm_or_network_dependency": false
+  },
+  "verification": {
+    "artifact": "artifacts/work_packages/F01/attempts/0002/classifier-verification.json",
+    "status": "PASS",
+    "node_targeted": "30 passed",
+    "python_targeted": "24 passed",
+    "gold": "14/14",
+    "adversarial": "16/16",
+    "hash_vectors": "4/4",
+    "override_cases": "6/6",
+    "skipped": 0,
+    "xfail": 0
+  },
+  "underprocessing_guard": {
+    "artifact": "artifacts/work_packages/F01/attempts/0002/monotonicity-report.json",
+    "status": "PASS",
+    "nonempty_subsets": 1023,
+    "subset_superset_comparisons": 58025,
+    "underclassification_count": 0,
+    "monotonicity_violation_count": 0,
+    "protection_regression_count": 0
+  },
+  "hash_vectors": {
+    "artifact": "artifacts/work_packages/F01/attempts/0002/hash-vector-report.json",
+    "status": "PASS",
+    "passed": 4,
+    "failed": 0
+  },
+  "full_repository_regression": {
+    "artifact": "artifacts/work_packages/F01/attempts/0002/full-regression-impact.json",
+    "status": "FAIL",
+    "python": {
+      "passed": 936,
+      "failed": 1,
+      "new_failure_count": 1,
+      "failure": "B04 packaged canonical projection drift"
+    },
+    "node": {
+      "passed": 267,
+      "failed": 1,
+      "new_failure_count": 0,
+      "failure": "pre-existing S04-TM004 stale manifest hash"
+    },
+    "new_skip_or_xfail_count": 0
+  },
+  "spec_gap": {
+    "id": "F01-SG002",
+    "classification": "SPEC_GAP",
+    "summary": "The F01-authorized canonical schema strengthening makes the B04-owned packaged canonical snapshot stale, but the authority chain does not assign post-B04 reprojection ownership/timing or define whether F01 PASS waits for that integration.",
+    "not_fail_reason": "Every deterministic F01 classifier, schema, workflow and fixed-oracle check passes; the unresolved issue is a shared cross-package ownership and sequencing contract, not an implementation defect inside F01 scope.",
+    "not_blocked_reason": "No tool, credential, licensed source, host capability or external service is missing.",
+    "write_scope_conflict": {
+      "required_path": "src/epistemic_foundry/_canonical/**",
+      "current_owner": "B04",
+      "authorized_for_F01": false,
+      "silent_or_unauthorized_fix_forbidden": true
+    },
+    "required_product_owner_decision": [
+      "Assign the owner and execution point for synchronizing the packaged canonical snapshot after later canonical schema/OpenAPI changes.",
+      "Choose a new B04 attempt or a distinct integration package for reprojection and verification.",
+      "Decide whether F01 PASS waits for reprojection or may transfer this exact failure as explicit bounded downstream debt."
+    ]
+  },
+  "review": {
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "implementation_status": "PASS",
+    "overall_status": "SPEC_GAP",
+    "blocking_classifier_findings": 0,
+    "blocking_integration_findings": 1,
+    "artifact": "artifacts/work_packages/F01/attempts/0002/review.md",
+    "assurance_limitation": "Procedurally separate primary-session review; not external actor-independent certification because Fleet and subagents are product-owner-forbidden."
+  },
+  "historical_preservation": {
+    "F01-0001_status": "SPEC_GAP",
+    "F01-0001_report_sha256": "f71fa20f5646a9c47672ee2abc152f03af67b5e5d88df04657455bd468fe3134",
+    "F01-0001_commands_sha256": "5fad33dc0fee109c98ce0ea737cbc1605b83376f1de80d0afa0319a30835a5f2",
+    "F01-0001_review_sha256": "342507ec2a0b34c23cf3d3a35bd086a0fc3282a5e9548bcb40dcb1561417ddf7",
+    "F01-0001_modified": false,
+    "B04-0002_report_sha256": "a75e724b453bf58ce2745af174e96d7f08616bd09467e3b047b78f31b8add643",
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false
+  },
+  "dependency_effect": {
+    "artifact": "artifacts/work_packages/F01/attempts/0002/dependency-status.json",
+    "F01": "SPEC_GAP_F01_SG002",
+    "F02": "WAITING_ON_F01",
+    "F03": "WAITING_ON_F01",
+    "F04": "WAITING_ON_F02_AND_F03",
+    "full_156_package_dag_recomputed": false,
+    "later_package_started": false
+  },
+  "rah_state": {
+    "parent_generation": "000033-e5f23709",
+    "parent_generation_manifest_sha256": "f036230b2ce94f9818ba6d0f415a11ea9e29cb05d9f0c06a487a2c1d2e02bff3",
+    "core_generation": "000034-790e90ef",
+    "core_generation_manifest_sha256": "38d3bd3d68302bfc3ab8f9157b0f9102d1c52dc09fa69e68b77a37ee032e9821",
+    "implementation_evidence_id": "E0035",
+    "documented_gap_evidence_id": "E0036",
+    "final_closeout_evidence_id": "E0037",
+    "status_after_core": "blocked",
+    "retained_generation_count_after_core": 34,
+    "generation_file_hashes_verified_after_core": 204,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "flat_snapshot_content_matches_after_core": 6,
+    "parse_errors": {},
+    "integrity_artifact": "artifacts/work_packages/F01/attempts/0002/rah-core-integrity.json",
+    "completion_ready": false
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/F01/attempts/0002/classifier-verification.json",
+    "artifacts/work_packages/F01/attempts/0002/monotonicity-report.json",
+    "artifacts/work_packages/F01/attempts/0002/hash-vector-report.json",
+    "artifacts/work_packages/F01/attempts/0002/full-regression-impact.json",
+    "artifacts/work_packages/F01/attempts/0002/dependency-status.json",
+    "artifacts/work_packages/F01/attempts/0002/rah-core-integrity.json",
+    "artifacts/work_packages/F01/attempts/0002/review.md",
+    "artifacts/work_packages/F01/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/F01/attempts/0002/report.json",
+    "artifacts/work_packages/F01/attempts/0002/f01-rah-seal.py"
+  ],
+  "resume_condition": "A product-owner HumanDecision resolves F01-SG002 prospectively, preserves F01-0002, and authorizes an exact integration sequence that restores packaged projection parity before any required PASS gate or downstream execution."
+}

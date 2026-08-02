@@ -1,0 +1,68 @@
+{
+  "patch_plan_id": "MP-EF4-C01-SG004-20260730-001",
+  "source_path": "manifests/development_manifest.yaml",
+  "parent_sha256": "7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319",
+  "successor_sha256": "8859303ea2fbe8d71655b2c244daf424a9742d4ce700bb93edddc20e3a06f23b",
+  "authorizing_decision_ids": [
+    "HD-EF4-C01-SG004-20260730-001"
+  ],
+  "operations": [
+    {
+      "op": "replace",
+      "package_id": "B04",
+      "field": "write_scope",
+      "replacement_value_hash": "sha256:2e36812be313920aab6dcbef29c0f3591b526ee8a797a8322bbb88d89b47b399"
+    },
+    {
+      "op": "replace",
+      "package_id": "B04",
+      "field": "exit_criteria",
+      "replacement_value_hash": "sha256:adef5bddcc5e4b326f4900e3528cc7fcf1be1ebd0364cb66f8e01e416b9e47c6"
+    },
+    {
+      "op": "replace",
+      "package_id": "B04",
+      "field": "required_checks",
+      "replacement_value_hash": "sha256:73ea4cbbf107077fe36a6af83aa7e3f1af69e9c95586d4f8aa907d524dd5c3b3"
+    },
+    {
+      "op": "replace",
+      "package_id": "C01",
+      "field": "write_scope",
+      "replacement_value_hash": "sha256:a56464a8ae9a3abccd377c14fa211dc6a29a8eaea93a571ac36193a2d8cf2e91"
+    },
+    {
+      "op": "replace",
+      "package_id": "C01",
+      "field": "exit_criteria",
+      "replacement_value_hash": "sha256:17b0223e92800194d2b1615f51b5f0f0dc8d41ca4909b52ca68784f4e5495e91"
+    },
+    {
+      "op": "replace",
+      "package_id": "C01",
+      "field": "required_checks",
+      "replacement_value_hash": "sha256:35376fe9d5c809ccc8f72922a1e17e7e239e19e65b55eb57e62ea3731414282a"
+    }
+  ],
+  "operation_count": 6,
+  "changed_package_ids": [
+    "B04",
+    "C01"
+  ],
+  "changed_fields": {
+    "B04": [
+      "write_scope",
+      "exit_criteria",
+      "required_checks"
+    ],
+    "C01": [
+      "write_scope",
+      "exit_criteria",
+      "required_checks"
+    ]
+  },
+  "static_dependency_changes": [],
+  "preserves_active_binding": "DMB-EF4-20260730-001",
+  "created_at": "2026-07-30T08:30:00Z",
+  "patch_plan_hash": "sha256:3006cc81b9cc451c20c469394c1e0b715bd33e328ae9045c043bb8f73621268a"
+}

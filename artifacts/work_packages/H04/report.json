@@ -1,0 +1,236 @@
+{
+  "artifact_receipt": {
+    "path": "artifacts/work_packages/H04/attempts/0001/capability-probe-verification.artifact-receipt.json",
+    "receipt_id": "AR-H04-0001-CAPABILITY-PROBE-VERIFICATION"
+  },
+  "attempt_id": "H04-0001",
+  "changed_files": [
+    {
+      "bom": false,
+      "byte_size": 33223,
+      "path": "packages/plugin-host/src/capability-probe/capability-probe.mjs",
+      "replacement_character_count": 0,
+      "sha256": "sha256:1b419ca7902d4dfcceaaec92f9c533c3d4990ec7c42afc4b7ce45b2827e0d2b4"
+    },
+    {
+      "bom": false,
+      "byte_size": 12144,
+      "path": "tests/compatibility/hooks/hook-feature-probe.test.mjs",
+      "replacement_character_count": 0,
+      "sha256": "sha256:a55247f3eccf223d49c187843be681f056cd40c25681111a2b9f15d50751d4b3"
+    },
+    {
+      "bom": false,
+      "byte_size": 6932,
+      "path": "tests/compatibility/hooks/hook-degraded-mode.test.mjs",
+      "replacement_character_count": 0,
+      "sha256": "sha256:7a5c6bbf507b7524f786dfae9aa961817548a5f5c9c45f725b948186335843db"
+    }
+  ],
+  "completion_ready": false,
+  "dependencies": {
+    "H02": {
+      "attempt_id": "H02-0001",
+      "report": "artifacts/work_packages/H02/report.json",
+      "report_sha256": "sha256:5e540805460bb6d65badb4fe6f1a00123fcb5235ad7610cddc722f460aa8c167",
+      "status": "PASS"
+    },
+    "H03": {
+      "attempt_id": "H03-0001",
+      "report": "artifacts/work_packages/H03/report.json",
+      "report_sha256": "sha256:8f113f3b7f67377b0fba12bfc6632319c1e16bc2882c56c27635b312ba425fc3",
+      "status": "PASS"
+    }
+  },
+  "dependency_effect": {
+    "blocked_package_count": 114,
+    "completed_package_count": 37,
+    "dag_recomputed": true,
+    "next_package": "I01",
+    "ready_packages_manifest_order": [
+      "I01",
+      "J01",
+      "K01",
+      "T01",
+      "A06"
+    ]
+  },
+  "evidence_artifacts": [
+    {
+      "byte_size": 9337,
+      "path": "artifacts/work_packages/H04/attempts/0001/capability-probe-verification.json",
+      "sha256": "sha256:7107473403c63cf231424702282f53e199b8bd10498e21cc8c6f14532b17da57"
+    },
+    {
+      "byte_size": 6458,
+      "path": "artifacts/work_packages/H04/attempts/0001/full-regression-impact.json",
+      "sha256": "sha256:a3b1b69ec6d281d3d34e520c9ce142fdce515df39d4a702cf4598e973175bbc2"
+    },
+    {
+      "byte_size": 666,
+      "path": "artifacts/work_packages/H04/attempts/0001/preexisting-debt-reconciliation.json",
+      "sha256": "sha256:4c3e818d0436beb4b81d49ee198ca23f86b50e5c952d8ac419608adbcd4aa717"
+    },
+    {
+      "byte_size": 1811,
+      "path": "artifacts/work_packages/H04/attempts/0001/dependency-status.json",
+      "sha256": "sha256:defbbb0189969ce8adbb7f6ef967a9404857ea60279e2d69ad262b6e59636696"
+    },
+    {
+      "byte_size": 1186,
+      "path": "artifacts/work_packages/H04/attempts/0001/capability-probe-verification.artifact-receipt.json",
+      "sha256": "sha256:d2a2617601b36952bcf07be97d416cfd7c94b98cf4bf45dfb6a343806ce1911e"
+    },
+    {
+      "byte_size": 449,
+      "path": "artifacts/work_packages/H04/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:5c47095c7fd263e9375a50f9e4e9f0e1007eaf60befb6229d178858771e3a491"
+    },
+    {
+      "byte_size": 3819,
+      "path": "artifacts/work_packages/H04/attempts/0001/commands.jsonl",
+      "sha256": "sha256:922d47a55271fd154ea0d6898efbb3df4709e39d307263f96aa4b0e683e5f053"
+    },
+    {
+      "byte_size": 3018,
+      "path": "artifacts/work_packages/H04/attempts/0001/review.md",
+      "sha256": "sha256:613ed1edd6c264e6ffa9cbd362cb133113bea9e4e542177e5f19bd79c4ca6bbd"
+    },
+    {
+      "byte_size": 9419,
+      "path": "artifacts/work_packages/H04/attempts/0001/targeted-node-suite.junit.xml",
+      "sha256": "sha256:447b3ae2d17e740a26208236542876a9117e64213020978712d6c4fa417a63ce"
+    },
+    {
+      "byte_size": 72813,
+      "path": "artifacts/work_packages/H04/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:8c2ca1756a4077aab92b7670bbec0d48f4f79e59d54b34013a697e65d55a5ff8"
+    },
+    {
+      "byte_size": 120469,
+      "path": "artifacts/work_packages/H04/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:2fa33cfe06ce1905a271a4e46e44412c328a04203a6fb3ab5c7f595e52ac909b"
+    },
+    {
+      "byte_size": 3251,
+      "path": "artifacts/work_packages/H04/attempts/0001/normalize_junit.py",
+      "sha256": "sha256:99fb9e4b82904e65692151537d70c523125dc764c5c4605ef819e04f7a25db9f"
+    },
+    {
+      "byte_size": 48924,
+      "path": "artifacts/work_packages/H04/attempts/0001/h04_evidence.py",
+      "sha256": "sha256:0e97625ffd9d7053768325c79d4c51e5ae1c21eb7fb1569e69d8dccdfcee3c11"
+    },
+    {
+      "byte_size": 16791,
+      "path": "artifacts/work_packages/H04/attempts/0001/h04_rah_seal.py",
+      "sha256": "sha256:f089883101bc1c2a099319942ed486e67fc71636fec457bb2196e70eeaacff94"
+    }
+  ],
+  "exit_criteria": {
+    "changed_hooks_require_retrust": "PASS",
+    "unsupported_coverage_explicit": "PASS"
+  },
+  "historical_and_worktree_preservation": {
+    "dirty_worktree_preserved": true,
+    "failed_diagnostics_preserved_in_commands": true,
+    "prior_reports_and_generations_preserved": true,
+    "product_write_scope_violations": 0,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "not_claimed": [
+    "live cross-host feature discovery or runtime hook-runner registration",
+    "exhaustive enforcement from hook observation or hosted-tool interception",
+    "evolution/holdout observability or hook-disabled integration",
+    "global repository green status, release readiness, or product completion"
+  ],
+  "package_status": "PASS",
+  "preserved_limitations": [
+    "H04 projects bounded observations; it does not implement a live cross-host discovery adapter.",
+    "Observed hook coverage remains capability evidence and never exhaustive enforcement.",
+    "H05/H06 retain evolution/holdout and hook-disabled/hosted-tool integration gates.",
+    "S04-TM004 remains exact pre-existing S04-owned debt.",
+    "Review is not actor-independent because the product owner forbids subagents and Fleet in this sequence."
+  ],
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0066",
+    "core_generation": "000064-7d91b86c",
+    "final_closeout_evidence_id": "E0067",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 384,
+    "retained_generation_manifest_count": 64,
+    "status": "active"
+  },
+  "regression": {
+    "git_diff_check": "PASS",
+    "node": {
+      "failed": 1,
+      "h04_caused_failure_count": 0,
+      "passed": 360,
+      "skipped": 0,
+      "status": "BOUNDED_PREEXISTING_DEBT_S04_TM004"
+    },
+    "package_boundaries": "PASS",
+    "python": {
+      "failed": 0,
+      "passed": 947,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "repository_structure": "PASS",
+    "targeted_node": {
+      "failed": 0,
+      "h01_regression_cases": 11,
+      "h02_regression_cases": 8,
+      "h03_regression_cases": 8,
+      "h04_cases": 18,
+      "passed": 45,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "utf8_and_bom_check": "PASS"
+  },
+  "required_checks": {
+    "hook_degraded_mode_test": {
+      "failed": 0,
+      "passed": 7,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "hook_feature_probe_test": {
+      "failed": 0,
+      "passed": 11,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "artifact": "artifacts/work_packages/H04/attempts/0001/review.md",
+    "artifact_sha256": "sha256:613ed1edd6c264e6ffa9cbd362cb133113bea9e4e542177e5f19bd79c4ca6bbd",
+    "assurance_limitation": "Procedurally separate primary-session review; not actor-independent certification.",
+    "blocking_findings": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_INTEGRATION_REVIEW",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_INTEGRATION_REVIEW",
+    "subagents_used": false
+  },
+  "runtime_boundary": {
+    "bounded_observation_projection_only": true,
+    "evolution_holdout_observability_owner": "H05",
+    "hook_disabled_hosted_tool_integration_owner": "H06",
+    "hosted_tool_interception_claimed": false,
+    "live_cross_host_discovery_adapter_claimed": false,
+    "observed_hook_coverage_is_exhaustive_enforcement": false,
+    "runtime_hook_runner_registration_claimed": false
+  },
+  "status": "PASS",
+  "title": "Hook feature probe, trust and degraded-mode gate",
+  "work_package_id": "H04",
+  "write_scope": [
+    "packages/plugin-host/src/capability-probe/**",
+    "tests/compatibility/hooks/**",
+    "artifacts/work_packages/H04/**"
+  ]
+}

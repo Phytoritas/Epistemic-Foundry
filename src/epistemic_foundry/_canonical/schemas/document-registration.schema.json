@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/document-registration.schema.json",
+  "title": "DocumentRegistration",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "source_origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "UPLOAD",
+            "LOCAL_IMPORT",
+            "REMOTE_FETCH",
+            "EXISTING_ARTIFACT"
+          ]
+        },
+        "original_uri": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "not": {
+                "pattern": "^[fF][iI][lL][eE]:"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_system": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "retrieved_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "pattern": "Z$"
+        }
+      },
+      "required": [
+        "kind",
+        "original_uri",
+        "source_system",
+        "retrieved_at"
+      ]
+    },
+    "external_identifier_hint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scheme": {
+          "enum": [
+            "DOI",
+            "PMID",
+            "PMCID",
+            "ARXIV",
+            "ISBN",
+            "URL",
+            "OTHER"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "declared_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verified": {
+          "const": false
+        }
+      },
+      "required": [
+        "scheme",
+        "value",
+        "declared_by",
+        "verified"
+      ]
+    }
+  },
+  "properties": {
+    "registration_id": {
+      "type": "string",
+      "pattern": "^DREG-[0-9a-f]{64}$",
+      "description": "DREG- followed by the lowercase hexadecimal digest from registration_hash."
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "corpus_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_blob_artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_content_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "byte_size": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "detected_media_type": {
+      "type": "string",
+      "pattern": "^[^\\s/]+/[^\\s/]+$"
+    },
+    "original_filename": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?![.]{0,2}[/\\\\])[^/\\\\]+$"
+    },
+    "source_origin": {
+      "$ref": "#/$defs/source_origin"
+    },
+    "license_status": {
+      "enum": [
+        "licensed",
+        "open_access",
+        "fair_use_metadata_only",
+        "restricted",
+        "unknown"
+      ]
+    },
+    "access_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "confidentiality": {
+      "enum": [
+        "public",
+        "internal",
+        "restricted",
+        "secret"
+      ]
+    },
+    "external_identifier_hints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/external_identifier_hint"
+      },
+      "uniqueItems": true,
+      "description": "Canonically sorted before registration hashing."
+    },
+    "supersedes_registration_id": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^DREG-[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "initial_state": {
+      "const": "REGISTERED_UNSCREENED"
+    },
+    "submitted_by_principal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^DREQ-[0-9a-f]{64}$"
+    },
+    "request_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action_intent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_effect_receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_artifact_receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "registration_artifact_receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ledger_event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "registered_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "registration_hash": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "required": [
+    "registration_id",
+    "schema_version",
+    "workspace_id",
+    "corpus_id",
+    "source_blob_artifact_id",
+    "source_content_hash",
+    "byte_size",
+    "detected_media_type",
+    "original_filename",
+    "source_origin",
+    "license_status",
+    "access_policy_ref",
+    "confidentiality",
+    "external_identifier_hints",
+    "supersedes_registration_id",
+    "initial_state",
+    "submitted_by_principal_id",
+    "request_id",
+    "request_hash",
+    "idempotency_key",
+    "action_intent_id",
+    "source_effect_receipt_id",
+    "source_artifact_receipt_id",
+    "registration_artifact_receipt_id",
+    "ledger_event_id",
+    "registered_at",
+    "registration_hash"
+  ],
+  "x-canonical-hash": {
+    "algorithm": "sha256",
+    "canonicalization": "RFC 8785 JCS-equivalent UTF-8",
+    "preimage_fields": [
+      "schema_id",
+      "schema_version",
+      "workspace_id",
+      "corpus_id",
+      "source_blob_artifact_id",
+      "source_content_hash",
+      "byte_size",
+      "detected_media_type",
+      "original_filename",
+      "source_origin",
+      "license_status",
+      "access_policy_ref",
+      "confidentiality",
+      "external_identifier_hints",
+      "supersedes_registration_id",
+      "initial_state",
+      "submitted_by_principal_id",
+      "request_hash",
+      "idempotency_key"
+    ],
+    "excluded_fields": [
+      "registration_id",
+      "registration_hash",
+      "registered_at",
+      "request_id",
+      "action_intent_id",
+      "source_effect_receipt_id",
+      "source_artifact_receipt_id",
+      "registration_artifact_receipt_id",
+      "ledger_event_id",
+      "storage_locator",
+      "attempt_number",
+      "wall_clock_duration"
+    ],
+    "id_binding": "registration_id == 'DREG-' + lowercase_hex(registration_hash)"
+  },
+  "description": "Immutable initial registration of source bytes. Later lifecycle state is append-only EventRecord state and never mutates this artifact."
+}

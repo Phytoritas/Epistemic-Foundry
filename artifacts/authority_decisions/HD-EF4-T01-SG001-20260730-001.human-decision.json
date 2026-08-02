@@ -1,0 +1,32 @@
+{
+  "decision_id": "HD-EF4-T01-SG001-20260730-001",
+  "run_id": null,
+  "subject_id": "T01-SG001",
+  "decision_type": "correct",
+  "decision": "Resolve T01-SG001 prospectively. Fix MCP protocol version 2026-07-28, stateless STDIO and Streamable HTTP POST /mcp transports, an exact 13-tool catalog containing nine PURE_READ and four DURABLE_PLAN_ARTIFACT tools, exact shared result and error envelopes, provider-neutral Python handlers, plugin-host adapters, authorization and confidentiality ordering, no read receipts or business mutations, receipt-bound non-executing planning artifacts, and the exact T01 contract, runtime, adapter, documentation, fixture, test, evidence, manifest, and acceptance-matrix scopes. Authorize only T01-0002 and prohibit T02 mutations, session state, SSE fallback, duplicated business logic, and broad src or tests authority.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "T01-0001 correctly stopped because tool names alone did not define wire contracts, transport framing, side-effect classes, authorization, shared handler ownership, or executable acceptance thresholds. This decision freezes those contracts while retaining domain JSON Schemas as canonical and keeping execution-capable MCP tools outside T01.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/T01/attempts/0001/report.json",
+    "artifacts/work_packages/T01/attempts/0001/shared-contract-gap-verification.json",
+    "artifacts/work_packages/T01/attempts/0001/review.md",
+    "docs/plugin_ux_cli_and_mcp.md",
+    "openapi/epistemic-foundry-v1.openapi.yaml"
+  ],
+  "affected_artifact_ids": [
+    "contracts/mcp/t01/tool-catalog.yaml",
+    "contracts/mcp/t01/inputs/**",
+    "contracts/mcp/t01/foundry-mcp-tool-result.schema.json",
+    "contracts/mcp/t01/foundry-mcp-tool-error.schema.json",
+    "src/epistemic_foundry/application/mcp_read/**",
+    "src/epistemic_foundry/application/mcp_planning/**",
+    "src/epistemic_foundry/application/mcp_common/**",
+    "packages/plugin-host/src/mcp/**",
+    "T01-0002"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-30T00:00:00Z",
+  "decision_hash": "sha256:1af7bc9c3ed201a81dc5a91790ccad5823abaf063fc7e16ada92e37828b65657"
+}

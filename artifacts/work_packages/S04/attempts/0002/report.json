@@ -1,0 +1,106 @@
+{
+  "attempt_id": "S04-0002",
+  "attempt_type": "ACTIVE_SOURCE_BINDING_CORRECTION",
+  "authority_decision_id": "HD-EF4-UNBLOCK-SET-20260730-001",
+  "completion_ready": false,
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "S04_root_status": "IMMUTABLE_PASS_HISTORY_WITH_LATER_TM004_DEBT",
+    "dirty_worktree_preserved": true,
+    "immutable_s04_root_hashes": {
+      "artifacts/work_packages/S04/commands.jsonl": {
+        "byte_size": 5665,
+        "sha256": "sha256:36a152173cce4bfd75df354f57399d711f408e372ac93cfa54cf12bb78dadf86",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/S04/report.json": {
+        "byte_size": 5530,
+        "sha256": "sha256:2d727b6be5e847da71a2d24d893e596e5dc7dbec1d7ffbbe1326cbba8555ffa0",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/S04/review.md": {
+        "byte_size": 5964,
+        "sha256": "sha256:6b449123da06fbe51c43f8b17fefac1f7d0e51360929b79bccf6f5c30e669ff2",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/S04/threat_model_traceability.json": {
+        "byte_size": 33438,
+        "sha256": "sha256:8a7dfabfc1bc80af8b3c24d272de3a8a2c440d39b07f69d5e4a9cdda0e525658",
+        "status": "PRESERVED"
+      }
+    },
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_state": {
+    "C01": "READY_FOR_FIXED_SEQUENCE_REVALIDATION",
+    "J02": "WAITING_ON_C01_C02_C03_C04_B04_A05_A06",
+    "S04": "PASS_ACTIVE_SOURCE_BINDING_CURRENT"
+  },
+  "not_claimed": [
+    "global Python suite green",
+    "J02-0003 resolved or started",
+    "repository-wide conformance",
+    "completion_ready=true",
+    "external actor-independent certification"
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/S04/attempts/0002/active-source-binding-verification.json",
+    "artifacts/work_packages/S04/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/S04/attempts/0002/full-node-suite.junit.xml",
+    "artifacts/work_packages/S04/attempts/0002/full-python-suite.junit.xml",
+    "artifacts/work_packages/S04/attempts/0002/full-regression-impact.json",
+    "artifacts/work_packages/S04/attempts/0002/junit-normalization-verification.json",
+    "artifacts/work_packages/S04/attempts/0002/rah-core-integrity.json",
+    "artifacts/work_packages/S04/attempts/0002/report.json",
+    "artifacts/work_packages/S04/attempts/0002/review.md",
+    "artifacts/work_packages/S04/attempts/0002/s04_0002_evidence.py",
+    "artifacts/work_packages/S04/attempts/0002/s04_0002_rah_seal.py",
+    "artifacts/work_packages/S04/attempts/0002/targeted-security-suite.junit.xml"
+  ],
+  "package_status": "PASS",
+  "product_files_modified_by_attempt": [
+    "manifests/requirements_traceability.yaml",
+    "tests/security/s04-threat-model-traceability.test.mjs"
+  ],
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0094",
+    "core_generation": "000087-db6c1b44",
+    "final_closeout_evidence_id": "E0095",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 54,
+    "generation_manifest_sha256": "sha256:d73fe73d95f22797015dae21b888d04ada88708b6bb678a444f694a6bf909e1b",
+    "implementation_gate": "fail",
+    "retained_generation_manifest_count": 9,
+    "status": "active"
+  },
+  "regression": {
+    "node": "PASS_458_OF_458",
+    "python": "963_PASS_PLUS_BOUNDED_EXPECTED_J02_0003_DEBT",
+    "s04_owned_failure_count": 0,
+    "targeted_security": "PASS_67_OF_67",
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_S04_owned_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_SECURITY_REVIEW",
+    "status": "PASS"
+  },
+  "source_binding": {
+    "binding_hash": "sha256:6915375ce4c4d38f7c8c294db54c736ee1cc4e30a46079a4a4614bafd239036d",
+    "binding_id": "DMB-EF4-20260730-001",
+    "current_manifest_sha256": "sha256:7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319",
+    "patch_plan_hash": "sha256:7e03d0ff348ec21ebb78ce3840bcc226f854f20ebb6673ec1230ce18b6feedd8",
+    "patch_plan_id": "MP-EF4-UNBLOCK-SET-20260730-001",
+    "replacement_hashes_verified": 31,
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "S04"
+}

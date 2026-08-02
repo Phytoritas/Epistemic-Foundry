@@ -1,0 +1,250 @@
+{
+  "work_package_id": "D04",
+  "attempt_id": "D04-0001",
+  "title": "D-phase backup, corruption and recovery gate",
+  "status": "PASS",
+  "package_status": "PASS",
+  "completion_ready": false,
+  "dependencies": {
+    "D02": {
+      "status": "PASS",
+      "attempt_id": "D02-0001",
+      "report": "artifacts/work_packages/D02/report.json",
+      "report_sha256": "b843adb04258b3e72d3a2f21591441bd94f2a16ea409b014c8b49f1200eb004b"
+    },
+    "D03": {
+      "status": "PASS",
+      "attempt_id": "D03-0001",
+      "report": "artifacts/work_packages/D03/report.json",
+      "report_sha256": "10f6c29d27bbd68ace5a86fa21d019037b8a7bcec82c92c9f0922d66106eaf33"
+    }
+  },
+  "write_scope": [
+    "tests/recovery/state/**",
+    "artifacts/work_packages/D04/**"
+  ],
+  "changed_files": [
+    {
+      "path": "tests/recovery/state/recovery-fixtures.mjs",
+      "sha256": "a09eca4e977092e99500a8e146196831fb64a155e6b04a23e0c576f81b034b66",
+      "byte_size": 8470
+    },
+    {
+      "path": "tests/recovery/state/crash-recovery.test.mjs",
+      "sha256": "73ec38611cd9cb8e93ea531065ff8e885c044f0c8a11a4dcb8a5500e85729cdf",
+      "byte_size": 8050
+    },
+    {
+      "path": "tests/recovery/state/backup-restore.test.mjs",
+      "sha256": "f7e780cf3f3a4b15bfd70054bcf06c91ee9ccaa131cc4d7cadc98372a3f6ac66",
+      "byte_size": 7841
+    },
+    {
+      "path": "tests/recovery/state/test_postgres_backup_restore.py",
+      "sha256": "877fd187e1f2360fe0afec008e2cec9bb4e85733206e4d61089386ad83ad6141",
+      "byte_size": 12015
+    }
+  ],
+  "implementation": {
+    "scope": "acceptance fixtures and recovery qualification; not a production backup service",
+    "sqlite_crash_model": "real child-process abrupt termination with committed WAL replay and interrupted-transaction rollback",
+    "sqlite_corruption_policy": "preserve exact corrupt source and enter SAFE_MODE without reset",
+    "sqlite_backup": "node:sqlite live backup bound to SHA-256 and PRAGMA integrity_check",
+    "artifact_backup": "sorted canonical sha256 graph inventory with per-file size/hash and source bundle hash",
+    "restore_protocol": [
+      "validate immutable backup or snapshot",
+      "copy into a fresh sibling staging target",
+      "revalidate copied hash or complete inventory and database integrity",
+      "reject validation-to-publication mutation with final target absent",
+      "atomically rename the verified stage into the final target"
+    ],
+    "failed_restore_forensics": "failed staging targets remain available inside the per-test root until teardown",
+    "postgresql_backup": "custom-format pg_dump with pg_restore TOC preflight",
+    "postgresql_restore": "single-transaction restore into a fresh staging database followed by schema, function, owner, forced-RLS, data, and runtime-principal verification before database rename",
+    "source_tree_fallback": false,
+    "canonical_source_reset": false,
+    "d01_d02_d03_implementation_modified": false
+  },
+  "exit_criteria": {
+    "crash_and_corruption_fixtures_recover_safely": "PASS",
+    "no_data_loss_hidden_by_reset": "PASS"
+  },
+  "required_checks": {
+    "crash_recovery_test": {
+      "status": "PASS",
+      "tests": 4,
+      "committed_wal_replay": true,
+      "interrupted_transaction_rollback": true,
+      "corrupt_source_preserved": true,
+      "artifact_crash_residue_quarantined": true
+    },
+    "backup_restore_test": {
+      "status": "PASS",
+      "tests": 3,
+      "sqlite_tests": 1,
+      "artifact_tests": 1,
+      "postgresql_tests": 1,
+      "staging_revalidation": true,
+      "atomic_publication": true,
+      "corrupt_archive_or_snapshot_denial": true
+    },
+    "combined_targeted_gate": {
+      "status": "PASS",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    "final_repetitions": {
+      "status": "PASS",
+      "node_runs": 10,
+      "node_test_executions": 60,
+      "postgresql_runs": 3,
+      "failed_runs": 0
+    },
+    "additional_closeout_recheck": {
+      "status": "PASS",
+      "node_passed": 6,
+      "postgresql_passed": 1,
+      "failed": 0
+    },
+    "adversarial_restore_race": {
+      "status": "PASS",
+      "sqlite_final_target_absent_on_race": true,
+      "artifact_final_target_absent_on_race": true,
+      "failed_stage_preserved": true
+    }
+  },
+  "regression": {
+    "python": {
+      "status": "PASS",
+      "passed": 913,
+      "failed": 0
+    },
+    "repository_wide_node": {
+      "status": "FAIL_OUTSIDE_D04",
+      "passed": 149,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "owner_scope": "S04"
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix_and_cache_policy": "PASS",
+    "text_integrity": {
+      "status": "PASS",
+      "files": 4,
+      "strict_utf8": true,
+      "bom_absent": true,
+      "nul_absent": true,
+      "replacement_character_absent": true
+    },
+    "git_diff_check": "PASS"
+  },
+  "test_infrastructure": {
+    "postgresql_version": "16.13",
+    "postgresql_image": "pgvector/pgvector@sha256:7d400e340efb42f4d8c9c12c6427adb253f726881a9985d2a471bf0eed824dff",
+    "container_scope": "disposable per test run",
+    "memento_postgres_modified": false,
+    "backup_operator": "container-local postgres superuser",
+    "data_writer": "runtime principal with transaction-local tenant/workspace context through canonical create_revisioned_record"
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "artifact": "artifacts/work_packages/D04/review.md",
+    "artifact_sha256": "3ef7fc082571fdd3bb7efdf010f6aa2091104e0adf1339788fcd150c219a5623",
+    "blocking_findings": 0,
+    "resolved_finding_ids": [
+      "D04-RF001",
+      "D04-RF002"
+    ],
+    "assurance_limitation": "The final pass is procedurally separate within the primary session under the product owner's serial-execution decision; it is not external actor-independent certification."
+  },
+  "residual_integration_failures": [
+    {
+      "check": "repository-wide Node tests",
+      "status": "FAIL_OUTSIDE_D04",
+      "passed": 149,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "owner_scope": "S04"
+    },
+    {
+      "check": "scripts/build/double_build.py",
+      "status": "FAIL_OUTSIDE_D04",
+      "failure": "staged source omits scripts/ required by the existing build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  ],
+  "preserved_limitations": [
+    "Windows abrupt termination proves process-death recovery, not storage-device power-loss durability beyond host and SQLite guarantees.",
+    "The D04 helpers are acceptance fixtures, not a shipped backup CLI or production recovery service.",
+    "The PostgreSQL test qualifies a logical custom dump in one disposable container, not physical backup, PITR, cross-region recovery, or production RPO/RTO.",
+    "The ignored tests/recovery/state/__pycache__ remains because two cleanup command shapes were rejected before execution and no destructive workaround was used."
+  ],
+  "historical_and_worktree_preservation": {
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "failed_review_and_probe_results_preserved_in_commands": true,
+    "cleanup_commands_rejected_before_execution": 2,
+    "ignored_pycache_confirmed_by_git_check_ignore": true,
+    "unrelated_processes_terminated": false
+  },
+  "verification_artifacts": [
+    {
+      "path": "artifacts/work_packages/D04/dependency-status.json",
+      "sha256": "678ec704c64d0390afa5cfb98a1e138050d558cfdb83533491e7c86412b62cde"
+    },
+    {
+      "path": "artifacts/work_packages/D04/d04-dag-reconciliation.py",
+      "sha256": "1a001d6dc6682b0ef9575bdded83c0e39d86cf3c546bd4397423e50f5ace867b"
+    },
+    {
+      "path": "artifacts/work_packages/D04/rah-integrity.json",
+      "sha256": "79e1defd6b03050d08faead476e05ec4862deb95832ac57f0f671fd0830a9d18"
+    },
+    {
+      "path": "artifacts/work_packages/D04/d04-rah-integrity.py",
+      "sha256": "0c694bf9cbe44b08d17dd20120d14c13443ba7a280dc51fd7c6e53ecaa84886e"
+    }
+  ],
+  "evidence_artifacts": [
+    "artifacts/work_packages/D04/report.json",
+    "artifacts/work_packages/D04/commands.jsonl",
+    "artifacts/work_packages/D04/review.md",
+    "artifacts/work_packages/D04/dependency-status.json",
+    "artifacts/work_packages/D04/rah-integrity.json"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000020-e527ff54",
+    "core_generation": "000021-dc79580e",
+    "core_evidence_id": "E0022",
+    "final_closeout_evidence_id": "E0023",
+    "retained_generation_manifest_count_after_core": 21,
+    "generation_file_hashes_verified_after_core": 126,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "flat_snapshot_content_matches_after_core": 6,
+    "parse_errors": {},
+    "completion_ready": false
+  },
+  "dag_reconciliation": {
+    "status": "PASS",
+    "manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+    "work_package_count": 156,
+    "unique_work_package_count": 156,
+    "unknown_dependency_count": 0,
+    "cycle_count": 0,
+    "topological_layer_count": 42,
+    "maximum_layer_width": 10,
+    "completed_package_count": 21,
+    "ready_packages_manifest_order": [
+      "E01",
+      "G01",
+      "K01",
+      "A06"
+    ],
+    "next_package": "E01",
+    "completion_ready": false
+  }
+}

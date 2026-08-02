@@ -1,0 +1,247 @@
+{
+  "artifact_receipt": {
+    "path": "artifacts/work_packages/J03/attempts/0001/capsule-verification.artifact-receipt.json",
+    "receipt_hash": "sha256:53121945a5792d36899a1d90f6530fc2075a9a68a4cbac1ad128d67c5a41388a",
+    "receipt_id": "AR-J03-0001-CAPSULE-VERIFICATION"
+  },
+  "attempt_id": "J03-0001",
+  "authority_boundary": {
+    "canonical_context_capsule_schema": "schemas/context-capsule.schema.json",
+    "canonical_schema_modified_by_j03": false,
+    "canonical_schema_sha256": "sha256:635facd9479a229823eee68b00778dbdad3e24d93c0af355072b897be75db7b6",
+    "generated_contract_modified_by_j03": false,
+    "generated_contract_sha256": "sha256:73a23f4e233430a1c95958cd5037596416571feccbcbce913125e7d513996b4f",
+    "no_clock_random_id_filesystem_or_previous_capsule_authority": true,
+    "product_write_scope": [
+      "packages/context-capsule/**"
+    ]
+  },
+  "changed_files": [
+    {
+      "byte_size": 438,
+      "path": "packages/context-capsule/package.json",
+      "sha256": "sha256:f768694a12bac2de3e187770b6f3c0c47b2226246eda22d13226e70cd3b36d4e"
+    },
+    {
+      "byte_size": 26810,
+      "path": "packages/context-capsule/src/context-capsule.mjs",
+      "sha256": "sha256:017b9b7d8638df51fa2f5a0a218eaf797bdca1ca64b4c02e2d8fde7f3c2c45a6"
+    },
+    {
+      "byte_size": 304,
+      "path": "packages/context-capsule/src/index.mjs",
+      "sha256": "sha256:f92d0efb43f6bee745e0cfe442cfb0f8f3acc8002f8fecc979837a39d427a5d0"
+    },
+    {
+      "byte_size": 9274,
+      "path": "packages/context-capsule/src/capsule-hash.test.mjs",
+      "sha256": "sha256:89c01ee1981e93d6a6666d246c70061dbf00f5443129bde8ea034f4e263c192d"
+    },
+    {
+      "byte_size": 5925,
+      "path": "packages/context-capsule/src/stale-capsule.test.mjs",
+      "sha256": "sha256:29073639bde615df9edfe827d8c118fc8df4c12ecd3139aba6d4c8d516035ca8"
+    }
+  ],
+  "completion_ready": false,
+  "dependencies": {
+    "J01": {
+      "attempt_id": "J01-0001",
+      "report": "artifacts/work_packages/J01/attempts/0001/report.json",
+      "status": "PASS"
+    }
+  },
+  "dependency_effect": {
+    "attempted_non_pass_count": 4,
+    "dag_recomputed": true,
+    "j04_status": "WAITING_ON_J02",
+    "latest_pass_count": 43,
+    "manifest_package_count": 156,
+    "ready_packages_manifest_order": [],
+    "unstarted_blocked_count": 109
+  },
+  "evidence_artifacts": [
+    {
+      "byte_size": 4604,
+      "path": "artifacts/work_packages/J03/attempts/0001/capsule-verification.json",
+      "sha256": "sha256:27c675106507a3c8c159199e7e38d9b0ccb743626672c5ea7bd12c0e3b8cd036"
+    },
+    {
+      "byte_size": 1408,
+      "path": "artifacts/work_packages/J03/attempts/0001/capsule-verification.artifact-receipt.json",
+      "sha256": "sha256:0d8da19dfdfa7dafc923518faae9d4464c67f56d550cc1652924e53b0a9a7743"
+    },
+    {
+      "byte_size": 3831,
+      "path": "artifacts/work_packages/J03/attempts/0001/full-regression-impact.json",
+      "sha256": "sha256:57d2123257c3816f8d52a8242e010c297d026e2f3293f982a53132f3739baa37"
+    },
+    {
+      "byte_size": 1458,
+      "path": "artifacts/work_packages/J03/attempts/0001/dependency-status.json",
+      "sha256": "sha256:684c67ce6d8ba1f4e2b2316d9a1591d7e8f5f6d6964a678a518b7df363279909"
+    },
+    {
+      "byte_size": 1012,
+      "path": "artifacts/work_packages/J03/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:766179cfd295f52327aec228b345d574781eff5179a13d3233d5f9636b52130a"
+    },
+    {
+      "byte_size": 5472,
+      "path": "artifacts/work_packages/J03/attempts/0001/commands.jsonl",
+      "sha256": "sha256:698bd383b23ee717331321d2e4f4fc916c2e14e9748784a444464f4f85c4347c"
+    },
+    {
+      "byte_size": 4231,
+      "path": "artifacts/work_packages/J03/attempts/0001/review.md",
+      "sha256": "sha256:7262a53bde5a7406f441fbf8a18ed7ec6d52905fa205c62f78fa4683f3f1b862"
+    },
+    {
+      "byte_size": 4809,
+      "path": "artifacts/work_packages/J03/attempts/0001/targeted-node-suite.junit.xml",
+      "sha256": "sha256:ddc59f1887f205b87b95ceb3c92984ba57120b2423a66575eda1c1499edcdd12"
+    },
+    {
+      "byte_size": 2602,
+      "path": "artifacts/work_packages/J03/attempts/0001/targeted-python-suite.junit.xml",
+      "sha256": "sha256:5686c456ba46f604fd9ae9e257f835361a452af5ac2b20102396911f5c9f6040"
+    },
+    {
+      "byte_size": 137852,
+      "path": "artifacts/work_packages/J03/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:e8d5d10233f0ec1c4afdeb7dd559f57c64e162773739dfac854eb607fbbbef59"
+    },
+    {
+      "byte_size": 123128,
+      "path": "artifacts/work_packages/J03/attempts/0001/full-python-suite-with-pinned-tokenizer-diagnostic.junit.xml",
+      "sha256": "sha256:e49b26d8c386dec4a8894ce34331744e3c9fc26f322bbb3c8da91c31eb3ede2e"
+    },
+    {
+      "byte_size": 104979,
+      "path": "artifacts/work_packages/J03/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:1f1a0cac7b1637b807f012c9d05f9995154e306e8b53416f0cc553cc41971ecd"
+    }
+  ],
+  "exit_criteria": {
+    "capsule_rebuilt_from_canonical_state": "PASS",
+    "exclusions_and_freshness_explicit": "PASS"
+  },
+  "historical_and_worktree_preservation": {
+    "dirty_worktree_preserved": true,
+    "j02_s04_a06_k01_t01_surfaces_modified_by_j03": false,
+    "package_lock_pyproject_and_uv_lock_modified_by_j03": false,
+    "prior_attempts_reports_reviews_evidence_and_generations_preserved": true,
+    "product_write_scope_violation_count": 0,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "repository-wide green status",
+    "J02 remediation or J04 readiness",
+    "RAH lifecycle advancement or completion",
+    "actor-independent certification",
+    "release readiness or product completion"
+  ],
+  "package_status": "PASS",
+  "preserved_limitations": [
+    "The unchanged locked Python environment retains four J02-owned failures; an ephemeral pinned-tokenizer diagnostic retains the exact J02 dependency-lock failure.",
+    "The full Node suite retains exact S04-TM004 as pre-existing S04-owned debt.",
+    "RAH remains forensically blocked at generation 000081-843d5565 and was not mutated by J03.",
+    "J04 remains blocked by J02 even though J03 passes.",
+    "Review is procedurally separate but not actor-independent because subagents and Fleet were prohibited."
+  ],
+  "rah_state": {
+    "completion_ready": false,
+    "current_generation": "000081-843d5565",
+    "evidence_appended_by_j03": false,
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_created_by_j03": false,
+    "generation_manifest_sha256": "sha256:0aa10f1d9e112955401c56e4b7f07c6aedc490c973c27a2b4c872bd8c8869413",
+    "generation_payload_hashes_verified": 6,
+    "implementation_gate": "fail",
+    "latest_evidence_id": "E0084",
+    "mode": "READ_ONLY_FORENSIC_VERIFICATION",
+    "status": "blocked"
+  },
+  "regression": {
+    "full_node": {
+      "failed": 1,
+      "j03_caused_failure_count": 0,
+      "passed": 457,
+      "skipped": 0,
+      "status": "BOUNDED_PREEXISTING_DEBT_S04_TM004"
+    },
+    "full_python_locked_environment": {
+      "failed": 4,
+      "j03_caused_failure_count": 0,
+      "passed": 960,
+      "skipped": 0,
+      "status": "PREEXISTING_J02_DEPENDENCY_FAILURES"
+    },
+    "full_python_pinned_tokenizer_diagnostic": {
+      "failed": 1,
+      "passed": 963,
+      "skipped": 0,
+      "status": "PREEXISTING_J02_LOCK_GATE_ONLY"
+    },
+    "git_diff_check": "PASS_WITH_PREEXISTING_LINE_ENDING_ADVISORIES",
+    "new_skip_or_xfail_count": 0,
+    "package_boundaries": "PASS",
+    "repository_structure": "PASS",
+    "targeted_node": {
+      "failed": 0,
+      "passed": 21,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "targeted_python_i20": {
+      "failed": 0,
+      "passed": 20,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "capsule_hash_test": {
+      "failed": 0,
+      "passed": 11,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "independent_review": {
+      "actor_independence": false,
+      "blocking_finding_count": 0,
+      "mode": "PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+      "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW"
+    },
+    "stale_capsule_test": {
+      "failed": 0,
+      "passed": 10,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "artifact": "artifacts/work_packages/J03/attempts/0001/review.md",
+    "artifact_sha256": "sha256:7262a53bde5a7406f441fbf8a18ed7ec6d52905fa205c62f78fa4683f3f1b862",
+    "assurance_limitation": "Procedurally separate primary-session review; not actor-independent certification.",
+    "blocking_findings": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW"
+  },
+  "status": "PASS",
+  "title": "ContextCapsule assembly and exclusions",
+  "verification": {
+    "capsule_hash_cases": "11/11",
+    "full_node": "457 passed, 1 exact pre-existing S04-TM004 failure",
+    "full_python_locked": "960 passed, 4 J02-owned failures",
+    "full_python_pinned_tokenizer_diagnostic": "963 passed, 1 J02 dependency-lock failure",
+    "python_i20_contract_cases": "20/20",
+    "stale_capsule_cases": "10/10",
+    "targeted_node": "21/21"
+  },
+  "work_package_id": "J03"
+}

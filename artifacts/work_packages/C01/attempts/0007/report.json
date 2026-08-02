@@ -1,0 +1,140 @@
+{
+  "attempt_id": "C01-0007",
+  "attempt_type": "BOUNDED_CANONICAL_GATE_DECISION_HASH_CORRECTION",
+  "canonical_contract": {
+    "example_count": 126,
+    "openapi_operation_count": 33,
+    "openapi_version": "3.1.1",
+    "schema_count": 126,
+    "schema_example_one_to_one": true,
+    "status": "PASS"
+  },
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "correction": {
+    "attempt_id": "C01-0007",
+    "canonicalization": "RFC_8785_JCS_EQUIVALENT_FOR_THIS_JSON_DOMAIN",
+    "computed_decision_hash": "sha256:a6a50d4285e844b71093e999b5addccf969d09d4c14221a92531d73172369851",
+    "fixture_byte_hash": "sha256:6224cf4f32e1da439fa9418f551f7dd6333c6d19e70c4a20cd6bb1a38b754982",
+    "fixture_path": "examples/sample_gate_decision.json",
+    "prior_stale_decision_hash": "sha256:816c793545f4c3a194ce6b4fa842856defbcb34d991f27277ea9cd2a082e4be1",
+    "schema_id": "https://epistemic-foundry.local/schemas/gate-decision.schema.json",
+    "schema_validation": "PASS",
+    "self_field_excluded": "decision_hash",
+    "status": "PASS",
+    "stored_decision_hash": "sha256:a6a50d4285e844b71093e999b5addccf969d09d4c14221a92531d73172369851",
+    "tamper_rejection": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "B04_0007_preserved": true,
+    "C01_prior_attempts": "IMMUTABLE_HISTORY",
+    "dirty_worktree_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_state": {
+    "B04-0007": "PASS_PRE_C04_PROJECTION",
+    "B04-0008": "WAITING_ON_C04_0002",
+    "C01-0007": "PASS",
+    "C04-0002": "DEPENDENCY_READY",
+    "attempt_id": "C01-0007",
+    "authorized_order": [
+      "B04-0007",
+      "C01-0007",
+      "C04-0002",
+      "B04-0008",
+      "156_PACKAGE_DAG_RECOMPUTE"
+    ],
+    "completion_ready": false,
+    "global_implementation_gate": "fail",
+    "next_attempt": "C04-0002",
+    "static_dependency_cycle_added": false,
+    "status": "PASS"
+  },
+  "not_claimed": [
+    "C04-0002 full conformance",
+    "B04-0008 final packaging",
+    "repository release readiness",
+    "completion_ready=true",
+    "external actor-independent certification"
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/C01/attempts/0007/build_c01_0007_evidence.py",
+    "artifacts/work_packages/C01/attempts/0007/c01_0007_rah_seal.py",
+    "artifacts/work_packages/C01/attempts/0007/canonical-contract-verification.json",
+    "artifacts/work_packages/C01/attempts/0007/commands.jsonl",
+    "artifacts/work_packages/C01/attempts/0007/dependency-status.json",
+    "artifacts/work_packages/C01/attempts/0007/full-node-suite.junit.xml",
+    "artifacts/work_packages/C01/attempts/0007/full-python-suite.junit.xml",
+    "artifacts/work_packages/C01/attempts/0007/full-regression-impact.json",
+    "artifacts/work_packages/C01/attempts/0007/gate-decision-hash-verification.json",
+    "artifacts/work_packages/C01/attempts/0007/gate-decision.artifact-receipt.json",
+    "artifacts/work_packages/C01/attempts/0007/junit-normalization-verification.json",
+    "artifacts/work_packages/C01/attempts/0007/phase-artifact-reconciliation.json",
+    "artifacts/work_packages/C01/attempts/0007/projection-receipt-verification.json",
+    "artifacts/work_packages/C01/attempts/0007/rah-core-integrity.json",
+    "artifacts/work_packages/C01/attempts/0007/report.json",
+    "artifacts/work_packages/C01/attempts/0007/review.md",
+    "artifacts/work_packages/C01/attempts/0007/targeted-contracts.junit.xml",
+    "artifacts/work_packages/C01/attempts/0007/write-scope-verification.json"
+  ],
+  "package_status": "PASS",
+  "product_files_modified_by_attempt": [
+    "examples/sample_gate_decision.json"
+  ],
+  "projection_freshness": {
+    "B04_attempt_id": "B04-0007",
+    "receipt_id": "AR-B04-0007-CANONICAL-PROJECTION",
+    "registry_hash": "sha256:6b4fcade707639e537744be4075e71d3f7e068cd42eaaaddb20ef084851175d5",
+    "source_bundle_hash": "sha256:1557b03db2ad7e7d23b014d4c9d5fd643803f6613696c966d9b0379573259e7f",
+    "status": "CURRENT"
+  },
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0014",
+    "core_generation": "000014-4bc04f17",
+    "final_closeout_evidence_id": "E0015",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 84,
+    "implementation_gate": "fail",
+    "retained_generation_count": 14,
+    "status": "active"
+  },
+  "regression": {
+    "node": "PASS_460_OF_460",
+    "python": "PASS_990_OF_990",
+    "targeted": "PASS_77_OF_77",
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_C01_0007_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "C01",
+  "write_scope": {
+    "approved_product_paths": [
+      "examples/sample_gate_decision.json"
+    ],
+    "attempt_artifact_scope": "artifacts/work_packages/C01/attempts/0007/**",
+    "attempt_id": "C01-0007",
+    "changed_field": "decision_hash",
+    "derived_snapshot_change_count": 0,
+    "dirty_worktree_preserved": true,
+    "new_value": "sha256:a6a50d4285e844b71093e999b5addccf969d09d4c14221a92531d73172369851",
+    "old_value": "sha256:816c793545f4c3a194ce6b4fa842856defbcb34d991f27277ea9cd2a082e4be1",
+    "product_change_count": 1,
+    "reset_clean_stash_commit_push_performed": false,
+    "schema_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

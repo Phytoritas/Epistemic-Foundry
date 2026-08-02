@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/capability-lease.schema.json",
+  "title": "CapabilityLease",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "lease_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "principal_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "principal_type": {
+      "enum": [
+        "human",
+        "agent",
+        "service",
+        "tool"
+      ]
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "resource_scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fencing_token": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "policy_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "approval_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 128
+      },
+      "uniqueItems": true
+    },
+    "revoked": {
+      "type": "boolean"
+    },
+    "revocation_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "lease_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "lease_id",
+    "principal_id",
+    "principal_type",
+    "capabilities",
+    "resource_scopes",
+    "issued_at",
+    "expires_at",
+    "fencing_token",
+    "policy_hash",
+    "approval_ids",
+    "revoked",
+    "revocation_reason",
+    "lease_hash"
+  ]
+}

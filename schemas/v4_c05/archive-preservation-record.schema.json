@@ -1,0 +1,35 @@
+{
+  "$id": "https://epistemic-foundry.local/schemas/v4_c05/archive-preservation-record.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The quality-diversity archive surface (EF4-I48, EF4-I49, EF4-I50): niches and trade-offs rather than a single top score, with negative, null, unsafe and minority memory protected from fitness-only eviction.",
+  "oneOf": [
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/archive-rebalance-plan.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/epistemic-archive-entry.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/epistemic-niche.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/island-state.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/lineage-diversity-report.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/novelty-assessment.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/novelty-vector.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/pareto-front-snapshot.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/quality-diversity-map.schema.json"
+    }
+  ],
+  "title": "ArchivePreservationRecord"
+}

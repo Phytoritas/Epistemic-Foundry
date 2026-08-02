@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "G01-0001-PLUGIN-MANIFEST-VERIFICATION",
+  "byte_size": 3396,
+  "content_hash": "sha256:04f2e2e90f0344cb1f038117807991570871a5fe4c33b3d4e0ecc56ac365d351",
+  "created_at": "2026-07-29T02:37:05Z",
+  "created_by": {
+    "actor_id": "SVC-FOUNDRY-KERNEL-G01",
+    "actor_type": "service"
+  },
+  "locator": "artifacts/work_packages/G01/attempts/0001/g01-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:3a5a05efb59946466ae233217c4fe02a5af44333f255645575041d1605bde051",
+  "receipt_id": "AR-G01-0001-PLUGIN-MANIFEST-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "plugin_manifest_validation",
+      "details": "official and package-local validators report zero errors",
+      "status": "PASS"
+    },
+    {
+      "check": "asset_path_test",
+      "details": "7/7 negative cases pass; both active assets resolve inside plugin root",
+      "status": "PASS"
+    },
+    {
+      "check": "full_python_regression",
+      "details": "947/947 passed with zero skip",
+      "status": "PASS"
+    }
+  ]
+}

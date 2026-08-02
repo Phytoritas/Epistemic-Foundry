@@ -1,0 +1,37 @@
+{
+  "check": "ci_matrix_lint",
+  "status": "PASS",
+  "workflow": ".github/workflows/ci.yml",
+  "runners": [
+    "ubuntu-24.04",
+    "macos-15",
+    "windows-2025"
+  ],
+  "action_pins": {
+    "actions/checkout": "d23441a48e516b6c34aea4fa41551a30e30af803",
+    "actions/setup-node": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+    "actions/setup-python": "ece7cb06caefa5fff74198d8649806c4678c61a1",
+    "astral-sh/setup-uv": "94527f2e458b27549849d47d273a16bec83a01e9",
+    "actions/cache": "caa296126883cff596d87d8935842f9db880ef25"
+  },
+  "action_counts": {
+    "actions/checkout": 1,
+    "actions/setup-node": 1,
+    "actions/setup-python": 1,
+    "astral-sh/setup-uv": 1,
+    "actions/cache": 1
+  },
+  "required_commands": [
+    "python scripts/build/check_locks.py",
+    "npm ci --ignore-scripts",
+    "uv sync --locked --extra dev --no-python-downloads",
+    "npm run check:structure",
+    "npm run check:boundaries",
+    "uv run --locked python scripts/ci/ci_matrix_lint.py",
+    "uv run --locked python scripts/ci/cache_key_audit.py",
+    "uv run --locked python scripts/ci/test_ci_policy.py",
+    "uv run --locked pytest tests -p no:cacheprovider",
+    "uv run --locked python scripts/build/double_build.py"
+  ],
+  "failures": []
+}

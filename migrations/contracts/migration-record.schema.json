@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:epistemic-foundry:migrations:contracts:migration-record:v1",
+  "title": "C03MigrationRecord",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/evolution_run_spec_migration"
+    },
+    {
+      "$ref": "#/$defs/promotion_level_migration"
+    },
+    {
+      "$ref": "#/$defs/document_registration_migration"
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "promotion_level": {
+      "enum": [
+        "INBOX",
+        "CANDIDATE",
+        "LITERATURE_GROUNDED",
+        "VALIDATION_SCREENED",
+        "EMPIRICALLY_TESTED",
+        "REPLICATED"
+      ]
+    },
+    "evolution_run_spec_migration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "record_type": {
+          "const": "EvolutionRunSpecMigrationRecord"
+        },
+        "migration_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_schema_version": {
+          "const": "3.0.0"
+        },
+        "target_schema_version": {
+          "const": "4.0.0"
+        },
+        "source_evolution_run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_evolution_run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_artifact_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "target_spec_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "resolution_evidence_artifact_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "resolution_status": {
+          "const": "RESOLVED"
+        },
+        "failure_code": {
+          "type": "null"
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "migration_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "record_type",
+        "migration_id",
+        "source_schema_version",
+        "target_schema_version",
+        "source_evolution_run_id",
+        "target_evolution_run_id",
+        "source_artifact_hash",
+        "target_spec_hash",
+        "resolution_evidence_artifact_ids",
+        "resolution_status",
+        "failure_code",
+        "recorded_at",
+        "migration_hash"
+      ]
+    },
+    "promotion_level_migration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "record_type": {
+          "const": "PromotionLevelMigrationRecord"
+        },
+        "migration_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_schema_version": {
+          "const": "3.0.0"
+        },
+        "target_schema_version": {
+          "const": "4.0.0"
+        },
+        "source_level": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_level": {
+          "$ref": "#/$defs/promotion_level"
+        },
+        "source_value_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "target_value_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "review_status": {
+          "const": "APPROVED"
+        },
+        "review_authority_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "review_evidence_artifact_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "migration_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "record_type",
+        "migration_id",
+        "source_schema_version",
+        "target_schema_version",
+        "source_level",
+        "target_level",
+        "source_value_hash",
+        "target_value_hash",
+        "review_status",
+        "review_authority_id",
+        "review_evidence_artifact_ids",
+        "rationale",
+        "recorded_at",
+        "migration_hash"
+      ]
+    },
+    "document_registration_migration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "record_type": {
+          "const": "DocumentRegistrationMigrationRecord"
+        },
+        "migration_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_schema_version": {
+          "const": "3.0.0"
+        },
+        "target_schema_version": {
+          "const": "4.0.0"
+        },
+        "source_document_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_manifest_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "target_request_id": {
+          "type": "string",
+          "pattern": "^DREQ-[0-9a-f]{64}$"
+        },
+        "target_request_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "target_registration_id": {
+          "type": "string",
+          "pattern": "^DREG-[0-9a-f]{64}$"
+        },
+        "target_registration_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "target_manifest_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "immutable_evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "resolution_status": {
+          "const": "RESOLVED"
+        },
+        "failure_code": {
+          "type": "null"
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "migration_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "record_type",
+        "migration_id",
+        "source_schema_version",
+        "target_schema_version",
+        "source_document_id",
+        "source_manifest_hash",
+        "target_request_id",
+        "target_request_hash",
+        "target_registration_id",
+        "target_registration_hash",
+        "target_manifest_hash",
+        "immutable_evidence_ids",
+        "resolution_status",
+        "failure_code",
+        "recorded_at",
+        "migration_hash"
+      ]
+    }
+  }
+}

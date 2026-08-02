@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/epistemic-niche.schema.json",
+  "title": "EpistemicNiche",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "niche_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "axis_values": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mechanism_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope_class": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_state": {
+          "type": "string",
+          "minLength": 1
+        },
+        "testability_band": {
+          "type": "string",
+          "minLength": 1
+        },
+        "causal_status": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "mechanism_family",
+        "scope_class",
+        "evidence_state",
+        "testability_band",
+        "causal_status"
+      ]
+    },
+    "capacity": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occupant_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "elite_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "coverage_debt": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "niche_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "niche_id",
+    "axis_values",
+    "capacity",
+    "occupant_ids",
+    "elite_id",
+    "coverage_debt",
+    "niche_hash"
+  ],
+  "description": "MAP-Elites 셀을 기전·범위·증거상태·검증성 등 의미 축으로 정의한다."
+}

@@ -1,0 +1,68 @@
+{
+  "attempt_id": "T04-0001",
+  "declaring_sources": {
+    "approval_policy": "schemas/validation-target-manifest.schema.json",
+    "breach_policy": "schemas/budget-envelope.schema.json",
+    "effect_status": "schemas/effect-receipt.schema.json",
+    "enforcement": "schemas/budget-envelope.schema.json",
+    "isolation_boundaries": "schemas/holdout-manifest.schema.json",
+    "network_policy": "schemas/validation-target-manifest.schema.json",
+    "output_receipt_shape": "schemas/artifact-receipt.schema.json",
+    "quota_dimensions": "schemas/budget-envelope.schema.json",
+    "safety_class": "schemas/validation-target-manifest.schema.json"
+  },
+  "exit_criteria": {
+    "timeouts_cancellation_quotas_enforced": {
+      "evidence": [
+        "python/epistemic_foundry/tools/sandbox/test_tool_receipt.py"
+      ],
+      "mechanism": "a call and wall-clock ceiling are mandatory and an adapter that may reach the network must also bound what it sends; a breach resolves through the envelope's own breach policy rather than this component's preference; and a cancelled or timed-out run still emits an EffectReceipt whose status follows the observation, so UNKNOWN carries reconciliation_required and a proven non-start does not",
+      "status": "PASS"
+    },
+    "tool_outputs_hashed": {
+      "evidence": [
+        "python/epistemic_foundry/tools/sandbox/test_tool_receipt.py"
+      ],
+      "mechanism": "every captured output is content-addressed over the bytes themselves, the hash and byte size are re-derived on verification rather than trusted, a truncated capture is hashed as what was captured and records the completeness failure, and an unhashed output cannot enter an EffectReceipt",
+      "status": "PASS"
+    }
+  },
+  "isolation": {
+    "boundaries_read_from_schema": [
+      "backend_access",
+      "candidate_access",
+      "mutation_model_access",
+      "prompt_access"
+    ],
+    "holdout_contradicting_its_own_schema_refused": true,
+    "sandboxed_principal_cannot_reach_holdout_or_evaluator": true,
+    "unblinding_requires_approval_for_other_principals": true
+  },
+  "quotas": {
+    "breach_actions": [
+      "DENIED",
+      "ESCALATED",
+      "TRUNCATED",
+      "WARNED"
+    ],
+    "mandatory_ceilings": [
+      "calls",
+      "wall_seconds"
+    ],
+    "unmetered_enforcement_refused": true
+  },
+  "required_checks": {
+    "sandbox_escape_test": {
+      "module": "python/epistemic_foundry/tools/sandbox/test_sandbox_escape.py",
+      "status": "PASS",
+      "test_count": 62
+    },
+    "tool_receipt_test": {
+      "module": "python/epistemic_foundry/tools/sandbox/test_tool_receipt.py",
+      "status": "PASS",
+      "test_count": 53
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 115
+}

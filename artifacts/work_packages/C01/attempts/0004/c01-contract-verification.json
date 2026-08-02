@@ -1,0 +1,317 @@
+{
+  "attempt_id": "C01-0004",
+  "authority_decision_hash": "sha256:4717a98cfc987dac28c9b113d843e6f0077947d42589523e8e4cee2f0be64f5b",
+  "authority_decision_id": "HD-EF4-C01-SG003-20260728-001",
+  "canonical_contract": {
+    "openapi": {
+      "all_mutations_require_idempotency_key": true,
+      "all_operations_have_explicit_security_and_capabilities": true,
+      "base_path": "/api/v1",
+      "canonical_file": "openapi/epistemic-foundry-v1.openapi.yaml",
+      "external_validator": {
+        "command_id": "C01-0004-C005",
+        "exit_code": 0,
+        "input_sha256": "c77aa89918cc33cded07755bbf2cbec7fcb6554e573efbca2ebd9480b78344d7",
+        "result": "OK",
+        "tool": "openapi-spec-validator",
+        "version": "0.7.2"
+      },
+      "generated_client_dry_run": {
+        "command_id": "C01-0004-C006",
+        "exit_code": 0,
+        "generator": "python",
+        "generator_version": "7.14.0",
+        "input_form": "repository-relative path",
+        "input_sha256": "c77aa89918cc33cded07755bbf2cbec7fcb6554e573efbca2ebd9480b78344d7",
+        "tool": "OpenAPI Generator CLI",
+        "wrapper_version": "2.21.4",
+        "wrote_repository_files": false
+      },
+      "json_schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+      "mutation_operation_count": 12,
+      "openapi_version": "3.1.1",
+      "operation_count": 33,
+      "reference_resolution_failures": [],
+      "scientific_external_ref_count": 22,
+      "status": "PASS",
+      "unique_operation_id_count": 33
+    },
+    "schema_examples": {
+      "example_count": 124,
+      "fixture_hashes": {
+        "decision_hash": "sha256:781e2449498ee9799c8f62b6a8b4cd08289891587a86a795e8f45459e09f9f5f",
+        "spec_hash": "sha256:580392a2d791515a6523472372fa3139321807a9fa3a2a0f183e93b4686948df"
+      },
+      "floating_reference_hits": [],
+      "legacy_promotion_literal_hits": [],
+      "promotion_gate_order": [
+        "G00_PIN_RESOLUTION",
+        "G01_POLICY_AUTHORITY",
+        "G02_EVALUATOR_HOLDOUT_FIREWALL",
+        "G03_SCHEMA_LINEAGE_COUNT",
+        "G04_SOURCE_PROVENANCE",
+        "G05_SEARCH_COVERAGE",
+        "G06_METHOD_SCOPE_DEPENDENCY",
+        "G07_VALIDATION_LEAKAGE",
+        "G08_ADAPTIVE_STATISTICS",
+        "G09_RED_QUEEN",
+        "G10_REPLICATION_CEILING",
+        "G11_PARLIAMENT",
+        "G12_INDEPENDENT_ATTESTATION",
+        "G13_HUMAN_POLICY_APPROVAL",
+        "G14_ATOMIC_PROMOTION_COMMIT"
+      ],
+      "promotion_levels": [
+        "INBOX",
+        "CANDIDATE",
+        "LITERATURE_GROUNDED",
+        "VALIDATION_SCREENED",
+        "EMPIRICALLY_TESTED",
+        "REPLICATED"
+      ],
+      "promotion_semantic_cases": {
+        "blocked_nonnull_rejects": true,
+        "blocked_null_accepts": true,
+        "conditional_lower_accepts": true,
+        "conditional_null_rejects": true,
+        "conditional_requested_level_rejects": true,
+        "granted_level_remains_required": true,
+        "promote_equal_accepts": true,
+        "promote_mismatch_rejects": true,
+        "reject_nonnull_rejects": true,
+        "reject_null_accepts": true,
+        "underdetermined_nonnull_rejects": true,
+        "underdetermined_null_accepts": true
+      },
+      "required_resolved_ref_count": 20,
+      "schema_count": 124,
+      "schema_example_cardinality_matches": true,
+      "status": "PASS",
+      "unique_schema_id_count": 124,
+      "valid_example_count": 124
+    },
+    "status": "PASS",
+    "targeted_tests": {
+      "artifact": "artifacts/work_packages/C01/attempts/0004/targeted-contracts.junit.xml",
+      "command": "python -m pytest tests/contracts/openapi tests/test_wire_literal_discipline.py -p no:cacheprovider --tb=short --junitxml=artifacts/work_packages/C01/attempts/0004/targeted-contracts.junit.xml",
+      "exit_code": 0,
+      "failed": 0,
+      "passed": 71,
+      "sha256": "cd9b7bddd532e924ec56c8f54ae30582e88007ce8f82a9332d5dcab656e90ddc",
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "classification": {
+    "B04_may_start_now": false,
+    "C01_local_gate": "PASS",
+    "full_suite_is_not_reported_pass": true,
+    "repository_zero_failure_gate_owner": "C04",
+    "residual_failure_owner": "C03",
+    "residual_failures_are_not_hidden": true
+  },
+  "completion_ready": false,
+  "contract_input_hash_checks": {
+    "docs/api_contract.md": {
+      "actual_sha256": "317076f114f2e94d13b494487a3cbdfbcd061d31a1c225faefd6aebe17bc9b65",
+      "expected_sha256": "317076f114f2e94d13b494487a3cbdfbcd061d31a1c225faefd6aebe17bc9b65",
+      "status": "PASS"
+    },
+    "examples/sample_evolution-run-spec.json": {
+      "actual_sha256": "bf4bada986c682155388c83eb7913b5bd0c66ba4453527570f67d2bd2851cc3b",
+      "expected_sha256": "bf4bada986c682155388c83eb7913b5bd0c66ba4453527570f67d2bd2851cc3b",
+      "status": "PASS"
+    },
+    "examples/sample_promotion-decision.json": {
+      "actual_sha256": "d7512f0e94894c4dd85146879709778393a1f00c4856d1d67d9169004538312d",
+      "expected_sha256": "d7512f0e94894c4dd85146879709778393a1f00c4856d1d67d9169004538312d",
+      "status": "PASS"
+    },
+    "manifests/development_manifest.yaml": {
+      "actual_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+      "expected_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+      "status": "PASS"
+    },
+    "openapi/epistemic-foundry-v1.openapi.yaml": {
+      "actual_sha256": "c77aa89918cc33cded07755bbf2cbec7fcb6554e573efbca2ebd9480b78344d7",
+      "expected_sha256": "c77aa89918cc33cded07755bbf2cbec7fcb6554e573efbca2ebd9480b78344d7",
+      "status": "PASS"
+    },
+    "schemas/evolution-run-spec.schema.json": {
+      "actual_sha256": "54f6934f33426c8706640038c25f63687097fad36f21c84d46fdf5b0d9b9291a",
+      "expected_sha256": "54f6934f33426c8706640038c25f63687097fad36f21c84d46fdf5b0d9b9291a",
+      "status": "PASS"
+    },
+    "schemas/gate-decision.schema.json": {
+      "actual_sha256": "9f23594f912116cdaa2357c56e35c12f3a57606ce4793462245f86bfe9ad2559",
+      "expected_sha256": "9f23594f912116cdaa2357c56e35c12f3a57606ce4793462245f86bfe9ad2559",
+      "status": "PASS"
+    },
+    "schemas/phase-artifact-set.schema.json": {
+      "actual_sha256": "4db66de7a172062d9742736681641a0d312fac2fe2a798606757996b53cb3fb6",
+      "expected_sha256": "4db66de7a172062d9742736681641a0d312fac2fe2a798606757996b53cb3fb6",
+      "status": "PASS"
+    },
+    "schemas/promotion-decision.schema.json": {
+      "actual_sha256": "5a33e660aebed94c7a74de1fa8c8767f189b4367b70a830733fdda3c7d1caea7",
+      "expected_sha256": "5a33e660aebed94c7a74de1fa8c8767f189b4367b70a830733fdda3c7d1caea7",
+      "status": "PASS"
+    },
+    "tests/contracts/openapi/conftest.py": {
+      "actual_sha256": "437641ef742cc0be69b0a666f4c8e619c108dd2c1624f65b9afaf51202ebe5f0",
+      "expected_sha256": "437641ef742cc0be69b0a666f4c8e619c108dd2c1624f65b9afaf51202ebe5f0",
+      "status": "PASS"
+    },
+    "tests/contracts/openapi/test_openapi_contract.py": {
+      "actual_sha256": "737dd012fc3b7104763e189d2aea0998c90897856007058a715efd3f2c0471a4",
+      "expected_sha256": "737dd012fc3b7104763e189d2aea0998c90897856007058a715efd3f2c0471a4",
+      "status": "PASS"
+    },
+    "tests/contracts/openapi/test_scientific_contracts.py": {
+      "actual_sha256": "27296a0b77b21f00631936124c0738f2fca40b31ac23d040162b1b8dfd0f324c",
+      "expected_sha256": "27296a0b77b21f00631936124c0738f2fca40b31ac23d040162b1b8dfd0f324c",
+      "status": "PASS"
+    }
+  },
+  "contract_status": "CONFORMANT",
+  "expected_failure_count": 24,
+  "full_suite_status": "EXPECTED_FAILURES_PENDING_C03",
+  "history_hash_checks": {
+    "artifacts/authority_decisions/HD-EF4-C01-SG003-20260728-001.human-decision.json": {
+      "actual_sha256": "bcce9f20f59712c78032a846e1ac368e8d0cf27141731df31478a1f7e976d38e",
+      "expected_sha256": "bcce9f20f59712c78032a846e1ac368e8d0cf27141731df31478a1f7e976d38e",
+      "status": "PASS"
+    },
+    "artifacts/work_packages/A05/attempts/0002/report.json": {
+      "actual_sha256": "c9c550de22f55d32898f0d33489bc9b0480de6eef4bca7baeb09fcf047c6062c",
+      "expected_sha256": "c9c550de22f55d32898f0d33489bc9b0480de6eef4bca7baeb09fcf047c6062c",
+      "status": "PASS"
+    },
+    "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verification.json": {
+      "actual_sha256": "c0bf2ba5e156845731229bced427af3f390bcc3f77891fcd7e3075701fa27ee0",
+      "expected_sha256": "c0bf2ba5e156845731229bced427af3f390bcc3f77891fcd7e3075701fa27ee0",
+      "status": "PASS"
+    },
+    "artifacts/work_packages/C01/attempts/0003/report.json": {
+      "actual_sha256": "d3f14a0f227bc7fa4743b7d2fbb266cb1999cd2524f4a93a9770b19910a130e5",
+      "expected_sha256": "d3f14a0f227bc7fa4743b7d2fbb266cb1999cd2524f4a93a9770b19910a130e5",
+      "status": "PASS"
+    },
+    "artifacts/work_packages/C01/attempts/0003/review.md": {
+      "actual_sha256": "ed85ebe9b31e8bc223a3a50cefb05a77daaeebcb29aa80ee752df8fb7d05e3b8",
+      "expected_sha256": "ed85ebe9b31e8bc223a3a50cefb05a77daaeebcb29aa80ee752df8fb7d05e3b8",
+      "status": "PASS"
+    }
+  },
+  "manifest_contract": {
+    "B04_depends_on": [
+      "B02",
+      "B03",
+      "C04"
+    ],
+    "C01": {
+      "depends_on": [
+        "A04",
+        "A05"
+      ],
+      "write_scope": [
+        "schemas/**",
+        "openapi/**",
+        "docs/api_contract.md",
+        "tests/contracts/openapi/**",
+        "artifacts/work_packages/C01/**",
+        "examples/sample_evolution-run-spec.json",
+        "examples/sample_promotion-decision.json"
+      ]
+    },
+    "C02_depends_on": [
+      "C01"
+    ],
+    "C03_depends_on": [
+      "C01",
+      "C02"
+    ],
+    "C03_exact_migration_paths": [
+      "src/epistemic_foundry/evolution_chamber/run_spec.py",
+      "src/epistemic_foundry/governance/promotion.py",
+      "tests/test_evolution_chamber.py",
+      "tests/test_governance.py",
+      "tests/test_integration_forge_cycle.py"
+    ],
+    "C04_depends_on": [
+      "C02",
+      "C03"
+    ],
+    "status": "PASS",
+    "work_package_count": 156
+  },
+  "migration_owner": "C03",
+  "package_status": "PASS",
+  "probe_id": "C01-P004",
+  "repository_full_suite_status": "EXPECTED_MIGRATION_FAILURES",
+  "runtime_migration_impact": {
+    "artifact": "artifacts/work_packages/C01/attempts/0004/runtime-migration-impact.json",
+    "baseline_failed": 24,
+    "baseline_passed": 824,
+    "new_failure_count": 0,
+    "normalized_fingerprint_parity": true,
+    "raw_message_changed_count": 22,
+    "residual_failed": 24,
+    "residual_passed": 831,
+    "sha256": "3c35cc5cfe003055f2e039a4837e74527a843c4ed6795eee1d28b56954d36877",
+    "status": "EXPECTED_FAILURES_PENDING_C03"
+  },
+  "runtime_migration_status": "PENDING_C03",
+  "schema_version": 1,
+  "status": "PASS",
+  "work_package_id": "C01",
+  "write_scope_audit": {
+    "audit_method": "All declared attempt-0004 outputs are matched against the exact C01 scope; the five C03-owned paths are additionally hash-bound to the pre-attempt values.",
+    "declared_change_count": 13,
+    "declared_changes": [
+      "schemas/promotion-decision.schema.json",
+      "docs/api_contract.md",
+      "tests/contracts/openapi/test_scientific_contracts.py",
+      "artifacts/work_packages/C01/attempts/0004/c01-contract-verifier.py",
+      "artifacts/work_packages/C01/attempts/0004/runtime-migration-baseline.junit.xml",
+      "artifacts/work_packages/C01/attempts/0004/runtime-migration-residual.junit.xml",
+      "artifacts/work_packages/C01/attempts/0004/targeted-contracts.junit.xml",
+      "artifacts/work_packages/C01/attempts/0004/runtime-migration-impact.json",
+      "artifacts/work_packages/C01/attempts/0004/c01-contract-verification.json",
+      "artifacts/work_packages/C01/attempts/0004/dependency-status.json",
+      "artifacts/work_packages/C01/attempts/0004/commands.jsonl",
+      "artifacts/work_packages/C01/attempts/0004/review.md",
+      "artifacts/work_packages/C01/attempts/0004/report.json"
+    ],
+    "runtime_boundary_hash_checks": {
+      "src/epistemic_foundry/evolution_chamber/run_spec.py": {
+        "actual_sha256": "b18ac50a737f2ffd2e948a67541737e6dad4feafc8f7262f464311bafc55eb4b",
+        "expected_sha256": "b18ac50a737f2ffd2e948a67541737e6dad4feafc8f7262f464311bafc55eb4b",
+        "status": "PASS"
+      },
+      "src/epistemic_foundry/governance/promotion.py": {
+        "actual_sha256": "a05013fdd9ea83a51071f376075b540a2fc371bb7e9f2ff12f786feb0ba90e71",
+        "expected_sha256": "a05013fdd9ea83a51071f376075b540a2fc371bb7e9f2ff12f786feb0ba90e71",
+        "status": "PASS"
+      },
+      "tests/test_evolution_chamber.py": {
+        "actual_sha256": "8034125cb1f1e4a4dec9667dc8880f6e695eafbbfa14c15b4e8ec99bff3988d9",
+        "expected_sha256": "8034125cb1f1e4a4dec9667dc8880f6e695eafbbfa14c15b4e8ec99bff3988d9",
+        "status": "PASS"
+      },
+      "tests/test_governance.py": {
+        "actual_sha256": "6e588dc71df2da2abade7e06fc1b8817c1eb1d66eca82972080f17cd278ec7fa",
+        "expected_sha256": "6e588dc71df2da2abade7e06fc1b8817c1eb1d66eca82972080f17cd278ec7fa",
+        "status": "PASS"
+      },
+      "tests/test_integration_forge_cycle.py": {
+        "actual_sha256": "a137c6f16c64ecfcc10c49d2d2dba96c360fcd0f25e7943f06d0a3fc19e4bc75",
+        "expected_sha256": "a137c6f16c64ecfcc10c49d2d2dba96c360fcd0f25e7943f06d0a3fc19e4bc75",
+        "status": "PASS"
+      }
+    },
+    "status": "PASS",
+    "violation_count": 0,
+    "violations": []
+  }
+}

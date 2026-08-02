@@ -1,0 +1,37 @@
+{
+  "attempt_id": "X03-0001",
+  "declaring_sources": {
+    "route_table": "packages/role-router/src/routing/route-policy.mjs (declared task classes, route order, policy and reward-basis vocabulary; never invented)",
+    "routing_receipt_schema": "schemas/model-routing-receipt.schema.json (policy and reward_basis enums the routing vocabulary composes)"
+  },
+  "exit_criteria": {
+    "failure_cost_and_eval_data_drive_routing": {
+      "mechanism": "each task class routes over a declared, hash-bound route order whose selection is driven by the declared reward basis and per-route estimated cost/latency; the emitted receipt records the policy, reward_basis, estimated_cost and estimated_latency_ms and re-derives its own hash, so the routing decision is content-addressed rather than asserted",
+      "status": "PASS"
+    },
+    "fallback_recorded_and_policy_approved": {
+      "mechanism": "when a primary route is unavailable the derivation skips to the next declared candidate, records an ordered fallback_chain with a typed reason, and stamps a policy-approved RFB fallback_policy_decision_id; the route order must terminate in exactly one safe default which can never be declared unavailable, and distinct fallback depths yield distinct decision ids",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "fallback_provenance_test": {
+      "status": "PASS",
+      "test_count": 10
+    },
+    "independent_review": {
+      "evidence": "review.md (author: bounded X03 implementation agent; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "routing_policy_test": {
+      "status": "PASS",
+      "test_count": 14
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "fallback_provenance_test": 10,
+    "full_node_suite": 1192,
+    "routing_policy_test": 14
+  }
+}

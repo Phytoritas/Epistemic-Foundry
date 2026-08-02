@@ -1,0 +1,498 @@
+{
+  "generated_from": "contracts/mcp/t01/tool-catalog.yaml",
+  "protocol_version": "2026-07-28",
+  "tools": [
+    {
+      "name": "foundry.status",
+      "title": "Kernel and plugin status projection",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.status.input.schema.json",
+        "title": "FoundryStatusInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "workspace_id"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "PURE_READ",
+        "capability": "mcp.read.status",
+        "dataSchemaRefs": [],
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "foundry.health",
+      "title": "Component health with explicit degraded states",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.health.input.schema.json",
+        "title": "FoundryHealthInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "include_components": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": [
+          "workspace_id"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "PURE_READ",
+        "capability": "mcp.read.health",
+        "dataSchemaRefs": [],
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "foundry.session.get",
+      "title": "FORGE session state projection",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.session.get.input.schema.json",
+        "title": "FoundrySessionGetInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "session_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "workspace_id",
+          "session_id"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "PURE_READ",
+        "capability": "mcp.read.session",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/forge-session-state.schema.json"
+        ],
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "foundry.artifact.get",
+      "title": "Artifact manifest and receipt bindings",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.artifact.get.input.schema.json",
+        "title": "FoundryArtifactGetInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "workspace_id",
+          "artifact_id"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "PURE_READ",
+        "capability": "mcp.read.artifact",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/artifact-manifest.schema.json",
+          "https://epistemic-foundry.local/schemas/artifact-receipt.schema.json"
+        ],
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "foundry.claim.get",
+      "title": "Atomic claim card projection",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.claim.get.input.schema.json",
+        "title": "FoundryClaimGetInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "claim_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "workspace_id",
+          "claim_id"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "PURE_READ",
+        "capability": "mcp.read.claim",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/claim-card.schema.json"
+        ],
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "foundry.atlas.query",
+      "title": "Coverage, search-state, and dependency atlas views",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.atlas.query.input.schema.json",
+        "title": "FoundryAtlasQueryInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subject_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "view": {
+            "enum": [
+              "coverage",
+              "search_state",
+              "method_compatibility",
+              "dependency",
+              "bias",
+              "niche"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "subject_id",
+          "view"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "PURE_READ",
+        "capability": "mcp.read.atlas",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/coverage-snapshot.schema.json"
+        ],
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "foundry.passport.get",
+      "title": "Hypothesis Passport revision projection",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.passport.get.input.schema.json",
+        "title": "FoundryPassportGetInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "passport_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "default": null
+          }
+        },
+        "required": [
+          "workspace_id",
+          "passport_id"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "PURE_READ",
+        "capability": "mcp.read.passport",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/hypothesis-passport.schema.json"
+        ],
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "foundry.replay.diff",
+      "title": "Strict and semantic replay comparison",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.replay.diff.input.schema.json",
+        "title": "FoundryReplayDiffInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "run_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "baseline_run_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "workspace_id",
+          "run_id",
+          "baseline_run_id"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "PURE_READ",
+        "capability": "mcp.read.replay",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/replay-report.schema.json"
+        ],
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "foundry.map.query",
+      "title": "Workspace map snapshot query",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.map.query.input.schema.json",
+        "title": "FoundryMapQueryInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "query": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200,
+            "default": 50
+          }
+        },
+        "required": [
+          "workspace_id"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "PURE_READ",
+        "capability": "mcp.read.map",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/workspace-map-snapshot.schema.json"
+        ],
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "foundry.frame.compile",
+      "title": "Compile a Frame-phase InsightCard plan artifact",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.frame.compile.input.schema.json",
+        "title": "FoundryFrameCompileInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "insight_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "proposal": {
+            "type": "object",
+            "description": "Domain compilation request owned by the bound plan compiler; the compiled artifact must validate against the canonical schema bound in the tool catalog."
+          }
+        },
+        "required": [
+          "workspace_id",
+          "insight_id",
+          "idempotency_key",
+          "proposal"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "DURABLE_PLAN_ARTIFACT",
+        "capability": "mcp.plan.frame",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/insight-card.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.search.plan",
+      "title": "Compile an evidence-retrieval QueryPlan artifact",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.search.plan.input.schema.json",
+        "title": "FoundrySearchPlanInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "insight_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "request": {
+            "type": "object",
+            "description": "Domain compilation request owned by the bound plan compiler; the compiled artifact must validate against the canonical schema bound in the tool catalog."
+          }
+        },
+        "required": [
+          "workspace_id",
+          "insight_id",
+          "idempotency_key",
+          "request"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "DURABLE_PLAN_ARTIFACT",
+        "capability": "mcp.plan.search",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/query-plan.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.parliament.plan",
+      "title": "Compile an Evidence Parliament RoleDispatchPlan artifact",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.parliament.plan.input.schema.json",
+        "title": "FoundryParliamentPlanInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subject_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "request": {
+            "type": "object",
+            "description": "Domain compilation request owned by the bound plan compiler; the compiled artifact must validate against the canonical schema bound in the tool catalog."
+          }
+        },
+        "required": [
+          "workspace_id",
+          "subject_id",
+          "idempotency_key",
+          "request"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "DURABLE_PLAN_ARTIFACT",
+        "capability": "mcp.plan.parliament",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/role-dispatch-plan.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.validation.plan",
+      "title": "Compile a preregistered ValidationPlan artifact",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.validation.plan.input.schema.json",
+        "title": "FoundryValidationPlanInput",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "request": {
+            "type": "object",
+            "description": "Domain compilation request owned by the bound plan compiler; the compiled artifact must validate against the canonical schema bound in the tool catalog."
+          }
+        },
+        "required": [
+          "workspace_id",
+          "target_id",
+          "idempotency_key",
+          "request"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "DURABLE_PLAN_ARTIFACT",
+        "capability": "mcp.plan.validation",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/validation-plan.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    }
+  ]
+}

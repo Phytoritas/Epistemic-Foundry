@@ -1,0 +1,553 @@
+{
+  "attempt_id": "F01-0001",
+  "attempt_type": "F01_E0_E5_EPISTEMIC_WORK_CLASSIFIER",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "F01-0001",
+    "dependencies": {
+      "C04": {
+        "attempt_id": "C04-0001",
+        "report": "artifacts/work_packages/C04/report.json",
+        "report_sha256": "sha256:eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f",
+        "status": "PASS"
+      },
+      "E04": {
+        "attempt_id": "E04-0001",
+        "report": "artifacts/work_packages/E04/report.json",
+        "report_sha256": "sha256:841dcf60989cfc7ab0eff7be95e1ae721ae18ac513cae653ab6ac8a44942f6c1",
+        "status": "PASS"
+      }
+    },
+    "manifest_sha256": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+    "next_action": "SEAL_F01_0001_THEN_CONTINUE_DAG",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "added_signals_cannot_reduce_class_or_protection": "PASS",
+    "classification_identity_retry_replay_override_hold": "PASS",
+    "closed_vocabulary_and_maximum_floor_are_deterministic": "PASS",
+    "workflow_emits_canonical_business_artifact": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false
+  },
+  "implementation_status": "PASS",
+  "independent_review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (a bounded implementation agent authored; this seal-prep session and an independent contract-reviewer subagent reviewed). External actor-independent (provider-independent) certification does not.",
+    "blocking_finding_count": 0,
+    "external_certification": false,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "non_blocking_observations": [
+      "reclassification downgrade via a new PolicyBundle is spec-sanctioned by docs/forge_protocol.md section 2 and gated on C04 PolicyBundle authenticity"
+    ],
+    "status": "PASS"
+  },
+  "next_package": "SEAL_F01_0001_THEN_CONTINUE_DAG",
+  "not_claimed": [
+    "actor-independent (provider-independent) certification of this review",
+    "authentication of upstream PolicyBundle inputs, which is C04's responsibility",
+    "runtime or live-LLM execution of the classifier (none exists)",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true",
+    "an executed RAH seal: rah_state is reserved for the seal step and unbound here"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 46647,
+      "path": "artifacts/work_packages/F01/attempts/0001/build_f01_0001_evidence.py",
+      "sha256": "sha256:4632deb1c8dd9c39c3bad798749c8bf0080765d2ab7b11fde19166d8723cc4e8"
+    },
+    {
+      "byte_size": 3364,
+      "path": "artifacts/work_packages/F01/attempts/0001/canonical-projection-freshness.junit.xml",
+      "sha256": "sha256:258afbbcd4ccb6cd4c0e50add5f95294ecb486aa366b852c130317c8959b9a00"
+    },
+    {
+      "byte_size": 467,
+      "path": "artifacts/work_packages/F01/attempts/0001/canonical-projection-freshness.run.json",
+      "sha256": "sha256:133e51db34fa504441490740c4aced66e949695be4241937305eed87a1ed62d1"
+    },
+    {
+      "byte_size": 2447,
+      "path": "artifacts/work_packages/F01/attempts/0001/canonical-schema-example-validation.junit.xml",
+      "sha256": "sha256:5d98aecb8e756d2317a7f0dbefbccaec26e7b35a47379ce1c8aa4462c0ff21e0"
+    },
+    {
+      "byte_size": 478,
+      "path": "artifacts/work_packages/F01/attempts/0001/canonical-schema-example-validation.run.json",
+      "sha256": "sha256:7c81b0f17443ce6c015f556554b0ffa46ab5a20592a925c0b05736a0a1f19d77"
+    },
+    {
+      "byte_size": 3259,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-adversarial-test.junit.xml",
+      "sha256": "sha256:e2d93511ee712ba38d368ef844a43598942014215e8831c2cf33c2ed83111eb1"
+    },
+    {
+      "byte_size": 328,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-adversarial-test.run.json",
+      "sha256": "sha256:2a958dea321f8e299deddc9c2c74da7a3426d0255708a89a5cb3cd69a50c85c8"
+    },
+    {
+      "byte_size": 616,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-gold-test.junit.xml",
+      "sha256": "sha256:15d6788e728ea615b53e573f19a3b244afb14ed63f4156477f22e797099e441b"
+    },
+    {
+      "byte_size": 314,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-gold-test.run.json",
+      "sha256": "sha256:814c00725758ca1e9348752bcad8ee2ba5322bd77556e61520e93b1e43299f64"
+    },
+    {
+      "byte_size": 638,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-hash-vector-test.junit.xml",
+      "sha256": "sha256:94f29987787f8a7fd166ea166544d62eb87bf01ab302470ce3ae4382df2f3580"
+    },
+    {
+      "byte_size": 328,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-hash-vector-test.run.json",
+      "sha256": "sha256:a392b1dbd0d0324e8aad276d91d5dd5194bbbf8069875a77c190eab5686997bd"
+    },
+    {
+      "byte_size": 416,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-immutable-override-test.junit.xml",
+      "sha256": "sha256:43cd7a17836560b01d89e7169e2b0cae7e99040a8138193740c22f440d726ee8"
+    },
+    {
+      "byte_size": 332,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-immutable-override-test.run.json",
+      "sha256": "sha256:d4961e2d8105bbffc10f86dfacfbf3911cbd93a014fac7bb735744e3512d757e"
+    },
+    {
+      "byte_size": 1357,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-retry-replay-test.junit.xml",
+      "sha256": "sha256:12b6ed30126e49da8d2b11541576e62b0e1580d4a4f7a53d5f386380bcc5da07"
+    },
+    {
+      "byte_size": 331,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-retry-replay-test.run.json",
+      "sha256": "sha256:41509c9aac51e536b33e8c21683d1149d397c6c368215e0ce8213be3ebc3c122"
+    },
+    {
+      "byte_size": 5788,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-verification.json",
+      "sha256": "sha256:1018007aa87cd1970a15bc8e4516389d51736778856e7ec795b52cfcf04be3b4"
+    },
+    {
+      "byte_size": 847,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-workflow-contract-test.junit.xml",
+      "sha256": "sha256:e279a8e6d1e33d7a6a4eb3b3f1510ce0acbdb6bde326f482ca88824aad20920c"
+    },
+    {
+      "byte_size": 466,
+      "path": "artifacts/work_packages/F01/attempts/0001/classifier-workflow-contract-test.run.json",
+      "sha256": "sha256:ed8a7501a0ecf2f8d25d7ffc7e93769f23fcc76a260fbbaeaada7155e87790af"
+    },
+    {
+      "byte_size": 13064,
+      "path": "artifacts/work_packages/F01/attempts/0001/commands.jsonl",
+      "sha256": "sha256:eb94177397f7d75a486dc23b4a4b693344e347869803566edd1acef9807e045e"
+    },
+    {
+      "byte_size": 687,
+      "path": "artifacts/work_packages/F01/attempts/0001/dependency-status.json",
+      "sha256": "sha256:71a11a3436e04e5c47a6939aaaaf8b361510bc5fb8d930a5e2e2b6a7e88f5704"
+    },
+    {
+      "byte_size": 29109,
+      "path": "artifacts/work_packages/F01/attempts/0001/f01_0001_rah_seal.py",
+      "sha256": "sha256:6c2de4268542693d9ea4cca2b727ea680758317717fe649ec419b0e12ceee9f5"
+    },
+    {
+      "byte_size": 244544,
+      "path": "artifacts/work_packages/F01/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:15cc6ed29d607d57a8153558e8f221d4ab3ce01b52355bc473a838ebaaafee6c"
+    },
+    {
+      "byte_size": 7613,
+      "path": "artifacts/work_packages/F01/attempts/0001/full-node-suite.run.json",
+      "sha256": "sha256:bb310822107318f7cf168ebb4b0b171aa668f5d65cf853e279f6dd2cf7cf2057"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/F01/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 404,
+      "path": "artifacts/work_packages/F01/attempts/0001/full-python-suite.run.json",
+      "sha256": "sha256:8e4b7f567bf7c41499e39a7859f52624c1ce6ad54ac2d98cdba87c59df7db590"
+    },
+    {
+      "byte_size": 155,
+      "path": "artifacts/work_packages/F01/attempts/0001/git-diff-check.run.json",
+      "sha256": "sha256:4e1ebed995bb7289c1128ed1a2c92f66002f31a21f0f47946010f9ff0897e559"
+    },
+    {
+      "byte_size": 1358,
+      "path": "artifacts/work_packages/F01/attempts/0001/hash-vector-report.json",
+      "sha256": "sha256:97324aaf3b0f4a96a45055cef21039ea10a4826b1eb0587601d856a69ff42853"
+    },
+    {
+      "byte_size": 7329,
+      "path": "artifacts/work_packages/F01/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:de67eb46ab11b01369c29666dc0d5205553046d1e5594f14f000bcafaafaea88"
+    },
+    {
+      "byte_size": 7445,
+      "path": "artifacts/work_packages/F01/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:73decfcddff5900edc3e376855ec8af32b78864dc22b64a871510d9170f1aba9"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/F01/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:af373a11ab0a4eef7784a68755ba25e14e37b9adccdfb5224695a41501f53d75"
+    },
+    {
+      "byte_size": 1065,
+      "path": "artifacts/work_packages/F01/attempts/0001/regression-a03-boundary.junit.xml",
+      "sha256": "sha256:3b982f221c5d2377c06a9013a83751cf26bd0ecc82852a15f70d482a62bbb6e4"
+    },
+    {
+      "byte_size": 488,
+      "path": "artifacts/work_packages/F01/attempts/0001/regression-a03-boundary.run.json",
+      "sha256": "sha256:1d2732548cf9bbccb103b9121331c0adbdc630ee3cb0a5cad40655d9c948bdec"
+    },
+    {
+      "byte_size": 770,
+      "path": "artifacts/work_packages/F01/attempts/0001/regression-wire-literal.junit.xml",
+      "sha256": "sha256:858c6349b64aea8e6c90870e78b2785c00aaafda78f8c3a16f46eb87b1dd8c4a"
+    },
+    {
+      "byte_size": 448,
+      "path": "artifacts/work_packages/F01/attempts/0001/regression-wire-literal.run.json",
+      "sha256": "sha256:08dec9e9b3e88e4d303807a2a17fe07d155cde846080b035ce93f3395f0f2252"
+    },
+    {
+      "byte_size": 3781,
+      "path": "artifacts/work_packages/F01/attempts/0001/review.md",
+      "sha256": "sha256:80651b130b7ff9a57a1b9bc2fa269e668f9d92baab7be5e1c5425c7b95fca982"
+    },
+    {
+      "byte_size": 7959,
+      "path": "artifacts/work_packages/F01/attempts/0001/run_f01_0001_checks.py",
+      "sha256": "sha256:52bffe08b03e6b4a87991ffcab3f2643306ecfbbae1bdacc9c0a0ddfa54c0a2b"
+    },
+    {
+      "byte_size": 620,
+      "path": "artifacts/work_packages/F01/attempts/0001/schema-contract-verification.json",
+      "sha256": "sha256:2f56e686e5b709b7ee2dcef70ad731b2724851c37e1b6c4a492bcf77037b97a8"
+    },
+    {
+      "byte_size": 1276,
+      "path": "artifacts/work_packages/F01/attempts/0001/underprocessing-guard-node.junit.xml",
+      "sha256": "sha256:800864281829f3e7b2ba74a61dc1e32e57c727672e09b3435c9b700ca681a74b"
+    },
+    {
+      "byte_size": 326,
+      "path": "artifacts/work_packages/F01/attempts/0001/underprocessing-guard-node.run.json",
+      "sha256": "sha256:fc70a2a9b29c7a61f23a595c7a474b00c1298a62a61c17c4ea840742d3aa2ade"
+    },
+    {
+      "byte_size": 582,
+      "path": "artifacts/work_packages/F01/attempts/0001/underprocessing-guard-python.junit.xml",
+      "sha256": "sha256:6e02ffb29b4bf4416b4d919e1ea4a69243cd145791b7e6e8c0f0a50ce36a4528"
+    },
+    {
+      "byte_size": 460,
+      "path": "artifacts/work_packages/F01/attempts/0001/underprocessing-guard-python.run.json",
+      "sha256": "sha256:1a456ad862ec209761cd37250f0e854f7f1fcedaacb49f823ce777cc2887ab4f"
+    },
+    {
+      "byte_size": 5030,
+      "path": "artifacts/work_packages/F01/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:0e6e79880db58cf2d46918f602a62e4f44f50577c7d9f35e3faa48c97b6eec4f"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0335",
+    "core_generation": "000333-98e4aba6",
+    "final_closeout_evidence_id": "E0336",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1998,
+    "implementation_gate": "fail",
+    "retained_generation_count": 333,
+    "status": "active"
+  },
+  "ready_for_seal": false,
+  "regression": {
+    "attempt_id": "F01-0001",
+    "count_authority": "derived_from_measured_junit_expected_equals_measured",
+    "full_node_new_failure_count": 0,
+    "full_python_new_failure_count": 0,
+    "new_skip_or_xfail_count": 0,
+    "status": "PASS",
+    "suites": {
+      "canonical-projection-freshness": {
+        "collected": 24,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/canonical-projection-freshness.junit.xml",
+        "junit_sha256": "sha256:258afbbcd4ccb6cd4c0e50add5f95294ecb486aa366b852c130317c8959b9a00",
+        "passed": 24,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 24
+      },
+      "canonical-schema-example-validation": {
+        "collected": 16,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/canonical-schema-example-validation.junit.xml",
+        "junit_sha256": "sha256:5d98aecb8e756d2317a7f0dbefbccaec26e7b35a47379ce1c8aa4462c0ff21e0",
+        "passed": 16,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 16
+      },
+      "classifier-adversarial-test": {
+        "cancelled": 0,
+        "collected": 18,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/classifier-adversarial-test.junit.xml",
+        "junit_sha256": "sha256:e2d93511ee712ba38d368ef844a43598942014215e8831c2cf33c2ed83111eb1",
+        "passed": 18,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 17
+      },
+      "classifier-gold-test": {
+        "cancelled": 0,
+        "collected": 2,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/classifier-gold-test.junit.xml",
+        "junit_sha256": "sha256:15d6788e728ea615b53e573f19a3b244afb14ed63f4156477f22e797099e441b",
+        "passed": 2,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 2
+      },
+      "classifier-hash-vector-test": {
+        "cancelled": 0,
+        "collected": 2,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/classifier-hash-vector-test.junit.xml",
+        "junit_sha256": "sha256:94f29987787f8a7fd166ea166544d62eb87bf01ab302470ce3ae4382df2f3580",
+        "passed": 2,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 2
+      },
+      "classifier-immutable-override-test": {
+        "cancelled": 0,
+        "collected": 1,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/classifier-immutable-override-test.junit.xml",
+        "junit_sha256": "sha256:43cd7a17836560b01d89e7169e2b0cae7e99040a8138193740c22f440d726ee8",
+        "passed": 1,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1
+      },
+      "classifier-retry-replay-test": {
+        "cancelled": 0,
+        "collected": 5,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/classifier-retry-replay-test.junit.xml",
+        "junit_sha256": "sha256:12b6ed30126e49da8d2b11541576e62b0e1580d4a4f7a53d5f386380bcc5da07",
+        "passed": 5,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 5
+      },
+      "classifier-workflow-contract-test": {
+        "collected": 5,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/classifier-workflow-contract-test.junit.xml",
+        "junit_sha256": "sha256:e279a8e6d1e33d7a6a4eb3b3f1510ce0acbdb6bde326f482ca88824aad20920c",
+        "passed": 5,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 5
+      },
+      "full-node-suite": {
+        "cancelled": 0,
+        "collected": 1291,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:15cc6ed29d607d57a8153558e8f221d4ab3ce01b52355bc473a838ebaaafee6c",
+        "passed": 1291,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1286
+      },
+      "full-python-suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "regression-a03-boundary": {
+        "collected": 6,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/regression-a03-boundary.junit.xml",
+        "junit_sha256": "sha256:3b982f221c5d2377c06a9013a83751cf26bd0ecc82852a15f70d482a62bbb6e4",
+        "passed": 6,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 6
+      },
+      "regression-wire-literal": {
+        "collected": 5,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/regression-wire-literal.junit.xml",
+        "junit_sha256": "sha256:858c6349b64aea8e6c90870e78b2785c00aaafda78f8c3a16f46eb87b1dd8c4a",
+        "passed": 5,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 5
+      },
+      "underprocessing-guard-node": {
+        "cancelled": 0,
+        "collected": 5,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/underprocessing-guard-node.junit.xml",
+        "junit_sha256": "sha256:800864281829f3e7b2ba74a61dc1e32e57c727672e09b3435c9b700ca681a74b",
+        "passed": 5,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 5
+      },
+      "underprocessing-guard-python": {
+        "collected": 3,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/F01/attempts/0001/underprocessing-guard-python.junit.xml",
+        "junit_sha256": "sha256:6e02ffb29b4bf4416b4d919e1ea4a69243cd145791b7e6e8c0f0a50ce36a4528",
+        "passed": 3,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 3
+      }
+    }
+  },
+  "required_checks": {
+    "canonical_projection_freshness": {
+      "status": "PASS",
+      "steps": {
+        "canonical-projection-freshness": 24
+      }
+    },
+    "canonical_schema_example_validation": {
+      "status": "PASS",
+      "steps": {
+        "canonical-schema-example-validation": 16
+      }
+    },
+    "classifier_adversarial_test": {
+      "status": "PASS",
+      "steps": {
+        "classifier-adversarial-test": 18
+      }
+    },
+    "classifier_gold_test": {
+      "status": "PASS",
+      "steps": {
+        "classifier-gold-test": 2
+      }
+    },
+    "classifier_hash_vector_test": {
+      "status": "PASS",
+      "steps": {
+        "classifier-hash-vector-test": 2
+      }
+    },
+    "classifier_immutable_override_test": {
+      "status": "PASS",
+      "steps": {
+        "classifier-immutable-override-test": 1
+      }
+    },
+    "classifier_retry_replay_test": {
+      "status": "PASS",
+      "steps": {
+        "classifier-retry-replay-test": 5
+      }
+    },
+    "classifier_workflow_contract_test": {
+      "status": "PASS",
+      "steps": {
+        "classifier-workflow-contract-test": 5
+      }
+    },
+    "full_repository_regression": {
+      "status": "PASS",
+      "steps": {
+        "full-node-suite": 1291,
+        "full-python-suite": 1261
+      }
+    },
+    "independent_implementation_review": {
+      "evidence": "review.md",
+      "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+      "status": "PASS"
+    },
+    "underprocessing_guard": {
+      "status": "PASS",
+      "steps": {
+        "underprocessing-guard-node": 5,
+        "underprocessing-guard-python": 3
+      }
+    }
+  },
+  "seal_prep_only": true,
+  "status": "PASS",
+  "verification": {
+    "adversarial_cases": "16/16",
+    "count_authority": "fixture_cardinality_for_oracles; junit_footer_for_suites",
+    "full_node_pass": 1291,
+    "full_python_pass": 1261,
+    "gold_cases": "14/14",
+    "hash_vectors": "4/4",
+    "override_cases": "6/6",
+    "targeted_node_testblocks": 33
+  },
+  "work_package_id": "F01"
+}

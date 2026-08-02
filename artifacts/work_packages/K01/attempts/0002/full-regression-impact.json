@@ -1,0 +1,84 @@
+{
+  "attempt_id": "K01-0002",
+  "full_node": {
+    "cancelled": 0,
+    "collected": 470,
+    "failed": 0,
+    "failure_cases": [],
+    "junit": "artifacts/work_packages/K01/attempts/0002/full-node-suite.junit.xml",
+    "junit_sha256": "sha256:9c36215328a02559a681ebf2d12aeea0cffb343cc58d613d384be3070028c4f1",
+    "passed": 470,
+    "skipped": 0,
+    "test_file_count": 54,
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_testcase_count": 467
+  },
+  "full_python": {
+    "collected": 1054,
+    "errors": 0,
+    "failed": 0,
+    "junit": "artifacts/work_packages/K01/attempts/0002/full-python-suite.junit.xml",
+    "junit_sha256": "sha256:5984cf4e6ff1ae007bc22d81328cea8f448d1db8017172d2abfa8b3bf1444c64",
+    "passed": 1054,
+    "skipped": 0,
+    "xml_testcase_count": 1054
+  },
+  "initial_node_transient_failure": {
+    "cancelled": 0,
+    "causal_impact_on_k01": "NONE",
+    "classification": "NON_K01_TRANSIENT_CONCURRENCY_FAILURE",
+    "collected": 470,
+    "failed": 1,
+    "failure_cases": [
+      {
+        "file": "C:\\dev\\insight\\Epistemic-Foundry\\packages\\foundry-kernel\\src\\artifacts\\orphan-receipt.test.mjs",
+        "message": "[{&quot;ok&quot;:true},{&quot;ok&quot;:false,&quot;code&quot;:&quot;ARTIFACT_STORE_STRUCTURE_INVALID&quot;,&quot;message&quot;:&quot;artifact store integrity validation failed&quot;,&quot;reason&quot;:{&quot;code&quot;:&quot;ARTIFACT_STORE_STRUCTURE_INVALID&quot;,&quot;details&quot;:null}}]\n\nfalse !== true",
+        "name": "orphan_receipt_test: concurrent readers tolerate transient staging and lock handoff"
+      }
+    ],
+    "final_full_suite_result": "470/470 PASS",
+    "junit": "artifacts/work_packages/K01/attempts/0002/full-node-suite.initial-failure.junit.xml",
+    "junit_sha256": "sha256:bfd963d9afff7e1b0e86f740e1ce159908b05e66d9de5062f1538d7af17ba01b",
+    "passed": 469,
+    "preserved_not_concealed": true,
+    "skipped": 0,
+    "test_file_count": 54,
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 1,
+    "xml_testcase_count": 467
+  },
+  "new_failure_count": 0,
+  "new_skip_xfail_todo_or_cancellation_count": 0,
+  "repository_checks": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "status": "PASS_WITH_PREEXISTING_LINE_ENDING_ADVISORIES"
+    },
+    "package_boundaries": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "repository_structure": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "scoped_ruff": {
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "targeted_k01": {
+    "collected": 64,
+    "errors": 0,
+    "failed": 0,
+    "junit": "artifacts/work_packages/K01/attempts/0002/targeted-k01-suite.junit.xml",
+    "junit_sha256": "sha256:b8420f8c691fb469375a2eb61acf03207c4dbe05d98561a3425f20eeb5002c30",
+    "passed": 64,
+    "skipped": 0,
+    "xml_testcase_count": 64
+  }
+}

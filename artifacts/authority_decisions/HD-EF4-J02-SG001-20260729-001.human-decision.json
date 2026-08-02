@@ -1,0 +1,38 @@
+{
+  "decision_id": "HD-EF4-J02-SG001-20260729-001",
+  "run_id": null,
+  "subject_id": "J02-SG001",
+  "decision_type": "correct",
+  "decision": "Resolve J02-SG001 prospectively and authorize only J02-0002. Fix the production inventory at one parent router plus 28 child skills, the initial metadata budget at 6400 UTF-8 bytes and 1600 tiktoken 0.13.0 o200k_base tokens, the progressive activation budgets, the 17-reference graph, deterministic typed selection and topological loading rules, fail-closed reachability and path-integrity behavior, the J02-owned packages/plugin-host/src/skill-context runtime, exact fixtures and test oracles, and the J02/J03/J04 dependency boundary. Preserve J02-0001 and all prior evidence as immutable history, prohibit Fleet and subagents, and keep completion_ready false.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "J02-0001 correctly stopped because metadata accounting, production skill and reference authority, deterministic selection and reachability, loader ownership, write scope, and executable acceptance thresholds were undefined. This decision supplies those shared contracts without changing J01 routing authority, J03 ContextCapsule ownership, the canonical schema count, prior reports, RAH history, or the existing dirty worktree.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/J02/report.json",
+    "artifacts/work_packages/J02/attempts/0001/dependency-status.json",
+    "artifacts/work_packages/J02/attempts/0001/shared-contract-gap-verification.json",
+    "RAH:E0078",
+    "RAH:E0079",
+    "RAH:E0080",
+    "RAH:generation:000077-1473ad4c"
+  ],
+  "affected_artifact_ids": [
+    "manifests/development_manifest.yaml",
+    "manifests/acceptance_matrix.yaml",
+    "docs/skill_context_contract.md",
+    "plugins/epistemic-foundry/skills/**",
+    "packages/plugin-host/src/skill-context/**",
+    "tools/skill-context/count_tokens.py",
+    "tests/fixtures/j02/**",
+    "tests/test_j02_context_budget.py",
+    "tests/node/j02-reference-reachability.test.mjs",
+    "tests/node/j02-skill-context-loader.test.mjs",
+    "J02-0002",
+    "J03",
+    "J04"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-29T00:00:00Z",
+  "decision_hash": "sha256:c44c9bb6a398637f3773fcfa6b832215dfd586670a848ad13809a98d7f006d25"
+}

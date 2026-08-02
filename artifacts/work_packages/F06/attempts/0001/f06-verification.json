@@ -1,0 +1,70 @@
+{
+  "attempt_id": "F06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every gate decision resolves to a receipt whose gate_id and receipt_hash are pure sha256 functions of the decision's own published content: the caller supplies created_at and there is no clock or random draw, so replaying derive_lifecycle_replay over the same inputs reproduces the receipt byte for byte, and a refusal carries the same immutable receipt on the raised LifecycleReplayRefused so a caller that catches it still holds the auditable record",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the EVOLVE handoff phase, the replay mode/equivalence/drift vocabulary and the composed stop-reason vocabulary are read from the canonical forge-session-state and replay-report schemas and the F05 machine rather than restated (EF4-I22); the forge session and replay report are validated against their canonical schemas before use, and each of the fifteen FINDING_CODES names an exact refusal that _fail guards for membership",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the happy path admits a run every composed surface accepts and reproduces deterministically; the refusals carry the weight: a malformed run or schema-breaking session/report, an absent or misbound FORGE handoff, an inconsistent lifecycle or stop certificate (including a resume point the run never committed, the crash/resume case), a mid-run evaluator swap, a seed intake refusal or unreconciled population, an undeclared operator, an unreconciled candidate set, and a misbound, self-contradictory or non-byte-for-byte replay are each refused, and the suite self-guards that every declared finding code is exercised",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; the gate reads sealed verdicts and refuses, it never certifies, and it acquires no evaluator, holdout or promotion authority; the receipt is scanned to grant no scoring or promotion authority and treats evaluator immutability (EF4-I43) as a refusal axis rather than a lever, so no composed input can lift the gate into judging a candidate",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "admits_requires": "the FORGE session reached the EVOLVE handoff phase and names this run, the F05 lifecycle and stop certificate are consistent, one evaluator bundle spans every checkpoint, the seeds are exactly what I05 admitted, every operator is R05-declared, the candidate set is exactly seeds plus operator children, and the run's own replay report is a strict, exact, drift-free reproduction",
+    "axes_source": "lifecycle and stop certificate from the composed F05 EVOLVE state machine, seed population from I05 genome intake screening and reconciliation, operators from the R05 typed operator registry, evaluator immutability from the run's own committed checkpoints, and replay honesty from the run's own ReplayReport",
+    "produces": "an immutable, re-derivable lifecycle-replay receipt; no score, selection or promotion",
+    "refusals_are_by_code": true,
+    "trusts_asserted_replay": false
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent dispatched in parallel; reviewer: this sealing session as an independent, actor-independent reviewer distinct from the implementer; verdict PASS, blocking_finding_count=0; external actor-independent certification does not hold)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 24
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 11
+    }
+  },
+  "schema_binding": {
+    "evaluator_immutability": "evolution-checkpoint evaluator_bundle_hash, derived across the run's committed checkpoints (EF4-I43), never asserted",
+    "handoff_phase": "forge-session-state phase enum terminal value, read on demand (EF4-I22) rather than restated",
+    "lifecycle_and_stop_certificate": "F05 evaluate_run / require_valid_run verdict and stop_reasons vocabulary, composed rather than re-derived",
+    "operators": "R05 operator_registry keys, every applied operator resolved against the sealed registry",
+    "replay_honesty": "replay-report mode / event_equivalence / drift_classification enums and hash/pin/gate/verdict counters, read from the canonical schema and cross-checked, never trusted to flatter itself",
+    "seed_intake": "I05 bootstrap_seed_population and GENOME_KIND, the admitted seed_genome_ids reconciled against the run's declared seeds"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_f05": 76,
+    "dependency_regression_i05": 61,
+    "dependency_regression_r05": 58,
+    "full_node_suite": 1192,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 24,
+    "provenance_and_receipt_audit": 9,
+    "schema_and_type_check": 7,
+    "unit_and_contract_tests": 11
+  }
+}

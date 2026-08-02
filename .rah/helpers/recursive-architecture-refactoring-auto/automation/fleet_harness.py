@@ -625,6 +625,7 @@ def worker_contract_text(
         "- Implement the story below and write/extend tests for its acceptance atoms.",
         f"- Run the project's targeted tests before finishing{f' (at minimum: `{test_cmd}`)' if test_cmd else ''}.",
         "- You have NO judgment authority: do not declare the story complete, do not review other work.",
+        "- You have NO delegation authority: sub-agent tools are disabled for you (`--disable multi_agent --disable multi_agent_v2`). Do not spawn, message, or simulate sub-agents, and do not shell out to another agent CLI (`codex`, `claude`, `rah.py fleet`) to do your work. Implement the story yourself in this worktree.",
         "- NEVER touch `.rah/` and never invoke `rah.py ralph|source|prd|fleet` — state is orchestrator-owned.",
         "- Work only inside this worktree. Do not modify files outside it.",
         "- If one concrete brain decision is required and guessing would be unsafe, return status `needs_input` with one bounded question. The harness may answer it in a later worker round; this process is not interactive.",
@@ -1245,6 +1246,10 @@ def build_worker_command(
             sandbox=params.get("sandbox"),
             bypass_approvals_and_sandbox=bool(params.get("bypass")),
             config=config,
+            # Invariant I5: a worker is a non-authoritative hand. Strip every
+            # sub-agent tool so a worker cannot fan out its own delegates and
+            # launder unreviewed judgment back into the review packet.
+            extra_args=agent_engine.subagent_disable_args(),
         )
         return cmd, None
     cmd = agent_engine.build_claude_print_command(
@@ -2488,6 +2493,9 @@ def windows_sandbox_probe(
             last_message,
             sandbox=sandbox,
             config=[("model_reasoning_effort", "low")],
+            # Keep the probe shaped like a real worker: same no-subagent
+            # surface, so viability is measured on the dispatch config.
+            extra_args=agent_engine.subagent_disable_args(),
         )
         prompt = (
             "Sandbox probe. Run the shell command `cat probe_nonce.txt` in the current "

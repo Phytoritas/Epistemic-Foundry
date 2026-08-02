@@ -1,0 +1,50 @@
+{
+  "additional_coverage": {
+    "integrity_safe_mode_test": {
+      "module": "packages/foundry-kernel/src/state/sqlite/integrity-safe-mode.test.mjs",
+      "status": "PASS",
+      "test_count": 16
+    }
+  },
+  "attempt_id": "D01-0001",
+  "compare_and_swap": {
+    "revision_exhaustion_refused_without_mutation": true,
+    "stale_expected_revision_is_typed_no_op": true,
+    "stale_writer_never_overwrites_state": true
+  },
+  "exit_criteria": {
+    "integrity_failure_enters_SAFE_MODE": {
+      "evidence": [
+        "packages/foundry-kernel/src/state/sqlite/integrity-safe-mode.test.mjs"
+      ],
+      "mechanism": "physical corruption, schema drift, invalid persisted JSON, and runtime revision or schema-version drift all fail closed into a read-only SAFE_MODE that denies every mutation path",
+      "status": "PASS"
+    },
+    "transactions_and_compare_and_swap_revisions_implemented": {
+      "evidence": [
+        "packages/foundry-kernel/src/state/sqlite/sqlite-wal.test.mjs",
+        "packages/foundry-kernel/src/state/sqlite/concurrent-revision.test.mjs"
+      ],
+      "mechanism": "records commit inside BEGIN IMMEDIATE transactions in WAL mode and survive reopen; a callback failure rolls back every partial write; state advances only through a compare-and-swap on the expected revision so a stale writer is a typed no-op",
+      "status": "PASS"
+    }
+  },
+  "integrity_failure_mode": {
+    "safe_mode_is_read_only": true,
+    "safe_mode_refuses_all_mutation_paths": true
+  },
+  "required_checks": {
+    "concurrent_revision_test": {
+      "module": "packages/foundry-kernel/src/state/sqlite/concurrent-revision.test.mjs",
+      "status": "PASS",
+      "test_count": 2
+    },
+    "sqlite_wal_test": {
+      "module": "packages/foundry-kernel/src/state/sqlite/sqlite-wal.test.mjs",
+      "status": "PASS",
+      "test_count": 19
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 37
+}

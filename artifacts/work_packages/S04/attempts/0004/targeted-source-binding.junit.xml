@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="S04-TM001 traceability matrix covers every S04-owned audit lens without inflating deferred controls" time="0.023889" classname="test" file="REPO_ROOT/tests\security\s04-threat-model-traceability.test.mjs"/>
+	<testcase name="S04-TM002 every plugin threat has a control, a verification path, and an honest residual limit" time="0.011392" classname="test" file="REPO_ROOT/tests\security\s04-threat-model-traceability.test.mjs"/>
+	<testcase name="S04-TM003 hook bypass and primitive enforcement limitations are explicit and release-safe" time="0.000237" classname="test" file="REPO_ROOT/tests\security\s04-threat-model-traceability.test.mjs"/>
+	<testcase name="S04-TM004 traceability source bindings fail on undocumented contract drift" time="0.005250" classname="test" file="REPO_ROOT/tests\security\s04-threat-model-traceability.test.mjs" failure="active manifest does not match the bound successor&#10;+ actual - expected&#10;&#10;+ '6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063'&#10;- '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'&#10;">
+		<failure type="testCodeFailure" message="active manifest does not match the bound successor&#10;+ actual - expected&#10;&#10;+ '6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063'&#10;- '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'">
+[Error [ERR_TEST_FAILURE]: active manifest does not match the bound successor
++ actual - expected
+
++ '6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063'
+- '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'
+] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: active manifest does not match the bound successor
+  + actual - expected
+  
+  + '6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063'
+  - '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'
+  
+      at validateActiveManifestBinding (file:///REPO_ROOT/tests/security/s04-threat-model-traceability.test.mjs:100:10)
+      at TestContext.&lt;anonymous> (file:///REPO_ROOT/tests/security/s04-threat-model-traceability.test.mjs:430:20)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063',
+    expected: '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+}
+		</failure>
+	</testcase>
+	<!-- tests 4 -->
+	<!-- suites 0 -->
+	<!-- pass 3 -->
+	<!-- fail 1 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 159.5699 -->
+</testsuites>

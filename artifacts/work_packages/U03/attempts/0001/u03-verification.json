@@ -1,0 +1,42 @@
+{
+  "attempt_id": "U03-0001",
+  "declared_required_checks": [
+    "research_view_e2e",
+    "source_span_view_test"
+  ],
+  "exit_criteria": {
+    "minority_counterevidence_visible": {
+      "mechanism": "every research view keeps minority and counter-evidence first-class beside the verdict and refuses to hide or invent it: parliament renders the minority report before the council briefs and refuses hidden/unrecorded/invented dissent, aporia renders open questions (hidden assumptions and unresolved objections) first and refuses hiding or resolution overclaim, passport renders counter-evidence beside the verdict and refuses hiding a counter-evidence field, and atlas surfaces counter_count and the coverage-claim vocabulary bound to the certificate hash",
+      "required_checks": [
+        "research_view_e2e"
+      ],
+      "status": "PASS"
+    },
+    "source_span_accessible": {
+      "mechanism": "every research view carries a source receipt that exposes the provenance manifest, evidence pack, attestation, bias register and artifact hashes back to the underlying sources, and binds only the declared read operations from the generated route manifest (atlas coverage/provenance receipt, parliament adjudication/brief/minority hashes, aporia graph/proof-trace receipt, passport attestation/evidence-pack/stability receipt); an undeclared or write operation refuses",
+      "required_checks": [
+        "source_span_view_test"
+      ],
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "research_view_e2e": {
+      "junit": "artifacts/work_packages/U03/attempts/0001/research-view-e2e.junit.xml",
+      "status": "PASS",
+      "test_count": 52
+    },
+    "source_span_view_test": {
+      "junit": "artifacts/work_packages/U03/attempts/0001/source-span-view-test.junit.xml",
+      "status": "PASS",
+      "test_count": 52
+    }
+  },
+  "required_checks_mapping": "The manifest declares exactly two required checks over four *-view.test.mjs modules (atlas, parliament, aporia, passport). The checks are cross-cutting concerns, not a file partition: every view suite is a full end-to-end read-model projection (build*View -> render*Panel) AND carries a named 'the view carries its (source|graph) receipt' provenance test. research_view_e2e maps to all four suites for the end-to-end + minority/counterevidence-visible exit criterion; source_span_view_test maps to all four suites for the source-receipt provenance path (source-span accessible). Both run the full 52-test set; no test is excluded, filtered or weakened.",
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1192,
+    "research_view_e2e": 52,
+    "source_span_view_test": 52
+  }
+}

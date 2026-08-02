@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/calibration-report.schema.json",
+  "title": "CalibrationReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "calibration_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target": {
+      "enum": [
+        "claim_grounding",
+        "retrieval_relevance",
+        "verdict",
+        "causal_status",
+        "novelty_status",
+        "extraction_confidence"
+      ]
+    },
+    "sample_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "brier_score": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "expected_calibration_error": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "reliability_bins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lower": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "upper": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "mean_confidence": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "empirical_accuracy": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "lower",
+          "upper",
+          "count",
+          "mean_confidence",
+          "empirical_accuracy"
+        ]
+      }
+    },
+    "abstention_curve_artifact_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "calibration_status": {
+      "enum": [
+        "PASS",
+        "WARN",
+        "FAIL",
+        "INSUFFICIENT_DATA"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "calibration_report_id",
+    "evaluation_id",
+    "target",
+    "sample_count",
+    "brier_score",
+    "expected_calibration_error",
+    "reliability_bins",
+    "abstention_curve_artifact_id",
+    "calibration_status",
+    "created_at",
+    "report_hash"
+  ]
+}

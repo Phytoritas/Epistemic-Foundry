@@ -1,0 +1,194 @@
+{
+  "attempt_id": "O02-0001",
+  "authority_hashes": {
+    "AGENTS.md": "sha256:858e537ed3e49754b8e60d31c985467ee1246ed258c7763d6de4ef0767e381ea",
+    "MASTER_SPEC.md": "sha256:d4854c916594610e0503f9b017c57b0dbac9f52eef78b825b922fdf26b1a0fe3",
+    "config/retrieval_policy.example.yaml": "sha256:a5d20c342d16ad2ba0ad10fdf7d0b6398812f47eecc6c90a2c87cac94f0767f8",
+    "docs/search_completeness.md": "sha256:ee710a914ad5252948166ae219691dc46e632604514432934351e339db24376d",
+    "manifests/144_lens_audit_matrix.yaml": "sha256:bb79fda3deaee277b9e13c45cd11540d33abf2ac4af7418d1a3844f9f7003cec",
+    "manifests/development_manifest.yaml": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "schemas/evidence-node.schema.json": "sha256:dbb39dae38266145f3c8d3bef94386ddfefe81ca2ed9ec93f43b26abc27ff768",
+    "schemas/query-plan.schema.json": "sha256:6f9fe754cce171efbf9bfa738646046ae5232224b84d8a96e1f72dc14e5f0c4e",
+    "schemas/result-envelope.schema.json": "sha256:5985f8b16314a61c14d54902a1004f0149a95e9db60f6e316511aa9424418e74",
+    "schemas/search-lane-receipt.schema.json": "sha256:3c5bfbd600535e061b1d783a5f0df146f2896e980e438b58721c139c3b4305ac",
+    "schemas/source-span.schema.json": "sha256:4d4c8ec8b9a778c0176c7d8b866d15a82bf53be898985389ac0cc42d6a60586a",
+    "workflows/evidence_retrieval.workflow.yaml": "sha256:05e8e360187520c18d1fe8fba3e492896c9e4dbd7a324907fc271c0568ae3438"
+  },
+  "classification": {
+    "not_blocked_reason": "No required credential, licensed corpus, backend instance, host capability, or external service has yet been shown unavailable; the missing item is the authoritative interface and acceptance contract itself.",
+    "not_fail_reason": "No O02 implementation was attempted because candidate, ranking, relation-direction, fallback, and benchmark semantics are not authoritatively defined.",
+    "typed_outcome": "SPEC_GAP"
+  },
+  "completion_ready": false,
+  "contract_gaps": [
+    {
+      "id": "O02-C001",
+      "observation": "No exact provider-neutral input interface is defined for lexical, semantic, citation, or relation retrieval backends.",
+      "surfaces": [
+        "manifests/development_manifest.yaml",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    },
+    {
+      "id": "O02-C002",
+      "observation": "No canonical raw RetrievalCandidate artifact defines identity, rank, score, source locator, provenance, backend receipt, or integrity fields.",
+      "surfaces": [
+        "schemas/search-lane-receipt.schema.json",
+        "schemas/evidence-node.schema.json",
+        "schemas/source-span.schema.json"
+      ]
+    },
+    {
+      "id": "O02-C003",
+      "observation": "The contract does not map each lane to QueryPlan forward, reverse, null, boundary, method, temporal, or novelty query families.",
+      "surfaces": [
+        "schemas/query-plan.schema.json",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    },
+    {
+      "id": "O02-C004",
+      "observation": "Relation direction has no closed vocabulary, edge orientation, inverse predicate, reverse-query, or expected-result semantics.",
+      "surfaces": [
+        "schemas/query-plan.schema.json",
+        "schemas/evidence-node.schema.json",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    },
+    {
+      "id": "O02-C005",
+      "observation": "Ranking normalization, cutoff timing, pre/post-deduplication order, duplicate identity, and deterministic tie-break rules are absent.",
+      "surfaces": [
+        "schemas/search-lane-receipt.schema.json",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    },
+    {
+      "id": "O02-C006",
+      "observation": "The exact integrity binding among QueryPlan, corpus snapshot, index version, backend response, candidate set, and SearchLaneReceipt is undefined.",
+      "surfaces": [
+        "schemas/query-plan.schema.json",
+        "schemas/search-lane-receipt.schema.json"
+      ]
+    },
+    {
+      "id": "O02-C007",
+      "observation": "Unavailable, partial, malformed, stale, or policy-denied backend responses have no authoritative fallback and terminal-state semantics.",
+      "surfaces": [
+        "schemas/search-lane-receipt.schema.json",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    },
+    {
+      "id": "O02-C008",
+      "observation": "The exit criterion 'vector-only retrieval avoided' has no executable minimum-channel, fusion, contribution, or provenance rule.",
+      "surfaces": [
+        "manifests/development_manifest.yaml",
+        "manifests/144_lens_audit_matrix.yaml"
+      ]
+    },
+    {
+      "id": "O02-C009",
+      "observation": "retrieval_benchmark has no authoritative corpus, queries, relevance labels, metrics, tolerances, or PASS thresholds.",
+      "surfaces": [
+        "manifests/development_manifest.yaml"
+      ]
+    },
+    {
+      "id": "O02-C010",
+      "observation": "relation_direction_test has no fixture, direction vocabulary, or exact expected answers.",
+      "surfaces": [
+        "manifests/development_manifest.yaml"
+      ]
+    },
+    {
+      "id": "O02-C011",
+      "observation": "O02 ownership does not say whether lane adapters return raw candidates, normalized candidates, or complete SearchLaneReceipt artifacts; workflow outputs are generic ResultEnvelope artifacts.",
+      "surfaces": [
+        "manifests/development_manifest.yaml",
+        "schemas/result-envelope.schema.json",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    },
+    {
+      "id": "O02-C012",
+      "observation": "The resolving attempt lacks exact test, fixture, benchmark-corpus, and evidence write scopes outside the current implementation-only path.",
+      "surfaces": [
+        "manifests/development_manifest.yaml"
+      ]
+    }
+  ],
+  "implementation": {
+    "authorized_product_files_created": 0,
+    "implementation_files_modified_by_attempt": 0,
+    "out_of_scope_product_changes": 0,
+    "product_path_exists": false,
+    "product_write_scope": [
+      "python/epistemic_foundry/retrieval/lanes/**"
+    ],
+    "tests_or_fixtures_created_by_attempt": 0
+  },
+  "manifest_contract": {
+    "depends_on": [
+      "O01"
+    ],
+    "exit_criteria": [
+      "vector-only retrieval avoided",
+      "candidate provenance retained"
+    ],
+    "independent_review": "required",
+    "required_checks": [
+      "retrieval_benchmark",
+      "relation_direction_test"
+    ],
+    "risk_class": "medium",
+    "stop_condition_applied": "SPEC_GAP if a shared contract, authority boundary, or acceptance threshold is ambiguous",
+    "write_scope": [
+      "python/epistemic_foundry/retrieval/lanes/**"
+    ]
+  },
+  "missing_contracts": [
+    "exact lexical, semantic, citation, and relation backend input interface",
+    "canonical RetrievalCandidate or equivalent raw output schema",
+    "candidate identity, rank, score, source locator, provenance, and backend receipt fields",
+    "candidate-to-SourceSpan and candidate-to-EvidenceNode linkage rules",
+    "lane-to-QueryPlan query-family mapping",
+    "closed relation-direction vocabulary and forward, reverse, and inverse semantics",
+    "ranking normalization, cutoff, deduplication ordering, duplicate identity, and deterministic tie-break",
+    "corpus and index snapshot binding with stale-result rejection",
+    "backend unavailable, partial, invalid, policy-denied, and fallback semantics",
+    "executable non-vector-only multi-channel or fusion rule",
+    "retrieval_benchmark corpus, fixtures, relevance labels, metrics, and PASS thresholds",
+    "relation_direction_test fixtures and exact expected results",
+    "O01/O02 ownership boundary for raw candidates and SearchLaneReceipt creation",
+    "exact resolving implementation, test, fixture, benchmark, and evidence write scopes"
+  ],
+  "required_checks": {
+    "relation_direction_test": {
+      "reason": "No authoritative direction vocabulary, inverse/reverse rule, fixture, or exact expected answer exists.",
+      "status": "NOT_RUN_SPEC_GAP"
+    },
+    "retrieval_benchmark": {
+      "reason": "No authoritative benchmark corpus, query set, relevance labels, metric, normalization rule, or PASS threshold exists.",
+      "status": "NOT_RUN_SPEC_GAP"
+    }
+  },
+  "required_product_owner_decisions": [
+    "Define a canonical RetrievalCandidate or equivalent output artifact including identity, rank, score, source locator, provenance, backend receipt, and integrity fields.",
+    "Define each backend input and each lane's exact mapping to the sealed QueryPlan query families.",
+    "Freeze relation-direction vocabulary, edge orientation, forward/reverse/inverse behavior, and invalid-direction handling.",
+    "Define score normalization, cutoff, deduplication identity and order, and deterministic tie-break rules.",
+    "Define corpus/index/backend-result snapshot binding and stale-result rejection.",
+    "Define unavailable, partial, invalid, policy-denied, and fallback behavior without silent degradation.",
+    "Define an executable multi-channel or fusion rule proving retrieval is not vector-only.",
+    "Freeze retrieval_benchmark fixtures, corpus, labels, metrics, tolerances, and PASS thresholds.",
+    "Freeze relation_direction_test fixtures and exact expected outputs.",
+    "Assign the raw candidate, normalization, SearchLaneReceipt, and EvidenceNode ownership boundary across O01, O02, and later packages.",
+    "Authorize exact implementation, test, fixture, benchmark, and evidence paths for a resolving attempt."
+  ],
+  "schema_version": 1,
+  "spec_gap_id": "O02-SG001",
+  "status": "SPEC_GAP",
+  "subagents_or_fleet_used": false,
+  "work_package_id": "O02"
+}

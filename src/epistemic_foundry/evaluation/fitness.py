@@ -17,7 +17,6 @@ from __future__ import annotations
 from typing import Any, Mapping, Sequence
 
 from ..contracts import validate_artifact
-from ..domain.hashing import hash_excluding
 from ..domain.ids import new_id
 from ..domain.time import utc_now_iso
 

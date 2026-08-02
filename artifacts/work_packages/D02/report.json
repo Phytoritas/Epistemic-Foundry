@@ -1,0 +1,218 @@
+{
+  "work_package_id": "D02",
+  "attempt_id": "D02-0001",
+  "title": "PostgreSQL team store and tenant isolation",
+  "status": "PASS",
+  "package_status": "PASS",
+  "completion_ready": false,
+  "dependencies": {
+    "D01": {
+      "status": "PASS",
+      "attempt_id": "D01-0001",
+      "report": "artifacts/work_packages/D01/report.json",
+      "report_sha256": "00d44672b4c9680589ecd85c39f617c29bdfe79afd288a2769cafb1ba59a9a91"
+    }
+  },
+  "write_scope": [
+    "python/epistemic_foundry/storage/postgres/**",
+    "migrations/postgres/**"
+  ],
+  "changed_files": [
+    {
+      "path": "migrations/postgres/0001_team_store.sql",
+      "sha256": "21f349f098a03b8e7e2f4a82cef69f5df0fe2e73d88224ab197191260e316682",
+      "byte_size": 9187
+    },
+    {
+      "path": "migrations/postgres/README.md",
+      "sha256": "5ecaffa635dd57485cfd2396818293e3a55febfcb544dc055f6f2fc5dcf83824",
+      "byte_size": 4261
+    },
+    {
+      "path": "python/epistemic_foundry/storage/postgres/__init__.py",
+      "sha256": "31c6f062cb222577dcc7075214b846d9f8a3675cfec2a130381d66d87eac9b35",
+      "byte_size": 529
+    },
+    {
+      "path": "python/epistemic_foundry/storage/postgres/store.py",
+      "sha256": "ce99d637676c7044e8279d0778de94870e6f78946ed4884dbff2a19c2b8b875e",
+      "byte_size": 82773
+    },
+    {
+      "path": "python/epistemic_foundry/storage/postgres/pytest.ini",
+      "sha256": "66c104fc7cf9ee25275c59ce534e0ba856e4dc09e1720c6ad8f9d39ff1685af3",
+      "byte_size": 36
+    },
+    {
+      "path": "python/epistemic_foundry/storage/postgres/conftest.py",
+      "sha256": "c0dc0003e1046a8323919bacdaccd798a321dd6c79c81e6bb700f9280c001d45",
+      "byte_size": 6000
+    },
+    {
+      "path": "python/epistemic_foundry/storage/postgres/test_postgres_contract.py",
+      "sha256": "d4dab6fc3bf06c8a82367d1862896e605e82376342e6e867fae9c952e47f875c",
+      "byte_size": 33291
+    },
+    {
+      "path": "python/epistemic_foundry/storage/postgres/test_tenant_isolation.py",
+      "sha256": "013f69760a94fadf74eb6c0910f6d307de5dbb0bb36fddae39f227febca85882",
+      "byte_size": 14535
+    }
+  ],
+  "implementation": {
+    "postgresql_version": "16.13",
+    "logical_identity": [
+      "tenant_id",
+      "workspace_id",
+      "record_type",
+      "record_id"
+    ],
+    "identifier_projection": "utf16be-lowerhex-v1",
+    "identifier_prefix": "u16be:",
+    "identifier_support": "all non-empty JavaScript strings including NUL, astral characters, lone surrogates, and unbounded length",
+    "json_storage": "PostgreSQL json with canonical runtime validation",
+    "revision_genesis": 0,
+    "synchronous_transaction_callbacks_only": true,
+    "explicit_callback_thread_ownership": true,
+    "per_store_lock": "threading.RLock",
+    "writer_serialization_before_callback": true,
+    "row_level_security": "ENABLE AND FORCE",
+    "authorization_binding": [
+      "session_user",
+      "transaction-local tenant/workspace GUCs",
+      "principal_scopes"
+    ],
+    "security_definer_function_count": 4,
+    "security_definer_search_path": "pg_catalog",
+    "public_execute_revoked": true,
+    "deterministic_identity_collation": "pg_catalog.C",
+    "integrity_failure_mode": "SAFE_MODE",
+    "repository_root_fallback": false,
+    "new_manifest_dependency": false
+  },
+  "exit_criteria": {
+    "team_store_matches_local_semantics": "PASS",
+    "tenant_workspace_isolation_enforced": "PASS"
+  },
+  "required_checks": {
+    "postgres_contract_test": {
+      "status": "PASS",
+      "tests": 43,
+      "postgresql_version": "16.13"
+    },
+    "tenant_isolation_test": {
+      "status": "PASS",
+      "included_in_test_count": 43,
+      "force_rls": true,
+      "wrong_tenant_workspace_denial": true,
+      "direct_dml_and_role_escalation_denial": true
+    },
+    "final_contention": {
+      "status": "PASS",
+      "independent_runs": 10,
+      "targeted_executions": 30,
+      "failed_runs": 0,
+      "covered_paths": [
+        "compare-and-swap",
+        "create",
+        "writer callback entry"
+      ]
+    }
+  },
+  "regression": {
+    "python": {
+      "status": "PASS",
+      "passed": 912,
+      "failed": 0
+    },
+    "d01_and_foundry_kernel_security": {
+      "status": "PASS",
+      "passed": 72,
+      "failed": 0,
+      "skipped": 0
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix_and_cache_policy": "PASS",
+    "text_integrity": {
+      "status": "PASS",
+      "files": 8
+    },
+    "git_diff_check": "PASS"
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "artifact": "artifacts/work_packages/D02/review.md",
+    "blocking_findings": 0,
+    "resolved_finding_ids": [
+      "D02-RF001",
+      "D02-RF002"
+    ],
+    "assurance_limitation": "The final pass is procedurally separate within the primary session under the product owner's no-subagent/no-Fleet decision; it is not external actor-independent certification."
+  },
+  "residual_integration_failures": [
+    {
+      "check": "repository-wide Node tests",
+      "status": "FAIL_OUTSIDE_D02",
+      "passed": 103,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "owner_scope": "S04"
+    },
+    {
+      "check": "scripts/build/double_build.py",
+      "status": "FAIL_OUTSIDE_D02",
+      "failure": "staged source omits scripts/ required by build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  ],
+  "test_infrastructure": {
+    "container": "ef-d02-postgres",
+    "container_id_prefix": "3b33e978d5ef",
+    "listen": "127.0.0.1:4782",
+    "image_digest": "pgvector/pgvector@sha256:7d400e340efb42f4d8c9c12c6427adb253f726881a9985d2a471bf0eed824dff",
+    "transient_test_dependency": "psycopg[binary]==3.2.10",
+    "memento_postgres_modified": false
+  },
+  "historical_and_worktree_preservation": {
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "failed_review_and_probe_results_preserved_in_commands": true,
+    "cleanup_commands_rejected_before_execution": 2
+  },
+  "evidence_artifacts": [
+    "artifacts/work_packages/D02/report.json",
+    "artifacts/work_packages/D02/commands.jsonl",
+    "artifacts/work_packages/D02/review.md"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000016-c2e3eda2",
+    "core_generation": "000017-0d75171c",
+    "core_evidence_id": "E0018",
+    "final_closeout_evidence_id": "E0019",
+    "retained_generation_manifest_count_after_core": 17,
+    "generation_file_hashes_verified_after_core": 102,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "flat_snapshot_content_matches_after_core": 6,
+    "completion_ready": false
+  },
+  "dag_reconciliation": {
+    "status": "PASS",
+    "manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+    "work_package_count": 156,
+    "unique_work_package_count": 156,
+    "unknown_dependency_count": 0,
+    "cycle_count": 0,
+    "topological_layer_count": 42,
+    "completed_package_count": 19,
+    "ready_packages_manifest_order": [
+      "D03",
+      "G01",
+      "A06"
+    ],
+    "next_package": "D03",
+    "completion_ready": false
+  }
+}

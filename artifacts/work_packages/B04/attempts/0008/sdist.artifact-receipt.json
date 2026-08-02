@@ -1,0 +1,28 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-B04-0008-SDIST",
+  "byte_size": 257575,
+  "content_hash": "sha256:520079757dbaf868be2d293bfe79b0ee80f2bda252f066a166dabfb3a090f318",
+  "created_at": "2026-07-30T17:00:00.000Z",
+  "created_by": {
+    "actor_id": "B04-0008-final-packaging-verifier",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/B04/attempts/0008/dist/epistemic_foundry-4.0.0.tar.gz",
+  "media_type": "application/gzip",
+  "receipt_hash": "sha256:cbaea31c467878d5bfaf0ae734ac93e6bc9d3b2543bae9196e25359bead5d225",
+  "receipt_id": "AR-B04-0008-SDIST",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "sdist_clean_build",
+      "details": "Clean sdist embeds canonical source, derived snapshot, deterministic tooling, and exact hashed build constraints.",
+      "status": "PASS"
+    },
+    {
+      "check": "sdist_to_wheel",
+      "details": "The wheel rebuilt from this sdist is byte-identical to the direct clean-source wheel.",
+      "status": "PASS"
+    }
+  ]
+}

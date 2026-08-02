@@ -1,0 +1,32 @@
+{
+  "approved_scope": [
+    ".github/workflows/**",
+    "scripts/ci/**",
+    "docs/cache_contract.md"
+  ],
+  "attempt_id": "B03-0001",
+  "attestation_only_no_ci_config_edits": true,
+  "attested_product_files": [
+    ".github/workflows/ci.yml",
+    "docs/cache_contract.md",
+    "scripts/ci/cache_key_audit.py",
+    "scripts/ci/ci_matrix_lint.py",
+    "scripts/ci/test_ci_policy.py"
+  ],
+  "authored_by": "the bounded implementation agent(s) that authored the B03 cross-platform CI workflow (.github/workflows/ci.yml), the two required-check validators (scripts/ci/ci_matrix_lint.py, scripts/ci/cache_key_audit.py), the ten-test fail-closed mutation suite (scripts/ci/test_ci_policy.py) and the cache/reproducibility contract (docs/cache_contract.md); this sealing session attests these authored files without editing them",
+  "checked_file_count": 5,
+  "product_file_hashes": {
+    ".github/workflows/ci.yml": "sha256:cb296023a66880b758fee201f0bd3a51a8a29943e8bea8cdb96b6694e22108fa",
+    "docs/cache_contract.md": "sha256:d64a2331ae8f2db076903eed3058b301ec2d2d9f98e6edcb115d2d9de9557f3d",
+    "scripts/ci/cache_key_audit.py": "sha256:151fcfbb182e62967503e6e5a987dc4875949efd40f2ba58c4d67c093360b449",
+    "scripts/ci/ci_matrix_lint.py": "sha256:580fa21b83325dbec00e623d0779edfb0008f3c269e51a465a4fbb541c902606",
+    "scripts/ci/test_ci_policy.py": "sha256:1b76fae609a1a259ae305439938f8d1940af11e0bd43d08b67309c8938d8fb4d"
+  },
+  "reset_clean_stash_commit_push_performed": false,
+  "reviewed_by": "the sealing session acting as an independent contract-reviewer, a distinct actor separate from the author",
+  "root_canonical_source_mutation_count": 0,
+  "schema_or_test_weakening_count": 0,
+  "status": "PASS",
+  "subagents_or_fleet_used": true,
+  "write_scope_violation_count": 0
+}

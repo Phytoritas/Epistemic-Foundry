@@ -1,0 +1,68 @@
+{
+  "attempt_id": "I06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "admit and refuse alike emit one receipt whose receipt_hash re-derives from its own fields via hash_excluding; the batch report reconciles submitted == admitted + refused and its report_hash re-derives; the gate reads no clock and draws no random value when the receipt is named, so every hash is a pure function of the published bytes",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "verify_contract reads every genome/scope/falsifier/prediction field back out of the canonical schema that owns it on every call, eligibility is deferred entirely to the sealed I05 screen rather than restated, the un-evaluated intake status is read from the genome status enum, and each of the fifteen FINDING_CODES names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "a fully-consistent bundle is admitted; the refusals carry the weight and are surveyed together — a screening refusal, an advanced-status authority presumption, a missing or malformed scope vector, a prediction scoped out of the genome's bounds, an unresolved/undeclared/mis-attributed/malformed falsifier or prediction, and contract drift — and every decision replays byte for byte after a crash",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, ranks, selects, promotes or evaluates; a genome presenting an evaluated, promoted or otherwise advanced lifecycle status is refused AUTHORITY_STATUS_PRESUMED because intake grants no evaluator, holdout or promotion authority at the door, and the receipt carries none of the scoring or promotion fields",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "authority_at_intake": "none granted; advanced status is refused by path",
+    "eligibility": "deferred to epistemic_foundry.intake.v4_i05 screen",
+    "intake_status_source": "first value of the canonical genome status enum (un-evaluated draft), read from the schema not named here",
+    "produces": "one immutable admit/refuse receipt with resolved bindings; no score, selection or promotion",
+    "refusals_are_a_complete_survey": true
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: the implementing agent; reviewer: the sealing agent, actor-independent from the author; verdict PASS, blocking_finding_count=0; external certification does not hold)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 27
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 11
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 11
+    }
+  },
+  "schema_binding": {
+    "eligibility_screen": "epistemic_foundry.intake.v4_i05 (not re-derived)",
+    "falsifier_binding": "canonical falsifier-gene contract; must name this genome and link only predictions the genome declares",
+    "genome_schema": "canonical genome schema properties (re-derived per call)",
+    "prediction_binding": "canonical prediction-gene contract; must name this genome and be scoped to the genome's declared scope vector",
+    "scope_binding": "canonical scope-vector contract (re-derived per call)"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_i05": 61,
+    "dependency_regression_r05": 58,
+    "full_node_suite": 1129,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 27,
+    "provenance_and_receipt_audit": 11,
+    "schema_and_type_check": 9,
+    "unit_and_contract_tests": 11
+  }
+}

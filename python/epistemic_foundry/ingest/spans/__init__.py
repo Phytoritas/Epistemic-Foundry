@@ -1,0 +1,41 @@
+"""Source-bound immutable SourceSpan emission and resolution (K03)."""
+
+from .emitter import (
+    SOURCE_SPAN_EMITTER_VERSION,
+    CoordinateSystem,
+    ReconciliationStatus,
+    SemanticUnit,
+    SourceSnapshot,
+    SourceSnapshotIndex,
+    SourceSpan,
+    SourceSpanContractError,
+    SpanCandidate,
+    SpanKind,
+    emit,
+    emit_source_span,
+    emit_source_spans,
+    resolve_source_span,
+    resolve_source_spans,
+    source_span_from_mapping,
+    verify_source_span,
+)
+
+__all__ = [
+    "SOURCE_SPAN_EMITTER_VERSION",
+    "CoordinateSystem",
+    "ReconciliationStatus",
+    "SemanticUnit",
+    "SourceSnapshot",
+    "SourceSnapshotIndex",
+    "SourceSpan",
+    "SourceSpanContractError",
+    "SpanCandidate",
+    "SpanKind",
+    "emit",
+    "emit_source_span",
+    "emit_source_spans",
+    "resolve_source_span",
+    "resolve_source_spans",
+    "source_span_from_mapping",
+    "verify_source_span",
+]

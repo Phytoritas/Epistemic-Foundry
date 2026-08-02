@@ -197,18 +197,24 @@ work_packages:
   depends_on:
   - B01
   write_scope:
-  - package-lock.json
+  - pyproject.toml
   - uv.lock
-  - toolchains/**
-  - scripts/build/**
+  - artifacts/work_packages/B02/**
   model_tier: balanced
   independent_review: required
   exit_criteria:
   - all shipped dependencies pinned
   - clean builds are reproducible
+  - the skill-context dependency group declares exactly tiktoken==0.13.0
+  - uv resolves and frozen-syncs the skill-context group with no unrelated dependency change
+  - o200k_base tokenizer vectors pass with the installed tiktoken 0.13.0
   required_checks:
   - lockfile_check
   - double_build_comparison
+  - tiktoken_exact_lock_check
+  - skill_context_frozen_sync
+  - j02_tokenizer_vector_test
+  - write_scope_audit
   initial_status: NOT_STARTED
   risk_class: medium
   owner_role: bounded_maker
@@ -262,16 +268,38 @@ work_packages:
   depends_on:
   - B02
   - B03
+  - C04
   write_scope:
+  - src/epistemic_foundry/_canonical/**
+  - src/epistemic_foundry/contracts/registry.py
+  - scripts/build/canonical_registry/**
+  - tests/packaging/**
+  - tests/test_contracts.py
+  - tests/test_cli.py
   - artifacts/work_packages/B04/**
   model_tier: frontier
   independent_review: required
   exit_criteria:
   - source/dist build paths converge
   - build evidence is machine-readable
+  - canonical source changes can be reconciled by a new re-entrant B04 correction attempt without changing package-level dependencies
+  - a matching projection receipt proves the package snapshot matches the current root canonical bundle
+  - the 124-to-126 migration uses a pre-C04 attempt-level reconciliation without adding a static C04-B04 cycle
+  - the 126-to-127 RetrievalCandidate migration uses a pre-O02 attempt-level reconciliation without adding a static O02-B04 cycle
+  - the current package snapshot contains exactly 127 canonical schemas and one OpenAPI resource, 128 resources total
+  - the pre-C04 projection correction and post-C04 final packaging gate have distinct attempt evidence
+  - the skill-context dependency group is reproducible and is not exposed as a runtime dependency
+  - dependency revalidation does not edit pyproject.toml or uv.lock
   required_checks:
   - build_smoke
   - phase_artifact_reconciliation
+  - dependency_group_revalidation
+  - package_metadata_dependency_audit
+  - canonical_projection_integrity
+  - canonical_schema_127_projection
+  - pre_o02_projection_receipt
+  - pre_c04_projection_receipt
+  - final_packaging_gate
   initial_status: NOT_STARTED
   risk_class: medium
   owner_role: bounded_maker
@@ -285,6 +313,7 @@ work_packages:
   - artifacts/work_packages/B04/report.json
   - artifacts/work_packages/B04/commands.jsonl
   - artifacts/work_packages/B04/review.md
+  - artifacts/work_packages/B04/attempts/**/canonical-projection-verification.json
   rollback_or_recovery: revert only this package from the latest approved integration checkpoint; preserve ledger and effect history
 - id: C01
   phase: P02-C
@@ -292,17 +321,74 @@ work_packages:
   title: v4 JSON Schema and OpenAPI authority
   depends_on:
   - A04
+  - A05
   write_scope:
-  - schemas/**
-  - openapi/**
+  - schemas/document-registration-request.schema.json
+  - schemas/document-registration.schema.json
+  - schemas/document-manifest.schema.json
+  - schemas/evaluator-bundle.schema.json
+  - schemas/holdout-manifest.schema.json
+  - schemas/evaluator-qualification-report.schema.json
+  - schemas/gate-decision.schema.json
+  - schemas/promotion-decision.schema.json
+  - schemas/attestation.schema.json
+  - schemas/approval-record.schema.json
+  - schemas/capability-lease.schema.json
+  - schemas/action-intent.schema.json
+  - schemas/effect-receipt.schema.json
+  - schemas/artifact-receipt.schema.json
+  - schemas/phase-artifact-set.schema.json
+  - schemas/hypothesis-passport.schema.json
+  - schemas/replication-result.schema.json
+  - schemas/human-decision.schema.json
+  - schemas/retrieval-candidate.schema.json
+  - examples/sample_document-registration-request.json
+  - examples/sample_document-registration.json
+  - examples/sample_document-manifest.json
+  - examples/sample_evaluator-bundle.json
+  - examples/sample_holdout-manifest.json
+  - examples/sample_evaluator-qualification-report.json
+  - examples/sample_gate_decision.json
+  - examples/sample_promotion-decision.json
+  - examples/sample_attestation.json
+  - examples/sample_approval-record.json
+  - examples/sample_capability-lease.json
+  - examples/sample_action-intent.json
+  - examples/sample_effect-receipt.json
+  - examples/sample_artifact-receipt.json
+  - examples/sample_phase-artifact-set.json
+  - examples/sample_passport.json
+  - examples/sample_replication-result.json
+  - examples/sample_human-decision.json
+  - examples/sample_retrieval-candidate.json
+  - openapi/epistemic-foundry-v1.openapi.yaml
+  - MASTER_SPEC.md
+  - manifests/acceptance_matrix.yaml
+  - docs/api_contract.md
+  - docs/retrieval_contract.md
+  - tests/contracts/openapi/test_scientific_contracts.py
+  - tests/contracts/openapi/test_openapi_contract.py
+  - tests/contracts/test_k01_document_contracts.py
+  - tests/test_f01_epistemic_work_classifier.py
+  - artifacts/work_packages/C01/**
   model_tier: frontier
   independent_review: required
   exit_criteria:
   - all canonical artifacts are schema-defined
   - breaking changes are versioned
+  - the canonical schema and matching-example count is exactly 127 after the RetrievalCandidate shared correction
+  - DocumentRegistrationRequest, immutable DocumentRegistration, and final DocumentManifest are distinct and lineage-bound
+  - the two exact OpenAPI contract-test oracles consume the 127-contract inventory before targeted validation
+  - RetrievalCandidate identity, provenance, direction, channel, query-family, hash and nullability constraints are canonical and fail-closed
+  - evaluator, holdout, G00-G14, attestation, approval, lease, CAS, and receipt constraints are fail-closed
   required_checks:
   - schema_meta_validation
   - openapi_validation
+  - canonical_schema_example_cardinality
+  - document_registration_contract_validation
+  - retrieval_candidate_contract_validation
+  - evolution_authority_schema_validation
+  - openapi_127_contract_oracle
   initial_status: NOT_STARTED
   risk_class: critical
   owner_role: bounded_maker
@@ -332,9 +418,13 @@ work_packages:
   exit_criteria:
   - generated models derive from one source
   - manual duplicate enums are forbidden
+  - all 127 canonical schemas project deterministically to Python, TypeScript and UI models
+  - DocumentRegistration and evolution-authority generated projections remain cross-language equivalent
+  - RetrievalCandidate generated projections remain cross-language equivalent
   required_checks:
   - codegen_clean_diff
   - cross_language_fixture_check
+  - generated_contract_127_parity
   initial_status: NOT_STARTED
   risk_class: medium
   owner_role: bounded_maker
@@ -352,20 +442,45 @@ work_packages:
 - id: C03
   phase: P02-C
   phase_title: Canonical contracts and code generation
-  title: Compatibility windows and schema migration contracts
+  title: Compatibility windows, runtime migration, and schema migration contracts
   depends_on:
   - C01
+  - C02
   write_scope:
   - migrations/contracts/**
   - docs/schema_evolution.md
+  - src/epistemic_foundry/evolution_chamber/run_spec.py
+  - src/epistemic_foundry/governance/promotion.py
+  - src/epistemic_foundry/foundry_kernel/gates.py
+  - src/epistemic_foundry/verifier_firewall/firewall.py
+  - tests/test_evolution_chamber.py
+  - tests/test_evidence_parliament.py
+  - tests/test_foundry_kernel.py
+  - tests/test_governance.py
+  - tests/test_integration_forge_cycle.py
+  - tests/test_product_invariants.py
+  - tests/test_verifier_firewall.py
+  - artifacts/work_packages/C03/**
   model_tier: balanced
   independent_review: required
   exit_criteria:
   - read/write compatibility explicit
   - rollback and backfill required for breaking changes
+  - legacy document manifests migrate only from sufficient immutable registration evidence
+  - unresolved legacy registration or constitutional artifacts fail closed
+  - runtime GateDecision records satisfy the canonical required fields and deterministic decision-hash contract without fabricated defaults
+  - runtime HoldoutManifest records satisfy the canonical sealed-access contract and fail closed on missing immutable inputs
+  - C03 resolves the B04-SG002 GateDecision and HoldoutManifest Python migration fingerprints without changing canonical schemas
   required_checks:
   - compatibility_matrix_test
   - migration_fixture_test
+  - document_registration_migration_test
+  - evolution_authority_compatibility_test
+  - gate_decision_runtime_schema_migration_test
+  - holdout_manifest_runtime_schema_migration_test
+  - runtime_canonical_hash_identity_test
+  - b04_sg002_python_failure_reconciliation
+  - write_scope_audit
   initial_status: NOT_STARTED
   risk_class: medium
   owner_role: bounded_maker
@@ -394,9 +509,24 @@ work_packages:
   exit_criteria:
   - CLI/MCP/HTTP/persistence shapes agree
   - zero unresolved contract drift
+  - all 127 schemas and examples, generated projections, runtime semantics and OpenAPI agree
+  - K01 registration lifecycle and A06 constitutional constraints pass the full conformance gate
+  - RetrievalCandidate generated and runtime contracts agree with the O02 canonical semantics and fresh B04 projection receipt
   required_checks:
   - contract_surface_conformance
   - phase_artifact_reconciliation
+  - full_python_suite
+  - canonical_schema_example_validation
+  - openapi_validation
+  - generated_contract_parity
+  - legacy_enum_absence
+  - migration_allowlist_empty
+  - runtime_schema_semantic_parity
+  - independent_integration_review
+  - document_registration_lifecycle_conformance
+  - evolution_authority_conformance
+  - retrieval_candidate_conformance
+  - canonical_projection_128_resource_freshness
   initial_status: NOT_STARTED
   risk_class: critical
   owner_role: bounded_maker
@@ -667,14 +797,45 @@ work_packages:
   - E04
   write_scope:
   - packages/foundry-kernel/src/forge/classifier/**
+  - docs/forge_protocol.md
+  - schemas/epistemic-work-classification.schema.json
+  - examples/sample_epistemic-work-classification.json
+  - workflows/forge_research_cycle.workflow.yaml
+  - prompts/plugin/classify_epistemic_work.md
+  - manifests/acceptance_matrix.yaml
+  - tests/golden/forge/f01_classifier_gold_cases.json
+  - tests/golden/forge/f01_classifier_adversarial_cases.json
+  - tests/golden/forge/f01_classifier_hash_vectors.json
+  - tests/golden/forge/f01_classifier_override_cases.json
+  - tests/test_f01_epistemic_work_classifier.py
+  - tests/test_f01_underprocessing_guard.py
+  - tests/test_f01_workflow_contract.py
+  - artifacts/work_packages/F01/**
   model_tier: frontier
   independent_review: required
   exit_criteria:
-  - process depth is explainable
+  - closed signal vocabulary and maximum-floor classification are deterministic
+  - E0-E5 phase, role-count, human-gate, and conditional Interview projections are exact
+  - added signals cannot reduce class or any protection
+  - classification identity, retry, replay, receipt, and immutable override contracts hold
+  - classifier workflow emits a canonical EpistemicWorkClassification business artifact
+  - process depth is explainable through stable ordered rule traces
   - high-risk ambiguity routes to Interview
+  - matching B04 projection receipt exists
+  - package snapshot matches current root canonical bundle
+  - F01-caused full Python regression count is zero
   required_checks:
   - classifier_gold_test
   - underprocessing_guard
+  - classifier_adversarial_test
+  - classifier_hash_vector_test
+  - classifier_retry_replay_test
+  - classifier_immutable_override_test
+  - classifier_workflow_contract_test
+  - canonical_schema_example_validation
+  - canonical_projection_freshness
+  - full_repository_regression
+  - independent_implementation_review
   initial_status: NOT_STARTED
   risk_class: critical
   owner_role: bounded_maker
@@ -1197,15 +1358,103 @@ work_packages:
   depends_on:
   - J01
   write_scope:
-  - plugins/epistemic-foundry/skills/**/references/**
+  - plugins/epistemic-foundry/skills/skill-inventory.json
+  - plugins/epistemic-foundry/skills/foundry/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-admin/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-admin/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-aporia/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-aporia/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-archive/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-archive/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-atlas/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-atlas/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-challenge/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-challenge/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-claim-forge/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-claim-forge/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-domain-pack/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-domain-pack/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-evaluator-audit/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-evaluator-audit/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-evolution-replay/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-evolution-replay/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-evolution-stop/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-evolution-stop/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-evolve-convert/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-evolve-convert/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-evolve-inspect/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-evolve-inspect/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-evolve-run/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-evolve-run/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-evolve-setup/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-evolve-setup/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-evolve/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-evolve/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-intake/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-intake/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-map/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-map/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-observe/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-observe/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-parliament/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-parliament/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-passport/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-passport/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-plugin-dev/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-plugin-dev/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-promote-evolved/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-promote-evolved/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-reason/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-reason/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-recall/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-recall/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-replay/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-replay/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-replicate/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-replicate/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-shinka-adapter/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-shinka-adapter/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry-validation/SKILL.md
+  - plugins/epistemic-foundry/skills/foundry-validation/agents/openai.yaml
+  - plugins/epistemic-foundry/skills/foundry/references/**
+  - packages/plugin-host/src/skill-context/**
+  - tools/skill-context/count_tokens.py
+  - docs/skill_context_contract.md
+  - tests/fixtures/j02/skill-inventory.expected.json
+  - tests/fixtures/j02/tokenizer-vectors.json
+  - tests/fixtures/j02/context-budget-cases.json
+  - tests/fixtures/j02/reference-selection-cases.json
+  - tests/fixtures/j02/reference-reachability-cases.json
+  - tests/test_j02_context_budget.py
+  - tests/node/j02-reference-reachability.test.mjs
+  - tests/node/j02-skill-context-loader.test.mjs
+  - artifacts/work_packages/J02/**
   model_tier: balanced
   independent_review: required
   exit_criteria:
-  - only needed references load
-  - initial skill metadata fits host budget
+  - exactly 29 active production skills are represented in bounded initial metadata
+  - initial metadata is at most 6400 UTF-8 bytes and 1600 pinned o200k_base tokens
+  - exactly 17 declared references are reachable with no orphan, cycle, drift, traversal, or alias
+  - only deterministic required, matching conditional, or authorized exact explicit references load
+  - all skill, reference, closure, depth, and activation budgets fail closed
+  - matching inventory, hash, token, and invocation-policy evidence exists
+  - J01 routing and metadata behavior remains unchanged
+  - J02 causes no new Python or Node regression and no skip or xfail
+  - primary-session separate adversarial review records no blocking finding
+  - B02 exact tiktoken lock correction and B04 dependency/build revalidation are PASS
+  - S04-TM004 active development-manifest source binding reconciliation is PASS
   required_checks:
   - context_budget_test
   - reference_reachability_test
+  - skill_routing_eval
+  - skill_metadata_lint
+  - inventory_hash_verification
+  - full_python_suite
+  - full_node_suite
+  - write_scope_audit
+  - exact_tokenizer_lock_check
+  - active_manifest_binding_check
   initial_status: NOT_STARTED
   risk_class: medium
   owner_role: bounded_maker
@@ -1292,15 +1541,41 @@ work_packages:
   - D04
   - S01
   write_scope:
-  - python/epistemic_foundry/ingest/registry/**
+  - workflows/corpus_ingest.workflow.yaml
+  - src/epistemic_foundry/ingest/registry/__init__.py
+  - src/epistemic_foundry/ingest/registry/models.py
+  - src/epistemic_foundry/ingest/registry/service.py
+  - src/epistemic_foundry/ingest/registry/hash.py
+  - src/epistemic_foundry/ingest/registry/lineage.py
+  - src/epistemic_foundry/ingest/registry/repository.py
+  - src/epistemic_foundry/ingest/registry/errors.py
+  - docs/ingest_lifecycle_contract.md
+  - tests/fixtures/k01/document-registration-request.valid.json
+  - tests/fixtures/k01/document-registration.valid.json
+  - tests/fixtures/k01/document-registration.invalid.json
+  - tests/fixtures/k01/document-lineage-cases.json
+  - tests/fixtures/k01/document-effect-cases.json
+  - tests/ingest/test_k01_document_registration.py
+  - tests/ingest/test_k01_document_lineage.py
+  - tests/ingest/test_k01_effect_reconciliation.py
+  - tests/contracts/test_k01_document_contracts.py
+  - tests/integration/test_k01_register_document_node.py
+  - artifacts/work_packages/K01/**
   model_tier: balanced
   independent_review: required
   exit_criteria:
   - source bytes immutable
   - license/retraction/version status retained
+  - initial registration emits an immutable DocumentRegistration before downstream final-manifest construction
+  - source-byte, registry, ledger, lease, CAS and receipt effects reconcile without reimplementing D/E primitives
+  - legacy records without sufficient immutable evidence fail closed
   required_checks:
   - document_registry_test
   - license_propagation_test
+  - document_registration_oracle_22
+  - document_lineage_test
+  - document_effect_reconciliation_test
+  - document_contract_validation
   initial_status: NOT_STARTED
   risk_class: medium
   owner_role: bounded_maker
@@ -1824,14 +2099,35 @@ work_packages:
   - O01
   write_scope:
   - python/epistemic_foundry/retrieval/lanes/**
+  - config/retrieval_policy.example.yaml
+  - workflows/evidence_retrieval.workflow.yaml
+  - tests/retrieval/test_o02_retrieval_benchmark.py
+  - tests/retrieval/test_o02_relation_direction.py
+  - tests/retrieval/test_o02_integrity_and_fallback.py
+  - tests/retrieval/test_o02_non_vector_guard.py
+  - tests/fixtures/retrieval/o02/corpus.jsonl
+  - tests/fixtures/retrieval/o02/queries.json
+  - tests/fixtures/retrieval/o02/relevance-labels.json
+  - tests/fixtures/retrieval/o02/relation-direction-cases.json
+  - tests/fixtures/retrieval/o02/backend-responses.json
+  - artifacts/work_packages/O02/**
   model_tier: balanced
   independent_review: required
   exit_criteria:
   - vector-only retrieval avoided
   - candidate provenance retained
+  - RetrievalCandidate identity, content hash, snapshot and receipt bindings are deterministic and fail closed
+  - lane-local exact deduplication precedes RRF fusion with k=60, transparent features, cutoff and candidate-id tie-break
+  - no silent cross-channel fallback or learned reranker is used
+  - every non-empty release set contains a non-vector origin or the run ceiling is PARTIAL
+  - all exact direction, provenance, integrity, replay and critical must-find fixtures pass
   required_checks:
   - retrieval_benchmark
   - relation_direction_test
+  - retrieval_candidate_contract_test
+  - retrieval_integrity_and_fallback_test
+  - non_vector_release_guard_test
+  - deterministic_replay_test
   initial_status: NOT_STARTED
   risk_class: medium
   owner_role: bounded_maker
@@ -2377,16 +2673,22 @@ work_packages:
   - S02
   - S03
   write_scope:
-  - tests/security/**
+  - manifests/source_bindings/development-manifest.binding.json
+  - manifests/requirements_traceability.yaml
+  - tests/security/s04-threat-model-traceability.test.mjs
   - artifacts/work_packages/S04/**
   model_tier: frontier
   independent_review: required
   exit_criteria:
   - zero critical unresolved findings
   - hook bypass limitations documented
+  - S04-TM004 validates the active development-manifest source binding rather than a hard-coded incidental hash
+  - parent, successor, patch plan, authorizing decisions, traceability reference and binding self-hash reconcile
   required_checks:
   - security_gate
   - threat_model_traceability
+  - active_manifest_source_binding
+  - source_binding_self_hash
   initial_status: NOT_STARTED
   risk_class: critical
   owner_role: bounded_maker
@@ -2410,15 +2712,44 @@ work_packages:
   - G04
   - S04
   write_scope:
+  - contracts/mcp/t01/tool-catalog.yaml
+  - contracts/mcp/t01/inputs/**
+  - contracts/mcp/t01/foundry-mcp-tool-result.schema.json
+  - contracts/mcp/t01/foundry-mcp-tool-error.schema.json
+  - plugins/epistemic-foundry/.mcp.json
+  - src/epistemic_foundry/application/mcp_read/**
+  - src/epistemic_foundry/application/mcp_planning/**
+  - src/epistemic_foundry/application/mcp_common/**
   - packages/plugin-host/src/mcp/read/**
+  - packages/plugin-host/src/mcp/planning/**
+  - packages/plugin-host/src/mcp/generated/**
+  - docs/mcp_transport_contract.md
+  - tests/fixtures/t01_mcp/**
+  - tests/mcp/test_t01_shared_handlers.py
+  - tests/mcp/test_t01_authorization.py
+  - tests/mcp/test_t01_read_side_effects.py
+  - tests/mcp/test_t01_planning_artifacts.py
+  - tests/mcp/test_t01_error_contract.py
+  - tests/node/t01-tool-catalog.test.mjs
+  - tests/node/t01-schema-resolution.test.mjs
+  - tests/node/t01-transport-framing.test.mjs
+  - artifacts/work_packages/T01/**
   model_tier: frontier
   independent_review: required
   exit_criteria:
   - tool schemas canonical
   - read tools side-effect free
+  - MCP protocol version 2026-07-28 exposes exactly nine PURE_READ and four DURABLE_PLAN_ARTIFACT tools
+  - STDIO and stateless Streamable HTTP POST /mcp share provider-neutral handlers and exact envelopes
+  - authorization, workspace isolation, confidentiality, schema resolution, receipts and idempotency fail closed
   required_checks:
   - mcp_schema_test
   - read_side_effect_test
+  - mcp_tool_catalog_exact_13
+  - mcp_transport_framing_test
+  - mcp_authorization_and_confidentiality_test
+  - mcp_planning_artifact_receipt_test
+  - mcp_schema_resolution_test
   initial_status: NOT_STARTED
   risk_class: high
   owner_role: bounded_maker
@@ -3302,7 +3633,26 @@ work_packages:
   depends_on:
   - A04
   write_scope:
+  - src/epistemic_foundry/governance/evolution_authority/__init__.py
+  - src/epistemic_foundry/governance/evolution_authority/models.py
+  - src/epistemic_foundry/governance/evolution_authority/gate_registry.py
+  - src/epistemic_foundry/governance/evolution_authority/gate_runner.py
+  - src/epistemic_foundry/governance/evolution_authority/evaluator.py
+  - src/epistemic_foundry/governance/evolution_authority/holdout.py
+  - src/epistemic_foundry/governance/evolution_authority/parliament.py
+  - src/epistemic_foundry/governance/evolution_authority/attestation.py
+  - src/epistemic_foundry/governance/evolution_authority/approval.py
+  - src/epistemic_foundry/governance/evolution_authority/promotion.py
+  - src/epistemic_foundry/governance/evolution_authority/cas.py
+  - src/epistemic_foundry/governance/evolution_authority/reconciliation.py
+  - src/epistemic_foundry/governance/evolution_authority/errors.py
+  - workflows/evolution_promotion.workflow.yaml
+  - workflows/verifier_firewall_qualification.workflow.yaml
+  - workflows/hypothesis_replication.workflow.yaml
+  - workflows/insight_deliberation.workflow.yaml
   - docs/v4_a05/**
+  - tests/fixtures/a05/**
+  - tests/governance/a05/**
   - artifacts/work_packages/A05/**
   model_tier: frontier
   independent_review: required
@@ -3311,12 +3661,19 @@ work_packages:
   - happy path, negative path, crash/resume and adversarial tests cover the package scope
   - no candidate, model, prompt, backend or hook acquires evaluator, holdout or promotion authority
   - all completion and external effects resolve to immutable receipts
+  - G00-G14 are exact, ordered, non-waivable where specified and receipt-bound
+  - evolution_promotion has the exact 23-node fail-closed sequence
+  - all 24 negative/adversarial and 6 positive constitutional cases pass exactly
   required_checks:
   - schema_and_type_check
   - unit_and_contract_tests
   - negative_and_adversarial_tests
   - provenance_and_receipt_audit
   - independent_review
+  - gate_registry_exact_15
+  - evolution_promotion_workflow_exact_23
+  - constitutional_negative_24
+  - constitutional_positive_6
   initial_status: NOT_STARTED
   risk_class: critical
   owner_role: bounded_maker
@@ -3347,12 +3704,22 @@ work_packages:
   - happy path, negative path, crash/resume and adversarial tests cover the package scope
   - no candidate, model, prompt, backend or hook acquires evaluator, holdout or promotion authority
   - all completion and external effects resolve to immutable receipts
+  - governing schemas and generated projections are fully conformant
+  - G00-G14 registration, order, Parliament, attestation, approval, lease, fence, CAS and receipt boundaries all pass independent audit
+  - all 24 negative/adversarial and 6 positive A05 paths are independently reconciled
   required_checks:
   - schema_and_type_check
   - unit_and_contract_tests
   - negative_and_adversarial_tests
   - provenance_and_receipt_audit
   - independent_review
+  - constitutional_schema_and_projection_parity
+  - gate_registry_and_order_audit
+  - evaluator_holdout_firewall_audit
+  - parliament_attestation_approval_audit
+  - lease_fence_cas_receipt_audit
+  - constitutional_negative_24_audit
+  - constitutional_positive_6_audit
   initial_status: NOT_STARTED
   risk_class: critical
   owner_role: bounded_maker

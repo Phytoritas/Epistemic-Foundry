@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/schema-migration.schema.json",
+  "title": "SchemaMigration",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "migration_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$"
+    },
+    "to_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$"
+    },
+    "compatibility": {
+      "enum": [
+        "backward_compatible",
+        "forward_compatible",
+        "bidirectional",
+        "breaking"
+      ]
+    },
+    "transform_entrypoint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reverse_transform_entrypoint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "postconditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "fixture_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "data_loss_possible": {
+      "type": "boolean"
+    },
+    "approval_record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "migration_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "migration_id",
+    "schema_name",
+    "from_version",
+    "to_version",
+    "compatibility",
+    "transform_entrypoint",
+    "reverse_transform_entrypoint",
+    "preconditions",
+    "postconditions",
+    "fixture_artifact_ids",
+    "data_loss_possible",
+    "approval_record_id",
+    "migration_hash"
+  ]
+}

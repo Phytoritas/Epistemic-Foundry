@@ -1,0 +1,128 @@
+{
+  "attempt_id": "K04-0001",
+  "codegen": {
+    "deterministic_double_replay": "PASS",
+    "example_count": 126,
+    "schema_count": 126,
+    "status": "PASS"
+  },
+  "diagnostics_preserved": [
+    {
+      "artifact": null,
+      "classification": "FIXTURE_ORACLE_LEAKAGE",
+      "result": "initial K04 Node run: 2 passed, 4 failed; expectedSignal was removed from the sealed untrusted input and the same six assertions then passed",
+      "retention": "commands/report narrative; initial JUnit was superseded before evidence capture"
+    },
+    {
+      "artifact": "artifacts/work_packages/K04/attempts/0001/predecessor-component-python.junit.xml",
+      "classification": "OBSOLETE_PROVISIONAL_K01_COMPONENT_PATH",
+      "result": "initial component predecessor run: 86 passed, 24 failed; the obsolete K01-0001 python/.../ingest/registry path was excluded and current K02/K03 components passed 76/76",
+      "retention": "JUnit and stdout retained"
+    },
+    {
+      "artifact": null,
+      "classification": "PROVISIONAL_DAG_EXPECTATION_OMITTED_M01",
+      "result": "initial evidence build rejected an expected four-package READY set because live manifest recomputation correctly also selected M01; expected READY was corrected to L01, M01, N01, T01, A06",
+      "retention": "commands/report narrative; no RAH state was mutated by the failed build"
+    }
+  ],
+  "full_node": {
+    "cancelled": 0,
+    "collected": 476,
+    "failed": 0,
+    "junit": "artifacts/work_packages/K04/attempts/0001/full-node-suite.junit.xml",
+    "junit_sha256": "sha256:1dc23641ced87cb77f158c465b921ba2a84fbe5faa47fa984dc8153b8f6a41b8",
+    "passed": 476,
+    "skipped": 0,
+    "test_file_count": 55,
+    "todo": 0,
+    "xml_testcase_count": 473
+  },
+  "full_python": {
+    "collected": 1064,
+    "errors": 0,
+    "failed": 0,
+    "junit": "artifacts/work_packages/K04/attempts/0001/full-python-suite.junit.xml",
+    "junit_sha256": "sha256:1a6a2b6513f033d05298ec17e7c5692b17c20a8ab4878cac04feda042efcccc7",
+    "passed": 1064,
+    "skipped": 0,
+    "xml_testcase_count": 1064
+  },
+  "new_failure_count": 0,
+  "new_skip_xfail_todo_or_cancellation_count": 0,
+  "predecessor_current": {
+    "k01_root_ingest": {
+      "collected": 85,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/K04/attempts/0001/predecessor-root-python.junit.xml",
+      "junit_sha256": "sha256:37462263396d01c8c38c88de25ce52626fa835a25f62cf2f3615f8c3876b5f3f",
+      "passed": 85,
+      "skipped": 0,
+      "xml_testcase_count": 85
+    },
+    "k02_k03_components": {
+      "collected": 76,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/K04/attempts/0001/predecessor-k02-k03-python.junit.xml",
+      "junit_sha256": "sha256:19bbc7ff7125d527207e6761df90cee7c911c4ec5af98033d954820d5407a1e8",
+      "passed": 76,
+      "skipped": 0,
+      "xml_testcase_count": 76
+    },
+    "s01_trust_boundary": {
+      "cancelled": 0,
+      "collected": 17,
+      "failed": 0,
+      "junit": "artifacts/work_packages/K04/attempts/0001/predecessor-s01-node.junit.xml",
+      "junit_sha256": "sha256:40889d8d4103c26c6b986430aad21511a8a2ccb27d19a4fa54448e0bd72226cd",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0,
+      "xml_testcase_count": 17
+    }
+  },
+  "repository_checks": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "status": "PASS_WITH_PREEXISTING_LINE_ENDING_ADVISORIES"
+    },
+    "package_boundaries": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "repository_structure": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "scoped_ruff": {
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "targeted_k04": {
+    "node": {
+      "cancelled": 0,
+      "collected": 6,
+      "failed": 0,
+      "junit": "artifacts/work_packages/K04/attempts/0001/targeted-k04-node.junit.xml",
+      "junit_sha256": "sha256:a4909db7561a72a81c248074b8769b12e5a62c6cc5f5620f088278216b9592e0",
+      "passed": 6,
+      "skipped": 0,
+      "todo": 0,
+      "xml_testcase_count": 6
+    },
+    "python": {
+      "collected": 10,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/K04/attempts/0001/targeted-k04-python.junit.xml",
+      "junit_sha256": "sha256:24afe0a5a3cb05d321571e0db6799f3958bad9bf4793befd418dd6c67d3664f4",
+      "passed": 10,
+      "skipped": 0,
+      "xml_testcase_count": 10
+    }
+  }
+}

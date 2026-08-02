@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Any, Sequence
+from typing import Sequence
 
 #: Patterns that indicate embedded instruction-injection attempts. Detection is
 #: for *flagging*, never for sanitizing: a corpus record is preserved verbatim

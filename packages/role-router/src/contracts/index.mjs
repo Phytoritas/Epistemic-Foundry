@@ -1,0 +1,17 @@
+export {
+  EVIDENCE_CLASSES,
+  FAILURE_POLICIES,
+  MODEL_TIERS,
+  ROLE_DISPATCH_PROJECTION_FIELDS,
+  ROLE_SPEC_ID_PREFIX,
+  ROLE_SPEC_REQUIRED_FIELDS,
+  ROLE_SPEC_VERSION,
+  TOOL_CAPABILITIES,
+  RoleSpecContractError,
+  authorizeRoleAccess,
+  canonicalizeRoleSpecJson,
+  computeRoleSpecHash,
+  createRoleSpec,
+  projectRoleSpecToDispatchRole,
+  verifyRoleSpecIntegrity,
+} from "./role-spec.mjs";

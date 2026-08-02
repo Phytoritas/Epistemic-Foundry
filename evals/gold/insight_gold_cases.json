@@ -1,0 +1,300 @@
+{
+  "annotation_manual": "docs/annotation_manual.md",
+  "cases": [
+    {
+      "adjudication": null,
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "TRUE_INSIGHT",
+          "rationale_ref": "note:GC-true-001#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "TRUE_INSIGHT",
+          "rationale_ref": "note:GC-true-001#ann-b"
+        }
+      ],
+      "boundary_condition": null,
+      "case_class": "TRUE_INSIGHT",
+      "case_id": "GC-true-001",
+      "gold_label": "TRUE_INSIGHT",
+      "source_spans": [
+        "SPAN-p7-results-1",
+        "SPAN-t3-yield-table"
+      ],
+      "statement": "Supplemental far-red at the end of day increases fresh yield in the cultivar tested, measured against a matched control in the same house."
+    },
+    {
+      "adjudication": null,
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "TRUE_INSIGHT",
+          "rationale_ref": "note:GC-true-002#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "TRUE_INSIGHT",
+          "rationale_ref": "note:GC-true-002#ann-b"
+        }
+      ],
+      "boundary_condition": null,
+      "case_class": "TRUE_INSIGHT",
+      "case_id": "GC-true-002",
+      "gold_label": "TRUE_INSIGHT",
+      "source_spans": [
+        "SPAN-p9-sensitivity-1"
+      ],
+      "statement": "The reported effect survives the authors' own pre-registered sensitivity analysis with the outlier block removed."
+    },
+    {
+      "adjudication": null,
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "TRUE_INSIGHT",
+          "rationale_ref": "note:GC-true-003#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "TRUE_INSIGHT",
+          "rationale_ref": "note:GC-true-003#ann-b"
+        }
+      ],
+      "boundary_condition": null,
+      "case_class": "TRUE_INSIGHT",
+      "case_id": "GC-true-003",
+      "gold_label": "TRUE_INSIGHT",
+      "source_spans": [
+        "SPAN-p4-methods-2",
+        "SPAN-ref12-results-1"
+      ],
+      "statement": "Two independent teams using different measurement instruments report the same sign of effect on the same construct."
+    },
+    {
+      "adjudication": null,
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "TRUE_INSIGHT",
+          "rationale_ref": "note:GC-true-004#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "TRUE_INSIGHT",
+          "rationale_ref": "note:GC-true-004#ann-b"
+        }
+      ],
+      "boundary_condition": null,
+      "case_class": "TRUE_INSIGHT",
+      "case_id": "GC-true-004",
+      "gold_label": "TRUE_INSIGHT",
+      "source_spans": [
+        "SPAN-p11-discussion-3"
+      ],
+      "statement": "The paper states a falsifying condition and reports that the condition was tested and not met."
+    },
+    {
+      "adjudication": null,
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "FALSE_INSIGHT",
+          "rationale_ref": "note:GC-false-001#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "FALSE_INSIGHT",
+          "rationale_ref": "note:GC-false-001#ann-b"
+        }
+      ],
+      "boundary_condition": null,
+      "case_class": "FALSE_INSIGHT",
+      "case_id": "GC-false-001",
+      "gold_label": "FALSE_INSIGHT",
+      "source_spans": [
+        "SPAN-p1-abstract-2",
+        "SPAN-p8-results-4"
+      ],
+      "statement": "The abstract asserts a causal mechanism the results section never measures; only an association is reported."
+    },
+    {
+      "adjudication": null,
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "FALSE_INSIGHT",
+          "rationale_ref": "note:GC-false-002#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "FALSE_INSIGHT",
+          "rationale_ref": "note:GC-false-002#ann-b"
+        }
+      ],
+      "boundary_condition": null,
+      "case_class": "FALSE_INSIGHT",
+      "case_id": "GC-false-002",
+      "gold_label": "FALSE_INSIGHT",
+      "source_spans": [
+        "SPAN-p2-background-1"
+      ],
+      "statement": "A background review sentence is presented as a direct measurement, but its cited source is itself a review."
+    },
+    {
+      "adjudication": null,
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "FALSE_INSIGHT",
+          "rationale_ref": "note:GC-false-003#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "FALSE_INSIGHT",
+          "rationale_ref": "note:GC-false-003#ann-b"
+        }
+      ],
+      "boundary_condition": null,
+      "case_class": "FALSE_INSIGHT",
+      "case_id": "GC-false-003",
+      "gold_label": "FALSE_INSIGHT",
+      "source_spans": [
+        "SPAN-p6-methods-5",
+        "SPAN-t2-pooled"
+      ],
+      "statement": "The claimed effect is computed by pooling an observational cohort with a randomized arm into one average."
+    },
+    {
+      "adjudication": {
+        "adjudicator_id": "ann-c",
+        "decided_at": "2026-08-01T19:00:00Z",
+        "reason": "the manual treats an unstated scope jump in the conclusion as a false insight, not a boundary: the paper never names the condition under which the generalisation would hold",
+        "resolution": "ANNOTATOR_A_CORRECT"
+      },
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "FALSE_INSIGHT",
+          "rationale_ref": "note:GC-false-004#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "BOUNDARY",
+          "rationale_ref": "note:GC-false-004#ann-b"
+        }
+      ],
+      "boundary_condition": null,
+      "case_class": "FALSE_INSIGHT",
+      "case_id": "GC-false-004",
+      "gold_label": "FALSE_INSIGHT",
+      "source_spans": [
+        "SPAN-p12-conclusion-1",
+        "SPAN-p3-methods-1"
+      ],
+      "statement": "The conclusion generalises to field conditions from a study whose inclusion criteria are greenhouse-only."
+    },
+    {
+      "adjudication": null,
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "BOUNDARY",
+          "rationale_ref": "note:GC-boundary-001#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "BOUNDARY",
+          "rationale_ref": "note:GC-boundary-001#ann-b"
+        }
+      ],
+      "boundary_condition": "cultivar-specific: the claim is bounded to the tested cultivar",
+      "case_class": "BOUNDARY",
+      "case_id": "GC-boundary-001",
+      "gold_label": "BOUNDARY",
+      "source_spans": [
+        "SPAN-p10-limitations-1"
+      ],
+      "statement": "The effect holds in the tested cultivar and is explicitly not claimed for others; the authors name cultivar as the limiting condition."
+    },
+    {
+      "adjudication": null,
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "BOUNDARY",
+          "rationale_ref": "note:GC-boundary-002#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "BOUNDARY",
+          "rationale_ref": "note:GC-boundary-002#ann-b"
+        }
+      ],
+      "boundary_condition": "the sign reverses above the measured 28 C threshold",
+      "case_class": "BOUNDARY",
+      "case_id": "GC-boundary-002",
+      "gold_label": "BOUNDARY",
+      "source_spans": [
+        "SPAN-p8-results-7",
+        "SPAN-f4-threshold"
+      ],
+      "statement": "The result reverses sign above a stated temperature threshold, and the threshold is measured rather than assumed."
+    },
+    {
+      "adjudication": null,
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "BOUNDARY",
+          "rationale_ref": "note:GC-boundary-003#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "BOUNDARY",
+          "rationale_ref": "note:GC-boundary-003#ann-b"
+        }
+      ],
+      "boundary_condition": "instrument-bounded: unverified against the reference method",
+      "case_class": "BOUNDARY",
+      "case_id": "GC-boundary-003",
+      "gold_label": "BOUNDARY",
+      "source_spans": [
+        "SPAN-p5-methods-3"
+      ],
+      "statement": "The claim is supported under the paper's own instrument but the authors state it has not been checked against the reference method."
+    },
+    {
+      "adjudication": {
+        "adjudicator_id": "ann-c",
+        "decided_at": "2026-08-01T19:00:00Z",
+        "reason": "the authors name the untested condition themselves, which the manual classifies as a boundary case rather than a clean true insight, however well the single season is measured",
+        "resolution": "ANNOTATOR_A_CORRECT"
+      },
+      "annotations": [
+        {
+          "annotator_id": "ann-a",
+          "label": "BOUNDARY",
+          "rationale_ref": "note:GC-boundary-004#ann-a"
+        },
+        {
+          "annotator_id": "ann-b",
+          "label": "TRUE_INSIGHT",
+          "rationale_ref": "note:GC-boundary-004#ann-b"
+        }
+      ],
+      "boundary_condition": "single-season: inter-season variation is named but untested",
+      "case_class": "BOUNDARY",
+      "case_id": "GC-boundary-004",
+      "gold_label": "BOUNDARY",
+      "source_spans": [
+        "SPAN-p9-limitations-2"
+      ],
+      "statement": "The effect is reported for a single growing season and the authors name inter-season variation as the untested condition."
+    }
+  ],
+  "corpus_id": "GOLD-INSIGHT-V1",
+  "corpus_version": "1.0.0",
+  "kappa_floor": 0.6
+}

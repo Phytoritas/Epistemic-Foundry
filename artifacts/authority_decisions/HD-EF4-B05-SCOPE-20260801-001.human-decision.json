@@ -1,0 +1,29 @@
+{
+  "affected_artifact_ids": [
+    "build/v4_b05/**",
+    "artifacts/work_packages/B05/**",
+    "B05-0001"
+  ],
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "created_at": "2026-08-01T21:00:00Z",
+  "decision": "Resolve the conflict between the B05 write scope build/v4_b05/** and .gitignore line 41 (build/) by treating build/v4_b05/ as generated, reproducible build output rather than tracked source. The deterministic profile generator, its tests and every declared expectation live in the tracked attempt directory artifacts/work_packages/B05/attempts/0001/; the generator emits build/v4_b05/ deterministically and the attempt evidence records the content hash of every emitted file, so the untracked output is fully reconstructible and verifiable from tracked sources. .gitignore is not modified, because it lies outside the B05 write scope and a repository-wide ignore change is a larger act than reading the deliverable as build output. pyproject.toml and uv.lock are read and hashed, never edited: dependency pinning is verified against them, which is B04's sealed territory. The ShinkaEvolve optional-feature profile is emitted DISABLED and UNQUALIFIED.",
+  "decision_hash": "sha256:d97d2ade2d70399d2a73820db0049f55848b2992115f03b791bddcf64dbb8af3",
+  "decision_id": "HD-EF4-B05-SCOPE-20260801-001",
+  "decision_type": "correct",
+  "evidence_artifact_ids": [
+    ".gitignore",
+    "manifests/development_manifest.yaml",
+    "pyproject.toml",
+    "uv.lock",
+    "research/shinkaevolve_source_manifest.json",
+    "schemas/shinka-backend-manifest.schema.json",
+    "artifacts/work_packages/A06/attempts/0002/report.json",
+    "artifacts/work_packages/B04/attempts/0010/report.json"
+  ],
+  "non_mutation_acknowledgement": true,
+  "rationale": "The manifest grants B05 exactly build/v4_b05/** and artifacts/work_packages/B05/**, and the repository ignores build/. Writing product source into an ignored path would make the deliverable vanish on a clean checkout, so a literal reading of the write scope as tracked source is not viable. The package title is 'Deterministic v4 build', and a deterministic build is precisely one whose output need not be tracked because it can be reproduced byte-for-byte from tracked inputs; proving that reproduction is stronger evidence than committing the output would be. Adding a !build/v4_b05/ negation to .gitignore was rejected because .gitignore is outside the granted scope and the change would alter repository-wide behaviour to satisfy one package. The ShinkaEvolve pin is recorded from research/shinkaevolve_source_manifest.json, whose own repository_state_note says a local clone and byte-complete audit were not available and that adoption claims are limited to the listed files; the only revision observed is a short release commit, not a verified full revision. MASTER_SPEC adds that the source study is not an endorsement of a floating main dependency. The profile therefore enables nothing, claims no qualification, and grants the backend no evaluator, holdout or promotion authority, which EF4-I63 requires; qualification belongs to B06 and T06.",
+  "run_id": null,
+  "subject_id": "B05",
+  "supersedes_decision_id": null
+}

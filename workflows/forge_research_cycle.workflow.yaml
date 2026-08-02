@@ -25,33 +25,40 @@ completeness_contract:
   partial_result_policy: typed_and_visible_only
 nodes:
 - node_id: classify_epistemic_work
-  purpose: Classify the request E0-E5 and choose the minimum truthful FORGE path
-  executor_type: llm
-  executor_ref: prompts/plugin/classify_epistemic_work.md
+  purpose: Deterministically classify the request E0-E5 from sealed typed signals and commit the canonical classification artifact
+  executor_type: policy
+  executor_ref: epistemic_foundry.forge.classifier:classify_epistemic_work
   input_schema_ref: schemas/node-invocation.schema.json
-  output_schema_ref: schemas/result-envelope.schema.json
+  output_schema_ref: schemas/epistemic-work-classification.schema.json
   depends_on: []
   read_scope:
   - request
   - policy/**
+  - artifacts/work_classification/proposals/**
   write_scope:
   - artifacts/work_classification/**
   capabilities:
+  - artifact_read
   - artifact_write
-  model_tier: balanced
+  model_tier: deterministic
   timeout_seconds: 300
   max_attempts: 2
   failure_policy: fail_run
   acceptance_checks:
-  - class rationale explicit
-  - risk factors identified
-  - no process depth chosen to favor a verdict
+  - closed signal vocabulary
+  - deterministic maximum-floor rule
+  - monotonic underprocessing guard
+  - class-specific exact projection
+  - direct EpistemicWorkClassification output
+  - ArtifactReceipt exists
+  - replay identity holds
   resource_dependencies: []
-  determinism_class: provider_nondeterministic
+  determinism_class: deterministic
   idempotency_key_fields:
-  - run_id
-  - node_id
+  - request_id
   - input_hash
+  - classifier_version
+  - policy_bundle_hash
   loop_contract_ref: null
   expected_effects: []
   required_policy_checks:

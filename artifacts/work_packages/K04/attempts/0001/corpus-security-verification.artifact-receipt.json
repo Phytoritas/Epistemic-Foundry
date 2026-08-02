@@ -1,0 +1,38 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "K04-0001-CORPUS-SECURITY-VERIFICATION",
+  "byte_size": 1306,
+  "content_hash": "sha256:f4d524ca0f9529ba8448e51aa4550d0e1dab2516ae974737d1b6b096c6a6cf05",
+  "created_at": "2026-07-30T22:32:36.998Z",
+  "created_by": {
+    "actor_id": "K04-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/K04/attempts/0001/corpus-injection-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:e3d57b47f2f252e2474eb6201fa1744dc1d100ed9a5d6039d1382b4d0f16a372",
+  "receipt_id": "AR-K04-0001-CORPUS-SECURITY-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "corpus_injection_test",
+      "details": "6/6 actual trust-boundary tests pass; hostile content stays data-only and never gains authority",
+      "status": "PASS"
+    },
+    {
+      "check": "ingest_quality_gate",
+      "details": "10/10 Python tests pass; quarantine and typed FAIL outcomes block trust/export/projection",
+      "status": "PASS"
+    },
+    {
+      "check": "workflow_order_and_projection_gate",
+      "details": "integrity scan precedes parsers and the non-waivable quality gate is projection's sole predecessor",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Python 1064/1064, Node 476/476, current predecessors green, codegen 126/126, structure/boundaries/Ruff/diff checks pass",
+      "status": "PASS"
+    }
+  ]
+}

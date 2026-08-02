@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.health.input.schema.json",
+  "title": "FoundryHealthInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "include_components": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "workspace_id"
+  ]
+}

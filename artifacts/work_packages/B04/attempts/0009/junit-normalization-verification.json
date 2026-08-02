@@ -1,0 +1,57 @@
+{
+  "attempt_id": "B04-0009",
+  "files": {
+    "full_node": {
+      "normalized_sha256": "sha256:9a84c09231a5eac73bbf3e9ecb2f71a0eb85bc86afd10848333fd2f4ef50f51d",
+      "raw_sha256": "sha256:321c3f1cbafbb965b9696bcf8f7958f452a3b9be255dfbd23fd5d3c41e904093",
+      "removed": {
+        "duration_comments": 1,
+        "hostname_attributes": 0,
+        "repository_prefixes": 814,
+        "time_attributes": 0,
+        "timestamp_attributes": 0
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 814
+    },
+    "full_python": {
+      "normalized_sha256": "sha256:78581486e02f95e889016cc4ad06507597e78a87e9103be68c904d6bb5d69eff",
+      "raw_sha256": "sha256:6ca5f3f48fa6ac4e9d1223636ccd4ec526001d1641cf02df313e8ecf2a1dead5",
+      "removed": {
+        "duration_comments": 0,
+        "hostname_attributes": 1,
+        "repository_prefixes": 0,
+        "time_attributes": 1074,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 1073
+    },
+    "targeted_projection": {
+      "normalized_sha256": "sha256:0dc18a00e72d255a49a45dff90a5ccfc7b9a9aabdb38caf72d9167daea9b11ae",
+      "raw_sha256": "sha256:fcfc9bc9716318bda3cefc32778cd70784255ec7df9e32484ff8d0498cae988d",
+      "removed": {
+        "duration_comments": 0,
+        "hostname_attributes": 1,
+        "repository_prefixes": 0,
+        "time_attributes": 42,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 41
+    }
+  },
+  "normalization_scope": [
+    "remove pytest hostname, timestamp, and suite/testcase time attributes",
+    "remove absolute repository prefixes",
+    "remove Node duration_ms while retaining authoritative footer counters"
+  ],
+  "preserved": [
+    "testcase identity",
+    "failure, error, and skip state",
+    "failure type, message, and body after repository-path normalization",
+    "Node footer counters"
+  ],
+  "recorded_at_utc": "2026-07-31T10:05:00.000Z",
+  "status": "PASS"
+}

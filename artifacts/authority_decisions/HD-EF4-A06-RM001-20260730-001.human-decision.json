@@ -1,0 +1,33 @@
+{
+  "decision_id": "HD-EF4-A06-RM001-20260730-001",
+  "run_id": null,
+  "subject_id": "A06-RM001",
+  "decision_type": "correct",
+  "decision": "Resolve the A06 remediation-ownership gap prospectively while preserving A06-0001 as FAIL. Assign constitutional runtime remediation to an A05 correction attempt; canonical schemas to the shared C01 correction; generated projections to C02; compatibility to C03; conformance to C04; packaged snapshot to B04; and the independent audit only to A06-0002. Preserve existing package dependencies. A05 must implement the exact G00-G14 registry and 23-node evolution_promotion workflow within its exact runtime, workflow, documentation, fixture, test, and evidence paths, pass 24 negative/adversarial and six positive cases, and only then may A06 audit the complete chain before any x05 package starts.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "A06-0001 established implementation nonconformance against an already clear A05 constitutional contract. Because A06 is an audit package and downstream C05/S05 cannot repair an upstream dependency, this decision assigns each repair to its existing authority layer without allowing A06 to certify its own fixes or changing the package dependency topology.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/A06/attempts/0001/report.json",
+    "artifacts/work_packages/A06/attempts/0001/constitutional-audit-verification.json",
+    "artifacts/work_packages/A06/attempts/0001/review.md",
+    "artifacts/work_packages/A05/attempts/0002/report.json",
+    "docs/v4_a05/evolution_authority_and_promotion_charter.md"
+  ],
+  "affected_artifact_ids": [
+    "C01-C04-shared-correction",
+    "B04-correction",
+    "src/epistemic_foundry/governance/evolution_authority/**",
+    "workflows/evolution_promotion.workflow.yaml",
+    "tests/governance/a05/**",
+    "A05-correction",
+    "A06-0002",
+    "B05",
+    "C05",
+    "S05"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-30T00:00:00Z",
+  "decision_hash": "sha256:3ed9daaf685214ffe34c6be92301abd046eb6fa7d1c7f625554746afc83fd7be"
+}

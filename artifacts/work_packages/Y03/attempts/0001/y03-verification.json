@@ -1,0 +1,64 @@
+{
+  "attempt_id": "Y03-0001",
+  "backup_and_disaster_recovery_drill": {
+    "both_stores_recovered_active_integrity_ok": true,
+    "corrupt_primaries_preserved_digest_unchanged_as_evidence": true,
+    "every_pre_backup_record_and_artifact_restored_byte_exact": true,
+    "post_backup_writes_absent_as_bounded_expected_loss_within_rpo": true,
+    "tampered_backup_refuses_restore_and_publishes_nothing": true
+  },
+  "exit_criteria": {
+    "restore_drills_documented": {
+      "evidence": [
+        "ops/runbooks/disaster-recovery.md",
+        "ops/runbooks/backup.md",
+        "ops/runbooks/corruption-response.md",
+        "tests/recovery/production/disaster-recovery-drill.test.mjs"
+      ],
+      "mechanism": "the RB-Y03-DR-RESTORE, RB-Y03-BACKUP and RB-Y03-CORRUPTION runbooks document the coordinated backup, corruption response and hash-checked staged restore over the two canonical stores, each with ordered required sections, imperative Verify-complete steps and no placeholder text; runbook_lint enforces that structure fail-closed and the disaster_recovery_drill executes the documented RB-Y03-DR-RESTORE procedure end to end in process",
+      "status": "PASS"
+    },
+    "rpo_and_rto_measured": {
+      "evidence": [
+        "tests/recovery/production/disaster-recovery-drill.test.mjs",
+        "tests/recovery/production/runbook-lint.mjs",
+        "ops/runbooks/disaster-recovery.md"
+      ],
+      "mechanism": "runbook_lint rejects a vague RPO/RTO and admits only a measured duration; the drill parses the documented RPO (15 minutes) and RTO (30 minutes) budgets from the runbook and asserts the measured data-loss window and the measured restore-plus-verify time are each within budget, so the objectives are quantified and enforced rather than narrated",
+      "status": "PASS"
+    }
+  },
+  "no_hidden_loss": {
+    "corrupt_primaries_open_safe_mode_not_reset": true,
+    "corrupt_primaries_preserved_digest_unchanged_after_recovery": true,
+    "post_backup_writes_explicitly_asserted_absent": true,
+    "tampered_backup_target_never_published": true
+  },
+  "required_checks": {
+    "disaster_recovery_drill": {
+      "module": "tests/recovery/production/disaster-recovery-drill.test.mjs",
+      "status": "PASS",
+      "test_count": 2
+    },
+    "runbook_lint": {
+      "module": "tests/recovery/production/runbook-lint.test.mjs",
+      "status": "PASS",
+      "test_count": 15
+    }
+  },
+  "rpo_and_rto_measured": {
+    "budgets_parsed_from_runbook_not_hardcoded": true,
+    "measured_rpo_window_within_documented_budget": true,
+    "measured_rto_within_documented_budget": true,
+    "vague_unmeasured_objective_rejected_by_lint": true
+  },
+  "runbooks_lint_clean": {
+    "exactly_ordered_required_sections_enforced": true,
+    "imperative_steps_with_verify_lines_enforced": true,
+    "negative_fixtures_prove_lint_is_not_vacuous": true,
+    "placeholder_tokens_rejected": true,
+    "quantified_rpo_rto_required": true
+  },
+  "status": "PASS",
+  "targeted_test_count": 17
+}

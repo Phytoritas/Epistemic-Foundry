@@ -1,0 +1,379 @@
+{
+  "attempt_id": "C06-0001",
+  "attempt_type": "C06_GENERATED_TYPES_FIXTURES_AND_COMPATIBILITY_GATE",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "C06-0001",
+    "dependencies": {
+      "C05": {
+        "attempt_id": "C05-0001",
+        "core_evidence_id": "E0155",
+        "final_closeout_evidence_id": "E0156",
+        "report": "artifacts/work_packages/C05/attempts/0001/report.json",
+        "report_sha256": "sha256:35ea908093214930bbf10d8d181e539b54940febb5a36983c60b6274a545111d",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_C06_0001_THEN_CONTINUE_DAG",
+    "regression_baseline": {
+      "attempt_id": "Q03-0001",
+      "core_evidence_id": "E0159",
+      "final_closeout_evidence_id": "E0160",
+      "report": "artifacts/work_packages/Q03/attempts/0001/report.json",
+      "report_sha256": "sha256:b0f601f10de7e39db863cc38440aa1ec0994217167b1fd22e3af0ace4aa8db20",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": "PASS",
+    "governing_schemas_authority_boundaries_failure_states_exact": "PASS",
+    "happy_negative_crash_resume_adversarial_coverage": "PASS",
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_package": "D05-0001",
+  "not_claimed": [
+    "any change to the canonical schemas, examples, generated projections, or the sealed C05 bundle, which are read-only inputs",
+    "that the C02 generators reproduce their projections, which C02's own codegen check owns",
+    "that a proposed migration is correct, only that a migration record carries the matrix and impact it must",
+    "actor-independent certification of this implementation review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 36676,
+      "path": "artifacts/work_packages/C06/attempts/0001/build_c06_0001_evidence.py",
+      "sha256": "sha256:9cf4796f564fc976ac65d25d1c20e7f9c4a130d3c35c767150ea346d5ca81d51"
+    },
+    {
+      "byte_size": 3895,
+      "path": "artifacts/work_packages/C06/attempts/0001/c06-verification.json",
+      "sha256": "sha256:45bd5078fe7938472c3517edce7e98a07c85584038078aeb10306294cd15001b"
+    },
+    {
+      "byte_size": 24430,
+      "path": "artifacts/work_packages/C06/attempts/0001/c06_0001_rah_seal.py",
+      "sha256": "sha256:e0a1cf0e3c245f01e2010ad549f215f7dee3707b00e81c1b27cb837fe779c015"
+    },
+    {
+      "byte_size": 30821,
+      "path": "artifacts/work_packages/C06/attempts/0001/c06_integration_gate.py",
+      "sha256": "sha256:9117d79598bf8341947a9630b1b0e431711967ca7830ed0999c3b7783d3b2323"
+    },
+    {
+      "byte_size": 10774,
+      "path": "artifacts/work_packages/C06/attempts/0001/commands.jsonl",
+      "sha256": "sha256:ff3a13e20a9463d161014143edf8456347151bb110d262df26f3da76aab2c96a"
+    },
+    {
+      "byte_size": 16244,
+      "path": "artifacts/work_packages/C06/attempts/0001/dependency-regression-c05.junit.xml",
+      "sha256": "sha256:8d20b6296cab9a5a7bc0b310c10bed072b6c291677f70ed603119d2402f2f41d"
+    },
+    {
+      "byte_size": 3838,
+      "path": "artifacts/work_packages/C06/attempts/0001/dependency-regression-contracts.junit.xml",
+      "sha256": "sha256:a9c7aebf6884a014aae699ef965cd2ef625dc1854f77835769d1f3a759cc468b"
+    },
+    {
+      "byte_size": 779,
+      "path": "artifacts/work_packages/C06/attempts/0001/dependency-status.json",
+      "sha256": "sha256:5679e2ff94b3fb7ffaf8b8cf018a08c48795f8eda550889c4bfc590f1d06274d"
+    },
+    {
+      "byte_size": 189413,
+      "path": "artifacts/work_packages/C06/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:dfd3eefd392e9782e29d68231ac55ff2567cb07a5b6e16ab1a9a7436c14ab743"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/C06/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 4725,
+      "path": "artifacts/work_packages/C06/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:8c1a43ec15faaaaebb00d759fae54abf9ddf86643d3543ba5c5e644ebce9d687"
+    },
+    {
+      "byte_size": 4097,
+      "path": "artifacts/work_packages/C06/attempts/0001/negative-and-adversarial-tests.junit.xml",
+      "sha256": "sha256:cf730dcabe651b72c827aaf38cb2676f97fcdf9cde5a1bb514c7f8f8aeedf67f"
+    },
+    {
+      "byte_size": 6096,
+      "path": "artifacts/work_packages/C06/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:7be1582c7f070e46c0b2fb0318526037f75f5c6b1b4c952299412ec574da3799"
+    },
+    {
+      "byte_size": 1327,
+      "path": "artifacts/work_packages/C06/attempts/0001/provenance-and-receipt-audit.junit.xml",
+      "sha256": "sha256:7ca8bb4d14aea1970a22f571964bf197afdf8e2a8347307b02b76f03377c8f61"
+    },
+    {
+      "byte_size": 273,
+      "path": "artifacts/work_packages/C06/attempts/0001/pytest.ini",
+      "sha256": "sha256:915e8e897341535df82abc6cf984a25b924579eda19f52bc6448e1a2d1605fea"
+    },
+    {
+      "byte_size": 553,
+      "path": "artifacts/work_packages/C06/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:e5cc9afca3ded6dafe62bd3e9e8cbcaa9e4de0f827ff2cfa262dfc5d4648cdd9"
+    },
+    {
+      "byte_size": 2427,
+      "path": "artifacts/work_packages/C06/attempts/0001/review.md",
+      "sha256": "sha256:cac5e621dc311cb843000ba9225cf573c893f29349d21e0a0cb7a8a4e4ab42b5"
+    },
+    {
+      "byte_size": 7313,
+      "path": "artifacts/work_packages/C06/attempts/0001/run_c06_0001_checks.py",
+      "sha256": "sha256:dec340e138403845fcd1e8f75468a921432ee08cae2f0b3df79a5054d68d2b0f"
+    },
+    {
+      "byte_size": 2084,
+      "path": "artifacts/work_packages/C06/attempts/0001/schema-and-type-check.junit.xml",
+      "sha256": "sha256:0c7b1d08e0846c01653e29ad9edfac3e3472822a311803f8a603cf52d08822c9"
+    },
+    {
+      "byte_size": 14627,
+      "path": "artifacts/work_packages/C06/attempts/0001/targeted-c06-gate.junit.xml",
+      "sha256": "sha256:4300faced1278fef85d6b4db5e358a2f0db00afd220639e9a52b2ada7ddcf6af"
+    },
+    {
+      "byte_size": 10651,
+      "path": "artifacts/work_packages/C06/attempts/0001/test_negative_adversarial.py",
+      "sha256": "sha256:fe03d9b44b77dc0c265bb94c2ee721f75501d50c9e6bc198a129ec9c67390e45"
+    },
+    {
+      "byte_size": 4541,
+      "path": "artifacts/work_packages/C06/attempts/0001/test_provenance_receipts.py",
+      "sha256": "sha256:393d5345b3cbac5dcf7727af4742ec61a73048d07dc23293cd899a0330144504"
+    },
+    {
+      "byte_size": 5959,
+      "path": "artifacts/work_packages/C06/attempts/0001/test_schema_and_type.py",
+      "sha256": "sha256:85c6a1b9afd2bb8c729bc26d123f7e8d16cb6be9e573a5c4abe76bfd81c68467"
+    },
+    {
+      "byte_size": 6790,
+      "path": "artifacts/work_packages/C06/attempts/0001/test_unit_contract.py",
+      "sha256": "sha256:9694c39872d9d2ff819cd902ebf52840f9d6d5856917e84137dc471a3d8d258d"
+    },
+    {
+      "byte_size": 7619,
+      "path": "artifacts/work_packages/C06/attempts/0001/unit-and-contract-tests.junit.xml",
+      "sha256": "sha256:ec6e6ab8e25e92ccd4a9b18b84ae76b1630beff9d708839fbfb56670b2e131dd"
+    },
+    {
+      "byte_size": 2013,
+      "path": "artifacts/work_packages/C06/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:f69b5a1af64a97628c3a549bfc143c6e43bae77e13d430abdeff4f9e6aca32e6"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0161",
+    "core_generation": "000159-cceea8ee",
+    "final_closeout_evidence_id": "E0162",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 954,
+    "implementation_gate": "fail",
+    "retained_generation_count": 159,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "C06-0001",
+    "baseline_attempt": "Q03-0001",
+    "c05_regression": {
+      "collected": 132,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C06/attempts/0001/dependency-regression-c05.junit.xml",
+      "junit_sha256": "sha256:8d20b6296cab9a5a7bc0b310c10bed072b6c291677f70ed603119d2402f2f41d",
+      "passed": 132,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 132
+    },
+    "component_tests_are_targeted_only": true,
+    "contracts_regression": {
+      "collected": 29,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C06/attempts/0001/dependency-regression-contracts.junit.xml",
+      "junit_sha256": "sha256:a9c7aebf6884a014aae699ef965cd2ef625dc1854f77835769d1f3a759cc468b",
+      "passed": 29,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 29
+    },
+    "full_node": {
+      "cancelled": 0,
+      "collected": 982,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C06/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:dfd3eefd392e9782e29d68231ac55ff2567cb07a5b6e16ab1a9a7436c14ab743",
+      "passed": 982,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 977
+    },
+    "full_python": {
+      "collected": 1261,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C06/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+      "passed": 1261,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1261
+    },
+    "negative_and_adversarial_tests": {
+      "collected": 34,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C06/attempts/0001/negative-and-adversarial-tests.junit.xml",
+      "junit_sha256": "sha256:cf730dcabe651b72c827aaf38cb2676f97fcdf9cde5a1bb514c7f8f8aeedf67f",
+      "passed": 34,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 34
+    },
+    "new_failure_count": 0,
+    "prior_baseline_counts": {
+      "full_node": 982,
+      "full_python": 1261
+    },
+    "provenance_and_receipt_audit": {
+      "collected": 11,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C06/attempts/0001/provenance-and-receipt-audit.junit.xml",
+      "junit_sha256": "sha256:7ca8bb4d14aea1970a22f571964bf197afdf8e2a8347307b02b76f03377c8f61",
+      "passed": 11,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 11
+    },
+    "schema_and_type_check": {
+      "collected": 18,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C06/attempts/0001/schema-and-type-check.junit.xml",
+      "junit_sha256": "sha256:0c7b1d08e0846c01653e29ad9edfac3e3472822a311803f8a603cf52d08822c9",
+      "passed": 18,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 18
+    },
+    "status": "PASS",
+    "targeted_c06_gate": {
+      "collected": 124,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C06/attempts/0001/targeted-c06-gate.junit.xml",
+      "junit_sha256": "sha256:4300faced1278fef85d6b4db5e358a2f0db00afd220639e9a52b2ada7ddcf6af",
+      "passed": 124,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 124
+    },
+    "unit_and_contract_tests": {
+      "collected": 61,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C06/attempts/0001/unit-and-contract-tests.junit.xml",
+      "junit_sha256": "sha256:ec6e6ab8e25e92ccd4a9b18b84ae76b1630beff9d708839fbfb56670b2e131dd",
+      "passed": 61,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 61
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "module": "artifacts/work_packages/C06/attempts/0001/test_negative_adversarial.py",
+      "status": "PASS",
+      "test_count": 34
+    },
+    "provenance_and_receipt_audit": {
+      "module": "artifacts/work_packages/C06/attempts/0001/test_provenance_receipts.py",
+      "status": "PASS",
+      "test_count": 11
+    },
+    "schema_and_type_check": {
+      "module": "artifacts/work_packages/C06/attempts/0001/test_schema_and_type.py",
+      "status": "PASS",
+      "test_count": 18
+    },
+    "unit_and_contract_tests": {
+      "module": "artifacts/work_packages/C06/attempts/0001/test_unit_contract.py",
+      "status": "PASS",
+      "test_count": 61
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "C06",
+  "write_scope": {
+    "approved_scope": [
+      "schemas/v4_c06/**",
+      "artifacts/work_packages/C06/**"
+    ],
+    "attempt_id": "C06-0001",
+    "bundle_is_generated_and_regenerable": true,
+    "canonical_schemas_modified": false,
+    "component_files": [
+      "schemas/v4_c06/evolution-compatibility-binding.schema.json",
+      "schemas/v4_c06/generated-projection-parity.json",
+      "schemas/v4_c06/integration-index.json"
+    ],
+    "generated_projections_modified": false,
+    "product_file_hashes": {
+      "artifacts/work_packages/C06/attempts/0001/c06_integration_gate.py": "sha256:9117d79598bf8341947a9630b1b0e431711967ca7830ed0999c3b7783d3b2323",
+      "artifacts/work_packages/C06/attempts/0001/pytest.ini": "sha256:915e8e897341535df82abc6cf984a25b924579eda19f52bc6448e1a2d1605fea",
+      "artifacts/work_packages/C06/attempts/0001/test_negative_adversarial.py": "sha256:fe03d9b44b77dc0c265bb94c2ee721f75501d50c9e6bc198a129ec9c67390e45",
+      "artifacts/work_packages/C06/attempts/0001/test_provenance_receipts.py": "sha256:393d5345b3cbac5dcf7727af4742ec61a73048d07dc23293cd899a0330144504",
+      "artifacts/work_packages/C06/attempts/0001/test_schema_and_type.py": "sha256:85c6a1b9afd2bb8c729bc26d123f7e8d16cb6be9e573a5c4abe76bfd81c68467",
+      "artifacts/work_packages/C06/attempts/0001/test_unit_contract.py": "sha256:9694c39872d9d2ff819cd902ebf52840f9d6d5856917e84137dc471a3d8d258d",
+      "schemas/v4_c06/evolution-compatibility-binding.schema.json": "sha256:b6e91931bb88712fba857b45680c2df56c46618321896a56ee80506f80d62435",
+      "schemas/v4_c06/generated-projection-parity.json": "sha256:cc7d5c3e9f7733103b1f13890bd3b8bdb13d278589d42fecb034700aeaa79dba",
+      "schemas/v4_c06/integration-index.json": "sha256:6eda2f914492452474241c3e093f676d4321c8efc6c98be04e58c135f7bc64f0"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "sealed_c05_bundle_modified": false,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

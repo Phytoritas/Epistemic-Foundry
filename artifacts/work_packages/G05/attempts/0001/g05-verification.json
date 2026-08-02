@@ -1,0 +1,116 @@
+{
+  "attempt_id": "G05-0001",
+  "cli_surface": {
+    "authority_bearing_commands": [
+      "claim promote",
+      "passport publish"
+    ],
+    "available_commands_named_by_evolution_skills": 5,
+    "projected_commands": 22,
+    "proposed_evolution_commands": 25,
+    "proposed_evolution_commands_projected": 0
+  },
+  "composed_surfaces": {
+    "cli_projection": "packages/plugin-host/src/cli/command-surface.mjs",
+    "proposed_cli": "MASTER_SPEC.md section 35",
+    "routing_policy": "packages/plugin-host/src/skill-router/skill-router.mjs",
+    "skill_inventory": "plugins/epistemic-foundry/skills/skill-inventory.json"
+  },
+  "declaring_sources": {
+    "context_budgets": "plugins/epistemic-foundry/skills/skill-inventory.json budgets",
+    "evolution_skill_membership": "derived from the inventory reference closure by the declared rule",
+    "mutable_search_space": "schemas/v4_c05/family-index.json",
+    "routing_decision": "schemas/skill-routing-decision.schema.json"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "evidence": [
+        "plugin_blueprint/epistemic-foundry/v4_g05/surface-receipts.test.mjs"
+      ],
+      "mechanism": "the surface receipt binds every declaring source by digest, re-derives its own hash with the sealed routing hash function, carries no clock and no randomness, and the routing decision it issues re-derives its own hash and binds each candidate to the sealed content hash of its skill",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "evidence": [
+        "plugin_blueprint/epistemic-foundry/v4_g05/surface-schema.test.mjs"
+      ],
+      "mechanism": "the skill set is derived from the sealed inventory rather than listed, the proposed CLI is parsed from the section that proposes it, the mutable search space is read from the sealed C05 index, the emitted decision is validated against schemas/skill-routing-decision.schema.json, and each of the 18 failure codes carries its reason",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "evidence": [
+        "plugin_blueprint/epistemic-foundry/v4_g05/surface-contract.test.mjs",
+        "plugin_blueprint/epistemic-foundry/v4_g05/surface-adversarial.test.mjs"
+      ],
+      "mechanism": "a named evolution skill routes, discloses within budget and reports which commands exist; and an invented command, a twice-claimed command, an unowned command, an unprojected command, a genome outside the search space, a drifted inventory, a contradicted payload policy, a dropped reference and an outgrown budget are each refused by their own code against a staged copy of the declaring sources",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "evidence": [
+        "plugin_blueprint/epistemic-foundry/v4_g05/surface-adversarial.test.mjs",
+        "plugin_blueprint/epistemic-foundry/v4_g05/surface-receipts.test.mjs"
+      ],
+      "mechanism": "the promotion-bearing commands are derived from the sealed catalog by effect class and object, no evolution skill may name one, a predicate that matched nothing is refused as vacuous rather than satisfied, and the routing decision states in its own authority notes that it carries neither state nor authority",
+      "status": "PASS"
+    }
+  },
+  "failure_classes": [
+    "AUTHORITY_CLAIMED",
+    "AUTHORITY_PREDICATE_EMPTY",
+    "COMMAND_CLAIMED_TWICE",
+    "COMMAND_MISDECLARED",
+    "COMMAND_UNPROJECTED",
+    "COMMAND_UNPROPOSED",
+    "DECLARATION_NONCANONICAL",
+    "DISCLOSURE_BUDGET_EXCEEDED",
+    "INVENTORY_HASH_DRIFT",
+    "MEMBERSHIP_DRIFT",
+    "PARENT_UNDECLARED",
+    "POLICY_DRIFT",
+    "PROPOSED_COMMAND_UNROUTED",
+    "REFERENCE_UNDECLARED",
+    "SEARCH_SPACE_VIOLATION",
+    "SKILL_OUT_OF_SURFACE",
+    "SPEC_BLOCK_MISSING",
+    "SURFACE_UNREADABLE"
+  ],
+  "not_derivable": {
+    "command_ownership": "which skill owns which proposed command is declared here; the command vocabulary itself is parsed from the specification and every claim is checked against it, but the assignment is a judgment this surface records rather than derives",
+    "reference_token_counts": "token counts are taken from the sealed inventory, which owns the tokenizer; only byte counts and digests are recomputed here"
+  },
+  "progressive_disclosure": {
+    "evolution_skills": 15,
+    "maximal_closure_depth": 5,
+    "maximal_closure_reference_count": 11,
+    "reference_closure_max_count": 12,
+    "reference_closure_max_depth": 5
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "module": "plugin_blueprint/epistemic-foundry/v4_g05/surface-adversarial.test.mjs",
+      "status": "PASS",
+      "test_count": 27
+    },
+    "provenance_and_receipt_audit": {
+      "module": "plugin_blueprint/epistemic-foundry/v4_g05/surface-receipts.test.mjs",
+      "status": "PASS",
+      "test_count": 16
+    },
+    "schema_and_type_check": {
+      "module": "plugin_blueprint/epistemic-foundry/v4_g05/surface-schema.test.mjs",
+      "status": "PASS",
+      "test_count": 20
+    },
+    "unit_and_contract_tests": {
+      "module": "plugin_blueprint/epistemic-foundry/v4_g05/surface-contract.test.mjs",
+      "status": "PASS",
+      "test_count": 18
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 81
+}

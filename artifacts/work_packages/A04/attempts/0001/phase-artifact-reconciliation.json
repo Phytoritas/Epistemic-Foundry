@@ -1,0 +1,99 @@
+{
+  "attempt_id": "A04-0001",
+  "attests_pre_sealed_evidence_only": true,
+  "authority_spine_coheres": true,
+  "check": "phase_artifact_reconciliation",
+  "dependencies": {
+    "A02": [
+      "A01"
+    ],
+    "A03": [
+      "A01"
+    ],
+    "A04": [
+      "A02",
+      "A03"
+    ]
+  },
+  "domain_documents": {
+    "A01_authority_and_status": [
+      "CLAUDE.md",
+      "docs/status_taxonomy.md"
+    ],
+    "A02_product_invariants": [
+      "manifests/product_invariants.yaml"
+    ],
+    "A03_adr_boundary_map": [
+      "docs/adr/README.md"
+    ]
+  },
+  "edits_source_schema_or_manifest": false,
+  "ledger_chain": {
+    "A01": {
+      "closeout": "E0250",
+      "core": "E0249"
+    },
+    "A02": {
+      "closeout": "E0262",
+      "core": "E0261"
+    },
+    "A03": {
+      "closeout": "E0278",
+      "core": "E0277"
+    }
+  },
+  "ledger_chain_monotonic": true,
+  "phase": "P00-A",
+  "reconciled_packages": [
+    "A01",
+    "A02",
+    "A03"
+  ],
+  "schema_version": 1,
+  "sealed_evidence": {
+    "A01": {
+      "authored_documents": [
+        "CLAUDE.md",
+        "docs/status_taxonomy.md"
+      ],
+      "checks_passed": 4,
+      "evidence_artifacts": [
+        "artifacts/work_packages/A01/commands.jsonl",
+        "artifacts/work_packages/A01/report.json",
+        "artifacts/work_packages/A01/review.md"
+      ],
+      "status": "PASS"
+    },
+    "A02": {
+      "authored_documents": [
+        "docs/product_constitution.md",
+        "manifests/product_invariants.yaml"
+      ],
+      "checks_passed": 4,
+      "evidence_artifacts": [
+        "artifacts/work_packages/A02/commands.jsonl",
+        "artifacts/work_packages/A02/report.json",
+        "artifacts/work_packages/A02/review.md"
+      ],
+      "status": "PASS"
+    },
+    "A03": {
+      "authored_documents": [
+        "docs/adr/ADR-031-plugin-shell-kernel-authority.md",
+        "docs/adr/ADR-032-component-import-boundaries.md",
+        "docs/adr/ADR-033-adapter-isolation-and-degraded-mode.md",
+        "docs/adr/README.md",
+        "docs/v4_plugin_architecture.md"
+      ],
+      "checks_passed": 4,
+      "evidence_artifacts": [
+        "artifacts/work_packages/A03/commands.jsonl",
+        "artifacts/work_packages/A03/report.json",
+        "artifacts/work_packages/A03/review.md"
+      ],
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "work_package_id": "A04"
+}

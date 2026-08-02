@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/archive-rebalance-plan.schema.json",
+  "title": "ArchiveRebalancePlan",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "quality_diversity_map_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "eviction_candidates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "protected_entry_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "migration_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "from_island": {
+            "type": "string",
+            "minLength": 1
+          },
+          "to_island": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "candidate_id",
+          "from_island",
+          "to_island",
+          "reason"
+        ]
+      }
+    },
+    "capacity_changes": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {}
+    },
+    "approval_required": {
+      "type": "boolean"
+    },
+    "plan_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "plan_id",
+    "quality_diversity_map_id",
+    "eviction_candidates",
+    "protected_entry_ids",
+    "migration_actions",
+    "capacity_changes",
+    "approval_required",
+    "plan_hash"
+  ],
+  "description": "archive 용량·niche 균형·negative memory를 보존하는 교체 계획을 고정한다."
+}

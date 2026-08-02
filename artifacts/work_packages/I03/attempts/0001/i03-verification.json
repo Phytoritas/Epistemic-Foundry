@@ -1,0 +1,39 @@
+{
+  "attempt_id": "I03-0001",
+  "declaring_sources": {
+    "finding_codes": "ONTOLOGY_INPUT_INVALID, ONTOLOGY_INPUT_DUPLICATE, ONTOLOGY_CATALOG_DUPLICATE_ID, ONTOLOGY_AUTHORITY_UNAVAILABLE, MEASUREMENT_INPUT_INVALID, MEASUREMENT_IDENTITY_INVALID, MEASUREMENT_IDENTITY_CONFLICT, MEASUREMENT_BRIDGE_INVALID, MEASUREMENT_BRIDGE_DUPLICATE_ID, MEASUREMENT_BRIDGE_AMBIGUOUS",
+    "ontology_vocabulary": "the closed OntologyEntityKind/MappingImpact/ResolutionStatus/CompatibilityStatus/ConstructEquivalence/PromotionCeiling enums declared in python/epistemic_foundry/ontology/resolver.py, each bound key-for-key to its wire literal"
+  },
+  "exit_criteria": {
+    "human_approval_queue_exists": {
+      "mechanism": "ambiguous, high-impact, high-frequency, and unknown-term mappings route to a deterministic MappingReviewItem whose required_authority_artifact is HumanDecision; a queue item is a proposal that never selects the construct, and its review_item_id binds the full mapping context (mapping_key_hash, candidate ids, and policy version) so a change in population or frequency mints a new item",
+      "status": "PASS"
+    },
+    "same_label_different_construct_not_silently_merged": {
+      "mechanism": "a raw term resolves only when exactly one complete viable candidate exists within the pinned ontology/DomainPack authority; a label shared by distinct construct_ids returns AMBIGUOUS rather than a silent merge, compatibility normalization (NFKC/casefold/whitespace) is never mapping authority, and distinct construct_ids are never pooled - compare_measurements returns NOT_COMPARABLE with BLOCK_AGGREGATION",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: the sealing agent, a distinct actor; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "measurement_identity_test": {
+      "status": "PASS",
+      "test_count": 23
+    },
+    "ontology_fixture_test": {
+      "status": "PASS",
+      "test_count": 16
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1702,
+    "full_python_suite": 1261,
+    "measurement_identity_test": 23,
+    "ontology_fixture_test": 16,
+    "wire_literal_discipline": 5
+  }
+}

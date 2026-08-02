@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/common-mutation-input.schema.json",
+  "title": "CommonMutationInput",
+  "description": "Fields every mutating tool input must carry. dry_run is required and never defaulted; expected_revision is required but nullable; the client may never supply a CapabilityLease or an EffectReceipt.",
+  "type": "object",
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dry_run": {
+      "type": "boolean"
+    },
+    "expected_revision": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "approval_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "workspace_id",
+    "dry_run",
+    "expected_revision",
+    "idempotency_key",
+    "approval_record_ids"
+  ]
+}

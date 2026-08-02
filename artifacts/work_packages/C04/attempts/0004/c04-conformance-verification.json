@@ -1,0 +1,568 @@
+{
+  "attempt_id": "C04-0004",
+  "canonical_contract": {
+    "canonical": {
+      "draft": "2020-12",
+      "example_count": 127,
+      "mapped_example_count": 127,
+      "meta_schema_validation": "PASS",
+      "schema_count": 127,
+      "schema_example_one_to_one": true,
+      "status": "PASS",
+      "unique_schema_id_count": 127,
+      "valid_example_count": 127
+    },
+    "external_openapi_validator_0_7_2": "PASS",
+    "openapi": {
+      "canonical_file": "openapi/epistemic-foundry-v1.openapi.yaml",
+      "document_sha256": "sha256:43429ad9c583b1026bd2445fb77d38b12410d2f6db065cffad45c64297db2cd7",
+      "external_schema_ref_count": 24,
+      "json_schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+      "openapi_version": "3.1.1",
+      "operation_count": 33,
+      "reference_resolution_failures": [],
+      "status": "PASS",
+      "unique_operation_id_count": 33
+    },
+    "retrieval_candidate": {
+      "attempt_id": "C01-0009",
+      "candidate_hash": "sha256:6125d56bf4d2097f3081b85d522bdfcb0cbad008bc6c693bc89f5e579ddc72da",
+      "candidate_id": "RC-bead81fad2a047285297611ac44e28646e764716b42fc53f07fecddff5aa3a3b",
+      "channel_nullability": "PASS",
+      "fixture_sha256": "sha256:e8cf70b16ec3ca22c7fa5782c7f1a130abafc8b8824dcceedec4fc54540d00c7",
+      "lane": "counterevidence",
+      "metadata_only_boundary": "PASS",
+      "query_family": "REVERSE",
+      "query_hash": "sha256:3cc4c6b54c5e182f3f1c25d505244f0ed601221adb0654293f006732099fb309",
+      "relation_direction": "REVERSE_DIRECTION",
+      "rrf_k60_recomputation": "PASS",
+      "schema_sha256": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+      "schema_validation": "PASS",
+      "status": "PASS",
+      "tamper_rejection": "PASS",
+      "unknown_and_missing_field_rejection": "PASS"
+    },
+    "status": "PASS"
+  },
+  "canonical_projection": {
+    "attempt_id": "C04-0004",
+    "b04_attempt_id": "B04-0009",
+    "installed_resource_count": 128,
+    "installed_wheel_only": "PASS",
+    "openapi_operation_count": 33,
+    "projected_snapshot_bundle_hash": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+    "projection_receipt_hash": "sha256:9ddf7fbd76878c8f8904567cc86b6284be3ddf7c76ea74acfde95bfddac4e45a",
+    "projection_receipt_id": "AR-B04-0009-CANONICAL-PROJECTION",
+    "registry_hash": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+    "schema_count": 127,
+    "snapshot_file_count_including_registry": 129,
+    "source_bundle_hash": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+    "source_tree_fallback_count": 0,
+    "status": "PASS",
+    "verification": {
+      "destination": "C:\\dev\\insight\\Epistemic-Foundry\\src\\epistemic_foundry\\_canonical",
+      "expected_file_count": 129,
+      "extra": [],
+      "mismatches": [],
+      "missing": [],
+      "status": "PASS"
+    },
+    "wheel_registry_byte_equal": true
+  },
+  "completion_ready": false,
+  "document_registration_lifecycle": {
+    "minimum_required_test_count": 6,
+    "missing_required_tests": [],
+    "observed_document_registration_test_count": 45,
+    "passed_test_node_ids": [
+      "tests/contracts/openapi/test_openapi_contract.py::test_document_registration_uses_canonical_staged_request_and_result",
+      "tests/contracts/openapi/test_scientific_contracts.py::test_document_registration_hash_id_and_immutable_initial_state",
+      "tests/contracts/openapi/test_scientific_contracts.py::test_document_registration_request_hash_id_and_staging_contract",
+      "tests/ingest/test_k01_document_registration.py::test_commit_rejects_cas_without_exactly_one_revision_advance[0]",
+      "tests/ingest/test_k01_document_registration.py::test_commit_rejects_cas_without_exactly_one_revision_advance[2]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-01-VALID-REQUEST-HASH-ID]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-02-CANONICAL-HINT-ORDER]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-03-UNKNOWN-REQUEST-FIELD]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-04-PATH-FILENAME]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-05-FILE-URI]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-06-REQUEST-HASH-MISMATCH]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-07-REQUEST-ID-MISMATCH]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-08-VALID-REGISTRATION-HASH-ID]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-09-FIXED-INITIAL-STATE]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-10-REGISTRATION-HASH-MISMATCH]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-11-STAGED-SOURCE-MISSING]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-12-SOURCE-BYTE-HASH-MISMATCH]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-13-SOURCE-RECEIPT-NOT-PASS]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-14-MEDIA-TYPE-MISMATCH]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-15-STALE-FENCING-TOKEN]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-16-EXACT-IDEMPOTENT-REPLAY]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-17-IDEMPOTENCY-CONFLICT]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-18-VALID-SUPERSESSION]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-19-UNKNOWN-PREDECESSOR]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-20-CROSS-SCOPE-OR-CYCLE]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-21-MISSING-EFFECT-OR-CRASH-RECONCILIATION]",
+      "tests/ingest/test_k01_document_registration.py::test_document_registration_oracle_22[K01-ORACLE-22-CAS-OR-ENVELOPE-ONLY]",
+      "tests/ingest/test_k01_document_registration.py::test_oracle_fixture_has_exactly_22_stable_unique_cases",
+      "tests/ingest/test_k01_document_registration.py::test_publication_receipt_must_bind_the_reserved_action_intent",
+      "tests/ingest/test_k01_document_registration.py::test_replay_rejects_a_registration_artifact_from_another_intent",
+      "tests/ingest/test_k01_document_registration.py::test_request_and_registration_wrappers_are_recursively_immutable",
+      "tests/ingest/test_k01_document_registration.py::test_success_is_not_emitted_before_the_receipt_bound_cas",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_emits_canonical_lineage",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_malformed_immutable_evidence[registered_at-2026-07-30T00:02:00+09:00-ending in Z]",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_malformed_immutable_evidence[registration_ledger_event_id-None-registration_ledger_event_id]",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_malformed_immutable_evidence[source_content_hash-sha256:not-a-digest-canonical sha256]",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_malformed_immutable_evidence[source_effect_receipt_id-None-source_effect_receipt_id]",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_malformed_immutable_evidence[submitted_by_principal_id--submitted principal]",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_non_utc_recorded_at",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_noncanonical_request_fields",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_rehashed_nested_schema_violations",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_source_identity_drift",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_unbound_receipt_evidence",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_requires_more_than_final_manifest",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rollback_is_hash_bound"
+    ],
+    "status": "PASS"
+  },
+  "generated_contract": {
+    "codegen_clean_diff": "PASS",
+    "cross_language_fixture_parity": "PASS",
+    "example_bundle_sha256": "sha256:6a3847eb8b95e23c8166a8889b1723c260c0fe9c63cc17c06bf010c1c6c538c2",
+    "example_count": 127,
+    "generated_file_count": 9,
+    "generated_manifest_sha256": "sha256:5208eb39b70ab43cd099ee867fa391fc2c218c559302e68a682b1558f6d94ce3",
+    "legacy_promotion_value_hits": [],
+    "manifest_parity": "PASS",
+    "python_model_count": 127,
+    "repository_boundaries": "PASS",
+    "repository_structure": "PASS",
+    "schema_bundle_sha256": "sha256:907570a9fe2a346c0c8f1795362bd64ad1521388065935089333224751c44000",
+    "schema_count": 127,
+    "status": "PASS",
+    "typescript_5_9_3_strict_nodenext": "PASS"
+  },
+  "migration_reconciliation": {
+    "baseline_attempt": "C01-0004",
+    "baseline_failure_count": 24,
+    "baseline_impact_sha256": "sha256:3c35cc5cfe003055f2e039a4837e74527a843c4ed6795eee1d28b56954d36877",
+    "current_failed_count": 0,
+    "current_passed_count": 24,
+    "migration_allowlist_entries": 0,
+    "missing_node_ids": [],
+    "node_ids": [
+      "tests/test_evolution_chamber.py::test_evaluator_swap_between_specs_is_detectable",
+      "tests/test_evolution_chamber.py::test_run_spec_pins_evaluator_and_holdout",
+      "tests/test_governance.py::test_absent_reference_sentinel_never_accompanies_a_promotion",
+      "tests/test_governance.py::test_blocker_outranks_missing_requirements",
+      "tests/test_governance.py::test_complete_evidence_promotes",
+      "tests/test_governance.py::test_failed_hard_cascade_blocks",
+      "tests/test_governance.py::test_incompatible_method_is_underdetermined",
+      "tests/test_governance.py::test_leakage_blocks_even_with_complete_evidence",
+      "tests/test_governance.py::test_missing_dependency_correction_is_underdetermined",
+      "tests/test_governance.py::test_missing_grounded_evidence_is_underdetermined",
+      "tests/test_governance.py::test_missing_multiplicity_accounting_is_underdetermined",
+      "tests/test_governance.py::test_missing_parliament_adjudication_is_underdetermined",
+      "tests/test_governance.py::test_partial_cascade_is_conditional_not_promotion",
+      "tests/test_governance.py::test_required_human_approval_absent_is_underdetermined",
+      "tests/test_governance.py::test_required_replication_absent_is_underdetermined",
+      "tests/test_governance.py::test_unchallenged_candidate_is_underdetermined",
+      "tests/test_integration_forge_cycle.py::test_failed_cascade_blocks_promotion_end_to_end",
+      "tests/test_integration_forge_cycle.py::test_full_cycle_promotes_only_with_complete_evidence",
+      "tests/test_integration_forge_cycle.py::test_inconclusive_challenge_cannot_promote_end_to_end",
+      "tests/test_integration_forge_cycle.py::test_leakage_invalidates_the_cycle",
+      "tests/test_integration_forge_cycle.py::test_partial_cascade_blocks_promotion_end_to_end",
+      "tests/test_integration_forge_cycle.py::test_refuted_candidate_cannot_promote_end_to_end",
+      "tests/test_integration_forge_cycle.py::test_surviving_every_challenge_promotes_end_to_end",
+      "tests/test_integration_forge_cycle.py::test_unchallenged_candidate_cannot_promote_end_to_end"
+    ],
+    "status": "PASS"
+  },
+  "phase_artifact_reconciliation": {
+    "admitted_phase_artifact_set_count": 14,
+    "admitted_transition_count": 17,
+    "artifact_sha256": "sha256:ccec043face776dd38cf7097f7b215e22edbebab138252be2e09c71c87bb67c7",
+    "attempt_id": "F04-0002",
+    "cancelled_count": 0,
+    "duplicate_transition_ids": [],
+    "expected_phase_artifact_set_count": 14,
+    "expected_transition_count": 17,
+    "failed_count": 0,
+    "flow_count": 3,
+    "generated_phase_artifact_set_count": 14,
+    "generated_transition_count": 17,
+    "missing_phase_artifact_set_ids": [],
+    "missing_transition_ids": [],
+    "negative_missing_persisted_transition_test": "PASS_FAIL_CLOSED",
+    "persisted_transition_count": 17,
+    "reduced_transition_count": 17,
+    "replayed_transition_count": 17,
+    "required_check": "phase_artifact_reconciliation",
+    "status": "PASS",
+    "targeted_failed": 0,
+    "targeted_passed": 2,
+    "targeted_skipped": 0,
+    "underdetermined_terminal_outcome_count": 3
+  },
+  "retrieval_contract": {
+    "attempt_id": "C04-0004",
+    "benchmark": {
+      "attempt_id": "O02-0002",
+      "critical_must_find_passed": 4,
+      "critical_must_find_total": 4,
+      "deterministic_input_reordering": "PASS",
+      "fixture_hashes": {
+        "corpus.jsonl": "sha256:cef8f5479795274dbeb5a8f01d1fe2a2ea8ffc60e53252ca4b8e1fb7f63fb9bd",
+        "queries.json": "sha256:042b712069c9b675ac21a47d8ef267d8f4186209eb87a9447d7d1d861aeb3189",
+        "relevance-labels.json": "sha256:e19d71ba8558adab35f2332c439cf8a41da139250a123bca396e9ac174bea691"
+      },
+      "fused_recall_at_20": 1.0,
+      "lane_count": 11,
+      "live_llm_calls": 0,
+      "live_network_calls": 0,
+      "per_lane": {
+        "boundary": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        },
+        "citation": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        },
+        "counterevidence": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        },
+        "entity_variable": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        },
+        "external_novelty": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        },
+        "lexical": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        },
+        "mechanism": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        },
+        "method": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        },
+        "null": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        },
+        "semantic": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        },
+        "temporal": {
+          "ndcg_at_20": 1.0,
+          "recall_at_20": 1.0
+        }
+      },
+      "query_count": 11,
+      "status": "PASS",
+      "thresholds": {
+        "critical_must_find": 1.0,
+        "fused_recall_at_20_minimum": 0.95,
+        "per_lane_ndcg_at_20_minimum": 0.85,
+        "per_lane_recall_at_20_minimum": 0.9
+      }
+    },
+    "integrity_and_fallback": {
+      "attempt_id": "O02-0002",
+      "backend_request_hash": "sha256:ec24763735e3830aec36abf41ac0f592be533376fbd6632406e74e3557429945",
+      "backend_response_hash": "sha256:4a636dbb17a17ba5f6a4dae168987a7fd3d0be2bd86e9e71c3de7a3d4c2fb65e",
+      "candidate_count": 2,
+      "candidate_replay_sha256": "sha256:c5898cd3d49c2ac07ba1595eec9c4803a836f2a6024a64c4aad5cc4dc6442910",
+      "candidate_schema_validation": "PASS",
+      "cutoff_count": 0,
+      "duplicate_count": 1,
+      "excluded_count": 1,
+      "raw_hit_count": 4,
+      "replay_byte_identical": true,
+      "run_ceiling": "PASS",
+      "status": "PASS",
+      "tamper_rejection_codes": {
+        "candidate": "CANDIDATE_HASH_MISMATCH",
+        "corpus_snapshot_hash": "STALE_RETRIEVAL_SNAPSHOT",
+        "plan_hash": "RESPONSE_BINDING_MISMATCH",
+        "query_hash": "RESPONSE_BINDING_MISMATCH",
+        "unsealed_response": "BACKEND_RESPONSE_HASH_MISMATCH"
+      },
+      "terminal_case_count": 5,
+      "terminal_cases": [
+        {
+          "case_id": "POLICY",
+          "error_code": "POLICY_DENIED",
+          "search_state": "BLOCKED",
+          "stop_reason": "policy_blocked"
+        },
+        {
+          "case_id": "CREDENTIAL",
+          "error_code": "CREDENTIAL_UNAVAILABLE",
+          "search_state": "BLOCKED",
+          "stop_reason": "credential_unavailable"
+        },
+        {
+          "case_id": "BACKEND",
+          "error_code": "BACKEND_UNAVAILABLE",
+          "search_state": "BLOCKED",
+          "stop_reason": "backend_unavailable"
+        },
+        {
+          "case_id": "PROVIDER",
+          "error_code": "PROVIDER_FAILURE",
+          "search_state": "FAILED",
+          "stop_reason": "provider_failure"
+        },
+        {
+          "case_id": "PARTIAL",
+          "error_code": "BOUNDED_TIMEOUT",
+          "search_state": "PARTIAL",
+          "stop_reason": "bounded_interruption"
+        }
+      ]
+    },
+    "non_vector_guard": {
+      "attempt_id": "O02-0002",
+      "complete_zero_results": {
+        "allowed": true,
+        "reason": "complete_zero_results"
+      },
+      "direct_evidence_candidate_count": 1,
+      "metadata_only_candidate_count": 1,
+      "metadata_only_direct_promotion_allowed": false,
+      "non_vector_release": {
+        "allowed": true,
+        "reason": "non_vector_origin_present",
+        "run_ceiling": "PASS"
+      },
+      "required_lane_incomplete": {
+        "allowed": false,
+        "reason": "required_lane_incomplete",
+        "run_ceiling": "PARTIAL"
+      },
+      "silent_fallback": {
+        "allowed": false,
+        "reason": "silent_fallback_detected",
+        "run_ceiling": "FAIL"
+      },
+      "status": "PASS",
+      "vector_only_release": {
+        "allowed": false,
+        "reason": "vector_only_release",
+        "run_ceiling": "PARTIAL"
+      }
+    },
+    "relation_direction": {
+      "attempt_id": "O02-0002",
+      "case_count": 7,
+      "cases": [
+        {
+          "actual": "SAME_DIRECTION",
+          "case_id": "SAME_DIRECTION",
+          "expected": "SAME_DIRECTION"
+        },
+        {
+          "actual": "REVERSE_DIRECTION",
+          "case_id": "REVERSE_DIRECTION",
+          "expected": "REVERSE_DIRECTION"
+        },
+        {
+          "actual": "INVERSE_PREDICATE",
+          "case_id": "INVERSE_PREDICATE",
+          "expected": "INVERSE_PREDICATE"
+        },
+        {
+          "actual": "BIDIRECTIONAL",
+          "case_id": "BIDIRECTIONAL",
+          "expected": "BIDIRECTIONAL"
+        },
+        {
+          "actual": "NO_DIRECTION",
+          "case_id": "NO_DIRECTION",
+          "expected": "NO_DIRECTION"
+        },
+        {
+          "actual": "UNRESOLVED",
+          "case_id": "UNRESOLVED",
+          "expected": "UNRESOLVED"
+        },
+        {
+          "actual": "UNRESOLVED",
+          "case_id": "UNTRUSTED_GROUNDING",
+          "expected": "UNRESOLVED"
+        }
+      ],
+      "fixture_sha256": "sha256:4ebacb71c6d7b125cf71c09ea888bbf8dfa1dd408513594a348c6b663e0d05b0",
+      "inverse_mapping_version_guard": "ONTOLOGY_VERSION_REQUIRED",
+      "no_direction_is_match": false,
+      "status": "PASS",
+      "unresolved_is_match": false
+    },
+    "retrieval": {
+      "attempt_id": "O02-0002",
+      "authority": {
+        "attempt_id": "O02-0002",
+        "decision_file_sha256": "sha256:5e986212a409db12121d15ab936998d15478037fa06bcb8c0b2480292b4b29fe",
+        "decision_hash": "sha256:3695c59b67788b0f144f033627a9ef3294b75418f78dfb15fcebccc14a8ef221",
+        "decision_id": "HD-EF4-O02-SG001-20260731-001",
+        "dependency": "O01-0002 PASS",
+        "manifest_sha256": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+        "package_count": 156,
+        "prior_O02_0001_preserved": true,
+        "required_checks": [
+          "retrieval_benchmark",
+          "relation_direction_test",
+          "retrieval_candidate_contract_test",
+          "retrieval_integrity_and_fallback_test",
+          "non_vector_release_guard_test",
+          "deterministic_replay_test"
+        ],
+        "status": "PASS"
+      },
+      "backend_request_hash": "sha256:ec24763735e3830aec36abf41ac0f592be533376fbd6632406e74e3557429945",
+      "backend_response_hash": "sha256:4a636dbb17a17ba5f6a4dae168987a7fd3d0be2bd86e9e71c3de7a3d4c2fb65e",
+      "candidate_count": 2,
+      "candidate_hashes": [
+        "sha256:212ed7eacdb9c6ac0fa33107ed22f4b42732c403b0c9c44c26998bfdaf00d92e",
+        "sha256:b87c95f50674ac065e946fe528ac20b21edad54261e069116c6e4e3b0597c645"
+      ],
+      "candidate_ids": [
+        "RC-498e3ac216bc7900d69d081c6d58ce0c9bb5f037b07256244f0259522be5e3d3",
+        "RC-555fa76dee1db1d6e9cb6a0fd8fefa54dbced79e8a83ec0b58a7825f001c76eb"
+      ],
+      "candidate_schema_validation": "PASS",
+      "closed_query_family_count": 6,
+      "closed_relation_direction_count": 6,
+      "closed_retrieval_channel_count": 5,
+      "deterministic_replay": "PASS_BYTE_IDENTICAL",
+      "lane_query_family_bindings": {
+        "boundary": [
+          "BOUNDARY"
+        ],
+        "citation": [
+          "FORWARD"
+        ],
+        "counterevidence": [
+          "FORWARD",
+          "REVERSE"
+        ],
+        "entity_variable": [
+          "FORWARD"
+        ],
+        "external_novelty": [
+          "NOVELTY"
+        ],
+        "lexical": [
+          "FORWARD"
+        ],
+        "mechanism": [
+          "FORWARD"
+        ],
+        "method": [
+          "METHOD"
+        ],
+        "null": [
+          "NULL"
+        ],
+        "semantic": [
+          "FORWARD"
+        ],
+        "temporal": [
+          "FORWARD"
+        ]
+      },
+      "learned_reranker_calls": 0,
+      "live_llm_calls": 0,
+      "live_network_calls": 0,
+      "metadata_only_candidate_count": 1,
+      "policy_binding": "PASS",
+      "processing_order": [
+        "validate backend response and receipt",
+        "validate QueryPlan, corpus, and index bindings",
+        "derive canonical source identity",
+        "collapse exact within-channel duplicates",
+        "assign stable channel ranks",
+        "fuse with RRF k=60",
+        "retain transparent features",
+        "apply max-candidates cutoff",
+        "break ties by candidate_id ascending"
+      ],
+      "provider_neutral": true,
+      "raw_score_cross_channel_comparison": false,
+      "retrieval_score_is_scientific_support": false,
+      "rrf_k": 60,
+      "silent_fallback_count": 0,
+      "status": "PASS",
+      "workflow_candidate_output_binding": "PASS",
+      "workflow_retrieval_node_count": 11
+    },
+    "sealed_o02_attempt": "O02-0002",
+    "status": "PASS"
+  },
+  "runtime_contract": {
+    "c03_runtime_migration_sha256": "sha256:056dc4d17e6ba295b1d241c02d1e40cb5afc4ac13967c8bf5d302972866e7241",
+    "c03_runtime_status": "PASS",
+    "forge_receipt_bound_promotion": {
+      "candidate_level_after_commit": "CANDIDATE",
+      "candidate_revision_after_commit": 2,
+      "crash_without_receipt_rejected_without_mutation": true,
+      "decision": "PROMOTE",
+      "effect_receipt_bound": true,
+      "forge_final_phase": "E",
+      "forge_revision": 5,
+      "gate_decision_count": 15,
+      "granted_level": "CANDIDATE",
+      "idempotent_replay_returned_original_result": true,
+      "ledger_chain_verified": true,
+      "ledger_event_count": 7,
+      "phase_e_complete": true,
+      "phase_e_required_kind_count": 27
+    },
+    "legacy_and_suppression": {
+      "active_legacy_promotion_value_hits": [],
+      "c01_sg003_xfail_or_skip_suppression_hits": []
+    },
+    "runtime_schema_semantics": {
+      "evolution_acceptance_spec_hash": "sha256:984398c972505d1e618a2fdea6ed942064815afd97fe65c3f2c7d13ae43c1900",
+      "evolution_rejection_cases": {
+        "empty": true,
+        "floating": true,
+        "missing": true,
+        "range": true,
+        "unversioned_model_alias": true
+      },
+      "promotion_ladder": [
+        "INBOX",
+        "CANDIDATE",
+        "LITERATURE_GROUNDED",
+        "VALIDATION_SCREENED",
+        "EMPIRICALLY_TESTED",
+        "REPLICATED"
+      ],
+      "promotion_schema_cases": {
+        "blocked_nonnull_schema_rejects": true,
+        "blocked_null_schema_accepts": true,
+        "conditional_lower_schema_accepts": true,
+        "conditional_null_schema_rejects": true,
+        "conditional_requested_schema_rejects": true,
+        "promote_equal_schema_accepts": true,
+        "promote_mismatch_schema_rejects": true,
+        "reject_nonnull_schema_rejects": true,
+        "reject_null_schema_accepts": true,
+        "underdetermined_nonnull_schema_rejects": true,
+        "underdetermined_null_schema_accepts": true
+      },
+      "resolved_refs_required_without_default": true
+    },
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "verdict": "C04_PASS_B04_0010_DEPENDENCY_READY_AFTER_RAH_SEAL"
+}

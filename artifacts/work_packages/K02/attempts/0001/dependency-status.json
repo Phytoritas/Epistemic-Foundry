@@ -1,0 +1,50 @@
+{
+  "attempt_id": "K02-0001",
+  "dependency": {
+    "attempt_id": "K01-0002",
+    "report": "artifacts/work_packages/K01/attempts/0002/report.json",
+    "report_sha256": "sha256:e2132964003c019599e6e5ef130ea2e8d933e08e94481d68864038d1e82a2b3b",
+    "status": "PASS"
+  },
+  "manifest": {
+    "depends_on": [
+      "K01"
+    ],
+    "exit_criteria": [
+      "parser versions pinned",
+      "disagreement retained"
+    ],
+    "required_checks": [
+      "parser_fixture_benchmark",
+      "fallback_status_test"
+    ],
+    "risk_class": "medium",
+    "status": "PASS",
+    "write_scope": [
+      "python/epistemic_foundry/ingest/parsers/**"
+    ]
+  },
+  "post_k01_sealed_dag": {
+    "artifact": "artifacts/work_packages/K01/attempts/0002/post-k01-0002-dag-reconciliation.json",
+    "artifact_sha256": "sha256:0179528c9b07ee4df4b73467b3b0ec6a75806836f48e27075b1faf8f24d5461c",
+    "evidence_id": "E0031",
+    "next_package": "K02",
+    "status": "PASS"
+  },
+  "provisional_post_k02_projection": {
+    "blocked_package_count": 104,
+    "completed_package_count": 47,
+    "completion_ready": false,
+    "next_package": "K03",
+    "ready_package_count": 5,
+    "ready_packages_manifest_order": [
+      "K03",
+      "L01",
+      "N01",
+      "T01",
+      "A06"
+    ],
+    "status": "PASS"
+  },
+  "status": "PASS"
+}

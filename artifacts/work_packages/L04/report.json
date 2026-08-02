@@ -1,0 +1,437 @@
+{
+  "artifact_receipt": {
+    "path": "artifacts/work_packages/L04/attempts/0001/recall-quality-privacy-verification.artifact-receipt.json",
+    "receipt_hash": "sha256:17173033d369b97e53bc3afd511b967272de731be745a3386d1da86593967f08",
+    "receipt_id": "AR-L04-0001-RECALL-QUALITY-PRIVACY-VERIFICATION"
+  },
+  "attempt_id": "L04-0001",
+  "changed_files": [
+    {
+      "byte_size": 6563,
+      "path": "tests/evals/recall/recall-eval-support.mjs",
+      "sha256": "sha256:a18abb3c15e4953932a73bc90a35d0cf7b59926e2dcc1ce0197b0c94a4a981a9",
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 8640,
+      "path": "tests/evals/recall/recall-precision.test.mjs",
+      "sha256": "sha256:01482ee0303ca23dc7592a59bf21fbadfbf94836fdb3ec4590540dd9d661ad9b",
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 13064,
+      "path": "tests/evals/recall/cross-workspace-leak.test.mjs",
+      "sha256": "sha256:2d6ef75f55f940567af41b04df1f6f724f2deb4b5324fe7ce1b638b169fd37f8",
+      "utf8_bom": false
+    }
+  ],
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependencies": {
+    "L02": {
+      "attempt_id": "L02-0001",
+      "final_closeout_evidence_id": "E0045",
+      "report": "artifacts/work_packages/L02/attempts/0001/report.json",
+      "report_sha256": "sha256:ddfc9d8c9157fe0f3a9f472c170eb6fb360bd156304e05b83972cb9c11b945ef",
+      "status": "PASS"
+    },
+    "L03": {
+      "attempt_id": "L03-0001",
+      "final_closeout_evidence_id": "E0048",
+      "report": "artifacts/work_packages/L03/attempts/0001/report.json",
+      "report_sha256": "sha256:4f7d72f062fa285fddc8d2ce5fe798ee6d1eb5c13a06d8998aa89ccacbccbbe1",
+      "status": "PASS"
+    }
+  },
+  "diagnostics_preserved": [
+    {
+      "classification": "TEST_ORACLE_TYPE_BOUNDARY",
+      "resolution": "recognized the direct canonical MemoryPolicyError boundary without changing production code",
+      "result": "initial targeted execution 24/25 because the malformed-policy oracle accepted only MemoryIndexError"
+    },
+    {
+      "classification": "TEST_ORACLE_CODE_MISMATCH",
+      "resolution": "bound the assertion to canonical MEMORY_POLICY_INVALID; final targeted execution is 25/25",
+      "result": "second targeted execution 24/25 because the assertion used INVALID_MEMORY_POLICY"
+    }
+  ],
+  "evidence_artifacts": [
+    {
+      "byte_size": 4591,
+      "path": "artifacts/work_packages/L04/attempts/0001/recall-quality-privacy-verification.json",
+      "sha256": "sha256:fff23b0ccdf8e2fe51cc54aeaa497f6bdf96c86aedec37a5127cbd808684e6e2"
+    },
+    {
+      "byte_size": 1379,
+      "path": "artifacts/work_packages/L04/attempts/0001/recall-quality-privacy-verification.artifact-receipt.json",
+      "sha256": "sha256:477b3a45d30cff75c88cc20d362b95451a2bcf6a0e958a51cd32447cf0bd50d6"
+    },
+    {
+      "byte_size": 2344,
+      "path": "artifacts/work_packages/L04/attempts/0001/full-regression-impact.json",
+      "sha256": "sha256:07894a5ee8279ae0d6447eee1d38559d8b4bfa2f3c7a1c62af2065bc46d5730e"
+    },
+    {
+      "byte_size": 682,
+      "path": "artifacts/work_packages/L04/attempts/0001/dependency-status.json",
+      "sha256": "sha256:e0b9f763011e905d5914b586c008d756444285f420df931e4f93f337617c56f9"
+    },
+    {
+      "byte_size": 565,
+      "path": "artifacts/work_packages/L04/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:a824fa1639b5f849be958ef7dce28c69a516d9006af3d043459a1ca2e5b13b8b"
+    },
+    {
+      "byte_size": 485,
+      "path": "artifacts/work_packages/L04/attempts/0001/syntax-verification.json",
+      "sha256": "sha256:e6f8d893ced911859830ea3191970d158cabb33ef66d6163483c03aedd7533b3"
+    },
+    {
+      "byte_size": 5843,
+      "path": "artifacts/work_packages/L04/attempts/0001/targeted-l04-node.junit.xml",
+      "sha256": "sha256:f9b8e7e9cfcc21a54937f3c9f9ec73fe88c136e6758e56129a87433062a304df"
+    },
+    {
+      "byte_size": 6137,
+      "path": "artifacts/work_packages/L04/attempts/0001/predecessor-l01-node.junit.xml",
+      "sha256": "sha256:20f418ebcd30d581309afc8e3b463f9679d1dc6ac1e33b743fe061aac910a813"
+    },
+    {
+      "byte_size": 9725,
+      "path": "artifacts/work_packages/L04/attempts/0001/predecessor-l02-node.junit.xml",
+      "sha256": "sha256:a664dff4430ce6daba66f055a30a93d88f7a433ba96a9cd65f06432c1f46c3db"
+    },
+    {
+      "byte_size": 10767,
+      "path": "artifacts/work_packages/L04/attempts/0001/predecessor-l03-node.junit.xml",
+      "sha256": "sha256:a894d36ebc1fe6d131f2ff0048417576a731a53185ef277ab50af32b44651f13"
+    },
+    {
+      "byte_size": 138669,
+      "path": "artifacts/work_packages/L04/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:c3c63278fcd4bad9d66fdc3703b80dec51f56f7623a74f6df85b2104315f307e"
+    },
+    {
+      "byte_size": 138393,
+      "path": "artifacts/work_packages/L04/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:afc69f0505a10748488bad264e7b2b13a67ad57ae1b2ff7779a76f3f6cae77b0"
+    },
+    {
+      "byte_size": 4291,
+      "path": "artifacts/work_packages/L04/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:670e0427af0d69fd544fe9c728b00e50ac5e495f505b8f6ab201249c408145bd"
+    },
+    {
+      "byte_size": 2910,
+      "path": "artifacts/work_packages/L04/attempts/0001/codegen-verification.stdout.log",
+      "sha256": "sha256:582d58db1b7861b506572d56b823f9681cc1a2b71ee3d1d678e2f873e9a82800"
+    },
+    {
+      "byte_size": 320,
+      "path": "artifacts/work_packages/L04/attempts/0001/structure-check.stdout.log",
+      "sha256": "sha256:a0f4e1b43cc5f2576d0bba4325fd0df83b05f2d439bcb34208dbfb80a0fa724d"
+    },
+    {
+      "byte_size": 260,
+      "path": "artifacts/work_packages/L04/attempts/0001/boundary-check.stdout.log",
+      "sha256": "sha256:2a48ac08975188e29c6403dde604a168834e1aa8f1ddcc2bf26cfab913152884"
+    },
+    {
+      "byte_size": 0,
+      "path": "artifacts/work_packages/L04/attempts/0001/git-diff-check.stdout.log",
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "byte_size": 6385,
+      "path": "artifacts/work_packages/L04/attempts/0001/git-diff-check.stderr.log",
+      "sha256": "sha256:5d598dde66a2fd6d038c840dcb6b09f11638efb57306c868eaa57b1f4ae2fc2f"
+    },
+    {
+      "byte_size": 3998,
+      "path": "artifacts/work_packages/L04/attempts/0001/commands.jsonl",
+      "sha256": "sha256:54fdf8732ebe5eb3c72eae5248152e5a9a7a31ff3a7ffbf2db171f6a71e86b51"
+    },
+    {
+      "byte_size": 2841,
+      "path": "artifacts/work_packages/L04/attempts/0001/review.md",
+      "sha256": "sha256:58d724377a79db61bf93253ccc3177446be6c1fcb6fc7c4dd553b43bc414b324"
+    },
+    {
+      "byte_size": 108,
+      "path": "artifacts/work_packages/L04/attempts/0001/attempt-metadata.json",
+      "sha256": "sha256:6a0194cb836da1c750440457743f92a2c0b996e7ac2af0856cc1d36475e60e18"
+    },
+    {
+      "byte_size": 6559,
+      "path": "artifacts/work_packages/L04/attempts/0001/run_l04_0001_checks.py",
+      "sha256": "sha256:e5e6529ba24ba6a9399c81bd74f10f0ca5929789d2a67eca4332f34e582a406d"
+    },
+    {
+      "byte_size": 33673,
+      "path": "artifacts/work_packages/L04/attempts/0001/build_l04_0001_evidence.py",
+      "sha256": "sha256:3622831e3650eb71be5ae1978285deaaf1b741d4f145c8d4969a25507dfb2693"
+    },
+    {
+      "byte_size": 9844,
+      "path": "artifacts/work_packages/L04/attempts/0001/l04_0001_rah_seal.py",
+      "sha256": "sha256:b0cc32c509ebda65d47df658a629671272411030cf98936f75a74765f8d49819"
+    },
+    {
+      "byte_size": 1733,
+      "path": "artifacts/work_packages/L04/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:c62f24a7cede2550f0d8f1c29a0e7ec543cd478040cb0c6841c880ea39d612b4"
+    }
+  ],
+  "exit_criteria": {
+    "needed_prior_facts_recovered": "PASS",
+    "unrelated_private_context_not_returned": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "actor-independent certification",
+    "production corpus recall performance",
+    "production persistence or vector backend",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0050",
+    "core_generation": "000050-2135fbf0",
+    "final_closeout_evidence_id": "E0051",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 300,
+    "implementation_gate": "fail",
+    "retained_generation_count": 50,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "L04-0001",
+    "canonical_codegen": {
+      "example_count": 126,
+      "schema_count": 126,
+      "status": "PASS"
+    },
+    "full_node": {
+      "cancelled": 0,
+      "collected": 613,
+      "failed": 0,
+      "junit": "artifacts/work_packages/L04/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:c3c63278fcd4bad9d66fdc3703b80dec51f56f7623a74f6df85b2104315f307e",
+      "passed": 613,
+      "skipped": 0,
+      "test_file_count": 63,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 608
+    },
+    "full_python": {
+      "collected": 1064,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/L04/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:afc69f0505a10748488bad264e7b2b13a67ad57ae1b2ff7779a76f3f6cae77b0",
+      "passed": 1064,
+      "skipped": 0,
+      "xml_testcase_count": 1064
+    },
+    "git_diff_check": "PASS_WITH_PREEXISTING_LINE_ENDING_ADVISORIES",
+    "new_failure_count": 0,
+    "new_skip_xfail_todo_or_cancellation_count": 0,
+    "package_boundaries": "PASS",
+    "predecessor_l01_node": {
+      "cancelled": 0,
+      "collected": 27,
+      "failed": 0,
+      "junit": "artifacts/work_packages/L04/attempts/0001/predecessor-l01-node.junit.xml",
+      "junit_sha256": "sha256:20f418ebcd30d581309afc8e3b463f9679d1dc6ac1e33b743fe061aac910a813",
+      "passed": 27,
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 25
+    },
+    "predecessor_l02_node": {
+      "cancelled": 0,
+      "collected": 41,
+      "failed": 0,
+      "junit": "artifacts/work_packages/L04/attempts/0001/predecessor-l02-node.junit.xml",
+      "junit_sha256": "sha256:a664dff4430ce6daba66f055a30a93d88f7a433ba96a9cd65f06432c1f46c3db",
+      "passed": 41,
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 41
+    },
+    "predecessor_l03_node": {
+      "cancelled": 0,
+      "collected": 44,
+      "failed": 0,
+      "junit": "artifacts/work_packages/L04/attempts/0001/predecessor-l03-node.junit.xml",
+      "junit_sha256": "sha256:a894d36ebc1fe6d131f2ff0048417576a731a53185ef277ab50af32b44651f13",
+      "passed": 44,
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 44
+    },
+    "repository_structure": "PASS",
+    "status": "PASS"
+  },
+  "required_checks": {
+    "cross_workspace_leak_test": {
+      "failed": 0,
+      "passed": 15,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "independent_review": {
+      "actor_independence": false,
+      "blocking_finding_count": 0,
+      "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+      "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_REVIEW"
+    },
+    "recall_precision_test": {
+      "failed": 0,
+      "passed": 10,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "artifact": "artifacts/work_packages/L04/attempts/0001/review.md",
+    "artifact_sha256": "sha256:58d724377a79db61bf93253ccc3177446be6c1fcb6fc7c4dd553b43bc414b324",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_REVIEW"
+  },
+  "status": "PASS",
+  "title": "L-phase recall quality/privacy gate",
+  "verification": {
+    "full_node": "613/613",
+    "full_python": "1064/1064",
+    "predecessor_l01_node": "27/27",
+    "predecessor_l02_node": "41/41",
+    "predecessor_l03_node": "44/44",
+    "targeted_l04": "25/25",
+    "write_scope_violation_count": 0
+  },
+  "verification_details": {
+    "attempt_id": "L04-0001",
+    "exact_oracle": {
+      "expected_memory_id_set_exact_match": true,
+      "forbidden_private_or_cross_workspace_id_count": 0,
+      "pipeline": [
+        "L01_POLICY",
+        "L02_SCOPED_SEARCH",
+        "L03_REDACTION_DEDUPE",
+        "CANONICAL_RECEIPT"
+      ],
+      "receipt_hash_and_replay_identity": true
+    },
+    "precision": {
+      "bounded_top_k_excludes_unrelated_context": true,
+      "duplicate_source_amplification": false,
+      "expired_memory_excluded_before_ranking": true,
+      "needed_fact_exact_id_set_recovered": true,
+      "raw_search_text_in_receipt": false,
+      "redaction_preserves_identity_without_private_bytes": true,
+      "searched_none_distinct_from_unsearched": true,
+      "unicode_nfkc_equivalence": true
+    },
+    "privacy": {
+      "cross_workspace_workspace_store_allowed": false,
+      "default_cross_workspace_access": "DENY",
+      "explicit_user_opt_in_requires_policy_and_consent": true,
+      "forbidden_id_leak_count": 0,
+      "malformed_policy_fails_closed": true,
+      "prompt_injection_authority": false,
+      "raw_forbidden_source_text_returned": false,
+      "searched_excluded_class_partition_complete": true,
+      "target_workspace_binding_exact": true
+    },
+    "status": "PASS",
+    "syntax": {
+      "attempt_id": "L04-0001",
+      "checks": [
+        {
+          "exit_code": 0,
+          "path": "tests/evals/recall/recall-eval-support.mjs",
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "exit_code": 0,
+          "path": "tests/evals/recall/recall-precision.test.mjs",
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "exit_code": 0,
+          "path": "tests/evals/recall/cross-workspace-leak.test.mjs",
+          "stderr": "",
+          "stdout": ""
+        }
+      ],
+      "final_status": "PASS"
+    },
+    "targeted": {
+      "cancelled": 0,
+      "collected": 25,
+      "cross_workspace_leak_test_count": 15,
+      "failed": 0,
+      "junit": "artifacts/work_packages/L04/attempts/0001/targeted-l04-node.junit.xml",
+      "junit_sha256": "sha256:f9b8e7e9cfcc21a54937f3c9f9ec73fe88c136e6758e56129a87433062a304df",
+      "passed": 25,
+      "recall_precision_test_count": 10,
+      "skipped": 0,
+      "test_names": [
+        "cross_workspace_leak_test: same-workspace recall excludes exact-match private workspace records",
+        "cross_workspace_leak_test: default-denied cross-workspace query fails before index access",
+        "cross_workspace_leak_test: explicit USER opt-in retrieves only the intended target workspace",
+        "cross_workspace_leak_test: policy permission without explicit opt-in is denied",
+        "cross_workspace_leak_test: explicit opt-in without consent is denied",
+        "cross_workspace_leak_test: revoked consent cannot authorize recall",
+        "cross_workspace_leak_test: cross-workspace WORKSPACE store remains denied",
+        "cross_workspace_leak_test: WORKSPACE query cannot return same-workspace USER private context",
+        "cross_workspace_leak_test: USER query cannot return same-workspace WORKSPACE records",
+        "cross_workspace_leak_test: expired private memory is excluded from an otherwise permitted USER store",
+        "cross_workspace_leak_test: prompt injection text in another workspace has no authority",
+        "cross_workspace_leak_test: retrieval output contains provenance only, never raw forbidden source text",
+        "cross_workspace_leak_test: target-workspace binding excludes the caller workspace on allowed USER recall",
+        "cross_workspace_leak_test: unknown or malformed policy input fails closed",
+        "cross_workspace_leak_test: searched and excluded classes remain a complete privacy partition",
+        "recall_precision_test: the exact needed fact outranks a partial distractor",
+        "recall_precision_test: all required facts fit the bounded top-k without unrelated context",
+        "recall_precision_test: duplicate source memories yield one representative",
+        "recall_precision_test: explicit redaction preserves the needed identity without private bytes",
+        "recall_precision_test: expired high-score memory is excluded before ranking",
+        "recall_precision_test: a completed zero-result search remains SEARCHED_NONE",
+        "recall_precision_test: Unicode NFKC equivalents recover the same fact",
+        "recall_precision_test: input permutation leaves selection and receipt identities stable",
+        "recall_precision_test: receipt is bound to the selected post-L03 subset",
+        "recall_precision_test: selected output carries provenance but no raw search text"
+      ],
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 25
+    }
+  },
+  "work_package_id": "L04"
+}

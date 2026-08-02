@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "workspaceRoot": "packages",
+  "sourceImportPolicy": "public-package-api-only",
+  "layers": {
+    "foundation": 0,
+    "authority": 2,
+    "service": 3,
+    "adapter": 4,
+    "tooling": 9
+  },
+  "components": [
+    {
+      "directory": "contracts",
+      "packageName": "@epistemic-foundry/contracts",
+      "layer": "foundation"
+    },
+    {
+      "directory": "transport-kernel",
+      "packageName": "@epistemic-foundry/transport-kernel",
+      "layer": "foundation"
+    },
+    {
+      "directory": "foundry-kernel",
+      "packageName": "@epistemic-foundry/foundry-kernel",
+      "layer": "authority"
+    },
+    {
+      "directory": "role-router",
+      "packageName": "@epistemic-foundry/role-router",
+      "layer": "service"
+    },
+    {
+      "directory": "context-capsule",
+      "packageName": "@epistemic-foundry/context-capsule",
+      "layer": "service"
+    },
+    {
+      "directory": "workspace-map",
+      "packageName": "@epistemic-foundry/workspace-map",
+      "layer": "service"
+    },
+    {
+      "directory": "skill-vault",
+      "packageName": "@epistemic-foundry/skill-vault",
+      "layer": "service"
+    },
+    {
+      "directory": "plugin-host",
+      "packageName": "@epistemic-foundry/plugin-host",
+      "layer": "adapter"
+    },
+    {
+      "directory": "ui-api",
+      "packageName": "@epistemic-foundry/ui-api",
+      "layer": "adapter"
+    },
+    {
+      "directory": "repo-checks",
+      "packageName": "@epistemic-foundry/repo-checks",
+      "layer": "tooling"
+    }
+  ],
+  "python": {
+    "runtimeRoot": "src/epistemic_foundry",
+    "componentRoot": "python/epistemic_foundry",
+    "duplicateImplementationPolicy": "forbidden"
+  }
+}

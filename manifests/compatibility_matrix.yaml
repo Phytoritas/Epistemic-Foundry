@@ -2,6 +2,76 @@ version: 4.0.0
 status: UNVERIFIED_REFERENCE_MATRIX
 policy: No row may become SUPPORTED without recorded fresh-install, lifecycle-hook, MCP, payload, upgrade, rollback and uninstall
   evidence.
+model_note: This is a fail-closed reference compatibility and lifecycle matrix. It declares the identity, payload layout, host/platform
+  cells, the sealed-package provenance that establishes each host, and the install/uninstall lifecycle policy that a fresh install and
+  uninstall must satisfy. It records NO runtime-executability, validation, or production-readiness claim; every host cell is UNVERIFIED
+  or ADAPTER_REQUIRED and every install decision is REFUSED until the required evidence is recorded (see docs/216_lens_plugin_audit.md
+  F05 and MASTER_SPEC fresh-install/uninstall acceptance). The Z01 install-matrix and uninstall-data harnesses read this file as the
+  single declaring source of the host and platform lists and never restate them.
+plugin:
+  name: epistemic-foundry
+  version: 4.0.0
+  runtime_capabilities: []
+  identity_source: plugins/epistemic-foundry/.codex-plugin/plugin.json
+payload:
+  root: plugins/epistemic-foundry
+  manifest: .codex-plugin/plugin.json
+  expected_top_level:
+  - .codex-plugin
+  - .mcp.json
+  - assets
+  - bin
+  - hooks
+  - skills
+sealed_dependencies:
+- attempt_id: G04-0001
+  package: G04
+  establishes: local-marketplace fresh-install, enable, disable and clean-uninstall lifecycle gate
+- attempt_id: H04-0001
+  package: H04
+  establishes: host hook feature-probe, trust and degraded-mode negotiation gate
+- attempt_id: L04-0001
+  package: L04
+  establishes: local memory and recall surface exercised across the plugin lifecycle
+- attempt_id: M04-0001
+  package: M04
+  establishes: Workspace Cartographer boundary and path-resolution surface
+- attempt_id: P04-0001
+  package: P04
+  establishes: Evidence Parliament adjudication surface
+- attempt_id: Q04-0001
+  package: Q04
+  establishes: quality, evaluation and calibration surface
+- attempt_id: S04-0005
+  package: S04
+  establishes: security, privacy and skill supply-chain gate
+- attempt_id: T04-0001
+  package: T04
+  establishes: tools, MCP, CLI and sandbox gate
+- attempt_id: U04-0001
+  package: U04
+  establishes: Foundry Console and API surface
+- attempt_id: V04-0001
+  package: V04
+  establishes: Validation Bay execution surface
+- attempt_id: W04-0001
+  package: W04
+  establishes: workflow, checkpoint and reassessment surface
+- attempt_id: X04-0001
+  package: X04
+  establishes: X-phase cross-provider parity gate sealing the codex (X01) and claude-code (X02) host adapters
+- attempt_id: Y04-0001
+  package: Y04
+  establishes: yield, operations and scale surface
+citation_policy:
+  rule: Every declared host row MUST cite at least one sealed_dependencies attempt through establishing_evidence; an uncited row is
+    refused fail-closed and none of its host/OS cells may install.
+  every_citation_must_be_a_sealed_dependency: true
+  capabilities_without_a_citation_cannot_be_supported: true
+  refusal_codes:
+    row_uncited: EF_Z01_ROW_UNCITED
+    citation_not_sealed: EF_Z01_CITATION_NOT_SEALED
+    capability_uncited: EF_Z01_CAP_UNCITED
 hosts:
 - host: codex
   channel: stable
@@ -17,6 +87,37 @@ hosts:
   upgrade: UNVERIFIED
   rollback: UNVERIFIED
   uninstall: UNVERIFIED
+  evidence: []
+  establishing_evidence:
+  - attempt_id: X04-0001
+    package: X04
+    capabilities:
+    - manifest
+    - skills
+    - hooks
+    establishes: X-phase cross-provider parity gate sealing the codex (X01) host adapter
+  - attempt_id: G04-0001
+    package: G04
+    capabilities:
+    - manifest
+    - payload
+    - uninstall
+    establishes: local-marketplace fresh-install, enable, disable and clean-uninstall lifecycle gate
+  - attempt_id: H04-0001
+    package: H04
+    capabilities:
+    - hooks
+    establishes: host hook feature-probe, trust and degraded-mode negotiation gate
+  - attempt_id: T04-0001
+    package: T04
+    capabilities:
+    - mcp
+    establishes: tools, MCP, CLI and sandbox gate
+  - attempt_id: S04-0005
+    package: S04
+    capabilities:
+    - skills
+    establishes: security, privacy and skill supply-chain gate
 - host: claude-code
   channel: stable
   platforms:
@@ -31,6 +132,83 @@ hosts:
   upgrade: UNVERIFIED
   rollback: UNVERIFIED
   uninstall: UNVERIFIED
+  evidence: []
+  establishing_evidence:
+  - attempt_id: X04-0001
+    package: X04
+    capabilities:
+    - manifest
+    - skills
+    - hooks
+    establishes: X-phase cross-provider parity gate sealing the claude-code (X02) host adapter
+  - attempt_id: G04-0001
+    package: G04
+    capabilities:
+    - manifest
+    - payload
+    - uninstall
+    establishes: local-marketplace fresh-install, enable, disable and clean-uninstall lifecycle gate
+  - attempt_id: H04-0001
+    package: H04
+    capabilities:
+    - hooks
+    establishes: host hook feature-probe, trust and degraded-mode negotiation gate
+  - attempt_id: T04-0001
+    package: T04
+    capabilities:
+    - mcp
+    establishes: tools, MCP, CLI and sandbox gate
+  - attempt_id: S04-0005
+    package: S04
+    capabilities:
+    - skills
+    establishes: security, privacy and skill supply-chain gate
+known_platforms:
+- windows-x64
+- linux-x64
+- macos-arm64
+capabilities:
+- manifest
+- skills
+- hooks
+- mcp
+- payload
+- upgrade
+- rollback
+- uninstall
+install:
+  target_layout_template: '{host_home}/plugins/cache/{marketplace}/{plugin}'
+  fresh_install_produces: byte-for-byte copy of the declared payload tree under the installed cache root, with no extra or missing
+    files relative to the payload manifest set
+  supported_requires:
+  - cell_status_is_SUPPORTED
+  - all_required_evidence_recorded
+  - capability_has_at_least_one_sealed_citation
+  refuse_when: the addressed host/capability cell status is not SUPPORTED, or any required_evidence item is not recorded for that cell,
+    or the capability has no sealed establishing citation
+  refusal_is_fail_closed: true
+lifecycle:
+  user_data_policy: preserve
+  user_data_locations:
+  - '{user_state_home}/epistemic-foundry/profile.sqlite3'
+  - '{user_state_home}/epistemic-foundry/artifacts'
+  - '{user_state_home}/epistemic-foundry/ledger'
+  removable_state:
+  - id: installed_cache
+    location: '{host_home}/plugins/cache/{marketplace}/{plugin}'
+  - id: installed_config_block
+    location: '{host_config}/config.toml#[plugins."{plugin}@{marketplace}"]'
+  - id: marketplace_config_block
+    location: '{host_config}/config.toml#[marketplaces."{marketplace}"]'
+  uninstall:
+    removes:
+    - installed_cache
+    - installed_config_block
+    - marketplace_config_block
+    preserves_user_data: true
+    partial_uninstall_is_failure: true
+    orphan_residue_allowed: 0
+    refuses_user_data_deletion: true
 required_evidence:
 - host_version
 - platform_fingerprint

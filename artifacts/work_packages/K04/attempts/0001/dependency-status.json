@@ -1,0 +1,62 @@
+{
+  "attempt_id": "K04-0001",
+  "dependencies": {
+    "K02": {
+      "attempt_id": "K02-0001",
+      "report": "artifacts/work_packages/K02/attempts/0001/report.json",
+      "report_sha256": "sha256:ee34be1309767c0400082c960cb1cdacb04de706eca6b9d04185ea124933d279",
+      "status": "PASS"
+    },
+    "K03": {
+      "attempt_id": "K03-0001",
+      "report": "artifacts/work_packages/K03/attempts/0001/report.json",
+      "report_sha256": "sha256:d4e67724ae825f67ac2fe587359ecba8ad734de82dc5bc886ff593de0e3e54d0",
+      "status": "PASS"
+    }
+  },
+  "manifest": {
+    "depends_on": [
+      "K02",
+      "K03"
+    ],
+    "exit_criteria": [
+      "document instructions remain data",
+      "malformed/active content quarantined"
+    ],
+    "independent_review": "required",
+    "required_checks": [
+      "corpus_injection_test",
+      "ingest_quality_gate"
+    ],
+    "risk_class": "medium",
+    "status": "PASS",
+    "write_scope": [
+      "tests/security/corpus/**",
+      "artifacts/work_packages/K04/**"
+    ]
+  },
+  "post_k03_sealed_dag": {
+    "artifact": "artifacts/work_packages/K03/attempts/0001/post-k03-0001-dag-reconciliation.json",
+    "artifact_sha256": "sha256:8cb9c9c0b1be1fbb05474749d0e925207eb299c7c7d6bef643f3d902831695f7",
+    "evidence_id": "E0037",
+    "generation": "000037-8b76b244",
+    "next_package": "K04",
+    "status": "PASS"
+  },
+  "provisional_post_k04_projection": {
+    "blocked_package_count": 102,
+    "completed_package_count": 49,
+    "completion_ready": false,
+    "next_package": "L01",
+    "ready_package_count": 5,
+    "ready_packages_manifest_order": [
+      "L01",
+      "M01",
+      "N01",
+      "T01",
+      "A06"
+    ],
+    "status": "PASS"
+  },
+  "status": "PASS"
+}

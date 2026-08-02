@@ -1113,8 +1113,22 @@ def compute_review_snapshot(
             return completed.stdout
 
         head = _git_bytes("rev-parse", "HEAD")
-        diff = _git_bytes("diff", "--binary", "HEAD")
-        untracked = _git_bytes("-c", "core.quotepath=false", "ls-files", "--others", "--exclude-standard", "-z")
+        # The review request itself commits a new RAH generation and updates
+        # flat control-plane snapshots. Including those files in the Git
+        # subject makes every required request -> approve pair self-stale.
+        # RAH semantics remain bound above by dedicated matrix, ledger, and
+        # coverage hashes; Git fields bind only the repository work product.
+        worktree_pathspec = ("--", ".", ":(exclude,glob).rah/**")
+        diff = _git_bytes("diff", "--binary", "HEAD", *worktree_pathspec)
+        untracked = _git_bytes(
+            "-c",
+            "core.quotepath=false",
+            "ls-files",
+            "--others",
+            "--exclude-standard",
+            "-z",
+            *worktree_pathspec,
+        )
         snapshot["git_head"] = (
             head.decode("ascii", errors="replace").strip() if head else "<git-error>"
         )

@@ -1,7 +1,21 @@
 # CLAUDE.md — Epistemic Foundry v4
 
-Use `MASTER_SPEC.md` and `manifests/development_manifest.yaml` as the governing
-contract.
+Use the following authority order. A lower source cannot override a higher
+one:
+
+1. `MASTER_SPEC.md`
+2. `manifests/development_manifest.yaml`
+3. `manifests/acceptance_matrix.yaml`
+4. `manifests/product_invariants.yaml`
+5. applicable `schemas/*.schema.json` and `workflows/*.workflow.yaml`
+6. `manifests/role_registry.yaml`
+7. `AGENTS.md` or this file
+8. work-package-local notes
+
+If required shared semantics are absent or inconsistent, return `SPEC_GAP`.
+Do not resolve an authority conflict by choosing the most convenient lower
+source. Use `BLOCKED` only when the contract is clear and an external
+prerequisite is unavailable.
 
 ## Main-session role
 

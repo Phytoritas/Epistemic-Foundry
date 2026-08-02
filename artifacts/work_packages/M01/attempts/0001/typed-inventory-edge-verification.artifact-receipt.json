@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "M01-0001-TYPED-INVENTORY-EDGE-VERIFICATION",
+  "byte_size": 4841,
+  "content_hash": "sha256:1db60a2b56cb4ff611c2f42048d27cb216659dda4863e2343d6494aa9aea19d4",
+  "created_at": "2026-07-31T00:36:23.847Z",
+  "created_by": {
+    "actor_id": "M01-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/M01/attempts/0001/typed-inventory-edge-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:fe8568ead369adda26a568dbfc76a5b6637aa02adb0795d0785b222e9b8f400b",
+  "receipt_id": "AR-M01-0001-TYPED-INVENTORY-EDGE-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "map_inventory_test",
+      "details": "11/11 deterministic layer, source-class, identity, immutability, and fail-closed cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "edge_resolution_test",
+      "details": "11/11 typed resolution, explicit unresolved, provenance, replay, and tamper cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Node 635/635 across 65 files, Python 1064/1064, codegen 126/126, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

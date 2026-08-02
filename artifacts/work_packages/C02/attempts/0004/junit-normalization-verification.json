@@ -1,0 +1,44 @@
+{
+  "attempt_id": "C02-0004",
+  "files": {
+    "full_node": {
+      "normalized_sha256": "sha256:04d9486f7ebfce0cfd62c9e9d2955e8a2d31ddaef970e581aa59cff9b3251de1",
+      "raw_sha256": "sha256:b73c0867baa84521eb105c42a2d9b30453937dc985f21af7e6686c7166fed932",
+      "removed": {
+        "duration_comments": 1,
+        "hostname_attributes": 0,
+        "repository_prefixes": 814,
+        "time_attributes": 0,
+        "timestamp_attributes": 0
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 814
+    },
+    "full_python": {
+      "normalized_sha256": "sha256:3208b8bba40e69d063a14735731739568b4615d235d28c775b12de7068c03656",
+      "raw_sha256": "sha256:4e2aa15c97911cfae99d6b903dd122d9cb848ee152a2ec9f4fb5b559413ee237",
+      "removed": {
+        "duration_comments": 0,
+        "hostname_attributes": 1,
+        "repository_prefixes": 13,
+        "time_attributes": 1074,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 1073
+    }
+  },
+  "normalization_scope": [
+    "remove pytest hostname, timestamp, and suite/testcase time attributes",
+    "remove absolute repository prefixes",
+    "remove Node duration_ms while retaining authoritative footer counters"
+  ],
+  "preserved": [
+    "testcase identity",
+    "failure, error, and skip state",
+    "failure type, message, and body after repository-path normalization",
+    "Node footer counters"
+  ],
+  "recorded_at_utc": "2026-07-31T09:42:43.358Z",
+  "status": "PASS"
+}

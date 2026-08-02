@@ -1,0 +1,38 @@
+{
+  "$id": "https://epistemic-foundry.local/schemas/v4_c05/evaluator-authority-surface.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The evaluator-owned surface, outside the mutable search space (EF4-I43, EF4-I44, EF4-I56): one content-addressed evaluator bundle per run, a hidden holdout no candidate path may read, and defect proposals that apply to future runs only.",
+  "oneOf": [
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/challenge-result.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/evaluation-run.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/evaluator-bundle.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/evaluator-mutation-proposal.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/evaluator-qualification-report.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/fitness-evidence-receipt.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/fitness-vector.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/holdout-manifest.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/leakage-audit.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/stage-evaluation-result.schema.json"
+    }
+  ],
+  "title": "EvaluatorAuthoritySurface"
+}

@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "M03-0001-QUERY-RISK-CHANGE-IMPACT-VERIFICATION",
+  "byte_size": 6725,
+  "content_hash": "sha256:a57b845c957343229f7451d67585fbc4771fda87cb5089b4c4650676cfac8d4e",
+  "created_at": "2026-07-31T01:11:21.836Z",
+  "created_by": {
+    "actor_id": "M03-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/M03/attempts/0001/query-risk-change-impact-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:427f75487208606b0cd248b0ccfc9844d7ff5cbeb8c694974e64802d89b05707",
+  "receipt_id": "AR-M03-0001-QUERY-RISK-CHANGE-IMPACT-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "personalization_test",
+      "details": "12/12 relevance, null-query, separation, identity, immutability, and fail-closed cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "blast_radius_test",
+      "details": "21/21 direction, shared-edge, risk, traversal, tamper, and hostile-input cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Node 693/693 across 69 files, Python 1064/1064, codegen 126/126, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

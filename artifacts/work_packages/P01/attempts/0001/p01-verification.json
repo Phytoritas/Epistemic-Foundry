@@ -1,0 +1,53 @@
+{
+  "asymmetric_dispatch": {
+    "identical_contexts_refused": true,
+    "minimum_dispatched_roles": 2,
+    "role_class_matrix_recorded": true
+  },
+  "attempt_id": "P01-0001",
+  "blindness": {
+    "blind_round": 1,
+    "cross_reference_check": "every ordered pair of first-round briefs",
+    "isolation_is_measured_not_asserted": true,
+    "shared_context_manifest_refused": true
+  },
+  "evidence_acl": {
+    "declaring_source": "manifests/role_registry.yaml",
+    "unregistered_role_fails_closed": true,
+    "wildcard_token": "all_permitted",
+    "withholding_is_visible": true
+  },
+  "exit_criteria": {
+    "first_round_isolation_measured": {
+      "evidence": [
+        "python/epistemic_foundry/parliament/blind/test_blindness.py"
+      ],
+      "mechanism": "the isolation ratio is computed over every ordered pair of first-round briefs, and a single cross-reference, shared manifest, or non-blind brief fails the seal",
+      "status": "PASS"
+    },
+    "roles_cannot_see_forbidden_evidence": {
+      "evidence": [
+        "python/epistemic_foundry/parliament/blind/test_evidence_acl.py"
+      ],
+      "mechanism": "each role's ACL is read from the declaring registry, the context carries only permitted classes, withheld ids are named, and a brief citing evidence its own context never contained is refused",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "blindness_test": {
+      "module": "python/epistemic_foundry/parliament/blind/test_blindness.py",
+      "status": "PASS",
+      "test_count": 16
+    },
+    "evidence_acl_test": {
+      "module": "python/epistemic_foundry/parliament/blind/test_evidence_acl.py",
+      "status": "PASS",
+      "test_count": 21
+    }
+  },
+  "schema_binding": {
+    "council_brief": "schemas/council-brief.schema.json"
+  },
+  "status": "PASS",
+  "targeted_test_count": 37
+}

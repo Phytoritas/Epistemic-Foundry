@@ -1,0 +1,58 @@
+{
+  "attempt_id": "V03-0001",
+  "declaring_sources": {
+    "effect": "schemas/effect-receipt.schema.json (effect status enum with exact reconciliation arithmetic)",
+    "lease": "schemas/capability-lease.schema.json (by path, referencing.Registry) and schemas/action-intent.schema.json (intent and argument hashing)"
+  },
+  "exit_criteria": {
+    "execution_uses_capability_lease_and_sandbox": {
+      "mechanism": "authorize_execution evaluates all ten authorization criteria without short-circuiting and returns DENIED unless the exact intent and arguments verify, the sealed lease is current, every requested capability and write scope is leased, no scope fencing token is stale, an approval names each controlled_effect/high_risk action, the principal is fenceable, the policy hash is pinned and the run environment is bound, so a capability or scope with no matching lease is refused rather than executed",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "construction and authorization refuse an undeclared intent field, an intent/argument hash mismatch, an expired, not-yet-valid, unsealed or revoked lease, an unleased capability or scope, a stale fencing token, a missing or unleased approval, an unfenceable principal, an unpinned policy and an unbound environment; the EXECUTION_GATE_LADDER keeps FAILED_RUN distinct from INCIDENT and DENIED so a real negative result reads as evidence, with counts reconciling exactly",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the component imports nothing from src (boundary check PASS), holds its tests component-local so the global suite count is unchanged, and screens and executes under a lease rather than granting authority — nothing scores, selects, promotes or evaluates any candidate and per-invocation approval stays with the leasing authority",
+      "status": "PASS"
+    },
+    "seeds_environment_and_artifacts_recorded_to_immutable_receipts": {
+      "mechanism": "seal_run_environment pins the seed, environment and resource envelope, build_run_capture requires all four capture channels (stdout, stderr, exit_status, resource_usage) before a receipt may seal, every EffectReceipt and artifact re-derives its own content hash so the sealed record and its pin set cannot disagree, and reconcile_effects publishes exact arithmetic (matched+missing=expected, matched+unexpected=observed) that raises an incident for any unexpected effect regardless of exit status while UNKNOWN keeps reconciliation open",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: an independent reviewer distinct from the author; actor independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 53
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 23
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 19
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 22
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_v01": 92,
+    "full_node_suite": 1641,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 53,
+    "provenance_and_receipt_audit": 23,
+    "schema_and_type_check": 19,
+    "targeted_v03_validation_execution": 117,
+    "unit_and_contract_tests": 22
+  }
+}

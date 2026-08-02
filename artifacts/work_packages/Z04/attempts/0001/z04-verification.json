@@ -1,0 +1,50 @@
+{
+  "attempt_id": "Z04-0001",
+  "declaring_sources": {
+    "acceptance_conditionals": "manifests/acceptance_matrix.yaml conditional external values",
+    "package_set_and_dag": "manifests/development_manifest.yaml (all 156 A-Z packages and their depends_on edges)",
+    "release_label": "plugins/epistemic-foundry/.codex-plugin/plugin.json and manifests/compatibility_matrix.yaml (4.0.0, UNVERIFIED_REFERENCE)",
+    "seal_ledger": ".rah/ralph/evidence_ledger.json (sealed iff a summary matches the seal predicate and contains hash-sealed)"
+  },
+  "exit_criteria": {
+    "all_a_z_packages_reconciled": {
+      "mechanism": "the final_release_gate iterates all 156 A-Z manifest packages against the sealed evidence ledger, requires each to be either sealed-PASS or a named remaining item with a designated owner (expected 156 = sealed + remaining, counts balance, zero orphans or unaccounted names), and verifies the depends_on DAG is acyclic and fully resolved by a Kahn topological pass",
+      "status": "PASS"
+    },
+    "release_label_matches_evidence": {
+      "mechanism": "the independent_attestation asserts the version is consistent across four sources at the UNVERIFIED reference / SPEC_BUNDLE maturity with completion_ready false everywhere and refuses any label claiming production-ready validated GA",
+      "status": "PASS"
+    },
+    "remaining_conditionals_have_owners": {
+      "mechanism": "every acceptance conditional (including the BLOCKED ShinkaEvolve backend and SPECIFIED-not-IMPLEMENTED deferrals) is reconciled by set-equality to a designated owner, and an unowned conditional or an orphan owner refuses fail-closed",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "final_release_gate": {
+      "status": "PASS",
+      "test_count": 12
+    },
+    "independent_attestation": {
+      "status": "PASS",
+      "test_count": 11
+    },
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "manifest_hash_check": {
+      "status": "PASS",
+      "test_count": 7
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "final_release_gate": 12,
+    "full_node_suite": 1740,
+    "full_python_suite": 1312,
+    "independent_attestation": 11,
+    "manifest_hash_check": 7,
+    "wire_literal_discipline": 5
+  }
+}

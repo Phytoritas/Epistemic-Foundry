@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="app_contract: every default view binds a declared operation of the generated client" time="0.003095" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: mutation is derived from the route table, not from the view's claim" time="0.001150" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: the navigation record is deeply frozen and hash re-derivable" time="0.000802" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: building navigation twice is deterministic to the byte" time="0.001432" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: a public view renders without authentication" time="0.001162" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: unauthenticated exposes only the declared public operations" time="0.001509" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: a secured view renders once the session is authenticated" time="0.001280" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: receipts map to the five distinct read model states" time="0.001211" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: EMPTY_CONFIRMED is distinct from UNAVAILABLE" time="0.001076" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: a claimed read model state that matches the receipt is accepted" time="0.001090" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: the auth machine advances only along declared transitions" time="0.000321" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: the auth machine record enumerates the declared vocabulary and re-derives" time="0.000272" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: declared read model states and receipt outcomes are the closed vocabularies" time="0.000116" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="app_contract: validateAuthState freezes and preserves a well-formed state" time="0.000106" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\app-contract.test.mjs"/>
+	<testcase name="shell_contract: every view binds an operation the generated client exports" time="0.003719" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: mutation is derived from the declared method, never asserted" time="0.000729" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: the navigation records the provenance of the client it composed" time="0.000575" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: the shell composes the client rather than hand written paths" time="0.000831" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: the health surface binds the two declared System health operations" time="0.000253" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: rendered health states are exactly the states the schema declares" time="0.001254" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: the declared security schemes are the ones the document declares" time="0.000218" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: the auth machine reaches every declared state from the initial state" time="0.000484" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: read model state follows the receipt and never the caller" time="0.002473" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: EMPTY_CONFIRMED, UNAVAILABLE and UNKNOWN stay distinct (EF4-I23)" time="0.000894" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: health is UNKNOWN until a readiness response arrives" time="0.000714" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: DEGRADED is rendered as a first class state with its checks" time="0.000455" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="shell_contract: a healthy report renders an empty degraded section, not a hidden one" time="0.000450" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\app\shell-contract.test.mjs"/>
+	<testcase name="health_states: the declared vocabularies match the plugin health report schema" time="0.001237" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\features\health\health-states.test.mjs"/>
+	<testcase name="health_states: a console with no readings renders explicit UNKNOWN, never blank" time="0.001521" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\features\health\health-states.test.mjs"/>
+	<testcase name="health_states: a healthy readiness report renders PASS with its profile" time="0.001008" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\features\health\health-states.test.mjs"/>
+	<testcase name="health_states: a degraded report renders DEGRADED with its non-passing checks visible" time="0.000383" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\features\health\health-states.test.mjs"/>
+	<testcase name="health_states: liveness is not readiness" time="0.000229" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\features\health\health-states.test.mjs"/>
+	<testcase name="health_states: a readiness backend problem renders UNAVAILABLE, not empty and not PASS" time="0.000217" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\features\health\health-states.test.mjs"/>
+	<testcase name="health_states: a liveness transport failure renders UNAVAILABLE liveness" time="0.000278" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\features\health\health-states.test.mjs"/>
+	<testcase name="health_states: a matching claimed overall is accepted" time="0.000376" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\features\health\health-states.test.mjs"/>
+	<testcase name="health_states: the health view is deeply frozen, deterministic and hash re-derivable" time="0.001057" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\features\health\health-states.test.mjs"/>
+	<testcase name="health_states: validateHealthReport freezes a well-formed report and preserves it" time="0.000361" classname="test" file="C:\dev\insight\Epistemic-Foundry\web\src\features\health\health-states.test.mjs"/>
+	<!-- tests 37 -->
+	<!-- suites 0 -->
+	<!-- pass 37 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 422.1275 -->
+</testsuites>

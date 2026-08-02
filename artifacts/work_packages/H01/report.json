@@ -1,0 +1,271 @@
+{
+  "artifact_receipt": {
+    "path": "artifacts/work_packages/H01/attempts/0001/hook-gateway-verification.artifact-receipt.json",
+    "receipt_id": "AR-H01-0001-HOOK-GATEWAY-VERIFICATION"
+  },
+  "attempt_id": "H01-0001",
+  "changed_files": [
+    {
+      "byte_size": 16987,
+      "path": "packages/plugin-host/src/hooks/gateway/hook-gateway.mjs",
+      "sha256": "sha256:8b9d1f72e4b4649d6588a7bfabd7c96c568f955f8eb4a11785c0930d50322e8c"
+    },
+    {
+      "byte_size": 7427,
+      "path": "packages/plugin-host/src/hooks/gateway/hook-schema-fixture.test.mjs",
+      "sha256": "sha256:c34112b0cdbce2b5e2bcd6336faf25a8ca6bb95d2a46caf70cabd8699b21608c"
+    },
+    {
+      "byte_size": 3899,
+      "path": "packages/plugin-host/src/hooks/gateway/hook-timeout.test.mjs",
+      "sha256": "sha256:1d1a4853beb54735ed271108e23f4b2df3a7e1c01c5b66f774ab156cfbba8f33"
+    }
+  ],
+  "completion_ready": false,
+  "dependencies": {
+    "E04": {
+      "attempt_id": "E04-0001",
+      "report": "artifacts/work_packages/E04/report.json",
+      "report_sha256": "sha256:841dcf60989cfc7ab0eff7be95e1ae721ae18ac513cae653ab6ac8a44942f6c1",
+      "status": "PASS"
+    },
+    "G04": {
+      "attempt_id": "G04-0001",
+      "report": "artifacts/work_packages/G04/report.json",
+      "report_sha256": "sha256:3abe50fc722255bb8f8c2196f133b94425a0b11318423cb756fab614026cf1ea",
+      "status": "PASS"
+    },
+    "S02": {
+      "attempt_id": "S02-0001",
+      "report": "artifacts/work_packages/S02/report.json",
+      "report_sha256": "sha256:c496ebe1e7d325a756edd44a163db3d08279dea71927f797e3481f7140460b81",
+      "status": "PASS"
+    }
+  },
+  "dependency_effect": {
+    "blocked_package_count": 115,
+    "completed_package_count": 34,
+    "dag_recomputed": true,
+    "next_package": "H02",
+    "ready_packages_manifest_order": [
+      "H02",
+      "H03",
+      "I01",
+      "J01",
+      "K01",
+      "T01",
+      "A06"
+    ]
+  },
+  "deterministic_fixture": {
+    "envelope": {
+      "action_intent_id": "AI-H01-001",
+      "coverage": "OBSERVED",
+      "decision": "ALLOW",
+      "effect_receipt_id": null,
+      "envelope_hash": "sha256:f3c3e9ee377a78379b5ac074e5ecf70d58c7ad1a7a1efcc44d53848ccdb6817d",
+      "event_id": "HEE-H01-FIXTURE-001",
+      "event_type": "PreToolUse",
+      "host": "codex",
+      "normalized_payload": {
+        "alpha": null,
+        "zeta": [
+          3,
+          {
+            "alpha": "한글",
+            "beta": true
+          }
+        ]
+      },
+      "raw_payload_hash": "sha256:6bcbb2809863ad7b57d804d004efea47dcb5f39f31dcc0297fec7d87fe1dc931",
+      "reasons": [
+        "POLICY_SCOPE_PERMITTED"
+      ],
+      "received_at": "2026-07-29T04:00:00.000Z",
+      "session_id": "FS-H01-001",
+      "tool_name": "shell_command"
+    },
+    "envelope_hash": "sha256:f3c3e9ee377a78379b5ac074e5ecf70d58c7ad1a7a1efcc44d53848ccdb6817d",
+    "independent_envelope_hash_recomputation": "PASS",
+    "independent_raw_hash_recomputation": "PASS",
+    "raw_and_normalized_payloads_are_distinct_contract_fields": true,
+    "raw_payload_hash": "sha256:6bcbb2809863ad7b57d804d004efea47dcb5f39f31dcc0297fec7d87fe1dc931"
+  },
+  "evidence_artifacts": [
+    {
+      "byte_size": 5000,
+      "path": "artifacts/work_packages/H01/attempts/0001/hook-gateway-verification.json",
+      "sha256": "sha256:d6760ae368f509810fa583d52597a1b4ee4ddd9a70123f5c6e50c1476a7876fc"
+    },
+    {
+      "byte_size": 3121,
+      "path": "artifacts/work_packages/H01/attempts/0001/full-regression-impact.json",
+      "sha256": "sha256:b9788f22b1918fbc9a2104fe52cf050af8974b729f6a7f9a5d2e835268256e09"
+    },
+    {
+      "byte_size": 666,
+      "path": "artifacts/work_packages/H01/attempts/0001/preexisting-debt-reconciliation.json",
+      "sha256": "sha256:48c63853a3513448db99a78b4af9120eab109c27247b27e0227b86d53d189cae"
+    },
+    {
+      "byte_size": 2032,
+      "path": "artifacts/work_packages/H01/attempts/0001/dependency-status.json",
+      "sha256": "sha256:82e5c64c7785130e579fb59ed7d5026fef52f7833d388d4228f28ed1b566a788"
+    },
+    {
+      "byte_size": 1385,
+      "path": "artifacts/work_packages/H01/attempts/0001/hook-gateway-verification.artifact-receipt.json",
+      "sha256": "sha256:4e1195e5aae093d21de82274873257b721cbe3841db3d620d7359478cbb154e6"
+    },
+    {
+      "byte_size": 449,
+      "path": "artifacts/work_packages/H01/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:88071c01a17d769d112b4636989f353eef6db5934efcec57c6c44f4bbcf8dbce"
+    },
+    {
+      "byte_size": 3983,
+      "path": "artifacts/work_packages/H01/attempts/0001/commands.jsonl",
+      "sha256": "sha256:6d11ae2f563a3b95b99986ad612dbc6970b0796a10359e1b0d89509707bf365b"
+    },
+    {
+      "byte_size": 3409,
+      "path": "artifacts/work_packages/H01/attempts/0001/review.md",
+      "sha256": "sha256:c92adeaa9306928807d57793c3472112070b066836e726433d9af2687eab02a0"
+    },
+    {
+      "byte_size": 2471,
+      "path": "artifacts/work_packages/H01/attempts/0001/targeted-node-suite.junit.xml",
+      "sha256": "sha256:bc5ccbc66d6b768469b8974d91620af0673a3a11b41b45a9d809ec58e8c61cfa"
+    },
+    {
+      "byte_size": 69300,
+      "path": "artifacts/work_packages/H01/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:05aedc0fa750e12846a0509ed1ee85177246cd07ba7f3965344ff96c1ca78a0b"
+    },
+    {
+      "byte_size": 120469,
+      "path": "artifacts/work_packages/H01/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:d0e8ffdc9d76bfd1bd4dab5e1845404507e5acd637481a0c8110fbb3e80fec92"
+    },
+    {
+      "byte_size": 47748,
+      "path": "artifacts/work_packages/H01/attempts/0001/h01_evidence.py",
+      "sha256": "sha256:f5eb923692a5813204c302b3a5ff6ad6e379e745d3ed55d64606756c98af0d48"
+    },
+    {
+      "byte_size": 16627,
+      "path": "artifacts/work_packages/H01/attempts/0001/h01_rah_seal.py",
+      "sha256": "sha256:cab66f9d73b4eb05582ced2174969ed686fbcf01002074fba698cd9546c4272d"
+    }
+  ],
+  "exit_criteria": {
+    "hook_decisions_schema_valid": "PASS",
+    "host_payloads_hash_and_normalize": "PASS"
+  },
+  "gateway_guards": {
+    "async_nonsettling_callback_timeout_fails_closed": "PASS",
+    "callback_error_fails_closed_without_message_leak": "PASS",
+    "coverage_is_preserved_not_promoted_to_enforcement": "PASS",
+    "decision_callback_input_immutable": "PASS",
+    "invalid_decision_fails_closed": "PASS",
+    "late_completion_cannot_mutate_timeout_result": "PASS",
+    "non_json_and_invalid_unicode_rejection": "PASS",
+    "proxy_accessor_cycle_sparse_array_rejection": "PASS",
+    "sealed_envelope_immutable": "PASS"
+  },
+  "historical_and_worktree_preservation": {
+    "dirty_worktree_preserved": true,
+    "failed_diagnostics_preserved_in_commands": true,
+    "prior_reports_and_generations_preserved": true,
+    "product_write_scope_violations": 0,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "not_claimed": [
+    "H02/H03 host-specific hook response mapping",
+    "exhaustive enforcement from hook observation",
+    "preemption of synchronously blocking same-thread callbacks",
+    "production host integration, release readiness, or product completion"
+  ],
+  "package_status": "PASS",
+  "preserved_limitations": [
+    "H02/H03 own host-specific response mapping and lifecycle/tool hook integration.",
+    "Hook coverage remains observed guardrail coverage, never the complete enforcement boundary.",
+    "Same-event-loop JavaScript timers cannot preempt a synchronously non-returning callback; untrusted synchronous decisions require a later isolation boundary.",
+    "S04-TM004 remains an exact pre-existing S04-owned debt.",
+    "Review is not actor-independent because the product owner forbids subagents and Fleet in this sequence."
+  ],
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0060",
+    "core_generation": "000058-f4eb7ce4",
+    "final_closeout_evidence_id": "E0061",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 348,
+    "retained_generation_manifest_count": 58,
+    "status": "active"
+  },
+  "regression": {
+    "git_diff_check": "PASS",
+    "node": {
+      "failed": 1,
+      "h01_caused_failure_count": 0,
+      "passed": 342,
+      "skipped": 0,
+      "status": "BOUNDED_PREEXISTING_DEBT_S04_TM004"
+    },
+    "package_boundaries": "PASS",
+    "python": {
+      "failed": 0,
+      "passed": 947,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "repository_structure": "PASS",
+    "targeted_node": {
+      "failed": 0,
+      "passed": 11,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "utf8_and_bom_check": "PASS"
+  },
+  "required_checks": {
+    "hook_schema_fixture_test": {
+      "failed": 0,
+      "passed": 6,
+      "status": "PASS"
+    },
+    "hook_timeout_test": {
+      "failed": 0,
+      "passed": 5,
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "artifact": "artifacts/work_packages/H01/attempts/0001/review.md",
+    "artifact_sha256": "sha256:c92adeaa9306928807d57793c3472112070b066836e726433d9af2687eab02a0",
+    "assurance_limitation": "Procedurally separate primary-session review; not actor-independent certification.",
+    "blocking_findings": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "subagents_used": false
+  },
+  "schema_validation": {
+    "draft": "https://json-schema.org/draft/2020-12/schema",
+    "emitted_envelope_validation": "PASS",
+    "meta_schema_validation": "PASS",
+    "path": "schemas/hook-event-envelope.schema.json",
+    "schema_id": "https://epistemic-foundry.local/schemas/hook-event-envelope.schema.json",
+    "sha256": "sha256:9ee336477d887e258f89bb744e064c2d847a39ec49e7442bcb551f7c65080968",
+    "validation_error_count": 0
+  },
+  "status": "PASS",
+  "title": "Normalized Hook Gateway and event envelopes",
+  "work_package_id": "H01",
+  "write_scope": [
+    "packages/plugin-host/src/hooks/gateway/**",
+    "artifacts/work_packages/H01/**"
+  ]
+}

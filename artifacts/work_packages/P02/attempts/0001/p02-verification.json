@@ -1,0 +1,48 @@
+{
+  "attempt_id": "P02-0001",
+  "ceiling_derivation": {
+    "combined_is_lowest_auditor_ceiling": true,
+    "declared_above_derived_refused": true,
+    "ladder_source": "schemas/hypothesis-passport.schema.json",
+    "no_auditor_can_raise_it": true
+  },
+  "exit_criteria": {
+    "method_incompatibility_not_pooled": {
+      "evidence": [
+        "python/epistemic_foundry/parliament/auditors/test_promotion_ceiling.py"
+      ],
+      "mechanism": "the method auditor reports one ceiling per stratum and its component ceiling must equal the strongest stratum, so a single blended figure spanning several strata is refused",
+      "status": "PASS"
+    },
+    "promotion_ceilings_deterministic": {
+      "evidence": [
+        "python/epistemic_foundry/parliament/auditors/test_promotion_ceiling.py",
+        "python/epistemic_foundry/parliament/auditors/test_veto_fixture.py"
+      ],
+      "mechanism": "the combined ceiling is the lowest any auditor set, floored by a sustained method veto, derived rather than declared, and invariant to verdict order",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "promotion_ceiling_test": {
+      "module": "python/epistemic_foundry/parliament/auditors/test_promotion_ceiling.py",
+      "status": "PASS",
+      "test_count": 23
+    },
+    "veto_fixture_test": {
+      "module": "python/epistemic_foundry/parliament/auditors/test_veto_fixture.py",
+      "status": "PASS",
+      "test_count": 19
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 42,
+  "veto_discipline": {
+    "reason_required": true,
+    "veto_capable_auditors": [
+      "method_auditor"
+    ],
+    "veto_floors_the_ladder": true,
+    "withdrawal_stays_on_the_record": true
+  }
+}

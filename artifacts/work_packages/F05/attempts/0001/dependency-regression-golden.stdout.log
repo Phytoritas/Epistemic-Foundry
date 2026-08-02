@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="classification committer: commit, retry, replay, reclassification, and override preserve immutable identity" time="0.581533" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: same idempotency key with a changed preimage fails closed" time="0.071161" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: same-revision lowering and stale override are rejected without mutation" time="0.129659" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: only a resolved canonical HumanDecision can authorize override" time="0.196120" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: non-correct or non-human decisions cannot authorize override" time="0.174927" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testsuite name="classifier_adversarial_test: all 16 fixed attacks fail closed or preserve the exact projection" time="0.297639" disabled="0" errors="0" tests="16" failures="0" skipped="0" hostname="Moon">
+		<testcase name="A01_USER_DEMANDS_E0" time="0.002112" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A02_PROMPT_INJECTION_IN_SOURCE" time="0.000373" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A03_LLM_OMITS_HARD_SIGNAL" time="0.000457" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A04_LLM_PROPOSES_UNKNOWN_SIGNAL" time="0.000367" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A05_UNSUPPORTED_LLM_PROPOSAL" time="0.000260" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A06_SIGNAL_ORDER_PERMUTATION" time="0.001770" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A07_DUPLICATE_SIGNALS" time="0.000264" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A08_MONOTONIC_ADDITION" time="0.000568" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A09_OVERRIDE_LOWERING" time="0.000984" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A10_OVERRIDE_RAISE" time="0.205420" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A11_RESULT_ENVELOPE_ONLY" time="0.000221" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A12_CAPABILITY_ALIAS" time="0.000120" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A13_RETRY_IDENTITY" time="0.064288" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A14_HASH_SELF_FIELD_MUTATION" time="0.000427" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A15_AMBIGUITY_REMOVAL_SAME_REVISION" time="0.000345" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A16_LLM_DIRECT_CLASS_OUTPUT" time="0.000216" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+	</testsuite>
+	<testcase name="classifier authority guards reject a forged request hash and any non-frozen version" time="0.000327" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+	<testcase name="classifier_gold_test: all 14 fixed cases have exact deterministic projections" time="0.004265" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-gold.test.mjs"/>
+	<testcase name="classifier_gold_test: input ordering and duplicate signals do not change identity" time="0.000329" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-gold.test.mjs"/>
+	<testcase name="classifier_hash_vector_test: every frozen preimage has the exact SHA-256 and ID" time="0.001575" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-hash-vector.test.mjs"/>
+	<testcase name="classifier_hash_vector_test: volatile and self fields are outside the semantic preimage" time="0.000160" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-hash-vector.test.mjs"/>
+	<testcase name="classifier_immutable_override_test: every fixed override is upward-only and immutable" time="0.004559" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\classifier-override.test.mjs"/>
+	<testcase name="underprocessing_guard: all 1023 non-empty subsets use the exact maximum floor" time="0.086960" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: every non-empty subset-to-superset pair preserves protection" time="0.101275" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: empty input injects sticky AMBIGUOUS and cannot lose Interview" time="0.000980" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: trusted unknown signals fail input validation" time="0.000351" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: any class, gate, Interview, role, or phase regression fails" time="0.000346" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<!-- tests 33 -->
+	<!-- suites 0 -->
+	<!-- pass 33 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 2162.6663 -->
+</testsuites>

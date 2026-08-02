@@ -1,0 +1,53 @@
+{
+  "attempt_id": "D04-0001",
+  "backup_restore_round_trip": {
+    "artifact_snapshot_excludes_staging_and_mutation_lock": true,
+    "exact_bytes_preserved": true,
+    "point_in_time_correct": true,
+    "postgresql_logical_dump_qualified_in_disposable_container": true
+  },
+  "crash_and_corruption_recovery": {
+    "artifact_crash_residue_quarantined_store_stays_active": true,
+    "committed_wal_replays_after_sigkill": true,
+    "corrupt_sqlite_header_enters_read_only_safe_mode": true,
+    "interrupted_transaction_rolls_back_without_reset": true
+  },
+  "exit_criteria": {
+    "crash_and_corruption_fixtures_recover_safely": {
+      "evidence": [
+        "tests/recovery/state/crash-recovery.test.mjs",
+        "tests/recovery/state/backup-restore.test.mjs"
+      ],
+      "mechanism": "a committed WAL replays after SIGKILL into a recovered ACTIVE store whose sealed record and integrity check pass; an interrupted transaction rolls back with no partial record; a corrupted SQLite header opens read-only SAFE_MODE and closes; artifact crash residue is quarantined while the store stays ACTIVE and resolves the committed artifact",
+      "status": "PASS"
+    },
+    "no_data_loss_hidden_by_reset": {
+      "evidence": [
+        "tests/recovery/state/crash-recovery.test.mjs",
+        "tests/recovery/state/backup-restore.test.mjs"
+      ],
+      "mechanism": "the corrupted database sha256 is identical before and after open, so SAFE_MODE never silently resets; crash residue is still present after recovery; restore is staged, hash-verified, integrity-checked and atomically published, so a damaged, hash-mismatched or raced backup throws and leaves the target absent while the source and backup are never mutated",
+      "status": "PASS"
+    }
+  },
+  "no_data_loss_hidden_by_reset": {
+    "corrupt_bytes_sha256_identical_before_and_after_open": true,
+    "crash_residue_preserved_not_reset": true,
+    "damaged_or_raced_restore_fails_closed_target_absent": true,
+    "snapshot_and_restore_never_mutate_source": true
+  },
+  "required_checks": {
+    "backup_restore_test": {
+      "module": "tests/recovery/state/backup-restore.test.mjs",
+      "status": "PASS",
+      "test_count": 2
+    },
+    "crash_recovery_test": {
+      "module": "tests/recovery/state/crash-recovery.test.mjs",
+      "status": "PASS",
+      "test_count": 4
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 6
+}

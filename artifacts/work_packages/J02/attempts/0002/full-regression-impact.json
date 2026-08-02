@@ -1,0 +1,117 @@
+{
+  "acceptance_failure_count": 2,
+  "attempt_id": "J02-0002",
+  "blocking_failures": [
+    {
+      "id": "J02-TOKENIZER-LOCK",
+      "non_waivable": true,
+      "owner": "UNASSIGNED_PRODUCT_DECISION_REQUIRED"
+    },
+    {
+      "id": "J02-S04-FINGERPRINT-CHANGE",
+      "non_waivable": true,
+      "owner": "S04_TRACEABILITY_AUTHORITY_REQUIRED"
+    }
+  ],
+  "full_node": {
+    "failures": [
+      {
+        "message": "manifests/development_manifest.yaml\n+ actual - expected\n\n+ 'de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940'\n- '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7'\n\nmanifests/development_manifest.yaml\n+ actual - expected\n\n+ 'de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940'\n- '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7'\n\n[Error [ERR_TEST_FAILURE]: manifests/development_manifest.yaml\n+ actual - expected\n\n+ 'de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940'\n- '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7'\n] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: AssertionError [ERR_ASSERTION]: manifests/development_manifest.yaml\n  + actual - expected\n  \n  + 'de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940'\n  - '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7'\n  \n      at TestContext.<anonymous> (file:///C:/dev/insight/Epistemic-Foundry/tests/security/s04-threat-model-traceability.test.mjs:207:12)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: 'de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940',\n    expected: '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n}\n\t\t",
+        "node_id": "test::S04-TM004 traceability source bindings fail on undocumented contract drift",
+        "test_file": "tests/security/s04-threat-model-traceability.test.mjs",
+        "type": "testCodeFailure"
+      }
+    ],
+    "path": "artifacts/work_packages/J02/attempts/0002/full-node-suite.junit.xml",
+    "semantic_totals_authority": "node_junit_footer_comments",
+    "sha256": "sha256:6b6704504f244e598298944e9357b54361a4e796d5b37f37a53095d5c14602c6",
+    "totals": {
+      "cancelled": 0,
+      "fail": 1,
+      "pass": 436,
+      "skipped": 0,
+      "tests": 437,
+      "todo": 0
+    },
+    "xml_footer_testcase_delta": 3,
+    "xml_testcase_count": 434
+  },
+  "full_python": {
+    "failures": [
+      {
+        "message": "Failed: TOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0\npyproject.toml does not declare exact tiktoken==0.13.0\n\nDuring handling of the above exception, another exception occurred:\nTOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0",
+        "node_id": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin",
+        "type": "pytest_failure"
+      }
+    ],
+    "path": "artifacts/work_packages/J02/attempts/0002/full-python-suite.junit.xml",
+    "sha256": "sha256:c5362aa2a2d7927889487e56faef1d8befec34445679030008aae9c853435ab2",
+    "totals": {
+      "errors": 0,
+      "failures": 1,
+      "passed": 963,
+      "skipped": 0,
+      "tests": 964
+    },
+    "xml_testcase_count": 964
+  },
+  "implementation_checks": {
+    "inventory_metadata_reference_runtime": "VERIFIED",
+    "j01_node_regression": "19/19",
+    "loader_determinism": "100/100",
+    "targeted_node": "25/25"
+  },
+  "j01_node_regression": {
+    "failures": [],
+    "path": "artifacts/work_packages/J02/attempts/0002/j01-regression-node-suite.junit.xml",
+    "semantic_totals_authority": "node_junit_footer_comments",
+    "sha256": "sha256:36df2692ebc2e3eb92c79b0d6e99a9945d3dffe88c94f79b68c983bcc0c59e6b",
+    "totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 19,
+      "skipped": 0,
+      "tests": 19,
+      "todo": 0
+    },
+    "xml_footer_testcase_delta": 0,
+    "xml_testcase_count": 19
+  },
+  "new_skip_or_xfail_count": 0,
+  "status": "FAIL",
+  "targeted_node": {
+    "failures": [],
+    "path": "artifacts/work_packages/J02/attempts/0002/targeted-node-suite.junit.xml",
+    "semantic_totals_authority": "node_junit_footer_comments",
+    "sha256": "sha256:f4eac13de7a1a4a1898994804aef7a705918db69d7c54b3001db5b0754f88f96",
+    "totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 25,
+      "skipped": 0,
+      "tests": 25,
+      "todo": 0
+    },
+    "xml_footer_testcase_delta": 1,
+    "xml_testcase_count": 24
+  },
+  "targeted_python": {
+    "failures": [
+      {
+        "message": "Failed: TOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0\npyproject.toml does not declare exact tiktoken==0.13.0\n\nDuring handling of the above exception, another exception occurred:\nTOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0",
+        "node_id": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin",
+        "type": "pytest_failure"
+      }
+    ],
+    "path": "artifacts/work_packages/J02/attempts/0002/targeted-python-suite.junit.xml",
+    "sha256": "sha256:f72b8985f8a1284c20ed78f75aa24f7315e3023fd4b3043bd3eb5978b098ebf4",
+    "totals": {
+      "errors": 0,
+      "failures": 1,
+      "passed": 16,
+      "skipped": 0,
+      "tests": 17
+    },
+    "xml_testcase_count": 17
+  }
+}

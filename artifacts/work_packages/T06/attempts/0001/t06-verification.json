@@ -1,0 +1,59 @@
+{
+  "attempt_id": "T06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every record re-derives its own hash byte for byte from its published fields with no clock and no random draw on the identified path; permits, routings, disablements and audits each carry their own digest; byte-identical output across replays is asserted; and no call mutates the binding, chain or import it was handed",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the usable serving verdicts are read positionally from the T05 backend-adapter-qualification schema enum intersected with shinka_adapter's usable set, the six lifecycle standings are proven disjoint from every canonical enum value (EF4-I22), composed qualifications and imported runs still validate against their canonical schemas, and each of the eleven FINDING_CODES names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "an identity mismatch, a broken or out-of-order qualification chain, a standing decided outside its window, an unrecorded fallback step, a capability-widening substitute, a disablement that left an in-flight import unmarked, and an invented finding code are each refused by their own code; the serving path, ordered step-down to the qualified standby and fall-through to the inert core each replay deterministically",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the gate only decides for-how-long, what-instead and what-becomes-of-in-flight-work; it never scores, selects, promotes or evaluates; an unqualified or lapsed backend falls back to the domain-neutral core unchanged, external output is treated as untrusted inert data, and no evaluator, holdout or promotion field is ever bound",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "fallback_is_narrowing_only": true,
+    "qualifies_a_backend": false,
+    "serving_verdicts_source": "T05 backend-adapter-qualification schema enum intersected with shinka_adapter usable set (computed per call)",
+    "terminal_member": "foundry-native-core (runs no backend, no capabilities)"
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: an independent reviewer that did not author the subject code; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 24
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 14
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 20
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 17
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_t05": 101,
+    "full_node_suite": 1129,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 24,
+    "provenance_and_receipt_audit": 14,
+    "schema_and_type_check": 20,
+    "unit_and_contract_tests": 17
+  }
+}

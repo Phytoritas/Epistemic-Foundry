@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/checkpoint-manifest.schema.json",
+  "title": "CheckpointManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "checkpoint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "layer_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "terminal_node_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected_node_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "event_sequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "gate_decision_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pending_effect_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "state_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "replay_verified": {
+      "type": "boolean"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "checkpoint_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "checkpoint_id",
+    "run_id",
+    "layer_index",
+    "terminal_node_ids",
+    "expected_node_ids",
+    "artifact_ids",
+    "event_sequence",
+    "gate_decision_ids",
+    "pending_effect_ids",
+    "state_hash",
+    "replay_verified",
+    "created_at",
+    "checkpoint_hash"
+  ]
+}

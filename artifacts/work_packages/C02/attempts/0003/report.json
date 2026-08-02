@@ -1,0 +1,201 @@
+{
+  "attempt_id": "C02-0003",
+  "attempt_type": "GENERATED_CONTRACT_CORRECTION",
+  "canonical_contract": {
+    "example_bundle_sha256": "sha256:899f7c7af8f7de5dc3479adf5c270c7eb80047bd84bf28214bfe6e596cbbf54e",
+    "example_count": 126,
+    "legacy_promotion_value_hits": [],
+    "schema_bundle_sha256": "sha256:5788bcf163d7a4ca20f5991935d425d7cc18ff8a5fbc43485c93de73e3c42de3",
+    "schema_count": 126,
+    "status": "PASS"
+  },
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "C02-0003",
+    "dependencies": {
+      "B04": {
+        "attempt_id": "B04-0007",
+        "report": "artifacts/work_packages/B04/attempts/0007/report.json",
+        "report_sha256": "sha256:156c205ac874d5399dd68ec0a285e32fd5d6921bcc42eb6c180b242617fa8dd3",
+        "status": "PASS"
+      },
+      "C01": {
+        "attempt_id": "C01-0007",
+        "report": "artifacts/work_packages/C01/attempts/0007/report.json",
+        "report_sha256": "sha256:13e989701aab58b670e467c20b35cee9fd77ac7852b56a2a4dd4b5aa7ffc447e",
+        "status": "PASS"
+      },
+      "C03": {
+        "attempt_id": "C03-0003",
+        "report": "artifacts/work_packages/C03/attempts/0003/report.json",
+        "report_sha256": "sha256:624ee1ef8fb21ee33670e19b6262d3226e8350aaf291da8d90e94e8c46273a56",
+        "status": "PASS"
+      },
+      "C04": {
+        "attempt_id": "C04-0002",
+        "report": "artifacts/work_packages/C04/attempts/0002/report.json",
+        "report_sha256": "sha256:a6224df570da678705c3605972fd9417356222985f03340237ef7c29de488dc0",
+        "status": "FAIL"
+      }
+    },
+    "development_manifest_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "fixed_repair_order": [
+      "C04-0002_FAIL",
+      "C02-0003_PASS",
+      "C04-0003_FULL_CONFORMANCE",
+      "B04-0008_FINAL_PACKAGING"
+    ],
+    "next_package": "C04-0003",
+    "states": {
+      "B04-0007": "PASS_PRE_C04_PROJECTION",
+      "B04-0008": "WAITING_ON_C04_PASS",
+      "C01-0007": "PASS",
+      "C02-0003": "PASS_AFTER_SEAL",
+      "C03-0003": "PASS",
+      "C04-0002": "FAIL_IMMUTABLE_HISTORY",
+      "C04-0003": "DEPENDENCY_READY_AFTER_C02_SEAL"
+    },
+    "status": "PASS"
+  },
+  "generated_projection": {
+    "codegen_clean_diff": "PASS",
+    "cross_language_fixture_parity": "PASS",
+    "generated_artifact_hashes": {
+      "packages/contracts/src/generated/contract-manifest.json": "sha256:6e3c9932a07422869a2c6a5c857ec4e6e41bf02bed271fca19b45cd0885c5065",
+      "packages/contracts/src/generated/models.d.ts": "sha256:8b63ca1df4ba5a97a87ee1a451f7e57d8d5e27e0ec88bf4573363061e16f2ccf",
+      "packages/contracts/src/generated/registry.mjs": "sha256:6334d99e6cba011ac4765a7c4175571d0fabb20210c480e7347fb4dcc1a06bd0",
+      "python/epistemic_foundry/contracts/__init__.py": "sha256:29a58cf958579f9a2165222059603ea1c4898d85379473b00872ce237dd92095",
+      "python/epistemic_foundry/contracts/contract-manifest.json": "sha256:6e3c9932a07422869a2c6a5c857ec4e6e41bf02bed271fca19b45cd0885c5065",
+      "python/epistemic_foundry/contracts/models.py": "sha256:e469692d365eb536cab3a66ca06686ec4dcba26888bdada99cecec462247a048",
+      "python/epistemic_foundry/contracts/py.typed": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "web/src/generated/contract-manifest.json": "sha256:6e3c9932a07422869a2c6a5c857ec4e6e41bf02bed271fca19b45cd0885c5065",
+      "web/src/generated/contracts.ts": "sha256:1d9c8236a531a351e9a7e5a32c6643206ebd5f37960d96225495a97b7245ab28"
+    },
+    "generated_file_count": 9,
+    "manifest_parity": "PASS",
+    "python_model_count": 126,
+    "repaired_stale_file_count": 7,
+    "repaired_stale_files": [
+      "packages/contracts/src/generated/contract-manifest.json",
+      "packages/contracts/src/generated/models.d.ts",
+      "packages/contracts/src/generated/registry.mjs",
+      "python/epistemic_foundry/contracts/contract-manifest.json",
+      "python/epistemic_foundry/contracts/models.py",
+      "web/src/generated/contract-manifest.json",
+      "web/src/generated/contracts.ts"
+    ],
+    "status": "PASS",
+    "typescript_5_9_3_strict_nodenext": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "C02_0001_and_C02_0002_preserved": true,
+    "C04_0002_FAIL_preserved": true,
+    "dirty_worktree_preserved": true,
+    "prior_RAH_evidence_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_package": "C04-0003",
+  "not_claimed": [
+    "C04 full conformance",
+    "B04-0008 final packaging",
+    "release or production readiness",
+    "completion_ready=true",
+    "external actor-independent certification"
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/C02/attempts/0003/build_c02_0003_evidence.py",
+    "artifacts/work_packages/C02/attempts/0003/c02_0003_rah_seal.py",
+    "artifacts/work_packages/C02/attempts/0003/c02-contract-codegen-verification.json",
+    "artifacts/work_packages/C02/attempts/0003/junit-normalization-verification.json",
+    "artifacts/work_packages/C02/attempts/0003/full-python-regression.junit.xml",
+    "artifacts/work_packages/C02/attempts/0003/full-node-regression.junit.xml",
+    "artifacts/work_packages/C02/attempts/0003/full-regression-impact.json",
+    "artifacts/work_packages/C02/attempts/0003/dependency-status.json",
+    "artifacts/work_packages/C02/attempts/0003/write-scope-verification.json",
+    "artifacts/work_packages/C02/attempts/0003/rah-core-integrity.json",
+    "artifacts/work_packages/C02/attempts/0003/commands.jsonl",
+    "artifacts/work_packages/C02/attempts/0003/review.md",
+    "artifacts/work_packages/C02/attempts/0003/report.json"
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0018",
+    "core_generation": "000018-bc8323a6",
+    "final_closeout_evidence_id": "E0019",
+    "implementation_gate": "fail",
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "C02-0003",
+    "full_node": {
+      "cancelled": 0,
+      "collected": 460,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C02/attempts/0003/full-node-regression.junit.xml",
+      "junit_sha256": "sha256:1ab59fa7eea66f687a0345d755038ab6b57516afa736f624dfc623abc22a9080",
+      "passed": 460,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_testcase_count": 457
+    },
+    "full_python": {
+      "collected": 990,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C02/attempts/0003/full-python-regression.junit.xml",
+      "junit_sha256": "sha256:66a350ae8de630b247eeb13759e5fd3b2631823fd0be37995e767f2f2958b016",
+      "passed": 990,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 990
+    },
+    "new_c02_failure_count": 0,
+    "status": "PASS",
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_c02_owned_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "C02",
+  "write_scope": {
+    "approved_scope": [
+      "packages/contracts/**",
+      "python/epistemic_foundry/contracts/**",
+      "web/src/generated/**",
+      "artifacts/work_packages/C02/** (manifest-declared evidence artifacts)"
+    ],
+    "attempt_id": "C02-0003",
+    "canonical_schema_or_example_change_count": 0,
+    "derived_package_snapshot_change_count": 0,
+    "dirty_worktree_preserved": true,
+    "generated_outputs_changed_only_by_generator": true,
+    "product_change_count": 8,
+    "product_files_modified_by_attempt": [
+      "packages/contracts/codegen/verify.py",
+      "packages/contracts/src/generated/contract-manifest.json",
+      "packages/contracts/src/generated/models.d.ts",
+      "packages/contracts/src/generated/registry.mjs",
+      "python/epistemic_foundry/contracts/contract-manifest.json",
+      "python/epistemic_foundry/contracts/models.py",
+      "web/src/generated/contract-manifest.json",
+      "web/src/generated/contracts.ts"
+    ],
+    "reset_clean_stash_commit_push_performed": false,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

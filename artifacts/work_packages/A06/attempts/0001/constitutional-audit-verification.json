@@ -1,0 +1,351 @@
+{
+  "attempt_id": "A06-0001",
+  "audit_type": "INDEPENDENT_CONSTITUTIONAL_INTEGRATION_AUDIT",
+  "authority_contract": "HD-EF4-A05-C01-B04-20260727-001 / A05-0002",
+  "classification": {
+    "not_blocked_reason": "No required credential, licensed source, external backend, or unavailable tool is needed to reproduce the local contract violations.",
+    "not_spec_gap_reason": "A05-0002 defines the evaluator, holdout, G00-G14, Parliament, attestation, approval, lease, CAS, and receipt semantics unambiguously; the observed problem is implementation and integration nonconformance.",
+    "typed_outcome": "FAIL"
+  },
+  "completion_ready": false,
+  "dependency_integrity": {
+    "bound_hashes": {
+      "artifacts/work_packages/A05/attempts/0002/authority-contract-verification.json": {
+        "expected_sha256": "sha256:b2a228ca578d8fdb70e1d893aaa0b23da500a44dc5609ef3f81c76741b6f7ff0",
+        "match": true,
+        "observed_sha256": "sha256:b2a228ca578d8fdb70e1d893aaa0b23da500a44dc5609ef3f81c76741b6f7ff0"
+      },
+      "artifacts/work_packages/A05/attempts/0002/report.json": {
+        "expected_sha256": "sha256:c9c550de22f55d32898f0d33489bc9b0480de6eef4bca7baeb09fcf047c6062c",
+        "match": true,
+        "observed_sha256": "sha256:c9c550de22f55d32898f0d33489bc9b0480de6eef4bca7baeb09fcf047c6062c"
+      },
+      "artifacts/work_packages/A05/attempts/0002/review.md": {
+        "expected_sha256": "sha256:7908fc4dbc560aa68d450aae59a5f51f9ff08eb4518fb0b1e30fe0774bb86f00",
+        "match": true,
+        "observed_sha256": "sha256:7908fc4dbc560aa68d450aae59a5f51f9ff08eb4518fb0b1e30fe0774bb86f00"
+      },
+      "docs/v4_a05/adversarial_contract_tests.md": {
+        "expected_sha256": "sha256:089944826184843854f0af4415a5bca6f31c83e88227597b20f7bd8db37d5290",
+        "match": true,
+        "observed_sha256": "sha256:089944826184843854f0af4415a5bca6f31c83e88227597b20f7bd8db37d5290"
+      },
+      "docs/v4_a05/evolution_authority_and_promotion_charter.md": {
+        "expected_sha256": "sha256:5d8b1b5d7b8bfed727e823ab49996de4ed40ba520a1958bbb519dda36639a181",
+        "match": true,
+        "observed_sha256": "sha256:5d8b1b5d7b8bfed727e823ab49996de4ed40ba520a1958bbb519dda36639a181"
+      }
+    },
+    "historical_gap_ids": [
+      {
+        "id": "A05-SG001",
+        "required_decision": "Define canonical fields or immutable references, resolution and hash semantics, compatibility behavior, and the EvolutionRunSpec-to-RunSpec relationship for every mandatory evolution pin.",
+        "summary": "The closed EvolutionRunSpec does not bind eleven of thirteen higher-authority per-run requirement groups completely, and its base RunSpec relationship has no canonical resolution rule."
+      },
+      {
+        "id": "A05-SG002",
+        "required_decision": "Define conditional promotion validity and assign final promotion authority to a receipt-bound canonical workflow with deterministic gates and distinct independent authority artifacts.",
+        "summary": "Unsafe PROMOTE combinations are canonical-schema valid and the canonical workflow lacks separately bound deterministic promotion, Parliament, independent-attestation, replication-ceiling, and explicit approval enforcement."
+      }
+    ],
+    "historical_top_level_status": "SPEC_GAP",
+    "history_preserved": true,
+    "latest_attempt": "A05-0002",
+    "latest_status": "PASS",
+    "status": "PASS"
+  },
+  "failed_finding_ids": [
+    "A06-F001",
+    "A06-F002",
+    "A06-F003",
+    "A06-F004",
+    "A06-F005"
+  ],
+  "findings": [
+    {
+      "criterion": "all governing v4 schemas and non-mutable surfaces are implemented exactly",
+      "evidence": [
+        "schemas/evaluator-bundle.schema.json accepts readable_by_candidates=true",
+        "schemas/evaluator-bundle.schema.json accepts mutable_during_run=true"
+      ],
+      "finding_id": "A06-F001",
+      "impact": "A schema-valid evaluator can be candidate-readable or mutable during a run even though both states are non-waivable failures under A05.",
+      "severity": "CRITICAL",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "hidden holdout is inaccessible to candidate identities",
+      "evidence": [
+        "schemas/holdout-manifest.schema.json accepts METADATA_ONLY and AGGREGATE_ONLY",
+        "build_holdout_manifest and VerifierFirewall accept both states"
+      ],
+      "finding_id": "A06-F002",
+      "impact": "The governing schema and runtime seal path do not enforce the A05 candidate_access=false/NONE invariant.",
+      "severity": "CRITICAL",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no model or prompt acquires promotion authority",
+      "evidence": [
+        "run_evidence_parliament_promotion is executor_type=llm",
+        "the same node directly emits schemas/promotion-decision.schema.json",
+        "issue_hypothesis_passport_revisions depends directly on that node"
+      ],
+      "finding_id": "A06-F003",
+      "impact": "The canonical evolution graph assigns a provider-nondeterministic prompt the business decision that immediately authorizes Passport revision processing.",
+      "severity": "CRITICAL",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "receipt-bound G00-G14 promotion authority is mandatory on the Passport path",
+      "evidence": [
+        "no evolution node emits GateDecision, ApprovalRecord, Attestation, CapabilityLease, ActionIntent, EffectReceipt, or ArtifactReceipt",
+        "no G00-G14 node sequence or promotion:commit capability appears in the evolution workflow",
+        "Passport issuance reads no sealed authority artifact scope and depends only on the LLM decision node"
+      ],
+      "finding_id": "A06-F004",
+      "impact": "Required gate decisions, approval, short lease, expected-revision CAS, and receipt reconciliation are not graph-enforced before Passport mutation.",
+      "severity": "CRITICAL",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "a bounded helper must be bound to the canonical execution path",
+      "evidence": [
+        "src/epistemic_foundry/governance/promotion.py implements the bounded controls",
+        "workflows/evolution_chamber_cycle.workflow.yaml references neither its decider nor its committer",
+        "forge_research_cycle is not bound as a subworkflow of the evolution Passport path"
+      ],
+      "finding_id": "A06-F005",
+      "impact": "Passing helper tests prove an isolated reference implementation, not enforcement by the canonical evolution workflow.",
+      "severity": "HIGH",
+      "status": "FAIL"
+    }
+  ],
+  "prompt_audit": {
+    "byte_size": 465,
+    "declares_advisory_only": false,
+    "declares_no_promotion_authority": false,
+    "implements_deterministic_gate_or_commit_authority": false,
+    "mentions_hard_failure": true,
+    "path": "prompts/promotion_attestor.md",
+    "separates_parliament_from_attestation": false,
+    "sha256": "sha256:cba0bf56de963541abb5231e7ac3d7ae213bcdab856ebd825dc3efaba4f0b224"
+  },
+  "runtime_binding_audit": {
+    "binding_status": "FAIL_UNBOUND",
+    "canonical_evolution_workflow_binding": {
+      "committer": false,
+      "decider": false,
+      "module_path": false
+    },
+    "helper_controls_present": {
+      "canonical_gate_order": true,
+      "cas_committer": true,
+      "deterministic_decider": true,
+      "effect_receipt_required": true,
+      "idempotency_conflict": true,
+      "semantic_validator": true
+    },
+    "helper_implementation_status": "PRESENT",
+    "helper_path": "src/epistemic_foundry/governance/promotion.py",
+    "helper_sha256": "sha256:9078dae66ff527b36915d924e579c49b7937ce78d0c084c2f8b00852e0113f51"
+  },
+  "schema_and_runtime_audit": {
+    "canonical_schema_count": 127,
+    "constitutional_status": "PASS",
+    "duplicate_schema_ids": [],
+    "holdout_candidate_access_fixtures": {
+      "AGGREGATE_ONLY": {
+        "schema_valid": false,
+        "validation_errors": [
+          "False was expected"
+        ]
+      },
+      "METADATA_ONLY": {
+        "schema_valid": false,
+        "validation_errors": [
+          "False was expected"
+        ]
+      },
+      "NONE": {
+        "schema_valid": false,
+        "validation_errors": [
+          "False was expected"
+        ]
+      }
+    },
+    "hostile_evaluator_fixtures": {
+      "mutable_during_run_true": {
+        "required_contract_result": "REJECT",
+        "schema_valid": false,
+        "validation_errors": [
+          "Additional properties are not allowed ('mutable_during_run' was unexpected)"
+        ]
+      },
+      "readable_by_candidates_true": {
+        "required_contract_result": "REJECT",
+        "schema_valid": false,
+        "validation_errors": [
+          "Additional properties are not allowed ('readable_by_candidates' was unexpected)"
+        ]
+      }
+    },
+    "meta_schema_failures": [],
+    "meta_validation_status": "PASS",
+    "runtime_holdout_candidate_access": {
+      "AGGREGATE_ONLY": {
+        "accepted": false,
+        "error": "build_holdout_manifest() got an unexpected keyword argument 'dataset_or_fixture_ids'",
+        "error_type": "TypeError"
+      },
+      "METADATA_ONLY": {
+        "accepted": false,
+        "error": "build_holdout_manifest() got an unexpected keyword argument 'dataset_or_fixture_ids'",
+        "error_type": "TypeError"
+      },
+      "NONE": {
+        "accepted": false,
+        "error": "build_holdout_manifest() got an unexpected keyword argument 'dataset_or_fixture_ids'",
+        "error_type": "TypeError"
+      }
+    },
+    "unique_schema_id_count": 127
+  },
+  "schema_version": 1,
+  "scope": {
+    "actor_independent_certification_claimed": false,
+    "audit_evidence_only": true,
+    "product_files_modified": [],
+    "subagents_or_fleet_used": false
+  },
+  "status": "FAIL",
+  "work_package_id": "A06",
+  "workflow_audit": {
+    "constitutional_status": "FAIL",
+    "evolution_workflow": {
+      "authority_artifact_output_nodes": {
+        "action_intent": [],
+        "adjudication": [],
+        "approval_record": [],
+        "artifact_receipt": [],
+        "attestation": [],
+        "capability_lease": [],
+        "effect_receipt": [],
+        "gate_decision": []
+      },
+      "canonical_gate_ids_declared_in_nodes": [],
+      "canonical_gate_ids_missing_from_nodes": [
+        "G00_PIN_RESOLUTION",
+        "G01_POLICY_AUTHORITY",
+        "G02_EVALUATOR_HOLDOUT_FIREWALL",
+        "G03_SCHEMA_LINEAGE_COUNT",
+        "G04_SOURCE_PROVENANCE",
+        "G05_SEARCH_COVERAGE",
+        "G06_METHOD_SCOPE_DEPENDENCY",
+        "G07_VALIDATION_LEAKAGE",
+        "G08_ADAPTIVE_STATISTICS",
+        "G09_RED_QUEEN",
+        "G10_REPLICATION_CEILING",
+        "G11_PARLIAMENT",
+        "G12_INDEPENDENT_ATTESTATION",
+        "G13_HUMAN_POLICY_APPROVAL",
+        "G14_ATOMIC_PROMOTION_COMMIT"
+      ],
+      "capability_lease_schema_bound": false,
+      "dangerous_adapter_capability_declarations": [],
+      "effect_receipt_schema_bound": false,
+      "generic_result_receipt_text_present": true,
+      "missing_authority_artifact_outputs": [
+        "action_intent",
+        "adjudication",
+        "approval_record",
+        "artifact_receipt",
+        "attestation",
+        "capability_lease",
+        "effect_receipt",
+        "gate_decision"
+      ],
+      "node_count": 26,
+      "passport_ancestor_count": 23,
+      "passport_ancestors": [
+        "assess_multilayer_novelty",
+        "audit_adaptive_selection_statistics",
+        "audit_initial_lineage_diversity",
+        "audit_typed_crossovers",
+        "bootstrap_candidate_populations",
+        "choose_mutation_operators",
+        "compute_constrained_fitness_vectors",
+        "generate_challenge_candidates",
+        "generate_experiment_candidates",
+        "generate_hypothesis_candidates",
+        "map_initial_epistemic_niches",
+        "qualify_evolution_run",
+        "rank_pareto_and_update_niches",
+        "replicate_surviving_elites",
+        "retrieve_candidate_evidence",
+        "route_mutation_models",
+        "run_contract_and_static_stages",
+        "run_evidence_parliament_promotion",
+        "run_evidence_simulation_adversarial_stages",
+        "run_red_queen_matches",
+        "seal_evaluator_bundle",
+        "select_epistemic_parents",
+        "validate_candidate_contracts"
+      ],
+      "passport_node": {
+        "capabilities": [
+          "artifact_read",
+          "artifact_write"
+        ],
+        "depends_on": [
+          "run_evidence_parliament_promotion"
+        ],
+        "executor_type": "policy",
+        "node_id": "issue_hypothesis_passport_revisions",
+        "read_scope": [],
+        "write_scope": [
+          "db.hypothesis_passports"
+        ]
+      },
+      "promotion_commit_capability_holders": [],
+      "promotion_node": {
+        "capabilities": [
+          "artifact_read",
+          "artifact_write",
+          "llm_inference"
+        ],
+        "depends_on": [
+          "replicate_surviving_elites"
+        ],
+        "determinism_class": "provider_nondeterministic",
+        "direct_llm_promotion_decision": true,
+        "executor_ref": "prompts/promotion_attestor.md",
+        "executor_type": "llm",
+        "input_schema_ref": "schemas/node-invocation.schema.json",
+        "node_id": "run_evidence_parliament_promotion",
+        "output_schema_ref": "schemas/promotion-decision.schema.json",
+        "read_scope": []
+      },
+      "workflow_id": "evolution_chamber_cycle"
+    },
+    "forge_workflow": {
+      "attestation_node_output": "schemas/result-envelope.schema.json",
+      "contains_evolution_workflow_binding": false,
+      "deterministic_gate_node_output": "schemas/result-envelope.schema.json",
+      "node_count": 26,
+      "phase_transition_node_output": "schemas/result-envelope.schema.json",
+      "promotion_authority_artifact_output_nodes": {
+        "action_intent": [],
+        "adjudication": [],
+        "approval_record": [],
+        "artifact_receipt": [],
+        "attestation": [],
+        "capability_lease": [],
+        "effect_receipt": [],
+        "gate_decision": []
+      },
+      "promotion_commit_capability_present": false,
+      "workflow_id": "forge_research_cycle"
+    }
+  }
+}

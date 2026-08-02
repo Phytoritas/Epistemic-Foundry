@@ -15,7 +15,7 @@ from epistemic_foundry.contracts import (
 )
 from epistemic_foundry.contracts.validation import artifact_errors
 
-EXPECTED_SCHEMA_COUNT = 124  # acceptance_matrix.yaml: canonical_schema_count
+EXPECTED_SCHEMA_COUNT = 127  # acceptance_matrix.yaml: canonical_schema_count
 
 
 def test_registry_loads_every_canonical_schema() -> None:

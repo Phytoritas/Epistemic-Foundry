@@ -1,0 +1,114 @@
+# T02 canonical mutating tool catalog — the sole declarer of these nine names.
+#
+# Frozen by HD-EF4-T02-SCOPE-20260801-001 and
+# docs/t02_mutating_tool_architecture.md.  Every mutating handler registry,
+# descriptor projection, test oracle, and documentation table derives from this
+# file; re-declaring a name, capability, approval class, or schema binding
+# elsewhere violates EF4-I22.  The sealed T01 catalog is not modified.
+catalog_id: MCP-T02-CATALOG
+catalog_version: 1.0.0
+protocol_version: "2026-07-28"
+mutating_tool_count: 9
+common_input_schema: contracts/mcp/t02/schemas/common-mutation-input.schema.json
+mutation_result_schema: contracts/mcp/t02/schemas/mutation-result.schema.json
+mutation_error_details_schema: contracts/mcp/t02/schemas/mutation-error-details.schema.json
+tools:
+  - name: foundry.session.transition
+    title: Advance the FORGE session through a receipt-bound phase transition
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_session_transition
+    input_schema: contracts/mcp/t02/schemas/tools/session-transition.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/forge-session-state.schema.json
+    capability: mcp.write.session
+    risk_class: medium
+    approval_class: POLICY_CONDITIONAL
+    expected_revision_required: true
+  - name: foundry.corpus.register
+    title: Register an immutable source document revision
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_corpus_register
+    input_schema: contracts/mcp/t02/schemas/tools/corpus-register.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/document-registration.schema.json
+    capability: mcp.write.corpus
+    risk_class: medium
+    approval_class: POLICY_CONDITIONAL
+    expected_revision_required: false
+  - name: foundry.search.execute
+    title: Execute a preregistered QueryPlan and seal its lane receipts
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_search_execute
+    input_schema: contracts/mcp/t02/schemas/tools/search-execute.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/retrieval-run.schema.json
+    capability: mcp.write.search
+    risk_class: medium
+    approval_class: POLICY_CONDITIONAL
+    expected_revision_required: false
+  - name: foundry.claim.promote
+    title: Commit a promotion decision through the deterministic gate chain
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_claim_promote
+    input_schema: contracts/mcp/t02/schemas/tools/claim-promote.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/promotion-decision.schema.json
+    capability: mcp.write.promotion
+    risk_class: critical
+    approval_class: HUMAN_REQUIRED
+    expected_revision_required: true
+  - name: foundry.parliament.execute
+    title: Execute a sealed Evidence Parliament deliberation round
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_parliament_execute
+    input_schema: contracts/mcp/t02/schemas/tools/parliament-execute.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/adjudication.schema.json
+    capability: mcp.write.parliament
+    risk_class: high
+    approval_class: POLICY_CONDITIONAL
+    expected_revision_required: true
+  - name: foundry.validation.execute
+    title: Execute a preregistered ValidationPlan under a capability lease
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_validation_execute
+    input_schema: contracts/mcp/t02/schemas/tools/validation-execute.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/experiment-result.schema.json
+    capability: mcp.write.validation
+    risk_class: critical
+    approval_class: HUMAN_REQUIRED
+    expected_revision_required: true
+  - name: foundry.passport.publish
+    title: Publish an immutable Hypothesis Passport revision
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_passport_publish
+    input_schema: contracts/mcp/t02/schemas/tools/passport-publish.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/hypothesis-passport.schema.json
+    capability: mcp.write.passport
+    risk_class: critical
+    approval_class: HUMAN_REQUIRED
+    expected_revision_required: true
+  - name: foundry.memory.write
+    title: Write consent-bound memory within its declared class and retention
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_memory_write
+    input_schema: contracts/mcp/t02/schemas/tools/memory-write.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/memory-policy.schema.json
+    capability: mcp.write.memory
+    risk_class: high
+    approval_class: CONSENT_REQUIRED
+    expected_revision_required: false
+  - name: foundry.skill.activate
+    title: Activate a quarantined third-party skill after supply-chain review
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_skill_activate
+    input_schema: contracts/mcp/t02/schemas/tools/skill-activate.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/skill-lockfile.schema.json
+    capability: mcp.write.skill
+    risk_class: critical
+    approval_class: HUMAN_REQUIRED
+    expected_revision_required: false

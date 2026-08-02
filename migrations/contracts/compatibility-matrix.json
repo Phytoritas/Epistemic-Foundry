@@ -1,0 +1,87 @@
+{
+  "matrix_id": "EF-C03-CONTRACT-COMPATIBILITY-V1",
+  "contract_version": 1,
+  "compatibility_window": {
+    "read_window": "v3 persisted artifacts only through artifact-specific explicit v3-to-v4 migration entry points",
+    "write_window": "v4 only",
+    "end_condition": "all v3 records are migrated or retained as fail-closed historical artifacts",
+    "silent_fallback": false
+  },
+  "rows": [
+    {
+      "consumer": "v4_runtime",
+      "operation": "new_write",
+      "payload_version": "v4",
+      "result": "SUPPORTED_STRICT",
+      "condition": "resolved_refs is complete, non-empty, exact, and hash-valid"
+    },
+    {
+      "consumer": "v4_runtime",
+      "operation": "new_write",
+      "payload_version": "v3",
+      "result": "REJECTED",
+      "condition": "normal write path never infers or defaults resolved_refs"
+    },
+    {
+      "consumer": "v4_runtime",
+      "operation": "legacy_read",
+      "payload_version": "v3",
+      "result": "MIGRATION_REQUIRED",
+      "condition": "explicit immutable resolution evidence is supplied"
+    },
+    {
+      "consumer": "v4_runtime",
+      "operation": "legacy_read",
+      "payload_version": "v3_unresolvable",
+      "result": "LEGACY_RUN_SPEC_RESOLUTION_REQUIRED",
+      "condition": "one or more exact versions or hashes cannot be reconstructed"
+    },
+    {
+      "consumer": "v4_runtime",
+      "operation": "promotion_level_read",
+      "payload_version": "legacy",
+      "result": "LEGACY_PROMOTION_LEVEL_REVIEW_REQUIRED",
+      "condition": "no reviewed, hash-bound record-specific MigrationRecord exists"
+    },
+    {
+      "consumer": "v4_runtime",
+      "operation": "promotion_level_read",
+      "payload_version": "legacy_reviewed",
+      "result": "MIGRATED_EXPLICITLY",
+      "condition": "approved MigrationRecord binds source, target, evidence, and hashes"
+    },
+    {
+      "consumer": "v4_runtime",
+      "operation": "document_registration_read",
+      "payload_version": "v3_with_immutable_registration_evidence",
+      "result": "MIGRATED_EXPLICITLY",
+      "condition": "canonical registration request plus immutable source, receipt, principal, timestamp, and lineage evidence are supplied"
+    },
+    {
+      "consumer": "v4_runtime",
+      "operation": "document_registration_read",
+      "payload_version": "v3_manifest_only_or_unresolved",
+      "result": "LEGACY_DOCUMENT_REGISTRATION_EVIDENCE_REQUIRED",
+      "condition": "a final DocumentManifest alone cannot prove an earlier registration or its receipts"
+    },
+    {
+      "consumer": "v3_runtime",
+      "operation": "read",
+      "payload_version": "v4",
+      "result": "UNSUPPORTED",
+      "condition": "forward compatibility is not claimed"
+    }
+  ],
+  "rollback": {
+    "v3_source_retained": true,
+    "exact_source_hash_required": true,
+    "migration_records_retained": true,
+    "promotion_or_effect_history_rewritten": false
+  },
+  "backfill": {
+    "dry_run_before_write": true,
+    "unresolved_records_fail_closed": true,
+    "partial_success_is_not_batch_success": true,
+    "receipts_and_migration_records_required": true
+  }
+}

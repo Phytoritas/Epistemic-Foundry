@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="t01_tool_catalog: descriptor projection derives from the canonical catalog" time="0.000904" classname="test" file="tests\node\t01-tool-catalog.test.mjs"/>
+	<testcase name="t01_tool_catalog: exactly nine PURE_READ and four DURABLE_PLAN_ARTIFACT tools" time="0.000244" classname="test" file="tests\node\t01-tool-catalog.test.mjs"/>
+	<testcase name="t01_tool_catalog: planning tools bind exactly one canonical artifact schema" time="0.000223" classname="test" file="tests\node\t01-tool-catalog.test.mjs"/>
+	<testcase name="t01_tool_catalog: the plugin MCP declaration is stateless STDIO via the payload dispatcher" time="0.000698" classname="test" file="tests\node\t01-tool-catalog.test.mjs"/>
+	<testcase name="t01_transport_framing: initialize and tools/list are stateless constants" time="0.001349" classname="test" file="tests\node\t01-transport-framing.test.mjs"/>
+	<testcase name="t01_transport_framing: tools/call wraps the shared envelope" time="0.000189" classname="test" file="tests\node\t01-transport-framing.test.mjs"/>
+	<testcase name="t01_transport_framing: protocol failures are typed JSON-RPC errors" time="0.000157" classname="test" file="tests\node\t01-transport-framing.test.mjs"/>
+	<testcase name="t01_transport_framing: stdio and http produce identical responses" time="0.000292" classname="test" file="tests\node\t01-transport-framing.test.mjs"/>
+	<testcase name="t01_transport_framing: http transport failures are typed" time="0.000144" classname="test" file="tests\node\t01-transport-framing.test.mjs"/>
+	<testcase name="t01_transport_framing: malformed stdio lines answer parse errors" time="0.000136" classname="test" file="tests\node\t01-transport-framing.test.mjs"/>
+	<testcase name="t01_transport_framing: receipt projection enforces side-effect classes" time="0.000431" classname="test" file="tests\node\t01-transport-framing.test.mjs"/>
+	<testcase name="the composed surface exposes exactly 13 + 9 unique tools" time="0.001506" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="merge order places the sealed projection first and unchanged" time="0.000831" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="the mutating half is exactly the nine T02 tools" time="0.000254" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="catalog set metadata carries counts and order but no tool name" time="0.000310" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="tools/list returns the composed table" time="0.000744" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="initialize describes the composed surface" time="0.000178" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="a committed mutation is framed as a successful call" time="0.000270" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="an intentional dry run is framed as a successful call" time="0.000182" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="an unresolved or failed effect is never framed as success" time="0.000273" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="a non-dry-run NOT_EXECUTED is never framed as success" time="0.000175" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="a sealed read tool keeps the port's own isError verdict" time="0.000118" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="an error envelope stays an error through the wrapper" time="0.000192" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="HTTP POST /mcp round-trips the composed table" time="0.000445" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="HTTP transport keeps the sealed framing rules" time="0.000179" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="STDIO serves the composed table line by line" time="0.000503" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<testcase name="an unknown method is rejected by the sealed framing" time="0.000102" classname="test" file="tests\node\t02-mcp-write-surface.test.mjs"/>
+	<!-- tests 27 -->
+	<!-- suites 0 -->
+	<!-- pass 27 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+</testsuites>

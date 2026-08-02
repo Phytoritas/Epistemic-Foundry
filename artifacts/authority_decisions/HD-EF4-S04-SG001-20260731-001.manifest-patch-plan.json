@@ -1,0 +1,135 @@
+{
+  "patch_plan_id": "MP-EF4-S04-SG001-20260731-001",
+  "source_path": "manifests/development_manifest.yaml",
+  "parent_sha256": "5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+  "successor_sha256": "6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+  "authorizing_decision_ids": [
+    "HD-EF4-O02-SG001-20260731-001",
+    "HD-EF4-S04-SG001-20260731-001"
+  ],
+  "operations": [
+    {
+      "op": "replace",
+      "package_id": "B04",
+      "field": "exit_criteria",
+      "replacement_value_hash": "sha256:0e565649a80b05b40129b90c6dede5f328f2fbe77b9d78e9953023ada96a1a6f"
+    },
+    {
+      "op": "replace",
+      "package_id": "B04",
+      "field": "required_checks",
+      "replacement_value_hash": "sha256:b85f3ba1dbfe8d053878913351d175ef2010a9f050742a7dec551bf99d532029"
+    },
+    {
+      "op": "replace",
+      "package_id": "C01",
+      "field": "write_scope",
+      "replacement_value_hash": "sha256:9cd3e0422389b2ceae1121616d4a3bf0597c3c60438e408b8f9a2a8188fd4e8e"
+    },
+    {
+      "op": "replace",
+      "package_id": "C01",
+      "field": "exit_criteria",
+      "replacement_value_hash": "sha256:76216d1f908c13e3525f2d660545d323af36cbb63bb66de59a1ea3c4d683c6bf"
+    },
+    {
+      "op": "replace",
+      "package_id": "C01",
+      "field": "required_checks",
+      "replacement_value_hash": "sha256:be31ba1ff282c4ff6f15adb18b83a5b17d0d1a8f69ac135a9d5fc8e02961ac21"
+    },
+    {
+      "op": "replace",
+      "package_id": "C02",
+      "field": "exit_criteria",
+      "replacement_value_hash": "sha256:08b6944f0ca3c12e46a2d42c1844b47ba24d938511a5897bb1769bf0ee6f95ef"
+    },
+    {
+      "op": "replace",
+      "package_id": "C02",
+      "field": "required_checks",
+      "replacement_value_hash": "sha256:855c55189eb33eba975896e268cc26448246d21f4bc2771dbc67fa61b1edce6d"
+    },
+    {
+      "op": "replace",
+      "package_id": "C04",
+      "field": "exit_criteria",
+      "replacement_value_hash": "sha256:99989e3e03555ca6c05573e771b83b4d4a22fdf959130d4d9b78ff98380d4bce"
+    },
+    {
+      "op": "replace",
+      "package_id": "C04",
+      "field": "required_checks",
+      "replacement_value_hash": "sha256:d1d87e62d4e92d38ebf6d57c3902da7857b574684dd5c858bf39ad023a11a51f"
+    },
+    {
+      "op": "replace",
+      "package_id": "O02",
+      "field": "write_scope",
+      "replacement_value_hash": "sha256:4a080889a6254cd9a92251e96d11d0e9558bea116977e76a3a0ae0367b87831b"
+    },
+    {
+      "op": "replace",
+      "package_id": "O02",
+      "field": "exit_criteria",
+      "replacement_value_hash": "sha256:fea758f85778b10fb42713592fafd8381a9e45aeee04c68935fa1d412537eb3b"
+    },
+    {
+      "op": "replace",
+      "package_id": "O02",
+      "field": "required_checks",
+      "replacement_value_hash": "sha256:9cf917350a5e3af3a380dce24825d2d17e4ef032ad1e309595f72e79745a9fc3"
+    }
+  ],
+  "operation_count": 12,
+  "changed_package_ids": [
+    "B04",
+    "C01",
+    "C02",
+    "C04",
+    "O02"
+  ],
+  "changed_fields": {
+    "B04": [
+      "exit_criteria",
+      "required_checks"
+    ],
+    "C01": [
+      "write_scope",
+      "exit_criteria",
+      "required_checks"
+    ],
+    "C02": [
+      "exit_criteria",
+      "required_checks"
+    ],
+    "C04": [
+      "exit_criteria",
+      "required_checks"
+    ],
+    "O02": [
+      "write_scope",
+      "exit_criteria",
+      "required_checks"
+    ]
+  },
+  "static_dependency_changes": [],
+  "attempt_level_reconciliation": [
+    "C01-0008",
+    "S04-0005",
+    "C01-0009",
+    "C02-0004",
+    "B04-0009",
+    "O02-0002",
+    "C04-0004",
+    "next-unused-B04-final-packaging-attempt"
+  ],
+  "parent_hash_verification": {
+    "status": "PASS",
+    "observed_before_patch": false,
+    "observed_sha256": "5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "verification_source": "superseded_active_binding_successor"
+  },
+  "created_at": "2026-07-31T08:51:27.691Z",
+  "patch_plan_hash": "sha256:b67f63b0dd1c50869f4ce40f25b25cbec89348ac826c6271071ed3d4222122f3"
+}

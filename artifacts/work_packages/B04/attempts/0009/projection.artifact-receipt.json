@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-B04-0009-CANONICAL-PROJECTION",
+  "byte_size": 64098,
+  "content_hash": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+  "created_at": "2026-07-31T10:05:00.000Z",
+  "created_by": {
+    "actor_id": "B04-0009-projection-regression-verifier",
+    "actor_type": "tool"
+  },
+  "locator": "src/epistemic_foundry/_canonical/canonical-registry.json",
+  "media_type": "application/vnd.epistemic-foundry.canonical-registry+json",
+  "receipt_hash": "sha256:9ddf7fbd76878c8f8904567cc86b6284be3ddf7c76ea74acfde95bfddac4e45a",
+  "receipt_id": "AR-B04-0009-CANONICAL-PROJECTION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "registry_byte_integrity",
+      "details": "Receipt binds the exact deterministic 127-schema canonical registry bytes.",
+      "status": "PASS"
+    },
+    {
+      "check": "root_snapshot_wheel_convergence",
+      "details": "All 128 resources bind root sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5 to snapshot sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229 and the clean wheel byte-for-byte.",
+      "status": "PASS"
+    },
+    {
+      "check": "pre_o02_scope_boundary",
+      "details": "This is the B04-0009 pre-O02 receipt, not the final post-C04 packaging gate.",
+      "status": "PASS"
+    }
+  ]
+}

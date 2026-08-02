@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.validation.plan.input.schema.json",
+  "title": "FoundryValidationPlanInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request": {
+      "type": "object",
+      "description": "Domain compilation request owned by the bound plan compiler; the compiled artifact must validate against the canonical schema bound in the tool catalog."
+    }
+  },
+  "required": [
+    "workspace_id",
+    "target_id",
+    "idempotency_key",
+    "request"
+  ]
+}

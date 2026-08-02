@@ -1,0 +1,54 @@
+{
+  "approval_is_explicit": {
+    "candidate_model_or_backend_principal_cannot_grant_authority": true,
+    "client_asserted_authority_role_rejected": true,
+    "later_revoke_head_invalidates_earlier_approved_lease": true,
+    "promotion_capability_requires_matching_approval": true,
+    "self_approval_is_a_non_waivable_denial": true
+  },
+  "attempt_id": "E03-0001",
+  "exit_criteria": {
+    "leases_are_scoped_and_expiring": {
+      "evidence": [
+        "packages/foundry-kernel/src/capabilities/lease-expiry.test.mjs"
+      ],
+      "mechanism": "issueLease binds each lease to a sealed PolicyBundle subject, its declared run and resource scopes, and a strictly positive lifetime; a zero or negative lifetime fails closed with LEASE_ALREADY_EXPIRED before any state mutation, and a subject/run/scope drift fails with LEASE_RUN_SCOPE_MISMATCH or LEASE_SUBJECT_SCOPE_MISMATCH. commitWithLease fails closed before invoking or persisting the callback on an expired (LEASE_EXPIRED), not-yet-valid (LEASE_NOT_YET_VALID), revoked (LEASE_REVOKED), or policy-changed (LEASE_POLICY_MISMATCH) lease; an in-callback expiry or clock regression rolls the protected mutation back atomically (LEASE_EXPIRED / CLOCK_REGRESSION), and an exact issuance or operation retry is idempotent",
+      "status": "PASS"
+    },
+    "stale_fencing_tokens_rejected": {
+      "evidence": [
+        "packages/foundry-kernel/src/capabilities/fencing.test.mjs"
+      ],
+      "mechanism": "a newer overlapping lease increments the monotonic global fencing token so a stale holder's commit fails closed with STALE_FENCING_TOKEN without persisting its mutation, and no two holders act at once; a forged fencing token or lease field is caught by the sealed lease hash (LEASE_HASH_MISMATCH) before the callback runs; the callback cannot read authority-private scope-head state (CAPABILITY_STATE_ACCESS_DENIED); an async (ASYNC_LEASE_COMMIT_DENIED) or thrown (LEASE_COMMIT_CALLBACK_FAILED) callback rolls back its result and event outbox; and a committed lease survives an E01 outage and reconciles its event exactly once",
+      "status": "PASS"
+    }
+  },
+  "leases_are_scoped_and_expiring": {
+    "clock_before_issued_at_is_not_yet_valid": true,
+    "expiry_boundary_rejects_commit_without_invoking_callback": true,
+    "in_callback_expiry_or_clock_regression_rolls_back": true,
+    "issued_leases_are_canonical_frozen_and_schema_valid": true,
+    "zero_or_negative_lifetime_fails_before_mutation": true
+  },
+  "required_checks": {
+    "fencing_test": {
+      "module": "packages/foundry-kernel/src/capabilities/fencing.test.mjs",
+      "status": "PASS",
+      "test_count": 19
+    },
+    "lease_expiry_test": {
+      "module": "packages/foundry-kernel/src/capabilities/lease-expiry.test.mjs",
+      "status": "PASS",
+      "test_count": 11
+    }
+  },
+  "stale_fencing_tokens_rejected": {
+    "async_or_thrown_callback_rolls_back_result_and_outbox": true,
+    "committed_state_survives_e01_outage_and_reconciles_once": true,
+    "forged_lease_field_or_hash_fails_before_callback": true,
+    "newer_overlapping_lease_increments_monotonic_token": true,
+    "stale_holder_commit_fails_closed_without_persisting": true
+  },
+  "status": "PASS",
+  "targeted_test_count": 30
+}

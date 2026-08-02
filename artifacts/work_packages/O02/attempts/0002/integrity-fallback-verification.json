@@ -1,0 +1,55 @@
+{
+  "attempt_id": "O02-0002",
+  "backend_request_hash": "sha256:ec24763735e3830aec36abf41ac0f592be533376fbd6632406e74e3557429945",
+  "backend_response_hash": "sha256:4a636dbb17a17ba5f6a4dae168987a7fd3d0be2bd86e9e71c3de7a3d4c2fb65e",
+  "candidate_count": 2,
+  "candidate_replay_sha256": "sha256:c5898cd3d49c2ac07ba1595eec9c4803a836f2a6024a64c4aad5cc4dc6442910",
+  "candidate_schema_validation": "PASS",
+  "cutoff_count": 0,
+  "duplicate_count": 1,
+  "excluded_count": 1,
+  "raw_hit_count": 4,
+  "replay_byte_identical": true,
+  "run_ceiling": "PASS",
+  "status": "PASS",
+  "tamper_rejection_codes": {
+    "candidate": "CANDIDATE_HASH_MISMATCH",
+    "corpus_snapshot_hash": "STALE_RETRIEVAL_SNAPSHOT",
+    "plan_hash": "RESPONSE_BINDING_MISMATCH",
+    "query_hash": "RESPONSE_BINDING_MISMATCH",
+    "unsealed_response": "BACKEND_RESPONSE_HASH_MISMATCH"
+  },
+  "terminal_case_count": 5,
+  "terminal_cases": [
+    {
+      "case_id": "POLICY",
+      "error_code": "POLICY_DENIED",
+      "search_state": "BLOCKED",
+      "stop_reason": "policy_blocked"
+    },
+    {
+      "case_id": "CREDENTIAL",
+      "error_code": "CREDENTIAL_UNAVAILABLE",
+      "search_state": "BLOCKED",
+      "stop_reason": "credential_unavailable"
+    },
+    {
+      "case_id": "BACKEND",
+      "error_code": "BACKEND_UNAVAILABLE",
+      "search_state": "BLOCKED",
+      "stop_reason": "backend_unavailable"
+    },
+    {
+      "case_id": "PROVIDER",
+      "error_code": "PROVIDER_FAILURE",
+      "search_state": "FAILED",
+      "stop_reason": "provider_failure"
+    },
+    {
+      "case_id": "PARTIAL",
+      "error_code": "BOUNDED_TIMEOUT",
+      "search_state": "PARTIAL",
+      "stop_reason": "bounded_interruption"
+    }
+  ]
+}

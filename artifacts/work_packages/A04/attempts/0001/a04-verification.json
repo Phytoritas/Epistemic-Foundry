@@ -1,0 +1,53 @@
+{
+  "attempt_id": "A04-0001",
+  "attestation_scope": {
+    "attested_not_authored": "A04 reconciles the sealed A01/A02/A03 evidence and attests the repository authority and boundary documents; it owns no source and edits no canonical source, schema, or manifest",
+    "authored_harnesses": [
+      "artifacts/work_packages/A04/attempts/0001/test_independent_review_gate.py",
+      "artifacts/work_packages/A04/attempts/0001/test_phase_artifact_reconciliation.py"
+    ],
+    "reconciled_packages": [
+      "A01",
+      "A02",
+      "A03"
+    ]
+  },
+  "exit_criteria": {
+    "a01_a03_evidence_reconciled": {
+      "mechanism": "phase_artifact_reconciliation pins the three sealed manifest evidence_artifacts of A01/A02/A03 by SHA-256, asserts each sealed report is PASS and internally self-consistent (every declared check exit_code 0 with a resolvable commands.jsonl anchor, output artifacts and authored authority documents present), verifies the monotonic ledger evidence-id chain E0249/E0250 < E0261/E0262 < E0277/E0278 with A02/A03 pinning A01's exact ids and A03's regression baseline the sealed A02-0001, and confirms the A02->A01, A03->A01, A04->{A02,A03} dependency structure with all three authority domains present",
+      "status": "PASS"
+    },
+    "independent_reviewer_approves_authority_and_boundaries": {
+      "mechanism": "independent_review_gate attests the deterministic substance an independent reviewer relies on -- the canonical eight-level CLAUDE.md authority order (no lower source can win), the authority-inward-of-adapter boundary policy with foundry-kernel authority and the plugin-host/ui-api hosts adapters, the sealed A03 boundary_cycle_policy_check PASS, and ADR-034 as a genuine tightening whose weakening alternatives are recorded as rejected -- and the sealing session, acting as the independent integration_reviewer, certifies in review.md that the A-phase authority and boundaries genuinely hold",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded A04 implementation agent that authored the phase_artifact_reconciliation and independent_review_gate harnesses; reviewer: the sealing session acting as the integration_reviewer, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "independent_review_gate": {
+      "status": "PASS",
+      "test_count": 5
+    },
+    "phase_artifact_reconciliation": {
+      "status": "PASS",
+      "test_count": 5
+    }
+  },
+  "seal_time_independent_review": {
+    "actor_independent_certification_claimed": false,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "note": "The independent_review_gate harness attests deterministic preconditions only and does not itself claim seal-time certification; the sealing session performs the actual A-phase integration review as a distinct actor and records the verdict in review.md.",
+    "role": "integration_reviewer",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1253,
+    "full_python_suite": 1261,
+    "independent_review_gate": 5,
+    "phase_artifact_reconciliation": 5
+  }
+}

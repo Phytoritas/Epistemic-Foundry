@@ -1,0 +1,42 @@
+{
+  "attempt_id": "O04-0001",
+  "exit_criteria": {
+    "absence_claims_carry_certificates": {
+      "evidence": [
+        "python/epistemic_foundry/retrieval/completeness/test_absence_claim.py"
+      ],
+      "status": "PASS"
+    },
+    "failed_lane_never_equals_zero_evidence": {
+      "evidence": [
+        "python/epistemic_foundry/retrieval/completeness/test_partial_search.py"
+      ],
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "claim_binding": "every claim recomputes the certificate through the O01 public API and hash-binds certificate_id/certificate_hash",
+    "ignorance_states": [
+      "UNSEARCHED",
+      "PARTIAL",
+      "BLOCKED",
+      "FAILED"
+    ],
+    "partial_policy": "scope-bounded claims only, ceiling demoted to LOCAL_CORPUS_ONLY",
+    "zero_evidence_states": [
+      "SEARCHED_NONE"
+    ]
+  },
+  "required_checks": {
+    "absence_claim_test": {
+      "module": "python/epistemic_foundry/retrieval/completeness/test_absence_claim.py",
+      "status": "PASS"
+    },
+    "partial_search_test": {
+      "module": "python/epistemic_foundry/retrieval/completeness/test_partial_search.py",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 18
+}

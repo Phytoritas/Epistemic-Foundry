@@ -1,0 +1,76 @@
+{
+  "attempt_id": "C06-0001",
+  "declaring_sources": {
+    "canonical_schemas": "schemas/*.schema.json (C01 authority; unmodified)",
+    "compatibility_vocabulary": "none: the binding is pure $ref structure over compatibility-matrix, schema-migration and update-impact-report (EF4-I22)",
+    "family_membership": "schemas/v4_c05/family-index.json (sealed C05)",
+    "generated_projections": "packages/contracts, python/epistemic_foundry/contracts and web/src/generated contract manifests (C02 authority; unmodified)"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "evidence": [
+        "artifacts/work_packages/C06/attempts/0001/test_provenance_receipts.py"
+      ],
+      "mechanism": "integration-index.json receipts the generator, the four reconciled sources and both emitted outputs by content hash; verification recomputes every one of them from the live repository, regeneration is byte-identical, and a file in the bundle that no receipt covers is refused",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "evidence": [
+        "artifacts/work_packages/C06/attempts/0001/test_schema_and_type.py"
+      ],
+      "mechanism": "the compatibility binding is a valid Draft 2020-12 schema whose references resolve to canonical $ids and which declares no enum, const, pattern or format of its own; the index and parity record keep exact field sets with recomputable hashes and account for exactly the sealed C05 membership",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "evidence": [
+        "artifacts/work_packages/C06/attempts/0001/test_unit_contract.py",
+        "artifacts/work_packages/C06/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "all four receipts are re-derived from the live repository and must agree on every member; every canonical fixture validates against its own schema and, where one governs it, its C05 composite; divergence, staleness, tampering and re-sealing are each refused with a typed code, and a deleted output is repaired byte-identically by re-emitting",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "evidence": [
+        "artifacts/work_packages/C06/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "the EF4-I41 boundary is proved with the repository's own fixtures: each of the eleven genome-family records that merely describe variation must be refused as a candidate, as must the evaluator and holdout fixtures, and a bundle whose candidate composite was widened is refused as AUTHORITY_IN_MUTABLE_SPACE",
+      "status": "PASS"
+    }
+  },
+  "reconciliation": {
+    "canonical_fixtures_validated": 84,
+    "composite_bound_members": 31,
+    "member_count": 42,
+    "projections_reconciled": 3,
+    "schema_only_members": 11,
+    "sources_reconciled": 4
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "module": "artifacts/work_packages/C06/attempts/0001/test_negative_adversarial.py",
+      "status": "PASS",
+      "test_count": 34
+    },
+    "provenance_and_receipt_audit": {
+      "module": "artifacts/work_packages/C06/attempts/0001/test_provenance_receipts.py",
+      "status": "PASS",
+      "test_count": 11
+    },
+    "schema_and_type_check": {
+      "module": "artifacts/work_packages/C06/attempts/0001/test_schema_and_type.py",
+      "status": "PASS",
+      "test_count": 18
+    },
+    "unit_and_contract_tests": {
+      "module": "artifacts/work_packages/C06/attempts/0001/test_unit_contract.py",
+      "status": "PASS",
+      "test_count": 61
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 124
+}

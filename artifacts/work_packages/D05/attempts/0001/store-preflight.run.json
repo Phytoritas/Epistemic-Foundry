@@ -1,0 +1,15 @@
+{
+  "attempt_id": "D05-0001",
+  "check": "store-preflight",
+  "command": [
+    "uv",
+    "run",
+    "--locked",
+    "python",
+    "-B",
+    "-c",
+    "import sys; sys.path.insert(0, r'artifacts/work_packages/D05/attempts/0001'); import pg_harness; sys.exit(0 if pg_harness.docker_is_available() else 1)"
+  ],
+  "exit_code": 0,
+  "status": "PASS"
+}

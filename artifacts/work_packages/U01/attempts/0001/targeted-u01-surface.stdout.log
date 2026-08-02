@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="an operation without an operationId is refused" time="0.002018" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="two operations sharing one operationId are refused" time="0.000705" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a response media type without a schema is refused" time="0.000540" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a non-bodiless response with neither $ref nor content is refused" time="0.000377" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="an operation that declares no responses at all is refused" time="0.000249" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a bodiless redirect status is accepted rather than refused" time="0.000160" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a path item declaring an unknown verb is refused" time="0.000289" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a dangling component reference is refused" time="0.000255" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a document that is not an OpenAPI object is refused" time="0.000342" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a missing document source is refused rather than defaulted" time="0.021634" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="every YAML construct outside the accepted subset is refused, not guessed" time="0.000761" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a handler for an operation the document does not declare is refused" time="0.001081" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="dispatching or resolving an undeclared operation is refused" time="0.000429" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a handler entry that is not callable is refused at composition time" time="0.000199" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a refusal is frozen and carries its standing reason" time="0.000472" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="a fixture that breaks nothing still projects" time="0.002825" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="the generated client refuses malformed input rather than sending it" time="0.001637" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-adversarial.test.mjs"/>
+	<testcase name="the projection and the document declare exactly the same operations" time="0.001861" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="the projection resolves component references the document indirects through" time="0.000253" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="an inline composed response schema is projected as inline, not invented" time="0.000183" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="a complete handler map covers the surface with no gap" time="0.000612" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="a declared operation with no handler is listed rather than tolerated" time="0.000817" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="dispatch hands the handler the route the document declares" time="0.000287" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="the generated client exports exactly one function per declared operation" time="0.000189" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="the generated client bakes the same route rows the server projects" time="0.001126" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="each client function bakes its own method and path template" time="0.000908" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="the client builds a deterministic URL from path and query values" time="0.000285" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="the client hands its descriptor to an injected transport and performs no I/O itself" time="0.000169" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="a request body is sent only where the document declares one" time="0.000127" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="the projector is document-shaped, not canonical-document-shaped" time="0.000470" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-contract.test.mjs"/>
+	<testcase name="the bound document digest matches the bytes on disk" time="0.001929" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="the packaged canonical projection is byte-identical to the source authority" time="0.001293" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="the route table digest is re-derivable from the route table" time="0.006683" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="the coverage record digest is re-derivable from the record" time="0.000528" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="changing any field of a coverage record changes its digest" time="0.000411" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="canonical JSON is key-order independent and whitespace-free" time="0.000459" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="every generated file names its generator and its source document bytes" time="0.001383" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="the generated route manifest agrees with the Node projection field for field" time="0.002417" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="regenerating the client reproduces the committed bytes exactly" time="0.915865" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="the generator refuses the committed tree when it drifts" time="1.615700" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="no product module reads a clock or a random source" time="0.004757" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-receipts.test.mjs"/>
+	<testcase name="the surface binds the repository-root OpenAPI document" time="0.000678" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<testcase name="the projection pins the declared operation count" time="0.000470" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<testcase name="the projection pins the declared method and path distribution" time="0.000171" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<testcase name="every projected row has the declared shape" time="0.000213" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<testcase name="every path parameter in a template is projected exactly once" time="0.000205" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<testcase name="every operation declares a default problem response" time="0.000119" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<testcase name="every operation declares one success status with a described body" time="0.000152" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<testcase name="a schema reference is either an internal pointer or a canonical schema file" time="0.000275" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<testcase name="the accepted verb and field vocabularies are frozen and complete" time="0.000146" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<testcase name="every finding code states a reason long enough to stand alone" time="0.000244" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<testcase name="the surface declares no route of its own" time="0.001406" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\ui-api\src\openapi\openapi-schema.test.mjs"/>
+	<!-- tests 52 -->
+	<!-- suites 0 -->
+	<!-- pass 52 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 4240.789 -->
+</testsuites>

@@ -1,0 +1,40 @@
+{
+  "attempt_id": "Z03-0001",
+  "declaring_sources": {
+    "matrix_fixture": "tests/migration/fixtures/upgrade_rollback_matrix.yaml (Z03's own declaring source of upgrade/downgrade paths, rollback record fixtures and backfill batches)",
+    "rollback_and_backfill_contract": "migrations/contracts/compatibility-matrix.json rollback and backfill blocks (composed by citation, unmodified)",
+    "v3_to_v4_migration": "migrations/contracts/evolution-run-spec-v3-to-v4.migration.json (composed by citation, unmodified)"
+  },
+  "exit_criteria": {
+    "failed_migration_rolls_back": {
+      "mechanism": "rollback_test proves a failed migration restores the exact prior state (restored source hash and state hash equal the retained originals) and refuses a rollback that discards the v3 source, mismatches the hash, loses migration records, rewrites promotion or effect history, or leaves records unresolved",
+      "status": "PASS"
+    },
+    "hook_re_trust_tested": {
+      "mechanism": "upgrade_matrix_test proves an upgraded host must re-establish hook trust and refuses silent inheritance of the prior trust state, with the positive re-trust path and the silent-inheritance refusal both exercised",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "rollback_test": {
+      "status": "PASS",
+      "test_count": 14
+    },
+    "upgrade_matrix_test": {
+      "status": "PASS",
+      "test_count": 13
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1740,
+    "full_python_suite": 1312,
+    "rollback_test": 14,
+    "upgrade_matrix_test": 13,
+    "wire_literal_discipline": 5
+  }
+}

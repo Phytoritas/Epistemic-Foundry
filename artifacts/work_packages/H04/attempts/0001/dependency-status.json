@@ -1,0 +1,26 @@
+{
+  "attempt_id": "H04-0001",
+  "dependencies": {
+    "H02": {
+      "attempt_id": "H02-0001",
+      "core_evidence_id": "E0345",
+      "core_generation": "000343-761467df",
+      "final_closeout_evidence_id": "E0346",
+      "report": "artifacts/work_packages/H02/attempts/0001/report.json",
+      "report_sha256": "sha256:f6b98a6ede90ec744d5777108a83b1a15bce013ff1270e89696dc427ab4d0a85",
+      "status": "PASS"
+    },
+    "H03": {
+      "attempt_id": "H03-0001",
+      "core_evidence_id": "E0347",
+      "core_generation": "000345-ffa5c1f4",
+      "final_closeout_evidence_id": "E0348",
+      "report": "artifacts/work_packages/H03/attempts/0001/report.json",
+      "report_sha256": "sha256:153e69b78f1e7b7ca085825e29fb5f0815f9fa4aeb8fdba5948c6730d5a2416d",
+      "status": "PASS"
+    }
+  },
+  "dependency_note": "H04 depends on H02 and H03; both sealed attempts are build dependencies pinned by content-hash and sealed core/final evidence ids. The live ledger frontier advances under concurrent sealing; the parent reconciles the exact frontier when it fills the ledger pins at seal time.",
+  "next_action": "SEAL_H04_0001_THEN_RECOMPUTE_DAG",
+  "status": "PASS"
+}

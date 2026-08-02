@@ -25,42 +25,53 @@ completeness_contract:
   partial_result_policy: typed_and_visible_only
 nodes:
 - node_id: register_document
-  purpose: Register source bytes, license metadata, and content hash
+  purpose: Resolve an immutable staged source and atomically register its initial DocumentRegistration with receipts, ledger evidence, and fenced CAS state
   executor_type: deterministic
   executor_ref: epistemic_foundry.ingest.registry:register_document
   input_schema_ref: schemas/node-invocation.schema.json
   output_schema_ref: schemas/result-envelope.schema.json
   depends_on: []
   read_scope:
-  - incoming/documents/**
+  - artifacts/staged_source/**
+  - artifacts/document_registration_requests/**
+  - policy/**
   write_scope:
-  - db.documents
-  - object_store/source/**
+  - artifacts/source/**
+  - artifacts/document_registrations/**
+  - ledger/events/document_registration/**
+  - state/document_registrations/**
   capabilities:
-  - filesystem_read
-  - database_write
-  - object_store_write
+  - artifact_read
+  - artifact_write
+  - ledger_append
+  - document_register
   model_tier: deterministic
   timeout_seconds: 900
   max_attempts: 2
   failure_policy: fail_run
   acceptance_checks:
-  - sha256 recorded
-  - original bytes preserved
-  - license/access class recorded
+  - DocumentRegistrationRequest hash and invocation input binding verified
+  - staged source bytes resolve through a PASS ArtifactReceipt without network or source-tree fallback
+  - source blob and immutable DocumentRegistration hashes verify
+  - license, access policy, confidentiality, and supersession lineage retained exactly
+  - ActionIntent and resolving EffectReceipt exist
+  - registration ArtifactReceipt and Noetic Ledger event exist
+  - current fencing token and expected revision CAS succeed
+  - retry identity and crash reconciliation hold
   resource_dependencies: []
   determinism_class: deterministic
   idempotency_key_fields:
-  - run_id
-  - node_id
-  - input_hash
+  - idempotency_key
+  - request_hash
   loop_contract_ref: null
   expected_effects:
-  - document_registered
   - source_blob_created
+  - document_registration_created
+  - document_registration_committed
   required_policy_checks:
   - policy_bundle_valid
   - capability_scope_valid
+  - source_access_policy_valid
 - node_id: scan_source_integrity
   purpose: Scan the document and metadata for corruption, active content, prompt-injection
     markers, and trust risks

@@ -1,0 +1,144 @@
+{
+  "attempt_id": "H03-0001",
+  "blueprint_byte_equivalence_count": 2,
+  "complete_hook_directory_inventory": [
+    "plugins/epistemic-foundry/hooks/delegation.json",
+    "plugins/epistemic-foundry/hooks/prompt.json",
+    "plugins/epistemic-foundry/hooks/session.json",
+    "plugins/epistemic-foundry/hooks/tools.json"
+  ],
+  "completion_ready": false,
+  "delegation_contract": {
+    "all_identity_matcher": ".*",
+    "event_names": [
+      "SubagentStart",
+      "SubagentStop"
+    ],
+    "expected_count_contract_binding": "PASS_AT_STATIC_HANDLER_BOUNDARY",
+    "handler_substitution_rejection": "PASS",
+    "missing_start_or_stop_rejection": "PASS",
+    "partial_matcher_rejection": "PASS",
+    "runtime_expected_identity_count_reconciliation_claimed": false,
+    "start_handler_binding": "RoleSpec",
+    "start_matcher": ".*",
+    "stop_handler_binding": "ResultEnvelope",
+    "stop_matcher": ".*"
+  },
+  "machine_local_marker_count": 0,
+  "product_inventory": [
+    {
+      "blueprint": "plugin_blueprint/epistemic-foundry/hooks/tools.json",
+      "blueprint_byte_equivalent": true,
+      "byte_size": 1162,
+      "path": "plugins/epistemic-foundry/hooks/tools.json",
+      "sha256": "sha256:7bd22606fa69ebc447d538c682d2175547e56247fe66755b4c2ac33f0ab31007"
+    },
+    {
+      "blueprint": "plugin_blueprint/epistemic-foundry/hooks/delegation.json",
+      "blueprint_byte_equivalent": true,
+      "byte_size": 698,
+      "path": "plugins/epistemic-foundry/hooks/delegation.json",
+      "sha256": "sha256:05fb9047ce62d00d296e47843c2130bbeb550ea43aa9d009dbcc8c2ce82cd4b6"
+    }
+  ],
+  "required_checks": {
+    "subagent_result_gate_test": {
+      "failed": 0,
+      "passed": 4,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "tool_hook_policy_test": {
+      "failed": 0,
+      "passed": 4,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "runtime_boundary": {
+    "capability_probe_and_degraded_mode_owner": "H04",
+    "expected_identity_and_count_reconciliation_owner": "N04",
+    "hook_runner_exists": false,
+    "observed_hook_coverage_is_exhaustive_enforcement": false,
+    "plugin_manifest_capabilities": [],
+    "plugin_manifest_hooks_registered": false,
+    "runtime_integration_owner": "X01/G06",
+    "static_declaration_only": true
+  },
+  "source_contracts": [
+    "MASTER_SPEC.md#H03",
+    "manifests/development_manifest.yaml#H03",
+    "docs/v3_plugin_architecture.md#9-hook-architecture",
+    "docs/v3_plugin_architecture.md#11-subagent-model",
+    "plugin_blueprint/epistemic-foundry/hooks/tools.json",
+    "plugin_blueprint/epistemic-foundry/hooks/delegation.json"
+  ],
+  "status": "PASS",
+  "targeted_junit": {
+    "byte_size": 5906,
+    "h01_regression_case_count": 11,
+    "h02_regression_case_count": 8,
+    "h03_case_count": 8,
+    "path": "artifacts/work_packages/H03/attempts/0001/targeted-node-suite.junit.xml",
+    "sha256": "sha256:a08096bca08eac4e72cf371ed68a68362a1c317f94749e2a02041ce4b6a2520b",
+    "subagent_result_gate_case_count": 4,
+    "test_names": [
+      "session_hook_test: canonical session lifecycle routes are exact and bounded",
+      "session_hook_test: installed declaration is byte-equivalent to the authority blueprint",
+      "session_hook_test: timeout expansion and extra lifecycle work fail closed",
+      "session_hook_test: current package shell does not prematurely claim hook runtime integration",
+      "prompt_hook_test: prompt intake is one bounded classification request",
+      "prompt_hook_test: installed declaration is byte-equivalent to the authority blueprint",
+      "prompt_hook_test: direct state mutation and authority fields fail closed",
+      "prompt_hook_test: prompt declaration cannot register tool, completion, or delegation events",
+      "tool_hook_policy_test: canonical permission, pre-tool, and receipt routes are exact",
+      "tool_hook_policy_test: installed tool declaration is byte-equivalent to the authority blueprint",
+      "tool_hook_policy_test: missing policy or receipt coverage fails closed",
+      "tool_hook_policy_test: timeout expansion, direct allow, and extra events fail closed",
+      "subagent_result_gate_test: canonical start and stop bindings cover every subagent",
+      "subagent_result_gate_test: installed delegation declaration is byte-equivalent to the authority blueprint",
+      "subagent_result_gate_test: missing start or stop coverage and partial matchers fail closed",
+      "subagent_result_gate_test: handler substitution and premature runtime claims fail closed",
+      "hook_schema_fixture_test: canonical schema vocabulary and deterministic fixture agree",
+      "hook_schema_fixture_test: object insertion order cannot change hashes",
+      "hook_schema_fixture_test: the decision callback receives only an immutable canonical view",
+      "hook_schema_fixture_test: invalid callback output becomes an explicit schema-valid error",
+      "hook_schema_fixture_test: hostile or non-JSON payloads fail closed before decision",
+      "hook_schema_fixture_test: envelope integrity rejects tampering",
+      "hook_timeout_test: a non-settling decision returns a bounded fail-closed envelope",
+      "hook_timeout_test: late completion cannot mutate the sealed timeout result",
+      "hook_timeout_test: callback rejection is explicit and does not leak its message",
+      "hook_timeout_test: a fast canonical decision wins without timeout rewriting",
+      "hook_timeout_test: timeout bounds are validated before callback invocation"
+    ],
+    "tool_policy_case_count": 4,
+    "totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 27,
+      "skipped": 0,
+      "tests": 27,
+      "todo": 0
+    }
+  },
+  "tool_contract": {
+    "asymmetric_matcher_rejection": "PASS",
+    "direct_allow_rejection": "PASS",
+    "event_names": [
+      "PermissionRequest",
+      "PreToolUse",
+      "PostToolUse"
+    ],
+    "extra_event_rejection": "PASS",
+    "maximum_timeout_seconds": 15,
+    "missing_policy_or_receipt_rejection": "PASS",
+    "permission_matcher": "Bash|apply_patch|mcp__.*",
+    "policy_route_present": true,
+    "post_tool_matcher": "Bash|apply_patch|Edit|Write|mcp__.*|Agent",
+    "pre_post_matcher_equal": true,
+    "pre_tool_matcher": "Bash|apply_patch|Edit|Write|mcp__.*|Agent",
+    "receipt_route_present": true
+  },
+  "work_package_id": "H03",
+  "write_scope_violation_count": 0
+}

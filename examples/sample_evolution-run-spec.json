@@ -1,23 +1,263 @@
 {
-  "evolution_run_id": "ER-1",
-  "base_run_spec_id": "RUN-1",
-  "objective": "Find falsifiable explanations for observation O.",
+  "evolution_run_id": "ER-FIXTURE-0001",
+  "base_run_spec_id": "RUN-FIXTURE-0001",
+  "objective": "Exercise the sealed EvolutionRunSpec contract without representing a production run.",
   "population_types": [
-    "hypothesis",
     "challenge",
-    "experiment"
+    "experiment",
+    "hypothesis"
   ],
   "seed_genome_ids": [
-    "HG-0001"
+    "HG-FIXTURE-0001"
   ],
-  "evaluator_bundle_id": "EB-1",
-  "holdout_manifest_id": "HO-1",
-  "operator_registry_version": "4.0.0",
-  "max_generations": 40,
-  "max_candidates": 500,
-  "budget_envelope_id": "BE-1",
-  "selection_policy": "constrained_pareto_map_elites",
-  "stop_policy": "dry_rounds_or_budget_or_stability",
+  "evaluator_bundle_id": "EB-FIXTURE-0001",
+  "holdout_manifest_id": "HO-FIXTURE-0001",
+  "operator_registry_version": "4.0.0-fixture.1",
+  "max_generations": 4,
+  "max_candidates": 20,
+  "budget_envelope_id": "BE-FIXTURE-0001",
+  "selection_policy": "constrained_pareto_map_elites_fixture_v1",
+  "stop_policy": "dry_rounds_or_budget_fixture_v1",
   "random_seed": 42,
-  "spec_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  "external_backend_enabled": false,
+  "resolved_refs": {
+    "base_run_spec": {
+      "logical_id": "RUN-FIXTURE-0001",
+      "exact_version_or_revision": "run-spec-revision-0001",
+      "content_hash": "sha256:4196b6dba86806fdabc8e6fb94a55c7a1b61550aa8f88069b2b04da1635775bb",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/base-run-spec/run-spec-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "schema_bundle": {
+      "logical_id": "SCHEMA-BUNDLE-FIXTURE",
+      "exact_version_or_revision": "4.0.0-fixture.1",
+      "content_hash": "sha256:aee2d2b3b18e5a92f924305905b04b9cc82dbf2cfec216019557075930a87fcb",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/schema-bundle/4.0.0-fixture.1",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "workflow": {
+      "logical_id": "evolution_chamber_cycle_fixture",
+      "exact_version_or_revision": "4.0.0-fixture.1",
+      "content_hash": "sha256:f75f1020f6eca1593175cf89485a2a27ebf281688ccd111977a7042c12a7272d",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/workflow/4.0.0-fixture.1",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "policy_bundle": {
+      "logical_id": "PB-FIXTURE-0001",
+      "exact_version_or_revision": "policy-revision-0001",
+      "content_hash": "sha256:dd42cc3ef7404d8ef2b277cfaf1d6fdf4598e114ff6f77cbecd7b2cb94a8942e",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/policy-bundle/policy-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "corpus_evidence_snapshot": {
+      "logical_id": "CORPUS-FIXTURE-0001",
+      "exact_version_or_revision": "snapshot-20260728-fixture.1",
+      "content_hash": "sha256:748872f4e4659c263b59fe182522ee3b21b830ad1bd1f24d29030b03da6f2661",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/corpus/snapshot-20260728-fixture.1",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "ontology": {
+      "logical_id": "ONTOLOGY-FIXTURE",
+      "exact_version_or_revision": "ontology-revision-0001",
+      "content_hash": "sha256:49d619953fa3c57ccb3b10bbe2496bb08e2843eda60c838e4211aeacefffd754",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/ontology/ontology-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "domain_pack": {
+      "logical_id": "DP-FIXTURE-0001",
+      "exact_version_or_revision": "domain-pack-revision-0001",
+      "content_hash": "sha256:7ab52e69668a1cc24f724a7042badf3b529e3110fbb5741e4b6d97ffa14546af",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/domain-pack/domain-pack-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "evaluator_bundle": {
+      "logical_id": "EB-FIXTURE-0001",
+      "exact_version_or_revision": "evaluator-revision-0001",
+      "content_hash": "sha256:a91cc680f35ba440f44af6b5d771d07982a5f1796f29c390cb4973868420834a",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/evaluator/evaluator-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "holdout_manifest": {
+      "logical_id": "HO-FIXTURE-0001",
+      "exact_version_or_revision": "holdout-revision-0001",
+      "content_hash": "sha256:56aa31808fdc9ad9012252c74085adcd3adb4f38ee48b15d94be5aefd7b75e8a",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/holdout-manifest/holdout-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "operator_registry": {
+      "logical_id": "OPERATOR-REGISTRY-FIXTURE",
+      "exact_version_or_revision": "operator-registry-revision-0001",
+      "content_hash": "sha256:bf7a6587149f36ba777c20cc491d1bd7ccf3fbdddec35d0b7685a48821221047",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/operator-registry/operator-registry-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "prompt_bundle": {
+      "logical_id": "PROMPT-BUNDLE-FIXTURE",
+      "exact_version_or_revision": "prompt-bundle-revision-0001",
+      "content_hash": "sha256:3d1090a6c93690fb86ffa401e81c3833769f84866053addfd487952900362691",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/prompt-bundle/prompt-bundle-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "model_routing_policy": {
+      "logical_id": "MODEL-ROUTING-FIXTURE",
+      "exact_version_or_revision": "routing-policy-revision-0001",
+      "content_hash": "sha256:3e9a1303cb50b965d8f3c330bea080c1e19909555b0fa4040e0ce7bc4aaca306",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/model-routing/routing-policy-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "provider_adapter_manifest": {
+      "logical_id": "PROVIDER-ADAPTER-FIXTURE",
+      "exact_version_or_revision": "adapter-manifest-revision-0001",
+      "content_hash": "sha256:d48ee7c857c2c1bfde40714a898249bf2329913e15a307a2fb287fd4507d2c2d",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/provider-adapter/adapter-manifest-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "provider_versioned_not_byte_pinned",
+      "remote_models": [
+        {
+          "provider": "fixture-provider",
+          "exact_exposed_model_identifier": "fixture-model-2026-07-28-r1",
+          "exposed_snapshot_or_revision": "fixture-snapshot-r1",
+          "adapter_version": "1.0.0-fixture.1",
+          "adapter_hash": "sha256:d7758c2809dc1f5c9b32bcf485e8e2a3ba28e3ffa260e75493dd73743b9feebc",
+          "decoding_parameters": {
+            "max_output_tokens": 4096,
+            "seed": 42,
+            "temperature": 0,
+            "top_p": 1
+          },
+          "capability_report_hash": "sha256:a168f886614a6f54ffdfe819a4b695f37710f11372be5b85053aae086e3eed31",
+          "reproducibility_class": "provider_versioned_not_byte_pinned"
+        }
+      ]
+    },
+    "statistical_plan": {
+      "logical_id": "STATISTICAL-PLAN-FIXTURE",
+      "exact_version_or_revision": "statistical-plan-revision-0001",
+      "content_hash": "sha256:052db02e4918571231474ddce502ad25f32bd62fdfc09c0e162b4ccc2b1c6b56",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/statistical-plan/statistical-plan-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "selection_policy": {
+      "logical_id": "SELECTION-POLICY-FIXTURE",
+      "exact_version_or_revision": "selection-policy-revision-0001",
+      "content_hash": "sha256:195a04eec3940e7ea0530d00c99bcbc0bd11b104c06e211a7c64b9b51faad430",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/selection-policy/selection-policy-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "stop_policy": {
+      "logical_id": "STOP-POLICY-FIXTURE",
+      "exact_version_or_revision": "stop-policy-revision-0001",
+      "content_hash": "sha256:5e56fdad4e5be0235e5d483ea1c5c232f04207df7c69e53dcae8dd8e8059d32e",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/stop-policy/stop-policy-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "replication_policy": {
+      "logical_id": "REPLICATION-POLICY-FIXTURE",
+      "exact_version_or_revision": "replication-policy-revision-0001",
+      "content_hash": "sha256:3d9480052a205e6f968da72248870792c80e25c67369ffdb28f8840f72c970a7",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/replication-policy/replication-policy-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "archive_niche_policy": {
+      "logical_id": "ARCHIVE-NICHE-POLICY-FIXTURE",
+      "exact_version_or_revision": "archive-policy-revision-0001",
+      "content_hash": "sha256:aa4cffdd33aaf57dc09ca47545addc166df0f66c7f4b7df9ab7d87c2b569a5d4",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/archive-policy/archive-policy-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "budget_envelope": {
+      "logical_id": "BE-FIXTURE-0001",
+      "exact_version_or_revision": "budget-revision-0001",
+      "content_hash": "sha256:aab58a0debab1a90478dc9fcf252319cab0b627d687beab6f16290611dc37b69",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/budget/budget-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    },
+    "execution_environment_toolchain_manifest": {
+      "logical_id": "TOOLCHAIN-FIXTURE-0001",
+      "exact_version_or_revision": "toolchain-revision-0001",
+      "content_hash": "sha256:89e26648f2a6d3820a5001067ef757f0f478d60a1e6b7fec54d2f79ee9cd8848",
+      "resolver_id": "fixture-resolver",
+      "resolver_version": "1.0.0-fixture.1",
+      "resolved_artifact_locator": "artifact://fixture/toolchain/toolchain-revision-0001",
+      "resolved_at": "2026-07-28T00:00:00Z",
+      "authority_source_class": "deterministic_fixture",
+      "reproducibility_class": "deterministic_fixture"
+    }
+  },
+  "spec_hash": "sha256:580392a2d791515a6523472372fa3139321807a9fa3a2a0f183e93b4686948df"
 }

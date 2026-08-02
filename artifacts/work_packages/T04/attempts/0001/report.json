@@ -1,0 +1,316 @@
+{
+  "attempt_id": "T04-0001",
+  "attempt_type": "T04_SANDBOX_AND_EXTERNAL_TOOL_ADAPTER_GATE",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "T04-0001",
+    "dependencies": {
+      "T02": {
+        "attempt_id": "T02-0001",
+        "core_evidence_id": "E0127",
+        "final_closeout_evidence_id": "E0128",
+        "report": "artifacts/work_packages/T02/attempts/0001/report.json",
+        "report_sha256": "sha256:53218e162140319fabd504be498d4248009763c2853b27c09f60626ae9c00bbd",
+        "status": "PASS"
+      },
+      "T03": {
+        "attempt_id": "T03-0001",
+        "core_evidence_id": "E0139",
+        "final_closeout_evidence_id": "E0140",
+        "report": "artifacts/work_packages/T03/attempts/0001/report.json",
+        "report_sha256": "sha256:eaf4f4a3252584860626e35374b402622e241a78264c5d02cd83b14ef4c7773d",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_T04_0001_THEN_CONTINUE_DAG",
+    "regression_baseline": {
+      "attempt_id": "Q01-0001",
+      "core_evidence_id": "E0149",
+      "final_closeout_evidence_id": "E0150",
+      "report": "artifacts/work_packages/Q01/attempts/0001/report.json",
+      "report_sha256": "sha256:89305583d752aa36858719ef7309e92827a857f8a7df9b35b4300324db39b2f3",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "timeouts_cancellation_quotas_enforced": "PASS",
+    "tool_outputs_hashed": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_package": "B05-0001",
+  "not_claimed": [
+    "an operating-system, container, or hypervisor sandbox, since this gate decides admissibility over declared contracts",
+    "that a conforming decision proves an external tool is safe to run",
+    "kernel or MCP binding of this gate, which T05 and later own",
+    "execution of any external tool, which no test performs",
+    "actor-independent certification of this implementation review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 36118,
+      "path": "artifacts/work_packages/T04/attempts/0001/build_t04_0001_evidence.py",
+      "sha256": "sha256:f94db50a4023fd915b304530b976bbd29778c8108f188dbcd7a432b1d2ef9150"
+    },
+    {
+      "byte_size": 9103,
+      "path": "artifacts/work_packages/T04/attempts/0001/commands.jsonl",
+      "sha256": "sha256:f6c5df79edac76a454eec3ef3ac5b0e694ab63c5399f8e35bd4eb4aacfd19bb1"
+    },
+    {
+      "byte_size": 6953,
+      "path": "artifacts/work_packages/T04/attempts/0001/dependency-regression-cli.junit.xml",
+      "sha256": "sha256:8e7bb012d602195789c64795a9ad8e383fdf2310d05c18e1c2844e73502530f2"
+    },
+    {
+      "byte_size": 2655,
+      "path": "artifacts/work_packages/T04/attempts/0001/dependency-regression-mcp-write.junit.xml",
+      "sha256": "sha256:c15435d4ed70cfd2a15afab56043fc723db9d4857f976b805da1b6b1e4e117d0"
+    },
+    {
+      "byte_size": 1105,
+      "path": "artifacts/work_packages/T04/attempts/0001/dependency-status.json",
+      "sha256": "sha256:46909b76c2217d45c55e33a0d8e4d053f8c815d24562ddbaad60f509929f9243"
+    },
+    {
+      "byte_size": 189413,
+      "path": "artifacts/work_packages/T04/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:5b2769ea630782329f30f0c31686b9d9c51e93c21851c33e4ecbef0198d33d7c"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/T04/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 1019,
+      "path": "artifacts/work_packages/T04/attempts/0001/inherited-defect-corrections.json",
+      "sha256": "sha256:6132aad2d7331c643c11289a856fb43ac4f810b1a05b447b3ef99078e780b4f9"
+    },
+    {
+      "byte_size": 3723,
+      "path": "artifacts/work_packages/T04/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:5f10238427d176bdf7b31aeec8c627a4fe6093105b52eaa8b445436fa4d9db90"
+    },
+    {
+      "byte_size": 6096,
+      "path": "artifacts/work_packages/T04/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:8a4f4cfc74b7b66b2d1efbd14379184e0c5e7a2fea94705e83928406e0e67b37"
+    },
+    {
+      "byte_size": 553,
+      "path": "artifacts/work_packages/T04/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:71756119745bd1d63439fa857c0991ebb6f700086cc708da2fc7802caa4459ca"
+    },
+    {
+      "byte_size": 3406,
+      "path": "artifacts/work_packages/T04/attempts/0001/review.md",
+      "sha256": "sha256:4b148c71a168f2b2cd09c8fa017fa4f2682a54eef73ad5bba4f462f53002f8dc"
+    },
+    {
+      "byte_size": 6732,
+      "path": "artifacts/work_packages/T04/attempts/0001/run_t04_0001_checks.py",
+      "sha256": "sha256:e73bf300af7257c4c72330d1f6eb36c606de48a437601b29fa9b3f5c1a3c7ea5"
+    },
+    {
+      "byte_size": 7091,
+      "path": "artifacts/work_packages/T04/attempts/0001/sandbox-escape-test.junit.xml",
+      "sha256": "sha256:16b7301f1abbb82f576777368de7f6c4df797432e5a62e2757946cd78ffecbce"
+    },
+    {
+      "byte_size": 2722,
+      "path": "artifacts/work_packages/T04/attempts/0001/t04-verification.json",
+      "sha256": "sha256:111ed176475822b131ae908ca0cb8163d60e0da3056802018e594928ff2b00f4"
+    },
+    {
+      "byte_size": 24155,
+      "path": "artifacts/work_packages/T04/attempts/0001/t04_0001_rah_seal.py",
+      "sha256": "sha256:558eaecfd2da04cda1801b08a255c6a2b21faed98ff24324d40f7af13abab29b"
+    },
+    {
+      "byte_size": 12442,
+      "path": "artifacts/work_packages/T04/attempts/0001/targeted-tool-sandbox.junit.xml",
+      "sha256": "sha256:34fa6247b7305885930cb82e111bbd24923f591c6c98b8584ef4b02b7d6630b3"
+    },
+    {
+      "byte_size": 5517,
+      "path": "artifacts/work_packages/T04/attempts/0001/tool-receipt-test.junit.xml",
+      "sha256": "sha256:1b57eaa8b75ce7c85cd2d3284e8a1141fe11607b50366f8bb7c8fa3cb17cf903"
+    },
+    {
+      "byte_size": 1417,
+      "path": "artifacts/work_packages/T04/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:dea79f17d0630b033bc607ca821562c10c7ac3ee23c7c5320384f93f11546efc"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0151",
+    "core_generation": "000149-0c01e02e",
+    "final_closeout_evidence_id": "E0152",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 894,
+    "implementation_gate": "fail",
+    "retained_generation_count": 149,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "T04-0001",
+    "baseline_attempt": "Q01-0001",
+    "cli_regression": {
+      "cancelled": 0,
+      "collected": 38,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T04/attempts/0001/dependency-regression-cli.junit.xml",
+      "junit_sha256": "sha256:8e7bb012d602195789c64795a9ad8e383fdf2310d05c18e1c2844e73502530f2",
+      "passed": 38,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 38
+    },
+    "component_tests_are_targeted_only": true,
+    "full_node": {
+      "cancelled": 0,
+      "collected": 982,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T04/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:5b2769ea630782329f30f0c31686b9d9c51e93c21851c33e4ecbef0198d33d7c",
+      "passed": 982,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 977
+    },
+    "full_python": {
+      "collected": 1261,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T04/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+      "passed": 1261,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1261
+    },
+    "mcp_write_regression": {
+      "cancelled": 0,
+      "collected": 16,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T04/attempts/0001/dependency-regression-mcp-write.junit.xml",
+      "junit_sha256": "sha256:c15435d4ed70cfd2a15afab56043fc723db9d4857f976b805da1b6b1e4e117d0",
+      "passed": 16,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 16
+    },
+    "new_failure_count": 0,
+    "prior_baseline_counts": {
+      "full_node": 982,
+      "full_python": 1261
+    },
+    "sandbox_escape_test": {
+      "collected": 62,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T04/attempts/0001/sandbox-escape-test.junit.xml",
+      "junit_sha256": "sha256:16b7301f1abbb82f576777368de7f6c4df797432e5a62e2757946cd78ffecbce",
+      "passed": 62,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 62
+    },
+    "status": "PASS",
+    "targeted_tool_sandbox": {
+      "collected": 115,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T04/attempts/0001/targeted-tool-sandbox.junit.xml",
+      "junit_sha256": "sha256:34fa6247b7305885930cb82e111bbd24923f591c6c98b8584ef4b02b7d6630b3",
+      "passed": 115,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 115
+    },
+    "tool_receipt_test": {
+      "collected": 53,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T04/attempts/0001/tool-receipt-test.junit.xml",
+      "junit_sha256": "sha256:1b57eaa8b75ce7c85cd2d3284e8a1141fe11607b50366f8bb7c8fa3cb17cf903",
+      "passed": 53,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 53
+    },
+    "unexpected_skip_xfail_todo_or_cancellation_count": 0
+  },
+  "required_checks": {
+    "sandbox_escape_test": {
+      "module": "python/epistemic_foundry/tools/sandbox/test_sandbox_escape.py",
+      "status": "PASS",
+      "test_count": 62
+    },
+    "tool_receipt_test": {
+      "module": "python/epistemic_foundry/tools/sandbox/test_tool_receipt.py",
+      "status": "PASS",
+      "test_count": 53
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "T04",
+  "write_scope": {
+    "approved_scope": [
+      "python/epistemic_foundry/tools/**",
+      "artifacts/work_packages/T04/**"
+    ],
+    "attempt_id": "T04-0001",
+    "component_files": [
+      "python/epistemic_foundry/tools/sandbox/__init__.py",
+      "python/epistemic_foundry/tools/sandbox/contracts.py",
+      "python/epistemic_foundry/tools/sandbox/pytest.ini",
+      "python/epistemic_foundry/tools/sandbox/test_sandbox_escape.py",
+      "python/epistemic_foundry/tools/sandbox/test_tool_receipt.py"
+    ],
+    "product_file_hashes": {
+      "python/epistemic_foundry/tools/sandbox/__init__.py": "sha256:85303b54f9efd2e9d65d7b3bd99736784a6b26a9482161ca4d515fe16a092e36",
+      "python/epistemic_foundry/tools/sandbox/contracts.py": "sha256:91bb06a0adf59bc3ab3a0eca833f855bf7010afb20ca7e371b24539efd2c18e4",
+      "python/epistemic_foundry/tools/sandbox/pytest.ini": "sha256:37f8a67e65729e203e590f33ff901a03b63e286abb379df730497e7b880e3b46",
+      "python/epistemic_foundry/tools/sandbox/test_sandbox_escape.py": "sha256:34831d153ca4b0afca7553141d94aab9928e9e7aba4b06ea1fe3290fa47287af",
+      "python/epistemic_foundry/tools/sandbox/test_tool_receipt.py": "sha256:314fa9bb4ea3e172a3c59d933b3b1687b1aeb45b61d3285a3fb9664959f75ce0"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

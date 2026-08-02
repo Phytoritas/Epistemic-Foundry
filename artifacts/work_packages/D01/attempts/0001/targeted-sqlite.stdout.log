@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="two writers with the same expected revision produce one update and one stale no-op" time="0.135653" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\concurrent-revision.test.mjs"/>
+	<testcase name="concurrent first opens initialize one canonical WAL schema" time="0.124710" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\concurrent-revision.test.mjs"/>
+	<testcase name="integrity failure enters SAFE_MODE and denies every mutation path" time="0.048111" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: missing composite primary key with duplicate rows" time="0.065768" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: non-STRICT table" time="0.046988" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: wrong revision type" time="0.044001" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: nullable record identifier" time="0.046100" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: reversed primary-key order" time="0.050430" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: missing non-negative revision check" time="0.045769" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: missing safe-integer revision ceiling" time="0.044886" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="schema drift enters SAFE_MODE: missing JSON validity check" time="0.052451" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="invalid persisted JSON enters SAFE_MODE during reopen" time="0.061168" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="checkIntegrity detects runtime JSON corruption and enters SAFE_MODE" time="0.129543" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="runtime JSON corruption fails the read and immediately enters SAFE_MODE" time="0.050416" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="runtime revision corruption is detected on read and enters SAFE_MODE" time="0.046551" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="runtime schema-version drift enters SAFE_MODE before read" time="0.047277" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="runtime schema-version drift enters SAFE_MODE before integrity check" time="0.047635" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="runtime schema-version drift enters SAFE_MODE before mutation" time="0.049267" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\integrity-safe-mode.test.mjs"/>
+	<testcase name="SQLite store uses WAL and committed state survives reopen" time="0.055123" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="transaction rollback leaves no partial records or revisions" time="0.047791" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="transaction rejects then accessors without executing them and revokes the handle" time="0.044176" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected async transaction cannot write before or after its await boundary" time="0.049730" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected async transaction is observed while its continuation remains revoked" time="0.048999" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="cross-realm async rejection is observed without running constructor or species hooks" time="0.044577" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected Promise subclass is observed without running inherited hooks" time="0.043171" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected preventExtensions Promise is observed without becoming extensible" time="0.048281" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected seal Promise is observed without becoming extensible" time="0.047857" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="rejected freeze Promise is observed without becoming extensible" time="0.049666" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="native Promise results remain denied after Promise then-method tampering" time="0.042130" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="an unconfirmed transaction outcome enters SAFE_MODE and denies reuse" time="0.042622" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="record values reject lossy or non-JSON JavaScript values" time="0.055822" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="record encoding ignores inherited object and array toJSON hooks" time="0.045629" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="record encoding ignores inherited array join hooks" time="0.044874" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="record encoding ignores inherited string and number helper hooks" time="0.043245" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="record validation ignores inherited RegExp test hooks" time="0.039868" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="explicit close remains distinct from SAFE_MODE" time="0.035425" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<testcase name="compare-and-swap reports revision exhaustion without modifying the record" time="0.065254" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\state\sqlite\sqlite-wal.test.mjs"/>
+	<!-- tests 37 -->
+	<!-- suites 0 -->
+	<!-- pass 37 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 2526.7404 -->
+</testsuites>

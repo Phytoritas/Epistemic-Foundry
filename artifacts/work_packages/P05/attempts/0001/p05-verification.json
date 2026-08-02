@@ -1,0 +1,70 @@
+{
+  "attempt_id": "P05-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every convene or withhold decision re-derives byte for byte from its own published fields: the gate id and receipt hash cover the receipt, each composed artifact re-derives its own hash, and there is no clock or random draw on the decided path (the caller supplies created_at), so replaying a call reproduces the receipt",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the adjudication, minority reports, Q05 selective-admissibility receipt, replication result and candidate lineage are each validated against their canonical schema and required to re-derive their own hash; the Parliament's binding-recommendation flag must stay false, the O05 adversarial lanes must all be searched, and each FINDING_CODE names an exact withholding",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the clean docket convenes and replays deterministically, while a Parliament that acquired binding authority, a dropped minority report, an unweighed or replicated-refutation Red Queen match, an unsearched adversarial lane, a missing or non-ADMIT statistical dimension, a broken lineage and a promotion-blocking replication result are each withheld by path",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the gate convenes or withholds and promotes nothing: promotion authority lives in governance.promotion and takes no score, parliament_grants_promotion records that in one place, a candidate-generating principal is refused from driving the convening, and a Parliament whose recommendation had become binding is refused before anything else",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "convenes_or_withholds": "a multi-dimensional promotion docket; never promotes",
+    "dimensions_stay_separate": "Parliament deliberation, preserved minority dissent, Red Queen adversarial evidence, Q05 statistical clearance, intact lineage and a replication-bounded ceiling are each a distinct dimension",
+    "promotion_authority": "governance.promotion (takes no score); this gate holds none",
+    "receipts_are_by_path": true
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation subagent; reviewer: the sealing agent, actor-independent from the author; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 22
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 10
+    }
+  },
+  "schema_binding": {
+    "adjudication": "evidence_parliament canonical adjudication (binding flag must stay false)",
+    "adversarial_lanes": "retrieval.v4_o05 declared evidence lanes (all must be searched)",
+    "candidate_lineage": "reasoning.v4_r05 candidate lineage kind (re-derived per call)",
+    "red_queen_results": "red_queen_lab challenge results (no crashed/unresolved win)",
+    "replication": "validation_bay.replication ceiling and promotion effect",
+    "statistical_clearance": "evaluation.v4_q05 selective-admissibility receipt (ADMIT required)"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_o05": 91,
+    "dependency_regression_p04": 52,
+    "dependency_regression_q05": 40,
+    "dependency_regression_r05": 58,
+    "full_node_suite": 1233,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 22,
+    "provenance_and_receipt_audit": 7,
+    "schema_and_type_check": 7,
+    "unit_and_contract_tests": 10
+  }
+}

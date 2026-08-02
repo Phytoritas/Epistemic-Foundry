@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "reconciliation_id": "B04-0002-RECON-001",
+  "work_package_id": "B04",
+  "attempt_id": "B04-0002",
+  "phase": "P01-B",
+  "status": "PASS",
+  "completion_ready": false,
+  "authority": {
+    "source_authority": [
+      "schemas/**",
+      "openapi/**"
+    ],
+    "packaged_projection": "src/epistemic_foundry/_canonical/**",
+    "runtime_registry": "src/epistemic_foundry/contracts/registry.py",
+    "duplicate_authority_created": false,
+    "root_canonical_sources_modified_by_B04": false
+  },
+  "dependencies": {
+    "B02": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/B02/report.json",
+      "report_sha256": "98abe689dbfb9399d2f50f87a18376ca9a85ed4a50c938513778e312e3e67dad"
+    },
+    "B03": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/B03/report.json",
+      "report_sha256": "baa07e997402a290f2602cea39a78a1acdeeb69dd7ea8c89331c84e78976338f"
+    },
+    "C04": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/C04/report.json",
+      "report_sha256": "eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f"
+    }
+  },
+  "canonical_registry": {
+    "bundle_version": "4.0.0",
+    "source_bundle_hash": "sha256:7dc06f09278471a136d2675801495bfe72efe7784a67fa040b77a07187dee8b0",
+    "schema_count": 124,
+    "openapi_document_count": 1,
+    "resource_count": 125,
+    "duplicate_document_id_count": 0,
+    "missing_resource_count": 0,
+    "extra_resource_count": 0,
+    "hash_mismatch_count": 0,
+    "source_tree_fallback_success_count": 0
+  },
+  "build": {
+    "backend": "setuptools.build_meta",
+    "exact_backend_requirement": "setuptools==82.0.1",
+    "constraint_sha256": "cfa3ae583cf955843a6d2370005d65587afe021f73ac93af8aaec586580d22b7",
+    "sdist_constraint_embedded": true,
+    "source_sdist_constraint_byte_equal": true,
+    "two_clean_wheels_byte_equal": true,
+    "two_clean_sdists_byte_equal": true,
+    "sdist_derived_wheel_byte_equal": true,
+    "clean_wheel_install": "PASS",
+    "arbitrary_empty_cwd": "PASS"
+  },
+  "artifact_receipts": [
+    {
+      "artifact_id": "ART-B04-0002-WHEEL",
+      "artifact": "artifacts/work_packages/B04/attempts/0002/dist/epistemic_foundry-4.0.0-py3-none-any.whl",
+      "content_hash": "sha256:ac6fc720b2df29ef8ebb73c429e6ef484e7dd844ed863e55e1d744a691a73756",
+      "byte_size": 301117,
+      "receipt": "artifacts/work_packages/B04/attempts/0002/wheel.artifact-receipt.json",
+      "receipt_hash": "sha256:4d5068a7786096010f878bab9f863132db360e85bef12da66f91076b0f5a9660",
+      "receipt_file_sha256": "42be19558ed802ea14150c9557bc5c93a1941d0e76624075a8e550ab6ebb03c0"
+    },
+    {
+      "artifact_id": "ART-B04-0002-SDIST",
+      "artifact": "artifacts/work_packages/B04/attempts/0002/dist/epistemic_foundry-4.0.0.tar.gz",
+      "content_hash": "sha256:dc5a40c8e9a92f58219e3b031038b745a00c30ce381cf43478f591d3041464d1",
+      "byte_size": 246149,
+      "receipt": "artifacts/work_packages/B04/attempts/0002/sdist.artifact-receipt.json",
+      "receipt_hash": "sha256:485567bb10a85f2829463f686c97182dfc839d0de762779ac231df4555f71a5d",
+      "receipt_file_sha256": "7c922b3c8cdfa3d8c31457e77167859dd02206d1841b72223bd8f44f63d60c2c"
+    }
+  ],
+  "checks": {
+    "build_smoke": "PASS",
+    "phase_artifact_reconciliation": "PASS",
+    "formal_packaging_verification": {
+      "status": "PASS",
+      "artifact": "artifacts/work_packages/B04/attempts/0002/b04-packaging-verification.json",
+      "sha256": "6f07659db311b9689e45b9bd3643dc5a0c148a152ce1d1ef6e43002df02e2739"
+    },
+    "full_python_suite": {
+      "status": "PASS",
+      "collected": 912,
+      "passed": 912,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit": "artifacts/work_packages/B04/attempts/0002/full-python-suite.junit.xml",
+      "junit_sha256": "6000a3ce26bff3ed54daa5defab3f1f4950f9ddc1b039242b8150dee073c33ac"
+    },
+    "packaging_suite": {
+      "status": "PASS",
+      "passed": 14
+    },
+    "installed_wheel_only": "PASS",
+    "source_tree_fallback": "PASS",
+    "tamper_detection": "PASS",
+    "registry_mutation_isolation": "PASS",
+    "destination_and_link_safety": "PASS",
+    "structure_regression": "PASS",
+    "boundary_regression": "PASS",
+    "lock_regression": "PASS",
+    "git_diff_check": "PASS",
+    "independent_technical_review": "PASS"
+  },
+  "preserved_history": {
+    "historical_root_status": "SPEC_GAP",
+    "historical_root_artifact_count": 5,
+    "historical_root_hashes": {
+      "report.json": "3b239d90f30257ef79e95caedbeb5d2b020e34710b4ddac3d5ebb07e981d775a",
+      "build-smoke.json": "e9184f3d59b1b7b1d90cfc5ff5b418038a1fb6058fab3b369b325488befc2591",
+      "reconciliation.json": "73b9671d6622a42e892e4aab7f4b29b171d3da7b46f42bb818230cc22001e258",
+      "commands.jsonl": "77d10bbf83fb9b734f9a5e6767e7c8a1579ca83964d7df36365006de85c80102",
+      "review.md": "5c32fb9c7e811d23ee569bd3202a2176137202e073ef5d357fa72f3de33a819d"
+    },
+    "initial_resolving_failure": "artifacts/work_packages/B04/attempts/0002/verification-runs/0001-sdist-reproducibility-fail.json",
+    "initial_resolving_failure_status": "FAIL",
+    "history_rewritten": false
+  },
+  "review": {
+    "artifact": "artifacts/work_packages/B04/attempts/0002/review.md",
+    "status": "PASS",
+    "blocking_finding_count": 0,
+    "resolved_finding_ids": [
+      "B04-RF001",
+      "B04-RF002",
+      "B04-RF003",
+      "B04-RF004"
+    ],
+    "assurance_limitation": "Actor-separated shared-workspace review using the same Codex model family; no external actor-independent certification is claimed."
+  },
+  "residual_risks": [
+    {
+      "id": "B04-RR001",
+      "severity": "LOW",
+      "blocking": false,
+      "summary": "A non-object ownership marker can surface as a raw TypeError before JSON-formatted domain-error normalization, but it fails before destination mutation."
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,93 @@
+{
+  "work_package_id": "S01",
+  "base_checkpoint": "A04:PASS+B01:PASS",
+  "status": "PASS",
+  "changed_files": [
+    "packages/foundry-kernel/src/security/trust/trust-boundary.mjs",
+    "packages/foundry-kernel/src/security/trust/prompt-injection.test.mjs",
+    "packages/foundry-kernel/src/security/trust/authority-escalation.test.mjs",
+    "packages/foundry-kernel/src/security/trust/README.md",
+    "artifacts/work_packages/S01/commands.jsonl",
+    "artifacts/work_packages/S01/review.md",
+    "artifacts/work_packages/S01/report.json"
+  ],
+  "checks": [
+    {
+      "command": "prompt_injection_suite",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S01/commands.jsonl#S01-C002"
+    },
+    {
+      "command": "authority_escalation_test",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S01/commands.jsonl#S01-C003"
+    },
+    {
+      "command": "security_test_coverage",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S01/commands.jsonl#S01-C004"
+    },
+    {
+      "command": "npm run check:structure && npm run check:boundaries",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S01/commands.jsonl#S01-C005"
+    },
+    {
+      "command": "uv run --locked pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S01/commands.jsonl#S01-C006"
+    },
+    {
+      "command": "uv run --locked python scripts/build/double_build.py",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S01/commands.jsonl#S01-C007"
+    },
+    {
+      "command": "S01 exact write-scope and contract reconciliation",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S01/commands.jsonl#S01-C009"
+    }
+  ],
+  "exit_criteria": [
+    {
+      "criterion": "evidence cannot become instruction",
+      "status": "PASS",
+      "evidence": "Runtime-branded evidence segments expose only data-only transforms; instruction use fails with UNTRUSTED_USE_DENIED, and context assembly has no instruction/messages field."
+    },
+    {
+      "criterion": "model output cannot self-authorize",
+      "status": "PASS",
+      "evidence": "All model-origin authority requests return typed DENY/UNTRUSTED_ORIGIN with empty authority identifier sets, including trusted-label, JSON-shaped, and unknown future request fixtures."
+    }
+  ],
+  "review": {
+    "agent": "primary_author",
+    "status": "PASS_WITH_RECORDED_PROCEDURE_DEVIATION",
+    "findings_resolved": [
+      "S01-RF001",
+      "S01-RF002",
+      "S01-RF003"
+    ]
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/S01/commands.jsonl",
+    "artifacts/work_packages/S01/review.md",
+    "artifacts/work_packages/S01/report.json"
+  ],
+  "open_risks": [
+    "Review was performed by the author under explicit user instruction and is not independent assurance.",
+    "The S01 primitive is not yet wired through every future provider, ingest, context-capsule, execution, or release path; those runtimes are not implemented in this blueprint maturity state.",
+    "Prompt-injection signal matching is advisory and intentionally does not claim exhaustive linguistic detection; origin-based authority denial is the enforcement boundary.",
+    "The private scaffold package has no declared public export map; consumption and API stabilization remain later integration scope."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "End-to-end provider prompt assembly and all future runtime call sites",
+    "K04 corpus-ingest quality gate and S04 red-team integration",
+    "Hosted or production execution behavior"
+  ],
+  "next_ready": [
+    "S02",
+    "S03"
+  ]
+}

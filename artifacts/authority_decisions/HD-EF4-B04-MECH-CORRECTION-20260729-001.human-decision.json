@@ -1,0 +1,31 @@
+{
+  "decision_id": "HD-EF4-B04-MECH-CORRECTION-20260729-001",
+  "run_id": null,
+  "subject_id": "B04-0003-MECHANISM-FAILURES",
+  "decision_type": "correct",
+  "decision": "Resolve the B04-0003 implementation blocker prospectively. Authorize the new monotonic B04-0004 attempt to correct B04-MECH001 through B04-MECH006 in scripts/build/canonical_registry/**, update the corresponding tests/packaging/** contract checks, update the already B04-owned src/epistemic_foundry/contracts/registry.py consumer, regenerate only src/epistemic_foundry/_canonical/** from root authority, and write B04 attempt evidence. Preserve schemas/** and openapi/** as read-only sole source authority, keep pyproject.toml read-only, preserve B04-0003 as immutable FAIL history, require a conforming projection and packaging PASS before F01-0003, and keep F02/F03 waiting until F01 PASS.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "The product owner stated that all required correction authority is approved and instructed execution to continue. B04-0003 already proved six explicit implementation defects and identified the minimum correction surface. This decision grants only that existing B04-owned surface for a new attempt; it does not weaken a gate, expand canonical-source authority, relabel prior failure evidence, authorize reverse synchronization, or permit Fleet or subagents.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/B04/attempts/0003/report.json",
+    "artifacts/work_packages/B04/attempts/0003/canonical-projection-verification.json",
+    "artifacts/work_packages/B04/attempts/0003/review.md",
+    "RAH:E0039",
+    "RAH:E0040",
+    "RAH:generation:000038-73e31b8e"
+  ],
+  "affected_artifact_ids": [
+    "scripts/build/canonical_registry/**",
+    "tests/packaging/**",
+    "src/epistemic_foundry/contracts/registry.py",
+    "src/epistemic_foundry/_canonical/**",
+    "artifacts/work_packages/B04/**",
+    "B04-0004",
+    "F01-0003"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-29T00:00:00Z",
+  "decision_hash": "sha256:98b71e0bc2370c08b5f1ef49f173b86ca9b454e907048e32e464ed2b40edf750"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_id": "S01-0001",
+  "authority_self_authorization": {
+    "content_is_never_inspected_to_decide": true,
+    "empty_capability_approval_policy_phase_instruction_ids": true,
+    "sidecar_authority_fields_rejected": true,
+    "typed_deny_untrusted_origin_for_every_request_type": true,
+    "unknown_future_request_types_still_denied": true
+  },
+  "evidence_instruction_separation": {
+    "assembled_context_has_no_instruction_or_messages_field": true,
+    "clean_scan_or_trusted_label_confers_no_authority": true,
+    "instruction_eligible_is_false_on_every_sealed_segment": true,
+    "requesting_instruction_use_fails_untrusted_use_denied": true,
+    "untrusted_source_planes_are_data_only": true
+  },
+  "exit_criteria": {
+    "evidence_cannot_become_instruction": {
+      "evidence": [
+        "packages/foundry-kernel/src/security/trust/prompt-injection.test.mjs",
+        "packages/foundry-kernel/src/security/trust/authority-escalation.test.mjs"
+      ],
+      "mechanism": "untrusted source kinds seal into the EVIDENCE_DATA or MODEL_OUTPUT plane with a frozen disposition where instructionEligible and authorityEligible are false; the data-only allowlist contains transforms only, so requesting an instruction use fails closed with UNTRUSTED_USE_DENIED, and assembleDataOnlyContext exposes neither an instruction nor a messages field. A clean prompt-injection scan and a trusted extraction label never upgrade the plane",
+      "status": "PASS"
+    },
+    "model_output_cannot_self_authorize": {
+      "evidence": [
+        "packages/foundry-kernel/src/security/trust/authority-escalation.test.mjs"
+      ],
+      "mechanism": "denyUntrustedAuthorityRequest returns a frozen DENY / UNTRUSTED_ORIGIN decision with empty capabilityGrantIds, approvalRecordIds, policyDecisionIds, phaseTransitionIds, and instructionIds for every request type including unknown future actions, and never inspects the persuasive content; sidecar role, approval, capability, policy, or phase fields are rejected with UNEXPECTED_FIELD rather than interpreted",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "authority_escalation_test": {
+      "module": "packages/foundry-kernel/src/security/trust/authority-escalation.test.mjs",
+      "status": "PASS",
+      "test_count": 9
+    },
+    "prompt_injection_suite": {
+      "module": "packages/foundry-kernel/src/security/trust/prompt-injection.test.mjs",
+      "status": "PASS",
+      "test_count": 8
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 17,
+  "trust_zone_crossing_needs_explicit_authority": {
+    "forged_or_serialized_segments_lose_brand_unsealed_content": true,
+    "no_promotion_or_authority_grant_api_exists": true,
+    "proxy_inputs_denied_without_invoking_traps": true,
+    "unknown_source_kinds_fail_closed": true
+  }
+}

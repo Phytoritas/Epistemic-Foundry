@@ -1,0 +1,543 @@
+{
+  "schema_version": 1,
+  "work_package_id": "S04",
+  "title": "S-phase threat model and red-team traceability",
+  "dependencies": {
+    "S02": "PASS",
+    "S03": "PASS"
+  },
+  "scope_conclusion": "The implemented S01-S03 trust, execution-policy, and Skill Vault primitives have no unresolved critical finding in the S04 adversarial suite. One non-critical HIGH static-signature coverage limit remains declared below. This conclusion is limited to those primitives and does not qualify production hosts, effect adapters, sandboxes, remote services, or release surfaces.",
+  "current_scope_critical_findings": [],
+  "current_scope_noncritical_findings": [
+    {
+      "finding_id": "S04-NF001",
+      "severity": "HIGH",
+      "title": "Directly quoted atob payload is outside the current encoded-payload token shape",
+      "evidence": "The first S04-RT004 run showed that TEXT_RISK_RULES recognizes atob(payload) but not atob('literal') because the terminal word-boundary assertion follows an opening parenthesis.",
+      "disposition": "DECLARED_LIMIT_FOLLOW_UP",
+      "scope_effect": "The composite hostile fixture remains CRITICAL and unapprovable through independent signature, install-hook, self-authority, dynamic-evaluation, network, secret/environment, and symlink findings. This limitation therefore does not violate S04's zero-critical-unresolved threshold, but it blocks any exhaustive static-malware-detection claim.",
+      "release_claim_blocked": true,
+      "follow_up_work_packages": ["T04", "Z01", "Z04"]
+    }
+  ],
+  "assurance_claims": {
+    "production_security_qualified": false,
+    "external_penetration_test_completed": false,
+    "all_hosted_tool_paths_observed": false,
+    "os_or_container_sandbox_implemented": false,
+    "effect_time_receipts_complete": false,
+    "s01_s03_boundary_red_team_passed": true
+  },
+  "source_bindings": [
+    {
+      "path": "manifests/development_manifest.yaml",
+      "sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7"
+    },
+    {
+      "path": "manifests/216_lens_plugin_audit_matrix.yaml",
+      "sha256": "8d406a8cf44226388ca5989ceb41a00d21204f575519b60e10cee709481d15cd"
+    },
+    {
+      "path": "docs/plugin_security_threat_model.md",
+      "sha256": "dd5caefe1868263d5fcafbfde963e09da338fa6b0d56241317cf547214a713e1"
+    },
+    {
+      "path": "docs/threat_model.md",
+      "sha256": "f4d61c200d8b977f6879bce39096d2a7a797a77256ad44269e16390356803c75"
+    },
+    {
+      "path": "docs/evolution_security_threat_model.md",
+      "sha256": "b7ae81f658581c13590c897eae1a6f28f658c326c41a79a654a5c25eb884d190"
+    },
+    {
+      "path": "workflows/skill_acquisition.workflow.yaml",
+      "sha256": "c34a8476898c4c984d00bb985ca9911a45c43e4cfe222b3a780c7222a26a19bd"
+    },
+    {
+      "path": "packages/foundry-kernel/src/security/trust/trust-boundary.mjs",
+      "sha256": "a25b5f4daa7cd8f1d98e66ba721728bb6fe333498117c830b1caa46b20bb8c75"
+    },
+    {
+      "path": "packages/foundry-kernel/src/security/execution/execution-policy.mjs",
+      "sha256": "ac5aa290bd830079abca12147e10f706326fffd1c1e9fb815d8539f0013e7fd1"
+    },
+    {
+      "path": "packages/skill-vault/src/skill-vault.mjs",
+      "sha256": "f3308719bfdfc400c25fce95fa2c089c99a73192e0c48dc35a936ff6025564b3"
+    }
+  ],
+  "hook_bypass_limitations": [
+    {
+      "limitation_id": "hooks_are_guardrails_not_enforcement",
+      "statement": "Host hooks are useful guardrails and observation points, but they are not the canonical enforcement boundary and cannot substitute for Foundry Kernel policy or Noetic Ledger receipts.",
+      "consequence": "A passing hook test never proves that an effect was authorized or receipted.",
+      "follow_up_work_packages": ["H01", "H03", "H04"]
+    },
+    {
+      "limitation_id": "hosted_paths_may_be_unobserved",
+      "statement": "Hosted or specialized tool paths may bypass, suppress, or expose no compatible hook event, so S04 cannot claim that every host action is observed.",
+      "consequence": "Unobserved paths must be reported as coverage gaps and cannot inherit an enforcement claim.",
+      "follow_up_work_packages": ["H04", "T04"]
+    },
+    {
+      "limitation_id": "primitives_are_not_an_os_sandbox",
+      "statement": "S02 binds decisions to a sandbox profile identifier but does not create an operating-system process, container, network namespace, timeout, or resource isolation boundary.",
+      "consequence": "Sandbox and timeout claims remain blocked until the external execution adapter is qualified.",
+      "follow_up_work_packages": ["T04"]
+    },
+    {
+      "limitation_id": "effect_time_adapters_are_future_scope",
+      "statement": "S01-S03 emit data-only decisions and branded authorizations; they do not perform filesystem, network, installation, activation, notification, or release effects.",
+      "consequence": "Every effect adapter must revalidate the decision immediately before acting and reconcile the result.",
+      "follow_up_work_packages": ["T02", "T04", "Z01"]
+    },
+    {
+      "limitation_id": "receipts_dns_and_quotas_are_not_implemented_here",
+      "statement": "S04 does not implement DNS pinning or rebinding defense, quota enforcement, network metering, effect receipts, descriptor-relative atomic filesystem effects, or production credential injection.",
+      "consequence": "Exact-origin and path-policy PASS records are necessary controls, not proof of effect-time completion.",
+      "follow_up_work_packages": ["D03", "T02", "T04", "Y01"]
+    }
+  ],
+  "lens_traceability": [
+    {
+      "lens_id": "J01",
+      "question": "Are bundled skill descriptions specific enough for bounded implicit invocation?",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "current_claim": "The acquisition workflow requires metadata-boundary inspection before activation.",
+      "control_refs": ["workflows/skill_acquisition.workflow.yaml#node_id: inspect_skill_metadata_and_boundaries"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM001"],
+      "follow_up_work_packages": ["Z01"],
+      "release_claim_blocked": true,
+      "residual_limit": "No installed bundled-skill catalog or host routing corpus exists yet, so description specificity is not runtime-qualified."
+    },
+    {
+      "lens_id": "J02",
+      "question": "Are sensitive or side-effecting skills explicit-only?",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "current_claim": "Passing conformance requires explicitInvocationOnly and activation is a separate branded authorization.",
+      "control_refs": ["packages/skill-vault/src/skill-vault.mjs#explicitInvocationOnly"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT006"],
+      "follow_up_work_packages": ["T04", "Z01"],
+      "release_claim_blocked": false,
+      "residual_limit": "Actual host routing remains subject to later adapter and fresh-install qualification."
+    },
+    {
+      "lens_id": "J03",
+      "question": "Does progressive disclosure keep initial context within the host skill budget?",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "current_claim": "The workflow requires progressive-disclosure assessment and activation conformance.",
+      "control_refs": ["workflows/skill_acquisition.workflow.yaml#progressive disclosure assessed"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM001"],
+      "follow_up_work_packages": ["Y01", "Z01"],
+      "release_claim_blocked": true,
+      "residual_limit": "No host context-budget measurement exists for installed skills."
+    },
+    {
+      "lens_id": "J04",
+      "question": "Are remote skills discovered as metadata before content fetch?",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "current_claim": "The canonical DAG orders discover and select nodes before fetch_to_quarantine.",
+      "control_refs": ["workflows/skill_acquisition.workflow.yaml#node_id: discover_skill_candidates", "workflows/skill_acquisition.workflow.yaml#node_id: fetch_to_quarantine"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM001"],
+      "follow_up_work_packages": ["Z01"],
+      "release_claim_blocked": true,
+      "residual_limit": "Catalog and network-fetch adapters are not implemented by S03 or S04."
+    },
+    {
+      "lens_id": "J05",
+      "question": "Are fetched skills quarantined and non-executable by default?",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "current_claim": "Candidate bytes enter a private-branded inert quarantine with executable, active, and authorityEligible all false.",
+      "control_refs": ["packages/skill-vault/src/skill-vault.mjs#state: REVIEW_STATUS.QUARANTINED"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT001", "tests/security/s04-red-team.test.mjs#S04-RT004"],
+      "follow_up_work_packages": ["Z01"],
+      "release_claim_blocked": false,
+      "residual_limit": "The primitive copies supplied bytes but does not implement the network fetch or filesystem quarantine adapter."
+    },
+    {
+      "lens_id": "J06",
+      "question": "Are source revision, hash, license, scripts, dependencies and permissions inventoried?",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "current_claim": "The normalized tree, source, revision, license, executable inventory, scan inventory, and permissions are hash-bound and reviewed.",
+      "control_refs": ["packages/skill-vault/src/skill-vault.mjs#epistemic-foundry.skill-tree.v1", "packages/skill-vault/src/skill-vault.mjs#executableInventory"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT004", "packages/skill-vault/src/skill-lockfile.test.mjs#SkillLockfile pins exact source"],
+      "follow_up_work_packages": ["Z01", "Z02"],
+      "release_claim_blocked": false,
+      "residual_limit": "Static inventory sees supplied files; real package-manager dependency resolution, provenance, and catalog variation remain unqualified."
+    },
+    {
+      "lens_id": "J07",
+      "question": "Do static and sandbox scans detect path, secret, network and obfuscation risks?",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "current_claim": "Static scanning detects representative portable-path, secret/environment, network, dynamic-evaluation, encoded-payload, executable, and symlink signals.",
+      "control_refs": ["packages/skill-vault/src/skill-vault.mjs#TEXT_RISK_RULES"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT004"],
+      "follow_up_work_packages": ["T04", "Z01"],
+      "release_claim_blocked": false,
+      "residual_limit": "Static token-shape rules are conservative defense in depth, not exhaustive malware detection: for example, the current encoded-payload rule recognizes an identifier argument to atob but not a directly quoted argument. Other findings and exact-hash approval still block the composite hostile fixture; T04 and Z01 own runtime isolation and broader adversarial qualification."
+    },
+    {
+      "lens_id": "J08",
+      "question": "Does activation require exact-hash approval and a SkillLockfile?",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "current_claim": "Activation requires a locally branded exact-hash SkillLockfile, disabled installation, passing conformance, and current policy hash.",
+      "control_refs": ["packages/skill-vault/src/skill-vault.mjs#activation requires this boundary's lockfile authority"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT005"],
+      "follow_up_work_packages": ["Z01"],
+      "release_claim_blocked": false,
+      "residual_limit": "The authorization performs no activation effect and requires a future receipted adapter."
+    },
+    {
+      "lens_id": "J09",
+      "question": "Can a skill never expand its own capabilities or approve itself?",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "current_claim": "Self-authority text is critical, inferred permissions cannot be omitted, and activation permissions are the intersection of lock and conformance observations.",
+      "control_refs": ["packages/skill-vault/src/skill-vault.mjs#PERMISSION_EXPANSION_DENIED", "packages/skill-vault/src/skill-vault.mjs#SELF_AUTHORITY_CLAIM"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT001", "tests/security/s04-red-team.test.mjs#S04-RT005"],
+      "follow_up_work_packages": ["T04"],
+      "release_claim_blocked": false,
+      "residual_limit": "Issuer custody and real reviewer identity enforcement belong to the integrating kernel and Ledger adapter."
+    },
+    {
+      "lens_id": "J10",
+      "question": "Are skill name collisions and shadowing visible?",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "current_claim": "Collision identities are retained on a BLOCKED_NAME_COLLISION installation and prohibit passing conformance.",
+      "control_refs": ["packages/skill-vault/src/skill-vault.mjs#BLOCKED_NAME_COLLISION"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT006"],
+      "follow_up_work_packages": ["Z01"],
+      "release_claim_blocked": false,
+      "residual_limit": "A future installer must enumerate every host-visible catalog and bundled namespace."
+    },
+    {
+      "lens_id": "J11",
+      "question": "Can activation be rolled back and uninstalled cleanly?",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "current_claim": "Passing conformance requires uninstallVerified and activation records rollbackAvailable.",
+      "control_refs": ["packages/skill-vault/src/skill-vault.mjs#passing conformance requires clean uninstall"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT006"],
+      "follow_up_work_packages": ["Z01", "Z03"],
+      "release_claim_blocked": false,
+      "residual_limit": "S03 accepts a trusted conformance attestation; it does not perform or independently observe uninstall."
+    },
+    {
+      "lens_id": "J12",
+      "question": "Does the malicious-skill fixture suite cover real catalog and packaging variations?",
+      "status": "CONDITIONAL_EXTERNAL_EVIDENCE",
+      "current_claim": "Synthetic hostile variations exercise package hooks, scripts, symlinks, signatures, obfuscation, path collisions, and permission expansion.",
+      "control_refs": ["docs/plugin_security_threat_model.md#malicious fixture suite"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT004"],
+      "follow_up_work_packages": ["Z01", "Z04"],
+      "release_claim_blocked": true,
+      "residual_limit": "No licensed real-catalog corpus or production packaging sample set was available for this package."
+    },
+    {
+      "lens_id": "M01",
+      "question": "Can evidence or model output ever enter the instruction/authority plane?",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "current_claim": "Runtime-branded evidence and model segments permit data transforms only and all authority requests receive typed denial.",
+      "control_refs": ["packages/foundry-kernel/src/security/trust/trust-boundary.mjs#UNTRUSTED_CONTENT_NEVER_INSTRUCTION"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT001"],
+      "follow_up_work_packages": ["T01"],
+      "release_claim_blocked": false,
+      "residual_limit": "Every future provider and context adapter must route untrusted material through this boundary."
+    },
+    {
+      "lens_id": "M02",
+      "question": "Are secret values represented as handles and excluded from prompts/logs/artifacts?",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "current_claim": "Opaque handles have no serializable identity and are denied at prompt, artifact, log, export, and ordinary network boundaries.",
+      "control_refs": ["packages/foundry-kernel/src/security/execution/execution-policy.mjs#opaque secret handles cannot enter"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT002"],
+      "follow_up_work_packages": ["T04", "Y02"],
+      "release_claim_blocked": false,
+      "residual_limit": "Raw-secret pattern checks are not exhaustive and trusted adapters must never pass secret bytes into generic payloads."
+    },
+    {
+      "lens_id": "M03",
+      "question": "Are filesystem paths canonicalized with symlink and traversal defenses?",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "current_claim": "Policy authorization requires canonical in-root portable paths, unchanged root identity, same-device traversal, and no-follow checks.",
+      "control_refs": ["packages/foundry-kernel/src/security/execution/execution-policy.mjs#PATH_LINK_DENIED"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT003", "packages/foundry-kernel/src/security/execution/path-escape.test.mjs#existing symlink or junction components are denied"],
+      "follow_up_work_packages": ["T04"],
+      "release_claim_blocked": false,
+      "residual_limit": "The primitive does not perform descriptor-relative atomic effects and cannot eliminate adapter-level TOCTOU risk."
+    },
+    {
+      "lens_id": "M04",
+      "question": "Is network egress allowlisted, metered and receipted?",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "current_claim": "Exact canonical HTTP(S) origins and per-hop reauthorization are enforced by the observable policy primitive.",
+      "control_refs": ["packages/foundry-kernel/src/security/execution/execution-policy.mjs#REAUTHORIZE_EACH_HOP"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT003"],
+      "follow_up_work_packages": ["D03", "T02", "T04", "Y01"],
+      "release_claim_blocked": false,
+      "residual_limit": "Network metering, DNS rebinding defense, transport execution, and effect receipts are not implemented by S02-S04."
+    },
+    {
+      "lens_id": "M05",
+      "question": "Are sandbox boundaries and timeouts enforced independently of model claims?",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "current_claim": "A model claim cannot change the exact sandbox profile bound into a branded policy decision.",
+      "control_refs": ["packages/foundry-kernel/src/security/execution/execution-policy.mjs#SANDBOX_PROFILE_MISMATCH"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT003"],
+      "follow_up_work_packages": ["T04"],
+      "release_claim_blocked": false,
+      "residual_limit": "No OS/container sandbox, process timeout, cancellation, or quota is implemented in this phase."
+    },
+    {
+      "lens_id": "M06",
+      "question": "Are tool-hook coverage gaps covered by kernel policy where observable?",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "current_claim": "Observable path, egress, secret, sandbox-profile, and authority decisions use kernel primitives rather than hook prose.",
+      "control_refs": ["docs/plugin_security_threat_model.md#Hosted tool path not observable: mark coverage gap", "packages/foundry-kernel/src/security/execution/execution-policy.mjs#Create an isolated authority compartment"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT007", "tests/security/s04-threat-model-traceability.test.mjs#S04-TM003"],
+      "follow_up_work_packages": ["H04", "T04"],
+      "release_claim_blocked": false,
+      "residual_limit": "Hosted or specialized paths may be unobservable; absence of a hook event cannot prove enforcement."
+    },
+    {
+      "lens_id": "M07",
+      "question": "Are remote notifications denied raw evidence and arbitrary commands by default?",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "current_claim": "The master invariant prohibits raw-evidence export and arbitrary command execution by optional remote adapters.",
+      "control_refs": ["MASTER_SPEC.md#EF4-I36 — Remote messaging minimized"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM001"],
+      "follow_up_work_packages": ["T02", "Y02", "Z04"],
+      "release_claim_blocked": true,
+      "residual_limit": "No remote notification or approval adapter exists to test; generic secret filtering is not a substitute for a raw-evidence deny policy."
+    },
+    {
+      "lens_id": "M08",
+      "question": "Are tenancy and workspace boundaries enforced below the UI/model layer?",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "current_claim": "The canonical work graph assigns database tenancy and cross-workspace retrieval enforcement below presentation layers.",
+      "control_refs": ["manifests/development_manifest.yaml#title: PostgreSQL team store and tenant isolation", "manifests/development_manifest.yaml#cross_workspace_leak_test"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM001"],
+      "follow_up_work_packages": ["D02", "L04"],
+      "release_claim_blocked": true,
+      "residual_limit": "Those storage and recall packages are not implemented at the S04 checkpoint."
+    },
+    {
+      "lens_id": "M09",
+      "question": "Are logs, traces, screenshots and exports redacted under policy?",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "current_claim": "The execution primitive rejects handles and secret-shaped fields or values at log and export boundaries.",
+      "control_refs": ["packages/foundry-kernel/src/security/execution/execution-policy.mjs#OUTBOUND_BOUNDARY"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT002"],
+      "follow_up_work_packages": ["Y02", "U04"],
+      "release_claim_blocked": false,
+      "residual_limit": "General PII, licensed-text, trace, and screenshot redaction policies require later observability and UI implementations."
+    },
+    {
+      "lens_id": "M10",
+      "question": "Does a source license constrain downstream export and retention?",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "current_claim": "The master invariant requires license restrictions to propagate through retrieval, evidence, export, and deletion.",
+      "control_refs": ["MASTER_SPEC.md#EF4-I37 — License-aware corpus/export"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM001"],
+      "follow_up_work_packages": ["K01", "L01", "L03", "Z01"],
+      "release_claim_blocked": true,
+      "residual_limit": "The corpus registry, retention engine, and export adapter are not implemented at this checkpoint."
+    },
+    {
+      "lens_id": "M11",
+      "question": "Are threat findings linked to tests and non-waivable gates?",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "current_claim": "All 24 S04-owned lenses and every plugin threat row resolve to controls, tests, limits, and follow-up owners under a drift-detecting gate.",
+      "control_refs": ["artifacts/work_packages/S04/threat_model_traceability.json"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM001", "tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["Z04"],
+      "release_claim_blocked": false,
+      "residual_limit": "Traceability proves accounting, not the implementation of explicitly deferred packages."
+    },
+    {
+      "lens_id": "M12",
+      "question": "Does an external security review and penetration test find zero unresolved critical issues?",
+      "status": "CONDITIONAL_EXTERNAL_EVIDENCE",
+      "current_claim": "The S04 author-run adversarial suite found no unresolved critical defect in the implemented S01-S03 boundary scope.",
+      "control_refs": ["docs/plugin_security_threat_model.md#no critical unresolved threat-model finding"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT001", "tests/security/s04-red-team.test.mjs#S04-RT007"],
+      "follow_up_work_packages": ["Z04"],
+      "release_claim_blocked": true,
+      "residual_limit": "No independent external penetration test or production host assessment was performed."
+    }
+  ],
+  "threat_traceability": [
+    {
+      "threat": "Prompt injection in paper/web page",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "control_refs": ["packages/foundry-kernel/src/security/trust/trust-boundary.mjs#UNTRUSTED_CONTENT_NEVER_INSTRUCTION"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT001"],
+      "follow_up_work_packages": ["T01"],
+      "residual_limit": "Signal matching is advisory; every future context adapter must preserve origin-based denial."
+    },
+    {
+      "threat": "Tool-hook bypass",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "control_refs": ["docs/plugin_security_threat_model.md#hooks are guardrails; kernel capabilities and receipts are authoritative"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM003"],
+      "follow_up_work_packages": ["H04", "T04"],
+      "residual_limit": "Specialized hosted paths may not emit observable hooks."
+    },
+    {
+      "threat": "Forged attestation",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "control_refs": ["packages/foundry-kernel/src/security/trust/trust-boundary.mjs#UNTRUSTED_ORIGIN"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT001"],
+      "follow_up_work_packages": ["D03", "T02", "Z04"],
+      "residual_limit": "Artifact and effect receipt stores are later packages."
+    },
+    {
+      "threat": "Stale replay",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["docs/plugin_security_threat_model.md#snapshot hashes, stale propagation, compatibility and lifecycle status"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["D04", "Z03"],
+      "residual_limit": "Replay and invalidation integration is outside S01-S04."
+    },
+    {
+      "threat": "Cross-workspace recall",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["docs/plugin_security_threat_model.md#workspace boundary, retrieval receipt, redaction, retention"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["D02", "L04"],
+      "residual_limit": "Team storage and recall boundaries are not implemented at S04."
+    },
+    {
+      "threat": "Malicious remote skill",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "control_refs": ["packages/skill-vault/src/skill-vault.mjs#S03 Skill Vault authority boundary"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT004"],
+      "follow_up_work_packages": ["T04", "Z01"],
+      "residual_limit": "Real catalog and dynamic sandbox coverage remain conditional."
+    },
+    {
+      "threat": "Plugin upgrade tampering",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["docs/plugin_security_threat_model.md#package hash, hook re-trust, SBOM, signature, source/dist equivalence"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["Z02", "Z03"],
+      "residual_limit": "Signing, SBOM, and upgrade execution are release-phase work."
+    },
+    {
+      "threat": "Symlink/path escape",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "control_refs": ["packages/foundry-kernel/src/security/execution/execution-policy.mjs#PATH_LINK_DENIED", "packages/skill-vault/src/skill-vault.mjs#SYMLINK_CONTENT"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT003", "tests/security/s04-red-team.test.mjs#S04-RT004"],
+      "follow_up_work_packages": ["T04"],
+      "residual_limit": "Effect-time atomic file operations are not implemented here."
+    },
+    {
+      "threat": "Secret exfiltration",
+      "status": "VERIFIED_CURRENT_BOUNDARY",
+      "control_refs": ["packages/foundry-kernel/src/security/execution/execution-policy.mjs#SECRET_HANDLE_BOUNDARY_DENIED"],
+      "verification_refs": ["tests/security/s04-red-team.test.mjs#S04-RT002"],
+      "follow_up_work_packages": ["T04", "Y02"],
+      "residual_limit": "Pattern scanning is defense in depth rather than exhaustive secret discovery."
+    },
+    {
+      "threat": "Partial fan-out hidden",
+      "status": "VERIFIED_WITH_DECLARED_LIMIT",
+      "control_refs": ["tests/test_security.py#reconcile_dispatch"],
+      "verification_refs": ["tests/test_security.py#test_i25_dropped_worker_is_reported_as_missing"],
+      "follow_up_work_packages": ["H03"],
+      "residual_limit": "Host delegation hook and receipt integration remain future work."
+    },
+    {
+      "threat": "UI outage hidden as empty",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["docs/plugin_security_threat_model.md#explicit UNAVAILABLE/DEGRADED state and health telemetry"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["U02", "U04"],
+      "residual_limit": "The UI and health-state surface are not implemented."
+    },
+    {
+      "threat": "Budget overrun",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["manifests/development_manifest.yaml#budget enforcement must be labeled HARD_METERED"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["Y01"],
+      "residual_limit": "Runtime hard meters and cancellation are not S04 primitives."
+    },
+    {
+      "threat": "Provider drift",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["docs/plugin_security_threat_model.md#model identifier, adapter version, eval drift and attestation"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["P04", "Z04"],
+      "residual_limit": "Provider qualification is outside the S-phase primitive gate."
+    },
+    {
+      "threat": "Corpus licensing violation",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["MASTER_SPEC.md#EF4-I37 — License-aware corpus/export"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["K01", "L03", "Z01"],
+      "residual_limit": "Corpus and export adapters are not implemented at S04."
+    },
+    {
+      "threat": "Remote messaging abuse",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["MASTER_SPEC.md#EF4-I36 — Remote messaging minimized"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["T02", "Y02", "Z04"],
+      "residual_limit": "No remote adapter exists to exercise the default-deny contract."
+    },
+    {
+      "threat": "SQLite corruption/concurrency",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["docs/plugin_security_threat_model.md#WAL, transactions, migrations, backup, integrity and recovery tests"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["D04"],
+      "residual_limit": "Durable-store recovery is a separate dependency layer."
+    },
+    {
+      "threat": "Dependency confusion",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["docs/plugin_security_threat_model.md#lockfiles, registry allowlist, checksums, provenance and offline build"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["Z02"],
+      "residual_limit": "Release dependency provenance is not qualified by the Skill Vault primitive."
+    },
+    {
+      "threat": "UI/API contract drift",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["docs/plugin_security_threat_model.md#generated clients, one handler contract, conformance tests"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["U01", "U04"],
+      "residual_limit": "API and UI surfaces are not implemented at the S04 checkpoint."
+    },
+    {
+      "threat": "Majority capture",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["docs/plugin_security_threat_model.md#asymmetric ACLs, veto, minority report, attestor, deterministic gates"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["R04", "Z04"],
+      "residual_limit": "Governance and Evidence Parliament integration are outside S04."
+    },
+    {
+      "threat": "Human override invisibility",
+      "status": "CONTRACT_ONLY_FUTURE_GATE",
+      "control_refs": ["docs/plugin_security_threat_model.md#immutable OverrideRecord and downstream invalidation"],
+      "verification_refs": ["tests/security/s04-threat-model-traceability.test.mjs#S04-TM002"],
+      "follow_up_work_packages": ["Q04", "Z04"],
+      "residual_limit": "Override ledger and invalidation integration are not implemented in S01-S04."
+    }
+  ],
+  "release_blockers": [
+    {
+      "lens_id": "J12",
+      "condition": "Real catalog and packaging variation coverage is unavailable.",
+      "blocks": "production-level malicious-skill coverage claim",
+      "resolution_owner": ["Z01", "Z04"]
+    },
+    {
+      "lens_id": "M12",
+      "condition": "No external security review or penetration test has assessed a production host.",
+      "blocks": "production security qualification",
+      "resolution_owner": ["Z04"]
+    }
+  ]
+}

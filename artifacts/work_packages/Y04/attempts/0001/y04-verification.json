@@ -1,0 +1,58 @@
+{
+  "attempt_id": "Y04-0001",
+  "exit_criteria": {
+    "no_silent_partial_completion": {
+      "mechanism": "every tier reconciles expected == processed == persisted exactly and a mismatch raises SILENT_PARTIAL_COMPLETION; under overload every offered item terminates as ADMITTED or SHED and admitted + shed == offered exactly, a shortfall raising SHED_RECONCILIATION_FAILURE (EF4-I26)",
+      "status": "PASS"
+    },
+    "quality_and_latency_measured_per_tier": {
+      "mechanism": "each of the 50/200/2000 tiers is qualified only when the honest measured quality state is OK, every measured budget dimension stays at or under the tier's hard_limits (mirroring the PRODUCTION_2000 hard_budget_overrun_rate: 0 gate), and the measured p95 latency is within the tier budget; the report records the measured numbers per tier",
+      "status": "PASS"
+    }
+  },
+  "honesty_posture": {
+    "corpus_is_synthetic_and_deterministic": true,
+    "licensed_corpus_claimed": false,
+    "overclaim_refused_as": "SCALE_OVERCLAIM",
+    "posture": "SPECIFIED != IMPLEMENTED: this qualifies system behaviour at the tier sizes on a synthetic, deterministic corpus; it is NOT the PRODUCTION_2000 release certification that MASTER_SPEC line 1371 lists as conditional external evidence requiring a licensed corpus and production topology",
+    "release_gate_certified_claimed": false
+  },
+  "load_shedding": {
+    "admitted_within_hard_budget": true,
+    "bounded_degradation_serves_full_capacity": true,
+    "fail_closed_refusals": [
+      "ADMISSION_OVERRUN",
+      "SHED_RECONCILIATION_FAILURE",
+      "STATE_DISHONEST",
+      "ADMISSION_UNBOUNDED"
+    ],
+    "honest_state_while_shedding": "DEGRADED",
+    "nothing_silently_dropped": true
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent; reviewer: an independent seal-preparation session; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "load_shedding_test": {
+      "status": "PASS",
+      "test_count": 11
+    },
+    "scale_qualification": {
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "schema_binding": {
+    "budget_vocabulary": "schemas/budget-envelope.schema.json enforcement/breach/hard_limits (read at load time, never restated) — Y01/EF4-I28",
+    "honest_states": "OK/DEGRADED/UNAVAILABLE/UNKNOWN by the sealed Y02 result-state rule (EF4-I23)"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1740,
+    "full_python_suite": 1261,
+    "load_shedding_test": 11,
+    "scale_qualification": 9,
+    "wire_literal_discipline": 5
+  }
+}

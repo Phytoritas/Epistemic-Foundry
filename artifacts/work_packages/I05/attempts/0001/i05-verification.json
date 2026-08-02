@@ -1,0 +1,61 @@
+{
+  "attempt_id": "I05-0001",
+  "declaring_sources": {
+    "genome_contract": "schemas/hypothesis-genome.schema.json (falsifier_gene_ids minItems 1)",
+    "lineage": "schemas/candidate-lineage.schema.json via validate_artifact",
+    "search_space": "schemas/v4_c05/family-index.json mutable_search_space"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "screening reports and seed populations re-derive their own hashes, are deterministic under caller-supplied ids, and a stricter self-scan proves zero canonical enum values held against the unfiltered 749-value vocabulary",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "every genome validates against its canonical schema, screened field names are verified against the schema's own properties on every call (GENOME_CONTRACT_DRIFT), and search-space membership is re-read from the sealed C05 index fail-closed",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "admitted, refused and malformed submissions reconcile exactly (submitted == admitted + refused, seeded == admitted), seed lineages validate as generation-1 rootless records, and a duplicate genome id, an empty seed set and insufficient declared diversity are refused by their own codes",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "intake screens and bootstraps only; it produces seed genome ids for an evolution-run-spec and touches no evaluator, holdout or promotion surface",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 24
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 11
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 13
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 13
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_c05": 132,
+    "dependency_regression_f05": 76,
+    "full_node_suite": 1276,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 24,
+    "provenance_and_receipt_audit": 11,
+    "schema_and_type_check": 13,
+    "targeted_i05_intake": 61,
+    "unit_and_contract_tests": 13,
+    "wire_literal_discipline": 5
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "attempt_id": "F03-0001",
+  "classification_business_artifact_checks": [
+    "byte integrity",
+    "schema identity",
+    "classification identity format",
+    "E0-E5 exact projection",
+    "ForgeSessionState work-class agreement"
+  ],
+  "classification_identity_context_boundary": "request_input_hash, policy_bundle_hash, accepted_signals, and supersedes/human-decision context are not present in the business artifact and are not inferred; F02 classification_identity_context plus F04 composition owns the full semantic binding",
+  "combined_targeted_suite": {
+    "byte_size": 13915,
+    "failures": [],
+    "path": "artifacts/work_packages/F03/attempts/0001/targeted-node-suite.junit.xml",
+    "sha256": "sha256:726db98bcd12b1984b11ef9d88c36bd985bb32c8653632ed0701138eb78691e5",
+    "totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 68,
+      "skipped": 0,
+      "tests": 68,
+      "todo": 0
+    },
+    "xml_failure_count": 0,
+    "xml_testcase_count": 67
+  },
+  "completion_ready": false,
+  "required_check": "transition_receipt_test",
+  "source_inventory": [
+    {
+      "byte_size": 46436,
+      "path": "packages/foundry-kernel/src/forge/gates/transition-admission-gate.mjs",
+      "sha256": "sha256:bef51dc910b2d600d2c4a0a40a91d04e67dbd7d43e8b39c330f4ffa86a4218bd"
+    },
+    {
+      "byte_size": 50,
+      "path": "packages/foundry-kernel/src/forge/gates/index.mjs",
+      "sha256": "sha256:002d53b0ed821fc5b2cb9b089616e9830aa08a19a42f9d56b845dc96c186f9c6"
+    },
+    {
+      "byte_size": 8818,
+      "path": "packages/foundry-kernel/src/forge/gates/gate-test-support.mjs",
+      "sha256": "sha256:99372425f21abe0fd5076eff5393f2f506fc31da8e4acf359ea1fe18e8e92266"
+    },
+    {
+      "byte_size": 18762,
+      "path": "packages/foundry-kernel/src/forge/gates/transition-receipt.test.mjs",
+      "sha256": "sha256:e396e0bacaf3ef6b5482b872f126137b90df2d192297e9e3e4f12090887ca617"
+    },
+    {
+      "byte_size": 8243,
+      "path": "packages/foundry-kernel/src/forge/gates/override-provenance.test.mjs",
+      "sha256": "sha256:2472f8d773c20b6161ba60ad2b3210d323f4d37cb572d59c8faa73aee7ea5653"
+    }
+  ],
+  "status": "PASS",
+  "targeted_failed": 0,
+  "targeted_passed": 15,
+  "targeted_skipped": 0,
+  "transition_admission_version": "4.0.0-f03.1",
+  "verified_contracts": [
+    "no prose-only transition",
+    "session, revision, from-phase, and state-hash binding",
+    "resolved receipt, manifest, byte size, and SHA-256 recomputation",
+    "validation evidence bound to content and manifest hashes",
+    "IDLE requires exactly one canonical F01 classification receipt",
+    "classification identity, schema receipt, projection, work class, timestamp, and version validation",
+    "non-IDLE requires exactly one complete current PhaseArtifactSet",
+    "required artifacts are VALID and receipt/hash/schema/state-retention bound",
+    "GateDecision run, input hash, decision hash, and evidence binding",
+    "FAIL and BLOCK are rejected in every phase",
+    "E admission requires resolving satisfied GateDecisions",
+    "deterministic immutable FTA admission identity"
+  ],
+  "work_package_id": "F03"
+}

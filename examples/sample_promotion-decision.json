@@ -1,22 +1,61 @@
 {
-  "decision_id": "PD-1",
-  "candidate_id": "HG-0002",
-  "requested_level": "PILOT",
-  "granted_level": "HYPOTHESIS_PASSPORT_ONLY",
+  "decision_id": "PD-FIXTURE-0001",
+  "candidate_id": "HG-FIXTURE-0002",
+  "candidate_revision": 2,
+  "requested_level": "REPLICATED",
+  "granted_level": "EMPIRICALLY_TESTED",
+  "promotion_ceiling": "EMPIRICALLY_TESTED",
   "hard_gate_status": "PASS",
-  "fitness_vector_id": "FV-1",
-  "parliament_adjudication_id": "ADJ-1",
-  "replication_result_ids": [
-    "RR-1"
+  "fitness_vector_id": "FV-FIXTURE-0001",
+  "phase_e_artifact_set_id": "PAS-E-FIXTURE-0001",
+  "promotion_pack_artifact_ids": [
+    "ART-PROMOTION-PACK-FIXTURE-0001"
   ],
-  "selective_inference_report_id": "SIR-1",
+  "promotion_pack_hash": "sha256:83361f4bc44217f07c55d6aa586ee2d858774de4a89a8d84d9e4731ec35c8164",
+  "gate_decision_ids": [
+    "G00_PIN_RESOLUTION",
+    "G01_POLICY_AUTHORITY",
+    "G02_EVALUATOR_HOLDOUT_FIREWALL",
+    "G03_SCHEMA_LINEAGE_COUNT",
+    "G04_SOURCE_PROVENANCE",
+    "G05_SEARCH_COVERAGE",
+    "G06_METHOD_SCOPE_DEPENDENCY",
+    "G07_VALIDATION_LEAKAGE",
+    "G08_ADAPTIVE_STATISTICS",
+    "G09_RED_QUEEN",
+    "G10_REPLICATION_CEILING",
+    "G11_PARLIAMENT",
+    "G12_INDEPENDENT_ATTESTATION",
+    "G13_HUMAN_POLICY_APPROVAL",
+    "G14_ATOMIC_PROMOTION_COMMIT"
+  ],
+  "artifact_receipt_ids": [
+    "AR-PROMOTION-PACK-FIXTURE-0001",
+    "AR-PROMOTION-DECISION-FIXTURE-0001"
+  ],
+  "effect_receipt_id": "ER-PROMOTION-COMMIT-FIXTURE-0001",
+  "request_action_intent_id": "AI-REQUEST-PROMOTION-FIXTURE-0001",
+  "commit_action_intent_id": "AI-COMMIT-PROMOTION-FIXTURE-0001",
+  "policy_bundle_hash": "sha256:ca3aeb03dba347ecbd788906c48e0c342cdb860d0811d729fecc926c779c68b5",
+  "idempotency_key": "HG-FIXTURE-0002:2:REPLICATED:83361f4bc44217f07c55d6aa586ee2d858774de4a89a8d84d9e4731ec35c8164:ca3aeb03dba347ecbd788906c48e0c342cdb860d0811d729fecc926c779c68b5",
+  "parliament_adjudication_id": "ADJ-FIXTURE-0001",
+  "attestation_id": "ATT-FIXTURE-0001",
+  "replication_status": "PARTIAL",
+  "replication_result_ids": [
+    "RR-FIXTURE-0001"
+  ],
+  "selective_inference_report_id": "SIR-FIXTURE-0001",
   "minority_report_ids": [
-    "MR-1"
+    "MR-FIXTURE-0001"
   ],
   "decision": "CONDITIONAL",
-  "rationale": "Promising but replication is partial and selection bias remains material.",
-  "approval_record_ids": [
-    "APR-1"
+  "rationale": "The candidate requested REPLICATED, but replication is partial and selection bias remains material; the A05 ceiling therefore limits the grant to EMPIRICALLY_TESTED.",
+  "unresolved_limitations": [
+    "One preregistered replication branch remains unresolved.",
+    "Selection-bias uncertainty remains material."
   ],
-  "decision_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  "approval_record_ids": [
+    "APR-FIXTURE-0001"
+  ],
+  "decision_hash": "sha256:781e2449498ee9799c8f62b6a8b4cd08289891587a86a795e8f45459e09f9f5f"
 }

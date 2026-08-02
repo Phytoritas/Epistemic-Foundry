@@ -1,0 +1,29 @@
+{
+  "attempt_id": "J02-0004",
+  "debts": [
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "debt_id": "B04-0009-CANONICAL-PROJECTION-COUNT",
+      "failure_count": 17,
+      "j02_causal_impact": "NONE",
+      "owner": "B04",
+      "resolving_attempt": "B04-0009"
+    },
+    {
+      "classification": "AUTHORIZED_NEXT_ATTEMPT_S04_0004",
+      "current_source_sha256": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+      "debt_id": "S04-TM004",
+      "failure_count": 1,
+      "j02_causal_impact": "NONE",
+      "owner": "S04",
+      "resolving_attempt": "S04-0004",
+      "stale_bound_successor_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+      "test_file": "tests/security/s04-threat-model-traceability.test.mjs",
+      "test_name": "S04-TM004 traceability source bindings fail on undocumented contract drift"
+    }
+  ],
+  "j02_causal_failure_count": 0,
+  "package_pass_effect": "HD-EF4-C01-SG005-20260731-001 orders S04-0004 next and B04-0009 later. Both exact residual sets remain visible and cannot be reclassified as resolved.",
+  "skip_or_xfail_used": false,
+  "status": "AUTHORIZED_DOWNSTREAM_DEBT_RECONCILED"
+}

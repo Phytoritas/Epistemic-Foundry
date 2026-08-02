@@ -1,0 +1,25 @@
+{
+  "attempt_id": "B04-0005",
+  "b04_owned_blocking_findings": [],
+  "global_suites_green": false,
+  "node_debt": {
+    "affected_path": "manifests/development_manifest.yaml",
+    "classification": "EXPECTED_S04_ACTIVE_BINDING_MIGRATION_DEBT",
+    "current_actual_sha256": "7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319",
+    "debt_id": "S04-TM004",
+    "expected_stale_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+    "failure_count": 1,
+    "failure_owner": "S04",
+    "fingerprint_is_unchanged_from_prior_attempt": false,
+    "prior_observed_actual_sha256": "de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940",
+    "reason": "The approved successor development manifest is not yet recorded by the active S04 source binding."
+  },
+  "python_debt": {
+    "affected_path": "tests/test_j02_context_budget.py",
+    "classification": "EXPECTED_J02_0003_MIGRATION_DEBT",
+    "failure_count": 1,
+    "failure_owner": "J02",
+    "reason": "The J02 repository dependency checker has not yet migrated to the canonical dependency-groups.skill-context declaration."
+  },
+  "status": "PASS_B04_ATTRIBUTION_WITH_TWO_PENDING_OWNED_MIGRATIONS"
+}

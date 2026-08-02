@@ -1,0 +1,41 @@
+{
+  "attempt_id": "A02-0001",
+  "attestation_scope": {
+    "attested_not_authored": "A02 attests the product invariants and non-goals the documents already carry; it does not re-author or edit them",
+    "product_documents": [
+      "manifests/product_invariants.yaml",
+      "docs/product_constitution.md"
+    ]
+  },
+  "exit_criteria": {
+    "invariants_atomic_and_testable": {
+      "mechanism": "invariant_schema_check reads manifests/product_invariants.yaml, asserts its validation_contract anchors the atomic unit at invariant_id with the atomicity rule, required bindings and verification registry declared, that the 64 invariants are uniquely and contiguously EF4-I01..EF4-I64 with every required binding present and every work-package reference well-formed, and that each invariant statement is byte-equal to the MASTER_SPEC.md and docs/product_constitution.md statement",
+      "status": "PASS"
+    },
+    "non_goals_prevent_overclaim_and_lock_in": {
+      "mechanism": "invariant_schema_check asserts the ten non-goals EF4-NG01.. are unique, contiguous and each guarded by a declared invariant and that they disclaim production performance and a required search backend; forbidden_claim_scan asserts neither product document carries an un-negated production-maturity overclaim while the guard is not inert",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "forbidden_claim_scan": {
+      "status": "PASS",
+      "test_count": 3
+    },
+    "independent_review": {
+      "evidence": "review.md (author: bounded A02 implementation agent; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "invariant_schema_check": {
+      "status": "PASS",
+      "test_count": 3
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "forbidden_claim_scan": 3,
+    "full_node_suite": 1253,
+    "full_python_suite": 1261,
+    "invariant_schema_check": 3
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "attempt_id": "S04-0004",
+  "authority_decision": {
+    "authorized_evidence_paths": [
+      "artifacts/work_packages/S04/attempts/0004/**"
+    ],
+    "authorized_product_paths": [
+      "manifests/source_bindings/development-manifest.binding.json"
+    ],
+    "decision_file_sha256": "sha256:c7faa17fab992b701749c7fc492b2aa7d03442cfa6e065d58f154c79c50113ab",
+    "decision_hash": "sha256:b833da71edfd31f8a41da371baad9aa75775d527ded2617b9a0b41d2353e028b",
+    "decision_id": "HD-EF4-C01-SG005-20260731-001",
+    "new_patch_plan_authorized": false,
+    "test_edit_authorized": false
+  },
+  "binding_only_candidate": {
+    "active_source_binding": true,
+    "attempt_level_reconciliation": [
+      "C03-0003",
+      "F04-0002",
+      "J02-0003",
+      "S04-0003",
+      "B04-0007",
+      "C04-0002",
+      "B04-0008"
+    ],
+    "authorizing_decision_ids": [
+      "HD-EF4-C01-SG005-20260731-001"
+    ],
+    "binding_hash": "sha256:9c62a0a68ed9a1bc99f317c31de19f8896b204a153a77bc33a53cb5c93905e74",
+    "binding_id": "DMB-EF4-20260731-003",
+    "binding_type": "active_source_binding",
+    "changed_fields": {
+      "C03": [
+        "write_scope",
+        "exit_criteria",
+        "required_checks"
+      ]
+    },
+    "changed_package_ids": [
+      "C03"
+    ],
+    "created_at": "2026-07-30T11:20:57Z",
+    "parent_sha256": "5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "patch_plan_hash": "sha256:6605f7bf3d434190f253d291221e7320c4bd9f1d7265568305520694e7736c30",
+    "patch_plan_id": "MP-EF4-B04-SG002-20260730-001",
+    "patch_plan_path": "artifacts/authority_decisions/HD-EF4-B04-SG002-20260730-001.manifest-patch-plan.json",
+    "reconciliation_binding_file_sha256": "sha256:d349ccd666570e454a16a09ef542776f5a82fdf2e939548ff68ef68b2cb500b6",
+    "reconciliation_binding_hash": "sha256:25466595ff8dcb255b1b7e171ef5b4222f47fa35a42d5c8a28d60fa2126fc6a1",
+    "reconciliation_binding_id": "DMBR-EF4-C01-SG004-20260730-001",
+    "reconciliation_binding_path": "artifacts/authority_decisions/HD-EF4-C01-SG004-20260730-001.manifest-reconciliation-binding.json",
+    "source_path": "manifests/development_manifest.yaml",
+    "static_dependency_changes": [],
+    "successor_sha256": "6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+    "superseded_binding_evidence_path": "artifacts/work_packages/S04/attempts/0002/active-source-binding-verification.json",
+    "superseded_binding_evidence_sha256": "sha256:e9b4c81e201ebe559c02cf09934c8a289826847d3db6001330ca975e99b81535",
+    "supersedes_binding_hash": "sha256:aa728584283eb126842e614f83c1e70d132ef12b99b9f80bc42deeb2922907ec",
+    "supersedes_binding_id": "DMB-EF4-20260730-002"
+  },
+  "classification": {
+    "not_blocked_reason": "No credential, service, toolchain, licensed source, or host capability is missing.",
+    "not_fail_reason": "The requested new binding revision cannot satisfy the immutable active test and patch-plan contract within the exact binding-only write scope.",
+    "typed_outcome": "SPEC_GAP"
+  },
+  "impossibility_proof": {
+    "binding_only_solution_exists": false,
+    "contradictions": [
+      {
+        "constraint": "test requires patchPlan.successor_sha256 == binding.successor_sha256",
+        "id": "C1_IMMUTABLE_PATCH_SUCCESSOR",
+        "patch_plan_value": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+        "required_new_binding_value": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+        "satisfied_by_binding_only_candidate": false
+      },
+      {
+        "constraint": "test requires binding.binding_id == DMB-EF4-20260730-002",
+        "id": "C2_HARDCODED_BINDING_ID",
+        "required_new_revision_id": "DMB-EF4-20260731-003",
+        "satisfied_by_binding_only_candidate": false
+      },
+      {
+        "constraint": "test requires binding and patch plan authorizing_decision_ids to equal [HD-EF4-B04-SG002-20260730-001]",
+        "id": "C3_HARDCODED_AUTHORIZING_DECISIONS",
+        "required_new_authorizing_decision": "HD-EF4-C01-SG005-20260731-001",
+        "satisfied_by_binding_only_candidate": false
+      },
+      {
+        "constraint": "HD-EF4-C01-SG005-20260731-001 authorizes only the binding file and S04 attempt evidence; it does not authorize a new patch plan or test edit",
+        "id": "C4_PATCH_PLAN_SCOPE_NOT_AUTHORIZED",
+        "satisfied_by_binding_only_candidate": false
+      }
+    ],
+    "current_binding_successor_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "current_manifest_sha256": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+    "derived_requirement": "sha256(manifest) == patch_plan.successor_sha256",
+    "derived_requirement_holds": false,
+    "immutable_patch_plan_successor_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "required_equalities": [
+      "sha256(manifest) == binding.successor_sha256",
+      "patch_plan.successor_sha256 == binding.successor_sha256"
+    ]
+  },
+  "junit_normalization": {
+    "attempt_id": "S04-0004",
+    "normalized_sha256": "sha256:f9362f3a612c81d577817138912e8368553824e21a962d78c7214d9e3613bf4a",
+    "raw_sha256": "sha256:f01a0018474e768c834b46bcc08d82eb91b5b3f8abe131191869bfafc6a57f2b",
+    "repository_prefix_replacement_count": 6,
+    "semantic_signature_preserved": true,
+    "status": "PASS",
+    "testcase_count": 4
+  },
+  "preserved_hashes": {
+    "artifacts/authority_decisions/HD-EF4-B04-SG002-20260730-001.manifest-patch-plan.json": "sha256:52110dfd9603f3af9fa29546cb3aa049fc983268dfaeabae4733e989a18d1792",
+    "artifacts/authority_decisions/HD-EF4-C01-SG005-20260731-001.human-decision.json": "sha256:c7faa17fab992b701749c7fc492b2aa7d03442cfa6e065d58f154c79c50113ab",
+    "artifacts/work_packages/J02/attempts/0004/report.json": "sha256:6512cbf890ccd3e6d4d719fa6e504263cfcaafc3e9931536362dfcc8ab50cd0c",
+    "artifacts/work_packages/S04/attempts/0002/report.json": "sha256:1ac68d8fd4f72030dc9124e432673b848ff96240812dba8ec1df0db3fee80573",
+    "artifacts/work_packages/S04/attempts/0003/report.json": "sha256:bf76a387c229769e568e650b150b5ede6b2136c3294d792a551a9802904cadd4",
+    "manifests/development_manifest.yaml": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+    "manifests/source_bindings/development-manifest.binding.json": "sha256:603bb4d082ce53ab902a3c3ab36abd9eb3331e44d105ec75e967c694bed50dbf",
+    "tests/security/s04-threat-model-traceability.test.mjs": "sha256:9e853f6ab584191d9e4899135522a4aa2d39860f14f6af388f815dcbdb1d3ef6"
+  },
+  "product_mutation_performed": false,
+  "recorded_at_utc": "2026-07-31T08:37:00.515Z",
+  "required_product_owner_decision": {
+    "minimum_scope_additions": [
+      "tests/security/s04-threat-model-traceability.test.mjs",
+      "artifacts/authority_decisions/<new-decision>.manifest-patch-plan.json"
+    ],
+    "preserve_existing_binding_and_patch_plan_as_immutable_history": true,
+    "required_semantics": [
+      "assign the next immutable binding ID and its supersedes linkage",
+      "authorize a patch plan binding the prior manifest hash to the current manifest hash",
+      "bind the latest HumanDecision in authorizing_decision_ids",
+      "make S04-TM004 validate the active revision rather than fixed revision 002"
+    ]
+  },
+  "resume_condition": "A product-owner HumanDecision must authorize the exact S04 test and new patch-plan paths and define their revision/lineage relationship; S04 must then run a new attempt.",
+  "schema_version": 1,
+  "spec_gap_id": "S04-SG001",
+  "status": "SPEC_GAP",
+  "targeted_result": {
+    "actual_manifest_sha256": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+    "command_exit_code": 1,
+    "expected_bound_successor_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "failed": 1,
+    "failure_test": "S04-TM004 traceability source bindings fail on undocumented contract drift",
+    "junit": "artifacts/work_packages/S04/attempts/0004/targeted-source-binding.junit.xml",
+    "junit_sha256": "sha256:f9362f3a612c81d577817138912e8368553824e21a962d78c7214d9e3613bf4a",
+    "passed": 3,
+    "skipped": 0,
+    "tests": 4
+  },
+  "test_contract": {
+    "active_binding_id_constant": "DMB-EF4-20260730-002",
+    "authorizing_decision_ids_constant": [
+      "HD-EF4-B04-SG002-20260730-001"
+    ],
+    "patch_plan_path_constant": "artifacts/authority_decisions/HD-EF4-B04-SG002-20260730-001.manifest-patch-plan.json",
+    "required_assertions": {
+      "binding_decisions_equal_constant": true,
+      "binding_id_equals_constant": true,
+      "manifest_equals_binding_successor": true,
+      "patch_decisions_equal_constant": true,
+      "patch_successor_equals_binding_successor": true
+    }
+  },
+  "work_package_id": "S04"
+}

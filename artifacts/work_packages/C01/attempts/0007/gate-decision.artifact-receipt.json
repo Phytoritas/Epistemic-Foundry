@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-C01-0007-GATE-DECISION",
+  "byte_size": 909,
+  "content_hash": "sha256:6224cf4f32e1da439fa9418f551f7dd6333c6d19e70c4a20cd6bb1a38b754982",
+  "created_at": "2026-07-30T14:39:26.902Z",
+  "created_by": {
+    "actor_id": "C01-0007-contract-verifier",
+    "actor_type": "tool"
+  },
+  "locator": "examples/sample_gate_decision.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:4b24cf674d5e37f6fbdc61c4a6e38a40b9c355c3e738cf17c967877760630e91",
+  "receipt_id": "AR-C01-0007-GATE-DECISION",
+  "schema_ref": "schemas/gate-decision.schema.json",
+  "validation_results": [
+    {
+      "check": "draft_2020_12_schema",
+      "details": "The corrected fixture validates against the canonical GateDecision schema.",
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_decision_hash",
+      "details": "decision_hash recomputes to sha256:a6a50d4285e844b71093e999b5addccf969d09d4c14221a92531d73172369851 with the self field excluded.",
+      "status": "PASS"
+    },
+    {
+      "check": "bounded_write_scope",
+      "details": "C01-0007 changes only the C01-owned decision_hash field and its new attempt evidence.",
+      "status": "PASS"
+    }
+  ]
+}

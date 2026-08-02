@@ -1,0 +1,51 @@
+{
+  "attempt_id": "T02-0001",
+  "authority_decision": "HD-EF4-T02-SCOPE-20260801-002",
+  "authorization_order": {
+    "approval_placement": "inside CAPABILITY_AUTHORIZATION, before lease issuance",
+    "frozen_top_level_order_extended": false,
+    "self_approval_enforced_by_service": true
+  },
+  "catalog_composition": {
+    "catalog_set_holds_no_tool_name_literal": true,
+    "composed_tool_count": 22,
+    "mutating_tool_count": 9,
+    "sealed_t01_tool_count": 13
+  },
+  "exit_criteria": {
+    "effects_reconcile": {
+      "evidence": [
+        "tests/mcp/t02/test_mcp_effect.py",
+        "src/epistemic_foundry/application/mcp_mutating/reconciliation.py"
+      ],
+      "status": "PASS"
+    },
+    "no_mutation_without_lease": {
+      "evidence": [
+        "tests/mcp/t02/test_mcp_effect.py",
+        "src/epistemic_foundry/application/mcp_mutating/handler_factory.py"
+      ],
+      "status": "PASS"
+    }
+  },
+  "mutation_semantics": {
+    "committed_is_tristate": true,
+    "dry_run_records_intent_and_not_executed_receipt": true,
+    "unknown_effect_is_result_not_internal_error": true,
+    "unknown_never_rendered_as_not_committed": true
+  },
+  "required_checks": {
+    "approval_test": {
+      "module": "tests/mcp/t02/test_approval.py",
+      "status": "PASS",
+      "test_count": 18
+    },
+    "mcp_effect_test": {
+      "module": "tests/mcp/t02/test_mcp_effect.py",
+      "status": "PASS",
+      "test_count": 24
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 65
+}

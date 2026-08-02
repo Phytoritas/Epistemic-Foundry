@@ -1,0 +1,59 @@
+{
+  "assumption_ledger_semantics": {
+    "derived_rather_than_declared": true,
+    "grounding_states": [
+      "UNGROUNDED",
+      "PARTIALLY_SUPPORTED"
+    ],
+    "ledger_entry_carries_dependents": true,
+    "undeclared_hidden_assumption_fails_closed": true
+  },
+  "attempt_id": "R02-0001",
+  "exit_criteria": {
+    "premises_source_bound_or_assumptions": {
+      "evidence": [
+        "python/epistemic_foundry/reasoning/deduction/test_deduction_trace.py"
+      ],
+      "mechanism": "a premise must cite evidence, an unevidenced statement must be an assumption, and the engine derives the load-bearing assumptions and requires the declared set to match exactly",
+      "status": "PASS"
+    },
+    "scope_widening_rejected": {
+      "evidence": [
+        "python/epistemic_foundry/reasoning/deduction/test_scope_widening.py"
+      ],
+      "mechanism": "a conclusion may narrow a ScopeVector but never drop a boundary, criterion, or condition its premises carried, and may not move to a value no premise covers",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "deduction_trace_test": {
+      "module": "python/epistemic_foundry/reasoning/deduction/test_deduction_trace.py",
+      "status": "PASS",
+      "test_count": 24
+    },
+    "scope_widening_test": {
+      "module": "python/epistemic_foundry/reasoning/deduction/test_scope_widening.py",
+      "status": "PASS",
+      "test_count": 19
+    }
+  },
+  "scope_discipline": {
+    "checked_map_fields": [
+      "conditions",
+      "domain_extensions"
+    ],
+    "checked_set_fields": [
+      "exclusion_criteria",
+      "inclusion_criteria"
+    ],
+    "widening_kinds": [
+      "ALTERED_CONDITION",
+      "DROPPED_BOUNDARY",
+      "DROPPED_CONDITION",
+      "DROPPED_CRITERIA",
+      "UNCOVERED_VALUE"
+    ]
+  },
+  "status": "PASS",
+  "targeted_test_count": 43
+}

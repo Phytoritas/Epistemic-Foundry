@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/model-routing-receipt.schema.json",
+  "title": "ModelRoutingReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "eligible_model_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "selected_model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy": {
+      "enum": [
+        "fixed",
+        "ucb",
+        "thompson",
+        "safe_bandit",
+        "manual"
+      ]
+    },
+    "reward_basis": {
+      "enum": [
+        "immediate_proxy",
+        "validated_improvement",
+        "delayed_holdout",
+        "replication",
+        "none"
+      ]
+    },
+    "estimated_cost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "estimated_latency_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "exploration_probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "safety_constraints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "receipt_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "task_class",
+    "eligible_model_ids",
+    "selected_model_id",
+    "policy",
+    "reward_basis",
+    "estimated_cost",
+    "estimated_latency_ms",
+    "exploration_probability",
+    "safety_constraints",
+    "receipt_hash"
+  ],
+  "description": "변이 모델 선택의 UCB/Thompson·비용·지연·지연보상 근거를 기록한다."
+}

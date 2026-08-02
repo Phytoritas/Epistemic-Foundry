@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "I03-0001-ONTOLOGY-VERIFICATION",
+  "byte_size": 7521,
+  "content_hash": "sha256:cab65ed32766d1a471d3eb3ef44ceee5e3236e986aff2a41aa74c229707c3049",
+  "created_at": "2026-07-29T11:45:10Z",
+  "created_by": {
+    "actor_id": "SVC-FOUNDRY-KERNEL-I03",
+    "actor_type": "service"
+  },
+  "locator": "artifacts/work_packages/I03/attempts/0001/ontology-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:b2c0e592a9f6fe97c63de157b5fc56c63c64440600cfb6d9b7f914a1a9a9ec32",
+  "receipt_id": "AR-I03-0001-ONTOLOGY-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "ontology_fixture_test",
+      "details": "16/16 exact mapping, ambiguity, review queue, authority, and deterministic identity cases passed",
+      "status": "PASS"
+    },
+    {
+      "check": "measurement_identity_test",
+      "details": "23/23 identity, bridge, ceiling, incompatibility, scope, and aggregation cases passed",
+      "status": "PASS"
+    },
+    {
+      "check": "full_python_regression",
+      "details": "947/947 official tests/** cases passed with zero skipped tests",
+      "status": "PASS"
+    }
+  ]
+}

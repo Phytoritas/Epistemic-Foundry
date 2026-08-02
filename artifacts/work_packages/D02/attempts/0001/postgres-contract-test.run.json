@@ -1,0 +1,20 @@
+{
+  "attempt_id": "D02-0001",
+  "check": "postgres-contract-test",
+  "command": [
+    "uv",
+    "run",
+    "--with",
+    "psycopg[binary]",
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "python/epistemic_foundry/storage/postgres/test_postgres_contract.py",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=C:\\dev\\insight\\Epistemic-Foundry\\artifacts\\work_packages\\D02\\attempts\\0001\\postgres-contract-test.junit.xml"
+  ],
+  "exit_code": 0,
+  "status": "PASS"
+}

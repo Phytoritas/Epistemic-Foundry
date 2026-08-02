@@ -1,0 +1,80 @@
+{
+  "attempt_id": "E05-0001",
+  "composed_surfaces": {
+    "candidate_accounting": "src/epistemic_foundry/evolution_chamber/reconciliation.py",
+    "effect_receipts": "src/epistemic_foundry/noetic_ledger/receipts.py",
+    "mutation_receipts": "src/epistemic_foundry/evolution_chamber/mutation.py"
+  },
+  "declaring_sources": {
+    "effect_status": "noetic_ledger/receipts.py EffectStatus, read with get_args",
+    "pipeline_stages": "evolution_chamber/reconciliation.py STAGES",
+    "status_disposition_table": "src/epistemic_foundry/effects/v4_e05/effect-disposition.json, verified to cover the imported vocabulary on every use"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "evidence": [
+        "artifacts/work_packages/E05/attempts/0001/test_provenance_receipts.py"
+      ],
+      "mechanism": "every effect and mutation receipt is minted by the runtime's own builders and validated against its canonical schema, each self-hash is re-derived, each mutation binds an effect receipt that exists, and the engine mints nothing of its own — it reads the ledger rather than adding to it",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "evidence": [
+        "artifacts/work_packages/E05/attempts/0001/test_schema_and_type.py"
+      ],
+      "mechanism": "the engine module is scanned for canonical schema enum values and holds none; the disposition table must cover the imported EffectStatus exactly, every disposition must be a declared pipeline stage or terminal state with a stated reason, and a status resolves if and only if it names one",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "evidence": [
+        "artifacts/work_packages/E05/attempts/0001/test_unit_contract.py",
+        "artifacts/work_packages/E05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "clean, failed, cancelled and rolled-back fan-outs all reconcile because a terminal state is an answer; an orphan effect, an unreceipted candidate, a mutation without provenance, a dangling reference, an unobserved outcome and a ledger/pipeline disagreement are each refused by their own code",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "evidence": [
+        "artifacts/work_packages/E05/attempts/0001/test_provenance_receipts.py"
+      ],
+      "mechanism": "a mutation that changes a forbidden authority field is refused before any receipt for it can exist, and changed paths are derived from the diff rather than from the operator's self-description, so an operator that edits more than it admits is detected",
+      "status": "PASS"
+    }
+  },
+  "failure_classes": [
+    "EFFECT_RECEIPT_MISSING",
+    "EFFECT_UNRESOLVED",
+    "LEDGER_PIPELINE_DISAGREEMENT",
+    "MUTATION_RECEIPT_MISSING",
+    "MUTATION_WITHOUT_PROVENANCE",
+    "ORPHAN_SIDE_EFFECT"
+  ],
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "module": "artifacts/work_packages/E05/attempts/0001/test_negative_adversarial.py",
+      "status": "PASS",
+      "test_count": 20
+    },
+    "provenance_and_receipt_audit": {
+      "module": "artifacts/work_packages/E05/attempts/0001/test_provenance_receipts.py",
+      "status": "PASS",
+      "test_count": 15
+    },
+    "schema_and_type_check": {
+      "module": "artifacts/work_packages/E05/attempts/0001/test_schema_and_type.py",
+      "status": "PASS",
+      "test_count": 18
+    },
+    "unit_and_contract_tests": {
+      "module": "artifacts/work_packages/E05/attempts/0001/test_unit_contract.py",
+      "status": "PASS",
+      "test_count": 13
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 66
+}

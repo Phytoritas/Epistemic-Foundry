@@ -1,0 +1,119 @@
+{
+  "adversarial_case_count": 16,
+  "adversarial_cases": [
+    {
+      "case_id": "MISSING_SKILL_TARGET",
+      "expected_error": "REFERENCE_TARGET_MISSING",
+      "status": "PASS"
+    },
+    {
+      "case_id": "MISSING_REFERENCE_TARGET",
+      "expected_error": "REFERENCE_TARGET_MISSING",
+      "status": "PASS"
+    },
+    {
+      "case_id": "ORPHAN_REFERENCE",
+      "expected_error": "INVENTORY_CONTRACT_INVALID",
+      "status": "PASS"
+    },
+    {
+      "case_id": "SELF_CYCLE",
+      "expected_error": "REFERENCE_GRAPH_CYCLE",
+      "status": "PASS"
+    },
+    {
+      "case_id": "MULTI_NODE_CYCLE",
+      "expected_error": "REFERENCE_GRAPH_CYCLE",
+      "status": "PASS"
+    },
+    {
+      "case_id": "DEPTH_OVERFLOW",
+      "expected_error": "REFERENCE_DEPTH_EXCEEDED",
+      "status": "PASS"
+    },
+    {
+      "case_id": "DUPLICATE_SKILL_ID",
+      "expected_error": "INVENTORY_CONTRACT_INVALID",
+      "status": "PASS"
+    },
+    {
+      "case_id": "DUPLICATE_REFERENCE_ID",
+      "expected_error": "INVENTORY_CONTRACT_INVALID",
+      "status": "PASS"
+    },
+    {
+      "case_id": "DUPLICATE_PATH",
+      "expected_error": "INVENTORY_CONTRACT_INVALID",
+      "status": "PASS"
+    },
+    {
+      "case_id": "CONTENT_HASH_MISMATCH",
+      "expected_error": "REFERENCE_CONTENT_DRIFT",
+      "status": "PASS"
+    },
+    {
+      "case_id": "DOT_DOT_TRAVERSAL",
+      "expected_error": "REFERENCE_PATH_TRAVERSAL",
+      "status": "PASS"
+    },
+    {
+      "case_id": "ABSOLUTE_POSIX_PATH",
+      "expected_error": "REFERENCE_PATH_TRAVERSAL",
+      "status": "PASS"
+    },
+    {
+      "case_id": "WINDOWS_DRIVE_OR_UNC_PATH",
+      "expected_error": "REFERENCE_PATH_TRAVERSAL",
+      "status": "PASS"
+    },
+    {
+      "case_id": "SYMLINK_ESCAPE",
+      "expected_error": "REFERENCE_SYMLINK_DENIED",
+      "status": "PASS"
+    },
+    {
+      "case_id": "DISABLED_EXPLICIT_REFERENCE",
+      "expected_error": "REFERENCE_DISABLED",
+      "status": "PASS"
+    },
+    {
+      "case_id": "UNKNOWN_LLM_PROPOSAL",
+      "expected_error": "UNKNOWN_REFERENCE_PROPOSAL",
+      "status": "PASS"
+    }
+  ],
+  "adversarial_exact_fail_closed_count": 16,
+  "attempt_id": "J02-0002",
+  "graph": {
+    "child_count": 28,
+    "graph_integrity_errors": [],
+    "maximum_closure_count": 11,
+    "maximum_transitive_depth": 5,
+    "orphan_reference_ids": [],
+    "orphan_skill_ids": [],
+    "parent_count": 1,
+    "reachable_child_count": 28,
+    "reachable_reference_count": 17,
+    "reference_count": 17,
+    "unreachable_child_ids": []
+  },
+  "loader_determinism_mismatch_count": 0,
+  "loader_determinism_repeat_count": 100,
+  "status": "PASS",
+  "targeted_node_junit": {
+    "failures": [],
+    "path": "artifacts/work_packages/J02/attempts/0002/targeted-node-suite.junit.xml",
+    "semantic_totals_authority": "node_junit_footer_comments",
+    "sha256": "sha256:f4eac13de7a1a4a1898994804aef7a705918db69d7c54b3001db5b0754f88f96",
+    "totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 25,
+      "skipped": 0,
+      "tests": 25,
+      "todo": 0
+    },
+    "xml_footer_testcase_delta": 1,
+    "xml_testcase_count": 24
+  }
+}

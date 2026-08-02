@@ -1,0 +1,161 @@
+........................................................................ [  6%]
+........................................................................ [ 12%]
+.........................F.............................................. [ 19%]
+........................................................................ [ 25%]
+........................................................................ [ 32%]
+........................................................................ [ 38%]
+........................................................................ [ 45%]
+........................................................................ [ 51%]
+........................................................................ [ 58%]
+........................................................................ [ 64%]
+........................................................................ [ 71%]
+........................................................................ [ 77%]
+........................................................................ [ 83%]
+........................................................................ [ 90%]
+........................................................................ [ 96%]
+...................................                                      [100%]
+================================== FAILURES ===================================
+_ test_backup_restore_test_postgres_staging_restore_preserves_corrupt_source __
+
+tmp_path = WindowsPath('C:/Users/Public/Documents/ESTsoft/CreatorTemp/pytest-of-yhmoo/pytest-8335/test_backup_restore_test_postg0')
+
+    def test_backup_restore_test_postgres_staging_restore_preserves_corrupt_source(
+        tmp_path: Path,
+    ) -> None:
+        assert shutil.which("docker") is not None, "Docker is required for the D04 gate"
+        _run(["docker", "image", "inspect", POSTGRES_IMAGE])
+        container = f"ef-d04-postgres-{uuid.uuid4().hex[:10]}"
+        started = False
+        try:
+            _run(
+                [
+                    "docker",
+                    "run",
+                    "--detach",
+                    "--rm",
+                    "--name",
+                    container,
+                    "--env",
+                    "POSTGRES_PASSWORD=d04-local-fixture",
+                    POSTGRES_IMAGE,
+                ]
+            )
+            started = True
+            for _ in range(60):
+                ready = _docker_exec(
+                    container,
+                    ["pg_isready", "-U", "postgres", "-d", "postgres"],
+                    check=False,
+                )
+                if ready.returncode == 0:
+                    break
+                time.sleep(0.25)
+            else:
+                raise AssertionError("disposable D04 PostgreSQL did not become ready")
+    
+>           _psql(
+                container,
+                "postgres",
+                f"""
+                CREATE ROLE {OWNER} LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE
+                    NOINHERIT NOBYPASSRLS;
+                CREATE ROLE {RUNTIME} LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE
+                    NOINHERIT NOBYPASSRLS;
+                CREATE DATABASE {SOURCE_DATABASE} OWNER {OWNER};
+                """,
+            )
+
+tests\recovery\state\test_postgres_backup_restore.py:241: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\recovery\state\test_postgres_backup_restore.py:64: in _psql
+    result = _docker_exec(
+tests\recovery\state\test_postgres_backup_restore.py:54: in _docker_exec
+    return _run(command, input_bytes=input_bytes, check=check)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\recovery\state\test_postgres_backup_restore.py:33: in _run
+    return subprocess.run(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = b'\n            CREATE ROLE ef_d04_owner LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE\n                NOINHERIT NOBYPASS...E\n                NOINHERIT NOBYPASSRLS;\n            CREATE DATABASE ef_d04_source OWNER ef_d04_owner;\n            '
+capture_output = False, timeout = 90, check = True
+popenargs = (['docker', 'exec', '-i', 'ef-d04-postgres-3b716e128e', 'psql', '-X', ...],)
+kwargs = {'stderr': -1, 'stdin': -1, 'stdout': -1}
+process = <Popen: returncode: 2 args: ['docker', 'exec', '-i', 'ef-d04-postgres-3b716e...>
+stdout = b''
+stderr = b'psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  the database system is starting up\n'
+retcode = 2
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['docker', 'exec', '-i', 'ef-d04-postgres-3b716e128e', 'psql', '-X', '--no-psqlrc', '-v', 'ON_ERROR_STOP=1', '-Atq', '-U', 'postgres', '-d', 'postgres']' returned non-zero exit status 2.
+
+C:\Users\yhmoo\AppData\Roaming\uv\python\cpython-3.12.3-windows-x86_64-none\Lib\subprocess.py:571: CalledProcessError
+- generated xml file: C:\dev\insight\Epistemic-Foundry\artifacts\work_packages\O02\attempts\0002\full-python-suite.junit.xml -
+=========================== short test summary info ===========================
+FAILED tests/recovery/state/test_postgres_backup_restore.py::test_backup_restore_test_postgres_staging_restore_preserves_corrupt_source
+1 failed, 1114 passed in 37.13s

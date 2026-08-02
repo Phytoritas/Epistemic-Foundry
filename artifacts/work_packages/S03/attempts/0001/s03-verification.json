@@ -1,0 +1,52 @@
+{
+  "attempt_id": "S03-0001",
+  "exit_criteria": {
+    "hash_license_permissions_pinned": {
+      "evidence": [
+        "packages/skill-vault/src/skill-lockfile.test.mjs"
+      ],
+      "mechanism": "createSkillLockfile emits a v1 lockfile that pins, per approved skill, the exact source, revision, content_hash, license, sorted permission envelope, sorted approver ids, and review_status under a deterministic lock_hash computed over canonical JSON; the lock is order-independent and deeply frozen. verifySkillLockfileSnapshot recomputes the hash and refuses any drift (LOCK_HASH_MISMATCH), a non-canonical permission order (NON_CANONICAL_ORDER), or an accessor-bearing field (ACCESSOR_FIELD_DENIED) without invoking getters, and treats a serialized snapshot as inert (isSkillLockfile:false, authorityEligible:false). A disabled installation refuses a content-hash drift (INSTALL_HASH_MISMATCH) or an unapproved or rejected skill (SKILL_NOT_APPROVED), conformance cannot report an undeclared permission (UNDECLARED_PERMISSION), and activation refuses a policy drift (POLICY_HASH_MISMATCH), an unverified or expanded permission (UNVERIFIED_PERMISSION_DENIED, PERMISSION_EXPANSION_DENIED), or a foreign lockfile (UNRECOGNIZED_LOCKFILE) and never performs an effect (effectPerformed:false)",
+      "status": "PASS"
+    },
+    "remote_skills_inactive_until_approved": {
+      "evidence": [
+        "packages/skill-vault/src/malicious-skill-fixture.test.mjs"
+      ],
+      "mechanism": "quarantineCandidate admits a remote candidate only into an inert QUARANTINED state (executable:false, active:false, authorityEligible:false) that never exposes the raw files or content bytes, and fails closed on path traversal, absolute, backslash, or portable-reserved names (PATH_ESCAPE_DENIED), name collisions (PATH_COLLISION), accessor fields (ACCESSOR_FIELD_DENIED), and Proxy inputs (PROXY_INPUT_DENIED) without invoking any getter. scanCandidate asserts noScriptsExecuted:true while flagging install hooks, dynamic evaluation, self-authority claims, symlink content, a failed signature, and script content and inferring the implied permission envelope; any CRITICAL finding makes issueReviewDecision fail closed with CRITICAL_FINDING_BLOCKS_APPROVAL. A review must bind the exact source, revision, content hash, and inferred permissions (REVIEW_SUBJECT_MISMATCH, INFERRED_PERMISSION_MISSING, MISSING_FIELD), and a foreign or copied candidate or scan cannot gain local approval (UNRECOGNIZED_CANDIDATE); activation requires a disabled installation plus passing conformance and stays inert under a name collision (BLOCKED_NAME_COLLISION, INSTALLATION_NOT_CONFORMABLE)",
+      "status": "PASS"
+    }
+  },
+  "hash_license_permissions_pinned": {
+    "activation_refuses_policy_permission_or_lockfile_drift": true,
+    "canonical_lock_hash_is_order_independent_and_frozen": true,
+    "disabled_install_refuses_content_hash_drift": true,
+    "rejected_decisions_stay_locked_and_uninstallable": true,
+    "serialized_snapshot_is_verifiable_but_inert": true
+  },
+  "quarantine_never_executes_candidate_bytes": {
+    "accessor_or_proxy_inputs_rejected_without_getters": true,
+    "critical_finding_blocks_approval_fail_closed": true,
+    "path_escape_and_collision_fail_closed": true,
+    "raw_files_and_content_never_exposed": true,
+    "static_scan_flags_hooks_eval_authority_symlink_signature_script": true
+  },
+  "required_checks": {
+    "malicious_skill_fixture_test": {
+      "module": "packages/skill-vault/src/malicious-skill-fixture.test.mjs",
+      "status": "PASS",
+      "test_count": 11
+    },
+    "skill_lockfile_test": {
+      "module": "packages/skill-vault/src/skill-lockfile.test.mjs",
+      "status": "PASS",
+      "test_count": 10
+    }
+  },
+  "schema_reference_is_string_only": {
+    "loaded_or_validated": false,
+    "note": "skill-vault.mjs returns schemas/skill-lockfile.schema.json as a string schemaRef only; the schema file is neither read nor validated against, lies outside the packages/skill-vault/** write scope, and no required check depends on it",
+    "schema_ref": "schemas/skill-lockfile.schema.json"
+  },
+  "status": "PASS",
+  "targeted_test_count": 21
+}

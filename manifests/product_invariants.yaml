@@ -1,5 +1,72 @@
 version: 4.0.0
 architecture_name: Epistemic Foundry
+validation_contract:
+  atomic_unit: invariant_id
+  atomicity_rule: Each invariant ID names one enforceable constitutional boundary;
+    enumerated subjects or controls within that boundary do not create separate
+    voting propositions.
+  normative_source: MASTER_SPEC.md#part-ii-product-constitution-64-non-negotiable-invariants
+  verification_registry: manifests/requirements_traceability.yaml
+  required_bindings:
+  - category
+  - statement
+  - evidence_artifacts
+  - work_packages
+  pass_conditions:
+  - IDs are unique and contiguous from EF4-I01 through EF4-I64.
+  - Category and statement match the corresponding MASTER_SPEC invariant.
+  - Every invariant has at least one resolving evidence artifact and one owner work
+    package.
+  - Every invariant resolves to non-empty verification checks in the verification
+    registry.
+  - Presence or traceability alone never proves runtime effectiveness.
+non_goals:
+- id: EF4-NG01
+  statement: v4 does not guarantee truth or autonomous scientific discovery.
+  guards:
+  - EF4-I33
+  - EF4-I40
+- id: EF4-NG02
+  statement: v4 does not equate novelty with value or support.
+  guards:
+  - EF4-I45
+  - EF4-I46
+- id: EF4-NG03
+  statement: v4 does not use agent majority as evidence.
+  guards:
+  - EF4-I09
+- id: EF4-NG04
+  statement: v4 does not let candidates rewrite current evaluators.
+  guards:
+  - EF4-I43
+  - EF4-I56
+- id: EF4-NG05
+  statement: v4 does not expose hidden holdouts.
+  guards:
+  - EF4-I44
+- id: EF4-NG06
+  statement: v4 does not promote from one scalar.
+  guards:
+  - EF4-I45
+- id: EF4-NG07
+  statement: v4 does not treat every domain as having the same statistical policy.
+  guards:
+  - EF4-I53
+- id: EF4-NG08
+  statement: v4 does not require ShinkaEvolve or any other search backend.
+  guards:
+  - EF4-I34
+  - EF4-I63
+- id: EF4-NG09
+  statement: v4 does not claim production performance from this specification.
+  guards:
+  - EF4-I33
+  - EF4-I35
+- id: EF4-NG10
+  statement: v4 does not replace expert judgment, ethics review or experimental validation.
+  guards:
+  - EF4-I17
+  - EF4-I58
 invariants:
 - id: EF4-I01
   category: Kernel authority

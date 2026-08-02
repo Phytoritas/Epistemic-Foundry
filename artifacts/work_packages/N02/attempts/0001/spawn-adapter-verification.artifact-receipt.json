@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "N02-0001-SPAWN-ADAPTER-VERIFICATION",
+  "byte_size": 11389,
+  "content_hash": "sha256:921826606eb6d83d9be884f665a3d4b59d4c5d36af1af3302ba474f3b1acc836",
+  "created_at": "2026-07-31T02:35:16.078Z",
+  "created_by": {
+    "actor_id": "N02-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/N02/attempts/0001/spawn-adapter-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:3a845842a33c1d4614d4b15ab18c9e1197f19939cbac325d330164c23c114df8",
+  "receipt_id": "AR-N02-0001-SPAWN-ADAPTER-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "adapter_compilation_test",
+      "details": "17/17 host compilation, model resolution, capability, fallback, integrity, and fail-closed cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "prompt_injection_boundary_test",
+      "details": "12/12 host/model/caller injection, proxy, accessor, mutation, and attacker-rehash cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Node 769/769 across 75 files, Python 1064/1064, codegen 126/126, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "fixture_version": "J02-0002",
+  "case_count": 12,
+  "cases": [
+    {
+      "case_id": "METADATA_BYTES_6400",
+      "operation": "metadata",
+      "input": {"byte_count": 6400, "token_count": 1600, "skill_count": 29},
+      "expected": "PASS"
+    },
+    {
+      "case_id": "METADATA_BYTES_6401",
+      "operation": "metadata",
+      "input": {"byte_count": 6401, "token_count": 1600, "skill_count": 29},
+      "expected": "INITIAL_SKILL_METADATA_BUDGET_EXCEEDED"
+    },
+    {
+      "case_id": "METADATA_TOKENS_1600",
+      "operation": "metadata",
+      "input": {"byte_count": 1, "token_count": 1600, "skill_count": 29},
+      "expected": "PASS"
+    },
+    {
+      "case_id": "METADATA_TOKENS_1601",
+      "operation": "metadata",
+      "input": {"byte_count": 1, "token_count": 1601, "skill_count": 29},
+      "expected": "INITIAL_SKILL_METADATA_BUDGET_EXCEEDED"
+    },
+    {
+      "case_id": "DESCRIPTION_BYTES_140",
+      "operation": "description",
+      "input": {"byte_count": 140},
+      "expected": "PASS"
+    },
+    {
+      "case_id": "DESCRIPTION_BYTES_141",
+      "operation": "description",
+      "input": {"byte_count": 141},
+      "expected": "INITIAL_SKILL_METADATA_BUDGET_EXCEEDED"
+    },
+    {
+      "case_id": "REFERENCE_COUNT_12",
+      "operation": "activation",
+      "input": {"skill_bytes": 0, "skill_tokens": 0, "reference_count": 12, "reference_depth": 0, "reference_bytes": 0, "reference_tokens": 0},
+      "expected": "PASS"
+    },
+    {
+      "case_id": "REFERENCE_COUNT_13",
+      "operation": "activation",
+      "input": {"skill_bytes": 0, "skill_tokens": 0, "reference_count": 13, "reference_depth": 0, "reference_bytes": 0, "reference_tokens": 0},
+      "expected": "REFERENCE_CONTEXT_BUDGET_EXCEEDED"
+    },
+    {
+      "case_id": "REFERENCE_DEPTH_5",
+      "operation": "activation",
+      "input": {"skill_bytes": 0, "skill_tokens": 0, "reference_count": 1, "reference_depth": 5, "reference_bytes": 0, "reference_tokens": 0},
+      "expected": "PASS"
+    },
+    {
+      "case_id": "REFERENCE_DEPTH_6",
+      "operation": "activation",
+      "input": {"skill_bytes": 0, "skill_tokens": 0, "reference_count": 1, "reference_depth": 6, "reference_bytes": 0, "reference_tokens": 0},
+      "expected": "REFERENCE_DEPTH_EXCEEDED"
+    },
+    {
+      "case_id": "ACTIVATION_BYTES_28672",
+      "operation": "activation",
+      "input": {"skill_bytes": 4096, "skill_tokens": 1024, "reference_count": 12, "reference_depth": 5, "reference_bytes": 24576, "reference_tokens": 6144},
+      "expected": "PASS"
+    },
+    {
+      "case_id": "ACTIVATION_BYTES_28673",
+      "operation": "activation",
+      "input": {"skill_bytes": 4096, "skill_tokens": 1024, "reference_count": 12, "reference_depth": 5, "reference_bytes": 24577, "reference_tokens": 6144},
+      "expected": "REFERENCE_CONTEXT_BUDGET_EXCEEDED"
+    }
+  ]
+}

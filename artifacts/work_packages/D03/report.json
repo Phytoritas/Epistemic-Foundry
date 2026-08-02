@@ -1,0 +1,243 @@
+{
+  "work_package_id": "D03",
+  "attempt_id": "D03-0001",
+  "title": "Content-addressed artifact store and receipts",
+  "status": "PASS",
+  "package_status": "PASS",
+  "completion_ready": false,
+  "dependencies": {
+    "D01": {
+      "status": "PASS",
+      "attempt_id": "D01-0001",
+      "report": "artifacts/work_packages/D01/report.json",
+      "report_sha256": "00d44672b4c9680589ecd85c39f617c29bdfe79afd288a2769cafb1ba59a9a91"
+    }
+  },
+  "write_scope": [
+    "packages/foundry-kernel/src/artifacts/**"
+  ],
+  "changed_files": [
+    {
+      "path": "packages/foundry-kernel/src/artifacts/content-addressed-artifact-store.mjs",
+      "sha256": "75e69756d30ab5b5112fd908f3fec312660f30e603fe1201566db2ad263c8c8e",
+      "byte_size": 73286
+    },
+    {
+      "path": "packages/foundry-kernel/src/artifacts/artifact-hash.test.mjs",
+      "sha256": "587b78680a5b5175f6889273369eddd25f54f3c47cf5d618277b9a4db634484a",
+      "byte_size": 25573
+    },
+    {
+      "path": "packages/foundry-kernel/src/artifacts/orphan-receipt.test.mjs",
+      "sha256": "c22c07e3d81d7121a8cf8258538bc8299d512413ae2a302327485206e2518d68",
+      "byte_size": 25957
+    }
+  ],
+  "implementation": {
+    "content_identity": "sha256 of exact raw bytes",
+    "artifact_identity": "opaque artifact_id independent of content identity",
+    "receipt_identity": "opaque receipt_id independent of artifact and content identity",
+    "same_content_multiple_artifacts": true,
+    "same_artifact_multiple_receipts": true,
+    "global_artifact_id_rebinding": "rejected before publication",
+    "global_receipt_id_rebinding": "rejected before publication",
+    "record_encoding": "deterministic canonical JSON encoded as UTF-8",
+    "receipt_integrity": "receipt_hash excludes itself and binds canonical receipt content",
+    "receipt_resolution": [
+      "exact bytes",
+      "artifact manifest",
+      "schema identifier and version",
+      "creator",
+      "manifest hash"
+    ],
+    "publication_protocol": [
+      "stage same-filesystem immutable records",
+      "fsync staged files",
+      "rename into canonical namespaces",
+      "fsync canonical files",
+      "fsync directories where the platform supports directory handles",
+      "verify committed identity and integrity"
+    ],
+    "integrity_failure_mode": "SAFE_MODE",
+    "link_policy": "reject symbolic links, junctions, and multiply-linked canonical files",
+    "path_policy": "reject traversal, absolute and platform-ambiguous names, root replacement, and unexpected entries",
+    "windows_staging_handoff_retry": {
+      "namespace": ".staging only",
+      "retryable_errors": [
+        "EPERM",
+        "EACCES"
+      ],
+      "retry_limit_after_initial_attempt": 8,
+      "maximum_attempts": 9,
+      "canonical_namespace_retry": false,
+      "persistent_error_result": "SAFE_MODE"
+    },
+    "public_delete_overwrite_update_api": false,
+    "repository_root_fallback": false,
+    "d04_owned_deferred_lifecycle": [
+      "stale staging recovery",
+      "stale mutation-lock recovery",
+      "backup and restore",
+      "corruption recovery lifecycle"
+    ]
+  },
+  "exit_criteria": {
+    "immutable_artifacts_address_by_hash": "PASS",
+    "receipt_resolves_bytes_schema_creator": "PASS"
+  },
+  "required_checks": {
+    "artifact_hash_test": {
+      "status": "PASS",
+      "tests": 21,
+      "canonical_draft_2020_12_manifest_validation": "PASS",
+      "canonical_draft_2020_12_receipt_validation": "PASS"
+    },
+    "orphan_receipt_test": {
+      "status": "PASS",
+      "tests": 19,
+      "orphan_and_partial_publication_denials": "PASS",
+      "concurrent_publication_and_reader_handoff": "PASS"
+    },
+    "combined": {
+      "status": "PASS",
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0
+    },
+    "coverage": {
+      "status": "PASS",
+      "line_percent": 84.83,
+      "branch_percent": 79.62,
+      "function_percent": 92.98,
+      "module_identity": "single canonical module URL without cache-busting duplication"
+    },
+    "final_writer_contention": {
+      "status": "PASS",
+      "independent_runs": 25,
+      "targeted_test_executions": 50,
+      "worker_results": 100,
+      "failed_runs": 0
+    },
+    "windows_handoff_fault_injection": {
+      "status": "PASS",
+      "transient_eperm_recovers": true,
+      "persistent_eperm_attempts": 9,
+      "persistent_eperm_enters_safe_mode": true
+    }
+  },
+  "regression": {
+    "syntax": {
+      "status": "PASS",
+      "files": 3
+    },
+    "python": {
+      "status": "PASS",
+      "passed": 912,
+      "failed": 0
+    },
+    "d03_d01_and_foundry_kernel_security": {
+      "status": "PASS",
+      "passed": 112,
+      "failed": 0,
+      "skipped": 0
+    },
+    "packages_and_web_node_discovery": {
+      "status": "PASS",
+      "passed": 133,
+      "failed": 0
+    },
+    "repository_wide_node": {
+      "status": "FAIL_OUTSIDE_D03",
+      "test_files": 13,
+      "passed": 143,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "owner_scope": "S04"
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix_and_cache_policy": "PASS",
+    "text_integrity": {
+      "status": "PASS",
+      "files": 3,
+      "strict_utf8": true,
+      "bom_absent": true,
+      "nul_absent": true,
+      "replacement_character_absent": true
+    },
+    "git_diff_check": "PASS"
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "artifact": "artifacts/work_packages/D03/review.md",
+    "blocking_findings": 0,
+    "resolved_finding_ids": [
+      "D03-RF001",
+      "D03-RF002",
+      "D03-RF003",
+      "D03-RF004",
+      "D03-RF005",
+      "D03-RF006"
+    ],
+    "assurance_limitation": "The final pass is procedurally separate within the primary session under the product owner's no-subagent/no-Fleet decision; it is not external actor-independent certification."
+  },
+  "residual_integration_failures": [
+    {
+      "check": "repository-wide Node tests",
+      "status": "FAIL_OUTSIDE_D03",
+      "passed": 143,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "owner_scope": "S04"
+    },
+    {
+      "check": "scripts/build/double_build.py",
+      "status": "FAIL_OUTSIDE_D03",
+      "failure": "staged source omits scripts/ required by the build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  ],
+  "historical_and_worktree_preservation": {
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "failed_review_and_probe_results_preserved_in_commands": true,
+    "timed_out_overlap_processes_terminated_naturally": true,
+    "unrelated_processes_terminated": false
+  },
+  "evidence_artifacts": [
+    "artifacts/work_packages/D03/report.json",
+    "artifacts/work_packages/D03/commands.jsonl",
+    "artifacts/work_packages/D03/review.md"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000018-9f37cf06",
+    "core_generation": "000019-01eda640",
+    "core_evidence_id": "E0020",
+    "final_closeout_evidence_id": "E0021",
+    "retained_generation_manifest_count_after_core": 19,
+    "generation_file_hashes_verified_after_core": 114,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "flat_snapshot_content_matches_after_core": 6,
+    "completion_ready": false
+  },
+  "dag_reconciliation": {
+    "status": "PASS",
+    "manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+    "work_package_count": 156,
+    "unique_work_package_count": 156,
+    "unknown_dependency_count": 0,
+    "cycle_count": 0,
+    "topological_layer_count": 42,
+    "maximum_layer_width": 10,
+    "completed_package_count": 20,
+    "ready_packages_manifest_order": [
+      "D04",
+      "G01",
+      "A06"
+    ],
+    "next_package": "D04",
+    "completion_ready": false
+  }
+}

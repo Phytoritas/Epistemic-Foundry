@@ -1,0 +1,38 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "L03-0001-MEMORY-LIFECYCLE-VERIFICATION",
+  "byte_size": 3168,
+  "content_hash": "sha256:785a2c074fe4fb4d1993e55e3aeab21e44497b77980d4f211c84a1733ae4dfbd",
+  "created_at": "2026-07-30T23:45:41.553Z",
+  "created_by": {
+    "actor_id": "L03-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/L03/attempts/0001/memory-lifecycle-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:3fe99b512ef31b09b75e519cda2e4c220d4b186b73534ba1d1ade0619338eb32",
+  "receipt_id": "AR-L03-0001-MEMORY-LIFECYCLE-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "redaction_test",
+      "details": "19/19 redaction, source integrity, dedupe, ordering, and tamper cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "forget_legal_hold_test",
+      "details": "25/25 immutable revision, legal hold, receipt, replay, and policy cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_effect_and_ledger_interop",
+      "details": "ActionIntent, EventRecord, and EffectReceipt schemas and hashes pass 3/3",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "L01 27/27, L02 41/41, Node 588/588, Python 1064/1064, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "attempt_id": "O02-0001",
+  "authorized_surface": {
+    "evidence_scope": [
+      "artifacts/work_packages/O02/**"
+    ],
+    "out_of_scope_product_change_count": 0,
+    "product_file_change_count": 0,
+    "product_write_scope": [
+      "python/epistemic_foundry/retrieval/lanes/**"
+    ]
+  },
+  "completion_ready": false,
+  "dependencies": {
+    "O01": {
+      "attempt_id": "O01-0002",
+      "report": "artifacts/work_packages/O01/attempts/0002/report.json",
+      "report_sha256": "sha256:21cd6f07ce4caae4d7a7d673a85aec105117f35f2a560ef8310ee532cb188051",
+      "status": "PASS"
+    }
+  },
+  "dependency_effect": {
+    "A06": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O02",
+    "O01": "PASS",
+    "O02": "SPEC_GAP_O02_SG001",
+    "O03": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O02",
+    "T01": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O02",
+    "W01": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O02"
+  },
+  "historical_and_worktree_preservation": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_evidence_and_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation": {
+    "authorized_product_files_created": 0,
+    "implementation_files_modified_by_attempt": 0,
+    "out_of_scope_product_changes": 0,
+    "product_path_exists": false,
+    "tests_or_fixtures_created_by_attempt": 0
+  },
+  "implementation_status": "NOT_STARTED_FAIL_CLOSED",
+  "output_artifacts": [
+    "artifacts/work_packages/O02/attempts/0001/shared-contract-gap-verification.json",
+    "artifacts/work_packages/O02/attempts/0001/dependency-status.json",
+    "artifacts/work_packages/O02/attempts/0001/rah-core-integrity.json",
+    "artifacts/work_packages/O02/attempts/0001/review.md",
+    "artifacts/work_packages/O02/attempts/0001/commands.jsonl",
+    "artifacts/work_packages/O02/attempts/0001/report.json"
+  ],
+  "package_status": "SPEC_GAP",
+  "rah_state": {
+    "completion_ready": false,
+    "documented_gap_evidence_id": "E0084",
+    "generation": "000084-a48e395d",
+    "generation_manifest_sha256": "sha256:728c23f5c22e11ee2be247b300cc83a8113b5f3c0b945ee28cc9a3dfbd9da54a",
+    "generation_payload_hashes_verified": 504,
+    "parent_generation": "000083-73439bf3",
+    "retained_generation_count": 84,
+    "six_flat_snapshot_content_matches": 6,
+    "six_flat_snapshot_stamps_verified": 6,
+    "status": "blocked"
+  },
+  "required_checks": {
+    "relation_direction_test": {
+      "reason": "No authoritative direction vocabulary, inverse/reverse rule, fixture, or exact expected answer exists.",
+      "status": "NOT_RUN_SPEC_GAP"
+    },
+    "retrieval_benchmark": {
+      "reason": "No authoritative benchmark corpus, query set, relevance labels, metric, normalization rule, or PASS threshold exists.",
+      "status": "NOT_RUN_SPEC_GAP"
+    }
+  },
+  "resume_condition": "A product-owner HumanDecision must define the complete O02 candidate, backend, query-family, relation-direction, ranking, snapshot-binding, fallback, non-vector-only, benchmark, ownership, and exact write-scope contract; O02 must then run as a new attempt while preserving O02-0001.",
+  "review": {
+    "actor_independence": false,
+    "artifact": "artifacts/work_packages/O02/attempts/0001/review.md",
+    "assurance_limitation": "Procedurally separate primary-session adversarial contract review; not actor-independent certification because Fleet and subagents were prohibited.",
+    "blocking_finding_count": 9,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "SPEC_GAP"
+  },
+  "spec_gap": {
+    "classification": "SPEC_GAP",
+    "id": "O02-SG001",
+    "missing_contracts": [
+      "canonical RetrievalCandidate or equivalent output and provenance contract",
+      "provider-neutral backend inputs and lane-to-QueryPlan query-family mapping",
+      "relation direction, inverse predicate, and reverse-query semantics",
+      "score normalization, cutoff, deduplication order, duplicate identity, and deterministic tie-break",
+      "corpus/index/backend result snapshot binding and stale-result rejection",
+      "unavailable, partial, invalid, policy-denied, and fallback semantics",
+      "executable multi-channel or fusion rule proving retrieval is not vector-only",
+      "retrieval_benchmark fixtures, corpus, labels, metrics, and thresholds",
+      "relation_direction_test fixtures and exact expected answers",
+      "raw candidate and SearchLaneReceipt ownership boundary",
+      "exact resolving implementation, test, fixture, benchmark, and evidence write scopes"
+    ],
+    "not_blocked_reason": "No required credential, licensed corpus, backend instance, host capability, or external service has yet been shown unavailable; the missing item is the authoritative interface and acceptance contract itself.",
+    "not_fail_reason": "No O02 implementation was attempted because candidate, ranking, relation-direction, fallback, and benchmark semantics are not authoritatively defined.",
+    "required_product_owner_decisions": [
+      "Freeze the canonical retrieval candidate and provenance artifact.",
+      "Define backend interfaces and lane-to-query-family mapping.",
+      "Define relation direction and forward/reverse/inverse expected behavior.",
+      "Define ranking, cutoff, deduplication, tie-break, snapshot, and fallback semantics.",
+      "Define the executable non-vector-only rule and both exact acceptance oracles.",
+      "Assign ownership boundaries and authorize bounded resolving paths."
+    ],
+    "summary": "O02 lacks an authoritative candidate, execution, relation-direction, ranking, fusion, fallback, benchmark, and ownership contract."
+  },
+  "spec_gap_id": "O02-SG001",
+  "status": "SPEC_GAP",
+  "title": "Lexical, semantic, citation and relation retrieval",
+  "verification": {
+    "authority_hashes": "PASS",
+    "dependency_reports": "1/1 PASS",
+    "external_rah_resume": "PASS_WITH_PARSE_ERRORS_EMPTY",
+    "git_diff_check": "PASS_WITH_PREEXISTING_LINE_ENDING_ADVISORIES",
+    "json_and_jsonl_parse": "PASS",
+    "product_regression": "NOT_RUN_SPEC_GAP_PRODUCT_CHANGES_ZERO",
+    "rah_generation_integrity": "84/84 manifests and 504/504 payload hashes",
+    "utf8_bom_count": 0,
+    "utf8_replacement_character_file_count": 0
+  },
+  "work_package_id": "O02"
+}

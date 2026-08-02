@@ -1,0 +1,1354 @@
+{
+  "generator": "artifacts/work_packages/U01/attempts/0001/generate_client.py",
+  "generatorVersion": "1.0.0",
+  "routeTable": {
+    "apiVersion": "1.0.0",
+    "basePath": "/api/v1",
+    "documentPath": "openapi/epistemic-foundry-v1.openapi.yaml",
+    "documentSha256": "sha256:43429ad9c583b1026bd2445fb77d38b12410d2f6db065cffad45c64297db2cd7",
+    "openapiVersion": "3.1.1",
+    "operationCount": 33,
+    "operationIds": [
+      "cancelRun",
+      "createApproval",
+      "createDeliberationRun",
+      "createEvolutionRun",
+      "createReplicationRun",
+      "createRetrievalRun",
+      "createRun",
+      "createValidationRun",
+      "getAdjudication",
+      "getApproval",
+      "getArtifact",
+      "getArtifactContent",
+      "getCandidate",
+      "getCapabilities",
+      "getClaim",
+      "getCoverageSnapshot",
+      "getDocument",
+      "getEvidence",
+      "getEvidencePack",
+      "getEvolutionRun",
+      "getLiveness",
+      "getPassport",
+      "getPromotionDecision",
+      "getReadiness",
+      "getReplicationResult",
+      "getRun",
+      "getRunEvents",
+      "listEvolutionCandidates",
+      "listRuns",
+      "pauseRun",
+      "registerDocument",
+      "requestCandidatePromotion",
+      "resumeRun"
+    ],
+    "operations": [
+      {
+        "method": "POST",
+        "operationId": "cancelRun",
+        "path": "/runs/{run_id}/actions/cancel",
+        "pathParameters": [
+          "run_id"
+        ],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "#/components/schemas/CommandRequest",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Request an expected-revision cancellation transition",
+        "tags": [
+          "Runs"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "createApproval",
+        "path": "/approvals",
+        "pathParameters": [],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "#/components/schemas/ApprovalCommand",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/approval-record.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/approval-record.schema.json",
+            "status": "201"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "201",
+          "default"
+        ],
+        "successStatus": "201",
+        "summary": "Create an approval after server-side authority and policy verification",
+        "tags": [
+          "Approvals"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "createDeliberationRun",
+        "path": "/deliberation-runs",
+        "pathParameters": [],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "inline",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Accept a RunSpec whose workflow_id is insight_deliberation",
+        "tags": [
+          "Deliberation"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "createEvolutionRun",
+        "path": "/evolution-runs",
+        "pathParameters": [],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "../schemas/evolution-run-spec.schema.json",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Accept a sealed asynchronous evolution run",
+        "tags": [
+          "Evolution"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "createReplicationRun",
+        "path": "/replication-runs",
+        "pathParameters": [],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "../schemas/replication-plan.schema.json",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Accept an asynchronous preregistered replication run",
+        "tags": [
+          "Validation and replication"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "createRetrievalRun",
+        "path": "/retrieval-runs",
+        "pathParameters": [],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "../schemas/query-plan.schema.json",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Accept an asynchronous retrieval run",
+        "tags": [
+          "Documents and evidence"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "createRun",
+        "path": "/runs",
+        "pathParameters": [],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "../schemas/run-spec.schema.json",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Accept a new asynchronous run",
+        "tags": [
+          "Runs"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "createValidationRun",
+        "path": "/validation-runs",
+        "pathParameters": [],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "../schemas/validation-plan.schema.json",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Accept an asynchronous preregistered validation run",
+        "tags": [
+          "Validation and replication"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getAdjudication",
+        "path": "/adjudications/{adjudication_id}",
+        "pathParameters": [
+          "adjudication_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/adjudication.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/adjudication.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read a canonical Evidence Parliament adjudication",
+        "tags": [
+          "Deliberation"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getApproval",
+        "path": "/approvals/{approval_id}",
+        "pathParameters": [
+          "approval_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/approval-record.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/approval-record.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read a server-issued approval record",
+        "tags": [
+          "Approvals"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getArtifact",
+        "path": "/artifacts/{artifact_id}",
+        "pathParameters": [
+          "artifact_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/artifact-manifest.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/artifact-manifest.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read artifact metadata without implicitly granting content access",
+        "tags": [
+          "Artifacts"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getArtifactContent",
+        "path": "/artifacts/{artifact_id}/content",
+        "pathParameters": [
+          "artifact_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/octet-stream",
+        "responseSchemaKind": "inline",
+        "responseSchemaRef": null,
+        "responses": [
+          {
+            "mediaType": "application/octet-stream",
+            "responseRef": null,
+            "schemaKind": "inline",
+            "schemaRef": null,
+            "status": "200"
+          },
+          {
+            "mediaType": null,
+            "responseRef": null,
+            "schemaKind": "none",
+            "schemaRef": null,
+            "status": "307"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "307",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Stream authorized content or return a bounded redirect",
+        "tags": [
+          "Artifacts"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getCandidate",
+        "path": "/candidates/{candidate_id}",
+        "pathParameters": [
+          "candidate_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/CandidateEnvelope",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/CandidateEnvelope",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read a candidate envelope",
+        "tags": [
+          "Evolution"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getCapabilities",
+        "path": "/capabilities",
+        "pathParameters": [],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/host-capability-report.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/host-capability-report.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read qualified host capabilities",
+        "tags": [
+          "System"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getClaim",
+        "path": "/claims/{claim_id}",
+        "pathParameters": [
+          "claim_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/claim-card.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/claim-card.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read a canonical claim card",
+        "tags": [
+          "Documents and evidence"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getCoverageSnapshot",
+        "path": "/coverage-snapshots/{coverage_snapshot_id}",
+        "pathParameters": [
+          "coverage_snapshot_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/coverage-snapshot.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/coverage-snapshot.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read searched-scope coverage without inventing completeness",
+        "tags": [
+          "Documents and evidence"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getDocument",
+        "path": "/documents/{document_id}",
+        "pathParameters": [
+          "document_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/document-manifest.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/document-manifest.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read a canonical document manifest",
+        "tags": [
+          "Documents and evidence"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getEvidence",
+        "path": "/evidence/{evidence_id}",
+        "pathParameters": [
+          "evidence_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/evidence-node.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/evidence-node.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read a canonical evidence node",
+        "tags": [
+          "Documents and evidence"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getEvidencePack",
+        "path": "/evidence-packs/{evidence_pack_id}",
+        "pathParameters": [
+          "evidence_pack_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/evidence-pack.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/evidence-pack.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read a canonical evidence pack",
+        "tags": [
+          "Documents and evidence"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getEvolutionRun",
+        "path": "/evolution-runs/{evolution_run_id}",
+        "pathParameters": [
+          "evolution_run_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "inline",
+        "responseSchemaRef": null,
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "inline",
+            "schemaRef": null,
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read a run view carrying its EvolutionRunSpec artifact reference",
+        "tags": [
+          "Evolution"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getLiveness",
+        "path": "/health/live",
+        "pathParameters": [],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/Liveness",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/Liveness",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Minimal unauthenticated process liveness",
+        "tags": [
+          "System"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getPassport",
+        "path": "/passports/{passport_id}",
+        "pathParameters": [
+          "passport_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/hypothesis-passport.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/hypothesis-passport.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read an immutable hypothesis passport revision",
+        "tags": [
+          "Evolution"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getPromotionDecision",
+        "path": "/promotion-decisions/{decision_id}",
+        "pathParameters": [
+          "decision_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/promotion-decision.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/promotion-decision.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read an immutable promotion decision revision",
+        "tags": [
+          "Evolution"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getReadiness",
+        "path": "/health/ready",
+        "pathParameters": [],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/plugin-health-report.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/plugin-health-report.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Readiness and dependency health",
+        "tags": [
+          "System"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getReplicationResult",
+        "path": "/replication-results/{replication_result_id}",
+        "pathParameters": [
+          "replication_result_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "../schemas/replication-result.schema.json",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "../schemas/replication-result.schema.json",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read a canonical replication result",
+        "tags": [
+          "Validation and replication"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getRun",
+        "path": "/runs/{run_id}",
+        "pathParameters": [
+          "run_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunView",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunView",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read a run and its terminal scientific result, when present",
+        "tags": [
+          "Runs"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "getRunEvents",
+        "path": "/runs/{run_id}/events",
+        "pathParameters": [
+          "run_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/EventRecordPage",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/EventRecordPage",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "Read ordered run events; JSON polling is canonical and SSE is a projection",
+        "tags": [
+          "Runs"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "listEvolutionCandidates",
+        "path": "/evolution-runs/{evolution_run_id}/candidates",
+        "pathParameters": [
+          "evolution_run_id"
+        ],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/CandidatePage",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/CandidatePage",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "List candidates using snapshot-bound cursor pagination",
+        "tags": [
+          "Evolution"
+        ]
+      },
+      {
+        "method": "GET",
+        "operationId": "listRuns",
+        "path": "/runs",
+        "pathParameters": [],
+        "requestMediaType": null,
+        "requestRequired": false,
+        "requestSchemaKind": "none",
+        "requestSchemaRef": null,
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunViewPage",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": null,
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunViewPage",
+            "status": "200"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "200",
+          "default"
+        ],
+        "successStatus": "200",
+        "summary": "List runs using snapshot-bound cursor pagination",
+        "tags": [
+          "Runs"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "pauseRun",
+        "path": "/runs/{run_id}/actions/pause",
+        "pathParameters": [
+          "run_id"
+        ],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "#/components/schemas/CommandRequest",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Request an expected-revision pause transition",
+        "tags": [
+          "Runs"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "registerDocument",
+        "path": "/documents",
+        "pathParameters": [],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "../schemas/document-registration-request.schema.json",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Register one already-staged source artifact",
+        "tags": [
+          "Documents and evidence"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "requestCandidatePromotion",
+        "path": "/candidates/{candidate_id}/promotion-requests",
+        "pathParameters": [
+          "candidate_id"
+        ],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "#/components/schemas/PromotionRequest",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Map a sealed promotion request to ActionIntent(request_promotion)",
+        "tags": [
+          "Evolution"
+        ]
+      },
+      {
+        "method": "POST",
+        "operationId": "resumeRun",
+        "path": "/runs/{run_id}/actions/resume",
+        "pathParameters": [
+          "run_id"
+        ],
+        "requestMediaType": "application/json",
+        "requestRequired": true,
+        "requestSchemaKind": "ref",
+        "requestSchemaRef": "#/components/schemas/CommandRequest",
+        "responseMediaType": "application/json",
+        "responseSchemaKind": "ref",
+        "responseSchemaRef": "#/components/schemas/RunHandle",
+        "responses": [
+          {
+            "mediaType": "application/json",
+            "responseRef": "#/components/responses/AsyncAccepted",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/RunHandle",
+            "status": "202"
+          },
+          {
+            "mediaType": "application/problem+json",
+            "responseRef": "#/components/responses/Problem",
+            "schemaKind": "ref",
+            "schemaRef": "#/components/schemas/ApiProblem",
+            "status": "default"
+          }
+        ],
+        "statusCodes": [
+          "202",
+          "default"
+        ],
+        "successStatus": "202",
+        "summary": "Request an expected-revision resume transition",
+        "tags": [
+          "Runs"
+        ]
+      }
+    ],
+    "routeTableSha256": "sha256:a8ca1da4dd7566082b0b342ca921dc7563ce1d645e0efb493d71760acfa129a1"
+  }
+}

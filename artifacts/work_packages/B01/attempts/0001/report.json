@@ -1,0 +1,296 @@
+{
+  "attempt_id": "B01-0001",
+  "attempt_type": "B01_POLYGLOT_MONOREPO_SCAFFOLD_AND_BOUNDARIES",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "B01-0001",
+    "dependencies": {
+      "A04": {
+        "attempt_id": "A04-0001",
+        "core_evidence_id": "E0285",
+        "core_generation": "000283-83b81092",
+        "final_closeout_evidence_id": "E0286",
+        "report": "artifacts/work_packages/A04/attempts/0001/report.json",
+        "report_sha256": "sha256:c14bd043f392c82d8e0f2b711f507179f78dc5e7a3616d5980e2f44b5c1fd49a",
+        "status": "PASS"
+      }
+    },
+    "dependency_note": "B01 depends on A04; the sealed A04-0001 attempt is the build dependency",
+    "next_action": "SEAL_B01_0001_THEN_RECOMPUTE_DAG",
+    "regression_baseline": {
+      "attempt_id": "A04-0001",
+      "core_evidence_id": "E0285",
+      "core_generation": "000283-83b81092",
+      "final_closeout_evidence_id": "E0286",
+      "report": "artifacts/work_packages/A04/attempts/0001/report.json",
+      "report_sha256": "sha256:c14bd043f392c82d8e0f2b711f507179f78dc5e7a3616d5980e2f44b5c1fd49a",
+      "status": "PASS"
+    },
+    "regression_baseline_note": "A04-0001 is the sealed PASS A-phase integration checkpoint (B01's direct dependency) bound as the regression baseline. The live ledger frontier advances under concurrent sealing; the parent reconciles the exact frontier when it fills the ledger pins at seal time.",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "no_component_imports_another_component_source": "PASS",
+    "node_and_python_roots_explicit": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "editing the polyglot scaffold or boundary contract: B01 attests the root package.json, pnpm-workspace.yaml, pyproject.toml workspace bindings, packages/boundary-policy.json, the repo-checks harnesses and the component manifests and makes zero substantive change to them",
+    "authorship of the component implementation under packages/** and python/**: other work packages own it and B01 does not re-author it",
+    "any product-maturity, runtime-executability or release readiness of the v4 plugin or ShinkaEvolve integration",
+    "a reproducible clean build: pinned toolchains and deterministic build are B02/B04 scope",
+    "that a passing boundary check implies the src import graph is runtime-verified beyond the attested module-slice DAG",
+    "resolution of the non-B01 ruff finding under python/epistemic_foundry/retrieval/planning, which belongs to another package",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 3742,
+      "path": "artifacts/work_packages/B01/attempts/0001/b01-verification.json",
+      "sha256": "sha256:08c9249a10351473ecce705d1d09f22e77de0d555a1af9e8f952dfb051dc61f8"
+    },
+    {
+      "byte_size": 27611,
+      "path": "artifacts/work_packages/B01/attempts/0001/b01_0001_rah_seal.py",
+      "sha256": "sha256:5d0b41ece0a1b28f810f8c2e1d19fa5d66065472f2cbe4ee24ef19139b039d87"
+    },
+    {
+      "byte_size": 1065,
+      "path": "artifacts/work_packages/B01/attempts/0001/boundary-cycle-policy-check.junit.xml",
+      "sha256": "sha256:3b982f221c5d2377c06a9013a83751cf26bd0ecc82852a15f70d482a62bbb6e4"
+    },
+    {
+      "byte_size": 40720,
+      "path": "artifacts/work_packages/B01/attempts/0001/build_b01_0001_evidence.py",
+      "sha256": "sha256:0b294b9d7c303d7661e71f8ccda224eab6b63dbd315c1206a94dc87bf38523e4"
+    },
+    {
+      "byte_size": 8608,
+      "path": "artifacts/work_packages/B01/attempts/0001/commands.jsonl",
+      "sha256": "sha256:82d63e15c8774f377930c749305250af3599d9de166dbb73315a9dec108aebe2"
+    },
+    {
+      "byte_size": 1259,
+      "path": "artifacts/work_packages/B01/attempts/0001/dependency-status.json",
+      "sha256": "sha256:47eebc0528a4322ddafb6bca5af6aafba14bca0d17d118be66b8b949e49e41cb"
+    },
+    {
+      "byte_size": 156,
+      "path": "artifacts/work_packages/B01/attempts/0001/forbidden-source-import-check.json",
+      "sha256": "sha256:91803a68de7ff36e0a159b45167bda287d1efcad9da196eb34606066676faedd"
+    },
+    {
+      "byte_size": 237600,
+      "path": "artifacts/work_packages/B01/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:b9590c02ee51148d792f7ff015c8d96476cfddf6211f84d9c899e4fa15783d04"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/B01/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 1780,
+      "path": "artifacts/work_packages/B01/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:6a1aac4691cc62cd4bf934b51bc747553ed817100ebdda493a2ec10a229d1b6e"
+    },
+    {
+      "byte_size": 7304,
+      "path": "artifacts/work_packages/B01/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:37f34d64f5fa65bf6bb3c642912260b361dfdb498b019d5d4a619c98f2da9811"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/B01/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:252ef1299f2e4f6a17b31c2a41dea708712a07ebf1010ec27202f7e777243405"
+    },
+    {
+      "byte_size": 218,
+      "path": "artifacts/work_packages/B01/attempts/0001/repo-structure-check.json",
+      "sha256": "sha256:cc43efd3f6a1f5884508c193b81c28e0d106bb45301a9d03b9b7448b7d7ecce4"
+    },
+    {
+      "byte_size": 3861,
+      "path": "artifacts/work_packages/B01/attempts/0001/review.md",
+      "sha256": "sha256:cfe508155be76cc57761f69005dcb14e55ae77df0f73f2e6b885d77b80b8605c"
+    },
+    {
+      "byte_size": 14453,
+      "path": "artifacts/work_packages/B01/attempts/0001/run_b01_0001_checks.py",
+      "sha256": "sha256:94c922d3184ef20b0c7f3e642bf2f4e6130d8197b582279101cbd6db6f3e655b"
+    },
+    {
+      "byte_size": 4087,
+      "path": "artifacts/work_packages/B01/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:24127021c87b2357fed64bbb0679496d833eb77a90de61cbed9b30a966bbd30a"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0295",
+    "core_generation": "000293-7ff781e9",
+    "final_closeout_evidence_id": "E0296",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1758,
+    "implementation_gate": "fail",
+    "retained_generation_count": 293,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "B01-0001",
+    "count_authority": "derived_from_measured_junit_expected_equals_measured",
+    "cross_tree_boundary_suite": "boundary_cycle_policy_check",
+    "cross_tree_boundary_suite_passed": 6,
+    "full_node_gate": "zero_failures_with_live_inventory_count",
+    "full_node_inventory_count": 111,
+    "full_node_passed": 1253,
+    "full_python_passed": 1261,
+    "new_failure_count": 0,
+    "regression_baseline_attempt": "A04-0001",
+    "status": "PASS",
+    "suites": {
+      "boundary_cycle_policy_check": {
+        "collected": 6,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/B01/attempts/0001/boundary-cycle-policy-check.junit.xml",
+        "junit_sha256": "sha256:3b982f221c5d2377c06a9013a83751cf26bd0ecc82852a15f70d482a62bbb6e4",
+        "passed": 6,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 6
+      },
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1253,
+        "failed": 0,
+        "junit": "artifacts/work_packages/B01/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:b9590c02ee51148d792f7ff015c8d96476cfddf6211f84d9c899e4fa15783d04",
+        "passed": 1253,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1248
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/B01/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      }
+    }
+  },
+  "required_checks": {
+    "forbidden_source_import_check": {
+      "components": 10,
+      "harness": "npm run check:boundaries",
+      "internal_package_edges": 18,
+      "source_import_policy": "public-package-api-only",
+      "status": "PASS"
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded implementation agent(s) that authored the polyglot scaffold and the two repo-checks Node harnesses; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "repo_structure_check": {
+      "harness": "npm run check:structure",
+      "node_components": 10,
+      "python_component_root": "python/epistemic_foundry",
+      "python_runtime_root": "src/epistemic_foundry",
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (bounded implementation agent(s) authored the scaffold and check harnesses, the sealing session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "role": "contract_reviewer",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "B01",
+  "write_scope": {
+    "approved_scope": [
+      "package.json",
+      "pnpm-workspace.yaml",
+      "pyproject.toml",
+      "packages/**",
+      "python/**"
+    ],
+    "attempt_id": "B01-0001",
+    "attestation_only_no_scaffold_edits": true,
+    "attested_structural_contract_files": [
+      "package.json",
+      "packages/README.md",
+      "packages/boundary-policy.json",
+      "packages/context-capsule/package.json",
+      "packages/contracts/package.json",
+      "packages/foundry-kernel/package.json",
+      "packages/plugin-host/package.json",
+      "packages/repo-checks/check-boundaries.mjs",
+      "packages/repo-checks/check-structure.mjs",
+      "packages/repo-checks/package.json",
+      "packages/role-router/package.json",
+      "packages/skill-vault/package.json",
+      "packages/transport-kernel/package.json",
+      "packages/ui-api/package.json",
+      "packages/workspace-map/package.json",
+      "pnpm-workspace.yaml",
+      "pyproject.toml",
+      "python/README.md",
+      "python/epistemic_foundry/README.md"
+    ],
+    "authored_by": "the bounded implementation agent(s) that authored the polyglot monorepo scaffold and boundary contract under packages/** and python/** (root package.json, pnpm-workspace.yaml, the pyproject.toml workspace bindings, packages/boundary-policy.json, the two repo-checks Node harnesses and the component package.json manifests); B01 attests this pre-existing scaffold without editing it. The component implementation under packages/** and python/** is owned by other work packages and is out of B01's authored set",
+    "checked_file_count": 19,
+    "component_implementation_owned_by_other_packages": true,
+    "product_file_hashes": {
+      "package.json": "sha256:ac644f31a8cec26becb5ddc8402b59895ebb1c73ef06a522c8176ba5aab1d772",
+      "packages/README.md": "sha256:ba23e11a7b0ee50cdbb3e405126c836981da945be4a2a4f5d37ac60086d2e5a9",
+      "packages/boundary-policy.json": "sha256:861b951f603abd238a5ce58f808c5688043f6d56442f971e91773b5aba06844d",
+      "packages/context-capsule/package.json": "sha256:f768694a12bac2de3e187770b6f3c0c47b2226246eda22d13226e70cd3b36d4e",
+      "packages/contracts/package.json": "sha256:faceda59bc5539bc75d13dbc2bb11ba04220164a92e0fb98fc8752f47c108c1b",
+      "packages/foundry-kernel/package.json": "sha256:b99bf120141c05ac8459602d29fc63f141143f3839cf810bd4afd95fea646e68",
+      "packages/plugin-host/package.json": "sha256:77d45167405531407f8e067ca3a4cbbd32c922a2fd6f16b75b2344c93687dcf7",
+      "packages/repo-checks/check-boundaries.mjs": "sha256:8c9ffd3cc60b977be7c8e8c1f413581ffe7f8162ac2ba960a829ce6c572edc71",
+      "packages/repo-checks/check-structure.mjs": "sha256:c16da2228796680aff2d6d774247ca6041397a3f15ad9961179e3e3cd3931044",
+      "packages/repo-checks/package.json": "sha256:6b01e2c7f0a918ddc6c6b9050d46df41fadd26c022cb327e838a64fcf64ba9e0",
+      "packages/role-router/package.json": "sha256:423d52a44a311d20345d9f8419e08ebb0004a24c4c4144d436fef1a42bbdb35f",
+      "packages/skill-vault/package.json": "sha256:cebcf93793345e05a9e0085ccb0e99e8d8460750bfee6d5d1ead85b3c70a0287",
+      "packages/transport-kernel/package.json": "sha256:0b3c1dcaf430d113feed539a8d995dbf5337fc06bc122912d6b3d6793a83eacd",
+      "packages/ui-api/package.json": "sha256:99036af7210d958cb75e0d00696faec9052f6215daf8386fd1779b67417a8697",
+      "packages/workspace-map/package.json": "sha256:136251307c184d517ec6dc4bc58e6bc325f859ffad1aca0d7fc2d8ff4753c0c8",
+      "pnpm-workspace.yaml": "sha256:0fb360452b0231d114d0b0ad6cc76bb48fe528382f55827cf93739bf64ec79e1",
+      "pyproject.toml": "sha256:31cf5dffa4703052d70536dbbb6e64d917900c70d52b039f9c9cbf09920353db",
+      "python/README.md": "sha256:5d6d5d3d3e402d91bac86996fe4b579cfc66b4ede24ce388313978a5afa4c8c0",
+      "python/epistemic_foundry/README.md": "sha256:01e9ad32b669ed2c509bf3b3d73087e8fbe5d3b714e45e1e9015c206a99169d7"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "the sealing session acting as an independent contract-reviewer, separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "decision_id": "HD-EF4-C01-SG004-20260730-001",
+  "run_id": null,
+  "subject_id": "C01-SG004",
+  "decision_type": "correct",
+  "decision": "Resolve C01-SG004 prospectively by making 126 canonical Draft 2020-12 schemas and 126 matching examples the sole active inventory, including DocumentRegistrationRequest and DocumentRegistration. Authorize the eight exact product and oracle corrections, the bounded C01 and B04 development-manifest corrections, C01-0006, C02 and C03 reconciliation, a pre-C04 re-entrant B04 projection attempt with a matching receipt, C04 full conformance, and a distinct final B04 packaging gate. Preserve every earlier C01, B04, F01, and RAH result as immutable history; do not create a static C04-B04 dependency cycle or weaken any gate.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "C01-0005 correctly stopped because the already-approved registration contracts required 126 active schemas and examples while the top-level inventory, acceptance oracles, OpenAPI tests, runtime registry tests, and pre-C04 projection timing still enforced the historical 124 inventory. This decision supplies exact correction ownership and places deterministic B04 projection reconciliation before the C04 consumers without making the derived package snapshot a second authority.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/C01/attempts/0005/report.json",
+    "artifacts/work_packages/C01/attempts/0005/c01-shared-contract-gap-verification.json",
+    "artifacts/work_packages/C01/attempts/0005/review.md",
+    "artifacts/authority_decisions/HD-EF4-K01-SG001-20260730-001.human-decision.json",
+    "RAH:E0098",
+    "RAH:generation:000090-a3e0bace"
+  ],
+  "affected_artifact_ids": [
+    "MASTER_SPEC.md",
+    "manifests/acceptance_matrix.yaml",
+    "manifests/development_manifest.yaml",
+    "tests/contracts/openapi/test_scientific_contracts.py",
+    "tests/contracts/openapi/test_openapi_contract.py",
+    "tests/test_contracts.py",
+    "tests/test_cli.py",
+    "tests/test_f01_epistemic_work_classifier.py",
+    "tests/packaging/test_canonical_registry.py",
+    "C01-0006",
+    "C02-0002",
+    "C03-0002",
+    "B04-pre-C04-correction",
+    "C04-0002",
+    "B04-final-packaging"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-30T00:00:00Z",
+  "decision_hash": "sha256:ebc3434cccdd248b38a36d1a3de5132f4503b4172c1ee11a64dd8f0033f670fd"
+}

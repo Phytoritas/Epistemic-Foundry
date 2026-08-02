@@ -1,0 +1,140 @@
+{
+  "attempt_id": "J02-0003",
+  "changed_product_files": [
+    {
+      "byte_size": 23211,
+      "path": "tools/skill-context/count_tokens.py",
+      "sha256": "sha256:6d96e64380e33fca7ba62ee38dd42b0c8ef6b4bda22a2853cbd8f8c1bafe51ee"
+    },
+    {
+      "byte_size": 12153,
+      "path": "tests/test_j02_context_budget.py",
+      "sha256": "sha256:99cef371124d4a1736fce2b5322e5b949dd2fdff934a9bfb59bdbf884f9ace34"
+    },
+    {
+      "byte_size": 42587,
+      "path": "plugins/epistemic-foundry/skills/skill-inventory.json",
+      "sha256": "sha256:093a0892377db04f66dfb49c2f1848067de5334e50c96f85990a7968405d211c"
+    },
+    {
+      "byte_size": 2406,
+      "path": "tests/fixtures/j02/skill-inventory.expected.json",
+      "sha256": "sha256:b8f692384e27f038f0a89a2b2468a339fede8fd0d9b42a1650561b832d7fb321"
+    },
+    {
+      "byte_size": 10693,
+      "path": "tests/fixtures/j02/reference-selection-cases.json",
+      "sha256": "sha256:4505491f1844bef6e420068c9600d4c18ec9982ea0cba67a007851e1aaaa30fe"
+    }
+  ],
+  "checks": {
+    "npm_check_boundaries": {
+      "command": "\"C:\\Program Files\\nodejs\\npm.cmd\" run check:boundaries",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "npm_check_structure": {
+      "command": "\"C:\\Program Files\\nodejs\\npm.cmd\" run check:structure",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "repository_git_diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "scoped_git_diff_check": {
+      "command": "git diff --check -- tools/skill-context/count_tokens.py tests/test_j02_context_budget.py plugins/epistemic-foundry/skills/skill-inventory.json tests/fixtures/j02/skill-inventory.expected.json tests/fixtures/j02/reference-selection-cases.json",
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  },
+  "manifest_package_count": 156,
+  "manifest_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+  "manifest_write_scope": [
+    "plugins/epistemic-foundry/skills/skill-inventory.json",
+    "plugins/epistemic-foundry/skills/foundry/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-admin/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-admin/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-aporia/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-aporia/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-archive/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-archive/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-atlas/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-atlas/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-challenge/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-challenge/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-claim-forge/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-claim-forge/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-domain-pack/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-domain-pack/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-evaluator-audit/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-evaluator-audit/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-evolution-replay/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-evolution-replay/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-evolution-stop/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-evolution-stop/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-evolve-convert/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-evolve-convert/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-evolve-inspect/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-evolve-inspect/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-evolve-run/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-evolve-run/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-evolve-setup/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-evolve-setup/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-evolve/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-evolve/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-intake/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-intake/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-map/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-map/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-observe/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-observe/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-parliament/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-parliament/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-passport/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-passport/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-plugin-dev/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-plugin-dev/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-promote-evolved/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-promote-evolved/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-reason/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-reason/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-recall/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-recall/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-replay/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-replay/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-replicate/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-replicate/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-shinka-adapter/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-shinka-adapter/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry-validation/SKILL.md",
+    "plugins/epistemic-foundry/skills/foundry-validation/agents/openai.yaml",
+    "plugins/epistemic-foundry/skills/foundry/references/**",
+    "packages/plugin-host/src/skill-context/**",
+    "tools/skill-context/count_tokens.py",
+    "docs/skill_context_contract.md",
+    "tests/fixtures/j02/skill-inventory.expected.json",
+    "tests/fixtures/j02/tokenizer-vectors.json",
+    "tests/fixtures/j02/context-budget-cases.json",
+    "tests/fixtures/j02/reference-selection-cases.json",
+    "tests/fixtures/j02/reference-reachability-cases.json",
+    "tests/test_j02_context_budget.py",
+    "tests/node/j02-reference-reachability.test.mjs",
+    "tests/node/j02-skill-context-loader.test.mjs",
+    "artifacts/work_packages/J02/**"
+  ],
+  "preservation": {
+    "dirty_worktree_preserved": true,
+    "j02_0001_report_sha256": "sha256:6b0f4f37acbe1014afcf17ef5449fa4ed799e7ca0e7ea7523c014a3a44607688",
+    "j02_0002_report_sha256": "sha256:17e342ae7f54707ebc0acc17f695507397b9d300a54cef741b2ab3ed05ffbd0c",
+    "pyproject_toml_modified_by_j02_0003": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "s04_files_modified_by_j02_0003": false,
+    "subagents_or_fleet_used": false,
+    "uv_lock_modified_by_j02_0003": false
+  },
+  "product_write_scope_violation_count": 0,
+  "status": "PASS"
+}

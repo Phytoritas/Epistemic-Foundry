@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t01/foundry-mcp-tool-error.schema.json",
+  "title": "FoundryMcpToolError",
+  "description": "Shared MCP tool error envelope for every T01 tool on every transport. NOT_FOUND is also the confidentiality concealment answer: after failed authorization scoping, absent and denied resources are indistinguishable.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol_version": {
+      "const": "2026-07-28"
+    },
+    "tool": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^foundry\\.[a-z][a-z_]*(\\.[a-z][a-z_]*)*$"
+    },
+    "request_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "error_code": {
+      "enum": [
+        "INVALID_REQUEST",
+        "UNKNOWN_TOOL",
+        "INVALID_INPUT",
+        "UNAUTHENTICATED",
+        "WORKSPACE_DENIED",
+        "UNAUTHORIZED",
+        "NOT_FOUND",
+        "IDEMPOTENCY_CONFLICT",
+        "PLAN_COMPILATION_REJECTED",
+        "INTERNAL"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retryable": {
+      "type": "boolean"
+    },
+    "details": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "protocol_version",
+    "tool",
+    "request_id",
+    "error_code",
+    "message",
+    "retryable",
+    "details"
+  ]
+}

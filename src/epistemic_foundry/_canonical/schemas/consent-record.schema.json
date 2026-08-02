@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/consent-record.schema.json",
+  "title": "ConsentRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "consent_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "purposes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "data_classes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "decision": {
+      "enum": [
+        "GRANTED",
+        "DENIED",
+        "REVOKED",
+        "EXPIRED"
+      ]
+    },
+    "granted_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "revoked_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "recorded_by": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "policy_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "record_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "consent_id",
+    "subject_id",
+    "workspace_id",
+    "purposes",
+    "data_classes",
+    "scopes",
+    "decision",
+    "granted_at",
+    "expires_at",
+    "revoked_at",
+    "recorded_by",
+    "policy_hash",
+    "record_hash"
+  ]
+}

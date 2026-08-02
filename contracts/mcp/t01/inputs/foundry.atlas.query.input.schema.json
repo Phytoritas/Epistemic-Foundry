@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.atlas.query.input.schema.json",
+  "title": "FoundryAtlasQueryInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "view": {
+      "enum": [
+        "coverage",
+        "search_state",
+        "method_compatibility",
+        "dependency",
+        "bias",
+        "niche"
+      ]
+    }
+  },
+  "required": [
+    "workspace_id",
+    "subject_id",
+    "view"
+  ]
+}

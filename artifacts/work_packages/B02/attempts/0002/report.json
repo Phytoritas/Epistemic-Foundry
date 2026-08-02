@@ -1,0 +1,130 @@
+{
+  "attempt_id": "B02-0002",
+  "authority_decision_id": "HD-EF4-J02-SG002-20260730-001",
+  "changed_product_files": [
+    "pyproject.toml",
+    "uv.lock"
+  ],
+  "completion_ready": false,
+  "dependency_effect": {
+    "B02": "PASS",
+    "B04": "READY_FOR_DEPENDENCY_BUILD_REVALIDATION",
+    "J02": "WAITING_ON_B04_AND_S04",
+    "S04": "WAITING_ON_B04_REVALIDATION"
+  },
+  "historical_preservation": {
+    "dirty_worktree_preserved": true,
+    "historical_b02_root_pass_immutable": true,
+    "j02_0002_fail_immutable": true,
+    "prior_RAH_evidence_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "integration_handoff": {
+    "B04_revalidation_pending": true,
+    "current_input_semantic_double_build": "PASS_11_BYTE_IDENTICAL_ARTIFACTS",
+    "production_helper": "PRESERVED_STALE_STAGING_FAILURE",
+    "production_helper_modified": false,
+    "production_helper_owner": "B04_REVALIDATION"
+  },
+  "lock_correction": {
+    "dependency_group": "skill-context",
+    "direct_dependency": "tiktoken==0.13.0",
+    "installed_version": "0.13.0",
+    "new_lock_hash": "sha256:5c3798ff0323f9352d73f17fa93913590d7dbb5382dd0de26b1619e775b58caa",
+    "old_lock_hash": "sha256:728e9d36f966b38a0f86ea5300210760b889110ba5adce5e646efa439ea2efac",
+    "runtime_dependency_exposure": false,
+    "transitive_additions": [
+      "certifi",
+      "charset-normalizer",
+      "idna",
+      "regex",
+      "requests",
+      "urllib3"
+    ],
+    "unrelated_dependency_change_count": 0
+  },
+  "not_claimed": [
+    "B04 dependency/build revalidation PASS",
+    "production double-build helper correction",
+    "S04-TM004 reconciliation",
+    "J02-0003 start or PASS",
+    "repository-wide conformance or product completion",
+    "actor-independent certification"
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/B02/attempts/0002/report.json",
+    "artifacts/work_packages/B02/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/B02/attempts/0002/review.md",
+    "artifacts/work_packages/B02/attempts/0002/write-scope-verification.json",
+    "artifacts/work_packages/B02/attempts/0002/lock-diff-verification-final.json",
+    "artifacts/work_packages/B02/attempts/0002/lockfile-check-final.json",
+    "artifacts/work_packages/B02/attempts/0002/double-build-comparison-current-inputs.json",
+    "artifacts/work_packages/B02/attempts/0002/double-build-comparison.json",
+    "artifacts/work_packages/B02/attempts/0002/double-build-comparison-rerun.json",
+    "artifacts/work_packages/B02/attempts/0002/staged-build-diagnostic.json",
+    "artifacts/work_packages/B02/attempts/0002/rah-core-integrity.json"
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0090",
+    "core_generation": "000083-85fd47c1",
+    "core_generation_manifest_sha256": "sha256:d4da8c5adf4aad0019fd83749a2c297061aff9ee828d3380ff45ac54789a8e3f",
+    "final_artifact_seal_evidence_id": "E0091",
+    "flat_snapshot_content_matches_after_core": 6,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "generation_file_hashes_verified_after_core": 30,
+    "implementation_gate": "fail",
+    "retained_generation_count_after_core": 5,
+    "status": "active"
+  },
+  "required_checks": {
+    "double_build_comparison": {
+      "B02_correction_status": "PASS",
+      "artifact_count": 11,
+      "current_input_adapter": "PASS",
+      "mismatch_count": 0,
+      "production_helper": "FAIL_PRESERVED_FOR_B04_REVALIDATION"
+    },
+    "j02_tokenizer_vector_test": {
+      "passed": 7,
+      "status": "PASS"
+    },
+    "lockfile_check": {
+      "status": "PASS"
+    },
+    "skill_context_frozen_sync": {
+      "status": "PASS"
+    },
+    "tiktoken_exact_lock_check": {
+      "status": "PASS",
+      "version": "0.13.0"
+    },
+    "write_scope_audit": {
+      "status": "PASS",
+      "violations": 0
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "artifact": "artifacts/work_packages/B02/attempts/0002/review.md",
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_B02_owned_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "verdict": "PASS_WITH_B04_HANDOFF"
+  },
+  "status": "PASS",
+  "verification": {
+    "artifact_count": 11,
+    "frozen_sync": "PASS",
+    "lock_packages": 21,
+    "lock_registry_packages": 20,
+    "targeted_pytest": "1/1",
+    "tokenizer_vectors": "7/7",
+    "unrelated_dependency_changes": 0,
+    "write_scope_violations": 0
+  },
+  "work_package_id": "B02"
+}

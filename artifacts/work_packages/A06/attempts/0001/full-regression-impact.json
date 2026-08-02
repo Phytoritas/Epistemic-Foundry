@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "work_package_id": "A06",
+  "attempt_id": "A06-0001",
+  "status": "PASS_WITH_PREEXISTING_J02_FAILURE_RECONCILED",
+  "package_status": "FAIL",
+  "completion_ready": false,
+  "constitutional_acceptance_failures": {
+    "count": 5,
+    "finding_ids": [
+      "A06-F001",
+      "A06-F002",
+      "A06-F003",
+      "A06-F004",
+      "A06-F005"
+    ],
+    "authority": "artifacts/work_packages/A06/attempts/0001/constitutional-audit-verification.json"
+  },
+  "targeted_python": {
+    "status": "PASS",
+    "tests": 214,
+    "passed": 214,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "path": "artifacts/work_packages/A06/attempts/0001/targeted-regression.junit.xml",
+    "sha256": "sha256:9da6c8a0b86a2bf0f6e523e339441c20e57c272b683c271b8bf19cee361c94d7"
+  },
+  "filtered_adversarial_python": {
+    "status": "PASS_BUT_NOT_CANONICAL_WORKFLOW_CONFORMANCE",
+    "tests": 13,
+    "passed": 13,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "path": "artifacts/work_packages/A06/attempts/0001/adversarial-regression.junit.xml",
+    "sha256": "sha256:a826af1d668c6bdc83911f99fa85b9eb55dce356f4befec9443950f9a4658d3d",
+    "limitation": "Passing bounded helper tests do not prove schema rejection or canonical evolution-workflow binding."
+  },
+  "capability_and_fencing_node": {
+    "status": "PASS",
+    "tests": 30,
+    "passed": 30,
+    "failed": 0,
+    "skipped": 0,
+    "new_failure_count": 0
+  },
+  "full_python": {
+    "status": "BOUNDED_PREEXISTING_FAILURE_J02",
+    "tests": 964,
+    "passed": 963,
+    "failed": 1,
+    "errors": 0,
+    "skipped": 0,
+    "path": "artifacts/work_packages/A06/attempts/0001/full-python-regression.junit.xml",
+    "sha256": "sha256:ddb1843fe79346024100995ce67b7b2fbb744f36b687c49d82cd9e6ca5a82611",
+    "failures": [
+      {
+        "node_id": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin",
+        "type": "pytest_failure",
+        "message": "Failed: TOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0",
+        "owner": "J02",
+        "prior_authority": "artifacts/work_packages/J02/attempts/0002/full-regression-impact.json",
+        "prior_authority_sha256": "sha256:c309c7aadb30c3f4f74dee5a91e4653d539fdb859bdb85b641b99e8a14450bb0",
+        "node_id_match": true,
+        "failure_type_match": true,
+        "message_contract_match": true,
+        "classification": "PRE_EXISTING_NON_WAIVABLE_J02_FAILURE"
+      }
+    ]
+  },
+  "reconciliation": {
+    "a06_caused_python_failure_count": 0,
+    "a06_caused_node_failure_count": 0,
+    "new_skip_or_xfail_count": 0,
+    "existing_failure_hidden": false,
+    "repository_wide_green_claimed": false,
+    "package_pass_claimed": false
+  }
+}

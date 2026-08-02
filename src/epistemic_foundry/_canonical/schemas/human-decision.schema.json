@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/human-decision.schema.json",
+  "title": "HumanDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision_type": {
+      "enum": [
+        "accept",
+        "reject",
+        "correct",
+        "narrow_scope",
+        "override_waivable_gate",
+        "withdraw",
+        "appeal",
+        "release",
+        "hold"
+      ]
+    },
+    "decision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "affected_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "supersedes_decision_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "non_mutation_acknowledgement": {
+      "type": "boolean"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decision_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "decision_id",
+    "run_id",
+    "subject_id",
+    "decision_type",
+    "decision",
+    "authority_id",
+    "authority_role",
+    "rationale",
+    "evidence_artifact_ids",
+    "affected_artifact_ids",
+    "supersedes_decision_id",
+    "non_mutation_acknowledgement",
+    "created_at",
+    "decision_hash"
+  ]
+}

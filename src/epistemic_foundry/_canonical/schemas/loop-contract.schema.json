@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/loop-contract.schema.json",
+  "title": "LoopContract",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "loop_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workflow_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entry_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exit_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state_artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "convergence_metric": {
+      "type": "string",
+      "minLength": 1
+    },
+    "convergence_predicate": {
+      "type": "string",
+      "minLength": 1
+    },
+    "max_iterations": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_cost_units": {
+      "type": "number",
+      "minimum": 0
+    },
+    "max_wall_seconds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "dry_rounds_required": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "dedupe_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "seen_set_scope": {
+      "enum": [
+        "run",
+        "workflow",
+        "project"
+      ]
+    },
+    "on_nonconvergence": {
+      "enum": [
+        "BLOCK",
+        "PARTIAL",
+        "ESCALATE",
+        "FAIL"
+      ]
+    },
+    "contract_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "loop_id",
+    "workflow_id",
+    "entry_node_id",
+    "exit_node_id",
+    "state_artifact_id",
+    "convergence_metric",
+    "convergence_predicate",
+    "max_iterations",
+    "max_cost_units",
+    "max_wall_seconds",
+    "dry_rounds_required",
+    "dedupe_key",
+    "seen_set_scope",
+    "on_nonconvergence",
+    "contract_hash"
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "attempt_id": "J02-0002",
+  "boundary_cases": [
+    {
+      "case_id": "METADATA_BYTES_6400",
+      "expected": "PASS",
+      "observed": "PASS"
+    },
+    {
+      "case_id": "METADATA_BYTES_6401",
+      "expected": "INITIAL_SKILL_METADATA_BUDGET_EXCEEDED",
+      "observed": "INITIAL_SKILL_METADATA_BUDGET_EXCEEDED"
+    },
+    {
+      "case_id": "METADATA_TOKENS_1600",
+      "expected": "PASS",
+      "observed": "PASS"
+    },
+    {
+      "case_id": "METADATA_TOKENS_1601",
+      "expected": "INITIAL_SKILL_METADATA_BUDGET_EXCEEDED",
+      "observed": "INITIAL_SKILL_METADATA_BUDGET_EXCEEDED"
+    },
+    {
+      "case_id": "DESCRIPTION_BYTES_140",
+      "expected": "PASS",
+      "observed": "PASS"
+    },
+    {
+      "case_id": "DESCRIPTION_BYTES_141",
+      "expected": "INITIAL_SKILL_METADATA_BUDGET_EXCEEDED",
+      "observed": "INITIAL_SKILL_METADATA_BUDGET_EXCEEDED"
+    },
+    {
+      "case_id": "REFERENCE_COUNT_12",
+      "expected": "PASS",
+      "observed": "PASS"
+    },
+    {
+      "case_id": "REFERENCE_COUNT_13",
+      "expected": "REFERENCE_CONTEXT_BUDGET_EXCEEDED",
+      "observed": "REFERENCE_CONTEXT_BUDGET_EXCEEDED"
+    },
+    {
+      "case_id": "REFERENCE_DEPTH_5",
+      "expected": "PASS",
+      "observed": "PASS"
+    },
+    {
+      "case_id": "REFERENCE_DEPTH_6",
+      "expected": "REFERENCE_DEPTH_EXCEEDED",
+      "observed": "REFERENCE_DEPTH_EXCEEDED"
+    },
+    {
+      "case_id": "ACTIVATION_BYTES_28672",
+      "expected": "PASS",
+      "observed": "PASS"
+    },
+    {
+      "case_id": "ACTIVATION_BYTES_28673",
+      "expected": "REFERENCE_CONTEXT_BUDGET_EXCEEDED",
+      "observed": "REFERENCE_CONTEXT_BUDGET_EXCEEDED"
+    }
+  ],
+  "boundary_exact_pass_count": 12,
+  "child_skill_count": 28,
+  "inventory_hash": "sha256:fe2c8b1814406af0f7cc380ddf95f2edd48f4df4745fc9fadaa9b743ab9961ac",
+  "limits": {
+    "max_o200k_base_tokens": 1600,
+    "max_utf8_bytes": 6400
+  },
+  "margin": {
+    "o200k_base_tokens": 488,
+    "utf8_bytes": 1633
+  },
+  "metadata_projection": {
+    "byte_count": 4767,
+    "sha256": "sha256:f7d347b3e64d3d079fd3deaf07a02da95a8dabd4ccf212a6710973ade33dea17",
+    "token_count": 1112
+  },
+  "parent_skill_count": 1,
+  "skill_count": 29,
+  "status": "PASS"
+}

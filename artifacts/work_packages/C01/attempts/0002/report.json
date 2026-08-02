@@ -1,0 +1,129 @@
+{
+  "work_package_id": "C01",
+  "attempt_id": "C01-0002",
+  "base_checkpoint": "A04:PASS,A05-0002:PASS",
+  "status": "SPEC_GAP",
+  "authority_decision_id": "HD-EF4-A05-C01-B04-20260727-001",
+  "authority_decision_hash": "sha256:9c09bc531bb69df8b6394157651fc681e13dbfb8027e5a3713fa65a073733e59",
+  "prior_attempt": {
+    "attempt": "C01-0001",
+    "status": "SPEC_GAP",
+    "gap_id": "C01-SG001",
+    "report_path": "artifacts/work_packages/C01/report.json",
+    "report_sha256": "14d1815150ba37ebc416d637afbb1514fbbb024f9fe6940ed7b976ce33b60d68",
+    "prospectively_resolved_by_authority_decision": true,
+    "history_preserved": true
+  },
+  "new_spec_gap": {
+    "id": "C01-SG002",
+    "summary": "Mandatory C01 schema changes invalidate two canonical examples that C01 has no authority to edit, while C01 PASS requires zero schema/example validation errors.",
+    "independent_of_prior_gap": true,
+    "required_decision": {
+      "type": "limited development-manifest write-scope correction",
+      "add_to_c01_write_scope": [
+        "examples/sample_evolution-run-spec.json",
+        "examples/sample_promotion-decision.json"
+      ],
+      "do_not_add": [
+        "examples/**",
+        "examples/sample_adjudication.json",
+        "examples/sample_phase-artifact-set.json"
+      ]
+    }
+  },
+  "changed_files": [
+    "artifacts/work_packages/C01/attempts/0002/example-scope-conflict-verifier.py",
+    "artifacts/work_packages/C01/attempts/0002/example-scope-conflict-verification.json",
+    "artifacts/work_packages/C01/attempts/0002/dependency-status.json",
+    "artifacts/work_packages/C01/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/C01/attempts/0002/review.md",
+    "artifacts/work_packages/C01/attempts/0002/report.json"
+  ],
+  "checks": [
+    {
+      "command_id": "C01-0002-C002",
+      "name": "deterministic example-scope conflict replay",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0002/example-scope-conflict-verification.json"
+    },
+    {
+      "command_id": "C01-0002-C003",
+      "name": "verifier compilation",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0002/commands.jsonl#C01-0002-C003"
+    },
+    {
+      "command_id": "C01-0002-C004",
+      "name": "full Python regression",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0002/commands.jsonl#C01-0002-C004"
+    },
+    {
+      "command_id": "C01-0002-C005",
+      "name": "write-scope, history, and dirty-worktree preservation audit",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0002/commands.jsonl#C01-0002-C005"
+    },
+    {
+      "command_id": "C01-0002-C006",
+      "name": "user-authorized primary-session separate contract review",
+      "exit_code": 1,
+      "artifact": "artifacts/work_packages/C01/attempts/0002/review.md"
+    }
+  ],
+  "review": {
+    "reviewer": "primary-session contract review",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_PASS",
+    "status": "SPEC_GAP_WITH_USER_AUTHORIZED_PRIMARY_SESSION_REVIEW",
+    "product_owner_review_approval": true,
+    "actor_separate_subagent_used": false,
+    "blocking_findings": [
+      "C01 cannot both enforce the required EvolutionRunSpec and PromotionDecision contracts and pass canonical example validation without editing two out-of-scope example files."
+    ],
+    "assurance_limitation": "The product owner prohibited Fleet and subagents. This review is procedurally separate but not actor-independent, and no external certification is claimed."
+  },
+  "conflict_evidence": {
+    "verification_sha256": "2f0d871c00af463360548e2282b4512a0028b0632179211ee0461d31eeac24c8",
+    "current_examples_valid": 2,
+    "mandatory_contract_errors": 3,
+    "evolution_error": "'resolved_refs' is a required property",
+    "promotion_errors": [
+      "PILOT is not an A05 promotion level",
+      "HYPOTHESIS_PASSPORT_ONLY is not an A05 promotion level"
+    ],
+    "out_of_scope_example_count": 2,
+    "canonical_schema_count_changed": false,
+    "runtime_implemented": false
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/C01/attempts/0002/example-scope-conflict-verifier.py",
+    "artifacts/work_packages/C01/attempts/0002/example-scope-conflict-verification.json",
+    "artifacts/work_packages/C01/attempts/0002/dependency-status.json",
+    "artifacts/work_packages/C01/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/C01/attempts/0002/review.md",
+    "artifacts/work_packages/C01/attempts/0002/report.json"
+  ],
+  "open_risks": [
+    "C01 remains incomplete: no schema changes, OpenAPI document, API contract correction, or C01 contract tests were implemented.",
+    "B04, C02, and C03 remain dependent on C01 PASS.",
+    "Review is user-authorized primary-session procedural review rather than actor-independent assurance because Fleet and subagents were prohibited.",
+    "The preserved dirty worktree and known PACKAGE_MANIFEST diagnostics remain outside this attempt's write scope."
+  ],
+  "not_verified": [
+    "OpenAPI 3.1.1 validation and generated-client dry run",
+    "C01 schema realization and canonical example validation after the required higher-order correction",
+    "production REST runtime, authentication, authorization, or handler behavior",
+    "external actor-independent assurance"
+  ],
+  "dependency_state": {
+    "A05": "PASS",
+    "C01": "SPEC_GAP",
+    "B04": "WAITING_ON_C01",
+    "direct_c01_dependents": [
+      "B04",
+      "C02",
+      "C03"
+    ]
+  },
+  "resume_condition": "A higher-order decision adds exactly examples/sample_evolution-run-spec.json and examples/sample_promotion-decision.json to C01 write_scope; then resume C01 with a new attempt, preserving C01-0001 and C01-0002."
+}

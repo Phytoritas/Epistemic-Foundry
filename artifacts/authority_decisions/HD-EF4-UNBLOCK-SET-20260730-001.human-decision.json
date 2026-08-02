@@ -1,0 +1,36 @@
+{
+  "decision_id": "HD-EF4-UNBLOCK-SET-20260730-001",
+  "run_id": null,
+  "subject_id": "EF4-J02-K01-T01-A06-UNBLOCK-SET",
+  "decision_type": "correct",
+  "decision": "Resolve prospectively the J02-SG002 dependency and traceability gap, K01-SG001 ingest lifecycle gap, T01-SG001 MCP transport gap, and A06 remediation-ownership gap through child decisions HD-EF4-J02-SG002-20260730-001, HD-EF4-K01-SG001-20260730-001, HD-EF4-T01-SG001-20260730-001, and HD-EF4-A06-RM001-20260730-001. Authorize only the exact development-manifest fields and bounded product paths stated by those decisions, bind the successor manifest to approved parent sha256:de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940 through a canonical patch plan, preserve every prior attempt and RAH generation, execute serially in the primary session without Fleet or subagents, and keep completion_ready false.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "The four blockers are genuine shared-contract or repair-ownership gaps rather than permission to erase prior non-PASS results. The decision set supplies exact owners, scopes, semantics, test oracles, source binding, and a fixed repair order while prohibiting broad authority, silent fallback, generated-file hand edits, gate weakening, history mutation, and premature completion.",
+  "evidence_artifact_ids": [
+    "attachment:b32635e9-cd03-434f-a290-3644e962fce6:pasted-text-1.txt:sha256:c44b4d35ee83cba3a15f7249a7bce171fd9d155f0f39cdf747a2fd57b6c736f4",
+    "artifacts/work_packages/J02/attempts/0002/report.json",
+    "artifacts/work_packages/K01/attempts/0001/report.json",
+    "artifacts/work_packages/T01/attempts/0001/report.json",
+    "artifacts/work_packages/A06/attempts/0001/report.json",
+    "RAH:E0084",
+    "RAH:generation:000081-843d5565"
+  ],
+  "affected_artifact_ids": [
+    "manifests/development_manifest.yaml",
+    "manifests/source_bindings/development-manifest.binding.json",
+    "B02-correction",
+    "B04-revalidation",
+    "S04-correction",
+    "C01-C04-shared-correction",
+    "A05-correction",
+    "A06-0002",
+    "J02-0003",
+    "K01-0002",
+    "T01-0002"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-30T00:00:00Z",
+  "decision_hash": "sha256:62c8ed14252736e8f5660bacb024281ec3565e8cd29130654a1b6be3bf97a7bb"
+}

@@ -1,0 +1,229 @@
+{
+  "acl_dimensions": [
+    "tool",
+    "read",
+    "write",
+    "network",
+    "evidence"
+  ],
+  "all_permitted_is_privileged_grant_only": true,
+  "attempt_id": "N01-0001",
+  "caller_input_preservation": "PASS",
+  "canonical_capability_aliases_rejected": [
+    "artifact.read",
+    "artifact:read",
+    "llm.inference",
+    "search.read"
+  ],
+  "canonical_hash_and_derived_id": "PASS",
+  "deep_immutability": "PASS",
+  "deny_by_default": true,
+  "dispatch_projection": {
+    "provider_neutral": true,
+    "role_dispatch_plan_schema": "schemas/role-dispatch-plan.schema.json",
+    "status": "PASS"
+  },
+  "evidence_asymmetry": "PASS",
+  "evidence_class_count": 36,
+  "evidence_classes": [
+    "adapter_test_results",
+    "adjudication_pack",
+    "all_permitted",
+    "archive_public",
+    "attestation_pack",
+    "backend_manifest",
+    "boundary",
+    "candidate_parent",
+    "candidate_public",
+    "challenge_archive",
+    "citation",
+    "counter",
+    "evaluation_results",
+    "evaluator_public",
+    "evidence_pack",
+    "evolution_state",
+    "external_novelty",
+    "fitness_public",
+    "holdout_metadata",
+    "implementation_contract",
+    "measurement_contract",
+    "mechanism",
+    "method",
+    "methods",
+    "null",
+    "primary_results",
+    "prompt_quarantine",
+    "replication_pack",
+    "results",
+    "sealed_promotion_pack",
+    "selection_events",
+    "source_span",
+    "support",
+    "temporal",
+    "theory",
+    "validation_plan"
+  ],
+  "expected_count_is_sealed_in_role_spec": true,
+  "failure_and_retry_policy_sealed": true,
+  "hostile_input_rejection": "PASS",
+  "manifest_contract": {
+    "depends_on": [
+      "C04",
+      "E04",
+      "G04",
+      "H04",
+      "J04"
+    ],
+    "exit_criteria": [
+      "role mission and forbidden behavior explicit",
+      "evidence asymmetry representable"
+    ],
+    "independent_review": "required",
+    "required_checks": [
+      "role_schema_test",
+      "acl_test"
+    ],
+    "risk_class": "high",
+    "status": "PASS",
+    "write_scope": [
+      "packages/role-router/src/contracts/**"
+    ]
+  },
+  "mission_and_forbidden_behavior_required": true,
+  "network_origins_are_exact_https": true,
+  "path_traversal_and_malformed_wildcard_rejection": "PASS",
+  "python_adjacent_contracts": {
+    "dispatch_contract": {
+      "collected": 5,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/N01/attempts/0001/dispatch-contract-python.junit.xml",
+      "junit_sha256": "sha256:46e64b0acee2adf0fe55c5629c2cde5c4573d0394aa250fcc6493c2e4287917b",
+      "passed": 5,
+      "skipped": 0,
+      "xml_testcase_count": 5
+    },
+    "security": {
+      "collected": 26,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/N01/attempts/0001/security-python.junit.xml",
+      "junit_sha256": "sha256:01bb58e8ff6d1f53cc3166352dc847dabbc772d2533433ca3f181db382eb29e6",
+      "passed": 26,
+      "skipped": 0,
+      "xml_testcase_count": 26
+    },
+    "status": "PASS"
+  },
+  "role_spec_version": "4.0.0-n01.1",
+  "status": "PASS",
+  "syntax": {
+    "attempt_id": "N01-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/contracts/role-spec.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/contracts/index.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/contracts/role-spec-test-support.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/contracts/role-schema.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/role-router/src/contracts/acl.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "targeted": {
+    "acl_test_count": 11,
+    "cancelled": 0,
+    "collected": 21,
+    "failed": 0,
+    "junit": "artifacts/work_packages/N01/attempts/0001/targeted-n01-node.junit.xml",
+    "junit_sha256": "sha256:f8e451b68169dcff52cdb180daf0c18e49b887dcd995006d369cc821b14f1c76",
+    "observed_file_count": 2,
+    "observed_files": [
+      "packages/role-router/src/contracts/acl.test.mjs",
+      "packages/role-router/src/contracts/role-schema.test.mjs"
+    ],
+    "passed": 21,
+    "role_schema_test_count": 10,
+    "skipped": 0,
+    "test_names": [
+      "acl_test: explicit tool, path, network, and evidence grants allow access",
+      "acl_test: every known but undeclared access is denied by default",
+      "acl_test: evidence ACLs preserve asymmetric defender and prosecutor views",
+      "acl_test: all_permitted is an explicit privileged grant but never a request class",
+      "acl_test: tool grants do not imply network, evidence, read, or write authority",
+      "acl_test: read and write scopes remain independent",
+      "acl_test: dotted and colon-delimited capability aliases fail closed",
+      "acl_test: unknown tool, evidence, and ACL vocabularies are never treated as denial aliases",
+      "acl_test: network ACLs bind exact canonical HTTPS origins",
+      "acl_test: access requests reject traversal and accessor or proxy wrappers without execution",
+      "acl_test: a tampered RoleSpec cannot authorize any access",
+      "role_schema_test: creates a deterministic content-addressed immutable RoleSpec",
+      "role_schema_test: set-semantic fields canonicalize while fallback precedence is preserved",
+      "role_schema_test: persisted integrity requires canonical ordering, hash, and derived ID",
+      "role_schema_test: mission, forbidden behavior, schemas, budget, and expected count are mandatory",
+      "role_schema_test: closed vocabularies and relationship constraints fail closed",
+      "role_schema_test: scopes reject traversal, absolute paths, separators, and malformed broadening",
+      "role_schema_test: duplicates are rejected rather than silently deduplicated",
+      "role_schema_test: hostile wrappers, accessors, sparse arrays, and custom prototypes are inert",
+      "role_schema_test: RoleDispatchPlan projection is exact, immutable, and provider-neutral",
+      "role_schema_test: canonical JSON rejects cycles and non-canonical numeric values"
+    ],
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_logical_test_count": 21,
+    "xml_suite_test_count": 0,
+    "xml_testcase_count": 21
+  },
+  "tool_capabilities": [
+    "approved_external_search",
+    "artifact_read",
+    "artifact_write",
+    "database_read",
+    "database_write",
+    "document_register",
+    "filesystem_read",
+    "filesystem_write",
+    "fulltext_search",
+    "graph_query",
+    "human_approval",
+    "human_input",
+    "ledger_append",
+    "llm_inference",
+    "network_fetch",
+    "network_read",
+    "object_store_read",
+    "object_store_write",
+    "python_analysis",
+    "sandbox_execute",
+    "signing_service",
+    "subagent_dispatch",
+    "vector_search",
+    "workflow_dispatch"
+  ],
+  "tool_capability_count": 24,
+  "unknown_vocabulary_fails_closed": true
+}

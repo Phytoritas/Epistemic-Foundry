@@ -1,0 +1,39 @@
+{
+  "attempt_id": "A05-0003",
+  "authorized_scope": {
+    "cascade_paths": [
+      "MASTER_SPEC.md",
+      "plugins/epistemic-foundry/skills/skill-inventory.json",
+      "tests/fixtures/j02/reference-selection-cases.json",
+      "tests/fixtures/j02/skill-inventory.expected.json",
+      "tests/test_wire_literal_discipline.py",
+      "tools/validate_spec_bundle.py",
+      "workflows/evolution_chamber_cycle.workflow.yaml"
+    ],
+    "cascade_paths_decision": "HD-EF4-A05-0003-SCOPE-20260801-001",
+    "remediation_decision": "HD-EF4-A06-RM001-20260730-001",
+    "remediation_paths": [
+      "src/epistemic_foundry/governance/evolution_authority/__init__.py",
+      "src/epistemic_foundry/governance/evolution_authority/nodes.py",
+      "src/epistemic_foundry/governance/evolution_authority/registry.py",
+      "tests/governance/__init__.py",
+      "tests/governance/a05/__init__.py",
+      "tests/governance/a05/test_a05_gate_registry.py",
+      "tests/governance/a05/test_a05_negative_cases.py",
+      "tests/governance/a05/test_a05_positive_cases.py",
+      "workflows/evolution_promotion.workflow.yaml"
+    ]
+  },
+  "notes": [
+    "tests/governance/__init__.py is the required parent package marker for the RM001 tests/governance/a05 test path grant.",
+    "MASTER_SPEC.md and workflows/evolution_chamber_cycle.workflow.yaml received only the exact deltas enumerated by the cascade decision; their remaining dirty-worktree content is preserved unchanged."
+  ],
+  "product_file_count": 16,
+  "product_hash_table": "artifacts/work_packages/A05/attempts/0003/product-hashes.json",
+  "reset_clean_stash_commit_push_performed": false,
+  "root_canonical_source_mutation_count": 0,
+  "schema_or_test_weakening_count": 0,
+  "status": "PASS",
+  "subagents_or_fleet_used": false,
+  "write_scope_violation_count": 0
+}

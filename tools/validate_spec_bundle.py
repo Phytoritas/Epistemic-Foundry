@@ -25,10 +25,10 @@ from referencing import Registry, Resource
 
 VERSION = "4.0.0"
 EXPECTED = {
-    "schemas": 124,
-    "examples": 124,
-    "workflows": 22,
-    "workflow_nodes": 327,
+    "schemas": 127,
+    "examples": 127,
+    "workflows": 23,
+    "workflow_nodes": 350,
     "prompts": 65,
     "work_packages": 156,
     "invariants": 64,

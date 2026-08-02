@@ -1,0 +1,31 @@
+{
+  "attempt_id": "W01-0001",
+  "exit_criteria": {
+    "dag_and_resource_edges_validated": {
+      "evidence": [
+        "packages/foundry-kernel/src/workflows/compiler/workflow-compile.test.mjs"
+      ],
+      "status": "PASS"
+    },
+    "unknown_executor_blocked": {
+      "evidence": [
+        "packages/foundry-kernel/src/workflows/compiler/node-contract.test.mjs"
+      ],
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "node_contract_test": {
+      "module": "packages/foundry-kernel/src/workflows/compiler/node-contract.test.mjs",
+      "status": "PASS"
+    },
+    "workflow_compile_test": {
+      "module": "packages/foundry-kernel/src/workflows/compiler/workflow-compile.test.mjs",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 26,
+  "vocabulary_authority": "schemas/node-contract.schema.json",
+  "vocabulary_registry_binding": "contracts registry source_sha256 equality asserted in node-contract.test.mjs"
+}

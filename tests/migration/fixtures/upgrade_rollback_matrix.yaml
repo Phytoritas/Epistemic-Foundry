@@ -1,0 +1,276 @@
+# Z03 declared upgrade / downgrade / migration / rollback matrix.
+#
+# This YAML is the SINGLE declaring source for the Z03 lifecycle proofs. It
+# never restates the cross-version compatibility semantics that already live in
+# `migrations/contracts/compatibility-matrix.json`; the harness composes that
+# read-only contract by citation and this file only declares the per-step
+# lifecycle fixtures the contract is evaluated against.
+#
+# Honesty boundary: every path and record below is a DECLARED fixture. Nothing
+# here executes a real cross-version runtime migration; the harness evaluates the
+# declared per-step outcomes as pure, deterministic, fail-closed functions.
+matrix_id: EF-Z03-UPGRADE-ROLLBACK-MATRIX-V1
+status: UNVERIFIED_REFERENCE_MATRIX
+target_version: 4.0.0
+write_version: v4
+composed_contract: migrations/contracts/compatibility-matrix.json
+composed_migration_contract: migrations/contracts/evolution-run-spec-v3-to-v4.migration.json
+composed_migration_guide: docs/migration_v2_to_v4.md
+
+version_states:
+- v2
+- v3
+- v4
+
+# Evidence an applied upgrade step MUST present before it can reconcile to a
+# MIGRATED_EXPLICITLY outcome. A missing item is a fail-closed refusal, never a
+# silent success.
+required_step_evidence:
+- compatibility_declaration
+- verified_backup
+- migration_dry_run
+- rollback_snapshot
+- hook_retrust_record
+
+paths:
+- path_id: upgrade_v2_to_v4
+  kind: upgrade
+  source: v2
+  target: v4
+  declared_terminal: MIGRATED_EXPLICITLY
+  steps:
+  - step_id: v2_to_v3
+    from: v2
+    to: v3
+    change_class: BREAKING
+    hooks_changed: true
+    hook_trust_reestablished: true
+    evidence:
+    - compatibility_declaration
+    - verified_backup
+    - migration_dry_run
+    - rollback_snapshot
+    - hook_retrust_record
+  - step_id: v3_to_v4
+    from: v3
+    to: v4
+    change_class: BREAKING
+    hooks_changed: true
+    hook_trust_reestablished: true
+    evidence:
+    - compatibility_declaration
+    - verified_backup
+    - migration_dry_run
+    - rollback_snapshot
+    - hook_retrust_record
+- path_id: upgrade_v3_to_v4
+  kind: upgrade
+  source: v3
+  target: v4
+  declared_terminal: MIGRATED_EXPLICITLY
+  steps:
+  - step_id: v3_to_v4
+    from: v3
+    to: v4
+    change_class: BREAKING
+    hooks_changed: true
+    hook_trust_reestablished: true
+    evidence:
+    - compatibility_declaration
+    - verified_backup
+    - migration_dry_run
+    - rollback_snapshot
+    - hook_retrust_record
+- path_id: downgrade_v4_to_v3
+  kind: downgrade
+  source: v4
+  target: v3
+  declared_terminal: UNSUPPORTED
+  forward_compatibility_claimed: false
+  steps:
+  - step_id: v4_to_v3
+    from: v4
+    to: v3
+    change_class: BREAKING
+    hooks_changed: true
+    hook_trust_reestablished: false
+    evidence: []
+- path_id: downgrade_v4_to_v2
+  kind: downgrade
+  source: v4
+  target: v2
+  declared_terminal: UNSUPPORTED
+  forward_compatibility_claimed: false
+  steps:
+  - step_id: v4_to_v2
+    from: v4
+    to: v2
+    change_class: BREAKING
+    hooks_changed: true
+    hook_trust_reestablished: false
+    evidence: []
+
+# Rollback record fixtures. Each case is a declared prior state plus a rollback
+# plan. The harness proves a FAILED migration restores the exact prior state and
+# fails closed on any plan that discards the source, changes its exact hash,
+# drops retained migration records, rewrites promotion/effect history, or leaves
+# unresolved records behind. History is modelled as opaque append-only event ids
+# so the proofs never depend on rewriting the ledger.
+rollback_cases:
+- case_id: failed_v3_to_v4_restores_exact_prior_state
+  migration_status: FAILED
+  source_version: v3
+  source_payload:
+    artifact_kind: EvolutionRunSpec
+    schema_version: 3.0.0
+    source_evolution_run_id: legacy-run-0001
+    resolved_refs_required: false
+  migration_records:
+  - MR-Z03-0001
+  - MR-Z03-0002
+  promotion_history:
+  - PH-0001
+  - PH-0002
+  effect_history:
+  - EFR-0001
+  rollback_plan:
+    restores_source_payload: true
+    retains_source: true
+    retains_migration_records: true
+    rewrites_promotion_or_effect_history: false
+    unresolved_records: []
+  expected_status: PASS
+- case_id: rollback_that_discards_source_is_refused
+  migration_status: FAILED
+  source_version: v3
+  source_payload:
+    artifact_kind: EvolutionRunSpec
+    schema_version: 3.0.0
+    source_evolution_run_id: legacy-run-0002
+    resolved_refs_required: false
+  migration_records:
+  - MR-Z03-0003
+  promotion_history:
+  - PH-0003
+  effect_history:
+  - EFR-0002
+  rollback_plan:
+    restores_source_payload: false
+    retains_source: false
+    retains_migration_records: true
+    rewrites_promotion_or_effect_history: false
+    unresolved_records: []
+  expected_status: FAIL
+- case_id: rollback_with_inexact_source_hash_is_refused
+  migration_status: FAILED
+  source_version: v3
+  source_payload:
+    artifact_kind: EvolutionRunSpec
+    schema_version: 3.0.0
+    source_evolution_run_id: legacy-run-0003
+    resolved_refs_required: false
+  migration_records:
+  - MR-Z03-0004
+  promotion_history:
+  - PH-0004
+  effect_history:
+  - EFR-0003
+  rollback_plan:
+    restores_source_payload: true
+    retains_source: true
+    mutate_restored_payload: true
+    retains_migration_records: true
+    rewrites_promotion_or_effect_history: false
+    unresolved_records: []
+  expected_status: FAIL
+- case_id: rollback_that_drops_migration_records_is_refused
+  migration_status: FAILED
+  source_version: v3
+  source_payload:
+    artifact_kind: EvolutionRunSpec
+    schema_version: 3.0.0
+    source_evolution_run_id: legacy-run-0004
+    resolved_refs_required: false
+  migration_records:
+  - MR-Z03-0005
+  promotion_history:
+  - PH-0005
+  effect_history:
+  - EFR-0004
+  rollback_plan:
+    restores_source_payload: true
+    retains_source: true
+    retains_migration_records: false
+    rewrites_promotion_or_effect_history: false
+    unresolved_records: []
+  expected_status: FAIL
+- case_id: rollback_that_rewrites_history_is_refused
+  migration_status: FAILED
+  source_version: v3
+  source_payload:
+    artifact_kind: EvolutionRunSpec
+    schema_version: 3.0.0
+    source_evolution_run_id: legacy-run-0005
+    resolved_refs_required: false
+  migration_records:
+  - MR-Z03-0006
+  promotion_history:
+  - PH-0006
+  effect_history:
+  - EFR-0005
+  rollback_plan:
+    restores_source_payload: true
+    retains_source: true
+    retains_migration_records: true
+    rewrites_promotion_or_effect_history: true
+    unresolved_records: []
+  expected_status: FAIL
+- case_id: rollback_with_unresolved_records_fails_closed
+  migration_status: FAILED
+  source_version: v3
+  source_payload:
+    artifact_kind: EvolutionRunSpec
+    schema_version: 3.0.0
+    source_evolution_run_id: legacy-run-0006
+    resolved_refs_required: false
+  migration_records:
+  - MR-Z03-0007
+  promotion_history:
+  - PH-0007
+  effect_history:
+  - EFR-0006
+  rollback_plan:
+    restores_source_payload: true
+    retains_source: true
+    retains_migration_records: true
+    rewrites_promotion_or_effect_history: false
+    unresolved_records:
+    - UNRESOLVED-legacy-run-0006
+  expected_status: FAIL
+
+# Backfill batch fixtures cited against the contract `backfill` block: a dry-run
+# must precede any write, unresolved records fail the whole batch closed, and a
+# partial success is never reported as batch success.
+backfill_cases:
+- case_id: clean_batch_with_dry_run_and_all_resolved
+  dry_run_performed: true
+  records:
+  - record_id: BF-0001
+    resolved: true
+  - record_id: BF-0002
+    resolved: true
+  expected_status: PASS
+- case_id: batch_without_dry_run_is_refused
+  dry_run_performed: false
+  records:
+  - record_id: BF-0003
+    resolved: true
+  expected_status: FAIL
+- case_id: batch_with_one_unresolved_record_fails_closed
+  dry_run_performed: true
+  records:
+  - record_id: BF-0004
+    resolved: true
+  - record_id: BF-0005
+    resolved: false
+  expected_status: FAIL

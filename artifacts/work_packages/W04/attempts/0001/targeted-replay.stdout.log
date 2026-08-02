@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="audit_export_test: a complete bundle reconciles and seals" time="0.003390" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: every section is accounted for" time="0.000563" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: a referenced artifact that is simply absent fails" time="0.001155" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: an absence with a typed reason is allowed and recorded" time="0.000690" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: an exclusion reason must be canonical" time="0.000250" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: an entry cannot be both bundled and excluded" time="0.000991" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: excluding something the run never referenced is refused" time="0.000245" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: an entry the run never referenced is an orphan" time="0.000376" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: a duplicated bundle entry is refused" time="0.000317" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: every bundled entry must carry a sha256 content hash" time="0.000274" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: the reconciliation counts add up" time="0.000409" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: reconcileExport reports rather than throws for a caller" time="0.000137" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: the drift report must belong to the same run" time="0.000237" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: an unsealed drift report cannot be exported" time="0.000320" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: a diverged run can still be exported, and says so" time="0.000463" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: a sealed export may not record missing entries" time="0.000867" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: hash coverage must match the present entries exactly" time="0.000616" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: a tampered export is rejected by its own hash" time="0.000469" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: a non-canonical field set is refused" time="0.000371" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: an unknown section cannot be excluded" time="0.000169" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="audit_export_test: the export is deterministic and content-addressed" time="0.000816" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\audit-export.test.mjs"/>
+	<testcase name="replay_drift_test: an exact replay is reproducible with no differences" time="0.002094" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: a moved timestamp is strict drift, not divergence" time="0.000339" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: a different duration and worker are strict drift" time="0.000445" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: a changed state hash is semantic divergence" time="0.000290" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: strict drift never downgrades a clean semantic result" time="0.000273" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: one semantic difference outweighs any amount of strict drift" time="0.000322" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: every semantic field is actually treated as semantic" time="0.000113" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: every volatile field is actually treated as strict" time="0.000084" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: the two field lists cannot overlap" time="0.000104" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: an unrecognised field is unclassified, not assumed harmless" time="0.000342" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: an unclassified difference blocks the seal" time="0.000711" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: a semantic field filed as strict is refused" time="0.000391" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: a verdict that does not follow from the buckets is refused" time="0.000609" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: counts must reconcile with the records" time="0.000229" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: a tampered report is rejected by its own hash" time="0.000316" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: an added or removed field is reported with both sides" time="0.000201" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: differences are reported in deterministic path order" time="0.000109" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: the verdict vocabulary is closed and ordered" time="0.000069" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: a non-canonical verdict is refused" time="0.000274" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<testcase name="replay_drift_test: the report is deterministic and content-addressed" time="0.000419" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\replay\replay-drift.test.mjs"/>
+	<!-- tests 41 -->
+	<!-- suites 0 -->
+	<!-- pass 41 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 199.8573 -->
+</testsuites>

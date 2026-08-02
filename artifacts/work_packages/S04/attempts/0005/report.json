@@ -1,0 +1,251 @@
+{
+  "attempt_id": "S04-0005",
+  "attempt_type": "ACTIVE_SOURCE_BINDING_DYNAMIC_AUTHORITY_CORRECTION",
+  "authority_decision_id": "HD-EF4-S04-SG001-20260731-001",
+  "bounded_downstream_debt": {
+    "attempt_id": "S04-0005",
+    "debts": [
+      {
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "debt_id": "B04-0009-CANONICAL-PROJECTION-COUNT",
+        "exact_fingerprint_set_match": true,
+        "exact_node_id_set_match": true,
+        "exact_normalized_error_text_match": true,
+        "failure_count": 17,
+        "owner": "B04",
+        "resolving_attempt": "B04-0009",
+        "s04_causal_impact": "NONE"
+      }
+    ],
+    "package_pass_effect": "S04 owns no remaining failure. The exact 17 B04-0009 projection debts remain visible and do not establish repository conformance.",
+    "repository_fully_green": false,
+    "resolved_debts": [
+      {
+        "classification": "RESOLVED_BY_AUTHORIZED_ACTIVE_BINDING_CORRECTION",
+        "current_failure_count": 0,
+        "debt_id": "S04-TM004",
+        "prior_failure_count": 1,
+        "prior_owner": "S04",
+        "resolved_by_attempt": "S04-0005"
+      }
+    ],
+    "skip_or_xfail_used": false,
+    "status": "AUTHORIZED_DOWNSTREAM_DEBT_RECONCILED"
+  },
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_effect": {
+    "B04-0009": "WAITING_ON_C01_0009_AND_C02_0004",
+    "B04-final": "WAITING_ON_C04_0004",
+    "C01-0009": "DEPENDENCY_READY",
+    "C02-0004": "WAITING_ON_C01_0009",
+    "C04-0004": "WAITING_ON_O02_0002_AND_FRESH_PROJECTION",
+    "O02-0002": "WAITING_ON_B04_0009",
+    "S04": "PASS_ACTIVE_SOURCE_BINDING_CURRENT"
+  },
+  "global_implementation_gate": "fail",
+  "global_status": {
+    "completion_ready": false,
+    "implementation_gate": "fail",
+    "next_attempt": "C01-0009",
+    "repository_fully_green": false
+  },
+  "historical_preservation": {
+    "dirty_worktree_preserved": true,
+    "immutable_history": {
+      "artifacts/work_packages/C01/attempts/0008/full-regression-impact.json": {
+        "byte_size": 15135,
+        "sha256": "sha256:5ef986b23928fd8abd70d701fc4546e333e0e152df45fbc866957af7f2c144f3",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/C01/attempts/0008/report.json": {
+        "byte_size": 5472,
+        "sha256": "sha256:bdbb3760c5799f8835bbe7becb87c8a3ab7c3252ebfb8734266d3106613d7a36",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/J02/attempts/0004/full-regression-impact.json": {
+        "byte_size": 56722,
+        "sha256": "sha256:5bb0e02e410af2dc3fcb5f7fdbee913e4349ae805f0abb79e16414526923e1d5",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/J02/attempts/0004/report.json": {
+        "byte_size": 13831,
+        "sha256": "sha256:6512cbf890ccd3e6d4d719fa6e504263cfcaafc3e9931536362dfcc8ab50cd0c",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/S04/attempts/0003/active-source-binding-verification.json": {
+        "byte_size": 5412,
+        "sha256": "sha256:361f8089c9effa1f03294e56c5fbda080e924d65d36ef4d1bc94742a52adb5f2",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/S04/attempts/0003/report.json": {
+        "byte_size": 5564,
+        "sha256": "sha256:bf76a387c229769e568e650b150b5ede6b2136c3294d792a551a9802904cadd4",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/S04/attempts/0004/binding-only-impossibility-verification.json": {
+        "byte_size": 8813,
+        "sha256": "sha256:abbbe306d9fad083c390a9840b924387ef138a9b977d7f12cb63341a33e50f01",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/S04/attempts/0004/report.json": {
+        "byte_size": 3569,
+        "sha256": "sha256:cfd5d8b095c54115ed8891d7be9a930a7d088bb6afdc602e9b165f2fcea38dcd",
+        "status": "PRESERVED"
+      },
+      "artifacts/work_packages/S04/attempts/0004/review.md": {
+        "byte_size": 2610,
+        "sha256": "sha256:167b354cc9421412afea0bde0cd81912577b35dad8cca4ba15bf5ad8ca6aff3c",
+        "status": "PRESERVED"
+      }
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "repository-wide green status",
+    "C01-0009 PASS",
+    "C02-0004 PASS",
+    "B04-0009 projection PASS",
+    "O02-0002 PASS",
+    "C04-0004 conformance PASS",
+    "final packaging or release readiness",
+    "actor-independent certification",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 8966,
+      "path": "artifacts/work_packages/S04/attempts/0005/active-source-binding-verification.json",
+      "sha256": "sha256:2a43a0beeb1e5345f6641be0dc170e8698c42552bf2722042d8aa9344aca5dfc"
+    },
+    {
+      "byte_size": 11936,
+      "path": "artifacts/work_packages/S04/attempts/0005/full-regression-impact.json",
+      "sha256": "sha256:fc4a9564d0c01513432cbd08b73cd0a0d629180f36d62baf3a0525aed9f2b49a"
+    },
+    {
+      "byte_size": 987,
+      "path": "artifacts/work_packages/S04/attempts/0005/preexisting-debt-reconciliation.json",
+      "sha256": "sha256:c7f7ab2fad3580313a7b5b225b42fcc66caa1a419950dfd6992a51184ce69e0b"
+    },
+    {
+      "byte_size": 4638,
+      "path": "artifacts/work_packages/S04/attempts/0005/write-scope-verification.json",
+      "sha256": "sha256:857e4031824343e3249ac7a652bbeb59ff51988fa986a148a38bd17b7cbb2684"
+    },
+    {
+      "byte_size": 1723,
+      "path": "artifacts/work_packages/S04/attempts/0005/junit-normalization-verification.json",
+      "sha256": "sha256:b69d9ac40eae9490bda3eeec9ee1b4dc6c4981ca1ea4e2f95967a4dcc7b426dc"
+    },
+    {
+      "byte_size": 642,
+      "path": "artifacts/work_packages/S04/attempts/0005/dependency-status.json",
+      "sha256": "sha256:04ce16d3d676ee4f7fd159f7176601c5502f377344bb13c65e4ae24e94197f93"
+    },
+    {
+      "byte_size": 13260,
+      "path": "artifacts/work_packages/S04/attempts/0005/targeted-security-suite.junit.xml",
+      "sha256": "sha256:789ca82cb12b98b4b73246684ce690fd2fec25f8df499e371cb09fb0025816d5"
+    },
+    {
+      "byte_size": 159611,
+      "path": "artifacts/work_packages/S04/attempts/0005/full-node-suite.junit.xml",
+      "sha256": "sha256:3896c7c6d167f2aea8f959048e3e656d4a92dddf8a1ee7d3d525fc3ea641a5e0"
+    },
+    {
+      "byte_size": 181169,
+      "path": "artifacts/work_packages/S04/attempts/0005/full-python-suite.junit.xml",
+      "sha256": "sha256:c84830b856dd63b682cf32c2a3040767e12528a2389dbb7a5867354848bf3394"
+    },
+    {
+      "byte_size": 5138,
+      "path": "artifacts/work_packages/S04/attempts/0005/commands.jsonl",
+      "sha256": "sha256:7ce394f8f01e721817db5a6a60d261da823d3e5616113406b1dd0c892e14962c"
+    },
+    {
+      "byte_size": 2420,
+      "path": "artifacts/work_packages/S04/attempts/0005/review.md",
+      "sha256": "sha256:9b21b0960b7a645a61bcdcf198e35c2434c1c3c11e73e79c52586247759ffeb7"
+    },
+    {
+      "byte_size": 56820,
+      "path": "artifacts/work_packages/S04/attempts/0005/build_s04_0005_evidence.py",
+      "sha256": "sha256:b18d7fdd46d81e45b44de40dbf6703ce6e30c9b2b4b41b29272b64f33f9935b3"
+    },
+    {
+      "byte_size": 25715,
+      "path": "artifacts/work_packages/S04/attempts/0005/s04_0005_rah_seal.py",
+      "sha256": "sha256:b6a372fdd18f83a4035400bc42530b5057f8c1014e9357da5fc5b5c8c443f1e1"
+    },
+    {
+      "byte_size": 546,
+      "path": "artifacts/work_packages/S04/attempts/0005/rah-core-integrity.json",
+      "sha256": "sha256:354aa47c07ee1acc72dd7f90c63f70e99a249368c74236c76cc557412bb8f86f"
+    }
+  ],
+  "package_status": "PASS",
+  "product_files_modified_by_attempt": [
+    "manifests/source_bindings/development-manifest.binding.json",
+    "tests/security/s04-threat-model-traceability.test.mjs",
+    "artifacts/authority_decisions/HD-EF4-S04-SG001-20260731-001.manifest-patch-plan.json",
+    "artifacts/authority_decisions/HD-EF4-S04-SG001-20260731-001.human-decision.json",
+    "S04-SG001_무엇을_승인해야_하는가.md"
+  ],
+  "rah_state": {
+    "activation_evidence_id": "E0096",
+    "activation_generation": "000094-fe7c74b1",
+    "completion_ready": false,
+    "core_evidence_id": "E0097",
+    "core_generation": "000095-b539f91e",
+    "final_closeout_evidence_id": "E0098",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 570,
+    "implementation_gate": "fail",
+    "retained_generation_count": 95,
+    "status": "active"
+  },
+  "regression": {
+    "new_failure_count": 0,
+    "node": "PASS_819_OF_819",
+    "python": "EXPECTED_B04_0009_PROJECTION_DEBT_1056_PASS_17_FAIL",
+    "python_failure_fingerprints_matched": 17,
+    "repository_fully_green": false,
+    "s04_owned_failure_count": 0,
+    "targeted_security": "PASS_67_OF_67",
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "required_checks": {
+    "active_manifest_source_binding": "PASS",
+    "full_node_suite": "PASS_819_OF_819",
+    "full_python_suite": "EXPECTED_B04_0009_PROJECTION_DEBT",
+    "independent_review": "PASS_WITH_PRIMARY_SESSION_SEPARATE_REVIEW",
+    "security_gate": "PASS",
+    "source_binding_self_hash": "PASS",
+    "threat_model_traceability": "PASS",
+    "write_scope_audit": "PASS_ZERO_VIOLATIONS"
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_S04_owned_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_SECURITY_AND_CONTRACT_REVIEW",
+    "status": "PASS"
+  },
+  "source_binding": {
+    "authorizing_decisions_verified": 2,
+    "binding_hash": "sha256:dc0eff8c011d7c08e9f27536e9693d1578a805e7013842b52059715f1a9ffaad",
+    "binding_id": "DMB-EF4-20260731-003",
+    "lineage_continuity": "PASS",
+    "manifest_sha256": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+    "patch_plan_hash": "sha256:b67f63b0dd1c50869f4ce40f25b25cbec89348ac826c6271071ed3d4222122f3",
+    "patch_plan_id": "MP-EF4-S04-SG001-20260731-001",
+    "replacement_hashes_verified": 12,
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "S04"
+}

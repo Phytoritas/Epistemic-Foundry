@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/epistemic-archive-entry.schema.json",
+  "title": "EpistemicArchiveEntry",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "archive_entry_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entry_class": {
+      "enum": [
+        "elite",
+        "diverse",
+        "null",
+        "counterexample",
+        "failed_replication",
+        "minority_lineage",
+        "unsafe",
+        "superseded"
+      ]
+    },
+    "niche_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fitness_vector_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lineage_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retention_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replacement_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "archived_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "archive_entry_id",
+    "candidate_id",
+    "entry_class",
+    "niche_id",
+    "fitness_vector_id",
+    "lineage_id",
+    "retention_reason",
+    "replacement_policy",
+    "artifact_hash",
+    "archived_at"
+  ],
+  "description": "승자뿐 아니라 null·반례·실패·소수계보를 이유와 함께 보존한다."
+}

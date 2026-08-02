@@ -1,0 +1,33 @@
+{
+  "decision_id": "HD-EF4-T02-SCOPE-20260801-002",
+  "run_id": null,
+  "subject_id": "T02",
+  "decision_type": "correct",
+  "decision": "Authorize the exact cross-layer paths T02 needs beyond its manifest grant of packages/plugin-host/src/mcp/write/**, and adopt the architecture recorded in docs/t02_mutating_tool_architecture.md. The additional authorized paths are exactly: contracts/mcp/catalog-set.yaml; contracts/mcp/t02/**; src/epistemic_foundry/application/mcp_mutating/**; tests/mcp/t02/**; docs/t02_mutating_tool_architecture.md; and a DECLARING_MODULES registry addition in tests/test_wire_literal_discipline.py. The sealed T01 catalog, its generated descriptor projection, the sealed result and error envelope schemas, and the sealed exact-13 tests must not change. Broad grants such as contracts/mcp/**, src/epistemic_foundry/**, tests/**, or packages/plugin-host/** are refused. Amendment: the composed Node adapter under the manifest grant needs its own Node test file, so this decision additionally authorizes exactly tests/node/t02-mcp-write-surface.test.mjs. No other path is added and the sealed T01 Node tests must not change.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "A Node-only T02 would have to duplicate the shared Python envelope and authorization semantics, make Node authoritative for policy, leases, receipts, and reconciliation, or hide domain logic under the Node write directory. A narrow cross-layer extension keeps the mutation lifecycle provider-neutral, keeps every wire literal in exactly one declaring catalog, and leaves the sealed T01 surface untouched. The architecture was produced by an external reasoning session and then verified locally; one of its assumptions about the Python package root was wrong and has been corrected in the recorded contract. The Node adapter composes the sealed T01 framing with the T02 descriptor projection; leaving it untested in Node would make the composed tools/list cardinality and the mutating isError rule unverified on the transport that actually serves them.",
+  "evidence_artifact_ids": [
+    "docs/t02_mutating_tool_architecture.md",
+    "contracts/mcp/t01/tool-catalog.yaml",
+    "contracts/mcp/t01/foundry-mcp-tool-result.schema.json",
+    "contracts/mcp/t01/foundry-mcp-tool-error.schema.json",
+    "artifacts/work_packages/T01/attempts/0002/report.json",
+    "packages/plugin-host/src/mcp/read/mcp-server.mjs"
+  ],
+  "affected_artifact_ids": [
+    "contracts/mcp/catalog-set.yaml",
+    "contracts/mcp/t02/**",
+    "src/epistemic_foundry/application/mcp_mutating/**",
+    "packages/plugin-host/src/mcp/write/**",
+    "tests/mcp/t02/**",
+    "tests/test_wire_literal_discipline.py",
+    "docs/t02_mutating_tool_architecture.md",
+    "tests/node/t02-mcp-write-surface.test.mjs",
+    "T02-0001"
+  ],
+  "supersedes_decision_id": "HD-EF4-T02-SCOPE-20260801-001",
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-08-01T07:20:00Z",
+  "decision_hash": "sha256:13d52a4c4c8fcb674f98e2e71b151b840368534a87926e227c86324fabe82866"
+}

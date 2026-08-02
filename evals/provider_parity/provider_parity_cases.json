@@ -1,0 +1,106 @@
+{
+  "canonical_registry_ref": {
+    "path": "manifests/role_registry.yaml",
+    "version": "4.0.0"
+  },
+  "claude_adapter_ref": {
+    "path": "adapters/claude-code/role_mapping.yaml",
+    "version": "4.0.0"
+  },
+  "codex_adapter_ref": {
+    "path": "adapters/codex/role_mapping.yaml",
+    "version": "4.0.0"
+  },
+  "dataset_hash": "sha256:ec42e56e98e33e29a0618545bcb3e73cd7cdd94244ad4aa3ff0c35b53817971b",
+  "dataset_id": "X04-PROVIDER-PARITY",
+  "diversity_position": "not_assumed_independent",
+  "evaluated_at": "2026-08-01T00:00:00Z",
+  "providers": [
+    {
+      "adapter_path": "adapters/codex/role_mapping.yaml",
+      "provider_id": "codex",
+      "synthetic": true
+    },
+    {
+      "adapter_path": "adapters/claude-code/role_mapping.yaml",
+      "provider_id": "claude-code",
+      "synthetic": true
+    }
+  ],
+  "report_id": "X04-CROSS-PROVIDER-PARITY-AND-DIVERSITY-0001",
+  "trials": [
+    {
+      "claude_outcome": "error",
+      "codex_outcome": "error",
+      "role_id": "abductive_mediator",
+      "trial_id": "X04-T01"
+    },
+    {
+      "claude_outcome": "error",
+      "codex_outcome": "error",
+      "role_id": "archive_curator",
+      "trial_id": "X04-T02"
+    },
+    {
+      "claude_outcome": "error",
+      "codex_outcome": "error",
+      "role_id": "causal_auditor",
+      "trial_id": "X04-T03"
+    },
+    {
+      "claude_outcome": "correct",
+      "codex_outcome": "error",
+      "role_id": "challenge_evolver",
+      "trial_id": "X04-T04"
+    },
+    {
+      "claude_outcome": "error",
+      "codex_outcome": "correct",
+      "role_id": "claim_extractor",
+      "trial_id": "X04-T05"
+    },
+    {
+      "claude_outcome": "correct",
+      "codex_outcome": "correct",
+      "role_id": "contract_reviewer",
+      "trial_id": "X04-T06"
+    },
+    {
+      "claude_outcome": "correct",
+      "codex_outcome": "correct",
+      "role_id": "deductivist",
+      "trial_id": "X04-T07"
+    },
+    {
+      "claude_outcome": "correct",
+      "codex_outcome": "correct",
+      "role_id": "defender",
+      "trial_id": "X04-T08"
+    },
+    {
+      "claude_outcome": "correct",
+      "codex_outcome": "correct",
+      "role_id": "evidence_scout",
+      "trial_id": "X04-T09"
+    },
+    {
+      "claude_outcome": "correct",
+      "codex_outcome": "correct",
+      "role_id": "evolution_governor",
+      "trial_id": "X04-T10"
+    },
+    {
+      "claude_outcome": "correct",
+      "codex_outcome": "correct",
+      "role_id": "evolution_promotion_attestor",
+      "trial_id": "X04-T11"
+    },
+    {
+      "claude_outcome": "correct",
+      "codex_outcome": "correct",
+      "role_id": "experiment_evolver",
+      "trial_id": "X04-T12"
+    }
+  ],
+  "version": "4.0.0"
+}

@@ -1,0 +1,289 @@
+{
+  "admission": {
+    "approval_policy_and_capability_evidence_required": true,
+    "capability_leases_are_external_authority": true,
+    "failed_admission_is_side_effect_free": true
+  },
+  "attempt_id": "N03-0001",
+  "bounded_loops": {
+    "cycle_requires_exact_hash_valid_loop_contract": true,
+    "dedupe_and_dry_rounds_enforced": true,
+    "iteration_cost_and_wall_limits_enforced": true
+  },
+  "dependency_readiness": {
+    "predecessor_success_required": true,
+    "terminal_receipt_required": true,
+    "typed_failure_policy_visible": true
+  },
+  "deterministic_plan_compilation": "PASS",
+  "effects_and_recovery": {
+    "effect_success_requires_receipt": true,
+    "expired_or_unknown_attempt_reconciliation_required": true,
+    "orphan_success_is_forbidden": true
+  },
+  "fencing_and_resources": {
+    "atomic_multi_resource_admission": true,
+    "exclusive_and_quota_capacity_enforced": true,
+    "node_and_exclusive_resource_fencing": true
+  },
+  "immutable_outputs": [
+    "plan",
+    "lease",
+    "attempt",
+    "snapshot"
+  ],
+  "manifest_contract": {
+    "depends_on": [
+      "N01"
+    ],
+    "exit_criteria": [
+      "real dependencies and resources enforced",
+      "cycles require LoopContract"
+    ],
+    "independent_review": "required",
+    "required_checks": [
+      "scheduler_property_test",
+      "resource_conflict_test"
+    ],
+    "risk_class": "high",
+    "status": "PASS",
+    "write_scope": [
+      "packages/foundry-kernel/src/scheduler/**"
+    ]
+  },
+  "replay": {
+    "canonical_command_log": true,
+    "exact_state_reproduction": true,
+    "tamper_rejection": true
+  },
+  "retry_and_idempotency": {
+    "changed_binding_conflicts": true,
+    "exact_acquisition_retry_reuses_lease": true,
+    "immutable_attempt_history": true,
+    "typed_retryable_failures_only": true
+  },
+  "status": "PASS",
+  "syntax": {
+    "attempt_id": "N03-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/scheduler/dag-scheduler.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/scheduler/index.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/scheduler/resource-conflict.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/scheduler/scheduler-property.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/scheduler/scheduler-test-support.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "targeted": {
+    "cancelled": 0,
+    "collected": 24,
+    "failed": 0,
+    "junit": "artifacts/work_packages/N03/attempts/0001/targeted-n03-node.junit.xml",
+    "junit_sha256": "sha256:0d0b987a0d5c6c3f867e8ec02e0725757c7b9cd8bdf741272fdebed2cb6b7227",
+    "observed_file_count": 2,
+    "observed_files": [
+      "packages/foundry-kernel/src/scheduler/resource-conflict.test.mjs",
+      "packages/foundry-kernel/src/scheduler/scheduler-property.test.mjs"
+    ],
+    "passed": 24,
+    "resource_conflict_test_count": 9,
+    "scheduler_property_test_count": 15,
+    "skipped": 0,
+    "test_names": [
+      "resource_conflict_test: exclusive resources admit exactly one owner",
+      "resource_conflict_test: multi-resource acquisition is all-or-none",
+      "resource_conflict_test: bounded quota permits capacity owners and rejects overflow",
+      "resource_conflict_test: quota capacities must be explicit and exclusive capacity cannot broaden",
+      "resource_conflict_test: expiry releases ownership only into reconciliation",
+      "resource_conflict_test: stale token cannot commit after a newer node lease",
+      "resource_conflict_test: exact acquisition retry returns one lease and one reservation",
+      "resource_conflict_test: active lease retry rejects changed admission or reservation",
+      "resource_conflict_test: failed admission does not consume token, budget, or resource",
+      "scheduler_property_test: graph compilation is deterministic across every node permutation",
+      "scheduler_property_test: unknown, duplicate, self, and hostile dependencies fail closed",
+      "scheduler_property_test: every real cycle requires one hash-valid matching LoopContract",
+      "scheduler_property_test: readiness requires successful predecessor terminal receipts",
+      "scheduler_property_test: admission evidence is explicit and capability leases remain external",
+      "scheduler_property_test: retries create immutable attempts and preserve idempotency",
+      "scheduler_property_test: idempotency conflicts and semantic failures never retry",
+      "scheduler_property_test: attempt activity and retry lease clocks never regress",
+      "scheduler_property_test: expired attempts reconcile before a retry can be assigned",
+      "scheduler_property_test: unknown effects can reconcile to success only with receipts",
+      "scheduler_property_test: typed hard budgets enforce calls and concurrency without inventing meters",
+      "scheduler_property_test: bounded loops dedupe all seen items and enforce dry rounds and limits",
+      "scheduler_property_test: failure policy remains visible to downstream readiness",
+      "scheduler_property_test: command replay reproduces exact state and rejects tamper",
+      "scheduler_property_test: plan, lease, attempt, and snapshot outputs are immutable"
+    ],
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_logical_test_count": 24,
+    "xml_suite_test_count": 0,
+    "xml_testcase_count": 24
+  },
+  "upstream_regressions": {
+    "e02_effect_contract": {
+      "cancelled": 0,
+      "collected": 19,
+      "failed": 0,
+      "junit": "artifacts/work_packages/N03/attempts/0001/e02-effect-regression.junit.xml",
+      "junit_sha256": "sha256:f0bf25c1e57c9c459778393d3bf3023bfe8ed8bfddb24cbe313e148bbb60d2cf",
+      "observed_file_count": 2,
+      "observed_files": [
+        "packages/foundry-kernel/src/effects/effect-reconciliation.test.mjs",
+        "packages/foundry-kernel/src/effects/idempotency.test.mjs"
+      ],
+      "passed": 19,
+      "skipped": 0,
+      "test_names": [
+        "effect_reconciliation_test: UNKNOWN blocks retry until an observed reconciliation resolves it",
+        "effect_reconciliation_test: crash before receipt is unresolved, not narrated failure or success",
+        "effect_reconciliation_test: executor narration cannot replace an evidence-bound EffectReceipt",
+        "effect_reconciliation_test: a durable receipt missing its ledger event is not completion",
+        "effect_reconciliation_test: receipt mutation and cross-intent binding fail closed",
+        "effect_reconciliation_test: attempt chronology cannot precede intent or prior reconciliation",
+        "effect_reconciliation_test: an attempt event crash blocks receipt creation until exact replay repairs it",
+        "effect_reconciliation_test: reconciliation retains external operation identity",
+        "effect_reconciliation_test: crash after ledger append requires durable confirmation replay",
+        "effect_reconciliation_test: emitted ActionIntent and EffectReceipt pass canonical schemas",
+        "idempotency_test: same key and same canonical intent replays one logical registration",
+        "idempotency_test: same key with a different canonical request is a conflict",
+        "idempotency_test: an intent ID cannot be rebound under a different key",
+        "idempotency_test: retrying one attempt never grants a second execution",
+        "idempotency_test: retrying one receipt returns the existing logical result",
+        "idempotency_test: attempt and receipt IDs are immutable identities",
+        "idempotency_test: hashes reject mutation, accessors, and hostile coercion",
+        "idempotency_test: immutable older attempt and receipt replays remain idempotent",
+        "idempotency_test: concurrent same-attempt callers grant execution once"
+      ],
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_logical_test_count": 19,
+      "xml_suite_test_count": 0,
+      "xml_testcase_count": 19
+    },
+    "e03_capability_contract": {
+      "cancelled": 0,
+      "collected": 30,
+      "failed": 0,
+      "junit": "artifacts/work_packages/N03/attempts/0001/e03-capability-regression.junit.xml",
+      "junit_sha256": "sha256:423e757728b98be2884ab9b974197c4124ed0cfed480cd233d4995d738c1b180",
+      "observed_file_count": 2,
+      "observed_files": [
+        "packages/foundry-kernel/src/capabilities/fencing.test.mjs",
+        "packages/foundry-kernel/src/capabilities/lease-expiry.test.mjs"
+      ],
+      "passed": 30,
+      "skipped": 0,
+      "test_names": [
+        "fencing_test: newer overlapping lease makes the old fencing token stale",
+        "fencing_test: replacing one scope invalidates the whole multi-scope lease",
+        "fencing_test: failed callback rolls back result, lease-use, and event outbox",
+        "fencing_test: operation retry is idempotent and does not rerun callback",
+        "fencing_test: approval role is server-derived and client assertion is rejected",
+        "fencing_test: exact approval retry returns its immutable result after expiry",
+        "fencing_test: self-approval is a non-waivable denial",
+        "fencing_test: promotion commit lease fails without approval and passes with exact approval",
+        "fencing_test: candidate/model/backend policy cannot grant privileged authority",
+        "fencing_test: forged lease fields or hash cannot reach the mutation callback",
+        "fencing_test: callback cannot access authority-private scope-head state",
+        "fencing_test: async callback is denied and its pre-await mutation rolls back",
+        "fencing_test: lease use and revocation are bound to the sealed run",
+        "fencing_test: approval authority role without approval:issue capability is denied",
+        "fencing_test: later REVOKE head invalidates an earlier APPROVE-bound lease",
+        "fencing_test: approval head rejects clock regression and rolls back the proposed record",
+        "fencing_test: approval head rejects distinct decisions at the same instant",
+        "fencing_test: committed state survives E01 outage and reconciles exactly once",
+        "fencing_test: same PolicyBundle hash with a different capability projection is rejected",
+        "lease_expiry_test: issued leases are canonical, scoped, expiring, and schema-valid",
+        "lease_expiry_test: active lease checks and result persistence share one transaction",
+        "lease_expiry_test: expiry boundary rejects commit without invoking or persisting callback",
+        "lease_expiry_test: a clock before issued_at rejects a not-yet-valid lease",
+        "lease_expiry_test: issue rejects zero or negative lifetime before state mutation",
+        "lease_expiry_test: policy changes invalidate an otherwise unexpired lease",
+        "lease_expiry_test: revocation is explicit and prevents later commits",
+        "lease_expiry_test: exact lease issuance retry returns the first logical lease",
+        "lease_expiry_test: expiry after callback rolls back the protected mutation",
+        "lease_expiry_test: authority clock regression during commit fails closed",
+        "lease_expiry_test: lease issuance is bound to declared subject run and scope"
+      ],
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_logical_test_count": 30,
+      "xml_suite_test_count": 0,
+      "xml_testcase_count": 30
+    },
+    "n01_role_contract": {
+      "cancelled": 0,
+      "collected": 21,
+      "failed": 0,
+      "junit": "artifacts/work_packages/N03/attempts/0001/n01-role-contract-regression.junit.xml",
+      "junit_sha256": "sha256:e74efe82106c6ef6e485cdde6273c214b3bce935d1e7b4710d222f90c93c0188",
+      "observed_file_count": 2,
+      "observed_files": [
+        "packages/role-router/src/contracts/acl.test.mjs",
+        "packages/role-router/src/contracts/role-schema.test.mjs"
+      ],
+      "passed": 21,
+      "skipped": 0,
+      "test_names": [
+        "acl_test: explicit tool, path, network, and evidence grants allow access",
+        "acl_test: every known but undeclared access is denied by default",
+        "acl_test: evidence ACLs preserve asymmetric defender and prosecutor views",
+        "acl_test: all_permitted is an explicit privileged grant but never a request class",
+        "acl_test: tool grants do not imply network, evidence, read, or write authority",
+        "acl_test: read and write scopes remain independent",
+        "acl_test: dotted and colon-delimited capability aliases fail closed",
+        "acl_test: unknown tool, evidence, and ACL vocabularies are never treated as denial aliases",
+        "acl_test: network ACLs bind exact canonical HTTPS origins",
+        "acl_test: access requests reject traversal and accessor or proxy wrappers without execution",
+        "acl_test: a tampered RoleSpec cannot authorize any access",
+        "role_schema_test: creates a deterministic content-addressed immutable RoleSpec",
+        "role_schema_test: set-semantic fields canonicalize while fallback precedence is preserved",
+        "role_schema_test: persisted integrity requires canonical ordering, hash, and derived ID",
+        "role_schema_test: mission, forbidden behavior, schemas, budget, and expected count are mandatory",
+        "role_schema_test: closed vocabularies and relationship constraints fail closed",
+        "role_schema_test: scopes reject traversal, absolute paths, separators, and malformed broadening",
+        "role_schema_test: duplicates are rejected rather than silently deduplicated",
+        "role_schema_test: hostile wrappers, accessors, sparse arrays, and custom prototypes are inert",
+        "role_schema_test: RoleDispatchPlan projection is exact, immutable, and provider-neutral",
+        "role_schema_test: canonical JSON rejects cycles and non-canonical numeric values"
+      ],
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_logical_test_count": 21,
+      "xml_suite_test_count": 0,
+      "xml_testcase_count": 21
+    },
+    "status": "PASS"
+  }
+}

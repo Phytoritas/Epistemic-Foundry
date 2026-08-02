@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.passport.get.input.schema.json",
+  "title": "FoundryPassportGetInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "passport_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "default": null
+    }
+  },
+  "required": [
+    "workspace_id",
+    "passport_id"
+  ]
+}

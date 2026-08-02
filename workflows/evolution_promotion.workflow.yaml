@@ -1,0 +1,842 @@
+workflow_id: evolution_promotion
+version: 4.0.0
+kind: dag
+description: 'Execute the receipt-bound A05 promotion chain: deterministic G00-G10, sealed
+  Evidence Parliament, G11, independent attestation, G12, ceiling recheck, G13 approval, bounded
+  promotion:commit lease, and atomic G14.'
+input_schema_ref: schemas/node-invocation.schema.json
+output_schema_ref: schemas/result-envelope.schema.json
+canonical_runtime: Foundry Kernel
+state_authority: Noetic Ledger
+invariants:
+- no scalar score, majority vote, or model confidence can promote
+- evaluator, holdout, policy, and prior revisions stay immutable
+- llm nodes emit advisory adjudication or attestation only
+- exactly one node holds promotion:commit
+- every gate emits one immutable GateDecision in canonical order
+terminal_states:
+- PASS
+- CONDITIONAL
+- PARTIAL
+- BLOCKED
+- SPEC_GAP
+- FAIL
+completeness_contract:
+  expected_node_count_source: compiled_run_spec
+  missing_node_policy: FAIL
+  partial_result_policy: typed_and_visible_only
+nodes:
+- node_id: record_promotion_request_intent
+  purpose: Record ActionIntent(request_promotion) and seal the requested level and candidate
+    revision
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:record_promotion_request_intent
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/action-intent.schema.json
+  depends_on: []
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/record_promotion_request_intent/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - record_promotion_request_intent contract valid
+  - requested level and candidate revision sealed before gating
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - record_promotion_request_intent_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: build_promotion_pack
+  purpose: Build the FORGE phase-E promotion pack as a PhaseArtifactSet
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:build_promotion_pack
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/phase-artifact-set.schema.json
+  depends_on:
+  - record_promotion_request_intent
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/build_promotion_pack/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - build_promotion_pack contract valid
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - build_promotion_pack_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: verify_promotion_pack_receipts
+  purpose: Verify every required promotion-pack artifact and its resolving receipt
+  executor_type: policy
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:verify_promotion_pack_receipts
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/artifact-receipt.schema.json
+  depends_on:
+  - build_promotion_pack
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/verify_promotion_pack_receipts/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - verify_promotion_pack_receipts contract valid
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - verify_promotion_pack_receipts_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g00_pin_resolution
+  purpose: Verify the sealed EvolutionRunSpec, spec_hash, and every resolved-reference version
+    and content hash
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g00_pin_resolution
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - verify_promotion_pack_receipts
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g00_pin_resolution/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G00_PIN_RESOLUTION GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G00_PIN_RESOLUTION order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g00_pin_resolution_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g01_policy_authority
+  purpose: Verify PolicyBundle, principal capability, approval policy, authority separation,
+    and registered non-waivable gates
+  executor_type: policy
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g01_policy_authority
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - gate_g00_pin_resolution
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g01_policy_authority/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G01_POLICY_AUTHORITY GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G01_POLICY_AUTHORITY order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g01_policy_authority_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g02_evaluator_holdout_firewall
+  purpose: Verify evaluator immutability and that no candidate, model, prompt, or backend
+    identity can read the holdout
+  executor_type: policy
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g02_evaluator_holdout_firewall
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - gate_g01_policy_authority
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g02_evaluator_holdout_firewall/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G02_EVALUATOR_HOLDOUT_FIREWALL GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G02_EVALUATOR_HOLDOUT_FIREWALL order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g02_evaluator_holdout_firewall_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g03_schema_lineage_count
+  purpose: Verify candidate schema and lineage, then reconcile expected, generated, evaluated,
+    persisted, failed, cancelled, and missing counts
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g03_schema_lineage_count
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - gate_g02_evaluator_holdout_firewall
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g03_schema_lineage_count/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G03_SCHEMA_LINEAGE_COUNT GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G03_SCHEMA_LINEAGE_COUNT order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g03_schema_lineage_count_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g04_source_provenance
+  purpose: Verify source spans, artifact receipts, evidence linkage, and trust labels
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g04_source_provenance
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - gate_g03_schema_lineage_count
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g04_source_provenance/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G04_SOURCE_PROVENANCE GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G04_SOURCE_PROVENANCE order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g04_source_provenance_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g05_search_coverage
+  purpose: Verify support, counter, null, boundary, method, and prior-art lanes and keep UNSEARCHED
+    distinct from SEARCHED_NONE
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g05_search_coverage
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - gate_g04_source_provenance
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g05_search_coverage/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G05_SEARCH_COVERAGE GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G05_SEARCH_COVERAGE order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g05_search_coverage_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g06_method_scope_dependency
+  purpose: Verify measurement comparability, scope overlap, shared-sample dependency, method
+    vetoes, and the resulting ceiling
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g06_method_scope_dependency
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - gate_g05_search_coverage
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g06_method_scope_dependency/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G06_METHOD_SCOPE_DEPENDENCY GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G06_METHOD_SCOPE_DEPENDENCY order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g06_method_scope_dependency_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g07_validation_leakage
+  purpose: Verify evaluator qualification, hidden/OOD/adversarial/metamorphic results, and
+    the leakage audit
+  executor_type: policy
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g07_validation_leakage
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - gate_g06_method_scope_dependency
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g07_validation_leakage/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G07_VALIDATION_LEAKAGE GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G07_VALIDATION_LEAKAGE order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g07_validation_leakage_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g08_adaptive_statistics
+  purpose: Verify the sequential-testing ledger, multiplicity adjustment, selective-inference
+    report, and holdout consumption
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g08_adaptive_statistics
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - gate_g07_validation_leakage
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g08_adaptive_statistics/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G08_ADAPTIVE_STATISTICS GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G08_ADAPTIVE_STATISTICS order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g08_adaptive_statistics_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g09_red_queen
+  purpose: Verify the strongest relevant challenge and its reproducibility
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g09_red_queen
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - gate_g08_adaptive_statistics
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g09_red_queen/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G09_RED_QUEEN GateDecision emitted with input_hash, decision_hash, policy_version, and
+    evidence IDs
+  - G09_RED_QUEEN order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g09_red_queen_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g10_replication_ceiling
+  purpose: Compute the replication requirement and the maximum grantable level including reproducibility-class
+    limits
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g10_replication_ceiling
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - gate_g09_red_queen
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g10_replication_ceiling/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G10_REPLICATION_CEILING GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G10_REPLICATION_CEILING order preserved
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g10_replication_ceiling_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_parliament_adjudication
+  purpose: Run sealed Evidence Parliament adjudication over the promotion pack
+  executor_type: llm
+  executor_ref: prompts/judge.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/adjudication.schema.json
+  depends_on:
+  - gate_g10_replication_ceiling
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/run_parliament_adjudication/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_parliament_adjudication contract valid
+  - adjudication is advisory and grants no promotion authority
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_parliament_adjudication_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g11_parliament
+  purpose: Verify blind briefs, audits, strongest counterevidence, minority report, and any
+    attempted gate override
+  executor_type: policy
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g11_parliament
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - run_parliament_adjudication
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g11_parliament/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G11_PARLIAMENT GateDecision emitted with input_hash, decision_hash, policy_version, and
+    evidence IDs
+  - majority agreement cannot override a failed deterministic gate
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g11_parliament_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: run_independent_attestation
+  purpose: Independent attestor reviews only the sealed structured pack
+  executor_type: llm
+  executor_ref: prompts/independent_attestor.md
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/attestation.schema.json
+  depends_on:
+  - gate_g11_parliament
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/run_independent_attestation/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - llm_inference
+  model_tier: frontier
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - run_independent_attestation contract valid
+  - attestor independence constraints enforced
+  resource_dependencies: []
+  determinism_class: provider_nondeterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - run_independent_attestation_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g12_independent_attestation
+  purpose: Require PASS attestation for VALIDATION_SCREENED and above, then recheck the G10
+    ceiling
+  executor_type: policy
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g12_independent_attestation
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - run_independent_attestation
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g12_independent_attestation/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G12_INDEPENDENT_ATTESTATION GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - G10_REPLICATION_CEILING recheck recorded after adjudication and attestation
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g12_independent_attestation_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: resolve_human_policy_approval
+  purpose: Resolve required human and policy approvals or the exact policy NOT_REQUIRED rule
+  executor_type: human_gate
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:resolve_human_policy_approval
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/approval-record.schema.json
+  depends_on:
+  - gate_g12_independent_attestation
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/resolve_human_policy_approval/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 1
+  failure_policy: fail_run
+  acceptance_checks:
+  - resolve_human_policy_approval contract valid
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - resolve_human_policy_approval_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: gate_g13_human_policy_approval
+  purpose: Verify every required ApprovalRecord or the policy-backed NOT_REQUIRED determination
+    and calculate the grantable level
+  executor_type: policy
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:gate_g13_human_policy_approval
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/gate-decision.schema.json
+  depends_on:
+  - resolve_human_policy_approval
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/gate_g13_human_policy_approval/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G13_HUMAN_POLICY_APPROVAL GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - grantable level calculated as the minimum of all applicable ceilings
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - gate_g13_human_policy_approval_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: acquire_promotion_commit_lease
+  purpose: Record ActionIntent(commit_promotion) and acquire the short-lived promotion commit
+    lease
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:acquire_promotion_commit_lease
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/capability-lease.schema.json
+  depends_on:
+  - gate_g13_human_policy_approval
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/acquire_promotion_commit_lease/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - acquire_promotion_commit_lease contract valid
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - acquire_promotion_commit_lease_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: commit_promotion_atomically
+  purpose: Compare-and-swap expected revisions and record the immutable PromotionDecision
+    and Passport revision
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:commit_promotion_atomically
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/promotion-decision.schema.json
+  depends_on:
+  - acquire_promotion_commit_lease
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/commit_promotion_atomically/**
+  - db.promotion_decisions
+  - db.hypothesis_passports
+  capabilities:
+  - artifact_read
+  - artifact_write
+  - promotion:commit
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G14_ATOMIC_PROMOTION_COMMIT compare-and-swap bound to expected candidate and Passport
+    revisions
+  - new immutable PromotionDecision and HypothesisPassport revisions recorded without overwrite
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - commit_promotion_atomically_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid
+- node_id: reconcile_commit_receipts
+  purpose: Append the ledger event and reconcile EffectReceipt and ArtifactReceipt before
+    completion
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:reconcile_commit_receipts
+  input_schema_ref: schemas/node-invocation.schema.json
+  output_schema_ref: schemas/effect-receipt.schema.json
+  depends_on:
+  - commit_promotion_atomically
+  read_scope:
+  - artifacts/evolution/promotion/**
+  write_scope:
+  - artifacts/evolution/promotion/reconcile_commit_receipts/**
+  capabilities:
+  - artifact_read
+  - artifact_write
+  model_tier: deterministic
+  timeout_seconds: 900
+  max_attempts: 2
+  failure_policy: fail_run
+  acceptance_checks:
+  - G14_ATOMIC_PROMOTION_COMMIT GateDecision emitted with input_hash, decision_hash, policy_version,
+    and evidence IDs
+  - EventRecord, EffectReceipt, and ArtifactReceipt reconcile before completion
+  resource_dependencies: []
+  determinism_class: deterministic
+  idempotency_key_fields:
+  - run_id
+  - node_id
+  - input_hash
+  loop_contract_ref: null
+  expected_effects:
+  - reconcile_commit_receipts_completed
+  required_policy_checks:
+  - policy_bundle_valid
+  - capability_scope_valid

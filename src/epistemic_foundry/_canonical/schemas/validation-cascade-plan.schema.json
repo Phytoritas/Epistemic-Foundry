@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/validation-cascade-plan.schema.json",
+  "title": "ValidationCascadePlan",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "cascade_plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "stage_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stage_class": {
+            "enum": [
+              "contract",
+              "static",
+              "evidence",
+              "simulation",
+              "adversarial",
+              "holdout",
+              "replication",
+              "human"
+            ]
+          },
+          "entry_rule": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pass_rule": {
+            "type": "string",
+            "minLength": 1
+          },
+          "failure_action": {
+            "enum": [
+              "reject",
+              "restrict",
+              "continue",
+              "escalate"
+            ]
+          },
+          "budget_fraction": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "stage_id",
+          "stage_class",
+          "entry_rule",
+          "pass_rule",
+          "failure_action",
+          "budget_fraction"
+        ]
+      },
+      "minItems": 1
+    },
+    "max_total_budget": {
+      "type": "number",
+      "minimum": 0
+    },
+    "early_stop_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plan_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "cascade_plan_id",
+    "candidate_class",
+    "stages",
+    "max_total_budget",
+    "early_stop_policy",
+    "plan_hash"
+  ],
+  "description": "저비용 계약 검사부터 숨은 복제까지 다단계 평가 순서·조기중단을 고정한다."
+}

@@ -11,6 +11,8 @@ from epistemic_foundry.evidence_parliament import (
 )
 from epistemic_foundry.foundry_kernel.gates import GateSpec, evaluate_gate, gate_decision
 
+POLICY_HASH = "sha256:" + "a" * 64
+
 
 def _decision(name: str, satisfied: bool) -> dict:
     inputs = {"evidence_ids": ["EV-1"]} if satisfied else {}
@@ -19,6 +21,10 @@ def _decision(name: str, satisfied: bool) -> dict:
         run_id="RUN-0001",
         policy_version="4.0.0",
         inputs=inputs,
+        gate_version="4.0.0",
+        input_artifact_ids=(f"ART-{name}-INPUT-0001",),
+        policy_bundle_hash=POLICY_HASH,
+        blocker_ids=(),
     )
 
 
@@ -94,6 +100,10 @@ def test_waived_gate_is_not_treated_as_failure() -> None:
         run_id="RUN-0001",
         policy_version="4.0.0",
         inputs={},
+        gate_version="4.0.0",
+        input_artifact_ids=("ART-STYLE-INPUT-0001",),
+        policy_bundle_hash=POLICY_HASH,
+        blocker_ids=(),
         waiver_authority="HUMAN-1",
         waiver_reason="cosmetic only, documented",
     )

@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "work_package_id": "T01",
+  "attempt_id": "T01-0001",
+  "title": "MCP read/planning tools",
+  "status": "SPEC_GAP",
+  "package_status": "SPEC_GAP",
+  "implementation_status": "NOT_STARTED_FAIL_CLOSED",
+  "spec_gap_id": "T01-SG001",
+  "completion_ready": false,
+  "dependencies": {
+    "E04": {
+      "status": "PASS",
+      "attempt_id": "E04-0001",
+      "report": "artifacts/work_packages/E04/report.json",
+      "report_sha256": "sha256:841dcf60989cfc7ab0eff7be95e1ae721ae18ac513cae653ab6ac8a44942f6c1"
+    },
+    "G04": {
+      "status": "PASS",
+      "attempt_id": "G04-0001",
+      "report": "artifacts/work_packages/G04/report.json",
+      "report_sha256": "sha256:3abe50fc722255bb8f8c2196f133b94425a0b11318423cb756fab614026cf1ea"
+    },
+    "S04": {
+      "status": "PASS",
+      "attempt_id": null,
+      "report": "artifacts/work_packages/S04/report.json",
+      "report_sha256": "sha256:2d727b6be5e847da71a2d24d893e596e5dc7dbec1d7ffbbe1326cbba8555ffa0"
+    }
+  },
+  "authority_boundary": {
+    "manifest_write_scope": [
+      "packages/plugin-host/src/mcp/read/**"
+    ],
+    "canonical_domain_authority": "schemas/*.schema.json",
+    "canonical_http_transport_authority": "openapi/epistemic-foundry-v1.openapi.yaml",
+    "cross_surface_invariant": "EF4-I22",
+    "product_files_modified": [],
+    "schema_openapi_workflow_or_handler_modified": false,
+    "subagents_or_fleet_used": false
+  },
+  "contract_audit": {
+    "canonical_tool_name_count": 13,
+    "read_tool_count": 9,
+    "planning_tool_count": 4,
+    "canonical_schema_count": 124,
+    "mcp_named_canonical_schema_count": 0,
+    "candidate_domain_schema_count": 14,
+    "machine_readable_per_tool_contract_count": 0,
+    "mcp_read_implementation_path_exists": false,
+    "transport_kernel_file_count": 1,
+    "transport_kernel_only_file": "packages/transport-kernel/package.json"
+  },
+  "required_checks": {
+    "mcp_schema_test": {
+      "status": "NOT_RUN_SPEC_GAP",
+      "reason": "No authoritative per-tool request, response, descriptor, schema-reference, error, authorization, or protocol contract exists from which a canonical test oracle can be derived."
+    },
+    "read_side_effect_test": {
+      "status": "NOT_RUN_SPEC_GAP",
+      "reason": "Planning purity and the audit-telemetry, receipt, persistence, and handler-service boundaries are not defined, so side-effect freedom has no complete canonical oracle."
+    }
+  },
+  "shared_contract_gap": {
+    "summary": "The authority documents freeze thirteen MCP tool names and require canonical schema reuse, but they do not bind any tool to exact request, response, handler, authorization, error, read-model state, side-effect, or protocol contracts.",
+    "fixed_facts": [
+      "nine read tool names and four planning tool names are listed",
+      "domain JSON Schema is canonical for scientific artifacts",
+      "OpenAPI is canonical for HTTP transport",
+      "MCP schemas must reference the same canonical definitions",
+      "read models distinguish READY, EMPTY_CONFIRMED, DEGRADED, and UNAVAILABLE",
+      "T01 product write scope is limited to packages/plugin-host/src/mcp/read/**"
+    ],
+    "unresolved_contracts": [
+      "exact input and output schema binding for each of the thirteen tools",
+      "MCP protocol/version, tool descriptor shape, schema-reference mechanism, and resolution base",
+      "canonical output and read-model envelope mapping for status, health, frame, atlas, replay, map, and planning tools",
+      "whether each planning tool is pure computation or creates, persists, or receipts a canonical plan artifact",
+      "handler-service ownership and the shared interface used by MCP, CLI, and HTTP",
+      "principal, workspace, capability, confidentiality, and authorization scoping",
+      "MCP error mapping and the transport representation of READY, EMPTY_CONFIRMED, DEGRADED, and UNAVAILABLE",
+      "whether read calls may emit audit telemetry, access records, ArtifactReceipts, or ledger events without violating side-effect freedom",
+      "bounded owners and write scopes for central/generated contracts, handler services, fixtures, and conformance tests"
+    ]
+  },
+  "classification": {
+    "typed_outcome": "SPEC_GAP",
+    "not_fail_reason": "No T01 implementation was started and no defined implementation behavior failed; the blocking problem is an absent shared wire and authority contract outside T01's exact write scope.",
+    "not_blocked_reason": "No required credential, licensed source, host capability, external service, or tool is unavailable.",
+    "fail_closed_reason": "Choosing plausible domain schemas or inventing MCP envelopes, handlers, planning side effects, authorization, and errors locally would duplicate wire literals and violate EF4-I22."
+  },
+  "required_product_owner_decisions": [
+    "Freeze an exact thirteen-row MCP tool matrix containing input schema, output schema, read-model envelope, handler operation, and side-effect class.",
+    "Choose the MCP protocol/version and canonical descriptor, schema-reference, content, and error contracts.",
+    "Define authentication, principal/workspace scoping, capabilities, confidentiality concealment, and authorization failure behavior per tool.",
+    "Define whether planning tools are pure projections or durable artifact-producing operations, including any receipt and ledger boundary.",
+    "Define whether read-only operations may emit audit telemetry or receipts and what read_side_effect_test must consider an impermissible effect.",
+    "Assign the provider-neutral handler-service owner and freeze the shared MCP/CLI/HTTP adapter interface.",
+    "Authorize the minimum exact central/generated contract, handler, plugin-host, fixture, test, documentation, and evidence write scopes for a resolving attempt."
+  ],
+  "review": {
+    "status": "SPEC_GAP_CONFIRMED",
+    "mode": "PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "blocking_finding_ids": [
+      "T01-SG001"
+    ],
+    "actor_independent_certification": false,
+    "assurance_limitation": "The product owner prohibited Fleet and subagents. Review is procedurally separate within the primary session and is not actor-independent certification."
+  },
+  "rah_state": {
+    "mode": "READ_ONLY",
+    "current_generation": "000081-843d5565",
+    "generation_manifest_sha256": "sha256:0aa10f1d9e112955401c56e4b7f07c6aedc490c973c27a2b4c872bd8c8869413",
+    "generation_payload_hashes_verified": 6,
+    "generation_payload_hash_mismatches": 0,
+    "latest_evidence_id": "E0084",
+    "ralph_status": "blocked",
+    "implementation_gate": "fail",
+    "evidence_appended_by_t01": false,
+    "generation_created_by_t01": false,
+    "reason_not_mutated": "The existing RAH state is forensically blocked by unresolved J02 tokenizer-lock and S04 traceability failures; T01 does not rewrite or advance it."
+  },
+  "historical_and_worktree_preservation": {
+    "prior_attempts_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "unrelated_product_files_modified_by_t01_attempt": false
+  },
+  "evidence_validation": {
+    "status": "PASS",
+    "json_files_parsed": 4,
+    "jsonl_records_parsed": 13,
+    "strict_utf8_files": 6,
+    "bom_count": 0,
+    "replacement_character_count": 0,
+    "authority_hash_matches": 6,
+    "authority_hash_mismatches": 0,
+    "rah_generation_payload_hash_matches": 6,
+    "rah_generation_payload_hash_mismatches": 0,
+    "git_diff_check": "PASS",
+    "root_projection_identity": "PASS"
+  },
+  "evidence_artifacts": [
+    "artifacts/work_packages/T01/report.json",
+    "artifacts/work_packages/T01/commands.jsonl",
+    "artifacts/work_packages/T01/review.md",
+    "artifacts/work_packages/T01/attempts/0001/shared-contract-gap-verification.json",
+    "artifacts/work_packages/T01/attempts/0001/dependency-status.json",
+    "artifacts/work_packages/T01/attempts/0001/rah-core-integrity.json"
+  ],
+  "next_state": {
+    "T01": "WAITING_ON_PRODUCT_OWNER_DECISION_T01_SG001",
+    "T02": "WAITING_ON_T01",
+    "T03": "WAITING_ON_T01",
+    "independent_ready_candidate_preserved": "A06",
+    "completion_ready": false
+  }
+}

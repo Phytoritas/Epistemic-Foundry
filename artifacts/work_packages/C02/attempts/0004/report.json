@@ -1,0 +1,430 @@
+{
+  "attempt_id": "C02-0004",
+  "attempt_type": "GENERATED_CONTRACT_PROJECTION_127",
+  "canonical_contract": {
+    "example_bundle_sha256": "sha256:6a3847eb8b95e23c8166a8889b1723c260c0fe9c63cc17c06bf010c1c6c538c2",
+    "example_count": 127,
+    "schema_bundle_sha256": "sha256:907570a9fe2a346c0c8f1795362bd64ad1521388065935089333224751c44000",
+    "schema_count": 127,
+    "schema_example_one_to_one": true,
+    "status": "PASS"
+  },
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "C02-0004",
+    "dependencies": {
+      "C01": {
+        "attempt_id": "C01-0009",
+        "receipt_hash": "sha256:e81903ff8f4fd44c902b7caab028623758a80be90f0175552932be6894c27703",
+        "report_sha256": "sha256:48797e915d6a9916bd56710b4b85b65e6cbcd5b6733eb0c9244f0f06162577ed",
+        "status": "PASS"
+      }
+    },
+    "next_state": {
+      "B04-0009": "DEPENDENCY_READY",
+      "B04-final": "WAITING_ON_C04_0004",
+      "C02-0004": "PASS",
+      "C04-0004": "WAITING_ON_O02_0002_AND_FRESH_PROJECTION",
+      "O02-0002": "WAITING_ON_B04_0009"
+    },
+    "status": "PASS"
+  },
+  "generated_projection": {
+    "codegen_clean_diff": "PASS",
+    "cross_language_fixture_parity": "PASS",
+    "generated_artifact_hashes": {
+      "packages/contracts/src/generated/contract-manifest.json": "sha256:5208eb39b70ab43cd099ee867fa391fc2c218c559302e68a682b1558f6d94ce3",
+      "packages/contracts/src/generated/models.d.ts": "sha256:36991360e707daa9926bee89fc4b764f74f5925340b133c2fabdf7e537b7e73d",
+      "packages/contracts/src/generated/registry.mjs": "sha256:df0e395f9f74e5faf18f7d0dd87172694c31e76489dd54b228f3e693ecfee0a4",
+      "python/epistemic_foundry/contracts/__init__.py": "sha256:29a58cf958579f9a2165222059603ea1c4898d85379473b00872ce237dd92095",
+      "python/epistemic_foundry/contracts/contract-manifest.json": "sha256:5208eb39b70ab43cd099ee867fa391fc2c218c559302e68a682b1558f6d94ce3",
+      "python/epistemic_foundry/contracts/models.py": "sha256:3f4207c2c45f7eb10164c570e2a7abd188b513611c0c7fa139cdb4045b59ab7e",
+      "python/epistemic_foundry/contracts/py.typed": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "web/src/generated/contract-manifest.json": "sha256:5208eb39b70ab43cd099ee867fa391fc2c218c559302e68a682b1558f6d94ce3",
+      "web/src/generated/contracts.ts": "sha256:97c132d169c5385d2af2efc73f0a82683219187ffce7351e15ebcdeb5aa59864"
+    },
+    "generated_file_count": 9,
+    "manifest_parity": "PASS",
+    "python_model_count": 127,
+    "repaired_stale_file_count": 7,
+    "repaired_stale_files": [
+      "packages/contracts/src/generated/contract-manifest.json",
+      "packages/contracts/src/generated/models.d.ts",
+      "packages/contracts/src/generated/registry.mjs",
+      "python/epistemic_foundry/contracts/contract-manifest.json",
+      "python/epistemic_foundry/contracts/models.py",
+      "web/src/generated/contract-manifest.json",
+      "web/src/generated/contracts.ts"
+    ],
+    "status": "PASS",
+    "typescript_5_9_3_strict_nodenext": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "C01_0009_preserved": true,
+    "C02_0001_through_C02_0003_preserved": true,
+    "dirty_worktree_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_package": "B04-0009",
+  "not_claimed": [
+    "B04-0009 canonical projection freshness",
+    "O02-0002 PASS",
+    "C04-0004 conformance",
+    "final packaging or release readiness",
+    "repository-wide green status",
+    "actor-independent certification",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 2910,
+      "path": "artifacts/work_packages/C02/attempts/0004/c02-contract-codegen-verification.json",
+      "sha256": "sha256:d0308b341c57aaf59e3632b4f806b5652fbc31e0d1b4254a16743efaef72614a"
+    },
+    {
+      "byte_size": 11690,
+      "path": "artifacts/work_packages/C02/attempts/0004/full-regression-impact.json",
+      "sha256": "sha256:07d9408ef392657a5972b63b898314c861fe273de20253db491bb0650472fb75"
+    },
+    {
+      "byte_size": 540,
+      "path": "artifacts/work_packages/C02/attempts/0004/preexisting-debt-reconciliation.json",
+      "sha256": "sha256:89901ff096c1e89270daa8ec92903e6639c2a6cbc15360f5745fb7b73f962be2"
+    },
+    {
+      "byte_size": 566,
+      "path": "artifacts/work_packages/C02/attempts/0004/dependency-status.json",
+      "sha256": "sha256:959565cdacb20710c1f09c535194a3d23816fddceda72eae8c5e3b28265baefa"
+    },
+    {
+      "byte_size": 1075,
+      "path": "artifacts/work_packages/C02/attempts/0004/write-scope-verification.json",
+      "sha256": "sha256:23412a4aa02d37425bd031a4e0b01c33d6ca22cbfacc23070081670fdab0c27d"
+    },
+    {
+      "byte_size": 1515,
+      "path": "artifacts/work_packages/C02/attempts/0004/junit-normalization-verification.json",
+      "sha256": "sha256:2bc4763c0b1757a035a23a774053681f70331dcc68660465783c0cf527d24bae"
+    },
+    {
+      "byte_size": 1306,
+      "path": "artifacts/work_packages/C02/attempts/0004/c02-verification.artifact-receipt.json",
+      "sha256": "sha256:c40e90a24cc9e38ed5d8237d3931ef67aabaad904ce248a3e875842fef0eb951"
+    },
+    {
+      "byte_size": 166803,
+      "path": "artifacts/work_packages/C02/attempts/0004/full-python-regression.junit.xml",
+      "sha256": "sha256:3208b8bba40e69d063a14735731739568b4615d235d28c775b12de7068c03656"
+    },
+    {
+      "byte_size": 159576,
+      "path": "artifacts/work_packages/C02/attempts/0004/full-node-regression.junit.xml",
+      "sha256": "sha256:04d9486f7ebfce0cfd62c9e9d2955e8a2d31ddaef970e581aa59cff9b3251de1"
+    },
+    {
+      "byte_size": 3175,
+      "path": "artifacts/work_packages/C02/attempts/0004/commands.jsonl",
+      "sha256": "sha256:e88698c39bad7a0d4dd172becb18f45890d5f663d91292e14875545035c23b69"
+    },
+    {
+      "byte_size": 1782,
+      "path": "artifacts/work_packages/C02/attempts/0004/review.md",
+      "sha256": "sha256:cb3f576f81fe772a6ba509ebbe6b5456a535a0f5d6f430ba87ca5822d3ea4932"
+    },
+    {
+      "byte_size": 37268,
+      "path": "artifacts/work_packages/C02/attempts/0004/build_c02_0004_evidence.py",
+      "sha256": "sha256:031db43c66a225d1188812737787b5d03a4e73c0a26bcf703f8226cfe388b9a6"
+    },
+    {
+      "byte_size": 19705,
+      "path": "artifacts/work_packages/C02/attempts/0004/c02_0004_rah_seal.py",
+      "sha256": "sha256:fcd88e893441f07f8651dd1526e779a3844fe89a841743d5acf495393ce79ea1"
+    },
+    {
+      "byte_size": 547,
+      "path": "artifacts/work_packages/C02/attempts/0004/rah-core-integrity.json",
+      "sha256": "sha256:835a4e8888073305e6e3313754f7ae0cff123a1e2261f12e89a57501cfc8618b"
+    }
+  ],
+  "package_status": "PASS",
+  "preexisting_debt": {
+    "attempt_id": "C02-0004",
+    "c02_owned_failure_count": 0,
+    "debts": [
+      {
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "debt_id": "B04-0009-CANONICAL-PROJECTION-COUNT",
+        "exact_failure_record_match": true,
+        "failure_count": 17,
+        "multiplicity_preserved": true,
+        "order_independent_comparison": true,
+        "owner": "B04",
+        "resolving_attempt": "B04-0009"
+      }
+    ],
+    "repository_fully_green": false,
+    "skip_or_xfail_used": false,
+    "status": "AUTHORIZED_DOWNSTREAM_DEBT_RECONCILED"
+  },
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0101",
+    "core_generation": "000099-1eba1cca",
+    "final_closeout_evidence_id": "E0102",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 594,
+    "implementation_gate": "fail",
+    "retained_generation_count": 99,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "C02-0004",
+    "baseline_attempt": "C01-0009",
+    "full_node": {
+      "cancelled": 0,
+      "collected": 819,
+      "failed": 0,
+      "junit": "artifacts/work_packages/C02/attempts/0004/full-node-regression.junit.xml",
+      "junit_sha256": "sha256:04d9486f7ebfce0cfd62c9e9d2955e8a2d31ddaef970e581aa59cff9b3251de1",
+      "passed": 819,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 814
+    },
+    "full_python": {
+      "collected": 1073,
+      "errors": 0,
+      "failed": 17,
+      "junit": "artifacts/work_packages/C02/attempts/0004/full-python-regression.junit.xml",
+      "junit_sha256": "sha256:3208b8bba40e69d063a14735731739568b4615d235d28c775b12de7068c03656",
+      "passed": 1056,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1073
+    },
+    "new_c02_failure_count": 0,
+    "python_failures": [
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_source_projection_is_current_and_complete",
+        "normalized_failure_fingerprint": "sha256:f37f494118405f9da3b58cdc326d112c09b84e75047e0eb5e8c1506744e51a15",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_registry_v2_binds_source_snapshot_paths_and_projection_tool",
+        "normalized_failure_fingerprint": "sha256:6bc2fac8ddd1f7545d51ea86dc25d740829e794f773d5b804d726a368df0b1a3",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_runtime_accepts_registry_v2_external_projection",
+        "normalized_failure_fingerprint": "sha256:254c283595e4111d8d967e88703c7dd7b5f9dbc817bd3ef1891d9d8869c08825",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_materialization_is_deterministic",
+        "normalized_failure_fingerprint": "sha256:bf8ec63f0c73dc97eefffc0bd3957fbcefbc20da83d55c0e05b9942fbb67b0df",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_materialize_atomically_replaces_complete_existing_projection",
+        "normalized_failure_fingerprint": "sha256:79c4d82a141438b561d0cbf75a4992023d04dff4ed0422300fe3ba976cae3fee",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_second_rename_failure_restores_old_tree",
+        "normalized_failure_fingerprint": "sha256:9dc8d10634aedf556b801a21ee443f1ee825b190ef3b0ec6728b58d0d0980617",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_source_mutation_before_swap_fails_without_live_change",
+        "normalized_failure_fingerprint": "sha256:97cc0079cb0b7cf735e8dc8102809e9c718675156447e9d7eca7ee01a094eb38",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_source_mutation_after_swap_rolls_back_old_tree",
+        "normalized_failure_fingerprint": "sha256:5b6f8ca8b6a24ac8bc9f4b6cd06ffeaebe8b718dcf5c4d1b1228949509ccff23",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_materialize_preserves_unrelated_empty_directory",
+        "normalized_failure_fingerprint": "sha256:b87b96c16e4964d0db15358042298fdc8561387eab8af7db8c36b81b53917573",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_missing_packaged_resource_fails_closed",
+        "normalized_failure_fingerprint": "sha256:0f6390dddbdaca8d0dbbbc61752eb98e0fed7011ce02742bca84926817a00e4c",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_one_byte_tamper_fails_closed",
+        "normalized_failure_fingerprint": "sha256:39e8ffbaa995b566cd3b65bd63d93826182c0a75fe630c2f8b3570aeac9034c4",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_duplicate_document_id_fails_closed",
+        "normalized_failure_fingerprint": "sha256:439a57e659fd1f5eaf796d7d863839c90a50ca74df58e9e7efc611cef45763f2",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_registry_v2_binding_tamper_fails_closed[projected_snapshot_bundle_hash-sha256:0000000000000000000000000000000000000000000000000000000000000000]",
+        "normalized_failure_fingerprint": "sha256:5668fdb7b2c3e334999b3c13d57f9dbc77f35b71f1bd4b38ca34aac885111243",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_registry_v2_binding_tamper_fails_closed[projection_tool_identity-unapproved.projector]",
+        "normalized_failure_fingerprint": "sha256:aa6eb5a3a875d3680d6474f3d9d8993b3a409ff3d6554926a5b1b629b31627f9",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_registry_v2_binding_tamper_fails_closed[projection_tool_version-999.0.0]",
+        "normalized_failure_fingerprint": "sha256:bad821c97eb624cdac1abc4519cd9505d14ffe07b2702ce7c68a91e46edf3095",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_registry_v2_binding_tamper_fails_closed[source_revision-sha256:0000000000000000000000000000000000000000000000000000000000000000]",
+        "normalized_failure_fingerprint": "sha256:a6f07f415f832ad5fd6df06ea960df930e7b38c7fad25dc1ef25dda87689ee01",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      },
+      {
+        "affected_runtime_path": "scripts/build/canonical_registry/materialize.py",
+        "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+        "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+        "node_id": "tests.packaging.test_canonical_registry::test_unregistered_extra_resource_fails_closed",
+        "normalized_failure_fingerprint": "sha256:792b53c16972ce8a89ecfdfd50550597927897706e40ad8944f6d929e5d09d13",
+        "owner": "B04",
+        "problem_type": "",
+        "resolving_attempt": "B04-0009"
+      }
+    ],
+    "python_projection_debt_failure_count": 17,
+    "status": "PASS_WITH_AUTHORIZED_B04_0009_PROJECTION_DEBT",
+    "unexpected_skip_xfail_todo_or_cancellation_count": 0
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_c02_owned_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "C02",
+  "write_scope": {
+    "approved_scope": [
+      "packages/contracts/**",
+      "python/epistemic_foundry/contracts/**",
+      "web/src/generated/**",
+      "artifacts/work_packages/C02/** (manifest evidence)"
+    ],
+    "attempt_id": "C02-0004",
+    "canonical_schema_or_example_change_count": 0,
+    "derived_package_snapshot_change_count": 0,
+    "dirty_worktree_preserved": true,
+    "generated_outputs_changed_only_by_generator": true,
+    "product_change_count": 8,
+    "product_files_modified_by_attempt": [
+      "packages/contracts/codegen/verify.py",
+      "packages/contracts/src/generated/contract-manifest.json",
+      "packages/contracts/src/generated/models.d.ts",
+      "packages/contracts/src/generated/registry.mjs",
+      "python/epistemic_foundry/contracts/contract-manifest.json",
+      "python/epistemic_foundry/contracts/models.py",
+      "web/src/generated/contract-manifest.json",
+      "web/src/generated/contracts.ts"
+    ],
+    "reset_clean_stash_commit_push_performed": false,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

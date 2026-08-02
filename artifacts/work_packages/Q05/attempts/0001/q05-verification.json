@@ -1,0 +1,68 @@
+{
+  "attempt_id": "Q05-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every admit or refuse decision resolves to a receipt whose gate_id and receipt_hash are pure sha256 functions of the decision's own published content: the caller supplies created_at and there is no clock or random draw, so replaying derive_selective_admissibility over the same inputs reproduces the receipt byte for byte, and a refusal carries the same immutable receipt on the raised SelectiveAdmissibilityRefused",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the passing hard-gate token is read from the canonical fitness-vector schema's own status ladder via hard_gate_pass_token() rather than restated (EF4-I22); the gate module holds zero canonical enum literal (asserted by the schema-and-type suite); every fitness vector is validated against the canonical fitness-vector schema and every evaluator bundle, holdout manifest and statistical record is sealed and self-hash-verified through its owning surface; and each of the fourteen FINDING_CODES names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the refusals carry the weight: a scalar or dimensionless fitness, a schema-breaking vector, a failed hard gate, a score claiming promotion authority, a candidate-identity mismatch across artifacts, a candidate-readable or drifted evaluator firewall, an unapproved or unauthorized hidden-result disclosure, a candidate-generating role driving the decision, leaked evaluator feedback touching a bound holdout, a tampered statistical record, an uncorrected adaptive selection, a misbound selective accounting, and a selective verdict that does not clear are each refused; the happy path and both replay checks still reproduce deterministically",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; the gate decides admissibility to promotion review only and holds no promotion authority, may_promote_on_score is composed and required to remain False so a scalar can never acquire promotion authority, a candidate-generating role driving the decision is refused, the hidden evaluation stays sealed and the receipt binds it by hash so disclosure requires both an unblinding approval and holdout-read authority, and leaked evaluator feedback invalidates the comparison rather than being laundered into a score",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "composes": "evaluation.fitness (the multi-objective fitness vector and its may_promote_on_score guarantee), verifier_firewall.firewall (the sealed evaluator bundle and holdout), and statistics.search_record plus statistics.selective (the corrected adaptive-selection accounting)",
+    "decides": "admissibility to be forwarded to promotion review, and nothing more; it holds no promotion authority",
+    "produces": "an immutable, re-derivable selective-inference admissibility receipt; no score, selection or promotion",
+    "refusals_are_by_code": true,
+    "trusts_asserted_score": false
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent dispatched in parallel; reviewer: this sealing session as an independent, actor-independent reviewer distinct from the implementer; verdict PASS, blocking_finding_count=0; external actor-independent certification does not hold)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 17
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 7
+    }
+  },
+  "schema_binding": {
+    "adaptive_selection": "statistics.search_record completeness and record-hash re-derivation plus statistics.selective's verdict, re-checked and cross-bound between the record and the report it summarizes, never trusted",
+    "decision_tokens": "ADMIT and REFUSE are the gate's own vocabulary, verified absent from every canonical schema enum by the wire-literal suite",
+    "fitness": "canonical fitness-vector schema; the passing hard-gate token is read from its status ladder via hard_gate_pass_token() and the vector is validated field by field, never restated",
+    "hidden_evaluation": "verifier-firewall evaluator bundle and holdout manifest, sealed and self-hash-verified through VerifierFirewall (composed, not re-derived); the receipt binds them by hash only"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_c05": 132,
+    "dependency_regression_o05": 91,
+    "dependency_regression_q04": 91,
+    "full_node_suite": 1192,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 17,
+    "provenance_and_receipt_audit": 9,
+    "schema_and_type_check": 7,
+    "unit_and_contract_tests": 7
+  }
+}

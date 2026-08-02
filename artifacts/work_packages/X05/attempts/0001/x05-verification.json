@@ -1,0 +1,65 @@
+{
+  "attempt_id": "X05-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every decision carries a content-derived receipt id and a self-covering hash with no clock or random draw, so two runs over equal inputs produce byte-equal receipts, and the routed fan-in resolves to the sealed N05 schedule verdict",
+      "status": "PASS"
+    },
+    "all_governing_schemas_authority_boundaries_and_failure_states_exact": {
+      "mechanism": "the routing-policy, reward-basis and bandit-policy ladders are read positionally from the schemas that declare them and the field names are discovered rather than restated (EF4-I22); the model-routing-receipt and operator-bandit-state artifacts are validated against their canonical schemas; and each FINDING_CODE names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_and_adversarial_coverage": {
+      "mechanism": "the happy compositions replay byte for byte and every declared FINDING_CODE is provoked: a provider outside the eligible set, a fallback that rewrites a verdict, a reward on the gameable proxy, a reward routed at a promotion, a safety failure beside a high proxy, and an external backend reaching for authority are each refused by exact code; crash/resume maps to replay determinism for this pure surface",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects or promotes; a bandit reward is refused outright when routed at a promotion (EF4-I45), is drawn only from a validated basis never the immediate proxy (EF4-I54) and only behind an applied statistical correction (EF4-I53); a provider that alters a canonical result field is refused (EF4-I34); and an external backend binding a field onto a Foundry authority surface is refused (EF4-I63)",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent; reviewer: the sealing session, actor-independent from the author; external actor-independent certification does not hold; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 20
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 8
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 11
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 12
+    }
+  },
+  "routing_semantics": {
+    "eligible_set_source": "X04 cross-provider parity-approved eligible set",
+    "produces": "content-addressed routing/fallback/reward receipts and a sealed bandit state; no score, selection or promotion",
+    "refusals_are_by_code": true,
+    "reward_bases_validated": "validated basis only, never the immediate proxy",
+    "safe_bandit_policy_source": "evaluation/bandits.py SAFE_POLICIES cross-check"
+  },
+  "schema_binding": {
+    "backend_boundary": "T05 adapter require_no_imported_authority via epistemic_foundry.adapters.v4_t05",
+    "bandit_state": "operator-bandit-state canonical schema via evaluation.bandits",
+    "fan_in_gate": "N05 schedule verify/seal via epistemic_foundry.scheduler.v4_n05",
+    "routing_receipt": "model-routing-receipt canonical schema (validated per call)"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1253,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 20,
+    "provenance_and_receipt_audit": 8,
+    "schema_and_type_check": 11,
+    "unit_and_contract_tests": 12
+  }
+}

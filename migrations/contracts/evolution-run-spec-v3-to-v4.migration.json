@@ -1,0 +1,42 @@
+{
+  "migration_contract_id": "EF-C03-EVOLUTION-RUN-SPEC-V3-TO-V4",
+  "contract_version": 1,
+  "change_class": "BREAKING",
+  "source_contract": {
+    "artifact_kind": "EvolutionRunSpec",
+    "schema_version": "3.0.0",
+    "resolved_refs_required": false
+  },
+  "target_contract": {
+    "artifact_kind": "EvolutionRunSpec",
+    "schema_version": "4.0.0",
+    "resolved_refs_required": true,
+    "resolved_refs_non_empty": true,
+    "floating_refs_forbidden": true
+  },
+  "forward_transform": {
+    "entry_point": "epistemic_foundry.evolution_chamber.run_spec:migrate_legacy_evolution_run_spec",
+    "discovery_forbidden": true,
+    "requires_distinct_target_evolution_run_id": true,
+    "requires_immutable_resolution_evidence": true,
+    "failure_code": "LEGACY_RUN_SPEC_RESOLUTION_REQUIRED"
+  },
+  "rollback": {
+    "entry_point": "epistemic_foundry.evolution_chamber.run_spec:rollback_legacy_evolution_run_spec",
+    "mode": "EXACT_SOURCE_PAYLOAD",
+    "requires_source_artifact_hash_match": true,
+    "deletes_migration_history": false
+  },
+  "backfill": {
+    "dry_run_required": true,
+    "write_requires_all_refs_resolved": true,
+    "partial_batch_commit_forbidden": true,
+    "preserve_source_artifact": true,
+    "emit_migration_record_per_artifact": true
+  },
+  "fixtures": {
+    "source": "migrations/contracts/fixtures/evolution-run-spec-v3.json",
+    "resolution": "migrations/contracts/fixtures/evolution-run-spec-resolution.json",
+    "migration_record": "migrations/contracts/fixtures/evolution-run-spec-migration-record.json"
+  }
+}

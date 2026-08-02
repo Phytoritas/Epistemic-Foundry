@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "calculated_at_utc": "2026-07-27T21:54:00Z",
+  "manifest_path": "manifests/development_manifest.yaml",
+  "manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+  "authority_decision_id": "HD-EF4-C01-SG003-20260728-001",
+  "fixed_execution_order": [
+    "C01-0004",
+    "C02",
+    "C03",
+    "C04",
+    "B04",
+    "FULL_156_PACKAGE_DAG_RECOMPUTATION"
+  ],
+  "packages": {
+    "A04": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/A04/report.json",
+      "report_sha256": "f34f72c561a6eb1696a524c1910d83a338847536e3c497c5d3038e7a1d2855ab"
+    },
+    "A05": {
+      "status": "PASS",
+      "attempt": "A05-0002",
+      "report": "artifacts/work_packages/A05/attempts/0002/report.json",
+      "report_sha256": "c9c550de22f55d32898f0d33489bc9b0480de6eef4bca7baeb09fcf047c6062c"
+    },
+    "B02": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/B02/report.json",
+      "report_sha256": "98abe689dbfb9399d2f50f87a18376ca9a85ed4a50c938513778e312e3e67dad"
+    },
+    "B03": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/B03/report.json",
+      "report_sha256": "baa07e997402a290f2602cea39a78a1acdeeb69dd7ea8c89331c84e78976338f"
+    },
+    "C01": {
+      "status": "PASS",
+      "attempt": "C01-0004",
+      "package_status": "PASS",
+      "contract_status": "CONFORMANT",
+      "runtime_migration_status": "PENDING_C03",
+      "full_suite_status": "EXPECTED_FAILURES_PENDING_C03",
+      "expected_failure_count": 24,
+      "report": "artifacts/work_packages/C01/attempts/0004/report.json",
+      "report_sha256": "424f40396e93bd6826bf5ad85c3580cac7bd4ea8171b93f24816bc6a78c4a5d6",
+      "verification": "artifacts/work_packages/C01/attempts/0004/c01-contract-verification.json",
+      "verification_sha256": "c60a154ff342a802de5f8333b3cbad8bdfdc4c15a4f6c735a51c47e0ef7abc64"
+    },
+    "C02": {
+      "status": "PASS",
+      "attempt": "C02-0001",
+      "generated_contract_status": "CONFORMANT",
+      "source_authority": "schemas/*.schema.json",
+      "schema_count": 124,
+      "example_count": 124,
+      "generated_file_count": 9,
+      "verification": "artifacts/work_packages/C02/c02-contract-codegen-verification.json",
+      "verification_sha256": "df55f11d6c3650868c67f73a1d67b0d586598bba10c4740888815255fbb516bf",
+      "rah_core_generation": "000007-1e720769",
+      "rah_core_evidence_id": "E0008",
+      "dependencies": {
+        "C01": "PASS"
+      }
+    },
+    "C03": {
+      "status": "READY",
+      "started": false,
+      "dependencies": {
+        "C01": "PASS",
+        "C02": "PASS"
+      },
+      "migration_debt_count": 24,
+      "next": true
+    },
+    "C04": {
+      "status": "WAITING_ON_C03",
+      "started": false,
+      "dependencies": {
+        "C02": "PASS",
+        "C03": "NOT_STARTED"
+      }
+    },
+    "B04": {
+      "status": "WAITING_ON_C04",
+      "started": false,
+      "dependencies": {
+        "B02": "PASS",
+        "B03": "PASS",
+        "C04": "NOT_STARTED"
+      },
+      "reason": "Packaging remains forbidden until C04 proves coherent canonical, generated, and handwritten runtime conformance."
+    }
+  },
+  "full_156_package_dag_recomputed": false,
+  "subsequent_dag_execution_started": false,
+  "completion_ready": false,
+  "next_action": {
+    "type": "EXECUTE_DEPENDENCY_READY_PACKAGE",
+    "package_id": "C03",
+    "constraint": "Resolve the exact 24 handwritten runtime migration failures within C03's five authorized runtime/test paths and migration/docs/artifact scopes; do not start C04 before C03 PASS or B04 before C04 PASS."
+  }
+}

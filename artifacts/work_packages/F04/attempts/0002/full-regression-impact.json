@@ -1,0 +1,130 @@
+{
+  "attempt_id": "F04-0002",
+  "canonical_example_debt": {
+    "attempt_id": "F04-0002",
+    "expected_decision_hash": "sha256:a6a50d4285e844b71093e999b5addccf969d09d4c14221a92531d73172369851",
+    "f04_acceptance_effect": "NONE",
+    "hidden_or_repaired_by_f04": false,
+    "must_be_reconciled_before_c04_full_conformance": true,
+    "owner": "C01_CANONICAL_CONTRACT",
+    "path": "examples/sample_gate_decision.json",
+    "schema_validation": "PASS",
+    "status": "PREEXISTING_CANONICAL_EXAMPLE_HASH_DEBT",
+    "stored_decision_hash": "sha256:816c793545f4c3a194ce6b4fa842856defbcb34d991f27277ea9cd2a082e4be1"
+  },
+  "full_node": {
+    "byte_size": 85675,
+    "classification": "EXPECTED_LATER_ATTEMPT_FAILURES",
+    "complete_test_file_count": 52,
+    "f04_causal_failure_count": 0,
+    "failure_owner_counts": {
+      "J02": 2,
+      "S04": 1
+    },
+    "failures": [
+      {
+        "body": "[Error [ERR_TEST_FAILURE]: EFREF-BACKEND-SHINKA-V4 authority source has changed] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: Error [SkillContextError]: EFREF-BACKEND-SHINKA-V4 authority source has changed\n      at failSkillContext (file:///workspace/packages/plugin-host/src/skill-context/errors.ts:49:9)\n      at verifyAuthoritySources (file:///workspace/packages/plugin-host/src/skill-context/loader.ts:218:7)\n      at async verifyInventoryFiles (file:///workspace/packages/plugin-host/src/skill-context/loader.ts:296:5)\n      at async TestContext.<anonymous> (file:///workspace/tests/node/j02-skill-context-loader.test.mjs:57:18)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    code: 'REFERENCE_AUTHORITY_STALE',\n    details: { source_path: 'MASTER_SPEC.md', expected: 'sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3', actual: 'sha256:d4854c916594610e0503f9b017c57b0dbac9f52eef78b825b922fdf26b1a0fe3' }\n  }\n}",
+        "file": "tests/node/j02-skill-context-loader.test.mjs",
+        "message": "EFREF-BACKEND-SHINKA-V4 authority source has changed",
+        "name": "loader verifies all sealed production files and authority pointers"
+      },
+      {
+        "body": "[Error [ERR_TEST_FAILURE]: EFREF-CORE-CONSTITUTION-V4 authority source has changed] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: Error [SkillContextError]: EFREF-CORE-CONSTITUTION-V4 authority source has changed\n      at failSkillContext (file:///workspace/packages/plugin-host/src/skill-context/errors.ts:49:9)\n      at verifyAuthoritySources (file:///workspace/packages/plugin-host/src/skill-context/loader.ts:218:7)\n      at async resolveSkillContext (file:///workspace/packages/plugin-host/src/skill-context/loader.ts:359:5)\n      at async TestContext.<anonymous> (file:///workspace/tests/node/j02-skill-context-loader.test.mjs:198:17)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    code: 'REFERENCE_AUTHORITY_STALE',\n    details: { source_path: 'MASTER_SPEC.md', expected: 'sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3', actual: 'sha256:d4854c916594610e0503f9b017c57b0dbac9f52eef78b825b922fdf26b1a0fe3' }\n  }\n}",
+        "file": "tests/node/j02-skill-context-loader.test.mjs",
+        "message": "EFREF-CORE-CONSTITUTION-V4 authority source has changed",
+        "name": "ResolvedSkillContext is identical across 100 repeated sealed loads"
+      },
+      {
+        "body": "[Error [ERR_TEST_FAILURE]: active manifest does not match the bound successor\n+ actual - expected\n\n+ '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n- '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'\n] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: AssertionError [ERR_ASSERTION]: active manifest does not match the bound successor\n  + actual - expected\n  \n  + '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n  - '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'\n  \n      at validateActiveManifestBinding (file:///workspace/tests/security/s04-threat-model-traceability.test.mjs:89:10)\n      at TestContext.<anonymous> (file:///workspace/tests/security/s04-threat-model-traceability.test.mjs:362:20)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12',\n    expected: '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n}",
+        "file": "tests/security/s04-threat-model-traceability.test.mjs",
+        "message": "active manifest does not match the bound successor\n+ actual - expected\n\n+ '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n- '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'",
+        "name": "S04-TM004 traceability source bindings fail on undocumented contract drift"
+      }
+    ],
+    "leaf_failure_count": 3,
+    "leaf_testcase_count": 457,
+    "path": "artifacts/work_packages/F04/attempts/0002/final-full-node-suite-complete.junit.xml",
+    "sha256": "sha256:d64dc7e1995c599352502fef06f1306bd9c7191e1439bf6dedf94cd2c92ce0b7",
+    "tap_totals": {
+      "cancelled": 0,
+      "fail": 3,
+      "pass": 457,
+      "skipped": 0,
+      "tests": 460,
+      "todo": 0
+    },
+    "test_file_count": 52
+  },
+  "full_python": {
+    "byte_size": 113934,
+    "classification": "EXPECTED_J02_0003_DEPENDENCY_DEBT",
+    "f04_causal_failure_count": 0,
+    "failure_owner": "J02",
+    "failures": [
+      {
+        "body": "pyproject.toml does not declare exact tiktoken==0.13.0\n\nDuring handling of the above exception, another exception occurred:\nTOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0",
+        "message": "Failed: TOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0",
+        "node_id": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin"
+      }
+    ],
+    "path": "artifacts/work_packages/F04/attempts/0002/final-full-python-suite.junit.xml",
+    "sha256": "sha256:c99e3c2c0f5be7dea1dabe5e18c4168995cecb0b3488a8e223d95edc0fa54ab6",
+    "totals": {
+      "errors": 0,
+      "failures": 1,
+      "skipped": 0,
+      "tests": 987
+    }
+  },
+  "new_f04_failure_count": 0,
+  "next_resolving_attempts": [
+    "J02-0003",
+    "S04-0003"
+  ],
+  "partial_node_diagnostic": {
+    "accepted_as_full_suite": false,
+    "byte_size": 80476,
+    "failures": [
+      {
+        "body": "[Error [ERR_TEST_FAILURE]: EFREF-BACKEND-SHINKA-V4 authority source has changed] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: Error [SkillContextError]: EFREF-BACKEND-SHINKA-V4 authority source has changed\n      at failSkillContext (file:///workspace/packages/plugin-host/src/skill-context/errors.ts:49:9)\n      at verifyAuthoritySources (file:///workspace/packages/plugin-host/src/skill-context/loader.ts:218:7)\n      at async verifyInventoryFiles (file:///workspace/packages/plugin-host/src/skill-context/loader.ts:296:5)\n      at async TestContext.<anonymous> (file:///workspace/tests/node/j02-skill-context-loader.test.mjs:57:18)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    code: 'REFERENCE_AUTHORITY_STALE',\n    details: { source_path: 'MASTER_SPEC.md', expected: 'sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3', actual: 'sha256:d4854c916594610e0503f9b017c57b0dbac9f52eef78b825b922fdf26b1a0fe3' }\n  }\n}",
+        "file": "tests/node/j02-skill-context-loader.test.mjs",
+        "message": "EFREF-BACKEND-SHINKA-V4 authority source has changed",
+        "name": "loader verifies all sealed production files and authority pointers"
+      },
+      {
+        "body": "[Error [ERR_TEST_FAILURE]: EFREF-CORE-CONSTITUTION-V4 authority source has changed] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: Error [SkillContextError]: EFREF-CORE-CONSTITUTION-V4 authority source has changed\n      at failSkillContext (file:///workspace/packages/plugin-host/src/skill-context/errors.ts:49:9)\n      at verifyAuthoritySources (file:///workspace/packages/plugin-host/src/skill-context/loader.ts:218:7)\n      at async resolveSkillContext (file:///workspace/packages/plugin-host/src/skill-context/loader.ts:359:5)\n      at async TestContext.<anonymous> (file:///workspace/tests/node/j02-skill-context-loader.test.mjs:198:17)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    code: 'REFERENCE_AUTHORITY_STALE',\n    details: { source_path: 'MASTER_SPEC.md', expected: 'sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3', actual: 'sha256:d4854c916594610e0503f9b017c57b0dbac9f52eef78b825b922fdf26b1a0fe3' }\n  }\n}",
+        "file": "tests/node/j02-skill-context-loader.test.mjs",
+        "message": "EFREF-CORE-CONSTITUTION-V4 authority source has changed",
+        "name": "ResolvedSkillContext is identical across 100 repeated sealed loads"
+      },
+      {
+        "body": "[Error [ERR_TEST_FAILURE]: active manifest does not match the bound successor\n+ actual - expected\n\n+ '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n- '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'\n] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: AssertionError [ERR_ASSERTION]: active manifest does not match the bound successor\n  + actual - expected\n  \n  + '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n  - '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'\n  \n      at validateActiveManifestBinding (file:///workspace/tests/security/s04-threat-model-traceability.test.mjs:89:10)\n      at TestContext.<anonymous> (file:///workspace/tests/security/s04-threat-model-traceability.test.mjs:362:20)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12',\n    expected: '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n}",
+        "file": "tests/security/s04-threat-model-traceability.test.mjs",
+        "message": "active manifest does not match the bound successor\n+ actual - expected\n\n+ '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n- '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'",
+        "name": "S04-TM004 traceability source bindings fail on undocumented contract drift"
+      }
+    ],
+    "leaf_failure_count": 3,
+    "leaf_testcase_count": 425,
+    "missing_leaf_tests": 32,
+    "missing_test_files": [
+      "web/src/features/intake/frame-roundtrip.test.mjs",
+      "web/src/features/intake/intake-ui.test.mjs"
+    ],
+    "path": "artifacts/work_packages/F04/attempts/0002/final-full-node-suite.junit.xml",
+    "sha256": "sha256:ee85dbb6a9ede475007f3ec39423de4bfe9051b11fd99919655b206559c4e220",
+    "tap_totals": {
+      "cancelled": 0,
+      "fail": 3,
+      "pass": 425,
+      "skipped": 0,
+      "tests": 428,
+      "todo": 0
+    },
+    "test_file_count": 50
+  },
+  "repository_fully_green": false,
+  "status": "PASS_WITH_DECLARED_J02_AND_S04_DEBT",
+  "unexpected_failure_count": 0,
+  "unexpected_skip_or_xfail_count": 0
+}

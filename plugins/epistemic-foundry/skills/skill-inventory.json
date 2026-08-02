@@ -1,0 +1,1119 @@
+{
+  "inventory_id": "EF-SKILL-INVENTORY-V4-J02-0002",
+  "inventory_version": "4.0.1-j02.1",
+  "inventory_hash": "sha256:3fe69222a3dea1ffc30b754d32ca533c50bf6eaa7738d019ba406ee98ea13a5f",
+  "parent_skill_id": "foundry",
+  "tokenizer": {
+    "package": "tiktoken",
+    "version": "0.13.0",
+    "encoding": "o200k_base",
+    "disallowed_special": [],
+    "dependency_artifact": {
+      "artifact_kind": "sdist",
+      "filename": "tiktoken-0.13.0.tar.gz",
+      "sha256": "sha256:c9435714c3a84c2319499de9a300c0e604449dd0799ff246458b3bb6a7f433c1",
+      "source_url": "https://files.pythonhosted.org/packages/source/t/tiktoken/tiktoken-0.13.0.tar.gz"
+    }
+  },
+  "budgets": {
+    "initial_metadata_max_utf8_bytes": 6400,
+    "initial_metadata_max_o200k_tokens": 1600,
+    "skill_body_max_utf8_bytes": 4096,
+    "skill_body_max_o200k_tokens": 1024,
+    "reference_file_max_utf8_bytes": 4096,
+    "reference_file_max_o200k_tokens": 1024,
+    "reference_closure_max_count": 12,
+    "reference_closure_max_depth": 5,
+    "reference_closure_max_utf8_bytes": 24576,
+    "reference_closure_max_o200k_tokens": 6144,
+    "activation_max_utf8_bytes": 28672,
+    "activation_max_o200k_tokens": 7168
+  },
+  "metadata_projection": {
+    "sha256": "sha256:f7d347b3e64d3d079fd3deaf07a02da95a8dabd4ccf212a6710973ade33dea17",
+    "byte_count": 4767,
+    "token_count": 1112
+  },
+  "skills": [
+    {
+      "skill_id": "foundry",
+      "name": "foundry",
+      "description": "Route research and evidence-synthesis requests. Use for claim validation; do not use for ordinary editing or casual questions.",
+      "path": "skills/foundry/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "PARENT_ROUTER",
+      "allow_implicit_invocation": true,
+      "sha256": "sha256:307998d6997fdf1932b0a9ec3e8ef424db87b3247a7c53b96d51f293b0ccc4d9",
+      "byte_count": 1670,
+      "token_count": 322,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-ROUTER-E0-E5-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": [
+        "foundry-admin",
+        "foundry-aporia",
+        "foundry-archive",
+        "foundry-atlas",
+        "foundry-challenge",
+        "foundry-claim-forge",
+        "foundry-domain-pack",
+        "foundry-evaluator-audit",
+        "foundry-evolution-replay",
+        "foundry-evolution-stop",
+        "foundry-evolve",
+        "foundry-evolve-convert",
+        "foundry-evolve-inspect",
+        "foundry-evolve-run",
+        "foundry-evolve-setup",
+        "foundry-intake",
+        "foundry-map",
+        "foundry-observe",
+        "foundry-parliament",
+        "foundry-passport",
+        "foundry-plugin-dev",
+        "foundry-promote-evolved",
+        "foundry-reason",
+        "foundry-recall",
+        "foundry-replay",
+        "foundry-replicate",
+        "foundry-shinka-adapter",
+        "foundry-validation"
+      ]
+    },
+    {
+      "skill_id": "foundry-admin",
+      "name": "foundry-admin",
+      "description": "Explicit-only administration for health, policy, consent, backup, migration, rollback, signing, and recovery.",
+      "path": "skills/foundry-admin/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:9568fb2cbbe4c0c57d88aad142cadfc6f9576441fee4ce985e98f2962e7f1513",
+      "byte_count": 498,
+      "token_count": 103,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-CORE-STATUS-RECEIPTS-V4",
+        "EFREF-PLUGIN-SECURITY-ADMIN-V4",
+        "EFREF-PLUGIN-DEVELOPMENT-RELEASE-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-aporia",
+      "name": "foundry-aporia",
+      "description": "Turn contradictions into competing mechanisms, moderators, and discriminating tests without forcing one explanation.",
+      "path": "skills/foundry-aporia/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "IMPLICIT_SAFE",
+      "allow_implicit_invocation": true,
+      "sha256": "sha256:bd3431ef71616c8d8db7cd1ec55abf3adb8c4d6bfc849bddbda8f37d7eb7c383",
+      "byte_count": 498,
+      "token_count": 95,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4",
+        "EFREF-REASONING-TYPED-MODES-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-archive",
+      "name": "foundry-archive",
+      "description": "Inspect or rebalance the quality-diversity archive while preserving negative, unsafe, failed, and minority lineages.",
+      "path": "skills/foundry-archive/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "PARENT_ROUTED",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:393a20cee1cd9a557f3db3401b3dc479d054396de6ca5c57174d4d3edf44e975",
+      "byte_count": 484,
+      "token_count": 103,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVOLUTION-RUN-GENOMES-V4",
+        "EFREF-EVOLUTION-ARCHIVE-REDQUEEN-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-atlas",
+      "name": "foundry-atlas",
+      "description": "Map evidence coverage, contradictions, dependencies, method compatibility, and searched or unsearched gaps.",
+      "path": "skills/foundry-atlas/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "IMPLICIT_SAFE",
+      "allow_implicit_invocation": true,
+      "sha256": "sha256:ad479d73cd57504aaba2d1e1b43a96bc369566d721c3688875aed9210d2e1735",
+      "byte_count": 446,
+      "token_count": 94,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVIDENCE-CLAIM-SEARCH-V4",
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-challenge",
+      "name": "foundry-challenge",
+      "description": "Generate, run, replicate, and archive safe Red Queen challenges for hypotheses or evaluators.",
+      "path": "skills/foundry-challenge/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "PARENT_ROUTED",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:0e8b786d2b9e05b1fb7588bcbd471ec5d80fbfae1f9672b133e56c87219af77b",
+      "byte_count": 486,
+      "token_count": 102,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVOLUTION-VERIFIER-STATISTICS-V4",
+        "EFREF-EVOLUTION-ARCHIVE-REDQUEEN-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-claim-forge",
+      "name": "foundry-claim-forge",
+      "description": "Extract atomic source-span ClaimCards with scope, method, stance, quantitative context, and provenance.",
+      "path": "skills/foundry-claim-forge/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "IMPLICIT_SAFE",
+      "allow_implicit_invocation": true,
+      "sha256": "sha256:ce8c523a1acd509ee7753d6c852598d6e6526a03ea815ee1b767f2a45d73c65a",
+      "byte_count": 470,
+      "token_count": 98,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVIDENCE-CLAIM-SEARCH-V4",
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-domain-pack",
+      "name": "foundry-domain-pack",
+      "description": "Author a versioned DomainPack for ontology, measurement, methods, evidence hierarchy, coverage, and contradiction rules.",
+      "path": "skills/foundry-domain-pack/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:3d2456905dc313c0c0c92c8b3e6dd2fc9864b57a98b42ddae6bb538f75fe2b91",
+      "byte_count": 498,
+      "token_count": 100,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4",
+        "EFREF-EXTENSIONS-MAP-DOMAINPACK-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-evaluator-audit",
+      "name": "foundry-evaluator-audit",
+      "description": "Qualify an evaluator bundle as a fallible scientific instrument before scoring or after a defect proposal.",
+      "path": "skills/foundry-evaluator-audit/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "PARENT_ROUTED",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:79b1701a5945df4a060644cecca4a2fcb304585a95a03b4c8e636cd520d4e053",
+      "byte_count": 552,
+      "token_count": 113,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-VALIDATION-REPLICATION-V4",
+        "EFREF-EVOLUTION-VERIFIER-STATISTICS-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-evolution-replay",
+      "name": "foundry-evolution-replay",
+      "description": "Replay an evolution cycle or lineage from a checkpoint under strict, semantic, or provider-nondeterministic equivalence.",
+      "path": "skills/foundry-evolution-replay/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:c98a116d675c59ecfe826d53fa3f879aaf42d3c965301d62bbbc9e17cc4c437b",
+      "byte_count": 533,
+      "token_count": 116,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVOLUTION-RUN-GENOMES-V4",
+        "EFREF-CONTEXT-MEMORY-REPLAY-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-evolution-stop",
+      "name": "foundry-evolution-stop",
+      "description": "Stop, pause, or cancel evolution safely with a typed stop certificate and atomic checkpoint.",
+      "path": "skills/foundry-evolution-stop/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:fc0ba7646923333803ad318f7be9964a1552fc4f90c7a797aa7ed045526ce7bf",
+      "byte_count": 509,
+      "token_count": 108,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-CORE-STATUS-RECEIPTS-V4",
+        "EFREF-EVOLUTION-RUN-GENOMES-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-evolve",
+      "name": "foundry-evolve",
+      "description": "Route a falsifiable research problem into governed EVOLVE search; not for a single lookup.",
+      "path": "skills/foundry-evolve/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "PARENT_ROUTED",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:d435236f9057af36c52b37f2e9545e6f50d6a4a7f323b43c2da70893b3aafdb5",
+      "byte_count": 531,
+      "token_count": 111,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-ROUTER-E0-E5-V4",
+        "EFREF-EVOLUTION-RUN-GENOMES-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-evolve-convert",
+      "name": "foundry-evolve-convert",
+      "description": "Convert a hypothesis, model-search, benchmark, or Shinka task into typed genomes and evaluator contracts.",
+      "path": "skills/foundry-evolve-convert/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:c8e19d7e898d2966958312d6d6e988ad9a0bc98bd6d38078ebd0d5b57e1ef2bc",
+      "byte_count": 568,
+      "token_count": 115,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVOLUTION-RUN-GENOMES-V4"
+      ],
+      "conditional_references": [
+        {
+          "reference_id": "EFREF-BACKEND-SHINKA-V4",
+          "mode": "CONDITIONAL",
+          "predicate": {
+            "key": "backend_id",
+            "operator": "EQUALS",
+            "value": "shinka"
+          }
+        }
+      ],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-evolve-inspect",
+      "name": "foundry-evolve-inspect",
+      "description": "Inspect populations, Pareto fronts, niches, lineages, challenges, receipts, bias, and unresolved candidates without mutation.",
+      "path": "skills/foundry-evolve-inspect/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "IMPLICIT_SAFE",
+      "allow_implicit_invocation": true,
+      "sha256": "sha256:9fd453a2741d818098df432632e86dee282dbad9b6e8a8f6369945d2d556d672",
+      "byte_count": 559,
+      "token_count": 113,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVOLUTION-RUN-GENOMES-V4",
+        "EFREF-EVOLUTION-ARCHIVE-REDQUEEN-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-evolve-run",
+      "name": "foundry-evolve-run",
+      "description": "Run or resume governed evolution with bounded workers, immutable evaluators, receipts, checkpoints, and explicit stop conditions.",
+      "path": "skills/foundry-evolve-run/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:c4ffb46f13fd41820bc7dcc002d842a233ff733c87cc0d30b44f9cff6bafd2ca",
+      "byte_count": 598,
+      "token_count": 124,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVOLUTION-RUN-GENOMES-V4",
+        "EFREF-EVOLUTION-VERIFIER-STATISTICS-V4",
+        "EFREF-EVOLUTION-ARCHIVE-REDQUEEN-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-evolve-setup",
+      "name": "foundry-evolve-setup",
+      "description": "Create a typed EvolutionRunSpec, seed genomes, evaluator and holdout manifests, diversity axes, budgets, and stop rules.",
+      "path": "skills/foundry-evolve-setup/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "PARENT_ROUTED",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:eefae162083b13ad72c30a93215407846a104549fd9123e3fa0ec1e0c2d43c85",
+      "byte_count": 574,
+      "token_count": 122,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-ROUTER-E0-E5-V4",
+        "EFREF-EVOLUTION-RUN-GENOMES-V4",
+        "EFREF-EVOLUTION-VERIFIER-STATISTICS-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-intake",
+      "name": "foundry-intake",
+      "description": "Frame research ideas into scoped claims, predictions, mechanisms, alternatives, and falsifiers before evidence search.",
+      "path": "skills/foundry-intake/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "IMPLICIT_SAFE",
+      "allow_implicit_invocation": true,
+      "sha256": "sha256:82310d63a144fdd8e47e918937a258b3a74d94367a9a5b797ac231f9b3a197b0",
+      "byte_count": 488,
+      "token_count": 108,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-ROUTER-E0-E5-V4",
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-map",
+      "name": "foundry-map",
+      "description": "Map code, schemas, workflows, papers, data, claims, evidence, artifacts, tests, and authority dependencies.",
+      "path": "skills/foundry-map/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "IMPLICIT_SAFE",
+      "allow_implicit_invocation": true,
+      "sha256": "sha256:2ef28ae2ba17f86421b0bc57dfd307a46e5f6ce6fcbbc421d23ab40ed7008f11",
+      "byte_count": 466,
+      "token_count": 95,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EXTENSIONS-MAP-DOMAINPACK-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-observe",
+      "name": "foundry-observe",
+      "description": "Acquire relation-aware evidence with receipts across support, counter, null, boundary, method, temporal, and novelty lanes.",
+      "path": "skills/foundry-observe/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "IMPLICIT_SAFE",
+      "allow_implicit_invocation": true,
+      "sha256": "sha256:71b4bd46693198569012bbc7ea995fd6c6bf05882e47de5e8e768508d312b5ee",
+      "byte_count": 479,
+      "token_count": 104,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVIDENCE-CLAIM-SEARCH-V4",
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-parliament",
+      "name": "foundry-parliament",
+      "description": "Run blind asymmetric evidence-gated deliberation with audits, cross-examination, minority report, judge, and attestation.",
+      "path": "skills/foundry-parliament/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "PARENT_ROUTED",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:3b855aa4e813e452e12fd83f50ced20704210000758c7791323ef76caa126c29",
+      "byte_count": 532,
+      "token_count": 108,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-PARLIAMENT-ASYMMETRIC-GATES-V4"
+      ],
+      "conditional_references": [
+        {
+          "reference_id": "EFREF-EVOLUTION-VERIFIER-STATISTICS-V4",
+          "mode": "CONDITIONAL",
+          "predicate": {
+            "key": "candidate_origin",
+            "operator": "EQUALS",
+            "value": "EVOLUTION"
+          }
+        }
+      ],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-passport",
+      "name": "foundry-passport",
+      "description": "Build or inspect a provenance-bound Hypothesis Passport after evidence and gate artifacts exist.",
+      "path": "skills/foundry-passport/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "IMPLICIT_SAFE",
+      "allow_implicit_invocation": true,
+      "sha256": "sha256:d479c581fa3231a68fbe78b31dc145714f794fb6574861ad771b313c92d7e958",
+      "byte_count": 509,
+      "token_count": 102,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-PASSPORT-PROMOTION-V4"
+      ],
+      "conditional_references": [
+        {
+          "reference_id": "EFREF-VALIDATION-REPLICATION-V4",
+          "mode": "CONDITIONAL",
+          "predicate": {
+            "key": "artifact_kind",
+            "operator": "ANY_OF",
+            "value": [
+              "ValidationResult",
+              "ReplicationResult"
+            ]
+          }
+        }
+      ],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-plugin-dev",
+      "name": "foundry-plugin-dev",
+      "description": "Build, test, audit, package, migrate, or release Epistemic Foundry without self-approval or unsupported readiness claims.",
+      "path": "skills/foundry-plugin-dev/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:e8fac51adb775d94df061a686673d0a9faf20001172aa6fbe7792ffcf09a72eb",
+      "byte_count": 546,
+      "token_count": 117,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-PLUGIN-SECURITY-ADMIN-V4",
+        "EFREF-PLUGIN-DEVELOPMENT-RELEASE-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-promote-evolved",
+      "name": "foundry-promote-evolved",
+      "description": "Review an evolved candidate after sealed evaluation, statistics, replication, Parliament, and independent attestation.",
+      "path": "skills/foundry-promote-evolved/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:8af3edaa5a13e52657718482ab2cedaee177b73fa062b9899971825efb272bf6",
+      "byte_count": 582,
+      "token_count": 116,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-PASSPORT-PROMOTION-V4",
+        "EFREF-EVOLUTION-VERIFIER-STATISTICS-V4",
+        "EFREF-EVOLUTION-ARCHIVE-REDQUEEN-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-reason",
+      "name": "foundry-reason",
+      "description": "Apply typed inductive, deductive, abductive, contradiction, and causal reasoning without converting plausibility into proof.",
+      "path": "skills/foundry-reason/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "IMPLICIT_SAFE",
+      "allow_implicit_invocation": true,
+      "sha256": "sha256:85c262604aa224e8d9b9d5619bdaab074ad2be1fc4e95a7c4ae84fe64f9e80e8",
+      "byte_count": 519,
+      "token_count": 102,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4",
+        "EFREF-REASONING-TYPED-MODES-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-recall",
+      "name": "foundry-recall",
+      "description": "Retrieve prior decisions only when needed and permitted; memory is not source evidence.",
+      "path": "skills/foundry-recall/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:481cc79ff6d34090d171bdfa5af8c620bf34a434255318843e7d476bcddbca63",
+      "byte_count": 431,
+      "token_count": 94,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-CONTEXT-MEMORY-REPLAY-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-replay",
+      "name": "foundry-replay",
+      "description": "Replay a run, compare strict or semantic outputs, and propagate staleness without overwriting prior artifacts.",
+      "path": "skills/foundry-replay/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:16e7e22b310ff013e58501bc4711f0346b9520c2e5c394aabaee6af49d38aaf9",
+      "byte_count": 468,
+      "token_count": 99,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-CORE-STATUS-RECEIPTS-V4",
+        "EFREF-CONTEXT-MEMORY-REPLAY-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-replicate",
+      "name": "foundry-replicate",
+      "description": "Plan and execute an independent preregistered replication using clean executors, data, methods, or seeds.",
+      "path": "skills/foundry-replicate/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:f9e227b52839678b20c0fbf0ef993cb5560bdfd86005d7fb479ad46203cd05a9",
+      "byte_count": 460,
+      "token_count": 96,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-VALIDATION-REPLICATION-V4",
+        "EFREF-EVOLUTION-VERIFIER-STATISTICS-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-shinka-adapter",
+      "name": "foundry-shinka-adapter",
+      "description": "Use pinned ShinkaEvolve only as an optional program-search backend behind Foundry authority.",
+      "path": "skills/foundry-shinka-adapter/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:6b741ccc1e31e2019ad63d6e4a9e63a9ff5a42a70cbf8b7c2a324a7d1ad66237",
+      "byte_count": 594,
+      "token_count": 123,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-BACKEND-SHINKA-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    },
+    {
+      "skill_id": "foundry-validation",
+      "name": "foundry-validation",
+      "description": "Preregister and execute validation under capability leases and receipts without relabeling computation as empirical evidence.",
+      "path": "skills/foundry-validation/SKILL.md",
+      "status": "ACTIVE",
+      "invocation_disposition": "EXPLICIT_ONLY",
+      "allow_implicit_invocation": false,
+      "sha256": "sha256:c7b7138b9ec9cb921db2ce1c29d96bab23b429c52dff5fe9296d1cc5c60403a1",
+      "byte_count": 556,
+      "token_count": 119,
+      "direct_references": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-VALIDATION-REPLICATION-V4",
+        "EFREF-EVOLUTION-VERIFIER-STATISTICS-V4"
+      ],
+      "conditional_references": [],
+      "child_skills": []
+    }
+  ],
+  "references": [
+    {
+      "reference_id": "EFREF-BACKEND-SHINKA-V4",
+      "path": "skills/foundry/references/backends/shinka.md",
+      "mode": "CONDITIONAL",
+      "depends_on": [
+        "EFREF-EVOLUTION-RUN-GENOMES-V4",
+        "EFREF-PLUGIN-SECURITY-ADMIN-V4"
+      ],
+      "sha256": "sha256:93ebece376fe12f694c7f73ddf599a2c7093e29294df3d53e1d99f201c1e96ec",
+      "byte_count": 635,
+      "token_count": 122,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-CONTEXT-MEMORY-REPLAY-V4",
+      "path": "skills/foundry/references/context/memory-replay.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-CORE-STATUS-RECEIPTS-V4",
+        "EFREF-ROUTER-E0-E5-V4"
+      ],
+      "sha256": "sha256:461263eeca29802fce1975227c906d16130ea066726affbf38c1ee75e0716582",
+      "byte_count": 700,
+      "token_count": 135,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-CORE-CONSTITUTION-V4",
+      "path": "skills/foundry/references/core/constitution.md",
+      "mode": "REQUIRED",
+      "depends_on": [],
+      "sha256": "sha256:cdf37add731e666906156bce01db27c648765aa4eb97bb749096544cab42f10d",
+      "byte_count": 757,
+      "token_count": 153,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-CORE-STATUS-RECEIPTS-V4",
+      "path": "skills/foundry/references/core/status-receipts.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-CORE-CONSTITUTION-V4"
+      ],
+      "sha256": "sha256:eed12e5a6da3115987ae4e7fd7b773fd16ad0adaa6bdd90d54f2ab97beb2caf2",
+      "byte_count": 710,
+      "token_count": 147,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-EVIDENCE-CLAIM-SEARCH-V4",
+      "path": "skills/foundry/references/evidence/claim-search.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-CORE-CONSTITUTION-V4"
+      ],
+      "sha256": "sha256:a62f68dfd4b718c0a8c77868455245c89cd514f19e01b746f01ddf7ac0d8607b",
+      "byte_count": 646,
+      "token_count": 131,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4",
+      "path": "skills/foundry/references/evidence/scope-method-dependency.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-EVIDENCE-CLAIM-SEARCH-V4"
+      ],
+      "sha256": "sha256:72c1aeebf8f795480f8b712feb684641c2b5cdf36d4a6c392aa5711f12c26c52",
+      "byte_count": 728,
+      "token_count": 125,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-EVOLUTION-ARCHIVE-REDQUEEN-V4",
+      "path": "skills/foundry/references/evolution/archive-red-queen.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-EVOLUTION-RUN-GENOMES-V4",
+        "EFREF-EVOLUTION-VERIFIER-STATISTICS-V4"
+      ],
+      "sha256": "sha256:42bec5859aeee20b53623a9b25cd931f424b11251b15b9414efa654c31efbaf6",
+      "byte_count": 658,
+      "token_count": 121,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-EVOLUTION-RUN-GENOMES-V4",
+      "path": "skills/foundry/references/evolution/run-genomes.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-CORE-STATUS-RECEIPTS-V4",
+        "EFREF-ROUTER-E0-E5-V4"
+      ],
+      "sha256": "sha256:eb7c232a5b6a1ae9e1451ce4203a87613f0ffe1a91e1e2de5f83ca8e73e29f82",
+      "byte_count": 690,
+      "token_count": 134,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-EVOLUTION-VERIFIER-STATISTICS-V4",
+      "path": "skills/foundry/references/evolution/verifier-statistics.md",
+      "mode": "CONDITIONAL",
+      "depends_on": [
+        "EFREF-VALIDATION-REPLICATION-V4",
+        "EFREF-EVOLUTION-RUN-GENOMES-V4"
+      ],
+      "sha256": "sha256:76580211d67b669eb992bc731cdeca3c1df51fba88198950c7e7fe5e23b981ca",
+      "byte_count": 668,
+      "token_count": 126,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-EXTENSIONS-MAP-DOMAINPACK-V4",
+      "path": "skills/foundry/references/extensions/map-domain-pack.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4"
+      ],
+      "sha256": "sha256:f4761cd7fba2a1c5dd0246070936247969152df1febdd4d87db7ad73ec5eed11",
+      "byte_count": 677,
+      "token_count": 130,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-PARLIAMENT-ASYMMETRIC-GATES-V4",
+      "path": "skills/foundry/references/parliament/asymmetric-gates.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-CORE-STATUS-RECEIPTS-V4",
+        "EFREF-EVIDENCE-CLAIM-SEARCH-V4",
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4"
+      ],
+      "sha256": "sha256:717cd415a892091fd9b5fe8bb145a63a30a1370a2b4fb8851199fca712748ee2",
+      "byte_count": 642,
+      "token_count": 111,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-PASSPORT-PROMOTION-V4",
+      "path": "skills/foundry/references/passport/promotion.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-CORE-STATUS-RECEIPTS-V4",
+        "EFREF-PARLIAMENT-ASYMMETRIC-GATES-V4"
+      ],
+      "sha256": "sha256:e1b525e01a26013ee06b2ada0941b55ae23ef7a9c1a1a5eddb9ac3a3e3521ea6",
+      "byte_count": 716,
+      "token_count": 162,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-PLUGIN-DEVELOPMENT-RELEASE-V4",
+      "path": "skills/foundry/references/plugin/development-release.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-CORE-STATUS-RECEIPTS-V4",
+        "EFREF-PLUGIN-SECURITY-ADMIN-V4"
+      ],
+      "sha256": "sha256:c652afe02362adb32195b5c78bdac47b6a234b204de45f519548e7fa27aa3fd5",
+      "byte_count": 669,
+      "token_count": 118,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-PLUGIN-SECURITY-ADMIN-V4",
+      "path": "skills/foundry/references/plugin/security-administration.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-CORE-CONSTITUTION-V4",
+        "EFREF-CORE-STATUS-RECEIPTS-V4"
+      ],
+      "sha256": "sha256:8e5c519df8527e137fb590ae67c2f7d9965ce116f83e4ca3c1586485ba6e3ff9",
+      "byte_count": 678,
+      "token_count": 129,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-REASONING-TYPED-MODES-V4",
+      "path": "skills/foundry/references/reasoning/typed-modes.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4"
+      ],
+      "sha256": "sha256:7b84605eae8d36ccda0d59700957a9a567c897f0f906964108ed956a0a4139eb",
+      "byte_count": 639,
+      "token_count": 112,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-ROUTER-E0-E5-V4",
+      "path": "skills/foundry/references/router/e0-e5-routing.md",
+      "mode": "REQUIRED",
+      "depends_on": [
+        "EFREF-CORE-CONSTITUTION-V4"
+      ],
+      "sha256": "sha256:22df0b2aeec0dfeeb70d49d09f3c172737ad42e182cd3ad5e3490d3686b83b31",
+      "byte_count": 673,
+      "token_count": 125,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    },
+    {
+      "reference_id": "EFREF-VALIDATION-REPLICATION-V4",
+      "path": "skills/foundry/references/validation/replication.md",
+      "mode": "CONDITIONAL",
+      "depends_on": [
+        "EFREF-CORE-STATUS-RECEIPTS-V4",
+        "EFREF-EVIDENCE-SCOPE-METHOD-DEPENDENCY-V4"
+      ],
+      "sha256": "sha256:68f5c7d4846826e9cb20d95a264ab1fb9f814712309c072a6a48d3ace3af244e",
+      "byte_count": 666,
+      "token_count": 133,
+      "authority_sources": [
+        {
+          "path": "MASTER_SPEC.md",
+          "sha256": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e"
+        },
+        {
+          "path": "artifacts/authority_decisions/HD-EF4-J02-SG001-20260729-001.human-decision.json",
+          "sha256": "sha256:c075acdf1e1123a4bab7cccb9966db9a5fba88c9f070ca0c91dff69cbef94f1a"
+        },
+        {
+          "path": "docs/skill_context_contract.md",
+          "sha256": "sha256:bcbd4888f5d677ef4fc172ba508e1ffcfd50849f767ba2848b0c071080b612d3"
+        }
+      ],
+      "media_type": "text/markdown",
+      "status": "ACTIVE"
+    }
+  ]
+}

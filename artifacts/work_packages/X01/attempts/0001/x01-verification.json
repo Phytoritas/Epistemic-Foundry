@@ -1,0 +1,44 @@
+{
+  "attempt_id": "X01-0001",
+  "declaring_sources": {
+    "gateway_vocab": "hook-gateway HOOK_HOSTS/EVENT_TYPES (selected by predicate, never restated)",
+    "payload": "plugins/epistemic-foundry (read-only; verified, never rewritten)",
+    "roles": "manifests/role_registry.yaml (28 roles)"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "the role table is byte-stable and hash-bound, cross-checked row-for-row against the pre-existing mapping file non-vacuously, and the binding receipt re-derives its hash over the payload facts it verified",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the host value lives only in the adapter's declaration JSON and is admitted by filtering the gateway's own host vocabulary for the declared value — zero or multiple matches refuse; per-module tests assert no quoted host literal exists in any product module",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the real payload binds as DEGRADED with the two missing dist runtime files named as findings, and a staged positive control flips the binding to BOUND with zero findings, proving the status is derived rather than constant; 8 event registrations verified, 3 canonical types published UNOBSERVED",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the adapter validates and translates only: contract tests assert no child-process, filesystem-write, clock, randomness or environment access in any product module, and gateway refusals propagate unmodified",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "codex_adapter_test": 14,
+    "codex_adversarial_tests": 28,
+    "codex_hook_coverage_test": 12,
+    "codex_schema_check": 14,
+    "dependency_regression_gateway": 11,
+    "dependency_regression_install": 1,
+    "full_node_suite": 1276,
+    "full_python_suite": 1261,
+    "targeted_x01_codex": 68
+  }
+}

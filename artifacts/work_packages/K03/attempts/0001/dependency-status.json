@@ -1,0 +1,51 @@
+{
+  "attempt_id": "K03-0001",
+  "dependency": {
+    "attempt_id": "K01-0002",
+    "report": "artifacts/work_packages/K01/attempts/0002/report.json",
+    "report_sha256": "sha256:e2132964003c019599e6e5ef130ea2e8d933e08e94481d68864038d1e82a2b3b",
+    "status": "PASS"
+  },
+  "manifest": {
+    "depends_on": [
+      "K01"
+    ],
+    "exit_criteria": [
+      "span hash resolves to source",
+      "page/bbox/char locators typed"
+    ],
+    "independent_review": "required",
+    "required_checks": [
+      "source_span_roundtrip",
+      "orphan_span_test"
+    ],
+    "risk_class": "medium",
+    "status": "PASS",
+    "write_scope": [
+      "python/epistemic_foundry/ingest/spans/**"
+    ]
+  },
+  "post_k02_sealed_dag": {
+    "artifact": "artifacts/work_packages/K02/attempts/0001/post-k02-0001-dag-reconciliation.json",
+    "artifact_sha256": "sha256:0067ae26b4b84e9cdf9e5bce5bbb877dc1c2feb7e0a2e28e38e4236bdce8c687",
+    "evidence_id": "E0034",
+    "next_package": "K03",
+    "status": "PASS"
+  },
+  "provisional_post_k03_projection": {
+    "blocked_package_count": 103,
+    "completed_package_count": 48,
+    "completion_ready": false,
+    "next_package": "K04",
+    "ready_package_count": 5,
+    "ready_packages_manifest_order": [
+      "K04",
+      "L01",
+      "N01",
+      "T01",
+      "A06"
+    ],
+    "status": "PASS"
+  },
+  "status": "PASS"
+}

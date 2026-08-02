@@ -1,0 +1,260 @@
+{
+  "attempt_id": "E01-0001",
+  "attempt_type": "E01_APPEND_ONLY_NOETIC_LEDGER_AND_REDUCER",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "E01-0001",
+    "dependencies": {
+      "C04": {
+        "attempt_id": "C04-0001",
+        "report": "artifacts/work_packages/C04/report.json",
+        "report_sha256": "sha256:eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f",
+        "status": "PASS"
+      },
+      "D04": {
+        "attempt_id": "D04-0001",
+        "report": "artifacts/work_packages/D04/report.json",
+        "report_sha256": "sha256:b47c194e230f4b08ab96b6153e9fc0e170eafb1054318cfaedd8e1ddeb4c5fde",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_E01_0001_THEN_CONTINUE_DAG",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "event_ordering_and_hash_chain_verified": "PASS",
+    "state_is_rebuildable": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false
+  },
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "ActionIntent, Attempt, or EffectReceipt behavior (E02)",
+    "the wider effects, capability, scheduler, or replay surface",
+    "external actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 34248,
+      "path": "artifacts/work_packages/E01/attempts/0001/build_e01_0001_evidence.py",
+      "sha256": "sha256:30d44da6dac0969edc0d52838c500199190857d5615deba357685bd7e56470cb"
+    },
+    {
+      "byte_size": 9188,
+      "path": "artifacts/work_packages/E01/attempts/0001/commands.jsonl",
+      "sha256": "sha256:486082abc78648f4d1c52bf2c43307d199cb720e80b10e59d5a4b8ebf8f55226"
+    },
+    {
+      "byte_size": 591,
+      "path": "artifacts/work_packages/E01/attempts/0001/dependency-status.json",
+      "sha256": "sha256:762eebcc6dcf6368b5536c2fbbdd9f06b020efb46adfd2ba1e26cfb08ccd27be"
+    },
+    {
+      "byte_size": 2808,
+      "path": "artifacts/work_packages/E01/attempts/0001/e01-verification.json",
+      "sha256": "sha256:fef4df1d6e480d9aa8671c13e4a30065cb799ed12ae8dfb5b48f24de5dcac924"
+    },
+    {
+      "byte_size": 26195,
+      "path": "artifacts/work_packages/E01/attempts/0001/e01_0001_rah_seal.py",
+      "sha256": "sha256:51adeb964db8b1a17954cb30f1151f454a191800e17c9e3759f6c3b886c5058a"
+    },
+    {
+      "byte_size": 237599,
+      "path": "artifacts/work_packages/E01/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:67ccd3d7d5675e0d77d0aa35e0399b7fd2a24de71a3215585ac737deb442c9bc"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/E01/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 2736,
+      "path": "artifacts/work_packages/E01/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:93e3b55b0e6e80e2695bd2970bcd5e9de5c6fcda4aaa458927650f449ea5887c"
+    },
+    {
+      "byte_size": 2663,
+      "path": "artifacts/work_packages/E01/attempts/0001/ledger-hash-chain-test.junit.xml",
+      "sha256": "sha256:12bfc3eb7090cac25bd33b2f01c301b465853db0f1feda7b0d459088381d0d70"
+    },
+    {
+      "byte_size": 7183,
+      "path": "artifacts/work_packages/E01/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:06e52bd61bf1d69671a3cd8388a260f3c269d703fad8548754edf0cce31ffd43"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/E01/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:bf6fca351ebe0c4be78acad32d9533e4b9a1efb76a5c7404b1bf36dc96c0ae8d"
+    },
+    {
+      "byte_size": 1934,
+      "path": "artifacts/work_packages/E01/attempts/0001/reducer-replay-test.junit.xml",
+      "sha256": "sha256:f5ffe46a4ceed8419b15925b299d11672a044b234eee2f0c268511899f9f7601"
+    },
+    {
+      "byte_size": 3760,
+      "path": "artifacts/work_packages/E01/attempts/0001/review.md",
+      "sha256": "sha256:7220f52cd30acbd8dbb491146b35f8fbaabcd3210257781d7afea6dd792a89c9"
+    },
+    {
+      "byte_size": 6180,
+      "path": "artifacts/work_packages/E01/attempts/0001/run_e01_0001_checks.py",
+      "sha256": "sha256:60acc0247d0d0ece82f08d12f81b44116831ebb9620b156cd0d1c242f6887acc"
+    },
+    {
+      "byte_size": 4401,
+      "path": "artifacts/work_packages/E01/attempts/0001/targeted-ledger.junit.xml",
+      "sha256": "sha256:606705ad40109086edad0700b748beb507e7884b13f525f3d416cee932cc7a87"
+    },
+    {
+      "byte_size": 1212,
+      "path": "artifacts/work_packages/E01/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:a858cbfb162832781ff676fcfd94fd270bf318e4d9ed5cbf48a96dd21a17e992"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0307",
+    "core_generation": "000305-989916a9",
+    "final_closeout_evidence_id": "E0308",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1830,
+    "implementation_gate": "fail",
+    "retained_generation_count": 305,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "E01-0001",
+    "component_tests_are_targeted_only": true,
+    "full_node": {
+      "cancelled": 0,
+      "collected": 1253,
+      "failed": 0,
+      "junit": "artifacts/work_packages/E01/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:67ccd3d7d5675e0d77d0aa35e0399b7fd2a24de71a3215585ac737deb442c9bc",
+      "passed": 1253,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 1248
+    },
+    "full_python": {
+      "collected": 1261,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/E01/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+      "passed": 1261,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1261
+    },
+    "ledger_hash_chain_test": {
+      "cancelled": 0,
+      "collected": 12,
+      "failed": 0,
+      "junit": "artifacts/work_packages/E01/attempts/0001/ledger-hash-chain-test.junit.xml",
+      "junit_sha256": "sha256:12bfc3eb7090cac25bd33b2f01c301b465853db0f1feda7b0d459088381d0d70",
+      "passed": 12,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 12
+    },
+    "new_failure_count": 0,
+    "reducer_replay_test": {
+      "cancelled": 0,
+      "collected": 9,
+      "failed": 0,
+      "junit": "artifacts/work_packages/E01/attempts/0001/reducer-replay-test.junit.xml",
+      "junit_sha256": "sha256:f5ffe46a4ceed8419b15925b299d11672a044b234eee2f0c268511899f9f7601",
+      "passed": 9,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 9
+    },
+    "status": "PASS",
+    "targeted_ledger": {
+      "cancelled": 0,
+      "collected": 21,
+      "failed": 0,
+      "junit": "artifacts/work_packages/E01/attempts/0001/targeted-ledger.junit.xml",
+      "junit_sha256": "sha256:606705ad40109086edad0700b748beb507e7884b13f525f3d416cee932cc7a87",
+      "passed": 21,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 21
+    },
+    "unexpected_skip_xfail_todo_or_cancellation_count": 0
+  },
+  "required_checks": {
+    "ledger_hash_chain_test": {
+      "module": "packages/foundry-kernel/src/ledger/ledger-hash-chain.test.mjs",
+      "status": "PASS",
+      "test_count": 12
+    },
+    "reducer_replay_test": {
+      "module": "packages/foundry-kernel/src/ledger/reducer-replay.test.mjs",
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Independent review of bounded-agent work by a distinct actor in this seal-prep session; not external actor-independent certification.",
+    "author": "bounded implementation agent",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "reviewer": "independent seal-prep session (distinct actor)",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "E01",
+  "write_scope": {
+    "approved_scope": [
+      "packages/foundry-kernel/src/ledger/**",
+      "artifacts/work_packages/E01/**"
+    ],
+    "attempt_id": "E01-0001",
+    "component_files": [
+      "packages/foundry-kernel/src/ledger/ledger-hash-chain.test.mjs",
+      "packages/foundry-kernel/src/ledger/ledger-test-support.mjs",
+      "packages/foundry-kernel/src/ledger/noetic-ledger.mjs",
+      "packages/foundry-kernel/src/ledger/reducer-replay.test.mjs"
+    ],
+    "product_file_hashes": {
+      "packages/foundry-kernel/src/ledger/ledger-hash-chain.test.mjs": "sha256:e478e71b48d74a139a10023033b3fd2d73fcbdf92660feeb920a6c3953e4eb82",
+      "packages/foundry-kernel/src/ledger/ledger-test-support.mjs": "sha256:4954d4dd7bc985136d744f0689b91316419fb376e842dba2a428c66c9813d6e9",
+      "packages/foundry-kernel/src/ledger/noetic-ledger.mjs": "sha256:58ea9dc0d52d9c20720b33970ee3b8d8d05703ba7dd0fb4f51a483d9f505f1ed",
+      "packages/foundry-kernel/src/ledger/reducer-replay.test.mjs": "sha256:a1f9848e08c1231de29ada86236b6a1ffef19d867ce412d16737a8ce44222029"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "write_scope_violation_count": 0
+  }
+}

@@ -1,0 +1,602 @@
+{
+  "a05_forbidden_input_integrity": {
+    "prompts/promotion_attestor.md": {
+      "byte_size": 465,
+      "sha256": "cba0bf56de963541abb5231e7ac3d7ae213bcdab856ebd825dc3efaba4f0b224",
+      "status": "PASS"
+    },
+    "schemas/evolution-run-spec.schema.json": {
+      "byte_size": 2193,
+      "sha256": "29fe472309463865f58413c9e6566d6b3bcb71be7f6f7c74dfe1176f6a407ee9",
+      "status": "PASS"
+    },
+    "schemas/promotion-decision.schema.json": {
+      "byte_size": 2145,
+      "sha256": "a71a125155f5690f7367b800d88ef7c49ef1f132cb607b37abb04e820924ebdc",
+      "status": "PASS"
+    },
+    "schemas/run-spec.schema.json": {
+      "byte_size": 6500,
+      "sha256": "91a8ee9e05bb3fb264f355b93ddad07d1e47b2829f6f960ade4c46a04011c64c",
+      "status": "PASS"
+    },
+    "src/epistemic_foundry/governance/promotion.py": {
+      "byte_size": 6581,
+      "sha256": "a05013fdd9ea83a51071f376075b540a2fc371bb7e9f2ff12f786feb0ba90e71",
+      "status": "PASS"
+    },
+    "workflows/evolution_chamber_cycle.workflow.yaml": {
+      "byte_size": 28704,
+      "sha256": "d3a611dc7c18dfdd8353cc49fa73bf0145465a245b00d22c945e5aa55ab40688",
+      "status": "PASS"
+    }
+  },
+  "adversarial_contract_tests": {
+    "negative_test_count": 24,
+    "positive_boundary_control_count": 4,
+    "results": [
+      {
+        "expected_tokens": [
+          "G00",
+          "FAIL",
+          "floating"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-001"
+      },
+      {
+        "expected_tokens": [
+          "G00",
+          "FAIL",
+          "hash mismatch"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-002"
+      },
+      {
+        "expected_tokens": [
+          "G00",
+          "BLOCK",
+          "BLOCKED"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-003"
+      },
+      {
+        "expected_tokens": [
+          "SPEC_GAP",
+          "ordering"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-004"
+      },
+      {
+        "expected_tokens": [
+          "G00",
+          "FAIL",
+          "new spec revision"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-005"
+      },
+      {
+        "expected_tokens": [
+          "G02_EVALUATOR_HOLDOUT_FIREWALL",
+          "FAIL"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-006"
+      },
+      {
+        "expected_tokens": [
+          "G02_EVALUATOR_HOLDOUT_FIREWALL",
+          "FAIL",
+          "approval cannot override"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-007"
+      },
+      {
+        "expected_tokens": [
+          "G01",
+          "scalar-only",
+          "FAIL"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-008"
+      },
+      {
+        "expected_tokens": [
+          "G03",
+          "FAIL",
+          "partial fan-in"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-009"
+      },
+      {
+        "expected_tokens": [
+          "G04",
+          "FAIL"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-010"
+      },
+      {
+        "expected_tokens": [
+          "G05",
+          "FAIL"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-011"
+      },
+      {
+        "expected_tokens": [
+          "G08",
+          "FAIL"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-012"
+      },
+      {
+        "expected_tokens": [
+          "G10",
+          "FAIL",
+          "empty result array"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-013"
+      },
+      {
+        "expected_tokens": [
+          "G10",
+          "FAIL",
+          "LITERATURE_GROUNDED",
+          "LOWER",
+          "BLOCK"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-014"
+      },
+      {
+        "expected_tokens": [
+          "G11",
+          "FAIL",
+          "majority"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-015"
+      },
+      {
+        "expected_tokens": [
+          "G12",
+          "FAIL",
+          "non-independent"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-016"
+      },
+      {
+        "expected_tokens": [
+          "G01/G13",
+          "FAIL",
+          "self-approval"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-017"
+      },
+      {
+        "expected_tokens": [
+          "G13",
+          "cannot convert",
+          "PASS"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-018"
+      },
+      {
+        "expected_tokens": [
+          "G13",
+          "FAIL",
+          "BLOCK",
+          "NOT_REQUIRED"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-019"
+      },
+      {
+        "expected_tokens": [
+          "G14",
+          "FAIL",
+          "completion"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-020"
+      },
+      {
+        "expected_tokens": [
+          "G14",
+          "conflict",
+          "no state change"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-021"
+      },
+      {
+        "expected_tokens": [
+          "existing logical result",
+          "no duplicate"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-022"
+      },
+      {
+        "expected_tokens": [
+          "unknown",
+          "reconciled",
+          "FAIL",
+          "BLOCKED"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-023"
+      },
+      {
+        "expected_tokens": [
+          "G14",
+          "rejects",
+          "new immutable revision"
+        ],
+        "observed": "contract row contains every required rejection token",
+        "status": "PASS",
+        "test_id": "A05-NEG-024"
+      }
+    ],
+    "status": "PASS"
+  },
+  "attempt_id": "A05-0002",
+  "authority_bindings": {
+    "MASTER_EXECUTION_PROMPT.md": {
+      "byte_size": 5123,
+      "sha256": "9b6cff656c62383229c5836c260b48a6f3fd024db7dc71ff04521ab7b539b855",
+      "status": "PASS"
+    },
+    "MASTER_SPEC.md": {
+      "byte_size": 62734,
+      "sha256": "43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3",
+      "status": "PASS"
+    },
+    "artifacts/authority_decisions/EF4-A05-C01-B04-SHARED-CONTRACT.human-decision.json": {
+      "byte_size": 1275,
+      "sha256": "436a69bfebf374e78e3f52711c52f2f2c02cb429fb8c0a8a5e4988720cdca2d1",
+      "status": "PASS"
+    },
+    "artifacts/authority_decisions/EF4-A05-C01-B04-SHARED-CONTRACT.md": {
+      "byte_size": 23787,
+      "sha256": "61e1be8c66491843845d5cac4d7446f4110fe679a64ab6560443abd3c83dd874",
+      "status": "PASS"
+    },
+    "manifests/development_manifest.yaml": {
+      "byte_size": 221429,
+      "sha256": "9ae9090a8d02973198492f271a9e46a352ca030eaa8b272e696bf6cd9ec1896e",
+      "status": "PASS"
+    }
+  },
+  "authority_decision": {
+    "decision_hash": "sha256:9c09bc531bb69df8b6394157651fc681e13dbfb8027e5a3713fa65a073733e59",
+    "decision_id": "HD-EF4-A05-C01-B04-20260727-001",
+    "non_mutation_acknowledgement": true,
+    "status": "PASS"
+  },
+  "charter_contract": {
+    "applicability_matrix": {
+      "G00_PIN_RESOLUTION": [
+        "R",
+        "R",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G01_POLICY_AUTHORITY": [
+        "R",
+        "R",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G02_EVALUATOR_HOLDOUT_FIREWALL": [
+        "R",
+        "R",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G03_SCHEMA_LINEAGE_COUNT": [
+        "P",
+        "R",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G04_SOURCE_PROVENANCE": [
+        "R",
+        "R",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G05_SEARCH_COVERAGE": [
+        "P",
+        "P",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G06_METHOD_SCOPE_DEPENDENCY": [
+        "P",
+        "P",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G07_VALIDATION_LEAKAGE": [
+        "P",
+        "P",
+        "P",
+        "R",
+        "R",
+        "R"
+      ],
+      "G08_ADAPTIVE_STATISTICS": [
+        "P",
+        "P",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G09_RED_QUEEN": [
+        "P",
+        "P",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G10_REPLICATION_CEILING": [
+        "R",
+        "R",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G11_PARLIAMENT": [
+        "P",
+        "P",
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "G12_INDEPENDENT_ATTESTATION": [
+        "P",
+        "P",
+        "P",
+        "R",
+        "R",
+        "R"
+      ],
+      "G13_HUMAN_POLICY_APPROVAL": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "C"
+      ],
+      "G14_ATOMIC_PROMOTION_COMMIT": [
+        "R",
+        "R",
+        "R",
+        "R",
+        "R",
+        "R"
+      ]
+    },
+    "approval_trigger_count": 8,
+    "gate_order": [
+      "G00_PIN_RESOLUTION",
+      "G01_POLICY_AUTHORITY",
+      "G02_EVALUATOR_HOLDOUT_FIREWALL",
+      "G03_SCHEMA_LINEAGE_COUNT",
+      "G04_SOURCE_PROVENANCE",
+      "G05_SEARCH_COVERAGE",
+      "G06_METHOD_SCOPE_DEPENDENCY",
+      "G07_VALIDATION_LEAKAGE",
+      "G08_ADAPTIVE_STATISTICS",
+      "G09_RED_QUEEN",
+      "G10_REPLICATION_CEILING",
+      "G11_PARLIAMENT",
+      "G12_INDEPENDENT_ATTESTATION",
+      "G13_HUMAN_POLICY_APPROVAL",
+      "G14_ATOMIC_PROMOTION_COMMIT"
+    ],
+    "promotion_levels": [
+      "INBOX",
+      "CANDIDATE",
+      "LITERATURE_GROUNDED",
+      "VALIDATION_SCREENED",
+      "EMPIRICALLY_TESTED",
+      "REPLICATED"
+    ],
+    "replication_controls": {
+      "failed_core": true,
+      "formal_exception": true,
+      "inconclusive": true,
+      "not_run_or_blocked": true,
+      "partial": true,
+      "replicated_eligible_only": true
+    },
+    "resolved_ref_keys": [
+      "base_run_spec",
+      "schema_bundle",
+      "workflow",
+      "policy_bundle",
+      "corpus_evidence_snapshot",
+      "ontology",
+      "domain_pack",
+      "evaluator_bundle",
+      "holdout_manifest",
+      "operator_registry",
+      "prompt_bundle",
+      "model_routing_policy",
+      "provider_adapter_manifest",
+      "statistical_plan",
+      "selection_policy",
+      "stop_policy",
+      "replication_policy",
+      "archive_niche_policy",
+      "budget_envelope",
+      "execution_environment_toolchain_manifest",
+      "external_backend_manifest"
+    ],
+    "status": "PASS",
+    "tuple_fields": [
+      "logical_id",
+      "exact_version_or_revision",
+      "content_hash",
+      "resolver_id",
+      "resolver_version",
+      "resolved_artifact_locator",
+      "resolved_at",
+      "authority_source_class",
+      "reproducibility_class"
+    ],
+    "workflow_step_count": 18
+  },
+  "decision": {
+    "reason": "The product-owner decision is fully expressed as a deterministic authority charter, matrices, ordered receipt workflow, and adversarial contract-test registry without changing schema, workflow, or runtime files.",
+    "resolved_prior_gaps": [
+      "A05-SG001",
+      "A05-SG002"
+    ],
+    "typed_outcome": "PASS"
+  },
+  "dependency_checkpoint": {
+    "report_sha256": "f34f72c561a6eb1696a524c1910d83a338847536e3c497c5d3038e7a1d2855ab",
+    "status": "PASS",
+    "work_package_id": "A04"
+  },
+  "historical_integrity": {
+    "bound_artifacts": {
+      "artifacts/work_packages/A04/report.json": {
+        "byte_size": 1499,
+        "sha256": "f34f72c561a6eb1696a524c1910d83a338847536e3c497c5d3038e7a1d2855ab",
+        "status": "PASS"
+      },
+      "artifacts/work_packages/A05/authority-contract-probe.json": {
+        "byte_size": 9786,
+        "sha256": "f02b6cf0abc0f53bac6099f5e524acb11d376ddc768871e8589946610fe769e0",
+        "status": "PASS"
+      },
+      "artifacts/work_packages/A05/authority_contract_probe.py": {
+        "byte_size": 15675,
+        "sha256": "ad5e5650a05260379fbce9f0ce769e914ff5e5fb459aa41a341ff86cbba7ff40",
+        "status": "PASS"
+      },
+      "artifacts/work_packages/A05/commands.jsonl": {
+        "byte_size": 3217,
+        "sha256": "65393532c41415b187e98dee1d8759e0e9df1c24a11f711637d12ff2e66a5e18",
+        "status": "PASS"
+      },
+      "artifacts/work_packages/A05/report.json": {
+        "byte_size": 4392,
+        "sha256": "9454f609060d652bcb4073e2da85dccfdfce79298337dbf8ae0233ff5c651b13",
+        "status": "PASS"
+      },
+      "artifacts/work_packages/A05/review.md": {
+        "byte_size": 4416,
+        "sha256": "5a83fb5f75916e9da53d82fc3fa93c14920f24cec9a30a0923802b32418a2b57",
+        "status": "PASS"
+      },
+      "docs/v4_a05/authority_contract_gap.md": {
+        "byte_size": 4778,
+        "sha256": "7f66f22f8964cb53d3cb89eafeaf4b080e6abcdc9ad0470f85607015c3766f9f",
+        "status": "PASS"
+      }
+    },
+    "preserved_not_overwritten": true,
+    "prior_attempt_status": "SPEC_GAP",
+    "prior_gap_ids": [
+      "A05-SG001",
+      "A05-SG002"
+    ]
+  },
+  "schema_meta_validation": {
+    "schemas/adjudication.schema.json": "PASS",
+    "schemas/approval-record.schema.json": "PASS",
+    "schemas/attestation.schema.json": "PASS",
+    "schemas/evolution-run-spec.schema.json": "PASS",
+    "schemas/gate-decision.schema.json": "PASS",
+    "schemas/phase-artifact-set.schema.json": "PASS",
+    "schemas/promotion-decision.schema.json": "PASS",
+    "schemas/replication-result.schema.json": "PASS"
+  },
+  "schema_version": 1,
+  "scope_statement": {
+    "a05_writes_only": [
+      "docs/v4_a05/**",
+      "artifacts/work_packages/A05/**"
+    ],
+    "production_runtime_claimed": false,
+    "schema_workflow_runtime_changes": 0
+  },
+  "status": "PASS",
+  "text_integrity": {
+    "docs/v4_a05/adversarial_contract_tests.md": {
+      "byte_size": 6617,
+      "line_count": 78,
+      "replacement_character_absent": true,
+      "sha256": "089944826184843854f0af4415a5bca6f31c83e88227597b20f7bd8db37d5290",
+      "utf8_without_bom": true
+    },
+    "docs/v4_a05/evolution_authority_and_promotion_charter.md": {
+      "byte_size": 27005,
+      "line_count": 441,
+      "replacement_character_absent": true,
+      "sha256": "5d8b1b5d7b8bfed727e823ab49996de4ed40ba520a1958bbb519dda36639a181",
+      "utf8_without_bom": true
+    }
+  },
+  "work_package_id": "A05"
+}

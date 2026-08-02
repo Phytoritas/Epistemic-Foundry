@@ -1,0 +1,81 @@
+{
+  "attempt_id": "B05-0001",
+  "declaring_sources": {
+    "backend_constants": "schemas/shinka-backend-manifest.schema.json",
+    "canonical_counts": "src/epistemic_foundry/_canonical/canonical-registry.json",
+    "dependency_pins": "uv.lock",
+    "project_contract": "pyproject.toml",
+    "shinka_observation": "research/shinkaevolve_source_manifest.json"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "evidence": [
+        "artifacts/work_packages/B05/attempts/0001/test_provenance_receipts.py"
+      ],
+      "mechanism": "the build manifest receipts the generator, every input and every output by content hash; verification recomputes all of them from the live repository, an unreceipted file in the output is refused, and a re-sealed forgery still fails because the expected bytes are re-derived from the inputs",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "evidence": [
+        "artifacts/work_packages/B05/attempts/0001/test_schema_and_type.py"
+      ],
+      "mechanism": "the emitted documents keep exact field sets with recomputable hashes; backend_name and license come from the canonical schema consts rather than restatement; and the readiness map must cover every required field of shinka-backend-manifest.schema.json exactly, each blocked field carrying the reason it cannot be pinned yet",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "evidence": [
+        "artifacts/work_packages/B05/attempts/0001/test_build_determinism.py",
+        "artifacts/work_packages/B05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "two emits are byte-identical, the committed output equals what the tracked inputs produce, a deleted or corrupted output is refused then repaired byte-identically, and every weakened pin — unpinned artifacts, drifted floors, unlocked or smuggled dependencies, tampered registry counts — is refused with a typed code",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "evidence": [
+        "artifacts/work_packages/B05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "the Shinka profile is emitted DISABLED and UNQUALIFIED with every EF4-I63 authority flag false; a profile edited toward enablement, qualification, authority or an install extra is refused at verification with the code that names the attempt, because no sealed B06/T06 qualification exists",
+      "status": "PASS"
+    }
+  },
+  "profile": {
+    "canonical_resources": {
+      "openapi_document_count": 1,
+      "resource_count": 128,
+      "schema_count": 127
+    },
+    "locked_external_packages": 20,
+    "shinka_feature": {
+      "qualification": "UNQUALIFIED",
+      "status": "DISABLED"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "module": "artifacts/work_packages/B05/attempts/0001/test_negative_adversarial.py",
+      "status": "PASS",
+      "test_count": 27
+    },
+    "provenance_and_receipt_audit": {
+      "module": "artifacts/work_packages/B05/attempts/0001/test_provenance_receipts.py",
+      "status": "PASS",
+      "test_count": 10
+    },
+    "schema_and_type_check": {
+      "module": "artifacts/work_packages/B05/attempts/0001/test_schema_and_type.py",
+      "status": "PASS",
+      "test_count": 14
+    },
+    "unit_and_contract_tests": {
+      "module": "artifacts/work_packages/B05/attempts/0001/test_build_determinism.py",
+      "status": "PASS",
+      "test_count": 11
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 62
+}

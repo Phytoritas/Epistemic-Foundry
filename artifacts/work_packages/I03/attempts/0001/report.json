@@ -1,0 +1,258 @@
+{
+  "attempt_id": "I03-0001",
+  "attempt_type": "I03_ONTOLOGY_AND_MEASUREMENT_CONSTRUCT_RESOLUTION",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "I03-0001",
+    "dependencies": {
+      "I01": {
+        "attempt_id": "I01-0001",
+        "core_evidence_id": "E0068",
+        "final_closeout_evidence_id": "E0069",
+        "report": "artifacts/work_packages/I01/report.json",
+        "report_sha256": "sha256:7174f9292421996fcd7e48de8f29757657dcf9b7aff3483028bbb86be70f886a",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_I03_0001_THEN_RECOMPUTE_DAG",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "human_approval_queue_exists": "PASS",
+    "same_label_different_construct_not_silently_merged": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "scoring, ranking, selection, promotion or evaluation of any candidate: I03 resolves a term against pinned authority or abstains",
+    "a canonical ontology or measurement JSON Schema: the I03 types are component-local execution contracts",
+    "HumanDecision approval, ontology persistence, a review UI, or a remote service: a MappingReviewItem is a proposal, not an approval",
+    "any composed code dependency on I01: it is a manifest-order dependency and the resolver imports the standard library alone",
+    "external actor-independent certification of this review",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 32859,
+      "path": "artifacts/work_packages/I03/attempts/0001/build_i03_0001_evidence.py",
+      "sha256": "sha256:b8d14ec13c82b3cc3776041b719d6f0c3a2c15b1d8b25bcdddc2d4f945b44a93"
+    },
+    {
+      "byte_size": 4181,
+      "path": "artifacts/work_packages/I03/attempts/0001/check_packaging.py",
+      "sha256": "sha256:89ea613bb6e015d0de676e76c9dbbd04aed972117922c613c3ff61bf1f2cfb28"
+    },
+    {
+      "byte_size": 11151,
+      "path": "artifacts/work_packages/I03/attempts/0001/commands.jsonl",
+      "sha256": "sha256:422a168f5630b3716f2effc8fb87775a29b221455ca43455c790fe037219c6cf"
+    },
+    {
+      "byte_size": 440,
+      "path": "artifacts/work_packages/I03/attempts/0001/dependency-status.json",
+      "sha256": "sha256:c6409c58b64da8b03b5cb795877dd618df03de2f667ffabb2ad05d1734cef9d0"
+    },
+    {
+      "byte_size": 325347,
+      "path": "artifacts/work_packages/I03/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:9706bea9d7b414d65105700c8db56be52b5f60091a9370dfa742b287b2b5dfe3"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/I03/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 2322,
+      "path": "artifacts/work_packages/I03/attempts/0001/i03-verification.json",
+      "sha256": "sha256:c1e8e1a0780ca47708b4c38a0710fb02b4988f3baba8c5cd31f85cfd1f8083e5"
+    },
+    {
+      "byte_size": 27149,
+      "path": "artifacts/work_packages/I03/attempts/0001/i03_0001_rah_seal.py",
+      "sha256": "sha256:ad9ef40e2dea467ec95dd161a7f68616267efd9f358217746f3faf2f94abf259"
+    },
+    {
+      "byte_size": 2778,
+      "path": "artifacts/work_packages/I03/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:f1337b50db280e47ced0e408b6fb79bc3515b4741742ac20bc7e295723d2f7e7"
+    },
+    {
+      "byte_size": 4089,
+      "path": "artifacts/work_packages/I03/attempts/0001/measurement-identity-test.junit.xml",
+      "sha256": "sha256:4a8496cef333e1fe639f0b0173b06be97424b6d16c63284dc2d8f1ad2ed6b4a1"
+    },
+    {
+      "byte_size": 8941,
+      "path": "artifacts/work_packages/I03/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:6bbabeba4dac2c2156938caf1911c43981bfc897efb84663c539132a7bb52e82"
+    },
+    {
+      "byte_size": 2667,
+      "path": "artifacts/work_packages/I03/attempts/0001/ontology-fixture-test.junit.xml",
+      "sha256": "sha256:c13edee80ea879efc51ce294ad72c9386d76c72f62dccb37b2730e94e29bba0d"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/I03/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:4d328124dc3a164b3e2724f4c4bca98590b31273b19da687422671fd7cde1624"
+    },
+    {
+      "byte_size": 3647,
+      "path": "artifacts/work_packages/I03/attempts/0001/review.md",
+      "sha256": "sha256:047a3d84bdb9fe4969b5a8f0a1d9475bd5531d1fee9c974f2fb15dddb2d03524"
+    },
+    {
+      "byte_size": 6786,
+      "path": "artifacts/work_packages/I03/attempts/0001/run_i03_0001_checks.py",
+      "sha256": "sha256:8af39bbad77801de7c665907b5d3b2443409855701ad8f5b86d321a2c1b9e308"
+    },
+    {
+      "byte_size": 770,
+      "path": "artifacts/work_packages/I03/attempts/0001/wire-literal-discipline.junit.xml",
+      "sha256": "sha256:858c6349b64aea8e6c90870e78b2785c00aaafda78f8c3a16f46eb87b1dd8c4a"
+    },
+    {
+      "byte_size": 1494,
+      "path": "artifacts/work_packages/I03/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:8336c24294fd5a965742109f7704e7fda7b8320e8123db47edfca8d71e5e3251"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0291",
+    "core_generation": "000289-df420a6c",
+    "final_closeout_evidence_id": "E0292",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1734,
+    "implementation_gate": "fail",
+    "retained_generation_count": 289,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "I03-0001",
+    "component_tests_are_targeted_only": true,
+    "new_failure_count": 0,
+    "status": "PASS",
+    "suites": {
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1702,
+        "failed": 0,
+        "junit": "artifacts/work_packages/I03/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:9706bea9d7b414d65105700c8db56be52b5f60091a9370dfa742b287b2b5dfe3",
+        "passed": 1702,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1697
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/I03/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "measurement_identity_test": {
+        "collected": 23,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/I03/attempts/0001/measurement-identity-test.junit.xml",
+        "junit_sha256": "sha256:4a8496cef333e1fe639f0b0173b06be97424b6d16c63284dc2d8f1ad2ed6b4a1",
+        "passed": 23,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 23
+      },
+      "ontology_fixture_test": {
+        "collected": 16,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/I03/attempts/0001/ontology-fixture-test.junit.xml",
+        "junit_sha256": "sha256:c13edee80ea879efc51ce294ad72c9386d76c72f62dccb37b2730e94e29bba0d",
+        "passed": 16,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 16
+      },
+      "wire_literal_discipline": {
+        "collected": 5,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/I03/attempts/0001/wire-literal-discipline.junit.xml",
+        "junit_sha256": "sha256:858c6349b64aea8e6c90870e78b2785c00aaafda78f8c3a16f46eb87b1dd8c4a",
+        "passed": 5,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 5
+      }
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: the sealing agent, a distinct actor; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "measurement_identity_test": {
+      "status": "PASS",
+      "test_count": 23
+    },
+    "ontology_fixture_test": {
+      "status": "PASS",
+      "test_count": 16
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds with actor_independence=true (a bounded implementation agent authored, the sealing agent reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "I03",
+  "write_scope": {
+    "approved_scope": [
+      "python/epistemic_foundry/ontology/**",
+      "artifacts/work_packages/I03/**"
+    ],
+    "attempt_id": "I03-0001",
+    "authored_by": "bounded implementation agent under the product owner's explicit instruction",
+    "authority_decision": null,
+    "composed_modules_modified": false,
+    "product_file_hashes": {
+      "artifacts/work_packages/I03/attempts/0001/check_packaging.py": "sha256:89ea613bb6e015d0de676e76c9dbbd04aed972117922c613c3ff61bf1f2cfb28",
+      "artifacts/work_packages/I03/attempts/0001/run_i03_0001_checks.py": "sha256:8af39bbad77801de7c665907b5d3b2443409855701ad8f5b86d321a2c1b9e308",
+      "python/epistemic_foundry/ontology/__init__.py": "sha256:6f165694369ae8a53ff5f86d64823ae959bef655b4774f5f7c68833c898e0f10",
+      "python/epistemic_foundry/ontology/resolver.py": "sha256:cf8be5f3e4f578040ad6036e058d8424c91f4c221f3907fa9c7f5d9940f3514f",
+      "python/epistemic_foundry/ontology/test_measurement_identity.py": "sha256:71d6f3e1572aa25d6d4329d9df82d5a0d6589d325d4e4ea2908ffa50a10ae0d3",
+      "python/epistemic_foundry/ontology/test_ontology_fixture.py": "sha256:a85c9c84a0f960133516a40bd13db8993789a247b6f86f9b6f4aa28c71d6f358"
+    },
+    "pyproject_modified": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "sealing agent (actor-independent from the author)",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

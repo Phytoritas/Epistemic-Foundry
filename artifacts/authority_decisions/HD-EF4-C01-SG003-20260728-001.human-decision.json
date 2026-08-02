@@ -1,0 +1,31 @@
+{
+  "decision_id": "HD-EF4-C01-SG003-20260728-001",
+  "run_id": null,
+  "subject_id": "C01-SG003",
+  "decision_type": "correct",
+  "decision": "Resolve C01-SG003 prospectively: C01 owns only canonical-contract conformance; C02 regenerates language and UI models; C03 exclusively owns the five authorized handwritten runtime and regression-test migration paths; C04 owns the repository-wide zero-failure conformance gate; B04 begins only after C04 PASS. PromotionDecision grants a non-null canonical level only for PROMOTE or CONDITIONAL, while REJECT, UNDERDETERMINED, and BLOCKED require granted_level null and preserve prior candidate state. Authorize C01-0004 without changing C01-0003 or any earlier history.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "C01-0003 correctly established that the canonical schemas, examples, OpenAPI document, and targeted contract tests conform while exactly 24 full-suite failures remain in handwritten runtime producers and their tests. Assigning that migration to C03, generated parity to C02, and the final full-suite gate to C04 preserves package boundaries without weakening resolved_refs, reintroducing legacy enum aliases, hiding failures, or allowing incoherent packaging. Non-granting decisions represent no newly granted level and therefore use null rather than copying an existing Passport level.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/C01/attempts/0003/report.json",
+    "artifacts/work_packages/C01/attempts/0003/c01-regression-boundary-verification.json",
+    "artifacts/work_packages/C01/attempts/0003/review.md",
+    "artifacts/authority_decisions/HD-EF4-C01-SG002-20260728-001.human-decision.json",
+    "artifacts/authority_decisions/HD-EF4-A05-C01-B04-20260727-001.human-decision.json",
+    "RAH:E0004",
+    "RAH:generation:000002-e90aad20"
+  ],
+  "affected_artifact_ids": [
+    "manifests/development_manifest.yaml",
+    "C01-0004",
+    "C02",
+    "C03",
+    "C04",
+    "B04"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-28T00:00:00Z",
+  "decision_hash": "sha256:4717a98cfc987dac28c9b113d843e6f0077947d42589523e8e4cee2f0be64f5b"
+}

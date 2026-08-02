@@ -1,0 +1,414 @@
+{
+  "attempt_id": "P05-0001",
+  "attempt_type": "P05_PROMOTION_PARLIAMENT_RED_QUEEN_MINORITY",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "P05-0001",
+    "dependencies": {
+      "O05": {
+        "attempt_id": "O05-0001",
+        "core_evidence_id": "E0211",
+        "final_closeout_evidence_id": "E0212",
+        "report": "artifacts/work_packages/O05/attempts/0001/report.json",
+        "report_sha256": "sha256:5ca6e96b90ef21bd30665deb28c063993e46f811be7f5aae00ad795d1e09636e",
+        "status": "PASS"
+      },
+      "P04": {
+        "attempt_id": "P04-0001",
+        "core_evidence_id": "E0147",
+        "final_closeout_evidence_id": "E0148",
+        "report": "artifacts/work_packages/P04/attempts/0001/report.json",
+        "report_sha256": "sha256:f94cab8d02468a199b0b08030728d172ea1530b34c500c93307c33e050f220ab",
+        "status": "PASS"
+      },
+      "Q05": {
+        "attempt_id": "Q05-0001",
+        "core_evidence_id": "E0235",
+        "final_closeout_evidence_id": "E0236",
+        "report": "artifacts/work_packages/Q05/attempts/0001/report.json",
+        "report_sha256": "sha256:f0e19a420500064b4c977b2c1fea20a1a21cb68ed422fb3c48233001c0111455",
+        "status": "PASS"
+      },
+      "R05": {
+        "attempt_id": "R05-0001",
+        "core_evidence_id": "E0205",
+        "final_closeout_evidence_id": "E0206",
+        "report": "artifacts/work_packages/R05/attempts/0001/report.json",
+        "report_sha256": "sha256:7688e7bf376cbd132a79f1c6fd8040ded629cbb8bd66b01eaee2205f702b852f",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_P05_0001_THEN_CONTINUE_DAG",
+    "regression_baseline": {
+      "attempt_id": "X04-0001",
+      "core_evidence_id": "E0251",
+      "final_closeout_evidence_id": "E0252",
+      "report": "artifacts/work_packages/X04/attempts/0001/report.json",
+      "report_sha256": "sha256:87d60e7bae4b75588f4c3093a0ec2425912eba4e7ed15d3db9587bf6ff7312a2",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": "PASS",
+    "governing_schemas_authority_boundaries_failure_states_exact": "PASS",
+    "happy_negative_crash_resume_adversarial_coverage": "PASS",
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "promotion of any candidate: P05 convenes or withholds a docket and records lineage only; promotion authority lives in governance.promotion and takes no score",
+    "that the multi-dimensional promotion review collapses to a single scalar score",
+    "that any preserved minority report or dissent may be dropped",
+    "that Red Queen adversarial evidence may be skipped rather than weighed across every declared O05 lane",
+    "that statistical correction or independent replication may be waived: the Q05 ADMIT receipt and a replication-bounded ceiling are required",
+    "runtime execution, backend dispatch or evolution-search orchestration of this gate",
+    "DSSAT or any plant-model numerical parity",
+    "actor-independent (provider-independent) external certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 38762,
+      "path": "artifacts/work_packages/P05/attempts/0001/build_p05_0001_evidence.py",
+      "sha256": "sha256:53bf8d96534f2f16e6436f11b49c8a18a933b10fb819d54f59cd47c2e91df66a"
+    },
+    {
+      "byte_size": 2745,
+      "path": "artifacts/work_packages/P05/attempts/0001/check_packaging.py",
+      "sha256": "sha256:aa8e11b5d466df1f74e9e257d56295407b585b95a46b88f8fc2296bd1d26b35f"
+    },
+    {
+      "byte_size": 11855,
+      "path": "artifacts/work_packages/P05/attempts/0001/commands.jsonl",
+      "sha256": "sha256:78044f0569996f1e26b8ff2a3b1a643765e96100179a7171284dc4b5444b50e3"
+    },
+    {
+      "byte_size": 10544,
+      "path": "artifacts/work_packages/P05/attempts/0001/dependency-regression-o05.junit.xml",
+      "sha256": "sha256:e258483444ff96d063d367a927e955fd03e0fbbc06c7c097c4f63701116aad93"
+    },
+    {
+      "byte_size": 5704,
+      "path": "artifacts/work_packages/P05/attempts/0001/dependency-regression-p04.junit.xml",
+      "sha256": "sha256:56c30b6a9e3413d579c7ff17d88103430dd94755409df62036409e10cac7fb0d"
+    },
+    {
+      "byte_size": 4508,
+      "path": "artifacts/work_packages/P05/attempts/0001/dependency-regression-q05.junit.xml",
+      "sha256": "sha256:86b2a315d1d3f6c750177377af8dd7788ae19e63608df4ed6e24e314e0ff7a55"
+    },
+    {
+      "byte_size": 6399,
+      "path": "artifacts/work_packages/P05/attempts/0001/dependency-regression-r05.junit.xml",
+      "sha256": "sha256:e5dbc586bffe175adf9277e0bf2b7f90f12fbb71d9033e5eeb3ca36952318c20"
+    },
+    {
+      "byte_size": 1757,
+      "path": "artifacts/work_packages/P05/attempts/0001/dependency-status.json",
+      "sha256": "sha256:c08e6cb9e19bbbbd9c64b73d1e1590b296284df96271c1d325a03cb9695023ce"
+    },
+    {
+      "byte_size": 15492,
+      "path": "artifacts/work_packages/P05/attempts/0001/fixtures.py",
+      "sha256": "sha256:e5316624f4e36128f7457e0a11f04c640c7e2ac49d5f827d7df1b8f02933a832"
+    },
+    {
+      "byte_size": 233786,
+      "path": "artifacts/work_packages/P05/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:f421c2f3b565bdd1e79c42e687daea9761f2a9ea34394395341c00433cd14935"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/P05/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 5299,
+      "path": "artifacts/work_packages/P05/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:f21437e75ee9c26c74db80cb995fece2fd5ea4697d7fe15b8fb4deae3a77bed9"
+    },
+    {
+      "byte_size": 3031,
+      "path": "artifacts/work_packages/P05/attempts/0001/negative-and-adversarial-tests.junit.xml",
+      "sha256": "sha256:9864ca570ca104430477e58cc03043a243db11b977c67edfd541ed68479a3fa0"
+    },
+    {
+      "byte_size": 4055,
+      "path": "artifacts/work_packages/P05/attempts/0001/p05-verification.json",
+      "sha256": "sha256:22f2021f0e61a48e06845258e1683cf13f61299e5eefbbea64bed3d0fb8ff1a8"
+    },
+    {
+      "byte_size": 26690,
+      "path": "artifacts/work_packages/P05/attempts/0001/p05_0001_rah_seal.py",
+      "sha256": "sha256:409ec26fd003bf5963c300eaccaaff3315e60eb53ae61a0e901b44e125caede7"
+    },
+    {
+      "byte_size": 918,
+      "path": "artifacts/work_packages/P05/attempts/0001/provenance-and-receipt-audit.junit.xml",
+      "sha256": "sha256:408e4b27f2c586f30c468238718f83949d82e3b61f403e5bd0d19fdbcd6e8d26"
+    },
+    {
+      "byte_size": 414,
+      "path": "artifacts/work_packages/P05/attempts/0001/pytest.ini",
+      "sha256": "sha256:cca564609cb143bef6854e1037e3f224c2ec82a2f8ae0f677be936ca014b4a9f"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/P05/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:be631a56d0d162927beab2bf4045efbf6ca3ba09df965f0b3afbdf852e45bdb0"
+    },
+    {
+      "byte_size": 2998,
+      "path": "artifacts/work_packages/P05/attempts/0001/review.md",
+      "sha256": "sha256:8476323ab9832b5dae2642ebe37022a7646247ee3a063880a6ce2435df597c7d"
+    },
+    {
+      "byte_size": 10062,
+      "path": "artifacts/work_packages/P05/attempts/0001/run_p05_0001_checks.py",
+      "sha256": "sha256:59cc2fc808a160e12da647bc32863c1780be95b09fbb394853ba760862872307"
+    },
+    {
+      "byte_size": 896,
+      "path": "artifacts/work_packages/P05/attempts/0001/schema-and-type-check.junit.xml",
+      "sha256": "sha256:ab7b551bef3ffe2c8a955ca9d5533e4be3171c5496be13cdcc071345f1ae39f5"
+    },
+    {
+      "byte_size": 6226,
+      "path": "artifacts/work_packages/P05/attempts/0001/test_negative_adversarial.py",
+      "sha256": "sha256:acb4042cb5ce66ff819fcbb0721e3c6fb7f07b74ac07d8ee6b37c606fb522811"
+    },
+    {
+      "byte_size": 3424,
+      "path": "artifacts/work_packages/P05/attempts/0001/test_provenance_receipt.py",
+      "sha256": "sha256:32f55e1ba5819578880cb2cbd0dbb9eab4cf99b1b1cb318f383e732b905b5ab9"
+    },
+    {
+      "byte_size": 4604,
+      "path": "artifacts/work_packages/P05/attempts/0001/test_schema_type.py",
+      "sha256": "sha256:03b069eb16164d604e3896dbda582e7fb0a52841e6df5487a65602718ef149d6"
+    },
+    {
+      "byte_size": 3972,
+      "path": "artifacts/work_packages/P05/attempts/0001/test_unit_contract.py",
+      "sha256": "sha256:9b2a042e7ef10e602b69e89f0d0f6a87e9a9cdd73dde1a004381bfd8f45daa63"
+    },
+    {
+      "byte_size": 1227,
+      "path": "artifacts/work_packages/P05/attempts/0001/unit-and-contract-tests.junit.xml",
+      "sha256": "sha256:7033ef929329dd5e880be0919518c6610f60a331213327b0a269f4a39cea741a"
+    },
+    {
+      "byte_size": 2103,
+      "path": "artifacts/work_packages/P05/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:7be7e44f9eb5d8e6c3e20988040fa9eef9e0251ba453db05e1ba1b6b9a882e9b"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0255",
+    "core_generation": "000253-230f70cd",
+    "final_closeout_evidence_id": "E0256",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1518,
+    "implementation_gate": "fail",
+    "retained_generation_count": 253,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "P05-0001",
+    "baseline_attempt": "X04-0001",
+    "component_tests_are_targeted_only": true,
+    "count_authority": "derived_from_measured_junit_expected_equals_measured",
+    "new_failure_count": 0,
+    "status": "PASS",
+    "suites": {
+      "dependency_regression_o05": {
+        "collected": 91,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/P05/attempts/0001/dependency-regression-o05.junit.xml",
+        "junit_sha256": "sha256:e258483444ff96d063d367a927e955fd03e0fbbc06c7c097c4f63701116aad93",
+        "passed": 91,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 91
+      },
+      "dependency_regression_p04": {
+        "collected": 52,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/P05/attempts/0001/dependency-regression-p04.junit.xml",
+        "junit_sha256": "sha256:56c30b6a9e3413d579c7ff17d88103430dd94755409df62036409e10cac7fb0d",
+        "passed": 52,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 52
+      },
+      "dependency_regression_q05": {
+        "collected": 40,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/P05/attempts/0001/dependency-regression-q05.junit.xml",
+        "junit_sha256": "sha256:86b2a315d1d3f6c750177377af8dd7788ae19e63608df4ed6e24e314e0ff7a55",
+        "passed": 40,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 40
+      },
+      "dependency_regression_r05": {
+        "collected": 58,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/P05/attempts/0001/dependency-regression-r05.junit.xml",
+        "junit_sha256": "sha256:e5dbc586bffe175adf9277e0bf2b7f90f12fbb71d9033e5eeb3ca36952318c20",
+        "passed": 58,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 58
+      },
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1233,
+        "failed": 0,
+        "junit": "artifacts/work_packages/P05/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:f421c2f3b565bdd1e79c42e687daea9761f2a9ea34394395341c00433cd14935",
+        "passed": 1233,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1228
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/P05/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "negative_and_adversarial_tests": {
+        "collected": 22,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/P05/attempts/0001/negative-and-adversarial-tests.junit.xml",
+        "junit_sha256": "sha256:9864ca570ca104430477e58cc03043a243db11b977c67edfd541ed68479a3fa0",
+        "passed": 22,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 22
+      },
+      "provenance_and_receipt_audit": {
+        "collected": 7,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/P05/attempts/0001/provenance-and-receipt-audit.junit.xml",
+        "junit_sha256": "sha256:408e4b27f2c586f30c468238718f83949d82e3b61f403e5bd0d19fdbcd6e8d26",
+        "passed": 7,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 7
+      },
+      "schema_and_type_check": {
+        "collected": 7,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/P05/attempts/0001/schema-and-type-check.junit.xml",
+        "junit_sha256": "sha256:ab7b551bef3ffe2c8a955ca9d5533e4be3171c5496be13cdcc071345f1ae39f5",
+        "passed": 7,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 7
+      },
+      "unit_and_contract_tests": {
+        "collected": 10,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/P05/attempts/0001/unit-and-contract-tests.junit.xml",
+        "junit_sha256": "sha256:7033ef929329dd5e880be0919518c6610f60a331213327b0a269f4a39cea741a",
+        "passed": 10,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 10
+      }
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation subagent; reviewer: the sealing agent, actor-independent from the author; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 22
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 10
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (a bounded implementation subagent authored the gate, the sealing agent reviewed it); external actor-independent (provider-independent) certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "P05",
+  "write_scope": {
+    "approved_scope": [
+      "src/epistemic_foundry/parliament/v4_p05/**",
+      "artifacts/work_packages/P05/**"
+    ],
+    "attempt_id": "P05-0001",
+    "authored_by": "a bounded implementation subagent (gate) and the sealing agent (runner, evidence and seal) across bounded turns",
+    "authority_decision": "P05's manifest write_scope is src/epistemic_foundry/parliament/v4_p05/**; the namespace marker src/epistemic_foundry/parliament/__init__.py sits one level above that glob and is a mandatory wheel-discovery prerequisite that P05 created (the sealed P04 Parliament tree lives under a separate python/epistemic_foundry/parliament root, so no src marker existed to reuse). It carries no logic and is proven necessary by check_packaging.py, exactly as the sibling gates authorized their own new namespace markers. Ratified by the primary session as a necessary packaging prerequisite; no separate HumanDecision was recorded.",
+    "component_files": [
+      "src/epistemic_foundry/parliament/__init__.py",
+      "src/epistemic_foundry/parliament/v4_p05/__init__.py",
+      "src/epistemic_foundry/parliament/v4_p05/gate.py"
+    ],
+    "composed_modules_modified": false,
+    "product_file_hashes": {
+      "artifacts/work_packages/P05/attempts/0001/run_p05_0001_checks.py": "sha256:59cc2fc808a160e12da647bc32863c1780be95b09fbb394853ba760862872307",
+      "src/epistemic_foundry/parliament/__init__.py": "sha256:4733924624c3e685777c6e4f2c332e34729a4c2dff62bfa5ec66410c5ac2e0ee",
+      "src/epistemic_foundry/parliament/v4_p05/__init__.py": "sha256:26fa6b7fe72f8f52cae0f3d847da0eccd802833baf93cfc0a9518a631503c7a8",
+      "src/epistemic_foundry/parliament/v4_p05/gate.py": "sha256:710c721f04eef9f1e6fa99593b479f0a9dadfa47ad978b6939e9dfd9fa4e892c"
+    },
+    "pyproject_modified": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "the sealing agent, actor-independent from the bounded implementation subagent that authored the gate",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

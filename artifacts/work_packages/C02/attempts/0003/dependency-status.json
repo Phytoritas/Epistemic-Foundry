@@ -1,0 +1,47 @@
+{
+  "attempt_id": "C02-0003",
+  "dependencies": {
+    "B04": {
+      "attempt_id": "B04-0007",
+      "report": "artifacts/work_packages/B04/attempts/0007/report.json",
+      "report_sha256": "sha256:156c205ac874d5399dd68ec0a285e32fd5d6921bcc42eb6c180b242617fa8dd3",
+      "status": "PASS"
+    },
+    "C01": {
+      "attempt_id": "C01-0007",
+      "report": "artifacts/work_packages/C01/attempts/0007/report.json",
+      "report_sha256": "sha256:13e989701aab58b670e467c20b35cee9fd77ac7852b56a2a4dd4b5aa7ffc447e",
+      "status": "PASS"
+    },
+    "C03": {
+      "attempt_id": "C03-0003",
+      "report": "artifacts/work_packages/C03/attempts/0003/report.json",
+      "report_sha256": "sha256:624ee1ef8fb21ee33670e19b6262d3226e8350aaf291da8d90e94e8c46273a56",
+      "status": "PASS"
+    },
+    "C04": {
+      "attempt_id": "C04-0002",
+      "report": "artifacts/work_packages/C04/attempts/0002/report.json",
+      "report_sha256": "sha256:a6224df570da678705c3605972fd9417356222985f03340237ef7c29de488dc0",
+      "status": "FAIL"
+    }
+  },
+  "development_manifest_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+  "fixed_repair_order": [
+    "C04-0002_FAIL",
+    "C02-0003_PASS",
+    "C04-0003_FULL_CONFORMANCE",
+    "B04-0008_FINAL_PACKAGING"
+  ],
+  "next_package": "C04-0003",
+  "states": {
+    "B04-0007": "PASS_PRE_C04_PROJECTION",
+    "B04-0008": "WAITING_ON_C04_PASS",
+    "C01-0007": "PASS",
+    "C02-0003": "PASS_AFTER_SEAL",
+    "C03-0003": "PASS",
+    "C04-0002": "FAIL_IMMUTABLE_HISTORY",
+    "C04-0003": "DEPENDENCY_READY_AFTER_C02_SEAL"
+  },
+  "status": "PASS"
+}

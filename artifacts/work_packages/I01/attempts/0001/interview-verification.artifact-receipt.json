@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "I01-0001-INTERVIEW-VERIFICATION",
+  "byte_size": 6872,
+  "content_hash": "sha256:5dcd871c280900fabcb57ae1785fe6db136f1486788e31fa505ddd72525b60aa",
+  "created_at": "2026-07-29T07:49:12Z",
+  "created_by": {
+    "actor_id": "SVC-FOUNDRY-KERNEL-I01",
+    "actor_type": "service"
+  },
+  "locator": "artifacts/work_packages/I01/attempts/0001/interview-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:30d32dfa361296010b193d8891a0315ec5f95c7b5d011d5f86a35f38ac8ca2ba",
+  "receipt_id": "AR-I01-0001-INTERVIEW-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "interview_readiness_test",
+      "details": "19/19 decision-critical question, readiness, contradiction, ordering, and fail-closed cases passed",
+      "status": "PASS"
+    },
+    {
+      "check": "no_repeat_question_test",
+      "details": "17/17 stable identity, pending, replay, blocker, and forged-history cases passed",
+      "status": "PASS"
+    },
+    {
+      "check": "full_python_regression",
+      "details": "947/947 passed with zero skipped tests",
+      "status": "PASS"
+    }
+  ]
+}

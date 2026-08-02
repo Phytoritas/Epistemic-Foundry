@@ -1,0 +1,83 @@
+{
+  "attempt_id": "O02-0002",
+  "files": {
+    "d04_isolated": {
+      "normalized_sha256": "sha256:e3d0871873f178e82518132ff46db671d8da4e5cddfe7fc24d4ea0654eafd093",
+      "raw_sha256": "sha256:e5941901e3d6101a724d3a18f7c11f00721375e6613a840f60d1b1a102b591e6",
+      "removed": {
+        "hostname_attributes": 1,
+        "time_attributes": 2,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 1
+    },
+    "full_node": {
+      "normalized_sha256": "sha256:12858b104d2967202f6c563af15d80312e5b8710a96022d34e9c32cf0c1cd6f7",
+      "raw_sha256": "sha256:32e613bffa473626961dd8aa8317074c5b48181c0cda9990edf45e5cc8131502",
+      "removed": {
+        "duration_comments": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 814
+    },
+    "full_python_first": {
+      "normalized_sha256": "sha256:8d5039c84cdd83388fefe9308bacfcd50a6d229d9020810744cef550fc5738fd",
+      "raw_sha256": "sha256:ed4159de6dc9400ca9a73b12fad6a631cd9b90f3b1934bed41243ea65627bfbd",
+      "removed": {
+        "hostname_attributes": 1,
+        "time_attributes": 1116,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 1115
+    },
+    "full_python_recheck": {
+      "normalized_sha256": "sha256:0e88d1a18c258de191c883369a2a11328a03ec77e1db0b0a8a6f75050ab691f8",
+      "raw_sha256": "sha256:c5087e6c2e47fdb492975cb5005e424e1206c34f5eb1072051bbbdff7ba541b1",
+      "removed": {
+        "hostname_attributes": 1,
+        "time_attributes": 1116,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 1115
+    },
+    "targeted_o02": {
+      "normalized_sha256": "sha256:d9905fa75f2b624ef9e3b8910c166344c0d4d8b493d6fa60afeabbfbfc98f14d",
+      "raw_sha256": "sha256:9b2fe104f2973df464d73410277548468b0edaf899d8d695c574615e1269ff41",
+      "removed": {
+        "hostname_attributes": 1,
+        "time_attributes": 43,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 42
+    },
+    "targeted_o02_o01": {
+      "normalized_sha256": "sha256:9974021e54da1d5c836e09d24c82dc9984b2a483c6b1b31844d0897e441b7d0b",
+      "raw_sha256": "sha256:ab7b08d2a1afd175e542faf4dcc1a214696002c19f5387053afd77558f5d3f73",
+      "removed": {
+        "hostname_attributes": 1,
+        "time_attributes": 84,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 83
+    }
+  },
+  "normalization_scope": [
+    "remove pytest host, timestamp, and timing attributes",
+    "remove repository and user-home absolute path prefixes",
+    "normalize the random disposable PostgreSQL container suffix",
+    "remove Node duration_ms while retaining footer counters"
+  ],
+  "preserved": [
+    "testcase identity",
+    "failure, error, and skip state",
+    "normalized failure type, message, and body",
+    "Node authoritative footer counters"
+  ],
+  "recorded_at_utc": "2026-07-31T10:33:58.441Z",
+  "status": "PASS"
+}

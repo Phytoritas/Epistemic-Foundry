@@ -1,0 +1,48 @@
+{
+  "attempt_id": "D03-0001",
+  "content_addressing": {
+    "distinct_bytes_never_alias": true,
+    "identical_bytes_share_one_object": true,
+    "identifier_cannot_be_rebound_to_different_bytes": true,
+    "immutable_metadata_cannot_be_overwritten": true,
+    "registration_and_receipt_replay_is_idempotent": true
+  },
+  "exit_criteria": {
+    "immutable_artifacts_address_by_hash": {
+      "evidence": [
+        "packages/foundry-kernel/src/artifacts/artifact-hash.test.mjs",
+        "packages/foundry-kernel/src/artifacts/orphan-receipt.test.mjs"
+      ],
+      "mechanism": "object bytes are stored once under their sha256 digest at sha256/<aa>/<rest>/content.bin and never overwritten; the content_hash and storage_uri in each frozen manifest are the digest of the exact bytes, identical bytes replay as EXISTING, distinct bytes occupy distinct addresses, and an artifact ID can never be rebound to different bytes",
+      "status": "PASS"
+    },
+    "receipt_resolves_bytes_schema_creator": {
+      "evidence": [
+        "packages/foundry-kernel/src/artifacts/artifact-hash.test.mjs",
+        "packages/foundry-kernel/src/artifacts/orphan-receipt.test.mjs"
+      ],
+      "mechanism": "resolveReceipt returns the exact addressed bytes, the receipt schema_ref, the creating actor, and the resolving manifest; an orphaned receipt whose content, manifest, or record is missing or mislabelled fails closed rather than resolving stale bytes",
+      "status": "PASS"
+    }
+  },
+  "integrity_failure_mode": {
+    "benign_windows_lock_handoff_tolerated_within_bound": true,
+    "persistent_transient_error_still_fails_closed": true,
+    "safe_mode_is_read_only": true,
+    "safe_mode_refuses_all_mutation_paths": true
+  },
+  "required_checks": {
+    "artifact_hash_test": {
+      "module": "packages/foundry-kernel/src/artifacts/artifact-hash.test.mjs",
+      "status": "PASS",
+      "test_count": 21
+    },
+    "orphan_receipt_test": {
+      "module": "packages/foundry-kernel/src/artifacts/orphan-receipt.test.mjs",
+      "status": "PASS",
+      "test_count": 19
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 40
+}

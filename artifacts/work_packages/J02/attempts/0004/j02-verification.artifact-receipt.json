@@ -1,0 +1,43 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "J02-0004-INVENTORY-AUTHORITY-VERIFICATION",
+  "byte_size": 13080,
+  "content_hash": "sha256:f49b998853c7fdf847fa78aeacffdfb8f56df8ea0b580facd3206f077efb4461",
+  "created_at": "2026-07-31T08:30:00.000Z",
+  "created_by": {
+    "actor_id": "SVC-FOUNDRY-KERNEL-J02",
+    "actor_type": "service"
+  },
+  "locator": "artifacts/work_packages/J02/attempts/0004/inventory-authority-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:30f2b91e3cbfc4b700bfd4d6069bd7568d17cadac4bd0d24e645c02d90ae6720",
+  "receipt_id": "AR-J02-0004-INVENTORY-AUTHORITY-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "authority_rebinding",
+      "details": "17/17 current MASTER_SPEC bindings",
+      "status": "PASS"
+    },
+    {
+      "check": "context_budget_test",
+      "details": "20/20",
+      "status": "PASS"
+    },
+    {
+      "check": "reference_reachability_test",
+      "details": "25/25",
+      "status": "PASS"
+    },
+    {
+      "check": "j01_routing_regression",
+      "details": "19/19",
+      "status": "PASS"
+    },
+    {
+      "check": "j02_regression_reconciliation",
+      "details": "J02-caused failures 0; downstream B04 and S04 debts retained",
+      "status": "PASS"
+    }
+  ]
+}

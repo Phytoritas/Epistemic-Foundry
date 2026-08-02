@@ -1,0 +1,23 @@
+{
+  "$id": "https://epistemic-foundry.local/schemas/v4_c06/evolution-compatibility-binding.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Compatibility binding for an evolution-family schema change: a migration cannot be recorded without the compatibility matrix it applies under, and the impact it declares travels with it. Every constraint is a reference to the canonical contract that owns it, so this composite adds no vocabulary of its own (EF4-I22).",
+  "properties": {
+    "compatibility_matrix": {
+      "$ref": "https://epistemic-foundry.local/schemas/compatibility-matrix.schema.json"
+    },
+    "impact_report": {
+      "$ref": "https://epistemic-foundry.local/schemas/update-impact-report.schema.json"
+    },
+    "migration": {
+      "$ref": "https://epistemic-foundry.local/schemas/schema-migration.schema.json"
+    }
+  },
+  "required": [
+    "compatibility_matrix",
+    "migration"
+  ],
+  "title": "EvolutionCompatibilityBinding",
+  "type": "object"
+}

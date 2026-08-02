@@ -1,0 +1,160 @@
+{
+  "attempt_id": "C03-0002",
+  "authority_decision_id": "HD-EF4-C01-SG004-20260730-001",
+  "canonical_contract": {
+    "document_registration_contracts_present": true,
+    "example_count": 126,
+    "schema_count": 126,
+    "status": "PASS",
+    "unique_schema_id_count": 126
+  },
+  "dependencies": {
+    "C01_0006": "PASS",
+    "C02_0002": "PASS",
+    "frozen_dependency_hash_count": 5,
+    "status": "PASS"
+  },
+  "document_registration_migration": {
+    "canonical_input_precondition": "DocumentRegistrationRequest is boundary-validated before migration; the migration rechecks closed fields, hash/ID binding and UTC time",
+    "environment_or_repository_discovery_count": 0,
+    "failure_code": "LEGACY_DOCUMENT_REGISTRATION_EVIDENCE_REQUIRED",
+    "migration_hash": "sha256:dd3f3046b90dee537d87f90898bfe97848fa4b7172a523762a644021b2417ece",
+    "output_fixture_parity": "PASS",
+    "rollback_exact_source_payload": "PASS",
+    "schema_validation": "PASS",
+    "source_manifest_hash": "sha256:ec847a102b74d7b60099694a91aba65c9de660450625268b9180dde4be1db48f",
+    "status": "PASS"
+  },
+  "legacy_promotion_value_hits": [],
+  "manifest_contract": {
+    "B04_static_depends_on": [
+      "B02",
+      "B03",
+      "C04"
+    ],
+    "C03": {
+      "depends_on": [
+        "C01",
+        "C02"
+      ],
+      "exit_criteria": [
+        "read/write compatibility explicit",
+        "rollback and backfill required for breaking changes",
+        "legacy document manifests migrate only from sufficient immutable registration evidence",
+        "unresolved legacy registration or constitutional artifacts fail closed"
+      ],
+      "required_checks": [
+        "compatibility_matrix_test",
+        "migration_fixture_test",
+        "document_registration_migration_test",
+        "evolution_authority_compatibility_test"
+      ],
+      "write_scope": [
+        "migrations/contracts/**",
+        "docs/schema_evolution.md",
+        "src/epistemic_foundry/evolution_chamber/run_spec.py",
+        "src/epistemic_foundry/governance/promotion.py",
+        "tests/test_evolution_chamber.py",
+        "tests/test_governance.py",
+        "tests/test_integration_forge_cycle.py",
+        "artifacts/work_packages/C03/**"
+      ]
+    },
+    "C04_depends_on": [
+      "C02",
+      "C03"
+    ],
+    "package_count": 156,
+    "pre_C04_B04_is_attempt_level_only": true,
+    "static_dependency_cycle_added": false,
+    "status": "PASS"
+  },
+  "protected_history": {
+    "C03_0001_artifact_count": 9,
+    "C03_0001_hashes_unchanged": true,
+    "status": "PASS"
+  },
+  "regression": {
+    "attempt_id": "C03-0002",
+    "baseline_test_count": 970,
+    "failure_owner_counts": {
+      "B04": 18,
+      "J02": 1
+    },
+    "full_python": {
+      "artifact": "artifacts/work_packages/C03/attempts/0002/full-python-regression.junit.xml",
+      "artifact_sha256": "sha256:d6488cb7d773fb18de0e57ce9ecfde8b0f2af76b8d659305b83bb8a6ea312925",
+      "errors": 0,
+      "failures": 19,
+      "passed": 964,
+      "skipped": 0,
+      "status": "EXPECTED_DOWNSTREAM_AND_PREEXISTING_FAILURES",
+      "tests": 983
+    },
+    "full_suite_is_not_reported_pass": true,
+    "new_c03_failure_count": 0,
+    "new_passing_test_count": 13,
+    "new_passing_test_nodes": [
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_emits_canonical_lineage",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_malformed_immutable_evidence[registered_at-2026-07-30T00:02:00+09:00-ending in Z]",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_malformed_immutable_evidence[registration_ledger_event_id-None-registration_ledger_event_id]",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_malformed_immutable_evidence[source_content_hash-sha256:not-a-digest-canonical sha256]",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_malformed_immutable_evidence[source_effect_receipt_id-None-source_effect_receipt_id]",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_malformed_immutable_evidence[submitted_by_principal_id--submitted principal]",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_non_utc_recorded_at",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_noncanonical_request_fields",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_rehashed_nested_schema_violations",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_source_identity_drift",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rejects_unbound_receipt_evidence",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_requires_more_than_final_manifest",
+      "tests/test_integration_forge_cycle.py::test_document_registration_migration_rollback_is_hash_bound"
+    ],
+    "same_failure_messages": true,
+    "same_failure_node_ids": true,
+    "same_normalized_fingerprints": true,
+    "status": "PASS_WITH_DECLARED_RESIDUAL_FAILURES",
+    "targeted": {
+      "artifact": "artifacts/work_packages/C03/attempts/0002/targeted-runtime-migration.junit.xml",
+      "artifact_sha256": "sha256:5cf17aff2edb272bc8e4f721903a731449925ed2a6483901705a96e9b7a7525a",
+      "errors": 0,
+      "failures": 0,
+      "passed": 105,
+      "skipped": 0,
+      "status": "PASS",
+      "tests": 105
+    }
+  },
+  "source_hashes": {
+    "docs/schema_evolution.md": "sha256:0e0aee2de923b0b28a94f193accadbdc20bba65f35755851f212722d7d95b44d",
+    "manifests/development_manifest.yaml": "sha256:8859303ea2fbe8d71655b2c244daf424a9742d4ce700bb93edddc20e3a06f23b",
+    "migrations/contracts/__init__.py": "sha256:df3d0d1fe68f56b348a825d8b01d14c2ef6e92e704ef6ef35e8284ffc2737e36",
+    "migrations/contracts/compatibility-matrix.json": "sha256:eb4f9ddc499a340be8422ef2f94bfe9235acacbea61d602870ee62e616a97412",
+    "migrations/contracts/document-registration-v3-to-v4.migration.json": "sha256:7be069808c5c1d136db13c13c1cdf04d3b65a7dad840c4c0e7e49e71d60c2498",
+    "migrations/contracts/document_registration_migration.py": "sha256:e2e403803f75d1df444b1a6c80ddb523858eda4163a59a49b78761b667d4560f",
+    "migrations/contracts/fixtures/document-manifest-v3.json": "sha256:7776d632c9a80c16bebfa2b892c63f70a274269cf1574483ac86a8e525a85fa9",
+    "migrations/contracts/fixtures/document-registration-evidence.json": "sha256:2ca560f28a6ea5bdfbc83df163ef0a1d5b931c611af6be604ffbedad0773aa2b",
+    "migrations/contracts/fixtures/document-registration-migration-record.json": "sha256:8e82f7ee800e6b6645af210ce9abca5b452f528c5a53a494d8e746ce678aff17",
+    "migrations/contracts/migration-record.schema.json": "sha256:1ff0311e4ec8674182416edf40472d87b673701e6227d0e1348c040c764aa629",
+    "src/epistemic_foundry/evolution_chamber/run_spec.py": "sha256:ce6a135dac6fbfb98184ff46448da88222cdb2de5ef31066d2f146bc25a7dc1c",
+    "src/epistemic_foundry/governance/promotion.py": "sha256:9078dae66ff527b36915d924e579c49b7937ce78d0c084c2f8b00852e0113f51",
+    "tests/test_evolution_chamber.py": "sha256:fa69b90f5d830d0f3552d374733da15a4769aae150fef4ed47ed35d8f19ac59f",
+    "tests/test_governance.py": "sha256:e2b83693db1434d88dbafd8c2f71cb5c9f7b89bf29e3a1cc0eb8fdd2bf99184c",
+    "tests/test_integration_forge_cycle.py": "sha256:c82372a9677ce2a380b1f7446a2f82d24671ef407994ca60a8ed44bc384a5874"
+  },
+  "status": "PASS",
+  "write_scope_audit": {
+    "declared_scope": [
+      "migrations/contracts/**",
+      "docs/schema_evolution.md",
+      "src/epistemic_foundry/evolution_chamber/run_spec.py",
+      "src/epistemic_foundry/governance/promotion.py",
+      "tests/test_evolution_chamber.py",
+      "tests/test_governance.py",
+      "tests/test_integration_forge_cycle.py",
+      "artifacts/work_packages/C03/**"
+    ],
+    "status": "PASS",
+    "unauthorized_migrations_init_present": false,
+    "violation_count": 0
+  }
+}

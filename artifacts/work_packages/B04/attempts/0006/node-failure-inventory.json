@@ -1,0 +1,101 @@
+{
+  "attempt_id": "B04-0006",
+  "completion_ready": false,
+  "failing_leaf_testcase_count": 10,
+  "failures": [
+    {
+      "classification": "F04_GATE_DECISION_FIXTURE_DRIFT",
+      "failure_type": "testCodeFailure",
+      "file": "tests/golden/forge/f04_forge_golden_flows.test.mjs",
+      "message": "F04 canonical schema validation failed\nstdout:\nstderr: GateDecision:: 'gate_version' is a required property\n1 !== 0",
+      "name": "E1_LOOKUP_MINIMUM",
+      "owner": "F04"
+    },
+    {
+      "classification": "F04_GATE_DECISION_FIXTURE_DRIFT",
+      "failure_type": "testCodeFailure",
+      "file": "tests/golden/forge/f04_forge_golden_flows.test.mjs",
+      "message": "F04 canonical schema validation failed\nstdout:\nstderr: GateDecision:: 'gate_version' is a required property\n1 !== 0",
+      "name": "E3_MECHANISM_FULL",
+      "owner": "F04"
+    },
+    {
+      "classification": "F04_GATE_DECISION_FIXTURE_DRIFT",
+      "failure_type": "testCodeFailure",
+      "file": "tests/golden/forge/f04_forge_golden_flows.test.mjs",
+      "message": "F04 canonical schema validation failed\nstdout:\nstderr: GateDecision:: 'gate_version' is a required property\n1 !== 0",
+      "name": "E5_AMBIGUOUS_INTERVIEW_FULL",
+      "owner": "F04"
+    },
+    {
+      "classification": "F04_GATE_DECISION_FIXTURE_DRIFT",
+      "failure_type": "testCodeFailure",
+      "file": "tests/golden/forge/f04_forge_golden_flows.test.mjs",
+      "message": "F04 canonical schema validation failed\nstdout:\nstderr: GateDecision:: 'gate_version' is a required property\n1 !== 0",
+      "name": "forge_golden_flows: UNDERDETERMINED is a receipt-bound truthful terminal outcome",
+      "owner": "F04"
+    },
+    {
+      "classification": "F04_GATE_DECISION_FIXTURE_DRIFT",
+      "failure_type": "testCodeFailure",
+      "file": "tests/golden/forge/f04_forge_golden_flows.test.mjs",
+      "message": "F04 canonical schema validation failed\nstdout:\nstderr: GateDecision:: 'gate_version' is a required property\n1 !== 0",
+      "name": "forge_golden_flows: admission cannot bypass F02 classification identity context",
+      "owner": "F04"
+    },
+    {
+      "classification": "F04_GATE_DECISION_FIXTURE_DRIFT",
+      "failure_type": "testCodeFailure",
+      "file": "tests/golden/forge/f04_phase_artifact_reconciliation.test.mjs",
+      "message": "F04 canonical schema validation failed\nstdout:\nstderr: GateDecision:: 'gate_version' is a required property\n1 !== 0",
+      "name": "phase_artifact_reconciliation: every expected F04 transition and phase set resolves exactly once",
+      "owner": "F04"
+    },
+    {
+      "classification": "F04_GATE_DECISION_FIXTURE_DRIFT",
+      "failure_type": "testCodeFailure",
+      "file": "tests/golden/forge/f04_phase_artifact_reconciliation.test.mjs",
+      "message": "F04 canonical schema validation failed\nstdout:\nstderr: GateDecision:: 'gate_version' is a required property\n1 !== 0",
+      "name": "phase_artifact_reconciliation: a missing persisted transition fails closed",
+      "owner": "F04"
+    },
+    {
+      "classification": "J02_SEALED_INVENTORY_HASH_DRIFT",
+      "failure_type": "testCodeFailure",
+      "file": "tests/node/j02-skill-context-loader.test.mjs",
+      "message": "EFREF-BACKEND-SHINKA-V4 authority source has changed",
+      "name": "loader verifies all sealed production files and authority pointers",
+      "owner": "J02"
+    },
+    {
+      "classification": "J02_SEALED_INVENTORY_HASH_DRIFT",
+      "failure_type": "testCodeFailure",
+      "file": "tests/node/j02-skill-context-loader.test.mjs",
+      "message": "EFREF-CORE-CONSTITUTION-V4 authority source has changed",
+      "name": "ResolvedSkillContext is identical across 100 repeated sealed loads",
+      "owner": "J02"
+    },
+    {
+      "classification": "S04_ACTIVE_MANIFEST_BINDING_DRIFT",
+      "failure_type": "testCodeFailure",
+      "file": "tests/security/s04-threat-model-traceability.test.mjs",
+      "message": "active manifest does not match the bound successor\n+ actual - expected\n+ '8859303ea2fbe8d71655b2c244daf424a9742d4ce700bb93edddc20e3a06f23b'\n- '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'",
+      "name": "S04-TM004 traceability source bindings fail on undocumented contract drift",
+      "owner": "S04"
+    }
+  ],
+  "junit_path": "artifacts/work_packages/B04/attempts/0006/full-node-suite.junit.xml",
+  "junit_sha256": "sha256:afee774cbcf78278e6fae4ece7eaab60e0ab56e1263429f634c3517d96a6bbf7",
+  "leaf_failure_owner_counts": {
+    "F04": 7,
+    "J02": 2,
+    "S04": 1
+  },
+  "tap_authoritative_totals": {
+    "failed": 11,
+    "passed": 447,
+    "skipped": 0,
+    "tests": 458
+  },
+  "tap_failure_minus_leaf_failure_count": 1
+}

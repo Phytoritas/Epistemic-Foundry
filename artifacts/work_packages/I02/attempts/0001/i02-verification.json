@@ -1,0 +1,39 @@
+{
+  "attempt_id": "I02-0001",
+  "declaring_sources": {
+    "closed_vocabularies": "the closed UnknownSource (ABSENT/EXPLICIT_NULL/BLANK_STRING), registration-status (inbox/eligible/withdrawn), risk-class (routine/consequential/high_stakes) and SCAMPER lens_provenance vocabularies declared in python/epistemic_foundry/intake/frame/compiler.py, each bound key-for-key to schemas/insight-card.schema.json",
+    "finding_codes": "FALSIFIER_REQUIRED, FRAME_FIELD_REQUIRED, FRAME_FIELD_UNKNOWN, FRAME_INPUT_INVALID, FRAME_ELIGIBILITY_CONFLICT, SCOPE_INPUT_INVALID, SCOPE_FIELD_UNKNOWN, SCOPE_INTERVENTION_NAME_REQUIRED"
+  },
+  "exit_criteria": {
+    "falsifier_mandatory_for_council": {
+      "mechanism": "falsifiers are checked before any other required field and an absent, empty, blank, or scalar falsifier list raises FALSIFIER_REQUIRED; predictions and mechanism_path are also mandatory, and an eligible card that retains any council blocker is refused FRAME_ELIGIBILITY_CONFLICT so no unfalsifiable frame can claim council readiness",
+      "status": "PASS"
+    },
+    "scope_normalization_preserves_unknowns": {
+      "mechanism": "a missing, explicit-null, or blank scalar scope position becomes a canonical null (list/map positions become the canonical empty [] / {}) and a typed ScopeUnknown sidecar records ABSENT, EXPLICIT_NULL, or BLANK_STRING for that path rather than inferring a value; an eligible card whose required domain/population/unit_of_analysis scope is unknown is refused instead of silently broadened",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "falsifier_gate_test": {
+      "status": "PASS",
+      "test_count": 12
+    },
+    "frame_gold_test": {
+      "status": "PASS",
+      "test_count": 19
+    },
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: the sealing agent, a distinct actor; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "falsifier_gate_test": 12,
+    "frame_gold_test": 19,
+    "full_node_suite": 1702,
+    "full_python_suite": 1261,
+    "wire_literal_discipline": 5
+  }
+}

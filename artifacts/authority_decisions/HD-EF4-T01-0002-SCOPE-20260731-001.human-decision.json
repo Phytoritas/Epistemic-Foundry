@@ -1,0 +1,23 @@
+{
+  "decision_id": "HD-EF4-T01-0002-SCOPE-20260731-001",
+  "run_id": null,
+  "subject_id": "T01-0002",
+  "decision_type": "correct",
+  "decision": "Authorize exactly one write outside the T01 manifest scope for T01-0002: add the three new T01 contract modules (application/mcp_common/contracts.py, application/mcp_common/transport.py, application/mcp_planning/handlers.py) to DECLARING_MODULES in tests/test_wire_literal_discipline.py so the repository wire-literal guard acknowledges them as declaring sites. No vocabulary token, threshold, or assertion in the guard may change, and no other file outside the T01 manifest write scope may be touched.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "The T01 envelope and catalog contract modules legitimately declare MCP wire vocabulary that overlaps canonical schema enum tokens; the guard is designed to fail until new declaring sites are explicitly acknowledged. Registering the modules preserves the guard's authority instead of weakening it, and the product owner's standing instruction for this session approves the exact bounded edit.",
+  "evidence_artifact_ids": [
+    "tests/test_wire_literal_discipline.py",
+    "artifacts/work_packages/T01/attempts/0002/product-hashes.json",
+    "artifacts/authority_decisions/HD-EF4-T01-SG001-20260730-001.human-decision.json"
+  ],
+  "affected_artifact_ids": [
+    "tests/test_wire_literal_discipline.py",
+    "T01-0002"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-31T13:20:00Z",
+  "decision_hash": "sha256:4810102279a4916b44fb48a639a67b28d19778c9fe280490fb8bb605ecbf3f8c"
+}

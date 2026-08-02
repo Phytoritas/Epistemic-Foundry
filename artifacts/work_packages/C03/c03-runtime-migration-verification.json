@@ -1,0 +1,127 @@
+{
+  "work_package_id": "C03",
+  "attempt_id": "C03-0001",
+  "authority_decision_id": "HD-EF4-C01-SG003-20260728-001",
+  "check": "c03_runtime_migration_verification",
+  "status": "PASS",
+  "manifest": {
+    "dependencies": [
+      "C01",
+      "C02"
+    ],
+    "write_scope": [
+      "migrations/contracts/**",
+      "docs/schema_evolution.md",
+      "src/epistemic_foundry/evolution_chamber/run_spec.py",
+      "src/epistemic_foundry/governance/promotion.py",
+      "tests/test_evolution_chamber.py",
+      "tests/test_governance.py",
+      "tests/test_integration_forge_cycle.py",
+      "artifacts/work_packages/C03/**"
+    ],
+    "required_checks": [
+      "compatibility_matrix_test",
+      "migration_fixture_test"
+    ]
+  },
+  "frozen_dependencies": {
+    "status": "PASS",
+    "hashes": {
+      "artifacts/work_packages/C01/attempts/0004/runtime-migration-impact.json": "sha256:3c35cc5cfe003055f2e039a4837e74527a843c4ed6795eee1d28b56954d36877",
+      "artifacts/work_packages/C01/attempts/0004/report.json": "sha256:424f40396e93bd6826bf5ad85c3580cac7bd4ea8171b93f24816bc6a78c4a5d6",
+      "artifacts/work_packages/C02/c02-contract-codegen-verification.json": "sha256:df55f11d6c3650868c67f73a1d67b0d586598bba10c4740888815255fbb516bf",
+      "artifacts/work_packages/C02/full-python-regression.junit.xml": "sha256:13ca652d4efad7ff290781a42834d9b61a0cb82a8f81fece852c356beea6f5bc",
+      "artifacts/work_packages/C02/report.json": "sha256:2f9a92ead5a97ecc47d2a70d2101bb4a302a6868710621511869c6e6f202d2e1"
+    }
+  },
+  "targeted_runtime_migration": {
+    "artifact": "artifacts/work_packages/C03/targeted-runtime-migration.junit.xml",
+    "sha256": "sha256:d768d1268aa29c56f6dceb2e765b5b45ffda0d5aa154f220b50faf72415a972e",
+    "tests": 92,
+    "passed": 92,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "full_python_suite": {
+    "artifact": "artifacts/work_packages/C03/full-python-regression.junit.xml",
+    "sha256": "sha256:b30c079f4b65c92f23974cf6597d5e2ccbb1516b9e45bb4150ad7deccd4114d8",
+    "tests": 898,
+    "passed": 898,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "migration_debt_reconciliation": {
+    "status": "PASS",
+    "authority_failure_count": 24,
+    "passing_node_count": 24,
+    "missing_node_ids": [],
+    "authority_artifact": "artifacts/work_packages/C01/attempts/0004/runtime-migration-impact.json"
+  },
+  "required_test_reconciliation": {
+    "status": "PASS",
+    "required_count": 14,
+    "present_count": 14,
+    "missing_node_ids": []
+  },
+  "migration_fixtures": {
+    "status": "PASS",
+    "evolution_run_spec": {
+      "source_artifact_hash": "sha256:c9e1720905f36ad9c6a19ccbe9f5fb57d55a65e25bd543ef07cd65ec59d5a599",
+      "target_spec_hash": "sha256:b00844b45c4728f297defcaf0571ab202c8b48b0df3ab6f1eae502dded3e1f8d",
+      "migration_hash": "sha256:ae655e9a1127956e4cd1b142ee4b39dfab6d5d0f21ec948e8ea520191c61009a",
+      "record_schema_valid": true,
+      "exact_rollback": true,
+      "unresolved_failure_code": "LEGACY_RUN_SPEC_RESOLUTION_REQUIRED"
+    },
+    "promotion_level": {
+      "source_level": "PILOT",
+      "target_level": "REPLICATED",
+      "migration_hash": "sha256:c7ce29862ed084b6e2ab071baa14c1e3ccc53b1f925c63143d489b9b0bc5ec3f",
+      "record_schema_valid": true,
+      "unreviewed_failure_code": "LEGACY_PROMOTION_LEVEL_REVIEW_REQUIRED"
+    }
+  },
+  "strict_runtime": {
+    "resolved_refs_required_without_default": true,
+    "active_legacy_promotion_value_hits": [],
+    "xfail_or_skip_suppression_hits": []
+  },
+  "compatibility_matrix": {
+    "status": "PASS",
+    "read_window": "v3 persisted artifacts only through the explicit v3-to-v4 migration entry point",
+    "write_window": "v4 only",
+    "silent_fallback": false,
+    "rollback": {
+      "v3_source_retained": true,
+      "exact_source_hash_required": true,
+      "migration_records_retained": true,
+      "promotion_or_effect_history_rewritten": false
+    },
+    "backfill": {
+      "dry_run_before_write": true,
+      "unresolved_records_fail_closed": true,
+      "partial_success_is_not_batch_success": true,
+      "receipts_and_migration_records_required": true
+    }
+  },
+  "source_hashes": {
+    "docs/schema_evolution.md": "sha256:e9e89a367e8ff6191552aa97632b00bae7cafbfbd41fd18ec0614872ca7be7ac",
+    "src/epistemic_foundry/evolution_chamber/run_spec.py": "sha256:ce6a135dac6fbfb98184ff46448da88222cdb2de5ef31066d2f146bc25a7dc1c",
+    "src/epistemic_foundry/governance/promotion.py": "sha256:9078dae66ff527b36915d924e579c49b7937ce78d0c084c2f8b00852e0113f51",
+    "tests/test_evolution_chamber.py": "sha256:fa69b90f5d830d0f3552d374733da15a4769aae150fef4ed47ed35d8f19ac59f",
+    "tests/test_governance.py": "sha256:e2b83693db1434d88dbafd8c2f71cb5c9f7b89bf29e3a1cc0eb8fdd2bf99184c",
+    "tests/test_integration_forge_cycle.py": "sha256:0fbd58c632aaf3a5535b739c624c6deba534aaf2b849fb097cc1b75b0430d42f"
+  },
+  "migration_artifact_hashes": {
+    "migrations/contracts/compatibility-matrix.json": "sha256:59c9a962156435a3178a33493037a6062395290f91fd4c5c040c0ad468c00553",
+    "migrations/contracts/evolution-run-spec-v3-to-v4.migration.json": "sha256:73634b8d52a4a3cb8acf8dd040e515afeeac9221e3cfa794dfd072efc0adba54",
+    "migrations/contracts/fixtures/evolution-run-spec-migration-record.json": "sha256:d5d210996445598ee78065acdd767d83238d183bc0cbec368da0aa78f71e07ee",
+    "migrations/contracts/fixtures/evolution-run-spec-resolution.json": "sha256:1420376630d4e6fccc42b26f0c262758d793b96bff29a72377e8e52a532aaf58",
+    "migrations/contracts/fixtures/evolution-run-spec-v3.json": "sha256:6b7be8609ccfe42dc13ab0ebd2ae10517e1af4552de466ff9c5f30f167d5e4d5",
+    "migrations/contracts/fixtures/promotion-level-review.json": "sha256:0fc5f6ab98c90413a3f56f033b102e158efff1991dc8414277b0a5c373482fc6",
+    "migrations/contracts/migration-record.schema.json": "sha256:78b991dfe42e7f903972443e9f4e375fd2e24820d855397c754451d248a2cd5d"
+  },
+  "failures": []
+}

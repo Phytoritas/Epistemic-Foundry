@@ -1,0 +1,83 @@
+{
+  "attempt_id": "D05-0001",
+  "declaring_sources": {
+    "checkpoint_bindings": "EF4-I61 (MASTER_SPEC)",
+    "postgres_image": "pgvector/pgvector@sha256:7d400e340efb42f4d8c9c12c6427adb253f726881a9985d2a471bf0eed824dff",
+    "protection_reasons": "EF4-I49 (MASTER_SPEC)"
+  },
+  "enforcement": {
+    "append_only_tables": [
+      "archive_entries",
+      "candidate_lineage",
+      "evolution_checkpoints",
+      "evolution_runs"
+    ],
+    "checkpoint_bindings": 7,
+    "mock_postgres_used": false,
+    "protection_reasons": 5,
+    "runtime_delete_privilege": false,
+    "runtime_privileges": [
+      "INSERT",
+      "SELECT"
+    ]
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "evidence": [
+        "artifacts/work_packages/D05/attempts/0001/test_provenance_receipts.py"
+      ],
+      "mechanism": "every hash column is a checked sha256 domain rather than free text, an eviction records when and why, a rolled-back or failed seal leaves nothing behind, and an evicted archive row stays in place as evidence rather than being deleted",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "evidence": [
+        "artifacts/work_packages/D05/attempts/0001/test_schema_and_type.py"
+      ],
+      "mechanism": "the assertions are PostgreSQL's own catalog answers after the migration ran: the nine tables, the seven NOT NULL checkpoint bindings, the sha256 and identifier domains under deterministic C collation, the five append-only and evaluator guards, and the two SECURITY DEFINER entry points",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "evidence": [
+        "artifacts/work_packages/D05/attempts/0001/test_unit_contract.py",
+        "artifacts/work_packages/D05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "lineage resolves to its root, islands specialise, the archive keeps whole niches, and a checkpoint seals in one statement; every attack is executed as the runtime principal against the real server, including a rolled-back seal that must leave no resume point at all",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "evidence": [
+        "artifacts/work_packages/D05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "a checkpoint may bind only the evaluator its run was opened with, so a resume point cannot swap the evaluator (EF4-I43); a run row cannot be rewritten; and a protected archive entry cannot be evicted for low fitness through the function, a direct UPDATE, or a DELETE the runtime does not hold (EF4-I49)",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "module": "artifacts/work_packages/D05/attempts/0001/test_negative_adversarial.py",
+      "status": "PASS",
+      "test_count": 39
+    },
+    "provenance_and_receipt_audit": {
+      "module": "artifacts/work_packages/D05/attempts/0001/test_provenance_receipts.py",
+      "status": "PASS",
+      "test_count": 11
+    },
+    "schema_and_type_check": {
+      "module": "artifacts/work_packages/D05/attempts/0001/test_schema_and_type.py",
+      "status": "PASS",
+      "test_count": 21
+    },
+    "unit_and_contract_tests": {
+      "module": "artifacts/work_packages/D05/attempts/0001/test_unit_contract.py",
+      "status": "PASS",
+      "test_count": 13
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 84
+}

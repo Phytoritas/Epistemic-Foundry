@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="frame_roundtrip_test: canonical export parses and re-exports byte-for-byte" time="0.024849" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: input object key order does not change export bytes" time="0.002971" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: meaningful array order is preserved" time="0.002021" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: one-byte content tampering fails hash verification" time="0.002127" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: semantically equal non-canonical JSON is rejected" time="0.001794" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: invalid UTF-8 is rejected before JSON parsing" time="0.000194" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: an Inbox frame cannot be exported" time="0.000867" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: a fabricated derived gate cannot be serialized" time="0.001117" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: unknown export envelope fields fail closed" time="0.002225" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: export and import leave caller-owned input untouched" time="0.003770" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: I02 lowercase and leap-second RFC 3339 output round-trips" time="0.002619" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="frame_roundtrip_test: browser SHA-256 matches the Node oracle across padding and Unicode cases" time="0.023395" classname="test" file="web\src\features\intake\frame-roundtrip.test.mjs"/>
+	<testcase name="intake_ui_test: Inbox and blockers are the first visible intake section" time="0.014791" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: a complete eligible frame exposes a truthful ready export control" time="0.000820" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: confidence and verdict are not invented anywhere in the projection" time="0.000678" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: untrusted statement and blocker text are HTML-escaped" time="0.000810" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: pending ontology approval remains a visible blocker and review item" time="0.001779" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: unresolved measurement identity blocks export" time="0.001549" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: a method boundary remains visible without being relabelled a blocker" time="0.000882" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: required consent fails closed until one active record covers the contract" time="0.001683" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: expiring consent without an evaluation time cannot be treated as valid" time="0.000944" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: assembling the UI does not mutate caller-owned authority inputs" time="0.002175" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: missing upstream blocker evidence is rejected instead of hidden" time="0.000800" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: a blocker outside the exact I02 vocabulary is rejected" time="0.000448" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: I02 blocker order remains canonical" time="0.000476" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: I03 aggregation decisions are checked in both directions" time="0.000609" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: unrestricted measurement output cannot contradict equivalence" time="0.000589" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: resolved ontology selection must name the unique complete candidate" time="0.000605" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: a normalized null scope value cannot lose its I02 sidecar" time="0.000541" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: malformed ScopeVector values fail closed" time="0.000428" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: a forged assembled frame cannot hide a derived blocker" time="0.001947" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<testcase name="intake_ui_test: unknown input fields fail closed" time="0.000323" classname="test" file="web\src\features\intake\intake-ui.test.mjs"/>
+	<!-- tests 32 -->
+	<!-- suites 0 -->
+	<!-- pass 32 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+</testsuites>

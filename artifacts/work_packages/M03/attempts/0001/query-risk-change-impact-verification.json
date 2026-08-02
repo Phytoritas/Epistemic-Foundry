@@ -1,0 +1,165 @@
+{
+  "attempt_id": "M03-0001",
+  "personalization": {
+    "algorithm": "DETERMINISTIC_FIELD_WEIGHTED_TOKEN_OVERLAP",
+    "attempt_id": "M03-0001",
+    "canonical_result_order": "UTF8_NODE_ID",
+    "centrality_emitted": false,
+    "deterministic_input_permutation": "PASS",
+    "field_weighted_unicode_token_overlap": "PASS",
+    "hash_and_id_binding": "PASS",
+    "hostile_input_rejection": "PASS",
+    "null_query_personalization": null,
+    "null_query_relevance_all_zero": true,
+    "risk_or_blast_radius_emitted": false,
+    "semantic_score": null,
+    "semantic_status": "NOT_COMPUTED",
+    "status": "PASS",
+    "unresolved_edges_excluded_from_scores": true,
+    "unresolved_edges_recorded": true,
+    "version": "4.0.0-m03.1"
+  },
+  "risk_change_impact": {
+    "algorithm": "TYPED_RISK_PLUS_DETERMINISTIC_IMPACT_TRAVERSAL",
+    "attempt_id": "M03-0001",
+    "canonical_path_witness": "PASS",
+    "closed_m01_edge_direction_table": true,
+    "cycle_and_multi_source_handling": "PASS",
+    "deterministic_input_permutation": "PASS",
+    "hash_and_id_binding": "PASS",
+    "hostile_input_rejection": "PASS",
+    "intrinsic_risk_components": [
+      "authority_level",
+      "write_scope_level",
+      "data_sensitivity",
+      "mutable_contract"
+    ],
+    "no_change_assessment": "PASS",
+    "query_relevance_or_centrality_emitted": false,
+    "risk_independent_of_blast_radius": true,
+    "risk_profile_exact_inventory_coverage": true,
+    "shared_resource_edge_kinds": [
+      "SHARED_WRITE",
+      "MUTABLE_CONTRACT",
+      "QUOTA",
+      "APPROVAL",
+      "CREDENTIAL",
+      "PRIVACY_BOUNDARY",
+      "MIGRATION",
+      "EXCLUSIVE_RESOURCE"
+    ],
+    "shared_resources_materialized_as_pairwise_bidirectional_edges": true,
+    "status": "PASS",
+    "traversal": "DETERMINISTIC_MULTI_SOURCE_BFS_SHORTEST_PATH",
+    "unresolved_edges_excluded_from_propagation": true,
+    "unresolved_edges_recorded": true,
+    "version": "4.0.0-m03.1"
+  },
+  "separation_contract": {
+    "baseline_centrality_separate": true,
+    "blast_radius_separate": true,
+    "query_relevance_separate": true,
+    "risk_separate": true,
+    "shared_resources_are_effective_edges": true
+  },
+  "status": "PASS",
+  "syntax": {
+    "attempt_id": "M03-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "packages/workspace-map/src/ranking/query/query-ranking-common.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/workspace-map/src/ranking/query/query-personalization.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/workspace-map/src/ranking/query/risk-change-impact.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/workspace-map/src/ranking/query/index.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/workspace-map/src/ranking/query/personalization.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/workspace-map/src/ranking/query/blast-radius.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "targeted": {
+    "blast_radius_test_count": 21,
+    "cancelled": 0,
+    "collected": 33,
+    "failed": 0,
+    "junit": "artifacts/work_packages/M03/attempts/0001/targeted-m03-node.junit.xml",
+    "junit_sha256": "sha256:db6c98bcbb0348eddfcad2aa618a5238efe02f01dc1215756d46a85eb607aa2a",
+    "observed_file_count": 2,
+    "observed_files": [
+      "packages/workspace-map/src/ranking/query/blast-radius.test.mjs",
+      "packages/workspace-map/src/ranking/query/personalization.test.mjs"
+    ],
+    "passed": 33,
+    "personalization_test_count": 12,
+    "skipped": 0,
+    "test_names": [
+      "blast_radius_test: algorithm, version, and closed direction table are explicit",
+      "blast_radius_test: dependency target changes propagate to dependants",
+      "blast_radius_test: evidence changes propagate forward to claims",
+      "blast_radius_test: provenance and supersession target changes propagate to dependants",
+      "blast_radius_test: contract ownership is bidirectional",
+      "blast_radius_test: every hidden shared-resource kind materializes effective edges",
+      "blast_radius_test: shared resource participants form deterministic pairwise edges",
+      "blast_radius_test: unresolved edges are recorded and excluded from propagation",
+      "blast_radius_test: intrinsic risk uses authority, write scope, sensitivity, and mutability",
+      "blast_radius_test: risk and blast radius remain separate dimensions",
+      "blast_radius_test: multi-source traversal handles cycles without duplicates",
+      "blast_radius_test: empty changed set is an explicit no-change assessment",
+      "blast_radius_test: equal-length paths use a deterministic canonical witness",
+      "blast_radius_test: input permutation preserves assessment hash and ID",
+      "blast_radius_test: validation, hash helper, and immutability hold",
+      "blast_radius_test: impact, risk, and hash tampering fail closed",
+      "blast_radius_test: risk profile coverage and changed-node identity fail closed",
+      "blast_radius_test: unknown risk and shared-resource vocabularies fail closed",
+      "blast_radius_test: duplicate or malformed shared resources fail closed",
+      "blast_radius_test: hostile wrappers, accessors, and sparse arrays fail without access",
+      "blast_radius_test: caller inputs remain unchanged",
+      "personalization_test: algorithm and version are explicit",
+      "personalization_test: absent query produces explicit null personalization",
+      "personalization_test: field-weighted token and phrase relevance is real",
+      "personalization_test: relevance is separate from semantic, centrality, and risk",
+      "personalization_test: unresolved edges are recorded but do not alter node scores",
+      "personalization_test: input permutation preserves output hash and ID",
+      "personalization_test: result order and tie break are deterministic",
+      "personalization_test: validation, hash helper, and deep immutability hold",
+      "personalization_test: score and hash tampering fail closed",
+      "personalization_test: blank, non-indexable, and non-NFC queries fail closed",
+      "personalization_test: hostile wrappers and accessors fail without execution",
+      "personalization_test: caller inputs are unchanged"
+    ],
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_logical_test_count": 33,
+    "xml_suite_test_count": 0,
+    "xml_testcase_count": 33
+  }
+}

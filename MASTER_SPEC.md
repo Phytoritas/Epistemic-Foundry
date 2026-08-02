@@ -795,6 +795,7 @@ No default single-score leaderboard is permitted.
 | `evidence_retrieval` | 20 | Compile a relation-aware query plan, execute eleven evidence lanes, and issue a completeness-bounded EvidencePack. |
 | `evidence_update_reassessment` | 12 | Detect evidence or policy changes, compute impact, invalidate stale state, rerun affected workflows, and record decision deltas. |
 | `evolution_chamber_cycle` | 26 | Run one governed quality-diversity hypothesis evolution cycle under immutable evaluators and evidence gates. |
+| `evolution_promotion` | 23 | Execute the receipt-bound A05 promotion chain: deterministic G00-G14, sealed Parliament, independent attestation, approval, and atomic commit. |
 | `evolution_release` | 15 | Validate and package v4 specification and later implementation releases without maturity overclaim. |
 | `forge_research_cycle` | 26 | Execute the research-native FORGE lifecycle from classification to Passport. |
 | `hypothesis_replication` | 12 | Run independent preregistered replication and propagate its result without rewriting history. |
@@ -810,7 +811,7 @@ No default single-score leaderboard is permitted.
 | `verifier_firewall_qualification` | 14 | Qualify evaluators as fallible scientific instruments before they can score candidates. |
 | `workspace_mapping` | 10 | Create auditable code, research, artifact and authority maps with real baseline and query-specific rankings. |
 
-Total: **22 workflows / 327 nodes**.
+Total: **23 workflows / 350 nodes**.
 
 Every fan-in validates expected count and identity. Every cycle has a LoopContract or an explicit external generation loop with seen-set, budget, dry rounds and stop certificate.
 
@@ -1229,12 +1230,12 @@ Total: **156 work packages**, dependency-checked in `manifests/development_manif
 
 ## 39. Canonical schemas
 
-Total: **124 Draft 2020-12 strict schemas** and **124 matching examples**.
+Total: **127 Draft 2020-12 strict schemas** and **127 matching examples**.
 
 - **A:** `action-intent.schema.json`, `adjudication.schema.json`, `approval-record.schema.json`, `archive-rebalance-plan.schema.json`, `argument-graph.schema.json`, `artifact-manifest.schema.json`, `artifact-receipt.schema.json`, `attestation.schema.json`
 - **B:** `backend-adapter-qualification.schema.json`, `bias-risk-register.schema.json`, `budget-envelope.schema.json`
 - **C:** `calibration-report.schema.json`, `candidate-generation-record.schema.json`, `candidate-lineage.schema.json`, `capability-lease.schema.json`, `challenge-genome.schema.json`, `challenge-result.schema.json`, `checkpoint-manifest.schema.json`, `claim-card.schema.json`, `claim-lifecycle-event.schema.json`, `compatibility-matrix.schema.json`, `consent-record.schema.json`, `context-assembly-manifest.schema.json`, `context-capsule.schema.json`, `council-brief.schema.json`, `coverage-snapshot.schema.json`, `cross-examination.schema.json`, `crossover-compatibility-report.schema.json`
-- **D:** `decision-stability-report.schema.json`, `document-manifest.schema.json`, `domain-pack.schema.json`
+- **D:** `decision-stability-report.schema.json`, `document-manifest.schema.json`, `document-registration-request.schema.json`, `document-registration.schema.json`, `domain-pack.schema.json`
 - **E:** `effect-receipt.schema.json`, `epistemic-archive-entry.schema.json`, `epistemic-niche.schema.json`, `epistemic-utility-report.schema.json`, `epistemic-work-classification.schema.json`, `evaluation-run.schema.json`, `evaluator-bundle.schema.json`, `evaluator-mutation-proposal.schema.json`, `evaluator-qualification-report.schema.json`, `event-record.schema.json`, `evidence-dependency-cluster.schema.json`, `evidence-node.schema.json`, `evidence-pack.schema.json`, `evidence-reconciliation-record.schema.json`, `evolution-checkpoint.schema.json`, `evolution-run-spec.schema.json`, `evolution-stop-certificate.schema.json`, `experiment-genome.schema.json`, `experiment-result.schema.json`, `experiment-ticket.schema.json`
 - **F:** `falsifier-gene.schema.json`, `fitness-evidence-receipt.schema.json`, `fitness-vector.schema.json`, `forge-session-state.schema.json`, `forge-transition-request.schema.json`
 - **G:** `gate-decision.schema.json`
@@ -1246,7 +1247,7 @@ Total: **124 Draft 2020-12 strict schemas** and **124 matching examples**.
 - **O:** `operator-bandit-state.schema.json`
 - **P:** `parent-selection-receipt.schema.json`, `pareto-front-snapshot.schema.json`, `phase-artifact-set.schema.json`, `plugin-capability-manifest.schema.json`, `plugin-health-report.schema.json`, `plugin-install-state.schema.json`, `plugin-policy-pack.schema.json`, `plugin-release-provenance.schema.json`, `policy-bundle.schema.json`, `prediction-gene.schema.json`, `promotion-decision.schema.json`, `prompt-genome.schema.json`, `prompt-mutation-proposal.schema.json`
 - **Q:** `quality-diversity-map.schema.json`, `query-plan.schema.json`
-- **R:** `red-queen-round.schema.json`, `replay-report.schema.json`, `replication-plan.schema.json`, `replication-result.schema.json`, `result-envelope.schema.json`, `retrieval-run.schema.json`, `role-dispatch-plan.schema.json`, `run-spec.schema.json`
+- **R:** `red-queen-round.schema.json`, `replay-report.schema.json`, `replication-plan.schema.json`, `replication-result.schema.json`, `result-envelope.schema.json`, `retrieval-candidate.schema.json`, `retrieval-run.schema.json`, `role-dispatch-plan.schema.json`, `run-spec.schema.json`
 - **S:** `schema-migration.schema.json`, `scope-vector.schema.json`, `search-completeness-certificate.schema.json`, `search-lane-receipt.schema.json`, `selective-inference-report.schema.json`, `sequential-testing-ledger.schema.json`, `shinka-backend-manifest.schema.json`, `skill-lockfile.schema.json`, `skill-routing-decision.schema.json`, `source-integrity-report.schema.json`, `source-span.schema.json`, `stage-evaluation-result.schema.json`, `surrogate-triage-report.schema.json`
 - **U:** `update-impact-report.schema.json`
 - **V:** `validation-cascade-plan.schema.json`, `validation-plan.schema.json`, `validation-target-manifest.schema.json`

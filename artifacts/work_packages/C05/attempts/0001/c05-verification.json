@@ -1,0 +1,79 @@
+{
+  "attempt_id": "C05-0001",
+  "declaring_sources": {
+    "canonical_schemas": "schemas/*.schema.json (C01 authority; unmodified)",
+    "composite_vocabulary": "none: composites are pure $ref structure with no enum, const, pattern or format (EF4-I22)"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "evidence": [
+        "artifacts/work_packages/C05/attempts/0001/test_provenance_receipts.py"
+      ],
+      "mechanism": "family-index.json receipts the generator, all 42 canonical members and all five composites by content hash; verification recomputes every hash from the live files, regeneration is byte-identical, and an unreceipted file in the bundle is refused",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "evidence": [
+        "artifacts/work_packages/C05/attempts/0001/test_schema_and_type.py"
+      ],
+      "mechanism": "every composite is a valid Draft 2020-12 schema whose references resolve to canonical $ids; none declares an enum, const, pattern or format of its own; the index keeps exactly the five titled families over 42 members with four explicit, reasoned exclusions",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "evidence": [
+        "artifacts/work_packages/C05/attempts/0001/test_unit_contract.py",
+        "artifacts/work_packages/C05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "a synthesized minimal instance of every canonical member validates against its own schema and its family composite; hostile instances and edited bundles are refused with typed codes; a deleted composite is refused then repaired byte-identically by re-emitting",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "evidence": [
+        "artifacts/work_packages/C05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "the mutable search space is exactly the four genome kinds (EF4-I41); evaluator, holdout, promotion, archive and backend documents are refused as candidates; a bundle edited to widen the space is refused as AUTHORITY_IN_MUTABLE_SPACE; adaptive results require their statistics (EF4-I53) and imports their qualification (EF4-I63)",
+      "status": "PASS"
+    }
+  },
+  "families": {
+    "adapter": 3,
+    "archive": 9,
+    "evaluator": 10,
+    "genome": 15,
+    "statistics": 5
+  },
+  "mutable_search_space": [
+    "schemas/challenge-genome.schema.json",
+    "schemas/experiment-genome.schema.json",
+    "schemas/hypothesis-genome.schema.json",
+    "schemas/prompt-genome.schema.json"
+  ],
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "module": "artifacts/work_packages/C05/attempts/0001/test_negative_adversarial.py",
+      "status": "PASS",
+      "test_count": 27
+    },
+    "provenance_and_receipt_audit": {
+      "module": "artifacts/work_packages/C05/attempts/0001/test_provenance_receipts.py",
+      "status": "PASS",
+      "test_count": 8
+    },
+    "schema_and_type_check": {
+      "module": "artifacts/work_packages/C05/attempts/0001/test_schema_and_type.py",
+      "status": "PASS",
+      "test_count": 26
+    },
+    "unit_and_contract_tests": {
+      "module": "artifacts/work_packages/C05/attempts/0001/test_unit_contract.py",
+      "status": "PASS",
+      "test_count": 71
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 132
+}

@@ -1,0 +1,225 @@
+{
+  "artifact_receipt": {
+    "path": "artifacts/work_packages/H03/attempts/0001/tool-delegation-verification.artifact-receipt.json",
+    "receipt_id": "AR-H03-0001-TOOL-DELEGATION-VERIFICATION"
+  },
+  "attempt_id": "H03-0001",
+  "changed_files": [
+    {
+      "blueprint": "plugin_blueprint/epistemic-foundry/hooks/tools.json",
+      "blueprint_byte_equivalent": true,
+      "byte_size": 1162,
+      "path": "plugins/epistemic-foundry/hooks/tools.json",
+      "sha256": "sha256:7bd22606fa69ebc447d538c682d2175547e56247fe66755b4c2ac33f0ab31007"
+    },
+    {
+      "blueprint": "plugin_blueprint/epistemic-foundry/hooks/delegation.json",
+      "blueprint_byte_equivalent": true,
+      "byte_size": 698,
+      "path": "plugins/epistemic-foundry/hooks/delegation.json",
+      "sha256": "sha256:05fb9047ce62d00d296e47843c2130bbeb550ea43aa9d009dbcc8c2ce82cd4b6"
+    }
+  ],
+  "completion_ready": false,
+  "dependencies": {
+    "H01": {
+      "attempt_id": "H01-0001",
+      "report": "artifacts/work_packages/H01/report.json",
+      "report_sha256": "sha256:6985995d5b57b7f2d4fff0993a73a0db06e278949b31b14c5894c275077bfb52",
+      "status": "PASS"
+    }
+  },
+  "dependency_effect": {
+    "blocked_package_count": 114,
+    "completed_package_count": 36,
+    "dag_recomputed": true,
+    "next_package": "H04",
+    "ready_packages_manifest_order": [
+      "H04",
+      "I01",
+      "J01",
+      "K01",
+      "T01",
+      "A06"
+    ]
+  },
+  "evidence_artifacts": [
+    {
+      "byte_size": 6337,
+      "path": "artifacts/work_packages/H03/attempts/0001/tool-delegation-verification.json",
+      "sha256": "sha256:0892fff713a9ff52e6ae7bedc379859d90344fc19158289e06a132d2e32edb04"
+    },
+    {
+      "byte_size": 4794,
+      "path": "artifacts/work_packages/H03/attempts/0001/full-regression-impact.json",
+      "sha256": "sha256:4dddb8d7ad86667bf67ff6da3f4252cf371dd93f8159c25a1839a3bb603c6d02"
+    },
+    {
+      "byte_size": 666,
+      "path": "artifacts/work_packages/H03/attempts/0001/preexisting-debt-reconciliation.json",
+      "sha256": "sha256:20abf360b467fb7b92c4de3199cd2917b2b3f161804bb4ebe390ccbabc6b8de2"
+    },
+    {
+      "byte_size": 1579,
+      "path": "artifacts/work_packages/H03/attempts/0001/dependency-status.json",
+      "sha256": "sha256:4e17aba4f6d15903106c3d8c46ff2460f085514b00cdfc460c70c7b4b689a1f2"
+    },
+    {
+      "byte_size": 1227,
+      "path": "artifacts/work_packages/H03/attempts/0001/tool-delegation-verification.artifact-receipt.json",
+      "sha256": "sha256:b088ca36b0068758e55a5e69fdcd07c4435989b5091008cecbb1564e58c1d640"
+    },
+    {
+      "byte_size": 449,
+      "path": "artifacts/work_packages/H03/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:dbbfa0a19770f5210233a8a5ffd9befcd667088bea0d4ed92bb95388cbf33810"
+    },
+    {
+      "byte_size": 4673,
+      "path": "artifacts/work_packages/H03/attempts/0001/commands.jsonl",
+      "sha256": "sha256:d93ca896e985f974e32291d580b0447a092e657367c5e670e645cf0726762c58"
+    },
+    {
+      "byte_size": 3118,
+      "path": "artifacts/work_packages/H03/attempts/0001/review.md",
+      "sha256": "sha256:db6b99c858cba4e9c8667442df6800ef5d7c4a955c8b455c192552dadfdc2b1e"
+    },
+    {
+      "byte_size": 5906,
+      "path": "artifacts/work_packages/H03/attempts/0001/targeted-node-suite.junit.xml",
+      "sha256": "sha256:a08096bca08eac4e72cf371ed68a68362a1c317f94749e2a02041ce4b6a2520b"
+    },
+    {
+      "byte_size": 69300,
+      "path": "artifacts/work_packages/H03/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:fc82aa3c3d71eeaf54b45aab1cd13597bd83a88de89289426ed6e155fc2fd743"
+    },
+    {
+      "byte_size": 120470,
+      "path": "artifacts/work_packages/H03/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:2e660e4285e58d7b5a521386b399952b48e11276ed904dcbb203218df81d2460"
+    },
+    {
+      "byte_size": 9647,
+      "path": "artifacts/work_packages/H03/attempts/0001/h03-hook-contract-tests.mjs",
+      "sha256": "sha256:bcad08be9e1b982bb6200533eb46ded680bf4bda15f34ccbb6d78f14cb2b06ba"
+    },
+    {
+      "byte_size": 51470,
+      "path": "artifacts/work_packages/H03/attempts/0001/h03_evidence.py",
+      "sha256": "sha256:8e4a4eaea9c2b161af83b398611b4670563bbb0acf49275390e561894966f63b"
+    },
+    {
+      "byte_size": 16700,
+      "path": "artifacts/work_packages/H03/attempts/0001/h03_rah_seal.py",
+      "sha256": "sha256:5ae04ba8491510932805c44b07ebc063561fce2e0c23546b8b2d53ef33557803"
+    }
+  ],
+  "exit_criteria": {
+    "observed_tools_use_policy_receipts": "PASS_AT_STATIC_DECLARATION_BOUNDARY",
+    "subagent_expected_count_enforced": "PASS_AT_STATIC_HANDLER_BINDING_BOUNDARY"
+  },
+  "historical_and_worktree_preservation": {
+    "dirty_worktree_preserved": true,
+    "failed_diagnostics_preserved_in_commands": true,
+    "prior_reports_and_generations_preserved": true,
+    "product_write_scope_violations": 0,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "not_claimed": [
+    "implemented hook runner or plugin-manifest hook registration",
+    "actual runtime policy decisions, receipt emission, or expected-count reconciliation",
+    "host capability probe, degraded mode, Codex adapter, or packaged integration",
+    "exhaustive enforcement from hook observation",
+    "global repository green status, release readiness, or product completion"
+  ],
+  "package_status": "PASS",
+  "preserved_limitations": [
+    "H03 supplies static declarations and handler bindings, not dist/hook-runner.mjs or plugin-manifest registration.",
+    "H04 owns capability/degraded-mode gates; N04 owns runtime expected identity/count reconciliation; X01/G06 own later host and packaging integration.",
+    "Observed hook coverage is capability evidence, never exhaustive enforcement.",
+    "S04-TM004 remains exact pre-existing S04-owned debt.",
+    "Review is not actor-independent because the product owner forbids subagents and Fleet in this sequence."
+  ],
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0064",
+    "core_generation": "000062-e1393f68",
+    "final_closeout_evidence_id": "E0065",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 372,
+    "retained_generation_manifest_count": 62,
+    "status": "active"
+  },
+  "regression": {
+    "git_diff_check": "PASS",
+    "node": {
+      "failed": 1,
+      "h03_caused_failure_count": 0,
+      "passed": 342,
+      "skipped": 0,
+      "status": "BOUNDED_PREEXISTING_DEBT_S04_TM004"
+    },
+    "package_boundaries": "PASS",
+    "python": {
+      "failed": 0,
+      "passed": 947,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "repository_structure": "PASS",
+    "targeted_node": {
+      "failed": 0,
+      "h01_regression_cases": 11,
+      "h02_regression_cases": 8,
+      "h03_cases": 8,
+      "passed": 27,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "utf8_and_bom_check": "PASS"
+  },
+  "required_checks": {
+    "subagent_result_gate_test": {
+      "failed": 0,
+      "passed": 4,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "tool_hook_policy_test": {
+      "failed": 0,
+      "passed": 4,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "artifact": "artifacts/work_packages/H03/attempts/0001/review.md",
+    "artifact_sha256": "sha256:db6b99c858cba4e9c8667442df6800ef5d7c4a955c8b455c192552dadfdc2b1e",
+    "assurance_limitation": "Procedurally separate primary-session review; not actor-independent certification.",
+    "blocking_findings": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "subagents_used": false
+  },
+  "runtime_boundary": {
+    "capability_probe_and_degraded_mode_owner": "H04",
+    "expected_identity_and_count_reconciliation_owner": "N04",
+    "hook_runner_exists": false,
+    "observed_hook_coverage_is_exhaustive_enforcement": false,
+    "plugin_manifest_capabilities": [],
+    "plugin_manifest_hooks_registered": false,
+    "runtime_integration_owner": "X01/G06",
+    "static_declaration_only": true
+  },
+  "status": "PASS",
+  "title": "Tool and delegation hooks",
+  "work_package_id": "H03",
+  "write_scope": [
+    "plugins/epistemic-foundry/hooks/tools.json",
+    "plugins/epistemic-foundry/hooks/delegation.json",
+    "artifacts/work_packages/H03/**"
+  ]
+}

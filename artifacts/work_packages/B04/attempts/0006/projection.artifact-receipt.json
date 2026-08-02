@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-B04-0006-CANONICAL-PROJECTION",
+  "byte_size": 63599,
+  "content_hash": "sha256:6b4fcade707639e537744be4075e71d3f7e068cd42eaaaddb20ef084851175d5",
+  "created_at": "2026-07-30T10:30:00Z",
+  "created_by": {
+    "actor_id": "B04-0006-canonical-projection-verifier",
+    "actor_type": "tool"
+  },
+  "locator": "src/epistemic_foundry/_canonical/canonical-registry.json",
+  "media_type": "application/vnd.epistemic-foundry.canonical-registry+json",
+  "receipt_hash": "sha256:c431cc21963bf354ae95083da635dacbe770b1a5a8e7661b15421c12d35da6fe",
+  "receipt_id": "AR-B04-0006-CANONICAL-PROJECTION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "registry_byte_integrity",
+      "details": "Receipt content_hash and byte_size bind the exact live canonical-registry.json bytes.",
+      "status": "PASS"
+    },
+    {
+      "check": "root_snapshot_wheel_convergence",
+      "details": "All 127 canonical resources bind root source sha256:1557b03db2ad7e7d23b014d4c9d5fd643803f6613696c966d9b0379573259e7f to snapshot sha256:d01bda0057584e235331b649238fc2507c60cab329fd6b8e8b6a115fac912559 and the built wheel byte-for-byte.",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt_scope_boundary",
+      "details": "This receipt proves canonical projection integrity only; it does not prove runtime, F04, J02, S04, package, C04, or repository conformance.",
+      "status": "PASS"
+    }
+  ]
+}

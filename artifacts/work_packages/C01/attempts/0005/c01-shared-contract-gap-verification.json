@@ -1,0 +1,371 @@
+{
+  "attempt_id": "C01-0005",
+  "authority": {
+    "attachment": {
+      "artifact_id": "attachment:b32635e9-cd03-434f-a290-3644e962fce6:pasted-text-1.txt",
+      "sha256": "sha256:c44b4d35ee83cba3a15f7249a7bce171fd9d155f0f39cdf747a2fd57b6c736f4",
+      "status": "PASS"
+    },
+    "authority_file_hashes": {
+      "artifacts/authority_decisions/HD-EF4-K01-SG001-20260730-001.human-decision.json": "sha256:988830f51b1d259e91d4a093da67d631566babcaa150368d2dbde680fb72f423",
+      "artifacts/authority_decisions/HD-EF4-UNBLOCK-SET-20260730-001.human-decision.json": "sha256:fdb8752fc7a629e444114b089e33163a7d8dc68290bf99d1667d6a4208c5f2f2",
+      "manifests/development_manifest.yaml": "sha256:7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319",
+      "manifests/source_bindings/development-manifest.binding.json": "sha256:0f87227ec902bf9c3e9b6f33111e2b1fa038323ef57752815239611caf6b273c"
+    },
+    "binding": {
+      "binding_hash": "sha256:6915375ce4c4d38f7c8c294db54c736ee1cc4e30a46079a4a4614bafd239036d",
+      "binding_id": "DMB-EF4-20260730-001",
+      "status": "PASS",
+      "successor_manifest_sha256": "sha256:7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319"
+    },
+    "decision": {
+      "decision_hash": "sha256:62c7e6885c051e92846bb6580f385efcffca744cd45c531f768f8324bdacaa30",
+      "decision_id": "HD-EF4-K01-SG001-20260730-001",
+      "file_sha256": "sha256:988830f51b1d259e91d4a093da67d631566babcaa150368d2dbde680fb72f423",
+      "status": "PASS"
+    },
+    "required_contract_fragments_verified": 9,
+    "status": "PASS"
+  },
+  "classification": {
+    "not_blocked_reason": "No credential, licensed source, external backend, toolchain, or host capability is missing; the conflict is entirely local and reproducible.",
+    "not_fail_reason": "No C01 product implementation was attempted against an unexecutable gate. The K01 object semantics are defined, but authority to migrate higher-order acceptance oracles and their pre-C04 execution timing is absent or contradictory.",
+    "typed_outcome": "SPEC_GAP"
+  },
+  "current_contract": {
+    "example_count": 124,
+    "legacy_openapi_document_registration_request_properties": [
+      "metadata",
+      "requested_document_id",
+      "source_uri",
+      "uploaded_artifact_id"
+    ],
+    "missing_new_canonical_paths": [
+      "schemas/document-registration-request.schema.json",
+      "schemas/document-registration.schema.json",
+      "examples/sample_document-registration-request.json",
+      "examples/sample_document-registration.json"
+    ],
+    "openapi_version": "3.1.1",
+    "product_contract_changes_applied_by_attempt": [],
+    "schema_count": 124,
+    "status": "PRE_IMPLEMENTATION_BASELINE_CONFIRMED",
+    "target_example_count": 126,
+    "target_schema_count": 126
+  },
+  "fixed_sequence_contradiction": {
+    "B04_owned_projection_freshness_test_will_fail_after_C01_before_B04": true,
+    "C01_targeted_tests_become_false_at_126": true,
+    "C04_full_python_suite_precedes_B04": true,
+    "F01_owned_root_count_test_will_fail_after_C01_before_any_F01_rerun": true,
+    "full_suite_zero_failure_reachable_under_current_scope_and_order": false,
+    "status": "UNRESOLVED_SHARED_CONTRACT"
+  },
+  "history": {
+    "checks": {
+      "artifacts/work_packages/C01/attempts/0002/report.json": {
+        "actual_sha256": "sha256:c8100002239cf826c9fe521f86f84295e1cdec3bbe5e49f210c4a7e124d31369",
+        "expected_sha256": "sha256:c8100002239cf826c9fe521f86f84295e1cdec3bbe5e49f210c4a7e124d31369",
+        "status": "PASS"
+      },
+      "artifacts/work_packages/C01/attempts/0003/report.json": {
+        "actual_sha256": "sha256:d3f14a0f227bc7fa4743b7d2fbb266cb1999cd2524f4a93a9770b19910a130e5",
+        "expected_sha256": "sha256:d3f14a0f227bc7fa4743b7d2fbb266cb1999cd2524f4a93a9770b19910a130e5",
+        "status": "PASS"
+      },
+      "artifacts/work_packages/C01/attempts/0004/report.json": {
+        "actual_sha256": "sha256:424f40396e93bd6826bf5ad85c3580cac7bd4ea8171b93f24816bc6a78c4a5d6",
+        "expected_sha256": "sha256:424f40396e93bd6826bf5ad85c3580cac7bd4ea8171b93f24816bc6a78c4a5d6",
+        "status": "PASS"
+      },
+      "artifacts/work_packages/C01/report.json": {
+        "actual_sha256": "sha256:14d1815150ba37ebc416d637afbb1514fbbb024f9fe6940ed7b976ce33b60d68",
+        "expected_sha256": "sha256:14d1815150ba37ebc416d637afbb1514fbbb024f9fe6940ed7b976ce33b60d68",
+        "status": "PASS"
+      }
+    },
+    "preserved_attempts": [
+      "C01-0001",
+      "C01-0002",
+      "C01-0003",
+      "C01-0004"
+    ],
+    "status": "PASS"
+  },
+  "informational_stale_reports": [
+    {
+      "marker_count": 2,
+      "owners": [],
+      "path": "docs/verification_report.md",
+      "sha256": "sha256:b3788f2c13798248a2c29dec2c210c64a4dd8331e39f446b723379ee7b33ef66",
+      "stage": null,
+      "status": "STALE_124_CONTRACT"
+    }
+  ],
+  "manifest": {
+    "B04_depends_on": [
+      "B02",
+      "B03",
+      "C04"
+    ],
+    "C01_depends_on": [
+      "A04",
+      "A05"
+    ],
+    "C01_write_scope": [
+      "schemas/document-registration-request.schema.json",
+      "schemas/document-registration.schema.json",
+      "schemas/document-manifest.schema.json",
+      "schemas/evaluator-bundle.schema.json",
+      "schemas/holdout-manifest.schema.json",
+      "schemas/evaluator-qualification-report.schema.json",
+      "schemas/gate-decision.schema.json",
+      "schemas/promotion-decision.schema.json",
+      "schemas/attestation.schema.json",
+      "schemas/approval-record.schema.json",
+      "schemas/capability-lease.schema.json",
+      "schemas/action-intent.schema.json",
+      "schemas/effect-receipt.schema.json",
+      "schemas/artifact-receipt.schema.json",
+      "schemas/phase-artifact-set.schema.json",
+      "schemas/hypothesis-passport.schema.json",
+      "schemas/replication-result.schema.json",
+      "schemas/human-decision.schema.json",
+      "examples/sample_document-registration-request.json",
+      "examples/sample_document-registration.json",
+      "examples/sample_document-manifest.json",
+      "examples/sample_evaluator-bundle.json",
+      "examples/sample_holdout-manifest.json",
+      "examples/sample_evaluator-qualification-report.json",
+      "examples/sample_gate_decision.json",
+      "examples/sample_promotion-decision.json",
+      "examples/sample_attestation.json",
+      "examples/sample_approval-record.json",
+      "examples/sample_capability-lease.json",
+      "examples/sample_action-intent.json",
+      "examples/sample_effect-receipt.json",
+      "examples/sample_artifact-receipt.json",
+      "examples/sample_phase-artifact-set.json",
+      "examples/sample_passport.json",
+      "examples/sample_replication-result.json",
+      "examples/sample_human-decision.json",
+      "openapi/epistemic-foundry-v1.openapi.yaml",
+      "docs/api_contract.md",
+      "artifacts/work_packages/C01/**"
+    ],
+    "C02_depends_on": [
+      "C01"
+    ],
+    "C03_depends_on": [
+      "C01",
+      "C02"
+    ],
+    "C04_depends_on": [
+      "C02",
+      "C03"
+    ],
+    "C04_full_python_suite_required": true,
+    "fixed_canonical_sequence": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "B04"
+    ],
+    "status": "PASS"
+  },
+  "planned_owner_surfaces": [
+    {
+      "marker_count": 1,
+      "owners": [
+        "C01"
+      ],
+      "path": "docs/api_contract.md",
+      "sha256": "sha256:317076f114f2e94d13b494487a3cbdfbcd061d31a1c225faefd6aebe17bc9b65",
+      "stage": "C01_IN_SCOPE",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 1,
+      "owners": [
+        "C03"
+      ],
+      "path": "docs/schema_evolution.md",
+      "sha256": "sha256:e9e89a367e8ff6191552aa97632b00bae7cafbfbd41fd18ec0614872ca7be7ac",
+      "stage": "C03_IN_SCOPE",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 1,
+      "owners": [
+        "B01",
+        "C02"
+      ],
+      "path": "packages/contracts/codegen/verify.py",
+      "sha256": "sha256:747a5dd41aaecac4b4fab8f54ae0fcffcf3a3cd0106e763a428042a01a2afe11",
+      "stage": "C02_IN_SCOPE",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 1,
+      "owners": [
+        "B01",
+        "C02"
+      ],
+      "path": "packages/contracts/src/generated/contract-manifest.json",
+      "sha256": "sha256:e4af39d5b08532bcc6997e862a3f70702a15f11bb24b01a6b049e49d417ef94f",
+      "stage": "C02_GENERATED",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 1,
+      "owners": [
+        "B01",
+        "C02"
+      ],
+      "path": "python/epistemic_foundry/contracts/contract-manifest.json",
+      "sha256": "sha256:e4af39d5b08532bcc6997e862a3f70702a15f11bb24b01a6b049e49d417ef94f",
+      "stage": "C02_GENERATED",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 1,
+      "owners": [
+        "C02",
+        "U01"
+      ],
+      "path": "web/src/generated/contract-manifest.json",
+      "sha256": "sha256:e4af39d5b08532bcc6997e862a3f70702a15f11bb24b01a6b049e49d417ef94f",
+      "stage": "C02_GENERATED",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 1,
+      "owners": [
+        "B04"
+      ],
+      "path": "src/epistemic_foundry/_canonical/canonical-registry.json",
+      "sha256": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+      "stage": "B04_DERIVED_SNAPSHOT",
+      "status": "STALE_124_CONTRACT"
+    }
+  ],
+  "required_higher_order_decision": {
+    "decision_subject": "126-schema acceptance-oracle migration ownership and gate order",
+    "exact_paths_requiring_owner_or_timing_correction": [
+      "MASTER_SPEC.md",
+      "manifests/acceptance_matrix.yaml",
+      "tests/contracts/openapi/test_scientific_contracts.py",
+      "tests/contracts/openapi/test_openapi_contract.py",
+      "tests/test_contracts.py",
+      "tests/test_cli.py",
+      "tests/test_f01_epistemic_work_classifier.py",
+      "tests/packaging/test_canonical_registry.py"
+    ],
+    "forbidden_shortcuts": [
+      "partially implement the two schemas while knowingly leaving the required gate structurally false",
+      "treat all tests/** as implicitly owned by C01",
+      "weaken C04 full_python_suite without an explicit product-owner decision",
+      "run B04 out of the fixed order without an explicit attempt-level correction decision",
+      "edit generated C02 outputs or the B04 derived snapshot by hand",
+      "change docs/verification_report.md as if it were current acceptance evidence"
+    ],
+    "minimum_terms": [
+      "Assign an explicit correction owner and exact write scope for each listed stale authority/test path; do not grant broad tests/** or docs/** scope.",
+      "Authorize MASTER_SPEC.md and manifests/acceptance_matrix.yaml to change the canonical count from 124 to 126 without rewriting historical reports.",
+      "Place the C01 contract-oracle corrections before C01 targeted validation.",
+      "Place every root-count and packaged-registry oracle correction, plus canonical snapshot reprojection, before the C04 full_python_suite or explicitly redefine that gate with a bounded and later reconciled projection status.",
+      "Preserve C01-0001 through C01-0005 and all prior RAH evidence as immutable history."
+    ]
+  },
+  "spec_gap_id": "C01-SG004",
+  "stale_acceptance_surfaces": [
+    {
+      "marker_count": 1,
+      "owners": [
+        "A01"
+      ],
+      "path": "MASTER_SPEC.md",
+      "sha256": "sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3",
+      "stage": "AUTHORITY_CONFLICT_BEFORE_C01",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 2,
+      "owners": [
+        "F01"
+      ],
+      "path": "manifests/acceptance_matrix.yaml",
+      "sha256": "sha256:f01ed8ed8a2916d9d8fad28d9f365325c008d3da6b04aba25612a282115bee4f",
+      "stage": "ACCEPTANCE_AUTHORITY_CONFLICT_BEFORE_C01",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 4,
+      "owners": [],
+      "path": "tests/contracts/openapi/test_scientific_contracts.py",
+      "sha256": "sha256:27296a0b77b21f00631936124c0738f2fca40b31ac23d040162b1b8dfd0f324c",
+      "stage": "C01_TARGETED_GATE",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 6,
+      "owners": [],
+      "path": "tests/contracts/openapi/test_openapi_contract.py",
+      "sha256": "sha256:737dd012fc3b7104763e189d2aea0998c90897856007058a715efd3f2c0471a4",
+      "stage": "C01_TARGETED_GATE",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 1,
+      "owners": [],
+      "path": "tests/test_contracts.py",
+      "sha256": "sha256:f9a9c630ea1de24cf5b86c90068c508a1f5b4d010ed919f2ed276951710a6903",
+      "stage": "POST_PROJECTION_REGRESSION",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 1,
+      "owners": [],
+      "path": "tests/test_cli.py",
+      "sha256": "sha256:8a43a7eb1dd4230b1260fa5bcf8efa27a542d0a55154c2f81f7c9d1ddb68106f",
+      "stage": "POST_PROJECTION_REGRESSION",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 2,
+      "owners": [
+        "F01"
+      ],
+      "path": "tests/test_f01_epistemic_work_classifier.py",
+      "sha256": "sha256:98516fbc6c99c3ee06f61b6e3c251b5fbfbab7bd1b0df2a6afa7f996c3d2e5d1",
+      "stage": "C04_FULL_SUITE_BEFORE_F01_CAN_RERUN",
+      "status": "STALE_124_CONTRACT"
+    },
+    {
+      "marker_count": 2,
+      "owners": [
+        "B04"
+      ],
+      "path": "tests/packaging/test_canonical_registry.py",
+      "sha256": "sha256:0a6c7dfad24686a1ebb5c1036578a2caa43af82155b02cbf13005a70c3a7d9bd",
+      "stage": "C04_FULL_SUITE_BEFORE_B04_CAN_RUN",
+      "status": "STALE_124_CONTRACT"
+    }
+  ],
+  "status": "SPEC_GAP",
+  "targeted_contract_baseline": {
+    "command": "python -m pytest tests/contracts/openapi -p no:cacheprovider --tb=short",
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 66,
+    "status": "PASS_PRE_IMPLEMENTATION_BASELINE"
+  },
+  "work_package_id": "C01",
+  "write_scope_audit": {
+    "attempt_artifact_scope": "artifacts/work_packages/C01/attempts/0005/**",
+    "out_of_scope_product_change_count": 0,
+    "product_file_change_count": 0,
+    "subagents_or_fleet_used": false
+  }
+}

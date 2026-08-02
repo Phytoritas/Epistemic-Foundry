@@ -1,0 +1,56 @@
+{
+  "work_package_id": "A03",
+  "base_checkpoint": "A01:PASS",
+  "status": "PASS",
+  "changed_files": [
+    "docs/adr/README.md",
+    "docs/adr/ADR-031-plugin-shell-kernel-authority.md",
+    "docs/adr/ADR-032-component-import-boundaries.md",
+    "docs/adr/ADR-033-adapter-isolation-and-degraded-mode.md",
+    "docs/v4_plugin_architecture.md",
+    "artifacts/work_packages/A03/commands.jsonl",
+    "artifacts/work_packages/A03/review.md",
+    "artifacts/work_packages/A03/report.json"
+  ],
+  "checks": [
+    {
+      "command": "adr_index_check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A03/commands.jsonl#A03-C001"
+    },
+    {
+      "command": "boundary_cycle_policy_check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A03/commands.jsonl#A03-C002"
+    },
+    {
+      "command": "python -m pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A03/commands.jsonl#A03-C005"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A03/commands.jsonl#A03-C006"
+    }
+  ],
+  "review": {
+    "agent": "primary_author",
+    "status": "PASS_WITH_RECORDED_PROCEDURE_DEVIATION",
+    "findings_resolved": []
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/A03/commands.jsonl",
+    "artifacts/work_packages/A03/review.md",
+    "artifacts/work_packages/A03/report.json"
+  ],
+  "open_risks": [
+    "Review was performed by the author under explicit user instruction and is not independent assurance.",
+    "Boundary checks currently cover the Python implementation; later B01 polyglot roots must add equivalent checks."
+  ],
+  "spec_gaps": [],
+  "not_verified": [],
+  "next_ready": [
+    "A04"
+  ]
+}

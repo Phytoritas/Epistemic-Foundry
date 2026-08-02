@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from .. import __version__
-from ..contracts import ContractViolation, default_registry, repo_root
+from ..contracts import ContractViolation, default_registry
 from ..contracts.validation import artifact_errors
 from ..domain.status import CapabilityStatus, ExitStatus
 from ..noetic_ledger import NoeticLedger

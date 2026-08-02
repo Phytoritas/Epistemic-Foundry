@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "work_package_id": "E02",
+  "attempt_id": "E02-0001",
+  "status": "PASS",
+  "recorded_at_utc": "2026-07-28T15:00:35Z",
+  "dependencies": {
+    "E01": {
+      "attempt_id": "E01-0001",
+      "status": "PASS",
+      "report": "artifacts/work_packages/E01/report.json",
+      "report_sha256": "beddc2a3019fcf680435ea6d5f907b5e7b50b0fa8a384673917c6198f49f32e1",
+      "core_evidence_id": "E0024",
+      "closeout_evidence_id": "E0025"
+    }
+  },
+  "source_files": [
+    {
+      "path": "packages/foundry-kernel/src/effects/effect-coordinator.mjs",
+      "sha256": "a4d2b9b851f9055869db842d10702e6017a61c18fcc637521fdec398b5abc1f2",
+      "byte_size": 71841
+    },
+    {
+      "path": "packages/foundry-kernel/src/effects/effect-test-support.mjs",
+      "sha256": "df45bdec72a2ed2ffda922189e21f1102cc1cdcf2c50d661f9ac1e98051c0a4a",
+      "byte_size": 4684
+    },
+    {
+      "path": "packages/foundry-kernel/src/effects/effect-reconciliation.test.mjs",
+      "sha256": "998a962b3e193e3b497aa60078f5f3d650332d88f973d81d3b167be025a13402",
+      "byte_size": 20651
+    },
+    {
+      "path": "packages/foundry-kernel/src/effects/idempotency.test.mjs",
+      "sha256": "0d386c1eb2ded877423979838d604e1270ec4112b82f162d2d2222924fda5dec",
+      "byte_size": 15699
+    }
+  ],
+  "authority_hashes": {
+    "action_intent_schema": "acaf9861436d3217c579f7eed518f2f138261a4a8cc1cb750c97a52ad908b0b1",
+    "effect_receipt_schema": "2fc5f33eaea8dd86ebbdb59c2c9d6075d4b2d7c9f03bab304c550dfd80d1a4cc",
+    "development_manifest": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+    "sqlite_state_store": "6619dccb72f40e92fdaae3d023a2d6591f8d63bdfe789ba5c36b53ce7dbe1380",
+    "artifact_store": "75e69756d30ab5b5112fd908f3fec312660f30e603fe1201566db2ad263c8c8e",
+    "noetic_ledger": "58ea9dc0d52d9c20720b33970ee3b8d8d05703ba7dd0fb4f51a483d9f505f1ed"
+  },
+  "required_checks": {
+    "effect_reconciliation_test": {
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0
+    },
+    "idempotency_test": {
+      "status": "PASS",
+      "passed": 9,
+      "failed": 0
+    },
+    "combined_targeted_gate": {
+      "status": "PASS",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    "repeatability": {
+      "status": "PASS",
+      "runs": 5,
+      "test_executions": 95,
+      "failed_runs": 0
+    }
+  },
+  "coverage": {
+    "tool": "node --experimental-test-coverage",
+    "target": "packages/foundry-kernel/src/effects/effect-coordinator.mjs",
+    "line_percent": 86.31,
+    "branch_percent": 74.17,
+    "function_percent": 97.94
+  },
+  "adversarial_cases": {
+    "narrative_completion_rejected": true,
+    "unknown_blocks_retry": true,
+    "missing_receipt_blocks_retry": true,
+    "same_key_changed_request_rejected": true,
+    "same_attempt_concurrent_execution_permission_once": true,
+    "receipt_without_ledger_event_not_complete": true,
+    "ledger_append_without_publication_checkpoint_not_complete": true,
+    "attempt_chronology_enforced": true,
+    "external_operation_identity_preserved": true,
+    "external_operation_id_alone_not_evidence": true,
+    "result_and_error_artifacts_reverified": true,
+    "hash_coercion_hook_not_executed": true,
+    "older_immutable_replay_remains_idempotent": true
+  },
+  "regression": {
+    "python": {
+      "status": "PASS",
+      "passed": 913,
+      "failed": 0
+    },
+    "repository_wide_node_initial": {
+      "status": "FAIL_OUTSIDE_E02_WITH_TRANSIENT_D03_OBSERVATION",
+      "passed": 188,
+      "failed": 2,
+      "failures": [
+        "S04-TM004 stale development_manifest.yaml hash binding",
+        "D03 Windows EPERM during concurrent reader/mutation-lock handoff"
+      ]
+    },
+    "d03_targeted_reproduction": {
+      "status": "PASS",
+      "passed": 1,
+      "failed": 0,
+      "duration_ms": 49831.6235
+    },
+    "repository_wide_node_final": {
+      "status": "FAIL_OUTSIDE_E02",
+      "passed": 189,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "actual_manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+      "expected_legacy_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+      "owner_scope": "S04"
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix": "PASS",
+    "cache_key_audit": "PASS",
+    "ci_policy_mutation_tests": {
+      "status": "PASS",
+      "passed": 10
+    },
+    "syntax": "PASS",
+    "text_integrity": {
+      "status": "PASS",
+      "files": 4,
+      "strict_utf8": true,
+      "bom_absent": true,
+      "nul_absent": true,
+      "replacement_character_absent": true
+    },
+    "git_diff_check": "PASS",
+    "double_build": {
+      "status": "FAIL_OUTSIDE_E02",
+      "failure": "staged source build omits scripts/ required by the existing build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "blocking_findings": 0,
+    "assurance_limitation": "Procedurally separate primary-session review is not external actor-independent certification; E02 qualifies local durable coordination, not arbitrary external-service correctness or distributed exactly-once execution."
+  },
+  "scope_and_preservation": {
+    "implementation_write_scope_violations": 0,
+    "schema_or_dependency_implementation_modified_by_e02": false,
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "initial_full_node_failures_preserved": true,
+    "completion_ready": false
+  }
+}

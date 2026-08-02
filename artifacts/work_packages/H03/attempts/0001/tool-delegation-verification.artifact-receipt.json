@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "H03-0001-TOOL-DELEGATION-VERIFICATION",
+  "byte_size": 6337,
+  "content_hash": "sha256:0892fff713a9ff52e6ae7bedc379859d90344fc19158289e06a132d2e32edb04",
+  "created_at": "2026-07-29T05:30:06Z",
+  "created_by": {
+    "actor_id": "SVC-FOUNDRY-KERNEL-H03",
+    "actor_type": "service"
+  },
+  "locator": "artifacts/work_packages/H03/attempts/0001/tool-delegation-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:ce1f4c44d05c413651103b0eeacf19aa5cb053509983a19b0540d48c1a057712",
+  "receipt_id": "AR-H03-0001-TOOL-DELEGATION-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "tool_hook_policy_test",
+      "details": "4/4 exact policy/receipt route, blueprint, coverage, timeout, direct-allow, and event-scope cases passed",
+      "status": "PASS"
+    },
+    {
+      "check": "subagent_result_gate_test",
+      "details": "4/4 RoleSpec/ResultEnvelope binding, blueprint, exhaustive matcher, missing-route, and handler-substitution cases passed",
+      "status": "PASS"
+    },
+    {
+      "check": "full_python_regression",
+      "details": "947/947 passed with zero skipped tests",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,13 +1,13 @@
 {
-  "generated_at_utc": "2026-07-26T16:22:42+00:00",
+  "generated_at_utc": "2026-07-27T12:34:32+00:00",
   "root": "C:\\dev\\insight\\Epistemic-Foundry",
-  "profile_hint": "generic",
+  "profile_hint": "monorepo",
   "scaffold_root": "C:\\dev\\insight\\Epistemic-Foundry\\docs\\architecture",
   "checks": [
     {
       "name": "repo_markers",
-      "status": "warn",
-      "detail": "No common repo markers detected at root."
+      "status": "pass",
+      "detail": ".git, pyproject.toml, package.json, pnpm-workspace.yaml"
     },
     {
       "name": "scaffold_root",
@@ -40,9 +40,19 @@
       "detail": "Core JSON state files parse successfully."
     },
     {
+      "name": "prd_projection_json",
+      "status": "pass",
+      "detail": "PRD projection artifacts parse successfully."
+    },
+    {
       "name": "ralph_state",
       "status": "pass",
-      "detail": "No active RALPH goal loop."
+      "detail": "RALPH goal loop active: status=blocked, iteration=24, completion_mode=exhaustive, checkpoint_required=True, completion_ready=False, review_status=not_requested, evidence_count=32, driver=.rah/ralph/driver/driver_state.json"
+    },
+    {
+      "name": "source_coverage",
+      "status": "warn",
+      "detail": "incomplete_rows=['SRC001-S0001', 'SRC001-S0002', 'SRC001-S0003-R001', 'SRC001-S0003-R002', 'SRC001-S0003-R003', 'SRC001-S0003-R004', 'SRC001-S0003-R005', 'SRC001-S0003-R006', 'SRC001-S0003-R007', 'SRC001-S0003-R008'], blocked_units=[]"
     },
     {
       "name": "long_jobs",
@@ -61,8 +71,13 @@
     },
     {
       "name": "deployment_state",
-      "status": "warn",
-      "detail": "No deployment.json found under .rah/state yet."
+      "status": "pass",
+      "detail": "Deployment state captured in .rah/state/deployment.json"
+    },
+    {
+      "name": "deployment_critical_files",
+      "status": "pass",
+      "detail": "Repo critical helpers match the install manifest and source."
     },
     {
       "name": "memento_identity_normalization",

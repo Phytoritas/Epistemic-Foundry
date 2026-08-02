@@ -1,0 +1,90 @@
+{
+  "atomic_replacement_result": "FAIL_NOT_IMPLEMENTED",
+  "attempt_id": "B04-0003",
+  "deterministic_rebuild_result": "NOT_RUN_NON_WAIVABLE_MECHANISM_FAILURE",
+  "duplicate_schema_ids": [],
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/B04/attempts/0003/source-inventory.json",
+    "artifacts/work_packages/B04/attempts/0003/snapshot-inventory.json",
+    "artifacts/work_packages/B04/attempts/0003/installed-wheel-verification.json"
+  ],
+  "extra_paths": [],
+  "final_status": "FAIL",
+  "hash_mismatches": [
+    "schemas/epistemic-work-classification.schema.json"
+  ],
+  "implementation_defects": [
+    {
+      "code": "B04-MECH001_SOURCE_BUNDLE_ALGORITHM_MISMATCH",
+      "detail": "Existing materializer hashes path + NUL + raw bytes + NUL instead of the authoritative canonical-JSON inventory preimage.",
+      "observed": "sha256:4c207bf3fe666f1b194e441e0cb187dcc20c8495a519960209238d65b4709367",
+      "required": "sha256:47a8d63daadae502bc3fc91c19cebc1f8f04f885e24d6d409c444748e04fd340"
+    },
+    {
+      "code": "B04-MECH002_PROJECTED_SNAPSHOT_HASH_MISSING",
+      "detail": "The generated registry has no projected snapshot bundle hash."
+    },
+    {
+      "code": "B04-MECH003_DISTINCT_SOURCE_PACKAGE_PATHS_MISSING",
+      "detail": "Registry entries expose one relative_path and do not record distinct source_path and package_path fields."
+    },
+    {
+      "code": "B04-MECH004_PROJECTION_TOOL_IDENTITY_MISSING",
+      "detail": "The generated registry has no projection tool identity and version."
+    },
+    {
+      "code": "B04-MECH005_ATOMIC_TREE_REPLACEMENT_MISSING",
+      "detail": "materialize() removes and writes individual live destination files and contains no atomic tree replacement."
+    },
+    {
+      "code": "B04-MECH006_SOURCE_CHANGE_ERROR_MISSING",
+      "detail": "The mechanism does not emit the required SOURCE_CHANGED_DURING_PROJECTION error."
+    }
+  ],
+  "live_snapshot_mutation_count": 0,
+  "mechanism_audit": {
+    "atomic_replace_present": false,
+    "direct_file_mutation_present": true,
+    "explicit_source_changed_error_present": false,
+    "generated_registry_contract": {
+      "deterministic_entry_list": true,
+      "entry_byte_size_present": true,
+      "entry_document_identity_present": true,
+      "entry_media_type_present": true,
+      "entry_package_path_present": false,
+      "entry_sha256_present": true,
+      "entry_source_path_present": false,
+      "file_count_present": true,
+      "format_version_present": true,
+      "projected_snapshot_bundle_hash_present": false,
+      "projection_tool_identity_present": false,
+      "projection_tool_version_present": false,
+      "source_bundle_hash_present": true,
+      "source_identity_present": true
+    },
+    "generated_registry_source_bundle_hash": "sha256:4c207bf3fe666f1b194e441e0cb187dcc20c8495a519960209238d65b4709367",
+    "required_source_bundle_hash": "sha256:47a8d63daadae502bc3fc91c19cebc1f8f04f885e24d6d409c444748e04fd340",
+    "staging_materialization_result": {
+      "changed_file_count": 126,
+      "destination": "<EXTERNAL_STAGING>/snapshot",
+      "expected_file_count": 126,
+      "extra": [],
+      "mismatches": [],
+      "missing": [],
+      "source_resource_count": 125,
+      "status": "PASS"
+    }
+  },
+  "missing_paths": [],
+  "openapi_operation_count": 33,
+  "openapi_version": "3.1.1",
+  "prior_snapshot_bundle_hash": "sha256:bcad7159884180030bc75ee96a984f20a23f692ccfff8efb28376e86ffd48090",
+  "projected_snapshot_bundle_hash": "sha256:dde63a97254b2432d0fc1f917e1bd294210f43e19720386ac4295e317a497ed7",
+  "registry_hash": "sha256:72bb8310222706193ba51049f853a251b8bee941187e42c81e6a1d48eef655bc",
+  "root_source_mutation_count": 0,
+  "snapshot_file_count": 125,
+  "source_bundle_hash": "sha256:47a8d63daadae502bc3fc91c19cebc1f8f04f885e24d6d409c444748e04fd340",
+  "source_file_count": 125,
+  "unrelated_write_count": 0,
+  "wheel_resource_load_result": "NOT_RUN_NON_WAIVABLE_MECHANISM_FAILURE"
+}

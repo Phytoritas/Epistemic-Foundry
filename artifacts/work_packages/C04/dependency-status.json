@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "calculated_at_utc": "2026-07-27T23:23:11Z",
+  "manifest_path": "manifests/development_manifest.yaml",
+  "manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+  "authority_decision_id": "HD-EF4-C01-SG003-20260728-001",
+  "fixed_execution_order": [
+    "C01-0004",
+    "C02-0001",
+    "C03-0001",
+    "C04-0001",
+    "B04_RESOLVING_ATTEMPT",
+    "FULL_156_PACKAGE_DAG_RECOMPUTATION"
+  ],
+  "packages": {
+    "A04": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/A04/report.json",
+      "report_sha256": "f34f72c561a6eb1696a524c1910d83a338847536e3c497c5d3038e7a1d2855ab"
+    },
+    "A05": {
+      "status": "PASS",
+      "attempt": "A05-0002",
+      "report": "artifacts/work_packages/A05/attempts/0002/report.json",
+      "report_sha256": "c9c550de22f55d32898f0d33489bc9b0480de6eef4bca7baeb09fcf047c6062c"
+    },
+    "B02": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/B02/report.json",
+      "report_sha256": "98abe689dbfb9399d2f50f87a18376ca9a85ed4a50c938513778e312e3e67dad"
+    },
+    "B03": {
+      "status": "PASS",
+      "report": "artifacts/work_packages/B03/report.json",
+      "report_sha256": "baa07e997402a290f2602cea39a78a1acdeeb69dd7ea8c89331c84e78976338f"
+    },
+    "C01": {
+      "status": "PASS",
+      "attempt": "C01-0004",
+      "contract_status": "CONFORMANT",
+      "report": "artifacts/work_packages/C01/attempts/0004/report.json",
+      "report_sha256": "424f40396e93bd6826bf5ad85c3580cac7bd4ea8171b93f24816bc6a78c4a5d6"
+    },
+    "C02": {
+      "status": "PASS",
+      "attempt": "C02-0001",
+      "generated_contract_status": "CONFORMANT",
+      "report": "artifacts/work_packages/C02/report.json",
+      "report_sha256": "2f9a92ead5a97ecc47d2a70d2101bb4a302a6868710621511869c6e6f202d2e1"
+    },
+    "C03": {
+      "status": "PASS",
+      "attempt": "C03-0001",
+      "runtime_migration_status": "CONFORMANT",
+      "migration_debt_resolved": 24,
+      "report": "artifacts/work_packages/C03/report.json",
+      "report_sha256": "8bc497806e76a1faa0761e945c74f539e7fe4d44a03d9d162cbfee1c44400ad5"
+    },
+    "C04": {
+      "status": "PASS",
+      "attempt": "C04-0001",
+      "contract_status": "CONFORMANT",
+      "repository_full_suite_status": "ZERO_FAILURE",
+      "verification": "artifacts/work_packages/C04/c04-conformance-verification.json",
+      "verification_sha256": "17ba27252b163696a5a41cafaf4594b6c83faf699354e072a01bbfd6eaae3a13",
+      "rah_core_generation": "000011-ffe0da9f",
+      "rah_core_evidence_id": "E0012",
+      "dependencies": {
+        "C02": "PASS",
+        "C03": "PASS"
+      }
+    },
+    "B04": {
+      "status": "READY_FOR_NEW_ATTEMPT",
+      "started": false,
+      "historical_root_attempt_status": "SPEC_GAP",
+      "historical_root_artifacts_preserved": true,
+      "dependencies": {
+        "B02": "PASS",
+        "B03": "PASS",
+        "C04": "PASS"
+      },
+      "reason": "HD-EF4-A05-C01-B04-20260727-001 granted the bounded packaging-correction scope and C04 now proves a coherent canonical/generated/runtime source tree. The prior B04 SPEC_GAP remains immutable history."
+    }
+  },
+  "full_156_package_dag_recomputed": false,
+  "subsequent_dag_execution_started": false,
+  "completion_ready": false,
+  "next_action": {
+    "type": "EXECUTE_DEPENDENCY_READY_PACKAGE",
+    "package_id": "B04",
+    "constraint": "Create a new resolving attempt; preserve the prior B04 SPEC_GAP artifacts; package only the C04-approved coherent source tree; do not begin downstream DAG execution before B04 PASS."
+  }
+}

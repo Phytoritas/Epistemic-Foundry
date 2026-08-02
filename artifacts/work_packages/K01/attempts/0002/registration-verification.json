@@ -1,0 +1,214 @@
+{
+  "attempt_id": "K01-0002",
+  "authority_boundary": {
+    "business_truth": "IMMUTABLE_DOCUMENT_REGISTRATION",
+    "required_shared_ports": [
+      "D03",
+      "E01",
+      "E02",
+      "E03",
+      "CAS"
+    ],
+    "result_envelope_role": "EXECUTION_TELEMETRY_ONLY",
+    "runtime_fallback_count": 0
+  },
+  "decision": {
+    "artifact": "artifacts/authority_decisions/HD-EF4-K01-SG001-20260730-001.human-decision.json",
+    "artifact_sha256": "sha256:988830f51b1d259e91d4a093da67d631566babcaa150368d2dbde680fb72f423",
+    "decision_hash": "sha256:62c7e6885c051e92846bb6580f385efcffca744cd45c531f768f8324bdacaa30",
+    "decision_id": "HD-EF4-K01-SG001-20260730-001",
+    "status": "PASS",
+    "subject_id": "K01-SG001"
+  },
+  "oracle": {
+    "case_count": 22,
+    "case_ids": [
+      "K01-ORACLE-01-VALID-REQUEST-HASH-ID",
+      "K01-ORACLE-02-CANONICAL-HINT-ORDER",
+      "K01-ORACLE-03-UNKNOWN-REQUEST-FIELD",
+      "K01-ORACLE-04-PATH-FILENAME",
+      "K01-ORACLE-05-FILE-URI",
+      "K01-ORACLE-06-REQUEST-HASH-MISMATCH",
+      "K01-ORACLE-07-REQUEST-ID-MISMATCH",
+      "K01-ORACLE-08-VALID-REGISTRATION-HASH-ID",
+      "K01-ORACLE-09-FIXED-INITIAL-STATE",
+      "K01-ORACLE-10-REGISTRATION-HASH-MISMATCH",
+      "K01-ORACLE-11-STAGED-SOURCE-MISSING",
+      "K01-ORACLE-12-SOURCE-BYTE-HASH-MISMATCH",
+      "K01-ORACLE-13-SOURCE-RECEIPT-NOT-PASS",
+      "K01-ORACLE-14-MEDIA-TYPE-MISMATCH",
+      "K01-ORACLE-15-STALE-FENCING-TOKEN",
+      "K01-ORACLE-16-EXACT-IDEMPOTENT-REPLAY",
+      "K01-ORACLE-17-IDEMPOTENCY-CONFLICT",
+      "K01-ORACLE-18-VALID-SUPERSESSION",
+      "K01-ORACLE-19-UNKNOWN-PREDECESSOR",
+      "K01-ORACLE-20-CROSS-SCOPE-OR-CYCLE",
+      "K01-ORACLE-21-MISSING-EFFECT-OR-CRASH-RECONCILIATION",
+      "K01-ORACLE-22-CAS-OR-ENVELOPE-ONLY"
+    ],
+    "duplicate_case_count": 0,
+    "status": "PASS"
+  },
+  "semantic_probes": {
+    "action_intent_resolved_on_replay": true,
+    "artifact_receipt_verified": true,
+    "cas_exact_one_revision_advance": true,
+    "effect_receipt_verified": true,
+    "fencing_and_capability_authorized": true,
+    "ledger_event_verified": true,
+    "no_default_authority_ports": true,
+    "result_envelope_after_commit": true,
+    "staged_source_only": true
+  },
+  "source_files": [
+    {
+      "byte_size": 1970,
+      "path": "src/epistemic_foundry/ingest/registry/__init__.py",
+      "sha256": "sha256:4af1c5ddb0abdda441de4a9df603ca4676e2c59b8156137302b4cac141ce0be9",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 2695,
+      "path": "src/epistemic_foundry/ingest/registry/errors.py",
+      "sha256": "sha256:2553dfe6f34b710ad396128131166b776569d613138470b966e4c50cd973485b",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 11954,
+      "path": "src/epistemic_foundry/ingest/registry/hash.py",
+      "sha256": "sha256:967bf4c8dc2e9cf6620df0ffb8dd14eb7fe471f7b0832cf5b7f5d96015cde03b",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 4412,
+      "path": "src/epistemic_foundry/ingest/registry/lineage.py",
+      "sha256": "sha256:b51ec00945a88cf7c112fbeb85754e7d427af55ece0675a15bd7bd64ec084a1a",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 15792,
+      "path": "src/epistemic_foundry/ingest/registry/models.py",
+      "sha256": "sha256:5db2acd0154b509ba7f29fc349b356cb7700034686e49cc48a6347dbe411ad5b",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 4777,
+      "path": "src/epistemic_foundry/ingest/registry/repository.py",
+      "sha256": "sha256:a0fba443b9ee50f04816e72e0c035ce03bea478fb8f4b088424183d64f042284",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 35836,
+      "path": "src/epistemic_foundry/ingest/registry/service.py",
+      "sha256": "sha256:99f59a05ab99aed080b944f9f0206f1ff4b8982c8c7ae1b71b99256595369114",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 4883,
+      "path": "docs/ingest_lifecycle_contract.md",
+      "sha256": "sha256:4609e5f7441a775c03960e845271b649138a548a486c2eae72bb22c8ca9361de",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 13591,
+      "path": "workflows/corpus_ingest.workflow.yaml",
+      "sha256": "sha256:8dad85a0677414765f678e2e53ea759181895c2bbe4bbcfbd97c6964e023d826",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 2243,
+      "path": "tests/fixtures/k01/document-effect-cases.json",
+      "sha256": "sha256:35f11d7a4a870916e17a36b8801bfa268a34d000e4cf76f5ef5c022415b330b8",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 547,
+      "path": "tests/fixtures/k01/document-lineage-cases.json",
+      "sha256": "sha256:bdab5441e45c0d12a6e93cbf4a7191c09a56fdc43fdf39c7355ce1f7f3349b4a",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 1035,
+      "path": "tests/fixtures/k01/document-registration-request.valid.json",
+      "sha256": "sha256:280bb8c5ce58bd25b52eaca6b1823160a3fcbdd2fb86aba20aa4804052ff7c50",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 1733,
+      "path": "tests/fixtures/k01/document-registration.invalid.json",
+      "sha256": "sha256:8bcd891a452afa5d82e7771280293f9775a8d3aca7274c9d9cf3855fe16b7c1c",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 1746,
+      "path": "tests/fixtures/k01/document-registration.valid.json",
+      "sha256": "sha256:d2f26e2a2ad8965c10696383dd334871fe46488b2d84973cbbc34a29d8374b73",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 7171,
+      "path": "tests/ingest/test_k01_document_lineage.py",
+      "sha256": "sha256:246cb4d8238d1362e2bf156a051d40564ac4745e39620a9b60680cb337c7fb7b",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 29886,
+      "path": "tests/ingest/test_k01_document_registration.py",
+      "sha256": "sha256:c4ba36829868752ddda4e7a11f78b2f47d9ab7aa03b9d50e19deadf6be9399a2",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 5608,
+      "path": "tests/ingest/test_k01_effect_reconciliation.py",
+      "sha256": "sha256:d3f1fdd2a883c872ee96a20ae094a6ee2fdc6f6c0e804846e26a8108a96d32dc",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 4350,
+      "path": "tests/contracts/test_k01_document_contracts.py",
+      "sha256": "sha256:cddb17c1d275de2f52f68d99fc30d65af5107986a8050b4c4547d453547525b2",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 3918,
+      "path": "tests/integration/test_k01_register_document_node.py",
+      "sha256": "sha256:789d6f058f0e8d9e39f1f15020d185e997267430ba97fce278463f61e82c0ae7",
+      "uses_lf_only": true,
+      "utf8_bom": false
+    }
+  ],
+  "status": "PASS",
+  "workflow": {
+    "capabilities": [
+      "artifact_read",
+      "artifact_write",
+      "ledger_append",
+      "document_register"
+    ],
+    "executor_ref": "epistemic_foundry.ingest.registry:register_document",
+    "idempotency_key_fields": [
+      "idempotency_key",
+      "request_hash"
+    ],
+    "node_id": "register_document",
+    "status": "PASS"
+  }
+}

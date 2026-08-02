@@ -1,0 +1,344 @@
+{
+  "artifact_receipt": {
+    "path": "artifacts/work_packages/J02/attempts/0003/j02-verification.artifact-receipt.json",
+    "receipt_id": "AR-J02-0003-INVENTORY-AUTHORITY-VERIFICATION"
+  },
+  "attempt_id": "J02-0003",
+  "authority": {
+    "effective_attempt_order": [
+      "F04-0002",
+      "J02-0003",
+      "S04-0003"
+    ],
+    "j02_repair_decision": {
+      "decision_hash": "sha256:6c3f062ef83523a986d660ca5250a14fc3a93554ebc0fc1cef9dba00c5956409",
+      "decision_id": "HD-EF4-J02-SG002-20260730-001",
+      "file_sha256": "sha256:ad7c8345bbcaa813c641ba139913728dabfe969fb1fef06a3e2209949939cc90",
+      "path": "artifacts/authority_decisions/HD-EF4-J02-SG002-20260730-001.human-decision.json"
+    },
+    "latest_serial_order_decision": {
+      "decision_hash": "sha256:421c238aa3bdb2a2e961a1c4c1a87f3c580a4affec1253439ddd842d8bbb4448",
+      "decision_id": "HD-EF4-B04-SG002-20260730-001",
+      "file_sha256": "sha256:13feb432b4504e11fecabfed4b6fc51c17db315b7a7124106baa82ff1cd63ffe",
+      "path": "artifacts/authority_decisions/HD-EF4-B04-SG002-20260730-001.human-decision.json"
+    },
+    "s04_residual_disposition": "BOUNDED_LATER_ATTEMPT_DEBT"
+  },
+  "bounded_later_attempt_debt": {
+    "attempt_id": "J02-0003",
+    "authorizing_decision_id": "HD-EF4-B04-SG002-20260730-001",
+    "current_source_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "debt_id": "S04-TM004",
+    "failure_count": 1,
+    "j02_causal_impact": "NONE",
+    "normalized_failure_fingerprint": {
+      "actual": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+      "expected": "sha256:7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319",
+      "test_file": "tests/security/s04-threat-model-traceability.test.mjs",
+      "test_name": "S04-TM004 traceability source bindings fail on undocumented contract drift"
+    },
+    "owner": "S04",
+    "package_pass_effect": "The later product-owner ordering decision requires J02-0003 before S04-0003; this exact residual is not relabeled as resolved or hidden.",
+    "resolving_attempt": "S04-0003",
+    "skip_or_xfail_used": false,
+    "source_path": "manifests/development_manifest.yaml",
+    "stale_bound_successor_sha256": "sha256:7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319",
+    "status": "AUTHORIZED_BOUNDED_LATER_ATTEMPT_DEBT",
+    "test_file": "tests/security/s04-threat-model-traceability.test.mjs",
+    "test_name": "S04-TM004 traceability source bindings fail on undocumented contract drift"
+  },
+  "changed_files": [
+    {
+      "byte_size": 23211,
+      "path": "tools/skill-context/count_tokens.py",
+      "sha256": "sha256:6d96e64380e33fca7ba62ee38dd42b0c8ef6b4bda22a2853cbd8f8c1bafe51ee"
+    },
+    {
+      "byte_size": 12153,
+      "path": "tests/test_j02_context_budget.py",
+      "sha256": "sha256:99cef371124d4a1736fce2b5322e5b949dd2fdff934a9bfb59bdbf884f9ace34"
+    },
+    {
+      "byte_size": 42587,
+      "path": "plugins/epistemic-foundry/skills/skill-inventory.json",
+      "sha256": "sha256:093a0892377db04f66dfb49c2f1848067de5334e50c96f85990a7968405d211c"
+    },
+    {
+      "byte_size": 2406,
+      "path": "tests/fixtures/j02/skill-inventory.expected.json",
+      "sha256": "sha256:b8f692384e27f038f0a89a2b2468a339fede8fd0d9b42a1650561b832d7fb321"
+    },
+    {
+      "byte_size": 10693,
+      "path": "tests/fixtures/j02/reference-selection-cases.json",
+      "sha256": "sha256:4505491f1844bef6e420068c9600d4c18ec9982ea0cba67a007851e1aaaa30fe"
+    }
+  ],
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependencies": {
+    "B02-0002": {
+      "exact_tiktoken_lock": "PASS",
+      "report_path": "artifacts/work_packages/B02/attempts/0002/report.json",
+      "report_sha256": "sha256:3c2259e7d4b7ce987960b82f2fb161914637567eacf3030d24899e44f462b33a",
+      "status": "PASS"
+    },
+    "B04-0005": {
+      "dependency_build_revalidation": "PASS",
+      "report_path": "artifacts/work_packages/B04/attempts/0005/report.json",
+      "report_sha256": "sha256:ff7e1f1fa7836fe612284542353e5aefe5f26ab644e2ac40c5f79c09f06ca1e2",
+      "status": "PASS"
+    },
+    "F04-0002": {
+      "report_path": "artifacts/work_packages/F04/attempts/0002/report.json",
+      "report_sha256": "sha256:5a2414ebb79c923af7425b87d614faa088ba9fbd4e6950406948b2eb86d6ab46",
+      "status": "PASS"
+    },
+    "J01": {
+      "manifest_dependency": true,
+      "status": "PASS"
+    }
+  },
+  "dependency_effect": {
+    "B04-0007": "WAITING_ON_S04_0003",
+    "J02": "PASS",
+    "S04": "READY_FOR_ATTEMPT_0003"
+  },
+  "evidence_artifacts": [
+    {
+      "byte_size": 2193,
+      "path": "artifacts/work_packages/J02/attempts/0003/metadata-budget-verification.json",
+      "sha256": "sha256:d86355667b457557f4fae1562c06e4bb1b924cc17365383188e479b07a8eeb75"
+    },
+    {
+      "byte_size": 1719,
+      "path": "artifacts/work_packages/J02/attempts/0003/tokenizer-verification.json",
+      "sha256": "sha256:cacb50479bd757eac399b5c9f7599e500f050203279e751860734d43e9e53ba0"
+    },
+    {
+      "byte_size": 11808,
+      "path": "artifacts/work_packages/J02/attempts/0003/inventory-authority-verification.json",
+      "sha256": "sha256:857cc7ee674fed8d6f8bd9ac676dde8f4404edd5481146e3a1b31b8f16c665f8"
+    },
+    {
+      "byte_size": 976,
+      "path": "artifacts/work_packages/J02/attempts/0003/reference-selection-verification.json",
+      "sha256": "sha256:b165fbfb6fe3dc2679c62ffd1c7fd8c7f3d30ccb8b4d5507355abc2cdb583165"
+    },
+    {
+      "byte_size": 3174,
+      "path": "artifacts/work_packages/J02/attempts/0003/reference-reachability-verification.json",
+      "sha256": "sha256:424a4b1f278873bf69fe4e3b179a455a2071eece2108768ce52dfb6744bd930f"
+    },
+    {
+      "byte_size": 1971,
+      "path": "artifacts/work_packages/J02/attempts/0003/dependency-status.json",
+      "sha256": "sha256:ad4f5d4e0e7c4588e84d5ffadc9b74cb14105373980b3e98adcb9ea91f05cb6c"
+    },
+    {
+      "byte_size": 4697,
+      "path": "artifacts/work_packages/J02/attempts/0003/full-regression-impact.json",
+      "sha256": "sha256:1c7bfb26b9a30d1608b9a7409929aec70338259b6a03a64c590c202d88de58d7"
+    },
+    {
+      "byte_size": 1297,
+      "path": "artifacts/work_packages/J02/attempts/0003/preexisting-debt-reconciliation.json",
+      "sha256": "sha256:f5112154adb7053f2de94ec711e59d21407ae4d161ec828cc12b0ef62443c003"
+    },
+    {
+      "byte_size": 7444,
+      "path": "artifacts/work_packages/J02/attempts/0003/write-scope-verification.json",
+      "sha256": "sha256:b1fa52cfc03378e83a34cefc6cb322192999b66df8b5edc55713cbe42e6c97b9"
+    },
+    {
+      "byte_size": 1293,
+      "path": "artifacts/work_packages/J02/attempts/0003/j02-verification.artifact-receipt.json",
+      "sha256": "sha256:7b3970d5bb2540337cedeea168b73776fae250ef63d538d33ca9ea6ab1ff2476"
+    },
+    {
+      "byte_size": 2945,
+      "path": "artifacts/work_packages/J02/attempts/0003/targeted-python-suite.junit.xml",
+      "sha256": "sha256:117e3121be75c7b9b0d255c68358d31529d70728b91ceaa89d0f295142aa0bc5"
+    },
+    {
+      "byte_size": 4689,
+      "path": "artifacts/work_packages/J02/attempts/0003/targeted-node-suite.junit.xml",
+      "sha256": "sha256:5ba097b4554c7c667adfe41e80a6f465f4b666fa80670d72accf39cfce92c574"
+    },
+    {
+      "byte_size": 4679,
+      "path": "artifacts/work_packages/J02/attempts/0003/j01-regression-node-suite.junit.xml",
+      "sha256": "sha256:489631a9d362ffc87f0a020d2e886199ec4460a5c51c3705ef1bde9cb5ca47ea"
+    },
+    {
+      "byte_size": 126901,
+      "path": "artifacts/work_packages/J02/attempts/0003/full-python-suite.junit.xml",
+      "sha256": "sha256:ab53c845aeda8a0ff60b503bb198a14030614c4a9bd569c21462e6d61d1595eb"
+    },
+    {
+      "byte_size": 105679,
+      "path": "artifacts/work_packages/J02/attempts/0003/full-node-suite.junit.xml",
+      "sha256": "sha256:1ee0a32d5b80e2901e8d8c0c83d6b4d406d5eed0b5726b8349a57190c40e12ab"
+    },
+    {
+      "byte_size": 3559,
+      "path": "artifacts/work_packages/J02/attempts/0003/commands.jsonl",
+      "sha256": "sha256:bed80107ab62304c748210bba272d2bc3dfe6b5cbed07e783ea1c8fdd14d239c"
+    },
+    {
+      "byte_size": 2401,
+      "path": "artifacts/work_packages/J02/attempts/0003/review.md",
+      "sha256": "sha256:00b02015ddf13325c1695a4d6c7962db9a68388e60e0d7fc4c18b5b5df0a970a"
+    },
+    {
+      "byte_size": 57388,
+      "path": "artifacts/work_packages/J02/attempts/0003/build_j02_0003_evidence.py",
+      "sha256": "sha256:105c2734143ec6ef54d2541776401c2d681c78677f390be0fd105b01693e3f83"
+    },
+    {
+      "byte_size": 25228,
+      "path": "artifacts/work_packages/J02/attempts/0003/j02_0003_rah_seal.py",
+      "sha256": "sha256:7d3a8120a0958d59d2ba3c2f093cdec5d17ff80c46c8aab2b3936a5ebe2d30fd"
+    },
+    {
+      "byte_size": 787,
+      "path": "artifacts/work_packages/J02/attempts/0003/rah-core-integrity.json",
+      "sha256": "sha256:85838db084fa78d0608bf7c859bd5edc396046c9014d8d6fcd0519729c295f23"
+    }
+  ],
+  "global_status": {
+    "completion_ready": false,
+    "implementation_gate": "fail",
+    "next_attempt": "S04-0003",
+    "repository_fully_green": false
+  },
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "j02_0001_report_sha256": "sha256:6b0f4f37acbe1014afcf17ef5449fa4ed799e7ca0e7ea7523c014a3a44607688",
+    "j02_0002_report_sha256": "sha256:17e342ae7f54707ebc0acc17f695507397b9d300a54cef741b2ab3ed05ffbd0c",
+    "pyproject_toml_modified_by_j02_0003": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "s04_files_modified_by_j02_0003": false,
+    "subagents_or_fleet_used": false,
+    "uv_lock_modified_by_j02_0003": false
+  },
+  "implementation_status": "PASS",
+  "inventory": {
+    "inventory_hash": "sha256:028264183f20ff6585c85052def9c9e8c75f68099c767e91169267bff21709c6",
+    "inventory_id": "EF-SKILL-INVENTORY-V4-J02-0002",
+    "inventory_version": "4.0.1-j02.1",
+    "maximum_closure_count": 11,
+    "maximum_transitive_depth": 5,
+    "metadata_o200k_base_tokens": 1112,
+    "metadata_utf8_bytes": 4767,
+    "reference_count": 17,
+    "skill_count": 29
+  },
+  "not_claimed": [
+    "S04-0003 PASS",
+    "repository-wide green status",
+    "B04-0007, C04-0002, or B04-0008 PASS",
+    "release or production readiness",
+    "actor-independent certification",
+    "completion_ready=true"
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0008",
+    "core_generation": "000008-ce1f42d8",
+    "final_closeout_evidence_id": "E0009",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 48,
+    "implementation_gate": "fail",
+    "retained_generation_count": 8,
+    "status": "active"
+  },
+  "regression": {
+    "j02_causal_failure_count": 0,
+    "node_regression_status": "BOUNDED_LATER_ATTEMPT_DEBT_S04",
+    "python_regression_status": "PASS",
+    "repository_fully_green": false
+  },
+  "required_checks": {
+    "active_manifest_binding_check": {
+      "current_manifest_hash_verified": true,
+      "status": "AUTHORIZED_LATER_ATTEMPT_S04_0003"
+    },
+    "context_budget_test": {
+      "failed": 0,
+      "passed": 20,
+      "status": "PASS"
+    },
+    "exact_tokenizer_lock_check": {
+      "status": "PASS",
+      "version": "0.13.0"
+    },
+    "full_node_suite": {
+      "debt_id": "S04-TM004",
+      "failed": 1,
+      "j02_causal_failures": 0,
+      "passed": 459,
+      "skipped": 0,
+      "status": "PASS_WITH_BOUNDED_LATER_ATTEMPT_DEBT"
+    },
+    "full_python_suite": {
+      "failed": 0,
+      "passed": 990,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "independent_review": {
+      "actor_independence": false,
+      "blocking_j02_finding_count": 0,
+      "status": "PASS_WITH_PRIMARY_SESSION_SEPARATE_REVIEW"
+    },
+    "inventory_hash_verification": {
+      "status": "PASS"
+    },
+    "reference_reachability_test": {
+      "failed": 0,
+      "passed": 25,
+      "status": "PASS"
+    },
+    "skill_metadata_lint": {
+      "failed": 0,
+      "passed": 29,
+      "status": "PASS"
+    },
+    "skill_routing_eval": {
+      "failed": 0,
+      "passed": 19,
+      "status": "PASS"
+    },
+    "write_scope_audit": {
+      "status": "PASS",
+      "violations": 0
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "artifact": "artifacts/work_packages/J02/attempts/0003/review.md",
+    "artifact_sha256": "sha256:00b02015ddf13325c1695a4d6c7962db9a68388e60e0d7fc4c18b5b5df0a970a",
+    "blocking_j02_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_IMPLEMENTATION_REVIEW",
+    "status": "PASS_WITH_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_IMPLEMENTATION_REVIEW",
+    "subagents_used": false
+  },
+  "status": "PASS",
+  "title": "Progressive references and context budgets after exact tokenizer-lock correction",
+  "verification": {
+    "adversarial_reachability_cases": "16/16",
+    "budget_boundary_cases": "12/12",
+    "full_node": "459 passed, exact S04-TM004 later-attempt debt only",
+    "full_python": "990/990",
+    "j01_node_regression": "19/19",
+    "loader_determinism": "100/100",
+    "new_skip_or_xfail_count": 0,
+    "selection_cases": "35/35",
+    "targeted_node": "25/25",
+    "targeted_python": "20/20"
+  },
+  "work_package_id": "J02"
+}

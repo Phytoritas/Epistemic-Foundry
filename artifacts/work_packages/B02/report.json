@@ -1,0 +1,68 @@
+{
+  "work_package_id": "B02",
+  "base_checkpoint": "B01:PASS",
+  "status": "PASS",
+  "changed_files": [
+    "package-lock.json",
+    "uv.lock",
+    "toolchains/toolchain-lock.json",
+    "toolchains/python-build-requirements.in",
+    "toolchains/python-build-constraints.txt",
+    "toolchains/README.md",
+    "scripts/build/check_locks.py",
+    "scripts/build/double_build.py",
+    "artifacts/work_packages/B02/lockfile-check.json",
+    "artifacts/work_packages/B02/double-build-comparison.json",
+    "artifacts/work_packages/B02/commands.jsonl",
+    "artifacts/work_packages/B02/review.md",
+    "artifacts/work_packages/B02/report.json"
+  ],
+  "checks": [
+    {
+      "command": "lockfile_check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B02/lockfile-check.json"
+    },
+    {
+      "command": "double_build_comparison",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B02/double-build-comparison.json"
+    },
+    {
+      "command": "python -m pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B02/commands.jsonl#B02-C006"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B02/commands.jsonl#B02-C008"
+    }
+  ],
+  "review": {
+    "agent": "primary_author",
+    "status": "PASS_WITH_RECORDED_PROCEDURE_DEVIATION",
+    "findings_resolved": []
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/B02/lockfile-check.json",
+    "artifacts/work_packages/B02/double-build-comparison.json",
+    "artifacts/work_packages/B02/commands.jsonl",
+    "artifacts/work_packages/B02/review.md",
+    "artifacts/work_packages/B02/report.json"
+  ],
+  "open_risks": [
+    "Review was performed by the author under explicit user instruction and is not independent assurance.",
+    "Byte reproducibility is proven on the pinned Windows toolchain; cross-platform CI execution is B03/B04 scope.",
+    "SBOM, signing, and release-provenance qualification remain Z-phase scope."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "Linux/macOS byte reproducibility (B03/B04 scope)",
+    "SBOM and signing provenance (Z-phase scope)"
+  ],
+  "next_ready": [
+    "B03",
+    "S01"
+  ]
+}

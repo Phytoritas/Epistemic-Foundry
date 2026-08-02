@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "N03-0001-SCHEDULER-VERIFICATION",
+  "byte_size": 14353,
+  "content_hash": "sha256:597bb25cb50ec436fb4f04e0cd40f5a8213794114c6964e7b7dbb5120aac298d",
+  "created_at": "2026-07-31T03:04:12.369Z",
+  "created_by": {
+    "actor_id": "N03-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/N03/attempts/0001/scheduler-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:6e5d0d5bce62c95cc46d35230f69b57ed08e3e8f06a2e85ab534f3635a5a659d",
+  "receipt_id": "AR-N03-0001-SCHEDULER-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "scheduler_property_test",
+      "details": "15/15 deterministic DAG, loop, dependency, admission, retry, budget, reconciliation, replay, and immutability cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "resource_conflict_test",
+      "details": "9/9 exclusivity, atomic acquisition, quota, expiry, fencing, idempotency, and rollback cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Official serial Node 793/793 across 77 files, Python 1064/1064, codegen 126/126, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

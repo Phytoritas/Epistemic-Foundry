@@ -1,0 +1,63 @@
+{
+  "attempt_id": "B04-0005",
+  "b04_owned_failure_count": 0,
+  "global_node_suite_green": false,
+  "global_python_suite_green": false,
+  "node": {
+    "b04_causal_impact": "NONE",
+    "classification": "EXPECTED_S04_ACTIVE_BINDING_MIGRATION_DEBT",
+    "collected": 458,
+    "current_actual_manifest_sha256": "7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319",
+    "errors": 0,
+    "expected_binding_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+    "failed": 1,
+    "failure_owner": "S04",
+    "failures": [
+      {
+        "message": "manifests/development_manifest.yaml\n+ actual - expected\n\n+ '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'\n- '456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7'",
+        "node_id": "test::S04-TM004 traceability source bindings fail on undocumented contract drift",
+        "type": "testCodeFailure"
+      }
+    ],
+    "junit": "artifacts/work_packages/B04/attempts/0005/full-node-suite.junit.xml",
+    "junit_sha256": "sha256:8c270c70cdda582ed5ff1b03509bc9fdd33858774b9414755396eec5049e9619",
+    "normalized_failure_fingerprint": "S04_TM004_ACTIVE_DEVELOPMENT_MANIFEST_BINDING_STALE",
+    "passed": 457,
+    "skipped": 0
+  },
+  "packaging": {
+    "collected": 24,
+    "errors": 0,
+    "failed": 0,
+    "failures": [],
+    "junit": "artifacts/work_packages/B04/attempts/0005/packaging-suite.junit.xml",
+    "junit_sha256": "sha256:2065594edd9e3e10e7af3aa67367cc9857e7e36906549fae71849460414e06ab",
+    "passed": 24,
+    "skipped": 0,
+    "status": "PASS"
+  },
+  "python": {
+    "b04_causal_impact": "NONE",
+    "classification": "EXPECTED_J02_0003_MIGRATION_DEBT",
+    "collected": 964,
+    "errors": 0,
+    "expected_resolving_test": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin",
+    "failed": 1,
+    "failure_owner": "J02",
+    "failures": [
+      {
+        "message": "Failed: TOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0",
+        "node_id": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin",
+        "type": "AssertionError"
+      }
+    ],
+    "junit": "artifacts/work_packages/B04/attempts/0005/full-python-suite.junit.xml",
+    "junit_sha256": "sha256:563437297363f90507a748af568a90655d3395b8989f54dd377f2d2dc697177f",
+    "normalized_failure_fingerprint": "J02_DEPENDENCY_READER_OMITS_CANONICAL_SKILL_CONTEXT_GROUP",
+    "passed": 963,
+    "skipped": 0
+  },
+  "status": "PASS_WITH_TWO_BOUNDED_NON_B04_DEBTS",
+  "unexpected_failure_count": 0,
+  "unexpected_skip_or_xfail_count": 0
+}

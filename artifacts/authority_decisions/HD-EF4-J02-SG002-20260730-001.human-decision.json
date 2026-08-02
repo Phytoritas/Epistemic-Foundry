@@ -1,0 +1,33 @@
+{
+  "decision_id": "HD-EF4-J02-SG002-20260730-001",
+  "run_id": null,
+  "subject_id": "J02-SG002",
+  "decision_type": "correct",
+  "decision": "Resolve J02-SG002 prospectively. Assign B02 sole authority for the exact skill-context dependency declaration tiktoken==0.13.0 in pyproject.toml and uv-generated uv.lock, assign B04 independent dependency and build revalidation without pyproject.toml or uv.lock edits, and assign S04 the exact source-binding reconciliation scope for S04-TM004. Authorize J02-0003 only after B02, B04, S04, and the active manifest binding pass; J02 may not edit dependency files and J04 must continue waiting for J02 PASS.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "J02-0002 verified its implementation but correctly failed because the executable repository did not pin tiktoken 0.13.0 and the S04 manifest-hash fingerprint drifted. This decision assigns the two repairs to their proper owners without weakening token accounting, the drift gate, package history, or source authority.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/J02/attempts/0002/report.json",
+    "artifacts/work_packages/J02/attempts/0002/tokenizer-verification.json",
+    "artifacts/work_packages/J02/attempts/0002/full-regression-impact.json",
+    "tests/security/s04-threat-model-traceability.test.mjs",
+    "RAH:E0082",
+    "RAH:E0083"
+  ],
+  "affected_artifact_ids": [
+    "pyproject.toml",
+    "uv.lock",
+    "manifests/source_bindings/development-manifest.binding.json",
+    "manifests/requirements_traceability.yaml",
+    "tests/security/s04-threat-model-traceability.test.mjs",
+    "B02-correction",
+    "B04-revalidation",
+    "S04-correction",
+    "J02-0003"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-30T00:00:00Z",
+  "decision_hash": "sha256:6c3f062ef83523a986d660ca5250a14fc3a93554ebc0fc1cef9dba00c5956409"
+}

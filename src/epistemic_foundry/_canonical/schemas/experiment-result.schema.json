@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/experiment-result.schema.json",
+  "title": "ExperimentResult",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "result_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ticket_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "result_type": {
+      "enum": [
+        "simulation",
+        "retrospective_analysis",
+        "formal_derivation",
+        "benchmark_execution",
+        "prospective_experiment",
+        "measurement_audit",
+        "external_service_observation"
+      ]
+    },
+    "status": {
+      "enum": [
+        "COMPLETED",
+        "FAILED",
+        "BLOCKED",
+        "PARTIAL",
+        "INVALIDATED"
+      ]
+    },
+    "input_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metric_results": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "number",
+          "integer",
+          "string",
+          "boolean",
+          "null"
+        ]
+      }
+    },
+    "falsification_outcome": {
+      "enum": [
+        "FALSIFIED",
+        "NOT_FALSIFIED",
+        "INCONCLUSIVE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "evidence_class": {
+      "enum": [
+        "modeling",
+        "formal",
+        "benchmark",
+        "retrospective_observational",
+        "prospective_empirical",
+        "methodological",
+        "other"
+      ]
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "environment_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "result_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "result_id",
+    "ticket_id",
+    "run_id",
+    "result_type",
+    "status",
+    "input_artifact_ids",
+    "output_artifact_ids",
+    "metric_results",
+    "falsification_outcome",
+    "evidence_class",
+    "limitations",
+    "environment_digest",
+    "started_at",
+    "finished_at",
+    "result_hash"
+  ]
+}

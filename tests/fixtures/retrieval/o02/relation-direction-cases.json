@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "case_id": "SAME_DIRECTION",
+      "canonical_relation": ["A", "parent_of", "B"],
+      "observed_relations": [["A", "parent_of", "B"]],
+      "inverse_predicates": {},
+      "ontology_version": null,
+      "symmetric_predicates": [],
+      "trusted_grounding": true,
+      "expected": "SAME_DIRECTION"
+    },
+    {
+      "case_id": "REVERSE_DIRECTION",
+      "canonical_relation": ["A", "parent_of", "B"],
+      "observed_relations": [["B", "parent_of", "A"]],
+      "inverse_predicates": {},
+      "ontology_version": null,
+      "symmetric_predicates": [],
+      "trusted_grounding": true,
+      "expected": "REVERSE_DIRECTION"
+    },
+    {
+      "case_id": "INVERSE_PREDICATE",
+      "canonical_relation": ["A", "parent_of", "B"],
+      "observed_relations": [["B", "child_of", "A"]],
+      "inverse_predicates": {"parent_of": "child_of"},
+      "ontology_version": "ontology-fixture-v1",
+      "symmetric_predicates": [],
+      "trusted_grounding": true,
+      "expected": "INVERSE_PREDICATE"
+    },
+    {
+      "case_id": "BIDIRECTIONAL",
+      "canonical_relation": ["A", "parent_of", "B"],
+      "observed_relations": [["A", "parent_of", "B"], ["B", "parent_of", "A"]],
+      "inverse_predicates": {},
+      "ontology_version": null,
+      "symmetric_predicates": [],
+      "trusted_grounding": true,
+      "expected": "BIDIRECTIONAL"
+    },
+    {
+      "case_id": "NO_DIRECTION",
+      "canonical_relation": ["A", "adjacent_to", "B"],
+      "observed_relations": [["A", "adjacent_to", "B"]],
+      "inverse_predicates": {},
+      "ontology_version": null,
+      "symmetric_predicates": ["adjacent_to"],
+      "trusted_grounding": true,
+      "expected": "NO_DIRECTION"
+    },
+    {
+      "case_id": "UNRESOLVED",
+      "canonical_relation": ["A", "parent_of", "B"],
+      "observed_relations": [],
+      "inverse_predicates": {},
+      "ontology_version": null,
+      "symmetric_predicates": [],
+      "trusted_grounding": true,
+      "expected": "UNRESOLVED"
+    },
+    {
+      "case_id": "UNTRUSTED_GROUNDING",
+      "canonical_relation": ["A", "parent_of", "B"],
+      "observed_relations": [["A", "parent_of", "B"]],
+      "inverse_predicates": {},
+      "ontology_version": null,
+      "symmetric_predicates": [],
+      "trusted_grounding": false,
+      "expected": "UNRESOLVED"
+    }
+  ]
+}

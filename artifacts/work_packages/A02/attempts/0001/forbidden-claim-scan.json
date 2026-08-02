@@ -1,0 +1,44 @@
+{
+  "attempt_id": "A02-0001",
+  "check": "forbidden_claim_scan",
+  "exit_criterion": "non-goals prevent overclaim and provider lock-in",
+  "overclaim_patterns": [
+    "production[- ]?ready",
+    "production readiness",
+    "production performance",
+    "production[- ]grade",
+    "fully implemented",
+    "fully operational",
+    "ready for production",
+    "already implemented",
+    "is executable",
+    "is validated",
+    "is production",
+    "guarantee[sd]? truth",
+    "autonomous scientific discovery"
+  ],
+  "overclaim_sentences_checked": 6,
+  "per_file": {
+    "docs/product_constitution.md": {
+      "overclaim_sentences_checked": 3,
+      "path": "docs/product_constitution.md",
+      "status": "PASS",
+      "un_negated_overclaims": 0
+    },
+    "manifests/product_invariants.yaml": {
+      "overclaim_sentences_checked": 3,
+      "path": "manifests/product_invariants.yaml",
+      "status": "PASS",
+      "un_negated_overclaims": 0
+    }
+  },
+  "reference_blueprint_maturity_preserved": true,
+  "scanned_files": [
+    "docs/product_constitution.md",
+    "manifests/product_invariants.yaml"
+  ],
+  "schema_version": 1,
+  "status": "PASS",
+  "un_negated_overclaims": 0,
+  "work_package_id": "A02"
+}

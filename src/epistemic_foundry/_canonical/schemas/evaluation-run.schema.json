@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evaluation-run.schema.json",
+  "title": "EvaluationRun",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "evaluation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "system_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$"
+    },
+    "evaluation_suite_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$"
+    },
+    "dataset_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "split": {
+      "enum": [
+        "development",
+        "visible_validation",
+        "hidden_holdout",
+        "time_sliced",
+        "adversarial",
+        "stress",
+        "production_shadow"
+      ]
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "number",
+          "integer",
+          "string",
+          "null"
+        ]
+      }
+    },
+    "subgroup_metrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "cost_metrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "number",
+          "integer",
+          "null"
+        ]
+      }
+    },
+    "latency_metrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "number",
+          "integer",
+          "null"
+        ]
+      }
+    },
+    "failure_counts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "environment_artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "result_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evaluation_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "evaluation_id",
+    "system_version",
+    "evaluation_suite_version",
+    "dataset_manifest_id",
+    "split",
+    "metrics",
+    "subgroup_metrics",
+    "cost_metrics",
+    "latency_metrics",
+    "failure_counts",
+    "environment_artifact_id",
+    "result_artifact_ids",
+    "started_at",
+    "finished_at",
+    "evaluation_hash"
+  ]
+}

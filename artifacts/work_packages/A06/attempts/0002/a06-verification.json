@@ -1,0 +1,66 @@
+{
+  "attempt_id": "A06-0002",
+  "audit_document": {
+    "path": "docs/v4_a06/constitutional_reaudit_a06_0002.md",
+    "sha256": "sha256:b9a9f6a7e69c311b4f6a3108ff3061d8f3bcd008170e906d45b479352106d75c"
+  },
+  "finding_verdicts": {
+    "A06-F001": "PASS",
+    "A06-F002": "PASS",
+    "A06-F003": "PASS",
+    "A06-F004": "PASS",
+    "A06-F005": "PASS"
+  },
+  "independence_method": "Findings derive from primary sources (schemas, samples, firewall runtime, workflow YAML, module sources); the audited A05 registry verifier is a labelled cross-check only.",
+  "required_checks": {
+    "constitutional_negative_24_audit": {
+      "evidence": "verification.constitutional_cases (24 tokens present, junit PASS)",
+      "status": "PASS"
+    },
+    "constitutional_positive_6_audit": {
+      "evidence": "verification.constitutional_cases (6 tokens present, junit PASS)",
+      "status": "PASS"
+    },
+    "constitutional_schema_and_projection_parity": {
+      "evidence": "verification.schema_meta_audit + firewall hostile fixtures",
+      "status": "PASS"
+    },
+    "evaluator_holdout_firewall_audit": {
+      "evidence": "verification.firewall_audit (F001/F002)",
+      "status": "PASS"
+    },
+    "gate_registry_and_order_audit": {
+      "evidence": "verification.promotion_workflow_audit (F004)",
+      "status": "PASS"
+    },
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "lease_fence_cas_receipt_audit": {
+      "evidence": "verification.promotion_workflow_audit outputs + NEG-020..024 cases",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "evidence": "targeted-a05-python.junit.xml (24 negative cases)",
+      "status": "PASS"
+    },
+    "parliament_attestation_approval_audit": {
+      "evidence": "verification.chamber_audit + G11/G12/G13 nodes + NEG-015..019",
+      "status": "PASS"
+    },
+    "provenance_and_receipt_audit": {
+      "evidence": "authority artifact outputs + receipt-bound commit cases",
+      "status": "PASS"
+    },
+    "schema_and_type_check": {
+      "evidence": "verification.schema_meta_audit (127 Draft 2020-12 schemas)",
+      "status": "PASS"
+    },
+    "unit_and_contract_tests": {
+      "evidence": "full Python 1196/1196 and full Node 860/860",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,67 @@
+{
+  "attempt_id": "A05-0003",
+  "chamber_binding": {
+    "promotion_delegation": "workflows/evolution_promotion.workflow.yaml",
+    "status": "PASS",
+    "workflow_id": "evolution_chamber_cycle"
+  },
+  "charter_obligations": {
+    "applicability_matrix_gate_count": 15,
+    "gate_node_count": 23,
+    "promotion_workflow_step_count": 18,
+    "resolved_reference_key_count": 20,
+    "resolved_reference_tuple_field_count": 9
+  },
+  "finding_remediation": {
+    "A06-F001": {
+      "owner": "C01 shared correction (already live)",
+      "status": "OUT_OF_A05_SCOPE_PRESENT_LIVE"
+    },
+    "A06-F002": {
+      "owner": "C01/runtime correction (already live)",
+      "status": "OUT_OF_A05_SCOPE_PRESENT_LIVE"
+    },
+    "A06-F003": {
+      "evidence": "chamber promotion node is a deterministic subworkflow delegation",
+      "status": "REMEDIATED"
+    },
+    "A06-F004": {
+      "evidence": "evolution_promotion graph-enforces G00-G14 order, advisory-only llm outputs, one promotion:commit holder, and all authority artifact outputs",
+      "status": "REMEDIATED"
+    },
+    "A06-F005": {
+      "evidence": "all 21 deterministic/policy/human_gate nodes bind epistemic_foundry.governance.evolution_authority.nodes, which delegates to decide_promotion and PromotionCommitter",
+      "status": "REMEDIATED"
+    }
+  },
+  "independent_audit_note": "Finding closure is claimed for implementation only; the independent constitutional re-audit is A06-0002 and is not claimed here.",
+  "master_spec_workflow_corpus": {
+    "node_total": 350,
+    "workflow_count": 23
+  },
+  "promotion_binding": {
+    "commit_capability_holder": "commit_promotion_atomically",
+    "gate_nodes": {
+      "G00_PIN_RESOLUTION": "gate_g00_pin_resolution",
+      "G01_POLICY_AUTHORITY": "gate_g01_policy_authority",
+      "G02_EVALUATOR_HOLDOUT_FIREWALL": "gate_g02_evaluator_holdout_firewall",
+      "G03_SCHEMA_LINEAGE_COUNT": "gate_g03_schema_lineage_count",
+      "G04_SOURCE_PROVENANCE": "gate_g04_source_provenance",
+      "G05_SEARCH_COVERAGE": "gate_g05_search_coverage",
+      "G06_METHOD_SCOPE_DEPENDENCY": "gate_g06_method_scope_dependency",
+      "G07_VALIDATION_LEAKAGE": "gate_g07_validation_leakage",
+      "G08_ADAPTIVE_STATISTICS": "gate_g08_adaptive_statistics",
+      "G09_RED_QUEEN": "gate_g09_red_queen",
+      "G10_REPLICATION_CEILING": "gate_g10_replication_ceiling",
+      "G11_PARLIAMENT": "gate_g11_parliament",
+      "G12_INDEPENDENT_ATTESTATION": "gate_g12_independent_attestation",
+      "G13_HUMAN_POLICY_APPROVAL": "gate_g13_human_policy_approval",
+      "G14_ATOMIC_PROMOTION_COMMIT": "reconcile_commit_receipts"
+    },
+    "node_count": 23,
+    "status": "PASS",
+    "workflow_id": "evolution_promotion"
+  },
+  "status": "PASS",
+  "targeted_case_count": 40
+}

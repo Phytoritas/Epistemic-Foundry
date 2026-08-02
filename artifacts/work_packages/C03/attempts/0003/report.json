@@ -1,0 +1,118 @@
+{
+  "attempt_id": "C03-0003",
+  "authority_decision_id": "HD-EF4-B04-SG002-20260730-001",
+  "b04_sg002_reconciliation": {
+    "authority_attempt": "B04-0006",
+    "classification_counts": {
+      "GATE_DECISION_RUNTIME_SCHEMA_DRIFT": 51,
+      "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT": 15
+    },
+    "missing_prior_nodes": [],
+    "prior_c03_owned_problem_count": 66,
+    "resolved_problem_count": 66,
+    "status": "PASS",
+    "still_failing_prior_nodes": []
+  },
+  "canonical_runtime": {
+    "defensive_copy": "PASS",
+    "evaluator_bundle": "PASS",
+    "gate_decision": "PASS",
+    "holdout_manifest": "PASS",
+    "legacy_silent_fallback_count": 0
+  },
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "B04_0006": "IMMUTABLE_PROJECTION_PASS_PACKAGE_SPEC_GAP_HISTORY",
+    "B04_0007": "WAITING_ON_C03_F04_J02_S04",
+    "B04_0008": "WAITING_ON_C04_0002",
+    "C03_0002": "IMMUTABLE_PASS_HISTORY",
+    "C03_0003": "PASS",
+    "C04_0002": "WAITING_ON_B04_0007",
+    "F04_0002": "DEPENDENCY_READY",
+    "J02_0003": "WAITING_ON_F04_0002",
+    "S04_0003": "WAITING_ON_J02_0003",
+    "attempt_id": "C03-0003",
+    "completion_ready": false,
+    "full_156_package_dag_recomputed": false,
+    "next_package": "F04-0002",
+    "status": "PASS",
+    "work_package_id": "C03"
+  },
+  "full_python_regression": {
+    "artifact": "artifacts/work_packages/C03/attempts/0003/full-python-regression.junit.xml",
+    "artifact_sha256": "sha256:19df8a1e2e3b620ee4376915fa49c74f8e08faad2749b68ae1f8741e661d864d",
+    "debt_id": "J02_TIKTOKEN_DEPENDENCY_DEBT",
+    "errors": 0,
+    "expected_failure_count": 1,
+    "failure_owner": "J02",
+    "failures": 1,
+    "new_c03_failure_count": 0,
+    "passed": 986,
+    "skipped": 0,
+    "status": "EXPECTED_PREEXISTING_J02_FAILURE",
+    "suite_reported_pass": false,
+    "tests": 987
+  },
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "B04_0006_preserved": true,
+    "C03_0002_preserved": true,
+    "authority_decision_preserved": true,
+    "dirty_worktree_preserved": true,
+    "prior_RAH_history_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "next_package": "F04-0002",
+  "not_claimed": [
+    "repository-wide Python suite green",
+    "F04-0002, J02-0003, or S04-0003 PASS",
+    "B04-0007 projection revalidation PASS",
+    "C04-0002 full conformance",
+    "B04-0008 final packaging",
+    "release or production readiness",
+    "external actor-independent certification",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/C03/attempts/0003/build_c03_0003_evidence.py",
+    "artifacts/work_packages/C03/attempts/0003/c03_0003_rah_seal.py",
+    "artifacts/work_packages/C03/attempts/0003/c03-runtime-migration-verification.json",
+    "artifacts/work_packages/C03/attempts/0003/full-regression-impact.json",
+    "artifacts/work_packages/C03/attempts/0003/dependency-status.json",
+    "artifacts/work_packages/C03/attempts/0003/targeted-runtime-migration.junit.xml",
+    "artifacts/work_packages/C03/attempts/0003/full-python-regression.junit.xml",
+    "artifacts/work_packages/C03/attempts/0003/commands.jsonl",
+    "artifacts/work_packages/C03/attempts/0003/review.md",
+    "artifacts/work_packages/C03/attempts/0003/report.json",
+    "artifacts/work_packages/C03/attempts/0003/rah-core-integrity.json"
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "core_evidence_id": "E0002",
+    "core_generation": "000002-45540a26",
+    "final_closeout_evidence_id": "E0003"
+  },
+  "repository_full_suite_status": "EXPECTED_PREEXISTING_J02_FAILURE",
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "User contract forbids subagents and Fleet; no external actor-independent certification is claimed.",
+    "blocking_c03_owned_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "PASS"
+  },
+  "runtime_migration_status": "PASS",
+  "status": "PASS",
+  "targeted_runtime_migration": {
+    "artifact": "artifacts/work_packages/C03/attempts/0003/targeted-runtime-migration.junit.xml",
+    "artifact_sha256": "sha256:c565cb92b496d4d4f79217e0713e9be24e71a0bb7430af1838ddd7bc6fa98e2f",
+    "errors": 0,
+    "failures": 0,
+    "passed": 174,
+    "skipped": 0,
+    "status": "PASS",
+    "tests": 174
+  },
+  "work_package_id": "C03"
+}

@@ -1,0 +1,65 @@
+{
+  "attempt_id": "H02-0001",
+  "attestation_scope": {
+    "attested_not_authored": "H02 attests the session and prompt lifecycle hook declarations (byte-equal to the plugin blueprint) and the eight-case contract harness the repository already carries; this sealing session makes ZERO edit and does not re-author them",
+    "hook_declaration_files": [
+      "plugins/epistemic-foundry/hooks/prompt.json",
+      "plugins/epistemic-foundry/hooks/session.json"
+    ]
+  },
+  "exit_criteria": {
+    "prompt_classification_cannot_change_state_directly": {
+      "mechanism": "prompt_hook_test asserts prompt.json declares only one UserPromptSubmit classification route (timeout 8, one command rooted at ${PLUGIN_ROOT}); a direct state-mutation / commit command, an authority field (decision / phase / state / revision / action_intent_id / effect_receipt_id), and a timeout expansion each FAIL CLOSED via validatePrompt; the prompt declaration cannot register tool, completion, or delegation events (PreToolUse / Stop / SubagentStart); and the installed declaration is byte-equal to the plugin blueprint",
+      "status": "PASS"
+    },
+    "session_bootstrap_is_bounded": {
+      "mechanism": "session_hook_test asserts session.json declares only a SessionStart route (matcher startup|resume|clear|compact, timeout 15) and a PostCompact route (matcher manual|auto, timeout 15), every hook a type: command rooted at ${PLUGIN_ROOT} with a positive bounded integer timeout <= 15 and no direct authority command; a timeout expansion to 16, an extra lifecycle event (SessionEnd), and a direct authority transition / set-phase command each FAIL CLOSED via validateSession; and the installed declaration is byte-equal to the plugin blueprint",
+      "status": "PASS"
+    }
+  },
+  "fail_closed_maturity_boundary": {
+    "boundary": "H02 declares STATIC session and prompt hook config only; the harness's fourth session and fourth prompt case assert the plugin manifest declares no hooks key and empty capabilities and plugins/epistemic-foundry/dist/hook-runner.mjs is ABSENT",
+    "deferred_to": [
+      "H04",
+      "X01",
+      "G06"
+    ],
+    "is_weakening": false,
+    "rationale": "SPECIFIED != IMPLEMENTED: the hook declarations are honest static config; runtime hook execution, plugin-manifest hook registration and host capability probing are deferred integration, not claimed here",
+    "status": "PASS"
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: the bounded implementation agent(s) that authored the session and prompt hook declarations and the contract harness; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "prompt_hook_test": {
+      "cases": [
+        "prompt_hook_test: direct state mutation and authority fields fail closed",
+        "prompt_hook_test: installed declaration is byte-equivalent to the authority blueprint",
+        "prompt_hook_test: prompt declaration cannot register tool, completion, or delegation events",
+        "prompt_hook_test: prompt intake is one bounded classification request"
+      ],
+      "harness": "node --test artifacts/work_packages/H02/attempts/0001/h02-hook-contract-tests.mjs",
+      "status": "PASS",
+      "test_count": 4
+    },
+    "session_hook_test": {
+      "cases": [
+        "session_hook_test: canonical session lifecycle routes are exact and bounded",
+        "session_hook_test: current package shell does not prematurely claim hook runtime integration",
+        "session_hook_test: installed declaration is byte-equivalent to the authority blueprint",
+        "session_hook_test: timeout expansion and extra lifecycle work fail closed"
+      ],
+      "harness": "node --test artifacts/work_packages/H02/attempts/0001/h02-hook-contract-tests.mjs",
+      "status": "PASS",
+      "test_count": 4
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1291,
+    "full_python_suite": 1261,
+    "hook_contract_tests": 8
+  }
+}

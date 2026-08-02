@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/novelty-vector.schema.json",
+  "title": "NoveltyVector",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "novelty_vector_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "claim_semantic": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "mechanism_topology": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "prediction_signature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "falsifier_signature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scope_shift": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "experiment_design": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_basis": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "external_prior_art": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "claim_semantic",
+        "mechanism_topology",
+        "prediction_signature",
+        "falsifier_signature",
+        "scope_shift",
+        "experiment_design",
+        "evidence_basis",
+        "external_prior_art"
+      ]
+    },
+    "nearest_candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "external_search_certificate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assessment_status": {
+      "enum": [
+        "ASSESSED",
+        "PARTIAL",
+        "UNASSESSED",
+        "FAILED"
+      ]
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "computed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "novelty_vector_id",
+    "candidate_id",
+    "dimensions",
+    "nearest_candidate_ids",
+    "external_search_certificate_id",
+    "assessment_status",
+    "uncertainties",
+    "computed_at"
+  ],
+  "description": "코드 유사도 대신 가설·기전·예측·실험·선행성의 다층 신규성을 분리한다."
+}

@@ -1,0 +1,51 @@
+✔ consent_policy_test: policy and consent projections are canonical, hash-bound, and immutable (4.5249ms)
+✔ consent_policy_test: memory classes and class rules are closed and unambiguous (0.2805ms)
+✔ consent_policy_test: cross-workspace access is denied by default below retrieval (1.0099ms)
+✔ consent_policy_test: USER cross-workspace recall requires policy and explicit opt-in (1.3719ms)
+✔ consent_policy_test: non-USER classes cannot become cross-workspace through a permissive mode (1.2496ms)
+▶ consent_policy_test: purpose, class, scope, policy, and workspace remain bound
+  ✔ CONSENT_PURPOSE_MISMATCH (0.5327ms)
+  ✔ CONSENT_DATA_CLASS_MISMATCH (0.4003ms)
+  ✔ CONSENT_SCOPE_MISMATCH (0.4118ms)
+  ✔ CONSENT_POLICY_MISMATCH (0.5053ms)
+  ✔ CONSENT_WORKSPACE_MISMATCH (0.4607ms)
+✔ consent_policy_test: purpose, class, scope, policy, and workspace remain bound (3.0975ms)
+✔ consent_policy_test: requested scope cannot claim a different memory class (0.99ms)
+✔ consent_policy_test: optional consent is validated but is not recorded as authority (0.4712ms)
+▶ consent_policy_test: only an effective GRANTED consent can authorize access
+  ✔ DENIED (0.4136ms)
+  ✔ REVOKED (0.4052ms)
+  ✔ EXPIRED (0.3521ms)
+✔ consent_policy_test: only an effective GRANTED consent can authorize access (1.7742ms)
+✔ consent_policy_test: expiry and revocation take effect at their exact boundary (1.0603ms)
+✔ consent_policy_test: not-yet-effective policy and consent fail closed (0.8119ms)
+✔ consent_policy_test: the enforcement API throws the typed denial and never implies search (0.5334ms)
+✔ retention_test: class-specific retention overrides the policy default (3.9663ms)
+✔ retention_test: the exact retention boundary is valid and the next millisecond is expired (0.7379ms)
+✔ retention_test: future memory timestamps are rejected instead of producing negative age (0.5278ms)
+✔ retention_test: zero-day EPHEMERAL memory survives only its creation instant (1.2051ms)
+✔ retention_test: canonical but disallowed classes fail closed before retrieval (0.9185ms)
+✔ retention_test: unknown classes and malformed timestamps are invalid input, not fallback (0.7047ms)
+✔ retention_test: access decisions preserve the policy hash and are deeply immutable (0.5081ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 417.0778
+ℹ start of coverage report
+ℹ -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ file                   | line % | branch % | funcs % | uncovered lines
+ℹ -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ packages               |        |          |         | 
+ℹ  foundry-kernel        |        |          |         | 
+ℹ   src                  |        |          |         | 
+ℹ    memory              |        |          |         | 
+ℹ     policy             |        |          |         | 
+ℹ      memory-policy.mjs |  92.05 |    80.89 |  100.00 | 116-118 120-121 135-136 141-142 145-146 159-160 165-166 169-170 176-177 194-195 214-215 265-266 270-271 283-284 287-288 291-292 349-350 353-354 380-381 396-397 414-415 451-452 455-456 474-475 503-504 653
+ℹ -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ all files              |  92.05 |    80.89 |  100.00 | 
+ℹ -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ℹ end of coverage report

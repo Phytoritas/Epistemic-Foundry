@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "work_package_id": "F01",
+  "attempt_id": "F01-0002",
+  "status": "PASS",
+  "verified_at_utc": "2026-07-28T19:14:28Z",
+  "authority_decision_id": "HD-EF4-F01-SG001-20260729-001",
+  "authority_decision_file_sha256": "sha256:1a4f8729628ffc6409e0cc7bd36e3aba7913836dabf5e97ecfc9eb061617c196",
+  "authority_decision_hash": "sha256:1b6fa81c62d8d34162679496a2459f9634670598f980feecfdc1c957a61e1383",
+  "classifier_version": "4.0.1-f01.1",
+  "contract": {
+    "final_authority": "Foundry Kernel deterministic Epistemic Work Classifier",
+    "canonical_signal_count": 10,
+    "work_class_count": 6,
+    "llm_role": "non-authoritative SignalProposal only",
+    "unknown_trusted_signal_policy": "FAIL_CLOSED",
+    "empty_signal_policy": "INJECT_AMBIGUOUS_E5_INTERVIEW",
+    "mixed_signal_rule": "MAXIMUM_SIGNAL_FLOOR",
+    "same_revision_override_rule": "UPWARD_ONLY_IMMUTABLE_SUPERSESSION",
+    "business_output": "EpistemicWorkClassification",
+    "telemetry_sidecar": "ResultEnvelope"
+  },
+  "targeted_suites": {
+    "node": {
+      "command": "node --test <all packages/foundry-kernel/src/forge/classifier/*.test.mjs files>",
+      "tests": 30,
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0,
+      "status": "PASS"
+    },
+    "python": {
+      "command": "uv run --locked python -B -m pytest tests/test_f01_epistemic_work_classifier.py tests/test_f01_underprocessing_guard.py tests/test_f01_workflow_contract.py -p no:cacheprovider",
+      "tests": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "xfail": 0,
+      "status": "PASS"
+    }
+  },
+  "fixed_oracles": {
+    "gold_cases": {
+      "expected": 14,
+      "passed": 14,
+      "failed": 0,
+      "exact_match_accuracy": "1.000"
+    },
+    "adversarial_cases": {
+      "expected": 16,
+      "passed": 16,
+      "failed": 0,
+      "exact_match_accuracy": "1.000"
+    },
+    "hash_vectors": {
+      "expected": 4,
+      "passed": 4,
+      "failed": 0,
+      "exact_match_accuracy": "1.000"
+    },
+    "override_cases": {
+      "expected": 6,
+      "passed": 6,
+      "failed": 0,
+      "exact_match_accuracy": "1.000"
+    }
+  },
+  "acceptance_metrics": {
+    "work_class_exact_match_accuracy": "1.000",
+    "required_phases_exact_match_accuracy": "1.000",
+    "default_role_count_exact_match_accuracy": "1.000",
+    "human_gate_exact_match_accuracy": "1.000",
+    "accepted_signal_normalization_accuracy": "1.000",
+    "interview_routing_exact_match_accuracy": "1.000",
+    "hash_vector_exact_match_accuracy": "1.000",
+    "classification_id_exact_match_accuracy": "1.000",
+    "live_llm_or_external_network_dependency_count": 0,
+    "skipped_or_xfailed_guard_cases": 0
+  },
+  "schema_and_workflow": {
+    "canonical_schema_count": 124,
+    "canonical_example_count": 124,
+    "schema_example_cardinality_match": true,
+    "epistemic_work_classification_schema_meta_valid": true,
+    "sample_example_valid": true,
+    "additional_properties_false": true,
+    "risk_factor_enum_closed": true,
+    "class_projection_constraints_exact": true,
+    "workflow_executor_type": "policy",
+    "workflow_model_tier": "deterministic",
+    "workflow_output_schema_ref": "schemas/epistemic-work-classification.schema.json",
+    "workflow_capabilities": [
+      "artifact_read",
+      "artifact_write"
+    ],
+    "capability_alias_count": 0,
+    "workflow_output_binding_error_count": 0
+  },
+  "repository_checks": {
+    "repo_structure_check": "PASS",
+    "forbidden_source_import_check": "PASS",
+    "scoped_git_diff_check": "PASS",
+    "line_ending_advisories_are_not_whitespace_errors": true
+  },
+  "implementation_files": [
+    {
+      "path": "packages/foundry-kernel/src/forge/classifier/epistemic-work-classifier.mjs",
+      "sha256": "sha256:16ce5f1c1622ca908d1f781bf7be094834636d73db0619cf2759e788d1e18c64"
+    },
+    {
+      "path": "packages/foundry-kernel/src/forge/classifier/classification-committer.mjs",
+      "sha256": "sha256:a603aa354cab8e9bcdc318e7a5075b88dd754f0e84c28d11eb17553a19975a5e"
+    },
+    {
+      "path": "packages/foundry-kernel/src/forge/classifier/index.mjs",
+      "sha256": "sha256:76783c602754f5faefc02e55093250fdcd9d9a4bb825f8e4925b9a3850b71f0d"
+    }
+  ],
+  "contract_file_hashes": {
+    "docs/forge_protocol.md": "sha256:3273d5efee6f6d9478b86bf05e67f7f01dfda3547ac6371b8cb818e737754ad3",
+    "schemas/epistemic-work-classification.schema.json": "sha256:dbe8437eae1ec8c956b1290556efa7f2bb89c862134870d80f15e6e49679efa9",
+    "examples/sample_epistemic-work-classification.json": "sha256:ab805fed88f6c25eb6cb708ea9cb854193d90ccd21ce87baa06457f2fb018b7c",
+    "workflows/forge_research_cycle.workflow.yaml": "sha256:cf95ed843b87f473653976735c5d06ce4462ace337efaa4d60fac4373b20e454",
+    "prompts/plugin/classify_epistemic_work.md": "sha256:99eaf43c4dfaa6e20cd05088cb9539ffc8b945a3d6ea55dfe6f33d22cc7ce0bc",
+    "manifests/development_manifest.yaml": "sha256:526f744b3ce67ebc3bf4a6e9f82defa83455568c4ae594cbf70d51d0cb436e63",
+    "manifests/acceptance_matrix.yaml": "sha256:004ecdffd791c7dd318704e0595fb675baf596b9c6fb8f88deca96940bf032d3"
+  },
+  "fixture_file_hashes": {
+    "tests/golden/forge/f01_classifier_gold_cases.json": "sha256:3adf6be1dc5ce43455ece62a26ba2ce02d064cb46bb249bf5c408387070843c7",
+    "tests/golden/forge/f01_classifier_adversarial_cases.json": "sha256:93a7617d29a52fe3af9bcc15a395056f5a38afc5d36b80034a1f3c547f0d6f66",
+    "tests/golden/forge/f01_classifier_hash_vectors.json": "sha256:9715c2e6e374fdfedc4d6011fec498f71e4396ad788773c93b3b49bae25b0915",
+    "tests/golden/forge/f01_classifier_override_cases.json": "sha256:afe77ea97803b280fb6333bc629dd3c7d7bcc96090d7e1f4155567251cf9264c"
+  },
+  "python_test_file_hashes": {
+    "tests/test_f01_epistemic_work_classifier.py": "sha256:98516fbc6c99c3ee06f61b6e3c251b5fbfbab7bd1b0df2a6afa7f996c3d2e5d1",
+    "tests/test_f01_underprocessing_guard.py": "sha256:a7595337682857c0b6a37924f80056bd6f4bb77b1954875eb966a35098199d7c",
+    "tests/test_f01_workflow_contract.py": "sha256:61b5effd4694a82a5a3124e31a41dfd3141973d82537001e0c6a3ad8002c314a"
+  },
+  "failures": []
+}

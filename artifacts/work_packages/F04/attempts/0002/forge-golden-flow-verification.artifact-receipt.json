@@ -1,0 +1,38 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "F04-0002-FORGE-GOLDEN-FLOW-VERIFICATION",
+  "byte_size": 3412,
+  "content_hash": "sha256:c653109417c17f3e254fb95ad99d981612cf4c85f22a5c0ade7e93aea2708d85",
+  "created_at": "2026-07-30T14:02:00.000Z",
+  "created_by": {
+    "actor_id": "SVC-FOUNDRY-KERNEL-F04",
+    "actor_type": "service"
+  },
+  "locator": "artifacts/work_packages/F04/attempts/0002/forge-golden-flow-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:39138da44d635fdc6086c9edae2f746fc62fb0ad17189f96ea0ad93a3982f0ba",
+  "receipt_id": "AR-F04-0002-FORGE-GOLDEN-FLOW-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "forge_golden_flows",
+      "details": "6/6",
+      "status": "PASS"
+    },
+    {
+      "check": "phase_artifact_reconciliation",
+      "details": "2/2",
+      "status": "PASS"
+    },
+    {
+      "check": "f04_targeted_gate",
+      "details": "8/8",
+      "status": "PASS"
+    },
+    {
+      "check": "regression_fingerprint_reconciliation",
+      "details": "F04 causal failures 0; exact J02 x3 and S04 x1 remain",
+      "status": "PASS"
+    }
+  ]
+}

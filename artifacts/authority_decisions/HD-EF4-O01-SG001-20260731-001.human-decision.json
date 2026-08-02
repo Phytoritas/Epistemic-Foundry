@@ -1,0 +1,38 @@
+{
+  "decision_id": "HD-EF4-O01-SG001-20260731-001",
+  "run_id": null,
+  "subject_id": "O01-SG001",
+  "decision_type": "correct",
+  "decision": "Resolve O01-SG001 prospectively and authorize only O01-0002. Freeze the canonical base retrieval-lane vocabulary to lexical, semantic, citation, entity_variable, mechanism, counterevidence, null, boundary, method, temporal, and external_novelty. support is an evidence role, not a lane; counter and novelty are legacy migration inputs only and new writes reject them; custom cannot substitute for a canonical lane. Freeze the class floor as E0=no retrieval with an explicit NOT_REQUIRED plan, E1=lexical+semantic+citation+temporal, E2=E1+entity_variable+counterevidence+null+boundary+method, E3=E2+mechanism, E4=all ten non-novelty lanes, and E5=E4+external_novelty. Class-floor lanes are non-waivable; canonical optional lanes may be selected or recorded as NOT_REQUIRED_FOR_CLASS/NOT_APPLICABLE only with typed deterministic evidence; any future extension or waiver requires a separately registered contract and HumanDecision. Bind every QueryPlan to request_id, request_revision, request_input_hash, classification_id, classification_revision, classification_hash, work_class, classifier_version, and policy_bundle_hash, and seal the required-lane decisions in plan_hash. Reconcile all eleven canonical lanes on every retrieval run: selected lanes emit one or more execution receipts, while each unselected or inapplicable lane emits exactly one UNSEARCHED sentinel; sentinel and execution receipts for the same lane cannot coexist. Define execution states SEARCHED_NONE, SEARCHED_WITH_RESULTS, PARTIAL, BLOCKED, and FAILED; UNSEARCHED has null execution-only fields and cannot masquerade as zero results. Budget/time/manual stops are PARTIAL, missing policy/credential/backend prerequisites are BLOCKED, provider/integrity/invalid-response failures are FAILED, and successful zero-result execution is SEARCHED_NONE. Any selected-lane FAILED or receipt/hash/count/reconciliation defect maps the run to FAIL; selected-lane BLOCKED maps to BLOCKED; selected-lane PARTIAL maps to PARTIAL; all selected lanes successfully terminal map to PASS; E0 maps to NOT_REQUIRED. Absence and novelty ceilings derive only from reconciled executed scope. Authorize the exact three O01 schemas and examples, retrieval policy example, evidence-retrieval workflow, search-completeness document, O01 planning runtime/tests, and O01 evidence paths listed in affected_artifact_ids. Preserve O01-0001, E0079, all 79 prior RAH generations, all earlier attempts and decisions, and the dirty worktree. Generated contract projection and packaged canonical snapshot must be reconciled by their existing C02 and B04 owners before repository-wide conformance; O02 and O03 wait for verified O01 PASS. Fleet and subagents remain forbidden and completion_ready remains false.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "O01-0001 correctly stopped because the active schema, policy, workflow, examples, and documentation disagreed on lane names and did not define class floors, applicability, classification binding, sentinel receipts, failure semantics, or deterministic reconciliation. This decision supplies a closed monotonic contract without inventing evidence, treating a zero result as absence, allowing base-lane waiver, changing the canonical schema count, or rewriting any prior result.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/O01/attempts/0001/report.json",
+    "artifacts/work_packages/O01/attempts/0001/shared-contract-gap-verification.json",
+    "artifacts/work_packages/O01/attempts/0001/dependency-status.json",
+    "artifacts/work_packages/O01/attempts/0001/review.md",
+    "RAH:E0079",
+    "RAH:generation:000079-344cd519"
+  ],
+  "affected_artifact_ids": [
+    "schemas/query-plan.schema.json",
+    "schemas/search-lane-receipt.schema.json",
+    "schemas/search-completeness-certificate.schema.json",
+    "examples/sample_query-plan.json",
+    "examples/sample_search-lane-receipt.json",
+    "examples/sample_search-completeness-certificate.json",
+    "config/retrieval_policy.example.yaml",
+    "workflows/evidence_retrieval.workflow.yaml",
+    "docs/search_completeness.md",
+    "python/epistemic_foundry/retrieval/planning/**",
+    "artifacts/work_packages/O01/**",
+    "C02-reconciliation",
+    "B04-reentrant-projection",
+    "O01-0002"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-31T00:00:00Z",
+  "decision_hash": "sha256:7147e54c609744ff4f043be9f0407382e36636e3afc2a4dbfa59afc19e1a6265"
+}

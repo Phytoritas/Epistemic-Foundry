@@ -1,0 +1,64 @@
+{
+  "attempt_id": "U06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every decision resolves to a content-addressed receipt whose identifier and hash are a pure function of its own body; the caller supplies created_at and there is no clock or random draw, so replaying a call over equal inputs reproduces the receipt byte for byte and a persisted receipt re-derives its identity after a restart",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "each panel resolves to one of the four honest-UI states read from epistemic_foundry.observability.result_state (never named in the gate), every requested surface is one the sealed U05 console declares, and each FINDING_CODE names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "a tampered, absent or malformed upstream degrades to an honest UNAVAILABLE panel rather than a fabricated healthy one, an authority grab is refused before any surface is touched, a dashboard cannot overstate the completeness of the panels it embeds, a persisted panel and dashboard re-derive their identity after a restart, and the happy path still replays deterministically",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "every panel and dashboard carries readonly=true and grants_authority=false unconditionally, any authority_request is refused before any surface is read, and nothing here scores, selects, promotes, evaluates or reaches an evaluator, holdout or promotion surface",
+      "status": "PASS"
+    }
+  },
+  "operator_semantics": {
+    "authority_refused_before_surface": true,
+    "honest_ui_state_source": "epistemic_foundry.observability.result_state (EF4-I23), read not named (EF4-I22)",
+    "produces": "read-only operator panels and one composed dashboard; no score, selection, promotion or evaluation",
+    "unavailable_is_never_fabricated_healthy": true
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent; reviewer: this independent contract-review session, a distinct actor; actor_independence between author and reviewer holds, external actor-independent certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 19
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 12
+    }
+  },
+  "schema_binding": {
+    "honest_ui_states": "epistemic_foundry.observability.result_state.ResultState (EF4-I23)",
+    "principal_counts": "U05 view counts-map keys, read structurally and never named (EF4-I22)",
+    "surfaces": "exactly the sealed U05 console surfaces (Pareto front, M05 niche map, candidate lineages, Red Queen challenge board)"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_u05": 48,
+    "full_node_suite": 1253,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 19,
+    "provenance_and_receipt_audit": 9,
+    "schema_and_type_check": 7,
+    "unit_and_contract_tests": 12
+  }
+}

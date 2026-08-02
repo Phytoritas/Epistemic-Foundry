@@ -1,0 +1,53 @@
+{
+  "attempt_id": "J03-0001",
+  "authority_boundary": {
+    "allowed_capabilities_and_sets_canonicalized": true,
+    "canonical_context_capsule_schema": "schemas/context-capsule.schema.json",
+    "canonical_schema_count": 127,
+    "canonical_schema_modified_by_j03": false,
+    "capsule_hash_binds_exact_canonical_preimage": true,
+    "capsule_output_deeply_frozen": true,
+    "complete_current_artifact_accounting_required": true,
+    "excluded_content_or_summary_denied": true,
+    "exclusions_are_explicit": true,
+    "freshness_binds_expiry_session_phase_run_spec_policy_and_inventory": true,
+    "generated_contract_bound_at_module_load": true,
+    "included_artifact_requires_source_hash_and_nonblank_summary": true,
+    "input_mutation_performed": false,
+    "no_clock_random_id_filesystem_or_previous_capsule_authority": true,
+    "proxy_accessor_sparse_array_and_custom_prototype_rejected": true,
+    "schema_contract_drift_fails_closed_at_module_load": true,
+    "summary_hash_binds_exact_summary_bytes": true
+  },
+  "exit_criteria": {
+    "capsule_rebuilt_from_canonical_state": {
+      "evidence": [
+        "packages/context-capsule/src/capsule-hash.test.mjs"
+      ],
+      "mechanism": "assembleContextCapsule turns an explicit canonical-state snapshot into a deeply frozen capsule whose capsule_hash binds the exact canonical JSON preimage; replaying the same snapshot yields identical immutable bytes with no clock, random id, filesystem discovery, or previous-capsule fallback, and set-like input order cannot change the bytes or hash",
+      "status": "PASS"
+    },
+    "exclusions_and_freshness_explicit": {
+      "evidence": [
+        "packages/context-capsule/src/capsule-hash.test.mjs",
+        "packages/context-capsule/src/stale-capsule.test.mjs"
+      ],
+      "mechanism": "exclusions are explicit and may never smuggle excluded content or its summary into the capsule; requireFreshContextCapsule fails closed on session, phase, RunSpec, policy, expiry, not-yet-valid, changed, missing, or newly visible unaccounted artifacts and on capsule or summary tamper",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "capsule_hash_test": {
+      "module": "packages/context-capsule/src/capsule-hash.test.mjs",
+      "status": "PASS",
+      "test_count": 11
+    },
+    "stale_capsule_test": {
+      "module": "packages/context-capsule/src/stale-capsule.test.mjs",
+      "status": "PASS",
+      "test_count": 10
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 21
+}

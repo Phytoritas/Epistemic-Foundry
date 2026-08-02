@@ -1,0 +1,130 @@
+{
+  "any_source_claims_ready": false,
+  "assurance_limitation": "This attestation is authored by the bounded Z04 maker; author/reviewer separation and independent-review sign-off are provided by the primary session, and external actor-independent certification does not hold.",
+  "completion_ready_sources": [
+    {
+      "field": "ralph_completion_ready",
+      "ready": false,
+      "source": ".rah/state/status.json",
+      "value": false
+    },
+    {
+      "field": "completion_ready",
+      "ready": false,
+      "source": ".rah/state/gates.json",
+      "value": null
+    },
+    {
+      "field": "completion_ready",
+      "ready": false,
+      "source": "artifacts/work_packages/Z01/attempts/0001/report.json",
+      "value": false
+    },
+    {
+      "field": "global_implementation_gate",
+      "ready": false,
+      "source": "artifacts/work_packages/Z01/attempts/0001/report.json",
+      "value": "fail"
+    },
+    {
+      "field": "completion_ready",
+      "ready": false,
+      "source": "artifacts/work_packages/Z02/attempts/0001/report.json",
+      "value": false
+    },
+    {
+      "field": "global_implementation_gate",
+      "ready": false,
+      "source": "artifacts/work_packages/Z02/attempts/0001/report.json",
+      "value": "fail"
+    },
+    {
+      "field": "completion_ready",
+      "ready": false,
+      "source": "artifacts/work_packages/Z03/attempts/0001/report.json",
+      "value": false
+    },
+    {
+      "field": "global_implementation_gate",
+      "ready": false,
+      "source": "artifacts/work_packages/Z03/attempts/0001/report.json",
+      "value": "fail"
+    }
+  ],
+  "composed_manifest_hash_reconciliation_sha256": "sha256:2397a66bc054721f54bde930333fc6533b30eb02ab03ad3738115b93097c87b7",
+  "composed_release_reconciliation_sha256": "sha256:8edb881a6a86ee0530b93563e5e46cf499cda265cfd1252552c8af26545696ae",
+  "conditional_owners": {
+    "all_owned": true,
+    "declared_count": 15,
+    "orphan_owners": [],
+    "owned": {
+      "PostgreSQL/object storage/queue/region and disaster-recovery SLOs": "platform / infrastructure owner (PLUGIN_ALPHA prerequisite)",
+      "ShinkaEvolve exact implementation-time revision/package digest": "shinka-adapter owner: backend is SPECIFIED-not-IMPLEMENTED and its exact revision/package digest stays BLOCKED until implementation-time pinning",
+      "actual 2,000-document cost/latency/quality evidence": "validation-bay / evaluation lead (PLUGIN_ALPHA prerequisite)",
+      "cross-platform Codex/Claude host capability matrix": "plugin-shell / compatibility owner (PLUGIN_ALPHA prerequisite)",
+      "ethics review thresholds for high-risk domains": "governance / ethics review owner (PLUGIN_ALPHA prerequisite)",
+      "first production DomainPack and ontology versions": "product owner / domain modelling lead (PLUGIN_ALPHA prerequisite)",
+      "gold annotation and expert adjudication team": "product owner / evaluation lead (PLUGIN_ALPHA prerequisite)",
+      "independent security and privacy review": "independent security reviewer (PLUGIN_ALPHA prerequisite)",
+      "operator training and appeal authority": "governance / operations owner (PLUGIN_ALPHA prerequisite)",
+      "production corpus license and access policy": "product owner / data-governance custodian (PLUGIN_ALPHA prerequisite)",
+      "production sandbox/container/cluster topology": "platform / infrastructure owner (PLUGIN_ALPHA prerequisite)",
+      "production signing identity and key custody": "release-integrity / signing custodian (PLUGIN_ALPHA prerequisite)",
+      "provider credentials, rate limits, cancellation and hard metering": "provider-neutrality / budget owner (PLUGIN_ALPHA prerequisite)",
+      "qualified evaluator and hidden/OOD data custodian": "verifier-firewall custodian (PLUGIN_ALPHA prerequisite)",
+      "statistical family/error-control policy by domain": "statistical governor (PLUGIN_ALPHA prerequisite)"
+    },
+    "refusals": [],
+    "unowned": []
+  },
+  "declaring_sources": [
+    "manifests/development_manifest.yaml",
+    "manifests/acceptance_matrix.yaml",
+    "manifests/compatibility_matrix.yaml",
+    "plugins/epistemic-foundry/.codex-plugin/plugin.json",
+    "PACKAGE_MANIFEST.json",
+    ".rah/state/status.json",
+    ".rah/state/gates.json",
+    ".rah/ralph/evidence_ledger.json"
+  ],
+  "final_status": "PASS",
+  "generated_at": "1970-01-01T00:00:00Z",
+  "honest_label_accepted": {
+    "decision": "ACCEPT"
+  },
+  "honesty_note": "The attested release label is the UNVERIFIED reference-maturity SPEC_BUNDLE at version 4.0.0; it is not a production, validated or GA release, and completion_ready stays false in every source.",
+  "label_matches_evidence": true,
+  "manifest_hash_status": "PASS",
+  "non_production_status": true,
+  "overclaim_label_refused": {
+    "code": "EF_Z04_RELEASE_LABEL_OVERCLAIM",
+    "decision": "REFUSED",
+    "matched_term": "production",
+    "reason": "the proposed release label claims production, validated or GA maturity that the SPEC_BUNDLE evidence does not support, so the attestor refuses it"
+  },
+  "record_sha256": "sha256:272eebfc1b3ca3c534618ebd34a99c3dd09349c8664f93f6c4e9279dc0647da1",
+  "refusals": [],
+  "release_label": {
+    "maturity": "UNVERIFIED_REFERENCE",
+    "release_level": "SPEC_BUNDLE",
+    "version": "4.0.0"
+  },
+  "release_label_evidence": {
+    "acceptance_bundle_status": "SPEC_BUNDLE",
+    "acceptance_version": "4.0.0",
+    "compat_status": "UNVERIFIED_REFERENCE_MATRIX",
+    "compat_version": "4.0.0",
+    "package_manifest_version": "4.0.0",
+    "plugin_version": "4.0.0",
+    "readiness": {
+      "architecture_freeze": "CONDITIONAL_PASS",
+      "plugin_blueprint": "REFERENCE_BLUEPRINT_NOT_IMPLEMENTED",
+      "production_implementation": "NOT_CLAIMED",
+      "specification_validation": "PASS"
+    }
+  },
+  "release_reconciliation_status": "PASS",
+  "schema_version": "z04-independent-attestation/v1",
+  "version_consistent": true,
+  "work_package_id": "Z04"
+}

@@ -1,0 +1,314 @@
+{
+  "attempt_id": "T03-0001",
+  "attempt_type": "T03_STABLE_CLI_JSON_ERROR_AND_PATHLESS_SURFACES",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "T03-0001",
+    "dependencies": {
+      "T01": {
+        "attempt_id": "T01-0002",
+        "core_evidence_id": "E0113",
+        "final_closeout_evidence_id": "E0114",
+        "report": "artifacts/work_packages/T01/attempts/0002/report.json",
+        "report_sha256": "sha256:474def1666b367e5a9da3bdbf622b78211046a88e2d2110aa3176a775f016ea4",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_T03_0001_THEN_CONTINUE_DAG",
+    "regression_baseline": {
+      "attempt_id": "P01-0001",
+      "core_evidence_id": "E0137",
+      "final_closeout_evidence_id": "E0138",
+      "report": "artifacts/work_packages/P01/attempts/0001/report.json",
+      "report_sha256": "sha256:83bc4212b2a8dae099b431099b9c01de0c44e54b7bc41b3c8801f5f0fb94c200",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "commands_round_trip_contracts": "PASS",
+    "stable_error_codes": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_package": "W04-0001",
+  "not_claimed": [
+    "a built dist/cli.mjs payload, which is a later build package",
+    "argument schema validation, which the sealed tool catalogs own",
+    "PATH-less guarantees for code outside the CLI and its dispatcher",
+    "human-readable output formatting beyond withholding the machine surface",
+    "actor-independent certification of this implementation review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 31427,
+      "path": "artifacts/work_packages/T03/attempts/0001/build_t03_0001_evidence.py",
+      "sha256": "sha256:f1de8f7563736df9c2d553580ded8333199b838a2084eb462676cd9ea87eb80c"
+    },
+    {
+      "byte_size": 4166,
+      "path": "artifacts/work_packages/T03/attempts/0001/cli-contract-test.junit.xml",
+      "sha256": "sha256:85ea4c409e9943403faa8618bb1359ebcf44560787d89df8e22c12dc574ba918"
+    },
+    {
+      "byte_size": 8799,
+      "path": "artifacts/work_packages/T03/attempts/0001/commands.jsonl",
+      "sha256": "sha256:a1893abc79da9853c683f1746516753ab16e149210614193173607cd0b685097"
+    },
+    {
+      "byte_size": 1038,
+      "path": "artifacts/work_packages/T03/attempts/0001/dependency-regression-dispatch.junit.xml",
+      "sha256": "sha256:0893bcc42983b16f11657f2c4a2484864f27a4306a2dc7e9820bb97a416d4aa3"
+    },
+    {
+      "byte_size": 4536,
+      "path": "artifacts/work_packages/T03/attempts/0001/dependency-regression-mcp.junit.xml",
+      "sha256": "sha256:320dadd10ae173cd744c079e00be14a7f506c62c1c8a3ca19f1370fd805fecb4"
+    },
+    {
+      "byte_size": 779,
+      "path": "artifacts/work_packages/T03/attempts/0001/dependency-status.json",
+      "sha256": "sha256:d7d0d80813b57664d1262e0f74f365699a5abd3caacf76838556a5c617fa05c6"
+    },
+    {
+      "byte_size": 181911,
+      "path": "artifacts/work_packages/T03/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:803364beb991ea843d837d78a72364cf72cc2c9b3190c5457c93d41b85c6e0bd"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/T03/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 3716,
+      "path": "artifacts/work_packages/T03/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:3d43e3abee1bfafb1a95f9cf77504daf253eb3f1040c24c0acdf6b2ea5b62a3b"
+    },
+    {
+      "byte_size": 5968,
+      "path": "artifacts/work_packages/T03/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:fee5aa49aea9ba1f1229f8dd0e807879681d54553acd1f448e7231f99d56cff0"
+    },
+    {
+      "byte_size": 2985,
+      "path": "artifacts/work_packages/T03/attempts/0001/pathless-cli-test.junit.xml",
+      "sha256": "sha256:39f08c6a81911688858d72b877ec0539c75c8963e8f00afe1c6476fe3aeee2c0"
+    },
+    {
+      "byte_size": 553,
+      "path": "artifacts/work_packages/T03/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:308222d64d68c9ef688a5e9c85d114d984b5856e53a63226a7bbf259cc807504"
+    },
+    {
+      "byte_size": 2426,
+      "path": "artifacts/work_packages/T03/attempts/0001/review.md",
+      "sha256": "sha256:4ac917755b257e3e8bfd5f8b5df12f71c2c96b85333ded4c23346ba530a59b9b"
+    },
+    {
+      "byte_size": 6116,
+      "path": "artifacts/work_packages/T03/attempts/0001/run_t03_0001_checks.py",
+      "sha256": "sha256:e5f73141b3a147ed77fac509da3793b3ffe30f60734b17c953cd87eaffeb7e74"
+    },
+    {
+      "byte_size": 1780,
+      "path": "artifacts/work_packages/T03/attempts/0001/t03-verification.json",
+      "sha256": "sha256:73b2cf535de04d775d6e3e2b700dd18698303ce6f5eaed017d1563ca0863c0f9"
+    },
+    {
+      "byte_size": 22967,
+      "path": "artifacts/work_packages/T03/attempts/0001/t03_0001_rah_seal.py",
+      "sha256": "sha256:911d3da4239adff832c70963733e682cf52da69c0351194383aff45650ad94b1"
+    },
+    {
+      "byte_size": 6953,
+      "path": "artifacts/work_packages/T03/attempts/0001/targeted-cli.junit.xml",
+      "sha256": "sha256:feca8b4cebae69bfd79ec7508be2579b2661379680f21f94afb6a008a857a346"
+    },
+    {
+      "byte_size": 1514,
+      "path": "artifacts/work_packages/T03/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:aa76832313693b35fd4f855542502e4bef6ab7107f0ef528588b034e463fc95e"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0139",
+    "core_generation": "000137-46b10283",
+    "final_closeout_evidence_id": "E0140",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 822,
+    "implementation_gate": "fail",
+    "retained_generation_count": 137,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "T03-0001",
+    "baseline_attempt": "P01-0001",
+    "cli_contract_test": {
+      "cancelled": 0,
+      "collected": 22,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T03/attempts/0001/cli-contract-test.junit.xml",
+      "junit_sha256": "sha256:85ea4c409e9943403faa8618bb1359ebcf44560787d89df8e22c12dc574ba918",
+      "passed": 22,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 22
+    },
+    "component_tests_are_targeted_only": true,
+    "dispatch_regression": {
+      "cancelled": 0,
+      "collected": 4,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T03/attempts/0001/dependency-regression-dispatch.junit.xml",
+      "junit_sha256": "sha256:0893bcc42983b16f11657f2c4a2484864f27a4306a2dc7e9820bb97a416d4aa3",
+      "passed": 4,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 4
+    },
+    "full_node": {
+      "cancelled": 0,
+      "collected": 941,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T03/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:803364beb991ea843d837d78a72364cf72cc2c9b3190c5457c93d41b85c6e0bd",
+      "passed": 941,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 936
+    },
+    "full_python": {
+      "collected": 1261,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T03/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+      "passed": 1261,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1261
+    },
+    "mcp_regression": {
+      "cancelled": 0,
+      "collected": 27,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T03/attempts/0001/dependency-regression-mcp.junit.xml",
+      "junit_sha256": "sha256:320dadd10ae173cd744c079e00be14a7f506c62c1c8a3ca19f1370fd805fecb4",
+      "passed": 27,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 27
+    },
+    "new_failure_count": 0,
+    "pathless_cli_test": {
+      "cancelled": 0,
+      "collected": 16,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T03/attempts/0001/pathless-cli-test.junit.xml",
+      "junit_sha256": "sha256:39f08c6a81911688858d72b877ec0539c75c8963e8f00afe1c6476fe3aeee2c0",
+      "passed": 16,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 16
+    },
+    "prior_baseline_counts": {
+      "full_node": 903,
+      "full_python": 1261
+    },
+    "status": "PASS",
+    "targeted_cli": {
+      "cancelled": 0,
+      "collected": 38,
+      "failed": 0,
+      "junit": "artifacts/work_packages/T03/attempts/0001/targeted-cli.junit.xml",
+      "junit_sha256": "sha256:feca8b4cebae69bfd79ec7508be2579b2661379680f21f94afb6a008a857a346",
+      "passed": 38,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 38
+    },
+    "unexpected_skip_xfail_todo_or_cancellation_count": 0
+  },
+  "required_checks": {
+    "cli_contract_test": {
+      "module": "packages/plugin-host/src/cli/cli-contract.test.mjs",
+      "status": "PASS",
+      "test_count": 22
+    },
+    "pathless_cli_test": {
+      "module": "packages/plugin-host/src/cli/pathless-cli.test.mjs",
+      "status": "PASS",
+      "test_count": 16
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "T03",
+  "write_scope": {
+    "approved_scope": [
+      "packages/plugin-host/src/cli/**",
+      "artifacts/work_packages/T03/**"
+    ],
+    "attempt_id": "T03-0001",
+    "component_files": [
+      "packages/plugin-host/src/cli/cli-contract.test.mjs",
+      "packages/plugin-host/src/cli/command-surface.mjs",
+      "packages/plugin-host/src/cli/envelope.mjs",
+      "packages/plugin-host/src/cli/error-codes.mjs",
+      "packages/plugin-host/src/cli/pathless-cli.test.mjs",
+      "packages/plugin-host/src/cli/pathless.mjs"
+    ],
+    "product_file_hashes": {
+      "packages/plugin-host/src/cli/cli-contract.test.mjs": "sha256:b2931cd3b788ec416da8f83b42ce511275870c88df9ced65546e42bf75ad42ce",
+      "packages/plugin-host/src/cli/command-surface.mjs": "sha256:cb364c9cd86bbdabcc57196a20de8e7f037f583df6aebb11fc785b7101ef0929",
+      "packages/plugin-host/src/cli/envelope.mjs": "sha256:73821938bd2737615390a70a50ed3911cf569e7b1e58066dca5ff37fcf4115f4",
+      "packages/plugin-host/src/cli/error-codes.mjs": "sha256:d254eb71341d420120cd2d517018cfdb39741687c8368782978284e5103805e0",
+      "packages/plugin-host/src/cli/pathless-cli.test.mjs": "sha256:7426a8ff93a917ae2a31bb0ad7bd466fd409586c306fa7d383c030bf49e40f42",
+      "packages/plugin-host/src/cli/pathless.mjs": "sha256:fe821f43787b7b3caff2c561939736557c90897e96d67f18c8d889d9561a4e5d"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

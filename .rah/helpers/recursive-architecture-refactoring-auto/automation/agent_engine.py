@@ -39,6 +39,22 @@ DEFAULT_WORKER_ENGINE = "codex"
 DEFAULT_WORKER_MODEL = "gpt-5.6-sol"
 DEFAULT_WORKER_EFFORT = "max"
 
+# Feature flags that expose sub-agent delegation to a codex worker.
+# Verified against codex-cli 0.145.0 on 2026-07-27: with both disabled a
+# worker answers NO-SUBAGENT-TOOLS, while disabling only `multi_agent_v2`
+# still leaves `multi_agent_v1__spawn_agent` callable. Fleet workers are
+# non-authoritative hands (invariant I5), so recursive fan-out below a
+# worker is never wanted: the brain owns decomposition and judgment.
+SUBAGENT_FEATURE_FLAGS: tuple[str, ...] = ("multi_agent", "multi_agent_v2")
+
+
+def subagent_disable_args(flags: Iterable[str] = SUBAGENT_FEATURE_FLAGS) -> list[str]:
+    """`codex exec` args that remove every sub-agent tool from a worker."""
+    args: list[str] = []
+    for flag in flags:
+        args.extend(["--disable", str(flag)])
+    return args
+
 
 def worker_model_defaults() -> tuple[str, str]:
     """Fleet codex-worker (model, effort): global config first, constants last.

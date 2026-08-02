@@ -1,0 +1,70 @@
+{
+  "work_package_id": "B03",
+  "base_checkpoint": "B01:PASS",
+  "status": "PASS",
+  "changed_files": [
+    ".github/workflows/ci.yml",
+    "scripts/ci/ci_matrix_lint.py",
+    "scripts/ci/cache_key_audit.py",
+    "scripts/ci/test_ci_policy.py",
+    "docs/cache_contract.md",
+    "artifacts/work_packages/B03/ci-matrix-lint.json",
+    "artifacts/work_packages/B03/cache-key-audit.json",
+    "artifacts/work_packages/B03/commands.jsonl",
+    "artifacts/work_packages/B03/review.md",
+    "artifacts/work_packages/B03/report.json"
+  ],
+  "checks": [
+    {
+      "command": "ci_matrix_lint",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B03/ci-matrix-lint.json"
+    },
+    {
+      "command": "cache_key_audit",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B03/cache-key-audit.json"
+    },
+    {
+      "command": "python scripts/ci/test_ci_policy.py",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B03/commands.jsonl#B03-C002"
+    },
+    {
+      "command": "uv run --locked pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B03/commands.jsonl#B03-C007"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B03/commands.jsonl#B03-C010"
+    }
+  ],
+  "review": {
+    "agent": "primary_author",
+    "status": "PASS_WITH_RECORDED_PROCEDURE_DEVIATION",
+    "findings_resolved": []
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/B03/ci-matrix-lint.json",
+    "artifacts/work_packages/B03/cache-key-audit.json",
+    "artifacts/work_packages/B03/commands.jsonl",
+    "artifacts/work_packages/B03/review.md",
+    "artifacts/work_packages/B03/report.json"
+  ],
+  "open_risks": [
+    "Review was performed by the author under explicit user instruction and is not independent assurance.",
+    "Local static, mutation, and regression checks prove the workflow definition but not execution on GitHub-hosted Linux, macOS, and Windows runners.",
+    "SBOM, signing, and release-provenance qualification remain Z-phase scope."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "GitHub-hosted execution of ubuntu-24.04, macos-15, and windows-2025 lanes (B04 integration evidence scope)",
+    "SBOM and signing provenance (Z-phase scope)"
+  ],
+  "next_ready": [
+    "B04",
+    "S01"
+  ]
+}

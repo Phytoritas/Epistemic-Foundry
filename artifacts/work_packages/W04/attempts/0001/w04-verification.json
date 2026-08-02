@@ -1,0 +1,59 @@
+{
+  "attempt_id": "W04-0001",
+  "audit_export": {
+    "completeness_is_reconciled_not_claimed": true,
+    "exclusion_requires_typed_reason": true,
+    "orphaned_entry_refused": true,
+    "sections": [
+      "artifacts",
+      "checkpoints",
+      "effect_receipts",
+      "gate_decisions"
+    ]
+  },
+  "drift_separation": {
+    "allowlists_cannot_overlap": true,
+    "classes": [
+      "STRICT",
+      "SEMANTIC",
+      "UNCLASSIFIED"
+    ],
+    "unclassified_blocks_the_seal": true,
+    "verdict_derives_from_semantic_bucket_only": true,
+    "verdicts": [
+      "REPRODUCIBLE",
+      "REPRODUCIBLE_WITH_STRICT_DRIFT",
+      "DIVERGED"
+    ]
+  },
+  "exit_criteria": {
+    "audit_export_complete": {
+      "evidence": [
+        "packages/foundry-kernel/src/replay/audit-export.test.mjs"
+      ],
+      "mechanism": "every referenced id must be bundled or carry a typed exclusion reason, every bundled entry must be reachable from the run, the counts must reconcile, and every entry must carry a content hash",
+      "status": "PASS"
+    },
+    "strict_semantic_drift_separated": {
+      "evidence": [
+        "packages/foundry-kernel/src/replay/replay-drift.test.mjs"
+      ],
+      "mechanism": "every difference is typed into exactly one bucket, the volatile allowlist may never name a semantic field, an unclassified difference blocks the seal, and the verdict follows from the semantic bucket alone",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "audit_export_test": {
+      "module": "packages/foundry-kernel/src/replay/audit-export.test.mjs",
+      "status": "PASS",
+      "test_count": 21
+    },
+    "replay_drift_test": {
+      "module": "packages/foundry-kernel/src/replay/replay-drift.test.mjs",
+      "status": "PASS",
+      "test_count": 20
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 41
+}

@@ -1,0 +1,43 @@
+{
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/dist/hook-runner.mjs\" permission-request",
+            "timeout": 12,
+            "statusMessage": "(Epistemic Foundry) Checking authority and capability"
+          }
+        ],
+        "matcher": "Bash|apply_patch|mcp__.*"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/dist/hook-runner.mjs\" pre-tool-use",
+            "timeout": 12,
+            "statusMessage": "(Epistemic Foundry) Applying tool guardrails"
+          }
+        ],
+        "matcher": "Bash|apply_patch|Edit|Write|mcp__.*|Agent"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/dist/hook-runner.mjs\" post-tool-use",
+            "timeout": 15,
+            "statusMessage": "(Epistemic Foundry) Capturing effect receipts"
+          }
+        ],
+        "matcher": "Bash|apply_patch|Edit|Write|mcp__.*|Agent"
+      }
+    ]
+  }
+}

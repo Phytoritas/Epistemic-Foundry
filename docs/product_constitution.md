@@ -2,6 +2,21 @@
 
 These invariants are canonical. Search backends, models, plugins, prompts, hooks, and humans cannot silently weaken them.
 
+## Contract shape and verification
+
+Each `EF4-Ixx` identifier is one constitutional boundary. A statement may list
+the subjects or controls governed by that boundary, but those items cannot be
+split into votes or selectively passed. The exact structured registry is
+`manifests/product_invariants.yaml`; `MASTER_SPEC.md` remains its higher-order
+normative source.
+
+An invariant is testable only when it has both a resolving evidence binding and
+an owning work package, and when `manifests/requirements_traceability.yaml`
+declares non-empty verification checks for the same ID. Those bindings make a
+requirement auditable; they do not by themselves prove that a runtime,
+security property, scientific result, or performance target works. Runtime
+effectiveness still requires the named package acceptance and release gates.
+
 ## EF4-I01 — Kernel authority
 
 Plugin shell, hooks, skills, GUI, chat transcripts and provider SDKs never own canonical state, policy, gates or replay.
@@ -257,3 +272,24 @@ ShinkaEvolve and other search engines are optional pinned adapters; their scores
 ## EF4-I64 — Executable candidate sandbox
 
 Candidate code executes only under declared capabilities, resource quotas, network policy, effect receipts and evaluator/holdout isolation.
+
+## Explicit non-goals
+
+These boundaries prevent architecture language from becoming an unsupported
+product or scientific claim:
+
+- v4 does not guarantee truth or autonomous scientific discovery.
+- v4 does not equate novelty with value or support.
+- v4 does not use agent majority as evidence.
+- v4 does not let candidates rewrite current evaluators.
+- v4 does not expose hidden holdouts.
+- v4 does not promote from one scalar.
+- v4 does not treat every domain as having the same statistical policy.
+- v4 does not require ShinkaEvolve or any other search backend.
+- v4 does not claim production performance from this specification.
+- v4 does not replace expert judgment, ethics review or experimental validation.
+
+Provider neutrality is therefore a constitutional boundary, not a portability
+aspiration. Codex, Claude, ShinkaEvolve, and future providers are replaceable
+adapters. No provider-specific SDK, score, archive, prompt, or execution state
+may become canonical semantics or a prerequisite for the domain-neutral core.

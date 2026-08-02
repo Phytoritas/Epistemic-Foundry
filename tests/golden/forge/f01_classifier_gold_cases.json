@@ -1,0 +1,230 @@
+{
+  "classifier_version": "4.0.1-f01.1",
+  "cases": [
+    {
+      "case_id": "G01_TRANSFORM_ONLY",
+      "request_text": "Rewrite the supplied paragraph without changing its meaning.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": ["TRANSFORM"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["TRANSFORM"],
+        "work_class": "E0",
+        "required_phases": [],
+        "default_role_count": 0,
+        "human_gate_required": false
+      }
+    },
+    {
+      "case_id": "G02_LOOKUP_ONLY",
+      "request_text": "Look up the publication date of the specified document.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": ["LOOKUP"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["LOOKUP"],
+        "work_class": "E1",
+        "required_phases": ["F", "O", "E"],
+        "default_role_count": 1,
+        "human_gate_required": false
+      }
+    },
+    {
+      "case_id": "G03_BOUNDED_SYNTHESIS",
+      "request_text": "Compare and synthesize the two supplied reports within their stated scope.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": ["SYNTHESIS"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["SYNTHESIS"],
+        "work_class": "E2",
+        "required_phases": ["F", "O", "R", "G", "E"],
+        "default_role_count": 3,
+        "human_gate_required": false
+      }
+    },
+    {
+      "case_id": "G04_MECHANISM_ANALYSIS",
+      "request_text": "Explain the competing mechanisms that could produce the observed pattern.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": ["MECHANISM"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["MECHANISM"],
+        "work_class": "E3",
+        "required_phases": ["F", "O", "R", "G", "E"],
+        "default_role_count": 6,
+        "human_gate_required": false
+      }
+    },
+    {
+      "case_id": "G05_CAUSAL_ANALYSIS_COMPLETE",
+      "request_text": "Estimate the causal effect under the supplied identification assumptions and bounded scope.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": ["CAUSAL"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["CAUSAL"],
+        "work_class": "E4",
+        "required_phases": ["F", "O", "R", "G", "E"],
+        "default_role_count": 10,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "G06_EXPENSIVE_VALIDATION_COMPLETE",
+      "request_text": "Validate the preregistered claim using the approved material-resource budget.",
+      "policy_bundle_signals": ["EXPENSIVE"],
+      "typed_request_metadata": { "signals": ["VALIDATION"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["EXPENSIVE", "VALIDATION"],
+        "work_class": "E4",
+        "required_phases": ["F", "O", "R", "G", "E"],
+        "default_role_count": 10,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "G07_NOVELTY_COMPLETE_NO_INTERVIEW",
+      "request_text": "Assess novelty within the sealed prior-art corpus, time boundary, stop rule, and approved budget.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": ["NOVELTY"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["NOVELTY"],
+        "work_class": "E5",
+        "required_phases": ["F", "O", "R", "G", "E"],
+        "default_role_count": 12,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "G08_AMBIGUOUS_OPEN_RESEARCH",
+      "request_text": "Research this important topic deeply.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": ["AMBIGUOUS"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["AMBIGUOUS"],
+        "work_class": "E5",
+        "required_phases": ["I", "F", "O", "R", "G", "E"],
+        "default_role_count": 12,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "G09_TRANSFORM_PLUS_CAUSAL",
+      "request_text": "Reformat the supplied analysis and audit whether its effect attribution is causal.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": ["TRANSFORM"] },
+      "deterministic_detector_signals": ["CAUSAL"],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["CAUSAL", "TRANSFORM"],
+        "work_class": "E4",
+        "required_phases": ["F", "O", "R", "G", "E"],
+        "default_role_count": 10,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "G10_LOOKUP_PLUS_NOVELTY",
+      "request_text": "Locate the cited prior art and assess novelty within the declared boundary.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": ["LOOKUP", "NOVELTY"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["NOVELTY", "LOOKUP"],
+        "work_class": "E5",
+        "required_phases": ["F", "O", "R", "G", "E"],
+        "default_role_count": 12,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "G11_SYNTHESIS_PLUS_HIGH_STAKES",
+      "request_text": "Synthesize the bounded evidence for the declared high-stakes decision.",
+      "policy_bundle_signals": ["HIGH_STAKES"],
+      "typed_request_metadata": { "signals": ["SYNTHESIS"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["HIGH_STAKES", "SYNTHESIS"],
+        "work_class": "E4",
+        "required_phases": ["F", "O", "R", "G", "E"],
+        "default_role_count": 10,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "G12_MECHANISM_PLUS_AMBIGUOUS",
+      "request_text": "Explain why this happens, but the target and scope are not specified.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": ["MECHANISM", "AMBIGUOUS"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["AMBIGUOUS", "MECHANISM"],
+        "work_class": "E5",
+        "required_phases": ["I", "F", "O", "R", "G", "E"],
+        "default_role_count": 12,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "G13_NO_RECOGNIZED_SIGNAL",
+      "request_text": "Proceed.",
+      "policy_bundle_signals": [],
+      "typed_request_metadata": { "signals": [] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected_injected_signals": ["AMBIGUOUS"],
+      "expected": {
+        "accepted_signals": ["AMBIGUOUS"],
+        "work_class": "E5",
+        "required_phases": ["I", "F", "O", "R", "G", "E"],
+        "default_role_count": 12,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "G14_HIGH_STAKES_LOOKUP",
+      "request_text": "Look up the bounded source fact used in the declared high-stakes decision.",
+      "policy_bundle_signals": ["HIGH_STAKES"],
+      "typed_request_metadata": { "signals": ["LOOKUP"] },
+      "deterministic_detector_signals": [],
+      "llm_signal_proposals": [],
+      "missing_contract_flags": [],
+      "expected": {
+        "accepted_signals": ["HIGH_STAKES", "LOOKUP"],
+        "work_class": "E4",
+        "required_phases": ["F", "O", "R", "G", "E"],
+        "default_role_count": 10,
+        "human_gate_required": true
+      }
+    }
+  ]
+}

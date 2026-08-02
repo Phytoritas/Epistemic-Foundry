@@ -1,0 +1,142 @@
+# T01 canonical MCP tool catalog — the single source of MCP wire literals.
+#
+# Frozen by HD-EF4-T01-SG001-20260730-001.  Every Python handler registry,
+# plugin-host descriptor projection, test oracle, and documentation table is
+# derived from this file; re-declaring tool names, side-effect classes, or
+# schema bindings elsewhere violates EF4-I22.
+catalog_id: MCP-T01-CATALOG
+catalog_version: 1.0.0
+protocol_version: "2026-07-28"
+transports:
+  - stdio
+  - streamable-http-post-/mcp
+stateless: true
+result_envelope_schema: contracts/mcp/t01/foundry-mcp-tool-result.schema.json
+error_envelope_schema: contracts/mcp/t01/foundry-mcp-tool-error.schema.json
+read_tool_count: 9
+planning_tool_count: 4
+authorization_order:
+  - PROTOCOL_VALIDATION
+  - INPUT_SCHEMA_VALIDATION
+  - AUTHENTICATION
+  - WORKSPACE_ISOLATION
+  - CAPABILITY_AUTHORIZATION
+  - CONFIDENTIALITY_CONCEALMENT
+  - HANDLER_EXECUTION
+tools:
+  - name: foundry.status
+    title: Kernel and plugin status projection
+    side_effect_class: PURE_READ
+    handler_operation: read_status
+    input_schema: contracts/mcp/t01/inputs/foundry.status.input.schema.json
+    data_schema_refs: []
+    capability: mcp.read.status
+    confidentiality_concealment: false
+  - name: foundry.health
+    title: Component health with explicit degraded states
+    side_effect_class: PURE_READ
+    handler_operation: read_health
+    input_schema: contracts/mcp/t01/inputs/foundry.health.input.schema.json
+    data_schema_refs: []
+    capability: mcp.read.health
+    confidentiality_concealment: false
+  - name: foundry.session.get
+    title: FORGE session state projection
+    side_effect_class: PURE_READ
+    handler_operation: read_session
+    input_schema: contracts/mcp/t01/inputs/foundry.session.get.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/forge-session-state.schema.json
+    capability: mcp.read.session
+    confidentiality_concealment: true
+  - name: foundry.artifact.get
+    title: Artifact manifest and receipt bindings
+    side_effect_class: PURE_READ
+    handler_operation: read_artifact
+    input_schema: contracts/mcp/t01/inputs/foundry.artifact.get.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/artifact-manifest.schema.json
+      - https://epistemic-foundry.local/schemas/artifact-receipt.schema.json
+    capability: mcp.read.artifact
+    confidentiality_concealment: true
+  - name: foundry.claim.get
+    title: Atomic claim card projection
+    side_effect_class: PURE_READ
+    handler_operation: read_claim
+    input_schema: contracts/mcp/t01/inputs/foundry.claim.get.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/claim-card.schema.json
+    capability: mcp.read.claim
+    confidentiality_concealment: true
+  - name: foundry.atlas.query
+    title: Coverage, search-state, and dependency atlas views
+    side_effect_class: PURE_READ
+    handler_operation: read_atlas
+    input_schema: contracts/mcp/t01/inputs/foundry.atlas.query.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/coverage-snapshot.schema.json
+    capability: mcp.read.atlas
+    confidentiality_concealment: true
+  - name: foundry.passport.get
+    title: Hypothesis Passport revision projection
+    side_effect_class: PURE_READ
+    handler_operation: read_passport
+    input_schema: contracts/mcp/t01/inputs/foundry.passport.get.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/hypothesis-passport.schema.json
+    capability: mcp.read.passport
+    confidentiality_concealment: true
+  - name: foundry.replay.diff
+    title: Strict and semantic replay comparison
+    side_effect_class: PURE_READ
+    handler_operation: read_replay_diff
+    input_schema: contracts/mcp/t01/inputs/foundry.replay.diff.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/replay-report.schema.json
+    capability: mcp.read.replay
+    confidentiality_concealment: true
+  - name: foundry.map.query
+    title: Workspace map snapshot query
+    side_effect_class: PURE_READ
+    handler_operation: read_map
+    input_schema: contracts/mcp/t01/inputs/foundry.map.query.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/workspace-map-snapshot.schema.json
+    capability: mcp.read.map
+    confidentiality_concealment: true
+  - name: foundry.frame.compile
+    title: Compile a Frame-phase InsightCard plan artifact
+    side_effect_class: DURABLE_PLAN_ARTIFACT
+    handler_operation: plan_frame_compile
+    input_schema: contracts/mcp/t01/inputs/foundry.frame.compile.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/insight-card.schema.json
+    capability: mcp.plan.frame
+    confidentiality_concealment: true
+  - name: foundry.search.plan
+    title: Compile an evidence-retrieval QueryPlan artifact
+    side_effect_class: DURABLE_PLAN_ARTIFACT
+    handler_operation: plan_search
+    input_schema: contracts/mcp/t01/inputs/foundry.search.plan.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/query-plan.schema.json
+    capability: mcp.plan.search
+    confidentiality_concealment: true
+  - name: foundry.parliament.plan
+    title: Compile an Evidence Parliament RoleDispatchPlan artifact
+    side_effect_class: DURABLE_PLAN_ARTIFACT
+    handler_operation: plan_parliament
+    input_schema: contracts/mcp/t01/inputs/foundry.parliament.plan.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/role-dispatch-plan.schema.json
+    capability: mcp.plan.parliament
+    confidentiality_concealment: true
+  - name: foundry.validation.plan
+    title: Compile a preregistered ValidationPlan artifact
+    side_effect_class: DURABLE_PLAN_ARTIFACT
+    handler_operation: plan_validation
+    input_schema: contracts/mcp/t01/inputs/foundry.validation.plan.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/validation-plan.schema.json
+    capability: mcp.plan.validation
+    confidentiality_concealment: true

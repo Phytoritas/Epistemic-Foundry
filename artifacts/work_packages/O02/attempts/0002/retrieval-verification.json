@@ -1,0 +1,98 @@
+{
+  "attempt_id": "O02-0002",
+  "authority": {
+    "attempt_id": "O02-0002",
+    "decision_file_sha256": "sha256:5e986212a409db12121d15ab936998d15478037fa06bcb8c0b2480292b4b29fe",
+    "decision_hash": "sha256:3695c59b67788b0f144f033627a9ef3294b75418f78dfb15fcebccc14a8ef221",
+    "decision_id": "HD-EF4-O02-SG001-20260731-001",
+    "dependency": "O01-0002 PASS",
+    "manifest_sha256": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+    "package_count": 156,
+    "prior_O02_0001_preserved": true,
+    "required_checks": [
+      "retrieval_benchmark",
+      "relation_direction_test",
+      "retrieval_candidate_contract_test",
+      "retrieval_integrity_and_fallback_test",
+      "non_vector_release_guard_test",
+      "deterministic_replay_test"
+    ],
+    "status": "PASS"
+  },
+  "backend_request_hash": "sha256:ec24763735e3830aec36abf41ac0f592be533376fbd6632406e74e3557429945",
+  "backend_response_hash": "sha256:4a636dbb17a17ba5f6a4dae168987a7fd3d0be2bd86e9e71c3de7a3d4c2fb65e",
+  "candidate_count": 2,
+  "candidate_hashes": [
+    "sha256:212ed7eacdb9c6ac0fa33107ed22f4b42732c403b0c9c44c26998bfdaf00d92e",
+    "sha256:b87c95f50674ac065e946fe528ac20b21edad54261e069116c6e4e3b0597c645"
+  ],
+  "candidate_ids": [
+    "RC-498e3ac216bc7900d69d081c6d58ce0c9bb5f037b07256244f0259522be5e3d3",
+    "RC-555fa76dee1db1d6e9cb6a0fd8fefa54dbced79e8a83ec0b58a7825f001c76eb"
+  ],
+  "candidate_schema_validation": "PASS",
+  "closed_query_family_count": 6,
+  "closed_relation_direction_count": 6,
+  "closed_retrieval_channel_count": 5,
+  "deterministic_replay": "PASS_BYTE_IDENTICAL",
+  "lane_query_family_bindings": {
+    "boundary": [
+      "BOUNDARY"
+    ],
+    "citation": [
+      "FORWARD"
+    ],
+    "counterevidence": [
+      "FORWARD",
+      "REVERSE"
+    ],
+    "entity_variable": [
+      "FORWARD"
+    ],
+    "external_novelty": [
+      "NOVELTY"
+    ],
+    "lexical": [
+      "FORWARD"
+    ],
+    "mechanism": [
+      "FORWARD"
+    ],
+    "method": [
+      "METHOD"
+    ],
+    "null": [
+      "NULL"
+    ],
+    "semantic": [
+      "FORWARD"
+    ],
+    "temporal": [
+      "FORWARD"
+    ]
+  },
+  "learned_reranker_calls": 0,
+  "live_llm_calls": 0,
+  "live_network_calls": 0,
+  "metadata_only_candidate_count": 1,
+  "policy_binding": "PASS",
+  "processing_order": [
+    "validate backend response and receipt",
+    "validate QueryPlan, corpus, and index bindings",
+    "derive canonical source identity",
+    "collapse exact within-channel duplicates",
+    "assign stable channel ranks",
+    "fuse with RRF k=60",
+    "retain transparent features",
+    "apply max-candidates cutoff",
+    "break ties by candidate_id ascending"
+  ],
+  "provider_neutral": true,
+  "raw_score_cross_channel_comparison": false,
+  "retrieval_score_is_scientific_support": false,
+  "rrf_k": 60,
+  "silent_fallback_count": 0,
+  "status": "PASS",
+  "workflow_candidate_output_binding": "PASS",
+  "workflow_retrieval_node_count": 11
+}

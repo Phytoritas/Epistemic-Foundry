@@ -1,0 +1,38 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "L01-0001-CONSENT-RETENTION-VERIFICATION",
+  "byte_size": 3996,
+  "content_hash": "sha256:4023eb33689488b391d6520fac3281663451b65ed4a3c5eec77c01587870d12d",
+  "created_at": "2026-07-30T22:46:29.017Z",
+  "created_by": {
+    "actor_id": "L01-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/L01/attempts/0001/consent-retention-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:2515cb069369931d1b87fa1fbefd8830439b7523f9f1e340151729bb1435cafa",
+  "receipt_id": "AR-L01-0001-CONSENT-RETENTION-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "consent_policy_test",
+      "details": "20 consent/policy executions including five bound-mismatch subtests pass",
+      "status": "PASS"
+    },
+    {
+      "check": "retention_test",
+      "details": "7/7 class override, exact boundary, future time, zero-day, and fail-closed cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_schema_validation",
+      "details": "sealed MemoryPolicy and ConsentRecord validate with zero Draft 2020-12 errors",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "predecessors 42/42, Node 503/503, Python 1064/1064, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

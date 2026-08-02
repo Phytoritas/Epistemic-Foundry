@@ -1,0 +1,141 @@
+{
+  "attempt_id": "I02-0001",
+  "compiler_version": "4.0.0-i02.1",
+  "completion_ready": false,
+  "contract_projection": {
+    "canonical_schema_added": false,
+    "canonical_schema_count": 124,
+    "canonical_schema_or_workflow_modified": false,
+    "eligible_card_with_required_scope_unknown_rejected": true,
+    "eligible_card_with_undefined_construct_rejected": true,
+    "existing_insight_card_schema_used": true,
+    "existing_scope_vector_schema_used": true,
+    "falsifier_required": true,
+    "identifier_timestamp_or_registration_hash_generated": false,
+    "inbox_and_withdrawn_cards_not_council_ready": true,
+    "input_proposal_mutated": false,
+    "mapping_order_changes_output": false,
+    "mechanism_path_required": true,
+    "prediction_required": true,
+    "registration_hash_content_recomputed": false,
+    "registration_hash_format_validated": true,
+    "rfc3339_leap_second_preserved": true,
+    "strict_rfc3339_timestamp_validation": true,
+    "unknown_collection_scope_preserved_as_empty_canonical_shape": true,
+    "unknown_origin_preserved_in_component_local_sidecar": true,
+    "unknown_scalar_scope_preserved_as_null": true,
+    "unknown_scope_inference_performed": false
+  },
+  "git_diff_check": "PASS",
+  "package_boundary_check": "PASS",
+  "product_inventory": [
+    {
+      "ast_parse": "PASS",
+      "bom": false,
+      "byte_size": 373,
+      "path": "python/epistemic_foundry/intake/frame/__init__.py",
+      "replacement_character_count": 0,
+      "sha256": "sha256:5401aea2c12d597fc627ed30cab262cc6695d1720a697f73fe603903a93dfc49"
+    },
+    {
+      "ast_parse": "PASS",
+      "bom": false,
+      "byte_size": 21418,
+      "path": "python/epistemic_foundry/intake/frame/compiler.py",
+      "replacement_character_count": 0,
+      "sha256": "sha256:eec74d16d02d7e5ee9ef80bb49ad5e012ade894e8c8406ba99e090eca9fbf4b9"
+    },
+    {
+      "ast_parse": "PASS",
+      "bom": false,
+      "byte_size": 4526,
+      "path": "python/epistemic_foundry/intake/frame/test_falsifier_gate.py",
+      "replacement_character_count": 0,
+      "sha256": "sha256:43721d8510d87492226dda4ee5162e46d891bb0cab2036313962c63482a0238a"
+    },
+    {
+      "ast_parse": "PASS",
+      "bom": false,
+      "byte_size": 7615,
+      "path": "python/epistemic_foundry/intake/frame/test_frame_gold.py",
+      "replacement_character_count": 0,
+      "sha256": "sha256:33c35e6d5e718ddd31863339847dc831fc85773750f970c3a658865f34c4c5d5"
+    }
+  ],
+  "python_cache_artifact_count": 0,
+  "repository_structure_check": "PASS",
+  "required_checks": {
+    "falsifier_gate_test": {
+      "failed": 0,
+      "passed": 12,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "frame_gold_test": {
+      "failed": 0,
+      "passed": 19,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "sealed_input_hashes": {
+    "MASTER_SPEC.md": "sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3",
+    "artifacts/work_packages/I01/attempts/0001/dependency-status.json": "sha256:a9f6c246dd16fe534df466813eba92b630de8c9e06022ca017cc1198cd75cd06",
+    "artifacts/work_packages/I01/report.json": "sha256:7174f9292421996fcd7e48de8f29757657dcf9b7aff3483028bbb86be70f886a",
+    "docs/forge_protocol.md": "sha256:3273d5efee6f6d9478b86bf05e67f7f01dfda3547ac6371b8cb818e737754ad3",
+    "examples/sample_insight.json": "sha256:4f03e249457f6ee88ec4a192d2b589c419ca55e3a819ab3b35bb4afeee82737b",
+    "manifests/development_manifest.yaml": "sha256:fb9656cce2fd4d0147571bc85726ebbbbb3f26a59ac644c5a12040007475d938",
+    "schemas/artifact-receipt.schema.json": "sha256:9de81c722fbe36038993437403e265d96b6e9d05d432b89aaab4abc89d996c34",
+    "schemas/insight-card.schema.json": "sha256:08c55d08828e1b883bd1bd426ef2691f2b3be34b6466c2503da62793b1cf3498",
+    "schemas/scope-vector.schema.json": "sha256:5f6c99c098a76cee1af133f0e1b47253cc73c49975356bfe78a3ea26260f8a98"
+  },
+  "status": "PASS",
+  "subagents_or_fleet_used": false,
+  "targeted_suite": {
+    "byte_size": 5414,
+    "falsifier_gate_case_count": 12,
+    "frame_gold_case_count": 19,
+    "path": "artifacts/work_packages/I02/attempts/0001/targeted-python-suite.junit.xml",
+    "sha256": "sha256:f391ac24296387d82a213e324c7f6be053fba2f9c1607bc92cc1429cdf4743b2",
+    "test_names": [
+      "test_falsifier_gate_test_complete_card_is_council_ready",
+      "test_falsifier_gate_test_missing_falsifier_fails_closed",
+      "test_falsifier_gate_test_empty_falsifier_array_fails_closed",
+      "test_falsifier_gate_test_blank_falsifier_fails_closed",
+      "test_falsifier_gate_test_scalar_falsifier_fails_closed",
+      "test_falsifier_gate_test_prediction_is_also_mandatory",
+      "test_falsifier_gate_test_mechanism_is_also_mandatory",
+      "test_falsifier_gate_test_eligible_card_cannot_hide_required_scope_unknowns",
+      "test_falsifier_gate_test_eligible_card_cannot_hide_undefined_constructs",
+      "test_falsifier_gate_test_inbox_preserves_unknowns_but_cannot_enter_council",
+      "test_falsifier_gate_test_withdrawn_card_never_reenters_council",
+      "test_falsifier_gate_test_optional_unknown_scope_axes_do_not_broaden_claim",
+      "test_frame_gold_test_sample_compiles_to_both_canonical_contracts",
+      "test_frame_gold_test_preserves_sealed_metadata_without_generating_it",
+      "test_frame_gold_test_mapping_order_does_not_change_compilation",
+      "test_frame_gold_test_does_not_mutate_the_proposal",
+      "test_frame_gold_test_missing_scope_values_remain_unknown_not_inferred",
+      "test_frame_gold_test_explicit_empty_collections_are_not_relabelled_unknown",
+      "test_frame_gold_test_partial_intervention_preserves_nested_unknowns",
+      "test_frame_gold_test_domain_specific_axis_must_use_domain_extensions",
+      "test_frame_gold_test_unknown_top_level_field_fails_closed",
+      "test_frame_gold_test_nonfinite_scope_value_fails_closed",
+      "test_frame_gold_test_missing_registration_hash_is_not_silently_generated",
+      "test_frame_gold_test_naive_timestamp_is_rejected",
+      "test_frame_gold_test_non_rfc3339_timestamp_forms_are_rejected[2026-07-25 12:00:00+00:00]",
+      "test_frame_gold_test_non_rfc3339_timestamp_forms_are_rejected[20260725T120000+00:00]",
+      "test_frame_gold_test_non_rfc3339_timestamp_forms_are_rejected[2026-07-25T12:00:00+0000]",
+      "test_frame_gold_test_invalid_rfc3339_calendar_or_offset_is_rejected[2026-02-29T12:00:00Z]",
+      "test_frame_gold_test_invalid_rfc3339_calendar_or_offset_is_rejected[2026-07-25T24:00:00Z]",
+      "test_frame_gold_test_invalid_rfc3339_calendar_or_offset_is_rejected[2026-07-25T12:00:00+24:00]",
+      "test_frame_gold_test_rfc3339_leap_second_is_preserved"
+    ],
+    "totals": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 31
+    }
+  },
+  "write_scope_violation_count": 0
+}

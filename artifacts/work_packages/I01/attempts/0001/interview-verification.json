@@ -1,0 +1,139 @@
+{
+  "attempt_id": "I01-0001",
+  "completion_ready": false,
+  "contract_projection": {
+    "accepted_blockers_sticky": true,
+    "canonical_workflow_modified": false,
+    "closed_interview_dimension_count": 11,
+    "closed_interview_rule_count": 9,
+    "critical_contradictions_recorded": true,
+    "duplicate_or_forged_identifiers_fail_closed": true,
+    "immutable_component_contracts": true,
+    "invalid_vocabulary_and_mutable_inputs_fail_closed": true,
+    "known_or_answered_dimension_reasked": false,
+    "new_canonical_schema_invented": false,
+    "noncritical_needs_deferred_explicitly": true,
+    "one_question_per_missing_dimension": true,
+    "only_decision_critical_questions_emitted": true,
+    "previously_asked_questions_remain_pending": true,
+    "rule_dimension_mismatch_fails_closed": true,
+    "same_revision_prior_questions_reemitted": false,
+    "same_revision_question_ids_deterministic": true,
+    "unresolved_critical_contradictions_routed": true
+  },
+  "engine_version": "4.0.0-i01.1",
+  "git_diff_check": "PASS",
+  "package_boundary_check": "PASS",
+  "product_inventory": [
+    {
+      "ast_parse": "PASS",
+      "bom": false,
+      "byte_size": 974,
+      "path": "python/epistemic_foundry/intake/interview/__init__.py",
+      "replacement_character_count": 0,
+      "sha256": "sha256:533f3441733c40bb38f6182add7eb553d6d6b378503ed8dbfda5e426c96d457c"
+    },
+    {
+      "ast_parse": "PASS",
+      "bom": false,
+      "byte_size": 27233,
+      "path": "python/epistemic_foundry/intake/interview/engine.py",
+      "replacement_character_count": 0,
+      "sha256": "sha256:dded723763a007de1a1d8e51606333b2140d9821e0541ac2bdea6cf40d9db764"
+    },
+    {
+      "ast_parse": "PASS",
+      "bom": false,
+      "byte_size": 11391,
+      "path": "python/epistemic_foundry/intake/interview/test_interview_readiness.py",
+      "replacement_character_count": 0,
+      "sha256": "sha256:d3daa0c5dc6284c1bf3086b64364c6514b3cc84caa392caf2fa8d56713b7d4c7"
+    },
+    {
+      "ast_parse": "PASS",
+      "bom": false,
+      "byte_size": 10680,
+      "path": "python/epistemic_foundry/intake/interview/test_no_repeat_question.py",
+      "replacement_character_count": 0,
+      "sha256": "sha256:b9a14f828e75b1a1ed2854cdb3c784003c517fc23548ef471693fab16fd2a8f4"
+    }
+  ],
+  "python_cache_artifact_count": 0,
+  "repository_structure_check": "PASS",
+  "required_checks": {
+    "interview_readiness_test": {
+      "failed": 0,
+      "passed": 19,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "no_repeat_question_test": {
+      "failed": 0,
+      "passed": 17,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "sealed_input_hashes": {
+    "MASTER_SPEC.md": "sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3",
+    "artifacts/work_packages/C04/report.json": "sha256:eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f",
+    "artifacts/work_packages/F04/report.json": "sha256:1c7f1a00a684dd84fe08b9bfea83972cf5ed1fd04cb521a7b6c3a4f74f96a12a",
+    "artifacts/work_packages/H04/attempts/0001/dependency-status.json": "sha256:defbbb0189969ce8adbb7f6ef967a9404857ea60279e2d69ad262b6e59636696",
+    "manifests/development_manifest.yaml": "sha256:fb9656cce2fd4d0147571bc85726ebbbbb3f26a59ac644c5a12040007475d938",
+    "schemas/artifact-receipt.schema.json": "sha256:9de81c722fbe36038993437403e265d96b6e9d05d432b89aaab4abc89d996c34"
+  },
+  "status": "PASS",
+  "subagents_or_fleet_used": false,
+  "targeted_suite": {
+    "byte_size": 6839,
+    "interview_readiness_case_count": 19,
+    "no_repeat_question_case_count": 17,
+    "path": "artifacts/work_packages/I01/attempts/0001/targeted-python-suite.junit.xml",
+    "sha256": "sha256:dfdb3ab594953109bfdf3dd6391a22b6e6b8fd889e98118054d49a3b78c1da9b",
+    "test_names": [
+      "test_interview_readiness_test_complete_contract_is_ready",
+      "test_interview_readiness_test_asks_only_missing_decision_critical_dimensions",
+      "test_interview_readiness_test_records_and_routes_critical_contradiction",
+      "test_interview_readiness_test_accepted_contradiction_is_explicit_blocker",
+      "test_interview_readiness_test_noncritical_contradiction_is_recorded_not_gated",
+      "test_interview_readiness_test_explicit_blocker_is_never_silently_downgraded",
+      "test_interview_readiness_test_conflict_need_requires_recorded_critical_conflict",
+      "test_interview_readiness_test_rule_dimension_mismatch_fails_closed",
+      "test_interview_readiness_test_raw_enum_alias_fails_closed",
+      "test_interview_readiness_test_mutable_record_collections_fail_closed[needs-value0]",
+      "test_interview_readiness_test_mutable_record_collections_fail_closed[known_facts-value1]",
+      "test_interview_readiness_test_mutable_record_collections_fail_closed[contradictions-value2]",
+      "test_interview_readiness_test_mutable_record_collections_fail_closed[prior_questions-value3]",
+      "test_interview_readiness_test_duplicate_identifiers_fail_closed",
+      "test_interview_readiness_test_unknown_prior_dimension_fails_closed",
+      "test_interview_readiness_test_invalid_disposition_linkage_fails_closed[UNRESOLVED-HD-INVALID-None]",
+      "test_interview_readiness_test_invalid_disposition_linkage_fails_closed[RESOLVED-None-None]",
+      "test_interview_readiness_test_invalid_disposition_linkage_fails_closed[ACCEPTED_AS_BLOCKER-None-None]",
+      "test_interview_readiness_test_question_order_is_canonical_not_input_order",
+      "test_no_repeat_question_test_known_fact_is_not_reasked",
+      "test_no_repeat_question_test_open_prior_question_is_pending_not_reemitted",
+      "test_no_repeat_question_test_answered_prior_question_resolves_dimension",
+      "test_no_repeat_question_test_prior_blocker_is_sticky_for_same_revision",
+      "test_no_repeat_question_test_duplicate_needs_share_one_stable_question",
+      "test_no_repeat_question_test_same_revision_replay_is_identical",
+      "test_no_repeat_question_test_new_revision_has_new_question_identity",
+      "test_no_repeat_question_test_forged_prior_question_id_fails_closed",
+      "test_no_repeat_question_test_missing_contradiction_target_fails_closed",
+      "test_no_repeat_question_test_duplicate_target_history_fails_closed",
+      "test_no_repeat_question_test_unresolved_answered_conflict_stays_pending",
+      "test_no_repeat_question_test_contradiction_blocker_must_match_history",
+      "test_no_repeat_question_test_noncritical_blocker_must_match_history",
+      "test_no_repeat_question_test_invalid_revision_fails_closed[-1]",
+      "test_no_repeat_question_test_invalid_revision_fails_closed[True]",
+      "test_no_repeat_question_test_invalid_revision_fails_closed[1.5]",
+      "test_no_repeat_question_test_invalid_revision_fails_closed[1]"
+    ],
+    "totals": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 36
+    }
+  },
+  "write_scope_violation_count": 0
+}

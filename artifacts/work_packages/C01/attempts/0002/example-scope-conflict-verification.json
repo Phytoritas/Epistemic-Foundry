@@ -1,0 +1,140 @@
+{
+  "attempt_id": "C01-0002",
+  "authority_decision_id": "HD-EF4-A05-C01-B04-20260727-001",
+  "current_contract": {
+    "c01_write_scope": [
+      "schemas/**",
+      "openapi/**",
+      "docs/api_contract.md",
+      "tests/contracts/openapi/**",
+      "artifacts/work_packages/C01/**"
+    ],
+    "evolution_example_validation_errors": [],
+    "promotion_example_validation_errors": [],
+    "schema_example_validation_gate_required": true,
+    "validator_maps_examples_by_schema_stem": true
+  },
+  "fail_closed_action": "No schema, OpenAPI, API documentation, test, or canonical example implementation was started after the conflict was confirmed.",
+  "hash_checks": {
+    "artifacts/authority_decisions/EF4-A05-C01-B04-SHARED-CONTRACT.human-decision.json": {
+      "actual_sha256": "436a69bfebf374e78e3f52711c52f2f2c02cb429fb8c0a8a5e4988720cdca2d1",
+      "expected_sha256": "436a69bfebf374e78e3f52711c52f2f2c02cb429fb8c0a8a5e4988720cdca2d1",
+      "status": "PASS"
+    },
+    "artifacts/work_packages/C01/commands.jsonl": {
+      "actual_sha256": "c6c0d5dc72995e925e493a47cef94691ae2ec5f7a88d253f772c6f2ffaf64796",
+      "expected_sha256": "c6c0d5dc72995e925e493a47cef94691ae2ec5f7a88d253f772c6f2ffaf64796",
+      "status": "PASS"
+    },
+    "artifacts/work_packages/C01/openapi-authority-audit.json": {
+      "actual_sha256": "316939a1ef647d629d41c3eac3000eb03c79c84d2b23c81f7d7601e4d7554d41",
+      "expected_sha256": "316939a1ef647d629d41c3eac3000eb03c79c84d2b23c81f7d7601e4d7554d41",
+      "status": "PASS"
+    },
+    "artifacts/work_packages/C01/report.json": {
+      "actual_sha256": "14d1815150ba37ebc416d637afbb1514fbbb024f9fe6940ed7b976ce33b60d68",
+      "expected_sha256": "14d1815150ba37ebc416d637afbb1514fbbb024f9fe6940ed7b976ce33b60d68",
+      "status": "PASS"
+    },
+    "artifacts/work_packages/C01/review.md": {
+      "actual_sha256": "5781bde5fb59bc3ed82610d44b3196314dcdd7e14fa414ca8e78ab2bf4be2666",
+      "expected_sha256": "5781bde5fb59bc3ed82610d44b3196314dcdd7e14fa414ca8e78ab2bf4be2666",
+      "status": "PASS"
+    },
+    "artifacts/work_packages/C01/schema-meta-validation.json": {
+      "actual_sha256": "4e51a83f49c16eb43d0b1f590fcb0864f3280cee362f64970caa9688cdd32af9",
+      "expected_sha256": "4e51a83f49c16eb43d0b1f590fcb0864f3280cee362f64970caa9688cdd32af9",
+      "status": "PASS"
+    },
+    "examples/sample_evolution-run-spec.json": {
+      "actual_sha256": "118c89f92b6050678056d79f513350ff781a352b05df717084e9fa999977ddbd",
+      "expected_sha256": "118c89f92b6050678056d79f513350ff781a352b05df717084e9fa999977ddbd",
+      "status": "PASS"
+    },
+    "examples/sample_promotion-decision.json": {
+      "actual_sha256": "c6238e11d1aa20b32f91537de358bb4c75b9dad1f18a6f787127ced9ae353001",
+      "expected_sha256": "c6238e11d1aa20b32f91537de358bb4c75b9dad1f18a6f787127ced9ae353001",
+      "status": "PASS"
+    },
+    "manifests/acceptance_matrix.yaml": {
+      "actual_sha256": "5b089aaf1ae1e0c524d395df0308592e98b5c7663c21655d7d60a98ce8f5d00a",
+      "expected_sha256": "5b089aaf1ae1e0c524d395df0308592e98b5c7663c21655d7d60a98ce8f5d00a",
+      "status": "PASS"
+    },
+    "manifests/development_manifest.yaml": {
+      "actual_sha256": "9ae9090a8d02973198492f271a9e46a352ca030eaa8b272e696bf6cd9ec1896e",
+      "expected_sha256": "9ae9090a8d02973198492f271a9e46a352ca030eaa8b272e696bf6cd9ec1896e",
+      "status": "PASS"
+    },
+    "schemas/evolution-run-spec.schema.json": {
+      "actual_sha256": "29fe472309463865f58413c9e6566d6b3bcb71be7f6f7c74dfe1176f6a407ee9",
+      "expected_sha256": "29fe472309463865f58413c9e6566d6b3bcb71be7f6f7c74dfe1176f6a407ee9",
+      "status": "PASS"
+    },
+    "schemas/promotion-decision.schema.json": {
+      "actual_sha256": "a71a125155f5690f7367b800d88ef7c49ef1f132cb607b37abb04e820924ebdc",
+      "expected_sha256": "a71a125155f5690f7367b800d88ef7c49ef1f132cb607b37abb04e820924ebdc",
+      "status": "PASS"
+    },
+    "tools/validate_spec_bundle.py": {
+      "actual_sha256": "cae72b53db10dd80f3a048daee27e197a50836cb70b60c216f917553fd7e6dd8",
+      "expected_sha256": "cae72b53db10dd80f3a048daee27e197a50836cb70b60c216f917553fd7e6dd8",
+      "status": "PASS"
+    }
+  },
+  "minimum_higher_order_decision": {
+    "action": "add only the two invalidated canonical example paths to C01 write_scope",
+    "not_requested": [
+      "examples/**",
+      "examples/sample_adjudication.json",
+      "examples/sample_phase-artifact-set.json"
+    ],
+    "paths": [
+      "examples/sample_evolution-run-spec.json",
+      "examples/sample_promotion-decision.json"
+    ],
+    "rationale": "The Adjudication and PhaseArtifactSet examples already remain compatible with the required C01 changes; broader example authority is unnecessary."
+  },
+  "probe_id": "C01-P002",
+  "required_contract_simulation": {
+    "evolution_change": "make resolved_refs required",
+    "evolution_example_errors": [
+      {
+        "message": "'resolved_refs' is a required property",
+        "path": "<root>"
+      }
+    ],
+    "promotion_change": "restrict requested_level and granted_level to the six A05 levels",
+    "promotion_example_errors": [
+      {
+        "message": "'HYPOTHESIS_PASSPORT_ONLY' is not one of ['INBOX', 'CANDIDATE', 'LITERATURE_GROUNDED', 'VALIDATION_SCREENED', 'EMPIRICALLY_TESTED', 'REPLICATED']",
+        "path": "granted_level"
+      },
+      {
+        "message": "'PILOT' is not one of ['INBOX', 'CANDIDATE', 'LITERATURE_GROUNDED', 'VALIDATION_SCREENED', 'EMPIRICALLY_TESTED', 'REPLICATED']",
+        "path": "requested_level"
+      }
+    ],
+    "promotion_levels": [
+      "INBOX",
+      "CANDIDATE",
+      "LITERATURE_GROUNDED",
+      "VALIDATION_SCREENED",
+      "EMPIRICALLY_TESTED",
+      "REPLICATED"
+    ],
+    "repository_files_modified": false
+  },
+  "schema_version": 1,
+  "scope_conflict": {
+    "canonical_examples_outside_c01_write_scope": [
+      "examples/sample_evolution-run-spec.json",
+      "examples/sample_promotion-decision.json"
+    ],
+    "conflict_proven": true,
+    "reason": "C01 must strengthen the two schemas and must pass canonical schema/example validation, but the only mapped examples invalidated by those mandatory changes are outside C01's write authority."
+  },
+  "spec_gap_id": "C01-SG002",
+  "status": "SPEC_GAP",
+  "work_package_id": "C01"
+}

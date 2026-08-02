@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="cli_contract_test: every composed tool projects exactly one command" time="0.001612" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: the command name is the tool name without its namespace" time="0.000527" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: mutating commands are marked as such" time="0.000201" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: an unknown command is refused, not guessed" time="0.000360" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: a result envelope round-trips byte-identically" time="0.000357" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: rendering sorts keys so the bytes are stable" time="0.000121" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: an error envelope round-trips byte-identically" time="0.000198" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: a null field survives rather than being dropped" time="0.000094" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: an undefined field is refused rather than silently dropped" time="0.000129" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: non-finite numbers and cycles cannot be emitted" time="0.000198" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: malformed output is refused rather than repaired" time="0.000202" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: emitJson proves the round trip before writing bytes" time="0.000103" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: the exit-code table covers the sealed vocabulary exactly" time="0.000180" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: every exit code is distinct and outside the reserved range" time="0.000141" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: exit codes are reversible for diagnosis" time="0.000130" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: an unmapped error code is refused, not folded into INTERNAL" time="0.000124" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: a successful command emits the envelope verbatim and exits zero" time="0.000302" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: a refusal maps to its stable exit code" time="0.000305" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: the CLI adds nothing to the envelope it was given" time="0.000130" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: --input is forwarded as parsed arguments" time="0.000105" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: malformed --input is refused before the handler runs" time="0.000220" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="cli_contract_test: without --json the machine surface is withheld, not approximated" time="0.000102" classname="test" file="packages\plugin-host\src\cli\cli-contract.test.mjs"/>
+	<testcase name="pathless_cli_test: the only executable is the running Node binary" time="0.000632" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: PATH is not on the inheritable allowlist" time="0.000101" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: the child environment carries only allowlisted keys" time="0.000500" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: an unset allowlisted key is simply absent" time="0.000093" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: an override cannot smuggle PATH back in" time="0.000366" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: an override must be a string" time="0.000105" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: a spawn plan names an absolute script and disables the shell" time="0.000212" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: a relative script path is refused" time="0.000148" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: a relative working directory is refused" time="0.000164" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: non-string arguments are refused" time="0.000152" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: the plan is frozen so a caller cannot re-enable the shell" time="0.000754" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: the source scanner names every lookup it finds" time="0.000447" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: several violations are reported together" time="0.000094" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: assertPathless refuses a source that would look up an executable" time="0.000131" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: every CLI source is itself PATH-less" time="0.000912" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="pathless_cli_test: the shipped dispatcher is PATH-less too" time="0.000397" classname="test" file="packages\plugin-host\src\cli\pathless-cli.test.mjs"/>
+	<testcase name="skill_metadata_lint: parent frontmatter has bounded implicit invocation metadata" time="0.006685" classname="test" file="packages\plugin-host\src\skill-router\skill-metadata-lint.test.mjs"/>
+	<testcase name="skill_metadata_lint: parent instructions preserve routing-only authority boundary" time="0.000400" classname="test" file="packages\plugin-host\src\skill-router\skill-metadata-lint.test.mjs"/>
+	<testcase name="skill_metadata_lint: always-visible agent metadata has exact trigger and exclusion boundaries" time="0.000642" classname="test" file="packages\plugin-host\src\skill-router\skill-metadata-lint.test.mjs"/>
+	<testcase name="skill_metadata_lint: initial metadata does not embed full instructions or references" time="0.000323" classname="test" file="packages\plugin-host\src\skill-router\skill-metadata-lint.test.mjs"/>
+	<testcase name="skill_routing_eval: bounded parent metadata permits one implicit route" time="0.002982" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: emitted decision validates against the canonical schema" time="0.246872" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: ordinary editing and casual questions select no skill" time="0.000869" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: exact explicit selection may route a sensitive bundled skill" time="0.000488" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: unknown explicit skill fails closed" time="0.000606" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: sensitive, side-effecting, and unspecified policies deny implicit invocation" time="0.001076" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: tied implicit candidates abstain instead of auto-selecting" time="0.000619" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: full instructions and references cannot enter metadata input" time="0.000188" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: remote skills are never implicitly selected" time="0.000310" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: explicit remote route requires exact S03-branded authorization" time="0.000531" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: candidate and phrase order do not change decision hash or ID" time="0.000794" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: decision hash binds the exact indexed skill content" time="0.000281" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: canonical hash helper rejects non-JSON object tricks" time="0.000992" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: caller inputs remain mutable while returned decision is deeply frozen" time="0.000321" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<testcase name="skill_routing_eval: proxy, accessor, sparse array, duplicate ID, and invalid hash fail closed" time="0.000262" classname="test" file="packages\plugin-host\src\skill-router\skill-router.test.mjs"/>
+	<!-- tests 57 -->
+	<!-- suites 0 -->
+	<!-- pass 57 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+</testsuites>

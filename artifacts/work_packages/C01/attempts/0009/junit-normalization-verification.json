@@ -1,0 +1,57 @@
+{
+  "attempt_id": "C01-0009",
+  "files": {
+    "node": {
+      "normalized_sha256": "sha256:9c8f880dcf45ec64c8eab027daa129aaffa44b35c566d9b37b26b3511b46461e",
+      "raw_sha256": "sha256:46278fe428b07da5a2bf528eeda153364c18caf5073440bd0065a77f7ed6d4e6",
+      "removed": {
+        "duration_comments": 1,
+        "hostname_attributes": 0,
+        "repository_prefixes": 814,
+        "time_attributes": 0,
+        "timestamp_attributes": 0
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 814
+    },
+    "python": {
+      "normalized_sha256": "sha256:698532eb227c3ac1496ebdcd780b3f7be0bb5ddb0c60f7ac4ef542c9a4c14c49",
+      "raw_sha256": "sha256:df4171bf173341fdf79175eb468b31bd545ef0b2f704a3882905d35d75375442",
+      "removed": {
+        "duration_comments": 0,
+        "hostname_attributes": 1,
+        "repository_prefixes": 13,
+        "time_attributes": 1074,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 1073
+    },
+    "targeted": {
+      "normalized_sha256": "sha256:8a0b74d464cc087883486be1325d55cc1054dcc2fabb652cade82bc6feae6ac8",
+      "raw_sha256": "sha256:75fb4ed14b07595c6a482d39bd1dd02d5fa98fa4d89173e5c53066da7a79cabb",
+      "removed": {
+        "duration_comments": 0,
+        "hostname_attributes": 1,
+        "repository_prefixes": 0,
+        "time_attributes": 105,
+        "timestamp_attributes": 1
+      },
+      "semantic_signature_preserved": true,
+      "testcase_count": 104
+    }
+  },
+  "normalization_scope": [
+    "remove pytest hostname, timestamp, and suite/testcase time attributes",
+    "remove absolute repository prefixes",
+    "remove Node duration_ms while retaining authoritative footer counters"
+  ],
+  "preserved": [
+    "testcase identity",
+    "failure, error, and skip state",
+    "failure type, message, and body after repository-path normalization",
+    "Node footer counters"
+  ],
+  "recorded_at_utc": "2026-07-31T09:25:58.275Z",
+  "status": "PASS"
+}

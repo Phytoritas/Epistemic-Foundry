@@ -1,0 +1,38 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "K01-0002-REGISTRATION-VERIFICATION",
+  "byte_size": 7302,
+  "content_hash": "sha256:34b4ca89415301cdd08fb4e852bc44c4ba363811029d98bfd02e7e886cb285d3",
+  "created_at": "2026-07-30T21:10:00.000Z",
+  "created_by": {
+    "actor_id": "K01-0002-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/K01/attempts/0002/registration-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:a6b9ed82628bd1d00d8c0546de1001235d67d9066eb3e4b03689af8beb4bfcbd",
+  "receipt_id": "AR-K01-0002-REGISTRATION-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "document_registration_oracle_22",
+      "details": "22/22 deterministic request, receipt, idempotency, lineage, effect, CAS, and envelope cases passed",
+      "status": "PASS"
+    },
+    {
+      "check": "lineage_and_effect_reconciliation",
+      "details": "append-only lineage, crash reconciliation, replay evidence, and exact one-step CAS rules passed",
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_contract_validation",
+      "details": "126 schemas/examples with clean deterministic cross-language codegen parity",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "K01 targeted 64/64, Python 1054/1054, final Node 470/470; initial transient preserved",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "surface_id": "EF-G05-EVOLUTION-SURFACE-V4",
+  "surface_version": "4.0.0-g05.1",
+  "parent_skill_id": "foundry",
+  "membership": {
+    "reference_id_prefixes": ["EFREF-EVOLUTION-"],
+    "reference_ids": ["EFREF-BACKEND-SHINKA-V4"]
+  },
+  "authority_objects": ["claim", "passport"],
+  "denied_authority": ["evaluator_mutation", "holdout_read", "promotion"],
+  "skills": [
+    {
+      "skill_id": "foundry-archive",
+      "mutable_kinds": [],
+      "proposed_commands": ["archive inspect", "archive map", "archive rebalance"],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-challenge",
+      "mutable_kinds": ["schemas/challenge-genome.schema.json"],
+      "proposed_commands": ["challenge generate", "challenge inspect", "challenge run"],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-evaluator-audit",
+      "mutable_kinds": [],
+      "proposed_commands": [
+        "evaluator audit",
+        "evaluator diff",
+        "evaluator qualify",
+        "evaluator register"
+      ],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-evolution-replay",
+      "mutable_kinds": [],
+      "proposed_commands": ["evolve replay"],
+      "available_commands": ["replay diff"]
+    },
+    {
+      "skill_id": "foundry-evolution-stop",
+      "mutable_kinds": [],
+      "proposed_commands": ["evolve stop"],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-evolve",
+      "mutable_kinds": [],
+      "proposed_commands": [],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-evolve-convert",
+      "mutable_kinds": [],
+      "proposed_commands": ["evolve convert"],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-evolve-inspect",
+      "mutable_kinds": [],
+      "proposed_commands": ["evolve inspect"],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-evolve-run",
+      "mutable_kinds": [
+        "schemas/experiment-genome.schema.json",
+        "schemas/hypothesis-genome.schema.json"
+      ],
+      "proposed_commands": ["evolve pause", "evolve resume", "evolve run"],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-evolve-setup",
+      "mutable_kinds": [
+        "schemas/experiment-genome.schema.json",
+        "schemas/hypothesis-genome.schema.json"
+      ],
+      "proposed_commands": ["evolve setup"],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-parliament",
+      "mutable_kinds": [],
+      "proposed_commands": [],
+      "available_commands": ["parliament execute", "parliament plan"]
+    },
+    {
+      "skill_id": "foundry-promote-evolved",
+      "mutable_kinds": [],
+      "proposed_commands": ["promote evolved"],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-replicate",
+      "mutable_kinds": [],
+      "proposed_commands": ["replicate audit", "replicate plan", "replicate run"],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-shinka-adapter",
+      "mutable_kinds": [],
+      "proposed_commands": [
+        "backend shinka disable",
+        "backend shinka inspect",
+        "backend shinka qualify"
+      ],
+      "available_commands": []
+    },
+    {
+      "skill_id": "foundry-validation",
+      "mutable_kinds": [],
+      "proposed_commands": [],
+      "available_commands": ["validation execute", "validation plan"]
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/fitness-vector.schema.json",
+  "title": "FitnessVector",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "fitness_vector_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hard_gate_status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "PARTIAL",
+        "NOT_ASSESSED"
+      ]
+    },
+    "hard_gate_failures": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "grounding": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "support": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "counterevidence_resistance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "predictive_accuracy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "calibration": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "robustness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "causal_identifiability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "falsifiability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "novelty": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "parsimony": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "information_gain": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "coverage_value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "replicability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "cost_efficiency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "safety": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "grounding",
+        "support",
+        "counterevidence_resistance",
+        "predictive_accuracy",
+        "calibration",
+        "robustness",
+        "causal_identifiability",
+        "falsifiability",
+        "novelty",
+        "parsimony",
+        "information_gain",
+        "coverage_value",
+        "replicability",
+        "cost_efficiency",
+        "safety"
+      ]
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "grounding": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "support": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "counterevidence_resistance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "predictive_accuracy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "calibration": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "robustness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "causal_identifiability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "falsifiability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "novelty": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "parsimony": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "information_gain": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "coverage_value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "replicability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "cost_efficiency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "safety": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "grounding",
+        "support",
+        "counterevidence_resistance",
+        "predictive_accuracy",
+        "calibration",
+        "robustness",
+        "causal_identifiability",
+        "falsifiability",
+        "novelty",
+        "parsimony",
+        "information_gain",
+        "coverage_value",
+        "replicability",
+        "cost_efficiency",
+        "safety"
+      ]
+    },
+    "evidence_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "pareto_rank": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "domination_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "computed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "fitness_vector_id",
+    "candidate_id",
+    "hard_gate_status",
+    "hard_gate_failures",
+    "dimensions",
+    "uncertainty",
+    "evidence_receipt_ids",
+    "pareto_rank",
+    "domination_count",
+    "computed_at"
+  ],
+  "description": "단일 점수 대신 제한조건과 다목적 과학적 적합도를 분리한다."
+}

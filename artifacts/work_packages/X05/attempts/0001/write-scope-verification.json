@@ -1,0 +1,27 @@
+{
+  "approved_scope": [
+    "src/epistemic_foundry/providers/v4_x05/**",
+    "artifacts/work_packages/X05/**"
+  ],
+  "attempt_id": "X05-0001",
+  "authored_by": "a bounded implementation agent (X05 maker) under the product owner's explicit parallel-execution instruction",
+  "authority_decision": "X05's manifest write_scope is src/epistemic_foundry/providers/v4_x05/**; the whole write scope is the two files under that glob. The parent package marker src/epistemic_foundry/providers/__init__.py pre-existed (it carries neutrality and the untrusted-execution surfaces) and is not a byte this package wrote, so it is not pinned as a product file; check_packaging.py still proves both the pre-existing providers marker and the new v4_x05 marker reach the wheel.",
+  "component_files": [
+    "src/epistemic_foundry/providers/v4_x05/__init__.py",
+    "src/epistemic_foundry/providers/v4_x05/routing.py"
+  ],
+  "composed_modules_modified": false,
+  "product_file_hashes": {
+    "artifacts/work_packages/X05/attempts/0001/run_x05_0001_checks.py": "sha256:1f0d79a05f7886030150bec89308b1544daefb70aeffafe6f7c992e6b24b43bf",
+    "src/epistemic_foundry/providers/v4_x05/__init__.py": "sha256:c10f202cc39c8d718dfb73757fdd62d2cc8150675206b7aa98f5f13c238bc33b",
+    "src/epistemic_foundry/providers/v4_x05/routing.py": "sha256:8e35ce9a40073b49eb38c23c5efd5ffcc438067e1ff1a18115b8b585aa17a7b6"
+  },
+  "pyproject_modified": false,
+  "reset_clean_stash_commit_push_performed": false,
+  "reviewed_by": "the sealing session acting as an independent contract-reviewer, separate from the author",
+  "root_canonical_source_mutation_count": 0,
+  "schema_or_test_weakening_count": 0,
+  "status": "PASS",
+  "subagents_or_fleet_used": true,
+  "write_scope_violation_count": 0
+}

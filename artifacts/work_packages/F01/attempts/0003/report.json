@@ -1,0 +1,89 @@
+{
+  "attempt_id": "F01-0003",
+  "authority_decision_hash": "sha256:923e5b94303626de6aceb41cedfbf405c3037828fb160e2645ac4ac4fc564eea",
+  "authority_decision_id": "HD-EF4-F01-SG002-20260729-001",
+  "canonical_projection_status": "CURRENT",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_effect": {
+    "dag_recomputed": true,
+    "newly_ready_f01_dependents": [
+      "F02",
+      "F03"
+    ],
+    "next_package": "F02",
+    "ready_packages_manifest_order": [
+      "F02",
+      "F03",
+      "G01",
+      "K01",
+      "A06"
+    ]
+  },
+  "historical_preservation": {
+    "B04_0003": "IMMUTABLE_FAIL_HISTORY",
+    "B04_0004": "PASS_CURRENT_PROJECTION",
+    "F01_0001": "IMMUTABLE_SPEC_GAP_HISTORY",
+    "F01_0002": "IMMUTABLE_SPEC_GAP_HISTORY",
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false
+  },
+  "implementation_status": "PASS",
+  "node_regression_status": "BOUNDED_PREEXISTING_DEBT_S04_TM004",
+  "output_artifacts": [
+    "artifacts/work_packages/F01/attempts/0003/build_f01_0003_evidence.py",
+    "artifacts/work_packages/F01/attempts/0003/classifier-verification.json",
+    "artifacts/work_packages/F01/attempts/0003/commands.jsonl",
+    "artifacts/work_packages/F01/attempts/0003/dependency-status.json",
+    "artifacts/work_packages/F01/attempts/0003/f01-0003-rah-seal.py",
+    "artifacts/work_packages/F01/attempts/0003/full-node-suite.junit.xml",
+    "artifacts/work_packages/F01/attempts/0003/full-python-suite.junit.xml",
+    "artifacts/work_packages/F01/attempts/0003/full-regression-impact.json",
+    "artifacts/work_packages/F01/attempts/0003/hash-vector-report.json",
+    "artifacts/work_packages/F01/attempts/0003/monotonicity-verification.json",
+    "artifacts/work_packages/F01/attempts/0003/normalize_junit.py",
+    "artifacts/work_packages/F01/attempts/0003/phase-artifact-reconciliation.json",
+    "artifacts/work_packages/F01/attempts/0003/preexisting-debt-reconciliation.json",
+    "artifacts/work_packages/F01/attempts/0003/projection-receipt-verification.json",
+    "artifacts/work_packages/F01/attempts/0003/rah-core-integrity.json",
+    "artifacts/work_packages/F01/attempts/0003/review.md",
+    "artifacts/work_packages/F01/attempts/0003/targeted-node-suite.junit.xml",
+    "artifacts/work_packages/F01/attempts/0003/targeted-python-suite.junit.xml"
+  ],
+  "package_status": "PASS",
+  "python_regression_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0044",
+    "core_generation": "000042-4e2e17a7",
+    "final_closeout_evidence_id": "E0045",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 252,
+    "generation_manifest_sha256": "sha256:5d26b30cf0b8ca0fa0cfe116eec4458b52b09508c6acd41a04f39a19eadeded8",
+    "retained_generation_manifest_count": 42,
+    "status": "active"
+  },
+  "review": {
+    "assurance_boundaries": [
+      "HumanDecision schema does not encode exact override target fields",
+      "Node JUnit suite-container accounting delta is one",
+      "hold/agent/tool generic rejection paths are not each separately instantiated"
+    ],
+    "blocking_finding_count": 0,
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "verification": {
+    "adversarial": "16/16",
+    "full_node": "270_PASS_PLUS_EXACT_PREEXISTING_S04_TM004",
+    "full_python": "947/947",
+    "gold": "14/14",
+    "hash_vectors": "4/4",
+    "monotonicity": "1023_SUBSETS_58025_COMPARISONS_ZERO_VIOLATIONS",
+    "override_cases": "6/6",
+    "targeted_node": "33/33",
+    "targeted_python": "24/24"
+  },
+  "work_package_id": "F01"
+}

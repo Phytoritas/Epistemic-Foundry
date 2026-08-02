@@ -1,0 +1,109 @@
+{
+  "attempt_id": "C01-0005",
+  "authority_decision_id": "HD-EF4-K01-SG001-20260730-001",
+  "completion_ready": false,
+  "dependency_effect": {
+    "A04": "PASS_HISTORY_PRESERVED",
+    "A05": "PASS_HISTORY_BUT_LATER_CORRECTION_NOT_STARTED",
+    "B04": "WAITING_ON_C04_AND_C01_SG004_RESOLUTION",
+    "C01": "SPEC_GAP_C01_SG004",
+    "C02": "WAITING_ON_C01",
+    "C03": "WAITING_ON_C01_AND_C02",
+    "C04": "WAITING_ON_C02_AND_C03",
+    "J02": "WAITING_ON_CANONICAL_SEQUENCE",
+    "K01": "WAITING_ON_CANONICAL_SEQUENCE"
+  },
+  "historical_preservation": {
+    "C01_0001_through_0004_reports_preserved": true,
+    "dirty_worktree_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "NOT_STARTED_FAIL_CLOSED",
+  "open_risks": [
+    "The active top-level specification and acceptance matrix still conflict with the approved 126-schema target.",
+    "C01 targeted tests cannot validate the approved contract without out-of-scope oracle migration.",
+    "The C04-before-B04 full-suite order consumes B04-owned freshness checks before B04 can repair the projection.",
+    "Review is primary-session procedural review, not actor-independent certification."
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/C01/attempts/0005/c01-shared-contract-gap-verification.json",
+    "artifacts/work_packages/C01/attempts/0005/dependency-status.json",
+    "artifacts/work_packages/C01/attempts/0005/rah-core-integrity.json",
+    "artifacts/work_packages/C01/attempts/0005/review.md",
+    "artifacts/work_packages/C01/attempts/0005/commands.jsonl",
+    "artifacts/work_packages/C01/attempts/0005/report.json",
+    "artifacts/work_packages/C01/attempts/0005/c01_0005_evidence.py",
+    "artifacts/work_packages/C01/attempts/0005/c01_0005_rah_seal.py"
+  ],
+  "package_status": "SPEC_GAP",
+  "product_file_change_count": 0,
+  "rah_state": {
+    "completion_ready": false,
+    "contract_audit_evidence_id": "E0096",
+    "core_generation": "000089-555278db",
+    "core_generation_manifest_sha256": "sha256:8fee729371b4d98d00e7c071698a1d09558f5a31daae2e8fe72c154bf0e09763",
+    "core_parent_generation": "000088-a4a7294e",
+    "documented_gap_evidence_id": "E0097",
+    "final_closeout_evidence_id": "E0098",
+    "flat_snapshot_content_matches_after_core": 6,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "generation_file_hashes_verified_after_core": 66,
+    "retained_generation_count_after_core": 11,
+    "status": "blocked"
+  },
+  "resume_condition": "A product-owner HumanDecision assigns exact owners and write paths for the eight stale authority/test surfaces and fixes their gate timing so the 126-schema C01/C04/B04 sequence is executable. Resume with a new C01 attempt; do not modify C01-0001 through C01-0005.",
+  "review": {
+    "actor_independence": false,
+    "artifact": "artifacts/work_packages/C01/attempts/0005/review.md",
+    "blocking_finding_count": 8,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "SPEC_GAP"
+  },
+  "spec_gap": {
+    "classification": "SPEC_GAP",
+    "id": "C01-SG004",
+    "not_blocked_reason": "No credential, licensed source, external backend, toolchain, or host capability is missing; the conflict is entirely local and reproducible.",
+    "not_fail_reason": "No C01 product implementation was attempted against an unexecutable gate. The K01 object semantics are defined, but authority to migrate higher-order acceptance oracles and their pre-C04 execution timing is absent or contradictory.",
+    "required_higher_order_decision": {
+      "decision_subject": "126-schema acceptance-oracle migration ownership and gate order",
+      "exact_paths_requiring_owner_or_timing_correction": [
+        "MASTER_SPEC.md",
+        "manifests/acceptance_matrix.yaml",
+        "tests/contracts/openapi/test_scientific_contracts.py",
+        "tests/contracts/openapi/test_openapi_contract.py",
+        "tests/test_contracts.py",
+        "tests/test_cli.py",
+        "tests/test_f01_epistemic_work_classifier.py",
+        "tests/packaging/test_canonical_registry.py"
+      ],
+      "forbidden_shortcuts": [
+        "partially implement the two schemas while knowingly leaving the required gate structurally false",
+        "treat all tests/** as implicitly owned by C01",
+        "weaken C04 full_python_suite without an explicit product-owner decision",
+        "run B04 out of the fixed order without an explicit attempt-level correction decision",
+        "edit generated C02 outputs or the B04 derived snapshot by hand",
+        "change docs/verification_report.md as if it were current acceptance evidence"
+      ],
+      "minimum_terms": [
+        "Assign an explicit correction owner and exact write scope for each listed stale authority/test path; do not grant broad tests/** or docs/** scope.",
+        "Authorize MASTER_SPEC.md and manifests/acceptance_matrix.yaml to change the canonical count from 124 to 126 without rewriting historical reports.",
+        "Place the C01 contract-oracle corrections before C01 targeted validation.",
+        "Place every root-count and packaged-registry oracle correction, plus canonical snapshot reprojection, before the C04 full_python_suite or explicitly redefine that gate with a bounded and later reconciled projection status.",
+        "Preserve C01-0001 through C01-0005 and all prior RAH evidence as immutable history."
+      ]
+    },
+    "summary": "126-schema acceptance-oracle migration ownership and gate-order gap"
+  },
+  "spec_gap_id": "C01-SG004",
+  "status": "SPEC_GAP",
+  "targeted_contract_baseline": {
+    "command": "python -m pytest tests/contracts/openapi -p no:cacheprovider --tb=short",
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 66,
+    "status": "PASS_PRE_IMPLEMENTATION_BASELINE"
+  },
+  "work_package_id": "C01"
+}

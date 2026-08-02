@@ -1,0 +1,20 @@
+{
+  "attempt_id": "D02-0001",
+  "check": "tenant-isolation-test",
+  "command": [
+    "uv",
+    "run",
+    "--with",
+    "psycopg[binary]",
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "python/epistemic_foundry/storage/postgres/test_tenant_isolation.py",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=C:\\dev\\insight\\Epistemic-Foundry\\artifacts\\work_packages\\D02\\attempts\\0001\\tenant-isolation-test.junit.xml"
+  ],
+  "exit_code": 0,
+  "status": "PASS"
+}

@@ -1,0 +1,50 @@
+{
+  "registration_set_id": "EF-H05-EVOLUTION-OBSERVABILITY-V4",
+  "registration_set_version": "4.0.0-h05.1",
+  "observed_hosts": ["claude", "codex"],
+  "coverage_rank": {
+    "OBSERVED": 2,
+    "PARTIAL": 1,
+    "UNOBSERVED": 0
+  },
+  "observer_decisions": ["ADVISORY", "ERROR", "NOT_APPLICABLE"],
+  "control_decisions": ["ALLOW", "BLOCK", "REWRITE"],
+  "registrations": [
+    {
+      "registration_id": "EFH05-OBS-EVOLUTION-POST-TOOL",
+      "coverage": "OBSERVED",
+      "emits_decision": "ADVISORY",
+      "event_types": ["PostToolUse"],
+      "hosts": ["claude", "codex"],
+      "matcher": "Bash|mcp__efoundry__evolve.*|Agent",
+      "payload_access": ["holdout_id", "manifest_hash"],
+      "runner_argument": "evolution-observe-post-tool",
+      "status_message": "(Epistemic Foundry) Observing evolution effects within declared hook coverage",
+      "timeout_seconds": 15
+    },
+    {
+      "registration_id": "EFH05-OBS-EVOLUTION-PRE-TOOL",
+      "coverage": "OBSERVED",
+      "emits_decision": "ADVISORY",
+      "event_types": ["PreToolUse"],
+      "hosts": ["claude", "codex"],
+      "matcher": "Bash|mcp__efoundry__evolve.*|Agent",
+      "payload_access": [],
+      "runner_argument": "evolution-observe-pre-tool",
+      "status_message": "(Epistemic Foundry) Observing evolution tool intents within declared hook coverage",
+      "timeout_seconds": 12
+    },
+    {
+      "registration_id": "EFH05-OBS-HOLDOUT-STOP",
+      "coverage": "PARTIAL",
+      "emits_decision": "ADVISORY",
+      "event_types": ["Stop"],
+      "hosts": ["claude"],
+      "matcher": null,
+      "payload_access": ["acl_policy_hash", "holdout_id"],
+      "runner_argument": "holdout-observe-stop",
+      "status_message": "(Epistemic Foundry) Observing hidden-evaluation disclosure obligations without reading holdout material",
+      "timeout_seconds": 10
+    }
+  ]
+}

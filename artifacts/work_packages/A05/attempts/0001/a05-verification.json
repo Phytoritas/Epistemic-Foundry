@@ -1,0 +1,101 @@
+{
+  "attempt_id": "A05-0001",
+  "constitutional": {
+    "attempt_id": "A05-0001",
+    "chamber_binding": {
+      "promotion_delegation": "workflows/evolution_promotion.workflow.yaml",
+      "status": "PASS",
+      "workflow_id": "evolution_chamber_cycle"
+    },
+    "charter_obligations": {
+      "advisory_llm_output_schema_count": 2,
+      "applicability_matrix_gate_count": 15,
+      "bound_runtime_node_count": 21,
+      "canonical_gate_count": 15,
+      "promotion_node_count": 23,
+      "resolved_reference_key_count": 20,
+      "resolved_reference_tuple_field_count": 9
+    },
+    "evolution_integrity": {
+      "commit_capability_holder": "commit_promotion_atomically",
+      "g14_is_receipt_bound_reconciliation": true,
+      "llm_nodes_are_advisory_only": true,
+      "promotion_decision_emitter": "commit_promotion_atomically",
+      "promotion_decision_emitter_is_deterministic": true,
+      "single_promotion_commit_holder": true,
+      "workflow_tampering_fails_closed": true
+    },
+    "promotion_binding": {
+      "commit_capability_holder": "commit_promotion_atomically",
+      "gate_nodes": {
+        "G00_PIN_RESOLUTION": "gate_g00_pin_resolution",
+        "G01_POLICY_AUTHORITY": "gate_g01_policy_authority",
+        "G02_EVALUATOR_HOLDOUT_FIREWALL": "gate_g02_evaluator_holdout_firewall",
+        "G03_SCHEMA_LINEAGE_COUNT": "gate_g03_schema_lineage_count",
+        "G04_SOURCE_PROVENANCE": "gate_g04_source_provenance",
+        "G05_SEARCH_COVERAGE": "gate_g05_search_coverage",
+        "G06_METHOD_SCOPE_DEPENDENCY": "gate_g06_method_scope_dependency",
+        "G07_VALIDATION_LEAKAGE": "gate_g07_validation_leakage",
+        "G08_ADAPTIVE_STATISTICS": "gate_g08_adaptive_statistics",
+        "G09_RED_QUEEN": "gate_g09_red_queen",
+        "G10_REPLICATION_CEILING": "gate_g10_replication_ceiling",
+        "G11_PARLIAMENT": "gate_g11_parliament",
+        "G12_INDEPENDENT_ATTESTATION": "gate_g12_independent_attestation",
+        "G13_HUMAN_POLICY_APPROVAL": "gate_g13_human_policy_approval",
+        "G14_ATOMIC_PROMOTION_COMMIT": "reconcile_commit_receipts"
+      },
+      "node_count": 23,
+      "status": "PASS",
+      "workflow_id": "evolution_promotion"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": "PASS",
+    "evolution_promotion_has_the_exact_23_node_fail_closed_sequence": "PASS",
+    "gates_g00_g14_exact_ordered_nonwaivable_receipt_bound": "PASS",
+    "governing_schemas_authority_boundaries_failure_states_exact": "PASS",
+    "happy_negative_crash_resume_adversarial_coverage": "PASS",
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": "PASS",
+    "twenty_four_negative_and_six_positive_constitutional_cases_pass": "PASS"
+  },
+  "required_checks": {
+    "constitutional_negative_24": {
+      "status": "PASS",
+      "test_count": 24
+    },
+    "constitutional_positive_6": {
+      "status": "PASS",
+      "test_count": 6
+    },
+    "evolution_promotion_workflow_exact_23": {
+      "status": "PASS",
+      "test_count": 2
+    },
+    "gate_registry_exact_15": {
+      "status": "PASS",
+      "test_count": 1
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded implementation agent; reviewer: the parent seal-prep session as a distinct actor; actor_independence between author and reviewer HOLDS; not external certification; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 24
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 2
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 3
+    }
+  },
+  "status": "PASS"
+}

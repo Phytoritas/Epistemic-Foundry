@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "work_package_id": "F01",
+  "attempt_id": "F01-0002",
+  "check": "underprocessing_guard",
+  "status": "PASS",
+  "classifier_version": "4.0.1-f01.1",
+  "canonical_signals": [
+    "TRANSFORM",
+    "LOOKUP",
+    "SYNTHESIS",
+    "MECHANISM",
+    "CAUSAL",
+    "VALIDATION",
+    "HIGH_STAKES",
+    "EXPENSIVE",
+    "NOVELTY",
+    "AMBIGUOUS"
+  ],
+  "signal_floors": {
+    "TRANSFORM": "E0",
+    "LOOKUP": "E1",
+    "SYNTHESIS": "E2",
+    "MECHANISM": "E3",
+    "CAUSAL": "E4",
+    "VALIDATION": "E4",
+    "HIGH_STAKES": "E4",
+    "EXPENSIVE": "E4",
+    "NOVELTY": "E5",
+    "AMBIGUOUS": "E5"
+  },
+  "exhaustive_signal_set_test": {
+    "nonempty_subset_count": 1023,
+    "evaluated_subset_count": 1023,
+    "underclassification_count": 0
+  },
+  "pairwise_monotonicity": {
+    "subset_to_superset_comparison_count": 58025,
+    "monotonicity_violation_count": 0
+  },
+  "protection_monotonicity": {
+    "dimensions": [
+      "class_ordinal",
+      "human_gate_required",
+      "interview_requirement",
+      "required_phase_protection",
+      "default_role_count"
+    ],
+    "protection_regression_count": 0
+  },
+  "empty_set": {
+    "accepted_signals": [
+      "AMBIGUOUS"
+    ],
+    "work_class": "E5",
+    "required_phases": [
+      "I",
+      "F",
+      "O",
+      "R",
+      "G",
+      "E"
+    ],
+    "ambiguous_sticky_for_same_revision": true,
+    "status": "PASS"
+  },
+  "fail_closed_counts": {
+    "unknown_signal_acceptance_count": 0,
+    "replay_divergence_count": 0,
+    "hash_vector_mismatch_count": 0,
+    "immutable_history_mutation_count": 0,
+    "workflow_output_binding_error_count": 0,
+    "skipped_or_xfailed_guard_cases": 0
+  },
+  "commands": [
+    "node --test packages/foundry-kernel/src/forge/classifier/underprocessing-guard.test.mjs",
+    "uv run --locked python -B -m pytest tests/test_f01_underprocessing_guard.py -p no:cacheprovider"
+  ]
+}

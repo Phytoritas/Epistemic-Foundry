@@ -1,0 +1,21 @@
+{
+  "all_errors_skill_scoped": true,
+  "attempt_id": "G01-0001",
+  "g01_write_scope_error_count": 0,
+  "gating": false,
+  "gating_rationale": "G01's required_checks are exactly plugin_manifest_validation and asset_path_test (both via g01_verify.py). The whole-plugin validate_plugin walk is NOT a G01 required check; its current errors are entirely skill-scoped debt owned by the downstream skill packages (G02-G05 etc.) and a later whole-plugin integration gate, not a G01 defect.",
+  "ownership": "cross_package_integration_item_owned_by_downstream_skill_packages",
+  "sample_errors": [
+    "skill `foundry` agent field `activation` is not accepted by plugin validation",
+    "skill `foundry` agent field `interface.icon_small must stay inside the plugin archive",
+    "skill `foundry` agent field `interface.icon_large must stay inside the plugin archive",
+    "skill `foundry` agent field `policy.invocation_disposition` is not accepted by plugin validation",
+    "skill `foundry` agent field `policy.load_full_instructions` is not accepted by plugin validation"
+  ],
+  "skill_scoped_error_count": 120,
+  "status": "DISCLOSED",
+  "total_error_count": 120,
+  "validator_available": true,
+  "validator_identity": "plugin-creator/scripts/validate_plugin.py",
+  "validator_sha256": "sha256:4e84c911479e4d158d723ed8ccc881d3499e580fbf5650e60d379a1a25ac3186"
+}

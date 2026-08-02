@@ -1,0 +1,50 @@
+{
+  "work_package_id": "A04",
+  "base_checkpoint": "A01-A03:PASS",
+  "status": "PASS",
+  "changed_files": [
+    "artifacts/work_packages/A04/reconciliation.json",
+    "artifacts/work_packages/A04/commands.jsonl",
+    "artifacts/work_packages/A04/review.md",
+    "artifacts/work_packages/A04/report.json"
+  ],
+  "checks": [
+    {
+      "command": "phase_artifact_reconciliation",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A04/commands.jsonl#A04-C001"
+    },
+    {
+      "command": "independent_review_gate (user-authorized direct-review deviation)",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A04/commands.jsonl#A04-C005"
+    },
+    {
+      "command": "python -m pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A04/commands.jsonl#A04-C003"
+    }
+  ],
+  "review": {
+    "agent": "primary_author",
+    "status": "PASS_WITH_RECORDED_PROCEDURE_DEVIATION",
+    "findings_resolved": []
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/A04/reconciliation.json",
+    "artifacts/work_packages/A04/commands.jsonl",
+    "artifacts/work_packages/A04/review.md",
+    "artifacts/work_packages/A04/report.json"
+  ],
+  "open_risks": [
+    "The A-phase review chain is author-reviewed under explicit user instruction, not independent assurance.",
+    "Polyglot import-boundary enforcement remains B01 scope."
+  ],
+  "spec_gaps": [],
+  "not_verified": [],
+  "next_ready": [
+    "B01",
+    "C01",
+    "A05"
+  ]
+}

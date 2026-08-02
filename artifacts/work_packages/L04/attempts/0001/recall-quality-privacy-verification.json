@@ -1,0 +1,102 @@
+{
+  "attempt_id": "L04-0001",
+  "exact_oracle": {
+    "expected_memory_id_set_exact_match": true,
+    "forbidden_private_or_cross_workspace_id_count": 0,
+    "pipeline": [
+      "L01_POLICY",
+      "L02_SCOPED_SEARCH",
+      "L03_REDACTION_DEDUPE",
+      "CANONICAL_RECEIPT"
+    ],
+    "receipt_hash_and_replay_identity": true
+  },
+  "precision": {
+    "bounded_top_k_excludes_unrelated_context": true,
+    "duplicate_source_amplification": false,
+    "expired_memory_excluded_before_ranking": true,
+    "needed_fact_exact_id_set_recovered": true,
+    "raw_search_text_in_receipt": false,
+    "redaction_preserves_identity_without_private_bytes": true,
+    "searched_none_distinct_from_unsearched": true,
+    "unicode_nfkc_equivalence": true
+  },
+  "privacy": {
+    "cross_workspace_workspace_store_allowed": false,
+    "default_cross_workspace_access": "DENY",
+    "explicit_user_opt_in_requires_policy_and_consent": true,
+    "forbidden_id_leak_count": 0,
+    "malformed_policy_fails_closed": true,
+    "prompt_injection_authority": false,
+    "raw_forbidden_source_text_returned": false,
+    "searched_excluded_class_partition_complete": true,
+    "target_workspace_binding_exact": true
+  },
+  "status": "PASS",
+  "syntax": {
+    "attempt_id": "L04-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "tests/evals/recall/recall-eval-support.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "tests/evals/recall/recall-precision.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "tests/evals/recall/cross-workspace-leak.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "targeted": {
+    "cancelled": 0,
+    "collected": 25,
+    "cross_workspace_leak_test_count": 15,
+    "failed": 0,
+    "junit": "artifacts/work_packages/L04/attempts/0001/targeted-l04-node.junit.xml",
+    "junit_sha256": "sha256:f9b8e7e9cfcc21a54937f3c9f9ec73fe88c136e6758e56129a87433062a304df",
+    "passed": 25,
+    "recall_precision_test_count": 10,
+    "skipped": 0,
+    "test_names": [
+      "cross_workspace_leak_test: same-workspace recall excludes exact-match private workspace records",
+      "cross_workspace_leak_test: default-denied cross-workspace query fails before index access",
+      "cross_workspace_leak_test: explicit USER opt-in retrieves only the intended target workspace",
+      "cross_workspace_leak_test: policy permission without explicit opt-in is denied",
+      "cross_workspace_leak_test: explicit opt-in without consent is denied",
+      "cross_workspace_leak_test: revoked consent cannot authorize recall",
+      "cross_workspace_leak_test: cross-workspace WORKSPACE store remains denied",
+      "cross_workspace_leak_test: WORKSPACE query cannot return same-workspace USER private context",
+      "cross_workspace_leak_test: USER query cannot return same-workspace WORKSPACE records",
+      "cross_workspace_leak_test: expired private memory is excluded from an otherwise permitted USER store",
+      "cross_workspace_leak_test: prompt injection text in another workspace has no authority",
+      "cross_workspace_leak_test: retrieval output contains provenance only, never raw forbidden source text",
+      "cross_workspace_leak_test: target-workspace binding excludes the caller workspace on allowed USER recall",
+      "cross_workspace_leak_test: unknown or malformed policy input fails closed",
+      "cross_workspace_leak_test: searched and excluded classes remain a complete privacy partition",
+      "recall_precision_test: the exact needed fact outranks a partial distractor",
+      "recall_precision_test: all required facts fit the bounded top-k without unrelated context",
+      "recall_precision_test: duplicate source memories yield one representative",
+      "recall_precision_test: explicit redaction preserves the needed identity without private bytes",
+      "recall_precision_test: expired high-score memory is excluded before ranking",
+      "recall_precision_test: a completed zero-result search remains SEARCHED_NONE",
+      "recall_precision_test: Unicode NFKC equivalents recover the same fact",
+      "recall_precision_test: input permutation leaves selection and receipt identities stable",
+      "recall_precision_test: receipt is bound to the selected post-L03 subset",
+      "recall_precision_test: selected output carries provenance but no raw search text"
+    ],
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_testcase_count": 25
+  }
+}

@@ -1,43 +1,278 @@
-policy_id: retrieval-policy-v2.0.0
+policy_id: retrieval-policy-v4.0.1-o02.1
+canonical_lane_order:
+- lexical
+- semantic
+- citation
+- entity_variable
+- mechanism
+- counterevidence
+- 'null'
+- boundary
+- method
+- temporal
+- external_novelty
+class_lane_floors:
+  E0: []
+  E1:
+  - lexical
+  - semantic
+  - citation
+  - temporal
+  E2:
+  - lexical
+  - semantic
+  - citation
+  - entity_variable
+  - counterevidence
+  - 'null'
+  - boundary
+  - method
+  - temporal
+  E3:
+  - lexical
+  - semantic
+  - citation
+  - entity_variable
+  - mechanism
+  - counterevidence
+  - 'null'
+  - boundary
+  - method
+  - temporal
+  E4:
+  - lexical
+  - semantic
+  - citation
+  - entity_variable
+  - mechanism
+  - counterevidence
+  - 'null'
+  - boundary
+  - method
+  - temporal
+  E5:
+  - lexical
+  - semantic
+  - citation
+  - entity_variable
+  - mechanism
+  - counterevidence
+  - 'null'
+  - boundary
+  - method
+  - temporal
+  - external_novelty
 lanes:
   lexical:
-    required: true
     budget: 40
   semantic:
-    required: true
     budget: 40
   citation:
-    required: true
     budget: 20
   entity_variable:
-    required: true
     budget: 30
   mechanism:
-    required: true
     budget: 30
-  counter:
-    required: true
+  counterevidence:
     budget: 40
   'null':
-    required: true
     budget: 30
   boundary:
-    required: true
     budget: 30
   method:
-    required: true
     budget: 20
   temporal:
-    required: true
     budget: 20
   external_novelty:
-    required_for_promotion: true
     budget: 40
+lane_selection:
+  class_floor_disposition: SELECTED
+  class_floor_reason: CLASS_FLOOR
+  class_floor_waivable: false
+  optional_selection_reason: POLICY_SELECTED
+  unselected_dispositions:
+  - NOT_REQUIRED_FOR_CLASS
+  - NOT_APPLICABLE
+  not_applicable_requires_typed_evidence: true
+  optional_selection_may_only_raise_protection: true
+  legacy_write_values_rejected:
+  - counter
+  - novelty
+  - support
+  - custom
+e0_contract:
+  retrieval_requirement: NOT_REQUIRED
+  query_arrays_empty: true
+  execution_budget_zero: true
+  backend_calls: 0
+receipt_contract:
+  reconcile_all_eleven_lanes: true
+  unselected_lane_receipt: UNSEARCHED
+  unselected_lane_receipt_kind: SENTINEL
+  selected_lane_receipt_kind: EXECUTION
+  selected_lane_states:
+  - SEARCHED_NONE
+  - SEARCHED_WITH_RESULTS
+  - PARTIAL
+  - BLOCKED
+  - FAILED
+  sentinel_and_execution_may_coexist: false
+  execution_field_nulls_required_for_unsearched: true
+query_family_bindings:
+  lexical:
+  - FORWARD
+  semantic:
+  - FORWARD
+  citation:
+  - FORWARD
+  entity_variable:
+  - FORWARD
+  mechanism:
+  - FORWARD
+  counterevidence:
+  - FORWARD
+  - REVERSE
+  'null':
+  - 'NULL'
+  boundary:
+  - BOUNDARY
+  method:
+  - METHOD
+  temporal:
+  - FORWARD
+  external_novelty:
+  - NOVELTY
+provider_request_contract:
+  required_fields:
+  - run_id
+  - query_plan_id
+  - plan_hash
+  - lane
+  - query_families
+  - query_batch
+  - query_hash
+  - scope_filter
+  - corpus_snapshot_hash
+  - index_versions
+  - max_candidates
+  - cutoff_policy_id
+  - deterministic_seed
+  - policy_bundle_hash
+  - capability_lease_id
+  - backend_id
+  - backend_version
+  - adapter_id
+  - adapter_version
+  query_batch_canonicalization: RFC_8785_JCS_EQUIVALENT_UTF8
+  query_hash_algorithm: sha256
+  temporal_requires:
+  - versioned_date_filter
+  - correction_filter
+  external_novelty_requires:
+  - external_scope
+  - stop_rule
+  missing_family_error: INVALID_QUERY_FAMILY_BINDING
+retrieval_candidate_contract:
+  canonical_schema: schemas/retrieval-candidate.schema.json
+  business_output: RetrievalCandidate
+  execution_telemetry: ResultEnvelope
+  telemetry_output_binding: output_artifact_ids
+  metadata_only_direct_evidence: false
+  nullable_keys_are_retained: true
+  candidate_identity_fields:
+  - plan_hash
+  - lane
+  - query_hash
+  - canonical_source_key
+  - source_version
+  - source_snapshot_hash
+  candidate_hash_fields_source: schema_x_canonical_hash
+retrieval_processing_order:
+- validate_backend_response_and_receipt
+- validate_plan_snapshot_and_index_bindings
+- generate_canonical_source_key
+- collapse_channel_local_exact_duplicates
+- assign_stable_channel_ranks
+- fuse_with_rrf_k60
+- calculate_transparent_features
+- apply_max_candidates_cutoff
+- tie_break_by_candidate_id_ascending
+- record_excluded_duplicate_and_cutoff_counts
+fusion_contract:
+  method: RRF_K60
+  k: 60
+  formula: sum(1 / (60 + channel_rank))
+  raw_scores_cross_channel_comparable: false
+  learned_reranker_allowed: false
+  score_is_scientific_support: false
+  duplicate_identity_fields:
+  - canonical_source_key
+  - source_version
+  - source_snapshot_hash
+  - source_locator
+integrity_contract:
+  immutable_bindings:
+  - plan_hash
+  - query_hash
+  - corpus_snapshot_hash
+  - index_versions
+  - backend_id
+  - backend_version
+  - adapter_id
+  - adapter_version
+  - policy_bundle_hash
+  - cutoff_policy_id
+  stale_snapshot_error: STALE_RETRIEVAL_SNAPSHOT
+  integrity_terminal_state: FAILED
+  integrity_stop_reason: integrity_failure
+  silent_cross_channel_fallback_allowed: false
+terminal_contract:
+  policy_denial: [BLOCKED, policy_blocked]
+  missing_credential: [BLOCKED, credential_unavailable]
+  missing_backend: [BLOCKED, backend_unavailable]
+  provider_error: [FAILED, provider_failure]
+  malformed_or_unknown_response: [FAILED, invalid_response]
+  bounded_interruption: [PARTIAL, bounded_interruption]
+  complete_zero_results: [SEARCHED_NONE, complete]
+  complete_nonempty_results: [SEARCHED_WITH_RESULTS, complete]
+non_vector_release_guard:
+  minimum_work_class: E1
+  required_executed_lanes:
+  - lexical
+  - semantic
+  - citation
+  - temporal
+  accepted_non_vector_origins:
+  - LEXICAL
+  - CITATION_GRAPH
+  - RELATION_GRAPH
+  - EXTERNAL_INDEX
+  vector_only_candidate_retained: true
+  vector_only_multi_channel_verified: false
+  vector_only_run_ceiling: PARTIAL
+  complete_all_searched_none_may_pass: true
+benchmark_contract:
+  fixture_root: tests/fixtures/retrieval/o02
+  live_network_calls: 0
+  live_llm_calls: 0
+  per_required_lane_recall_at_20_minimum: 0.90
+  per_required_lane_ndcg_at_20_minimum: 0.85
+  fused_recall_at_20_minimum: 0.95
+  critical_must_find_accuracy: 1.0
+  exact_direction_provenance_integrity_dedupe_replay_accuracy: 1.0
+  vector_only_violation_count: 0
+  silent_fallback_count: 0
+  skipped_or_xfailed_cases: 0
+run_status_precedence:
+- FAIL
+- BLOCKED
+- PARTIAL
+- PASS
 pack_targets:
   direct_support:
   - 2
   - 4
-  counter:
+  counterevidence:
   - 2
   - 4
   'null':
@@ -50,7 +285,9 @@ pack_targets:
   - 1
   - 2
 rules:
+- support is an evidence role and never a retrieval lane
 - do not infer none-exist from no-result
-- preserve unsearched scopes
+- preserve unsearched scopes and their sentinel receipts
+- derive absence and novelty ceilings only from reconciled executed scope
 - cluster dependencies before counting evidence
 - retain strongest counterevidence even in support verdict

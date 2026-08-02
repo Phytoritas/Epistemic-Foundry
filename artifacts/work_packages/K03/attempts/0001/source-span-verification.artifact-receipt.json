@@ -1,0 +1,38 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "K03-0001-SOURCE-SPAN-VERIFICATION",
+  "byte_size": 1094,
+  "content_hash": "sha256:ad75c11d2a4cc22f4543176f58834671092d98f9f02a3062fedad67825eb18f1",
+  "created_at": "2026-07-30T22:05:54.023Z",
+  "created_by": {
+    "actor_id": "K03-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/K03/attempts/0001/source-span-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:6a22a692289b9f77fb0108799b8488d331cc3febe41ae9401795143a85deb0b9",
+  "receipt_id": "AR-K03-0001-SOURCE-SPAN-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "source_span_roundtrip",
+      "details": "36/36 fixed tests pass; text/table/figure/formula projections resolve to exact immutable source bytes",
+      "status": "PASS"
+    },
+    {
+      "check": "orphan_span_test",
+      "details": "missing, stale, wrong-version, wrong-provenance, mutated, and tampered spans fail closed",
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_schema_binding",
+      "details": "all emitted records use exactly the unchanged canonical SourceSpan fields and validate under Draft 2020-12",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Python 1054/1054, Node 470/470, codegen 126/126, structure/boundaries/Ruff/diff checks passed",
+      "status": "PASS"
+    }
+  ]
+}

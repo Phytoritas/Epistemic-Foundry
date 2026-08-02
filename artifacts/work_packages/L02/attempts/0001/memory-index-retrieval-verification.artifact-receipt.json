@@ -1,0 +1,38 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "L02-0001-MEMORY-INDEX-RETRIEVAL-VERIFICATION",
+  "byte_size": 4344,
+  "content_hash": "sha256:08a6cc382473579519c31e96fd5fdf22aff2b30bd4467cf54422aede380371d9",
+  "created_at": "2026-07-30T23:10:29.150Z",
+  "created_by": {
+    "actor_id": "L02-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/L02/attempts/0001/memory-index-retrieval-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:5e3172e151ae091388cd9aa588dc7a2b830626c659cf1eac135a000f2d67a0a8",
+  "receipt_id": "AR-L02-0001-MEMORY-INDEX-RETRIEVAL-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "memory_scope_test",
+      "details": "22/22 scoped index, policy boundary, retention, deterministic rank, and replay cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "retrieval_receipt_test",
+      "details": "19/19 completeness, provenance, searched-none, replay, and tamper cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_schema_validation",
+      "details": "sealed MemoryRetrievalReceipt validates with zero Draft 2020-12 errors",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "L01 27/27, Node 544/544, Python 1064/1064, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

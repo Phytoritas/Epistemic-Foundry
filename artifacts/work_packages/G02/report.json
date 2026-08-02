@@ -1,0 +1,228 @@
+{
+  "artifact_receipt": {
+    "path": "artifacts/work_packages/G02/attempts/0001/g02-verification.artifact-receipt.json",
+    "receipt_id": "AR-G02-0001-PAYLOAD-DISPATCH-VERIFICATION"
+  },
+  "attempt_id": "G02-0001",
+  "changed_files": [
+    {
+      "byte_size": 734,
+      "path": "plugins/epistemic-foundry/bin/efoundry.mjs",
+      "sha256": "sha256:17723d450644508b755e725300a600f3792c05714056c794517bd9de2d005e05"
+    },
+    {
+      "byte_size": 3600,
+      "path": "packages/plugin-host/src/cli-dispatch/payload-cli-smoke.test.mjs",
+      "sha256": "sha256:e5f4f328a100abac6692e26dbce04e33cf15884be47a9e59d08604a133ab5b94"
+    },
+    {
+      "byte_size": 2176,
+      "path": "packages/plugin-host/src/cli-dispatch/dispatcher-boundary.test.mjs",
+      "sha256": "sha256:7c3600faf8373e1db3c1f03bca89e820668bd55e81f7e5b8535c0a13e12e543c"
+    }
+  ],
+  "completion_ready": false,
+  "dependency": {
+    "G01": {
+      "attempt_id": "G01-0001",
+      "report": "artifacts/work_packages/G01/report.json",
+      "report_sha256": "sha256:893bb9d7c01e7213fb2aed347dca03099ab8ba770d072a82030ffa1216f17cf0",
+      "status": "PASS"
+    }
+  },
+  "dependency_effect": {
+    "blocked_package_count": 121,
+    "completed_package_count": 31,
+    "dag_recomputed": true,
+    "next_package": "G03",
+    "ready_packages_manifest_order": [
+      "G03",
+      "I01",
+      "K01",
+      "A06"
+    ]
+  },
+  "dispatcher_contract": {
+    "alternate_fallback_count": 0,
+    "byte_size": 734,
+    "domain_logic_present": false,
+    "executable_source": "process.execPath",
+    "forbidden_token_count": 0,
+    "import_specifiers": [
+      "node:child_process",
+      "node:url"
+    ],
+    "path": "plugins/epistemic-foundry/bin/efoundry.mjs",
+    "payload_target": "../dist/cli.mjs",
+    "payload_target_site_count": 1,
+    "sha256": "sha256:17723d450644508b755e725300a600f3792c05714056c794517bd9de2d005e05",
+    "spawn_site_count": 1
+  },
+  "evidence_artifacts": [
+    {
+      "byte_size": 3029,
+      "path": "artifacts/work_packages/G02/attempts/0001/g02-verification.json",
+      "sha256": "sha256:47ce929fe3e81483b69f46b2784d24d8f3033d9fa48d527da7ed138614cecbc4"
+    },
+    {
+      "byte_size": 1424,
+      "path": "artifacts/work_packages/G02/attempts/0001/full-regression-impact.json",
+      "sha256": "sha256:a9348bcb89581f98b885abcd9a7398ca599eb2ebe4ac1ef13d82f4de4f4ce96a"
+    },
+    {
+      "byte_size": 661,
+      "path": "artifacts/work_packages/G02/attempts/0001/preexisting-debt-reconciliation.json",
+      "sha256": "sha256:dd7ad7dbb1f37ff31ed27111f3e8b510c9caad23752e4888bb6b0549c217dcfc"
+    },
+    {
+      "byte_size": 1502,
+      "path": "artifacts/work_packages/G02/attempts/0001/dependency-status.json",
+      "sha256": "sha256:5f3c09a682db420ea997a621eb971bebf18390037d5371a47bcd640714bfcdbd"
+    },
+    {
+      "byte_size": 1114,
+      "path": "artifacts/work_packages/G02/attempts/0001/g02-verification.artifact-receipt.json",
+      "sha256": "sha256:578cff71e18c883f322699e5754700fe359d70101ea67384497d88b36005a445"
+    },
+    {
+      "byte_size": 449,
+      "path": "artifacts/work_packages/G02/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:4b83cd64d2ff0bedffe837993a3c153d48d1bb5875517458076adc4a23b8a498"
+    },
+    {
+      "byte_size": 3070,
+      "path": "artifacts/work_packages/G02/attempts/0001/commands.jsonl",
+      "sha256": "sha256:3acf10862e9efcfad86523b08aed2083b8d0a15c48d7750cd0df7b67c4a588b7"
+    },
+    {
+      "byte_size": 3425,
+      "path": "artifacts/work_packages/G02/attempts/0001/review.md",
+      "sha256": "sha256:eb5c65ec43643115d725301b9803c13602f69a4959ee05e81104203bff1e9363"
+    },
+    {
+      "byte_size": 1070,
+      "path": "artifacts/work_packages/G02/attempts/0001/targeted-node-suite.junit.xml",
+      "sha256": "sha256:4d119fca9e9b5809f5e04832d6a8975e4e9faaa70d67540048c1f04a24c0b559"
+    },
+    {
+      "byte_size": 64332,
+      "path": "artifacts/work_packages/G02/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:c6b098103f8d4fe02645a1d4d8c7133ae50ed0fdc8678620d5481d896f8dba60"
+    },
+    {
+      "byte_size": 120470,
+      "path": "artifacts/work_packages/G02/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:d8f758830b05cfe4011b6bef064fa1489b07c8914127e23219f751afb6fe3528"
+    },
+    {
+      "byte_size": 43202,
+      "path": "artifacts/work_packages/G02/attempts/0001/g02_evidence.py",
+      "sha256": "sha256:4a4c2b99a7ebc0ceea4fc76e86ad4096dfd5940d3a5369256c620df69ec50c48"
+    },
+    {
+      "byte_size": 16496,
+      "path": "artifacts/work_packages/G02/attempts/0001/g02_rah_seal.py",
+      "sha256": "sha256:03c0d3f1a8add77de02dfbf06ce669facf7a0584531305f1485ff5ab9bbdefb7"
+    }
+  ],
+  "exit_criteria": {
+    "dispatcher_contains_no_domain_logic": "PASS",
+    "path_less_invocation_works": "PASS"
+  },
+  "historical_and_worktree_preservation": {
+    "dirty_worktree_preserved": true,
+    "prior_reports_and_generations_preserved": true,
+    "product_write_scope_violations": 0,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "not_claimed": [
+    "PLUGIN_ROOT, PLUGIN_DATA, or workspace resolution",
+    "downstream efoundry command semantics or stable JSON errors",
+    "marketplace fresh-install success",
+    "release readiness or product completion"
+  ],
+  "package_status": "PASS",
+  "preserved_limitations": [
+    "G02 proves payload process forwarding, not downstream CLI command semantics.",
+    "PLUGIN_ROOT, PLUGIN_DATA, and workspace policy remain G03-owned.",
+    "Marketplace fresh-install behavior remains G04-owned.",
+    "The downstream-built dist/cli.mjs is not created or claimed by G02.",
+    "S04-TM004 remains an exact pre-existing S04-owned debt.",
+    "Review is not actor-independent because the product owner forbids subagents in this sequence."
+  ],
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0054",
+    "core_generation": "000052-7408a440",
+    "final_closeout_evidence_id": "E0055",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 312,
+    "inspect_alternative": "state_store.verify_current plus all generation manifests, six flat snapshots, and continuous evidence IDs verified",
+    "inspect_status": "UNAVAILABLE_OR_GUARD_BLOCKED",
+    "retained_generation_manifest_count": 52,
+    "status": "active"
+  },
+  "regression": {
+    "git_diff_check": "PASS",
+    "node": {
+      "failed": 1,
+      "g02_caused_failure_count": 0,
+      "passed": 317,
+      "skipped": 0,
+      "status": "BOUNDED_PREEXISTING_DEBT_S04_TM004"
+    },
+    "package_boundaries": "PASS",
+    "python": {
+      "failed": 0,
+      "passed": 947,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "repository_structure": "PASS",
+    "targeted_node": {
+      "failed": 0,
+      "passed": 4,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "dispatcher_boundary_test": {
+      "case_count": 2,
+      "domain_logic_token_count": 0,
+      "fixed_target": true,
+      "path_alias_fallback_count": 0,
+      "python_fallback_count": 0,
+      "repository_root_fallback_count": 0,
+      "status": "PASS"
+    },
+    "payload_cli_smoke": {
+      "argv_stdin_stdout_stderr_cwd_env_preserved": true,
+      "case_count": 2,
+      "missing_target_fails_closed": true,
+      "non_ascii_and_space_paths_preserved": true,
+      "nonzero_exit_code_preserved": 23,
+      "path_alias_required": false,
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "artifact": "artifacts/work_packages/G02/attempts/0001/review.md",
+    "artifact_sha256": "sha256:eb5c65ec43643115d725301b9803c13602f69a4959ee05e81104203bff1e9363",
+    "assurance_limitation": "Procedurally separate primary-session review; not actor-independent certification.",
+    "blocking_findings": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "subagents_used": false
+  },
+  "status": "PASS",
+  "title": "Payload-resident efoundry dispatcher",
+  "work_package_id": "G02",
+  "write_scope": [
+    "plugins/epistemic-foundry/bin/**",
+    "packages/plugin-host/src/cli-dispatch/**",
+    "artifacts/work_packages/G02/**"
+  ]
+}

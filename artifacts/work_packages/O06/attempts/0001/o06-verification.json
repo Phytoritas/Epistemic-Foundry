@@ -1,0 +1,68 @@
+{
+  "attempt_id": "O06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every allow or refuse decision resolves to an immutable receipt whose certificate_id, certificate_hash, gate_id and receipt_hash are pure sha256 functions of the record's own published content: the caller supplies created_at and there is no clock or random draw, so replaying derive_search_integrity_admissibility over equal inputs reproduces the receipt byte for byte, and a refusal over well-formed inputs carries the same immutable receipt on the raised SearchIntegrityRefused",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the reconciled certificate is validated against the canonical search-completeness-certificate schema; completion states, absence/novelty claim ceilings, work classes and receipt/lane states are read positionally from the schema that declares them or from the O05 surface that owns them rather than restated (EF4-I22, asserted by the schema-and-type suite); ADMIT and REFUSE are Q05's own decision vocabulary imported and re-exported, not copied as O06 wire literals; and each of the twenty-one FINDING_CODES names an exact refusal while _fail refuses an undeclared code",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the happy path admits a claim over a complete search and a cleared candidate; every one of the twenty-one finding codes has a driving negative and the negative module self-asserts that no code was left unexercised; crash/resume is replay determinism — two derivations over equal inputs are byte-equal and no input is mutated; and the adversarial cases are the ones the gate exists for: a novelty claim that never earned its search, a determination that skipped a required source, a candidate-generating role reaching for authority over its own evaluation, and a tampered admissibility receipt",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; the gate decides admissibility to promotion review only and holds no promotion authority, a candidate-generating role driving the decision is refused (CANDIDATE_ROLE_HOLDS_AUTHORITY), the sealed Q05 receipt is composed by hash and must be an untampered ADMIT for this candidate from the Q05 gate with no score taken from it (ADMISSIBILITY_RECEIPT_REFUSED / CANDIDATE_IDENTITY_MISMATCH otherwise), and the emitted receipt carries admissible_for_promotion_review only with no granted level, promotion field or score",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "composes": "the sealed O05 retrieval, layered-novelty and coverage surface (the eleven canonical lane receipts, canonical lane order, receipt states and plan dispositions), the K05/evaluation novelty owners (novelty_supports_claim and the canonical novelty schema), and the Q05 selective-inference admissibility gate (its ADMIT decision and sealed receipt)",
+    "decides": "admissibility of a novelty or prior-art claim to be forwarded to promotion review, and nothing more; it holds no promotion authority",
+    "produces": "an immutable, re-derivable search-completeness certificate and a search-integrity admissibility receipt; no score, selection or promotion",
+    "refusals_are_by_code": true,
+    "trusts_asserted_completion": false
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent dispatched in parallel; reviewer: this sealing session as an independent, actor-independent reviewer distinct from the implementer; verdict PASS, blocking_finding_count=0; external actor-independent certification does not hold)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 27
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 10
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 11
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 13
+    }
+  },
+  "schema_binding": {
+    "admissibility": "the sealed Q05 admissibility receipt, composed and self-hash-verified (an ADMIT for this candidate, from the Q05 gate, re-deriving its own hash) and recorded by hash only, never as a copied hidden score",
+    "certificate": "canonical search-completeness-certificate schema; every lane's reconciled state, the completion state and both claim ceilings are derived from the reconciliation and the certificate is validated field by field, never supplied",
+    "decision_tokens": "ADMIT and REFUSE are Q05's own decision vocabulary, imported and re-exported, verified not restated as O06 wire literals by the wire-literal suite",
+    "novelty_assessment": "canonical K05 novelty schema; the assessment must cite this certificate and describe the one subject, and its status field name is read from the schema rather than named",
+    "vocabularies": "lane states, completion states, claim ceilings and work classes are read positionally from the certificate schema or the O05 surface that owns them (EF4-I22), never restated"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_o05": 91,
+    "dependency_regression_q05": 40,
+    "full_node_suite": 1233,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 27,
+    "provenance_and_receipt_audit": 10,
+    "schema_and_type_check": 11,
+    "unit_and_contract_tests": 13
+  }
+}

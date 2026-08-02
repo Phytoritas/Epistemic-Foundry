@@ -1,0 +1,281 @@
+{
+  "attempt_id": "Z02-0001",
+  "attempt_type": "Z02_SBOM_SIGNING_PROVENANCE_DETERMINISTIC_BUNDLE",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "Z02-0001",
+    "dependencies": {
+      "Z01": {
+        "attempt_id": "Z01-0001",
+        "core_evidence_id": "E0357",
+        "final_closeout_evidence_id": "E0358",
+        "report": "artifacts/work_packages/Z01/attempts/0001/report.json",
+        "report_sha256": "sha256:6af4f1f37cc6e1bdb9d9fddaeb29e729ac3e31a5fd136c212f2771f6d28d8571",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_Z02_0001_THEN_CONTINUE_DAG",
+    "regression_baseline": {
+      "attempt_id": "S05-0001",
+      "core_evidence_id": "E0175",
+      "final_closeout_evidence_id": "E0176",
+      "report": "artifacts/work_packages/S05/attempts/0001/report.json",
+      "report_sha256": "sha256:dbcb94e77fd885f18aa36a00dc352a9d5a788d265b979ff7a23fafd5f261c727",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "bundle_clean_extracts": "PASS",
+    "signatures_and_provenance_verify": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "Z03-0001",
+  "not_claimed": [
+    "a real cryptographic signing: signatures are empty and status is derived UNSIGNED; the synthetic-signature control is explicitly labelled non-cryptographic",
+    "a real supply-chain or transitive-dependency SBOM scan: the SBOM is a content-addressed bill of materials over the in-repo payload files only",
+    "a production, executable or validated release: the bundle is describable but not shippable and the v4 plugin is not claimed executable or production-ready",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 30176,
+      "path": "artifacts/work_packages/Z02/attempts/0001/build_z02_0001_evidence.py",
+      "sha256": "sha256:abd8452a49ad9e41a82a0d7a8794c8b104c707f8394d4f7a7bd0b5d190931d5c"
+    },
+    {
+      "byte_size": 11687,
+      "path": "artifacts/work_packages/Z02/attempts/0001/commands.jsonl",
+      "sha256": "sha256:48027d2ae1c2f6aa8c8f624ef2f1e831bcb2db6565d96971d3f38e7c2f86ca0d"
+    },
+    {
+      "byte_size": 779,
+      "path": "artifacts/work_packages/Z02/attempts/0001/dependency-status.json",
+      "sha256": "sha256:06ee249f715760e2994d5ff38d5cd77f69dde297e4c2e38b836bac4f0d17882b"
+    },
+    {
+      "byte_size": 332290,
+      "path": "artifacts/work_packages/Z02/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:950c696bb7eb4ace8e650e574ef004b46d7b7ec486f502cbf2ad7934b679b9ba"
+    },
+    {
+      "byte_size": 156735,
+      "path": "artifacts/work_packages/Z02/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:eb81189445ec368b2560e6dfe3699dee138a6904c14d559e03f427ef40ca1735"
+    },
+    {
+      "byte_size": 3247,
+      "path": "artifacts/work_packages/Z02/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:65699cbef1e15dcdc21fe802c06325162fac684e6aba0cf2b05c4d89ec467249"
+    },
+    {
+      "byte_size": 9184,
+      "path": "artifacts/work_packages/Z02/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:ac10755a467c3c9f1a1a2fb612cfd971552dba3d16f18d63fd5ade355b2a2c26"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/Z02/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:a10f14029a9b15ee7034037c526c523b5c2b80f174a1605b944f3ef9cae49bdc"
+    },
+    {
+      "byte_size": 1684,
+      "path": "artifacts/work_packages/Z02/attempts/0001/review.md",
+      "sha256": "sha256:e92c66fc5f3a6357e22c82640962e71aeecaf4906cc1e0fbac4c4c4911fc9477"
+    },
+    {
+      "byte_size": 7031,
+      "path": "artifacts/work_packages/Z02/attempts/0001/run_z02_0001_checks.py",
+      "sha256": "sha256:9768f103f05a7d7f745ef7de3e661cb825064dce6d17bb942e791b247e06aba0"
+    },
+    {
+      "byte_size": 1001,
+      "path": "artifacts/work_packages/Z02/attempts/0001/sbom-test.junit.xml",
+      "sha256": "sha256:bdd2a816d1652817b5caae3a9baf2f012e67aa32280368ea4ceabd32d65dc03f"
+    },
+    {
+      "byte_size": 1155,
+      "path": "artifacts/work_packages/Z02/attempts/0001/signature-test.junit.xml",
+      "sha256": "sha256:7b151af808eb6fbba85acbfdcae2f92b23bbafec2317b9a4eb8752d820339a30"
+    },
+    {
+      "byte_size": 770,
+      "path": "artifacts/work_packages/Z02/attempts/0001/wire-literal-discipline.junit.xml",
+      "sha256": "sha256:858c6349b64aea8e6c90870e78b2785c00aaafda78f8c3a16f46eb87b1dd8c4a"
+    },
+    {
+      "byte_size": 1297,
+      "path": "artifacts/work_packages/Z02/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:2e07cd21c22500afc4c755293ec1cbaa6b8bef35b6e585a9dfb23440f8caf1fd"
+    },
+    {
+      "byte_size": 2160,
+      "path": "artifacts/work_packages/Z02/attempts/0001/z02-verification.json",
+      "sha256": "sha256:62a6fe606618abdc28e225ca2688ea9ee5a4ab50af4749f81823561f820b6743"
+    },
+    {
+      "byte_size": 23471,
+      "path": "artifacts/work_packages/Z02/attempts/0001/z02_0001_rah_seal.py",
+      "sha256": "sha256:b8d627e9d656158881c323001af1cb7cca854ed9d4de5528a7953ce1dd4ca4c1"
+    },
+    {
+      "byte_size": 1123,
+      "path": "artifacts/work_packages/Z02/attempts/0001/zip-integrity-test.junit.xml",
+      "sha256": "sha256:4294627236295a8347b454d1effe0d489eb47153e60eb82e2c34f48804c9f2f6"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0359",
+    "core_generation": "000357-4bd1d510",
+    "final_closeout_evidence_id": "E0360",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 2142,
+    "implementation_gate": "fail",
+    "retained_generation_count": 357,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "Z02-0001",
+    "baseline_attempt": "S05-0001",
+    "component_tests_are_targeted_only": true,
+    "new_failure_count": 0,
+    "status": "PASS",
+    "suites": {
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1740,
+        "failed": 0,
+        "junit": "artifacts/work_packages/Z02/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:950c696bb7eb4ace8e650e574ef004b46d7b7ec486f502cbf2ad7934b679b9ba",
+        "passed": 1740,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1735
+      },
+      "full_python_suite": {
+        "collected": 1312,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/Z02/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:eb81189445ec368b2560e6dfe3699dee138a6904c14d559e03f427ef40ca1735",
+        "passed": 1312,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1312
+      },
+      "sbom_test": {
+        "collected": 8,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/Z02/attempts/0001/sbom-test.junit.xml",
+        "junit_sha256": "sha256:bdd2a816d1652817b5caae3a9baf2f012e67aa32280368ea4ceabd32d65dc03f",
+        "passed": 8,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 8
+      },
+      "signature_test": {
+        "collected": 9,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/Z02/attempts/0001/signature-test.junit.xml",
+        "junit_sha256": "sha256:7b151af808eb6fbba85acbfdcae2f92b23bbafec2317b9a4eb8752d820339a30",
+        "passed": 9,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 9
+      },
+      "wire_literal_discipline": {
+        "collected": 5,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/Z02/attempts/0001/wire-literal-discipline.junit.xml",
+        "junit_sha256": "sha256:858c6349b64aea8e6c90870e78b2785c00aaafda78f8c3a16f46eb87b1dd8c4a",
+        "passed": 5,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 5
+      },
+      "zip_integrity_test": {
+        "collected": 9,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/Z02/attempts/0001/zip-integrity-test.junit.xml",
+        "junit_sha256": "sha256:4294627236295a8347b454d1effe0d489eb47153e60eb82e2c34f48804c9f2f6",
+        "passed": 9,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 9
+      }
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "sbom_test": {
+      "status": "PASS",
+      "test_count": 8
+    },
+    "signature_test": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "zip_integrity_test": {
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Author/reviewer separation holds (parallel agent authored, primary session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_REVIEW_OF_PARALLEL_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "Z02",
+  "write_scope": {
+    "approved_scope": [
+      "scripts/release/**",
+      "artifacts/work_packages/Z02/**"
+    ],
+    "attempt_id": "Z02-0001",
+    "authored_by": "bounded parallel implementation agent under the product owner's explicit parallel-execution instruction",
+    "authority_decision": null,
+    "composed_modules_modified": false,
+    "product_file_hashes": {
+      "artifacts/work_packages/Z02/attempts/0001/run_z02_0001_checks.py": "sha256:9768f103f05a7d7f745ef7de3e661cb825064dce6d17bb942e791b247e06aba0",
+      "scripts/release/test_sbom.py": "sha256:57db7d33fb26bf563ad404ca4feaaded9d0aeb3130c5638b0936dc642dfeb794",
+      "scripts/release/test_signature.py": "sha256:1fcaf61b1e8d92a91088cc36a8670b662938bd74440777ba39eb539d36ba320b",
+      "scripts/release/test_zip_integrity.py": "sha256:d80ac3cc36e295d8989a0a61b02ce3b863d86f466cc674b6c62d79f34541e825",
+      "scripts/release/z02_release_engine.py": "sha256:c3bd58ac4b5ed58cf8f12a51b2fb8ad342c16fdd559549dd9f8ffdb71d502b50"
+    },
+    "pyproject_modified": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "primary session (Parent Architect), separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "migration_contract_id": "EF-C03-DOCUMENT-REGISTRATION-V3-TO-V4",
+  "contract_version": 1,
+  "authority_decision_id": "HD-EF4-K01-SG001-20260730-001",
+  "change_class": "BREAKING",
+  "source_contract": {
+    "artifact_kind": "DocumentManifest",
+    "schema_version": "3.0.0",
+    "registration_lineage_present": false
+  },
+  "target_contract": {
+    "request_artifact_kind": "DocumentRegistrationRequest",
+    "registration_artifact_kind": "DocumentRegistration",
+    "manifest_artifact_kind": "DocumentManifest",
+    "schema_version": "4.0.0",
+    "registration_lineage_required": true
+  },
+  "forward_transform": {
+    "entry_point": "migrations.contracts.document_registration_migration:migrate_legacy_document_manifest",
+    "environment_discovery_forbidden": true,
+    "final_manifest_only_forbidden": true,
+    "requires_canonical_registration_request": true,
+    "requires_immutable_source_receipt_and_lineage_evidence": true,
+    "failure_code": "LEGACY_DOCUMENT_REGISTRATION_EVIDENCE_REQUIRED"
+  },
+  "rollback": {
+    "entry_point": "migrations.contracts.document_registration_migration:rollback_legacy_document_manifest",
+    "mode": "EXACT_SOURCE_PAYLOAD",
+    "requires_source_manifest_hash_match": true,
+    "deletes_registration_or_migration_history": false
+  },
+  "backfill": {
+    "dry_run_required": true,
+    "partial_batch_commit_forbidden": true,
+    "preserve_source_manifest": true,
+    "emit_migration_record_per_manifest": true,
+    "receipt_resolution_required_before_write": true
+  },
+  "fixtures": {
+    "source": "migrations/contracts/fixtures/document-manifest-v3.json",
+    "registration_request": "examples/sample_document-registration-request.json",
+    "immutable_evidence": "migrations/contracts/fixtures/document-registration-evidence.json",
+    "migration_record": "migrations/contracts/fixtures/document-registration-migration-record.json",
+    "target_registration": "examples/sample_document-registration.json",
+    "target_manifest": "examples/sample_document-manifest.json"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "attempt_id": "S02-0001",
+  "compartment_isolation": {
+    "authorization_decisions_carry_private_brand": true,
+    "copied_or_serialized_handles_policies_decisions_rejected": true,
+    "foreign_compartment_objects_fail_closed": true,
+    "proxy_accessor_prototype_and_coercion_inputs_denied": true,
+    "sandbox_profile_identifier_bound_into_every_decision": true
+  },
+  "exit_criteria": {
+    "path_egress_policy_enforced": {
+      "evidence": [
+        "packages/foundry-kernel/src/security/execution/path-escape.test.mjs",
+        "packages/foundry-kernel/src/security/execution/secret-exfiltration.test.mjs"
+      ],
+      "mechanism": "resource paths must be portable forward-slash relative paths with no drive, backslash, colon, dot, or reserved Windows component; the canonical path.relative result may not escape the root; a per-segment lstat/realpath no-follow walk denies symlinks, junctions, mount crossings, non-directory traversal, and missing parents; root device/inode/birth identity is revalidated on every request; egress is disabled or an exact canonical HTTP(S) origin allowlist that denies URL credentials, fragments, and unauthorized redirect destinations",
+      "status": "PASS"
+    },
+    "secret_handles_never_enter_prompts": {
+      "evidence": [
+        "packages/foundry-kernel/src/security/execution/secret-exfiltration.test.mjs"
+      ],
+      "mechanism": "opaque secret handles have no own properties and serialize to {}; assertSecretFreeBoundaryPayload rejects those handles, secret-bearing field names, and secret-shaped text at the prompt, evidence-artifact, log, export, and ordinary network-request boundaries using descriptor-only reads that never invoke Proxy traps or accessors; last-mile secret use requires both an exact egress-policy origin and a handle independently bound to that canonical HTTPS origin, and the decision exposes neither secret bytes nor handle/vault ids",
+      "status": "PASS"
+    }
+  },
+  "outbound_secret_denial": {
+    "decisions_expose_no_handle_vault_or_secret_bytes": true,
+    "handles_denied_at_all_five_outbound_boundaries": true,
+    "last_mile_requires_policy_and_handle_origin_binding": true,
+    "opaque_handles_are_non_serializing_and_frozen": true,
+    "secret_shaped_fields_and_text_patterns_fail_closed": true
+  },
+  "path_and_egress_control": {
+    "canonical_relative_escape_check_denies_traversal": true,
+    "credential_fragment_and_redirect_egress_denied": true,
+    "egress_default_deny_exact_canonical_origin_allowlist": true,
+    "per_segment_no_follow_lstat_realpath_walk": true,
+    "portable_relative_and_windows_ambiguity_validation": true,
+    "resource_root_identity_revalidated_each_request": true
+  },
+  "required_checks": {
+    "path_escape_test": {
+      "module": "packages/foundry-kernel/src/security/execution/path-escape.test.mjs",
+      "status": "PASS",
+      "test_count": 9
+    },
+    "secret_exfiltration_test": {
+      "module": "packages/foundry-kernel/src/security/execution/secret-exfiltration.test.mjs",
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 18
+}

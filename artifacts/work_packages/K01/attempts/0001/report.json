@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "work_package_id": "K01",
+  "attempt_id": "K01-0001",
+  "title": "Document registry, versions, licensing and trust",
+  "status": "SPEC_GAP",
+  "package_status": "SPEC_GAP",
+  "implementation_status": "PROVISIONAL_VERIFIED",
+  "spec_gap_id": "K01-SG001",
+  "completion_ready": false,
+  "dependencies": {
+    "B04": {
+      "status": "PASS_CURRENT_PROJECTION",
+      "attempt_id": "B04-0004",
+      "report": "artifacts/work_packages/B04/attempts/0004/report.json",
+      "report_sha256": "sha256:a2a2a3bca9ccf1650145b983d942e3888cfd79aaa3568db71a865b5d410d5e13"
+    },
+    "C04": {
+      "status": "PASS",
+      "attempt_id": "C04-0001",
+      "report": "artifacts/work_packages/C04/report.json",
+      "report_sha256": "sha256:eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f"
+    },
+    "D04": {
+      "status": "PASS",
+      "attempt_id": "D04-0001",
+      "report": "artifacts/work_packages/D04/report.json",
+      "report_sha256": "sha256:b47c194e230f4b08ab96b6153e9fc0e170eafb1054318cfaedd8e1ddeb4c5fde"
+    },
+    "S01": {
+      "status": "PASS",
+      "attempt_id": null,
+      "report": "artifacts/work_packages/S01/report.json",
+      "report_sha256": "sha256:6aa7a2ae6c3c047df6293e227ac3206a2e213b322ef1619eb1814e589f3ea7d6"
+    }
+  },
+  "authority_boundary": {
+    "manifest_write_scope": [
+      "python/epistemic_foundry/ingest/registry/**"
+    ],
+    "workflow_authority": "workflows/corpus_ingest.workflow.yaml",
+    "final_manifest_authority": "schemas/document-manifest.schema.json",
+    "workflow_or_schema_modified": false,
+    "src_runtime_or_persistence_modified": false,
+    "subagents_or_fleet_used": false
+  },
+  "provisional_implementation": {
+    "status": "VERIFIED_WITHIN_ASSUMED_FINAL_MANIFEST_BOUNDARY",
+    "files": [
+      {
+        "path": "python/epistemic_foundry/ingest/registry/__init__.py",
+        "sha256": "sha256:31eff35aae123fab9551c44ae220673e17dcd571ca34e3ca045ffbbc72632773"
+      },
+      {
+        "path": "python/epistemic_foundry/ingest/registry/registry.py",
+        "sha256": "sha256:8d13a88b0b8419f8635923bd9f6635ab1a75ec89309dd96e26e9bceea5daa6df"
+      },
+      {
+        "path": "python/epistemic_foundry/ingest/registry/test_document_registry.py",
+        "sha256": "sha256:d66e04d1fedf8211e9e06a4aec55455cd8f541304abdfafb07a3d083638d1063"
+      },
+      {
+        "path": "python/epistemic_foundry/ingest/registry/test_license_propagation.py",
+        "sha256": "sha256:eab782cb94e73037f3337ae603073b63c8425a6f8691df48e98df4b935677680"
+      }
+    ],
+    "verified_properties": [
+      "source bytes are copied into immutable content-addressed snapshots",
+      "source SHA-256 must match the supplied canonical DocumentManifest",
+      "document and version identities are append-only and conflict checked",
+      "version lineage must reference a registered version of the same paper",
+      "exact retries reuse the original immutable record",
+      "license_status and access_policy_ref propagate without permissive inference"
+    ],
+    "claim_boundary": "The implementation is provisional because its input is a complete final DocumentManifest, while the canonical workflow builds that artifact only after registration, integrity scanning, metadata resolution, parsing, reconciliation, and SourceSpan emission."
+  },
+  "required_checks": {
+    "document_registry_test": {
+      "status": "PASS",
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0
+    },
+    "license_propagation_test": {
+      "status": "PASS",
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0
+    },
+    "combined_targeted": {
+      "status": "PASS",
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "xfailed": 0
+    }
+  },
+  "regression": {
+    "python": {
+      "status": "FAIL_OUTSIDE_K01",
+      "collected": 964,
+      "passed": 960,
+      "failed": 4,
+      "failure_owner": "J02",
+      "cause": "The repository does not lock the product-owner-selected exact tiktoken==0.13.0 contract in pyproject.toml and uv.lock."
+    },
+    "node": {
+      "status": "FAIL_OUTSIDE_K01",
+      "tests": 437,
+      "passed": 436,
+      "failed": 1,
+      "skipped": 0,
+      "failure_owner": "S04",
+      "debt_id": "S04-TM004",
+      "actual_manifest_sha256": "de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940",
+      "expected_manifest_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7"
+    },
+    "structure": "PASS",
+    "boundaries": "PASS",
+    "git_diff_check": "PASS_WITH_EXISTING_LINE_ENDING_ADVISORIES",
+    "k01_caused_python_failure_count": 0,
+    "k01_caused_node_failure_count": 0,
+    "new_skip_or_xfail_count": 0
+  },
+  "shared_contract_gap": {
+    "summary": "The first corpus-ingest node is required to register source bytes before the final DocumentManifest exists, but the only canonical document artifact requires results produced by later nodes.",
+    "workflow_sequence": [
+      "register_document",
+      "scan_source_integrity and resolve_metadata",
+      "parse and emit SourceSpan artifacts",
+      "build_document_manifest"
+    ],
+    "downstream_only_required_manifest_fields": [
+      "bibliographic_version",
+      "supersedes_version_id",
+      "status",
+      "parser_artifact_ids",
+      "source_integrity_report_id",
+      "malware_scan_status",
+      "prompt_injection_scan_status",
+      "provenance_manifest_id"
+    ],
+    "unresolved_contracts": [
+      "canonical initial source-registration artifact and its exact fields",
+      "relationship and immutable lineage between initial registration and final DocumentManifest",
+      "exact business input and output of register_document under NodeInvocation and ResultEnvelope wrapping",
+      "persistence, effect, ArtifactReceipt, and ledger ownership among K01, D03, and the workflow caller",
+      "runtime adapter from component root python/epistemic_foundry to installable src/epistemic_foundry",
+      "exact workflow, schema, runtime, persistence, and test owners plus bounded write-scope corrections"
+    ]
+  },
+  "classification": {
+    "typed_outcome": "SPEC_GAP",
+    "not_fail_reason": "The provisional implementation and both K01 required checks pass; the blocking issue is a contradictory lifecycle contract outside K01 write scope, not a known implementation defect.",
+    "not_blocked_reason": "No required credential, licensed source, host capability, external service, or tool is unavailable.",
+    "fail_closed_reason": "Selecting or inventing an initial artifact, persistence owner, receipt boundary, or runtime adapter would expand authority and could create a false source-provenance chain."
+  },
+  "required_product_owner_decisions": [
+    "Define the canonical initial source-registration artifact, its exact required fields, and whether it is a new schema or an existing artifact projection.",
+    "Define the immutable relationship, identifiers, hashes, and supersession lineage between initial registration and the final DocumentManifest.",
+    "Freeze register_document business input/output and its NodeInvocation, ResultEnvelope, ArtifactReceipt, and expected-effect bindings.",
+    "Assign durable source-byte persistence, registry state, effect, receipt, and Noetic Ledger ownership across K01, D03, and the workflow caller.",
+    "Assign the runtime adapter or package projection that exposes epistemic_foundry.ingest.registry from the installable src layout.",
+    "Authorize the minimum exact workflow, schema, runtime, persistence, fixture, and test paths required for a resolving K01 attempt."
+  ],
+  "review": {
+    "status": "SPEC_GAP_CONFIRMED",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "blocking_finding_ids": [
+      "K01-SG001"
+    ],
+    "implementation_blocking_finding_count_within_assumed_boundary": 0,
+    "actor_independent_certification": false,
+    "assurance_limitation": "The product owner prohibited Fleet and subagents. Review is procedurally separate within the primary session and is not actor-independent certification."
+  },
+  "rah_state": {
+    "mode": "READ_ONLY",
+    "current_generation": "000081-843d5565",
+    "generation_manifest_sha256": "sha256:0aa10f1d9e112955401c56e4b7f07c6aedc490c973c27a2b4c872bd8c8869413",
+    "generation_payload_hashes_verified": 6,
+    "generation_payload_hash_mismatches": 0,
+    "latest_evidence_id": "E0084",
+    "ralph_status": "blocked",
+    "implementation_gate": "fail",
+    "evidence_appended_by_k01": false,
+    "generation_created_by_k01": false,
+    "reason_not_mutated": "The existing RAH state is forensically blocked by unresolved J02 tokenizer-lock and S04 traceability failures; K01 does not rewrite or advance it."
+  },
+  "historical_and_worktree_preservation": {
+    "prior_attempts_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "unrelated_files_modified_by_k01_attempt": false,
+    "generated_k01_pycache_present": false
+  },
+  "evidence_artifacts": [
+    "artifacts/work_packages/K01/report.json",
+    "artifacts/work_packages/K01/commands.jsonl",
+    "artifacts/work_packages/K01/review.md",
+    "artifacts/work_packages/K01/attempts/0001/shared-contract-gap-verification.json",
+    "artifacts/work_packages/K01/attempts/0001/dependency-status.json",
+    "artifacts/work_packages/K01/attempts/0001/full-regression-impact.json",
+    "artifacts/work_packages/K01/attempts/0001/rah-core-integrity.json"
+  ],
+  "next_state": {
+    "K01": "WAITING_ON_PRODUCT_OWNER_DECISION_K01_SG001",
+    "K02": "WAITING_ON_K01",
+    "independent_ready_candidates_preserved": [
+      "T01",
+      "A06"
+    ],
+    "completion_ready": false
+  }
+}

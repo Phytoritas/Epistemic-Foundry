@@ -1,0 +1,278 @@
+{
+  "attempt_id": "B04-0009",
+  "attempt_type": "PRE_O02_CANONICAL_PROJECTION_RECONCILIATION_127",
+  "authority_decision_id": "HD-EF4-O02-SG001-20260731-001",
+  "canonical_projection": {
+    "duplicate_schema_id_count": 0,
+    "extra_path_count": 0,
+    "hash_mismatch_count": 0,
+    "missing_path_count": 0,
+    "openapi_operation_count": 33,
+    "openapi_resource_count": 1,
+    "openapi_version": "3.1.1",
+    "projected_snapshot_bundle_hash": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+    "registry_hash": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+    "resource_count": 128,
+    "schema_count": 127,
+    "source_bundle_hash": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5"
+  },
+  "completion_ready": false,
+  "dependency_state": {
+    "attempt_id": "B04-0009",
+    "dependencies": {
+      "C02": {
+        "attempt_id": "C02-0004",
+        "receipt_file_sha256": "sha256:c40e90a24cc9e38ed5d8237d3931ef67aabaad904ce248a3e875842fef0eb951",
+        "receipt_hash": "sha256:a46e6581e77aa6a283058481d0065536340573b657b8dfb17556963341006954",
+        "report_sha256": "sha256:1050242050a10624046c62abc8ded6bd7215fc34414fac90f5ed3cdb3397f5d3",
+        "status": "PASS"
+      }
+    },
+    "next_state": {
+      "B04-0009": "PASS_PRE_O02_PROJECTION",
+      "B04-final": "WAITING_ON_C04_0004",
+      "C04-0004": "WAITING_ON_O02_0002",
+      "O02-0002": "DEPENDENCY_READY"
+    },
+    "static_dependency_cycle_added": false,
+    "status": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "B04_0002_through_0008_preserved": true,
+    "C02_0004_preserved": true,
+    "dirty_worktree_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_package": "O02-0002",
+  "next_state": {
+    "B04-0009": "PASS_PRE_O02_PROJECTION",
+    "B04-final": "WAITING_ON_C04_0004",
+    "C04-0004": "WAITING_ON_O02_0002",
+    "O02-0002": "DEPENDENCY_READY"
+  },
+  "not_claimed": [
+    "O02-0002 PASS",
+    "C04-0004 conformance",
+    "next-unused final B04 packaging gate",
+    "release or production readiness",
+    "repository-wide terminal completion",
+    "external actor-independent certification",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 2457,
+      "path": "artifacts/work_packages/B04/attempts/0009/canonical-projection-verification.json",
+      "sha256": "sha256:90f97b19f8251ca0770959cc366cf913f3cfd8d768910fbe1201bae60c642a88"
+    },
+    {
+      "byte_size": 51779,
+      "path": "artifacts/work_packages/B04/attempts/0009/source-inventory.json",
+      "sha256": "sha256:70bba4ba914082bca4b3253fc0a0e7eaadcc395a48cf7c9eb194ba73a14af258"
+    },
+    {
+      "byte_size": 45553,
+      "path": "artifacts/work_packages/B04/attempts/0009/snapshot-inventory.json",
+      "sha256": "sha256:8463f7007498f7c845571c953c8bdc5066bd4fe9ec50c09d52c2123a8d70b543"
+    },
+    {
+      "byte_size": 621,
+      "path": "artifacts/work_packages/B04/attempts/0009/installed-wheel-verification.json",
+      "sha256": "sha256:b33bbd9dfce32c01e2d910f1cd5e53ce6e840d42296ead3f3eb42b13973f4f70"
+    },
+    {
+      "byte_size": 4137,
+      "path": "artifacts/work_packages/B04/attempts/0009/packaging-summary.json",
+      "sha256": "sha256:7aab4d8992b19600da20fe6084b07653fa913aa2fc90cf7ca31209b2ea5dc001"
+    },
+    {
+      "byte_size": 1370,
+      "path": "artifacts/work_packages/B04/attempts/0009/projection.artifact-receipt.json",
+      "sha256": "sha256:8e427dd651fcc43ccbab653d96ab9c8865a4dbbe579aa3e0651e689e98246b4d"
+    },
+    {
+      "byte_size": 1028,
+      "path": "artifacts/work_packages/B04/attempts/0009/wheel.artifact-receipt.json",
+      "sha256": "sha256:a6bb905ec72dd852197a69edca3061e85d365c304ae85642b211820ba1798c77"
+    },
+    {
+      "byte_size": 1001,
+      "path": "artifacts/work_packages/B04/attempts/0009/sdist.artifact-receipt.json",
+      "sha256": "sha256:60b154eb241546fc07fa682630d8d869defd1952cbc53dc2e62d7c7b8cc8dfa0"
+    },
+    {
+      "byte_size": 1967,
+      "path": "artifacts/work_packages/B04/attempts/0009/phase-artifact-reconciliation.json",
+      "sha256": "sha256:e8c8d9250d46d73f17be25d922f2fd2599a9e122833b2e51b2b4355762cac984"
+    },
+    {
+      "byte_size": 1461,
+      "path": "artifacts/work_packages/B04/attempts/0009/full-regression-impact.json",
+      "sha256": "sha256:1e87e31326d449d558cf97fe996a9e59d5beb3b00625a5d5d9db0fd4bbea7bf3"
+    },
+    {
+      "byte_size": 671,
+      "path": "artifacts/work_packages/B04/attempts/0009/dependency-status.json",
+      "sha256": "sha256:97252f455fa7b7900da3cfc3654ab9b8c6450f59472158f4cc29c4b5b560fc4c"
+    },
+    {
+      "byte_size": 5922,
+      "path": "artifacts/work_packages/B04/attempts/0009/node-test-inventory.json",
+      "sha256": "sha256:951faeb8bbb115eb776fa3a8801afaa8954a95a1a35dc4ad84d299eeefc72925"
+    },
+    {
+      "byte_size": 2011,
+      "path": "artifacts/work_packages/B04/attempts/0009/junit-normalization-verification.json",
+      "sha256": "sha256:b47e08742c5cbd91b7bfb90fb8c6458f1fb6fc847a53961325dbb29fff50d49d"
+    },
+    {
+      "byte_size": 2189,
+      "path": "artifacts/work_packages/B04/attempts/0009/prior-history-verification.json",
+      "sha256": "sha256:5fd24b2a9c8553917b76baa2f28773d1871e9063f186a8726a7d5134dea43d9e"
+    },
+    {
+      "byte_size": 2641,
+      "path": "artifacts/work_packages/B04/attempts/0009/write-scope-verification.json",
+      "sha256": "sha256:38669879301fd74ae39b864e03ef1ab51e7e47f99cb5d16d6c49e8851b949cbe"
+    },
+    {
+      "byte_size": 5007,
+      "path": "artifacts/work_packages/B04/attempts/0009/commands.jsonl",
+      "sha256": "sha256:69719d0c267c3edc4110c726beaca70ba674f967375a6e4003f2f07b90d05536"
+    },
+    {
+      "byte_size": 1971,
+      "path": "artifacts/work_packages/B04/attempts/0009/review.md",
+      "sha256": "sha256:9d4576b6e71c5bf60e09ce4eb91c9fcd831b1c9472661c30eb9e573ada3ca444"
+    },
+    {
+      "byte_size": 56429,
+      "path": "artifacts/work_packages/B04/attempts/0009/build_b04_0009_evidence.py",
+      "sha256": "sha256:8db83e675d6f17cd7c29709554e448339370876834f67ee5179eb439af8b18b3"
+    },
+    {
+      "byte_size": 21131,
+      "path": "artifacts/work_packages/B04/attempts/0009/b04_0009_rah_seal.py",
+      "sha256": "sha256:1f368d890a72900160955cc817babef4b5693dd47042c071b09e570e2f7259c9"
+    },
+    {
+      "byte_size": 4929,
+      "path": "artifacts/work_packages/B04/attempts/0009/targeted-projection.junit.xml",
+      "sha256": "sha256:0dc18a00e72d255a49a45dff90a5ccfc7b9a9aabdb38caf72d9167daea9b11ae"
+    },
+    {
+      "byte_size": 125937,
+      "path": "artifacts/work_packages/B04/attempts/0009/full-python-suite.junit.xml",
+      "sha256": "sha256:78581486e02f95e889016cc4ad06507597e78a87e9103be68c904d6bb5d69eff"
+    },
+    {
+      "byte_size": 159576,
+      "path": "artifacts/work_packages/B04/attempts/0009/full-node-suite.junit.xml",
+      "sha256": "sha256:9a84c09231a5eac73bbf3e9ecb2f71a0eb85bc86afd10848333fd2f4ef50f51d"
+    },
+    {
+      "byte_size": 7943,
+      "path": "artifacts/work_packages/B04/attempts/0009/packaging-verification-run.json",
+      "sha256": "sha256:997d471fe8bc42a1c425b5c40dc249a6aa131d8b9ff396378822e2b317e9a7a0"
+    },
+    {
+      "byte_size": 548,
+      "path": "artifacts/work_packages/B04/attempts/0009/rah-core-integrity.json",
+      "sha256": "sha256:6f8f48bc1891608ff9cd4939c0f95babf02f638b5ce1d50c24f204e53f2434af"
+    }
+  ],
+  "package_status": "PASS",
+  "product_files_modified_by_attempt": [
+    "scripts/build/canonical_registry/materialize.py",
+    "scripts/build/canonical_registry/verify_packaging.py",
+    "tests/test_contracts.py",
+    "tests/test_cli.py",
+    "tests/packaging/test_canonical_registry.py",
+    "src/epistemic_foundry/_canonical/schemas/retrieval-candidate.schema.json",
+    "src/epistemic_foundry/_canonical/canonical-registry.json"
+  ],
+  "projection_status": "PASS_CURRENT",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0103",
+    "core_generation": "000101-5cdd324b",
+    "final_closeout_evidence_id": "E0104",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 606,
+    "implementation_gate": "fail",
+    "retained_generation_count": 101,
+    "status": "active"
+  },
+  "regression": {
+    "node": "PASS_819_OF_819",
+    "node_test_files": 79,
+    "python": "PASS_1073_OF_1073",
+    "resolved_c02_projection_failure_count": 17,
+    "targeted_projection": "PASS_41_OF_41",
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_B04_0009_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_INTEGRATION_REVIEW",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "B04",
+  "write_scope": {
+    "approved_scope": [
+      "src/epistemic_foundry/_canonical/**",
+      "scripts/build/canonical_registry/**",
+      "tests/packaging/**",
+      "tests/test_contracts.py",
+      "tests/test_cli.py",
+      "artifacts/work_packages/B04/**"
+    ],
+    "attempt_id": "B04-0009",
+    "authority": {
+      "attempt_level_reconciliation_authorized": true,
+      "binding_file_sha256": "sha256:3e0549f39b40018dfa2c88b139595ea111904d1cf8d5a6a1a571fdcef2a461f8",
+      "binding_hash": "sha256:dc0eff8c011d7c08e9f27536e9693d1578a805e7013842b52059715f1a9ffaad",
+      "binding_id": "DMB-EF4-20260731-003",
+      "decision_file_sha256": "sha256:5e986212a409db12121d15ab936998d15478037fa06bcb8c0b2480292b4b29fe",
+      "decision_hash": "sha256:3695c59b67788b0f144f033627a9ef3294b75418f78dfb15fcebccc14a8ef221",
+      "decision_id": "HD-EF4-O02-SG001-20260731-001",
+      "manifest_sha256": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+      "package_count": 156,
+      "static_dependency_cycle_added": false,
+      "status": "PASS"
+    },
+    "dirty_worktree_preserved": true,
+    "product_change_count": 7,
+    "product_file_hashes": {
+      "scripts/build/canonical_registry/materialize.py": "sha256:ae10176b2ab1d9e1d13f6f501fb78b328774e2a828a8acddc1d8534d3273cf6f",
+      "scripts/build/canonical_registry/verify_packaging.py": "sha256:60fc75bec8d95e9dd186b9117a22fe2704bf1b74f3b480e518448d0dacb29c59",
+      "src/epistemic_foundry/_canonical/canonical-registry.json": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+      "src/epistemic_foundry/_canonical/schemas/retrieval-candidate.schema.json": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+      "tests/packaging/test_canonical_registry.py": "sha256:1cf1b30f8fd4243714d7cb8cac7b50d61604d87c9420442dde3da835aef0418b",
+      "tests/test_cli.py": "sha256:e3a791f3d94f9eadc03f65cff67eff4a73bade6902e0e7c6326a0024af0d3146",
+      "tests/test_contracts.py": "sha256:3fd45129acf1a340b7aecf71d45292c6b6a2daa963a43ea016aa7ca1f8e445fb"
+    },
+    "product_files_modified_by_attempt": [
+      "scripts/build/canonical_registry/materialize.py",
+      "scripts/build/canonical_registry/verify_packaging.py",
+      "tests/test_contracts.py",
+      "tests/test_cli.py",
+      "tests/packaging/test_canonical_registry.py",
+      "src/epistemic_foundry/_canonical/schemas/retrieval-candidate.schema.json",
+      "src/epistemic_foundry/_canonical/canonical-registry.json"
+    ],
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

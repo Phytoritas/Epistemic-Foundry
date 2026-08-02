@@ -1,0 +1,22 @@
+{
+  "attempt_id": "S05-0001",
+  "check": "dependency-regression-firewall",
+  "command": [
+    "uv",
+    "run",
+    "--locked",
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/test_verifier_firewall.py",
+    "tests/test_crossover_and_quarantine.py",
+    "tests/test_budgets.py",
+    "tests/test_security.py",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=C:\\dev\\insight\\Epistemic-Foundry\\artifacts\\work_packages\\S05\\attempts\\0001\\dependency-regression-firewall.junit.xml"
+  ],
+  "exit_code": 0,
+  "status": "PASS"
+}

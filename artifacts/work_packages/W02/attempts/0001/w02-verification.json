@@ -1,0 +1,42 @@
+{
+  "attempt_id": "W02-0001",
+  "exit_criteria": {
+    "cancellation_reconciles_effects": {
+      "evidence": [
+        "packages/foundry-kernel/src/workflows/runtime/cancellation.test.mjs"
+      ],
+      "status": "PASS"
+    },
+    "resume_from_reviewed_checkpoint": {
+      "evidence": [
+        "packages/foundry-kernel/src/workflows/runtime/checkpoint-resume.test.mjs"
+      ],
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "cancellation_outcomes": [
+      "CANCELLED",
+      "CANCELLED_WITH_UNRESOLVED_EFFECTS"
+    ],
+    "checkpoint_replay_verified_is_computed": true,
+    "resume_requires_independent_approved_review": true,
+    "unresolved_effect_states": [
+      "LEASED",
+      "RUNNING",
+      "RECONCILING"
+    ]
+  },
+  "required_checks": {
+    "cancellation_test": {
+      "module": "packages/foundry-kernel/src/workflows/runtime/cancellation.test.mjs",
+      "status": "PASS"
+    },
+    "checkpoint_resume_test": {
+      "module": "packages/foundry-kernel/src/workflows/runtime/checkpoint-resume.test.mjs",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 27
+}

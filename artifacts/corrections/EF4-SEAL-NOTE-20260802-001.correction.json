@@ -1,0 +1,46 @@
+{
+  "affected_seals": [
+    {
+      "attempt_id": "C06-0001",
+      "seal": "artifacts/work_packages/C06/attempts/0001/c06_0001_rah_seal.py",
+      "sealed_evidence": [
+        "E0161",
+        "E0162"
+      ],
+      "sealed_summary_correct": true
+    },
+    {
+      "attempt_id": "D05-0001",
+      "seal": "artifacts/work_packages/D05/attempts/0001/d05_0001_rah_seal.py",
+      "sealed_evidence": [
+        "E0163",
+        "E0164"
+      ],
+      "sealed_summary_correct": true
+    },
+    {
+      "attempt_id": "E05-0001",
+      "seal": "artifacts/work_packages/E05/attempts/0001/e05_0001_rah_seal.py",
+      "sealed_evidence": [
+        "E0165",
+        "E0166"
+      ],
+      "sealed_summary_correct": true
+    }
+  ],
+  "correction": "The live note in .rah/state/status.json and .rah/state/gates.json was rewritten to describe E05-0001 by its own title and to name F05-0001 as next. The sealed generations were not touched: the generation manifest covers .rah/ralph/** payloads only, so neither state file is hashed into any generation, and the E05-0001 seal verify still passes unchanged. The seal sources are left byte-identical because their hashes are recorded in the sealed E0165/E0166 summaries and in report.json output_artifacts; rewriting one would break the chain it is evidence for.",
+  "correction_id": "EF4-SEAL-NOTE-20260802-001",
+  "defect": "Three seals derived in sequence from the C05 seal carried C05's description into their live-status note: C06-0001, D05-0001 and E05-0001 each wrote 'evolution genome, evaluator, archive, statistics and adapter schema bundle ... Q02-0001 is next'. The derivation rebased the package id token but not the description or the next-package name. Only the last seal to run sets the live note, so the observable defect was E05-0001's.",
+  "detected_by": "Stop-hook challenge to prove the stored RALPH state evidences a verified completion, followed by a direct read of .rah/state/status.json",
+  "impact": "The live implementation_gate_note misnamed the last sealed package's subject and pointed at an already-sealed next package. No sealed evidence, artifact hash, generation, or gate status was affected: E0161-E0166 each describe their own package correctly, implementation_gate stayed fail and completion_ready stayed false throughout, and the gate's evidence_ids binding was already correct.",
+  "prevention": "A seal derivation must rebase the note description and the next-package name, not only the package id token. The next seal generator asserts the note names its own package before writing.",
+  "record_hash": "sha256:082eb1877415bb46d738c976fa5a7e4fa5007c210392f55640a65d61bbeeb63b",
+  "severity": "LOW",
+  "status": "CORRECTED",
+  "verified_after_correction": [
+    "E05-0001 seal verify PASS",
+    "live note names E05-0001 and F05-0001",
+    "implementation_gate=fail",
+    "ralph_completion_ready=false"
+  ]
+}

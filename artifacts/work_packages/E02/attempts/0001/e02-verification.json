@@ -1,0 +1,57 @@
+{
+  "attempt_id": "E02-0001",
+  "exit_criteria": {
+    "side_effects_cannot_complete_by_narration": {
+      "evidence": [
+        "packages/foundry-kernel/src/effects/effect-reconciliation.test.mjs"
+      ],
+      "mechanism": "recordReceipt and reconcile accept only sealed EffectReceipts whose receipt_hash re-derives from canonical JSON; an unsealed 'the executor says it succeeded' receipt is rejected with EFFECT_RECEIPT_INVALID and a resolving receipt with no bound result/error artifact or observed_state_hash fails with EFFECT_RECEIPT_RESOLUTION_EVIDENCE_REQUIRED; completion_proven stays false until a resolving receipt plus its reconciled E01 event and D01 publication checkpoint exist, and a durable record missing its ledger event stays PENDING_EVENT_RECONCILIATION rather than being narrated complete",
+      "status": "PASS"
+    },
+    "unknown_effects_reconcile_before_retry": {
+      "evidence": [
+        "packages/foundry-kernel/src/effects/effect-reconciliation.test.mjs",
+        "packages/foundry-kernel/src/effects/idempotency.test.mjs"
+      ],
+      "mechanism": "an UNKNOWN receipt leaves the operation RECONCILING and a blind retry is denied with EFFECT_RECONCILIATION_REQUIRED; a crash before any receipt stays unresolved rather than narrated success or failure; reconciliation must retain the observed external operation identity (EFFECT_RECONCILIATION_OPERATION_MISMATCH) and only a resolving receipt with observation evidence admits a retry, while concurrent same-attempt callers grant execution exactly once through the run-scoped compare-and-swap",
+      "status": "PASS"
+    }
+  },
+  "idempotency": {
+    "concurrent_same_attempt_grants_execution_once": true,
+    "hostile_accessor_or_proxy_rejected_before_execution": true,
+    "immutable_historical_attempt_and_receipt_replays_are_idempotent": true,
+    "intent_id_rebind_fails_closed": true,
+    "key_reuse_with_different_request_fails_closed": true,
+    "same_key_same_request_replays_one_registration": true
+  },
+  "receipts_are_immutable_and_rederivable": {
+    "canonical_json_sha256_hashing": true,
+    "cross_intent_binding_rejected": true,
+    "emitted_records_pass_canonical_schemas": true,
+    "post_write_mutation_fails_closed": true,
+    "tamper_accessor_and_proxy_rejected": true
+  },
+  "reconciliation": {
+    "crash_before_receipt_stays_unresolved": true,
+    "durable_record_missing_ledger_event_is_not_completion": true,
+    "external_operation_identity_preserved": true,
+    "narrated_result_has_no_authority": true,
+    "unknown_receipt_blocks_blind_retry": true,
+    "unsealed_receipt_rejected": true
+  },
+  "required_checks": {
+    "effect_reconciliation_test": {
+      "module": "packages/foundry-kernel/src/effects/effect-reconciliation.test.mjs",
+      "status": "PASS",
+      "test_count": 10
+    },
+    "idempotency_test": {
+      "module": "packages/foundry-kernel/src/effects/idempotency.test.mjs",
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 19
+}

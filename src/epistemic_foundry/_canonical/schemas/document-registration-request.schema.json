@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/document-registration-request.schema.json",
+  "title": "DocumentRegistrationRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "source_origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "UPLOAD",
+            "LOCAL_IMPORT",
+            "REMOTE_FETCH",
+            "EXISTING_ARTIFACT"
+          ]
+        },
+        "original_uri": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "not": {
+                "pattern": "^[fF][iI][lL][eE]:"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Acquisition provenance only. It is never an instruction for register_document to fetch content."
+        },
+        "source_system": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "retrieved_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "pattern": "Z$"
+        }
+      },
+      "required": [
+        "kind",
+        "original_uri",
+        "source_system",
+        "retrieved_at"
+      ]
+    },
+    "external_identifier_hint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scheme": {
+          "enum": [
+            "DOI",
+            "PMID",
+            "PMCID",
+            "ARXIV",
+            "ISBN",
+            "URL",
+            "OTHER"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "declared_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verified": {
+          "const": false
+        }
+      },
+      "required": [
+        "scheme",
+        "value",
+        "declared_by",
+        "verified"
+      ]
+    }
+  },
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "pattern": "^DREQ-[0-9a-f]{64}$",
+      "description": "DREQ- followed by the lowercase hexadecimal digest from request_hash."
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "corpus_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "staged_source_artifact_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Required immutable staged-source ArtifactManifest identifier."
+    },
+    "declared_filename": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?![.]{0,2}[/\\\\])[^/\\\\]+$",
+      "description": "A basename only; local and repository-relative paths are forbidden."
+    },
+    "declared_media_type": {
+      "type": "string",
+      "pattern": "^[^\\s/]+/[^\\s/]+$"
+    },
+    "source_origin": {
+      "$ref": "#/$defs/source_origin"
+    },
+    "declared_license_status": {
+      "enum": [
+        "licensed",
+        "open_access",
+        "fair_use_metadata_only",
+        "restricted",
+        "unknown"
+      ]
+    },
+    "access_policy_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "confidentiality": {
+      "enum": [
+        "public",
+        "internal",
+        "restricted",
+        "secret"
+      ]
+    },
+    "external_identifier_hints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/external_identifier_hint"
+      },
+      "uniqueItems": true,
+      "description": "Canonically sorted before request hashing; every hint remains unverified at registration."
+    },
+    "supersedes_registration_id": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^DREG-[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requested_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "request_hash": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "required": [
+    "request_id",
+    "workspace_id",
+    "corpus_id",
+    "staged_source_artifact_id",
+    "declared_filename",
+    "declared_media_type",
+    "source_origin",
+    "declared_license_status",
+    "access_policy_ref",
+    "confidentiality",
+    "external_identifier_hints",
+    "supersedes_registration_id",
+    "idempotency_key",
+    "requested_at",
+    "request_hash"
+  ],
+  "x-canonical-hash": {
+    "algorithm": "sha256",
+    "canonicalization": "RFC 8785 JCS-equivalent UTF-8",
+    "preimage_fields": [
+      "workspace_id",
+      "corpus_id",
+      "staged_source_artifact_id",
+      "declared_filename",
+      "declared_media_type",
+      "source_origin",
+      "declared_license_status",
+      "access_policy_ref",
+      "confidentiality",
+      "external_identifier_hints",
+      "supersedes_registration_id",
+      "idempotency_key"
+    ],
+    "excluded_fields": [
+      "request_id",
+      "request_hash",
+      "requested_at",
+      "transport_request_id",
+      "storage_locator",
+      "retry_attempt_number"
+    ],
+    "id_binding": "request_id == 'DREQ-' + lowercase_hex(request_hash)"
+  }
+}

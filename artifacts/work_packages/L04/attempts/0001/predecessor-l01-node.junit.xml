@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="consent_policy_test: policy and consent projections are canonical, hash-bound, and immutable" time="0.004455" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	<testcase name="consent_policy_test: memory classes and class rules are closed and unambiguous" time="0.000347" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	<testcase name="consent_policy_test: cross-workspace access is denied by default below retrieval" time="0.000977" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	<testcase name="consent_policy_test: USER cross-workspace recall requires policy and explicit opt-in" time="0.001078" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	<testcase name="consent_policy_test: non-USER classes cannot become cross-workspace through a permissive mode" time="0.001090" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	<testsuite name="consent_policy_test: purpose, class, scope, policy, and workspace remain bound" time="0.004529" disabled="0" errors="0" tests="5" failures="0" skipped="0" hostname="Moon">
+		<testcase name="CONSENT_PURPOSE_MISMATCH" time="0.001261" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+		<testcase name="CONSENT_DATA_CLASS_MISMATCH" time="0.000477" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+		<testcase name="CONSENT_SCOPE_MISMATCH" time="0.000456" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+		<testcase name="CONSENT_POLICY_MISMATCH" time="0.000566" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+		<testcase name="CONSENT_WORKSPACE_MISMATCH" time="0.000771" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	</testsuite>
+	<testcase name="consent_policy_test: requested scope cannot claim a different memory class" time="0.001226" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	<testcase name="consent_policy_test: optional consent is validated but is not recorded as authority" time="0.000647" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	<testsuite name="consent_policy_test: only an effective GRANTED consent can authorize access" time="0.001875" disabled="0" errors="0" tests="3" failures="0" skipped="0" hostname="Moon">
+		<testcase name="DENIED" time="0.000420" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+		<testcase name="REVOKED" time="0.000431" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+		<testcase name="EXPIRED" time="0.000386" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	</testsuite>
+	<testcase name="consent_policy_test: expiry and revocation take effect at their exact boundary" time="0.001356" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	<testcase name="consent_policy_test: not-yet-effective policy and consent fail closed" time="0.000845" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	<testcase name="consent_policy_test: the enforcement API throws the typed denial and never implies search" time="0.000531" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\consent-policy.test.mjs"/>
+	<testcase name="retention_test: class-specific retention overrides the policy default" time="0.005258" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\retention.test.mjs"/>
+	<testcase name="retention_test: the exact retention boundary is valid and the next millisecond is expired" time="0.000944" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\retention.test.mjs"/>
+	<testcase name="retention_test: future memory timestamps are rejected instead of producing negative age" time="0.000434" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\retention.test.mjs"/>
+	<testcase name="retention_test: zero-day EPHEMERAL memory survives only its creation instant" time="0.001357" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\retention.test.mjs"/>
+	<testcase name="retention_test: canonical but disallowed classes fail closed before retrieval" time="0.001005" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\retention.test.mjs"/>
+	<testcase name="retention_test: unknown classes and malformed timestamps are invalid input, not fallback" time="0.000616" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\retention.test.mjs"/>
+	<testcase name="retention_test: access decisions preserve the policy hash and are deeply immutable" time="0.000589" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\memory\policy\retention.test.mjs"/>
+	<!-- tests 27 -->
+	<!-- suites 0 -->
+	<!-- pass 27 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 336.7221 -->
+</testsuites>

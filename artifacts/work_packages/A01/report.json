@@ -1,0 +1,54 @@
+{
+  "work_package_id": "A01",
+  "base_checkpoint": "475b16374140b25f00d90aa7b821b237f255ca8e",
+  "status": "PASS",
+  "changed_files": [
+    "CLAUDE.md",
+    "docs/status_taxonomy.md",
+    "artifacts/work_packages/A01/commands.jsonl",
+    "artifacts/work_packages/A01/review.md",
+    "artifacts/work_packages/A01/report.json"
+  ],
+  "checks": [
+    {
+      "command": "A01 instructions_lint",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A01/commands.jsonl#A01-C003"
+    },
+    {
+      "command": "A01 status_claim_audit",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A01/commands.jsonl#A01-C004"
+    },
+    {
+      "command": "python -m pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A01/commands.jsonl#A01-C005"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A01/commands.jsonl#A01-C006"
+    }
+  ],
+  "review": {
+    "agent": "primary_author",
+    "status": "PASS_WITH_RECORDED_PROCEDURE_DEVIATION",
+    "findings_resolved": []
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/A01/commands.jsonl",
+    "artifacts/work_packages/A01/review.md",
+    "artifacts/work_packages/A01/report.json"
+  ],
+  "open_risks": [
+    "Review was performed by the author under explicit user instruction and is not independent assurance.",
+    "PACKAGE_MANIFEST.json and MANIFEST.sha256 intentionally remain the prior final-byte release manifest until content finalization."
+  ],
+  "spec_gaps": [],
+  "not_verified": [],
+  "next_ready": [
+    "A02",
+    "A03"
+  ]
+}

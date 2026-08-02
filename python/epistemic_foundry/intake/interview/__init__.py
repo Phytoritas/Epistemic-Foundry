@@ -1,0 +1,43 @@
+"""Public I01 bounded-interview component API."""
+
+from .engine import (
+    INTERVIEW_ENGINE_VERSION,
+    ContradictionDisposition,
+    ContradictionRecord,
+    ContradictionSeverity,
+    InterviewContractError,
+    InterviewDimension,
+    InterviewNeed,
+    InterviewPlan,
+    InterviewQuestion,
+    InterviewReadiness,
+    InterviewRule,
+    KnownFact,
+    NeedCriticality,
+    PriorQuestionRecord,
+    PriorQuestionState,
+    QuestionTargetType,
+    build_interview_plan,
+    question_id_for,
+)
+
+__all__ = [
+    "INTERVIEW_ENGINE_VERSION",
+    "ContradictionDisposition",
+    "ContradictionRecord",
+    "ContradictionSeverity",
+    "InterviewContractError",
+    "InterviewDimension",
+    "InterviewNeed",
+    "InterviewPlan",
+    "InterviewQuestion",
+    "InterviewReadiness",
+    "InterviewRule",
+    "KnownFact",
+    "NeedCriticality",
+    "PriorQuestionRecord",
+    "PriorQuestionState",
+    "QuestionTargetType",
+    "build_interview_plan",
+    "question_id_for",
+]

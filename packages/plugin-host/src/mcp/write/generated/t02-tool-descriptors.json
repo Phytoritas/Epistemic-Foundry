@@ -1,0 +1,789 @@
+{
+  "catalog_set": {
+    "catalogs": [
+      {
+        "catalog_id": "MCP-T01-CATALOG",
+        "descriptor_projection": "packages/plugin-host/src/mcp/generated/tool-descriptors.json",
+        "exact_count": 13
+      },
+      {
+        "catalog_id": "MCP-T02-CATALOG",
+        "descriptor_projection": "packages/plugin-host/src/mcp/write/generated/t02-tool-descriptors.json",
+        "exact_count": 9
+      }
+    ],
+    "global_exact_count": 22,
+    "merge_order": [
+      "MCP-T01-CATALOG",
+      "MCP-T02-CATALOG"
+    ],
+    "set_id": "MCP-CATALOG-SET"
+  },
+  "generated_from": "contracts/mcp/t02/tool-catalog.yaml",
+  "protocol_version": "2026-07-28",
+  "tools": [
+    {
+      "name": "foundry.session.transition",
+      "title": "Advance the FORGE session through a receipt-bound phase transition",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/session-transition.input.schema.json",
+        "title": "SessionTransitionInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "session_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "to_phase": {
+                "enum": [
+                  "FRAME",
+                  "OBSERVE",
+                  "REASON",
+                  "GATE",
+                  "EXPORT",
+                  "IDLE"
+                ]
+              },
+              "transition_request_artifact_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "session_id",
+              "to_phase",
+              "transition_request_artifact_id"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.session",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/forge-session-state.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.corpus.register",
+      "title": "Register an immutable source document revision",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/corpus-register.input.schema.json",
+        "title": "CorpusRegisterInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "null"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "source_uri": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_sha256": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "license_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "license_id",
+              "source_sha256",
+              "source_uri"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.corpus",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/document-registration.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.search.execute",
+      "title": "Execute a preregistered QueryPlan and seal its lane receipts",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/search-execute.input.schema.json",
+        "title": "SearchExecuteInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "null"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "query_plan_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "corpus_snapshot_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "corpus_snapshot_hash",
+              "query_plan_id"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.search",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/retrieval-run.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.claim.promote",
+      "title": "Commit a promotion decision through the deterministic gate chain",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/claim-promote.input.schema.json",
+        "title": "ClaimPromoteInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "candidate_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "requested_level": {
+                "enum": [
+                  "INBOX",
+                  "CANDIDATE",
+                  "LITERATURE_GROUNDED",
+                  "VALIDATION_SCREENED",
+                  "EMPIRICALLY_TESTED",
+                  "REPLICATED"
+                ]
+              },
+              "promotion_pack_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "candidate_id",
+              "promotion_pack_hash",
+              "requested_level"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.promotion",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/promotion-decision.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.parliament.execute",
+      "title": "Execute a sealed Evidence Parliament deliberation round",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/parliament-execute.input.schema.json",
+        "title": "ParliamentExecuteInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "subject_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "role_dispatch_plan_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "role_dispatch_plan_id",
+              "subject_id"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.parliament",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/adjudication.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.validation.execute",
+      "title": "Execute a preregistered ValidationPlan under a capability lease",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/validation-execute.input.schema.json",
+        "title": "ValidationExecuteInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "validation_plan_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "target_id",
+              "validation_plan_id"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.validation",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/experiment-result.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.passport.publish",
+      "title": "Publish an immutable Hypothesis Passport revision",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/passport-publish.input.schema.json",
+        "title": "PassportPublishInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "passport_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "adjudication_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "adjudication_id",
+              "passport_id"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.passport",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/hypothesis-passport.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.memory.write",
+      "title": "Write consent-bound memory within its declared class and retention",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/memory-write.input.schema.json",
+        "title": "MemoryWriteInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "null"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "memory_class": {
+                "enum": [
+                  "USER",
+                  "PROJECT",
+                  "SESSION",
+                  "SKILL",
+                  "SYSTEM",
+                  "EPHEMERAL"
+                ]
+              },
+              "consent_record_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "content_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "consent_record_id",
+              "content_hash",
+              "memory_class"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.memory",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/memory-policy.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.skill.activate",
+      "title": "Activate a quarantined third-party skill after supply-chain review",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/skill-activate.input.schema.json",
+        "title": "SkillActivateInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "null"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "skill_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "lockfile_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "lockfile_hash",
+              "skill_id"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.skill",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/skill-lockfile.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    }
+  ]
+}

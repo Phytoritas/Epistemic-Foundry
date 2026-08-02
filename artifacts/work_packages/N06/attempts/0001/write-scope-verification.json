@@ -1,0 +1,27 @@
+{
+  "approved_scope": [
+    "src/epistemic_foundry/scheduler/v4_n06/**",
+    "artifacts/work_packages/N06/**"
+  ],
+  "attempt_id": "N06-0001",
+  "authored_by": "a bounded implementation agent under the product owner's explicit delegation, with a disjoint write scope",
+  "authority_decision": "N06's manifest write_scope is src/epistemic_foundry/scheduler/v4_n06/** plus artifacts/work_packages/N06/**. The package marker src/epistemic_foundry/scheduler/__init__.py sits one level above that glob and is NOT in N06's scope: it pre-exists and was authorized for N05 under HD-EF4-N05-SCOPE-20260802-001, so N06 neither authored nor modified it. Only the v4_n06 files N06 owns are pinned here; packaging-discovery still proves the pre-existing marker and the composed v4_n05 subpackage remain discoverable so the wheel stays importable.",
+  "component_files": [
+    "src/epistemic_foundry/scheduler/v4_n06/__init__.py",
+    "src/epistemic_foundry/scheduler/v4_n06/integration.py"
+  ],
+  "composed_modules_modified": false,
+  "product_file_hashes": {
+    "artifacts/work_packages/N06/attempts/0001/run_n06_0001_checks.py": "sha256:65f2e522841a9b6d8d04ed5e8c80d98f4f8dad80b4cc6e03914807dced047153",
+    "src/epistemic_foundry/scheduler/v4_n06/__init__.py": "sha256:3ff9fed86f27ff783fc5728c0c290d715dff31f0239a09a9ff89da2e0f59f85b",
+    "src/epistemic_foundry/scheduler/v4_n06/integration.py": "sha256:88ff63d93321012518bd4e831f7e92c1b58006d3ab9d4c397d95119670d8bac7"
+  },
+  "pyproject_modified": false,
+  "reset_clean_stash_commit_push_performed": false,
+  "reviewed_by": "an independent reviewer that did not author the gate, actor-independent from the author",
+  "root_canonical_source_mutation_count": 0,
+  "schema_or_test_weakening_count": 0,
+  "status": "PASS",
+  "subagents_or_fleet_used": true,
+  "write_scope_violation_count": 0
+}

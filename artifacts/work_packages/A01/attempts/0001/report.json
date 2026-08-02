@@ -1,0 +1,265 @@
+{
+  "attempt_id": "A01-0001",
+  "attempt_type": "A01_AUTHORITY_CHAIN_CONSTITUTION_STATUS_VOCABULARY",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "A01-0001",
+    "dependencies": {},
+    "dependency_note": "root package, no dependencies (manifest depends_on is empty)",
+    "next_action": "SEAL_A01_0001_THEN_RECOMPUTE_DAG",
+    "regression_baseline": {
+      "attempt_id": "G06-0001",
+      "core_evidence_id": "E0247",
+      "core_generation": "000245-30a14b5f",
+      "final_closeout_evidence_id": "E0248",
+      "report": "artifacts/work_packages/G06/attempts/0001/report.json",
+      "report_sha256": "sha256:6486d22cb242c64924c06d1179e95aa8f47830032c597031756c855425cdc859",
+      "status": "PASS"
+    },
+    "regression_baseline_note": "G06-0001 is the live latest-sealed attempt (highest core generation on the ledger frontier) at the time this evidence was built.",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "authority_order_unambiguous": "PASS",
+    "conflict_returns_spec_gap": "PASS",
+    "specified_not_implemented": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "re-authoring the authority chain: A01 attests the four authority documents and does not edit them",
+    "any product-maturity, runtime-executability or release readiness of the v4 plugin or ShinkaEvolve integration",
+    "that SPECIFIED, REFERENCE_BLUEPRINT or a passing test implies IMPLEMENTED",
+    "any un-negated production-maturity claim in the authority documents",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 2147,
+      "path": "artifacts/work_packages/A01/attempts/0001/a01-verification.json",
+      "sha256": "sha256:083f1ac1f6825a4f9881b3144211e72f0d587a51f4cd6b0f979ba89d8d8144fc"
+    },
+    {
+      "byte_size": 26279,
+      "path": "artifacts/work_packages/A01/attempts/0001/a01_0001_rah_seal.py",
+      "sha256": "sha256:7a721ad993285d29208a1668593eecd883372e858bf13597f0df45e1a7dc2509"
+    },
+    {
+      "byte_size": 33522,
+      "path": "artifacts/work_packages/A01/attempts/0001/build_a01_0001_evidence.py",
+      "sha256": "sha256:8b8922c30c0c35115eb8d284c707629f37ef271502bdc54d12721d4075b41979"
+    },
+    {
+      "byte_size": 8774,
+      "path": "artifacts/work_packages/A01/attempts/0001/commands.jsonl",
+      "sha256": "sha256:cc43f6b735eed8d8e3a62f9244f62cfa4ead52616d9c27093765046605d235b9"
+    },
+    {
+      "byte_size": 741,
+      "path": "artifacts/work_packages/A01/attempts/0001/dependency-status.json",
+      "sha256": "sha256:dfce563fc0691b4bb664cf287f69ee543702bb87815ed0bea8da4967d9b3f015"
+    },
+    {
+      "byte_size": 233787,
+      "path": "artifacts/work_packages/A01/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:44482e90478dba9a51fe8e3843200dfde6c7968a9cc05083361753caf16412eb"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/A01/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 2937,
+      "path": "artifacts/work_packages/A01/attempts/0001/instructions-lint.json",
+      "sha256": "sha256:baba3dcfcb1f0a7cc488317c5eb18dfa53a0a01316336838bcaec6f68d70634d"
+    },
+    {
+      "byte_size": 690,
+      "path": "artifacts/work_packages/A01/attempts/0001/instructions-lint.junit.xml",
+      "sha256": "sha256:aa23431e070ea545d9b9a571e0d4bf1cc130177c152060b3c09912bbe629c71a"
+    },
+    {
+      "byte_size": 2264,
+      "path": "artifacts/work_packages/A01/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:3c2d4f67bede64803fbcd9f0eb05dcc5abae4710d370c8203c7299e25dae1ace"
+    },
+    {
+      "byte_size": 7168,
+      "path": "artifacts/work_packages/A01/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:dd875a4057702042b0ef957a8767f7a398843a6a6b22806a69c24f6f7b51cf48"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/A01/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:f2df8a7008b931789424f9212711480b550faa29a618478d2060afe9820e631b"
+    },
+    {
+      "byte_size": 2703,
+      "path": "artifacts/work_packages/A01/attempts/0001/review.md",
+      "sha256": "sha256:495c3cf29c8e827659229b682cf3fa74ad7aafd35cbd7aa103796939e4200429"
+    },
+    {
+      "byte_size": 8867,
+      "path": "artifacts/work_packages/A01/attempts/0001/run_a01_0001_checks.py",
+      "sha256": "sha256:9a395c425634e326c6a800531bdb656b3ce0ed97497af89c5798dc29840daef9"
+    },
+    {
+      "byte_size": 2287,
+      "path": "artifacts/work_packages/A01/attempts/0001/status-claim-audit.json",
+      "sha256": "sha256:17d8e5c04d3eca66699bf7b28d64dcdd80696e2e8935e3651f73d8ee0ab1ab5b"
+    },
+    {
+      "byte_size": 965,
+      "path": "artifacts/work_packages/A01/attempts/0001/status-claim-audit.junit.xml",
+      "sha256": "sha256:036cec512ef0639d7123402ce2ca20f2dde610ebecbd61d69ac8171a349e95fc"
+    },
+    {
+      "byte_size": 10188,
+      "path": "artifacts/work_packages/A01/attempts/0001/test_instructions_lint.py",
+      "sha256": "sha256:cb4a2f3666ce7d8aca9838d5d910b8ec036b1477ca3d2d00df87a2e7da36942b"
+    },
+    {
+      "byte_size": 9790,
+      "path": "artifacts/work_packages/A01/attempts/0001/test_status_claim_audit.py",
+      "sha256": "sha256:f7b1ba77933a61957815abb0204da183ad0aa03a540af8a5ef0df44c441c6fc1"
+    },
+    {
+      "byte_size": 1224,
+      "path": "artifacts/work_packages/A01/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:be11633dae33ce4dce75a46ac93dd56ced479c54906c4a6e654dee63debf126d"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0249",
+    "core_generation": "000247-53a0d135",
+    "final_closeout_evidence_id": "E0250",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1482,
+    "implementation_gate": "fail",
+    "retained_generation_count": 247,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "A01-0001",
+    "count_authority": "derived_from_measured_junit_expected_equals_measured",
+    "full_node_gate": "zero_failures_with_live_inventory_count",
+    "full_node_inventory_count": 109,
+    "full_node_passed": 1233,
+    "full_python_passed": 1261,
+    "new_failure_count": 0,
+    "regression_baseline_attempt": "G06-0001",
+    "status": "PASS",
+    "suites": {
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1233,
+        "failed": 0,
+        "junit": "artifacts/work_packages/A01/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:44482e90478dba9a51fe8e3843200dfde6c7968a9cc05083361753caf16412eb",
+        "passed": 1233,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1228
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/A01/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "instructions_lint": {
+        "collected": 4,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/A01/attempts/0001/instructions-lint.junit.xml",
+        "junit_sha256": "sha256:aa23431e070ea545d9b9a571e0d4bf1cc130177c152060b3c09912bbe629c71a",
+        "passed": 4,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 4
+      },
+      "status_claim_audit": {
+        "collected": 6,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/A01/attempts/0001/status-claim-audit.junit.xml",
+        "junit_sha256": "sha256:036cec512ef0639d7123402ce2ca20f2dde610ebecbd61d69ac8171a349e95fc",
+        "passed": 6,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 6
+      }
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded A01 implementation agent; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "instructions_lint": {
+      "status": "PASS",
+      "test_count": 4
+    },
+    "status_claim_audit": {
+      "status": "PASS",
+      "test_count": 6
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (a bounded A01 implementation agent authored, the sealing session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "A01",
+  "write_scope": {
+    "approved_scope": [
+      "MASTER_SPEC.md",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "docs/status_taxonomy.md",
+      "artifacts/work_packages/A01/**"
+    ],
+    "attempt_id": "A01-0001",
+    "attestation_only_no_document_edits": true,
+    "authored_by": "a bounded implementation agent (A01 maker) that authored the two attestation harnesses under artifacts/work_packages/A01/** and attested the pre-existing authority documents without editing them",
+    "checked_file_count": 4,
+    "product_file_hashes": {
+      "AGENTS.md": "sha256:858e537ed3e49754b8e60d31c985467ee1246ed258c7763d6de4ef0767e381ea",
+      "CLAUDE.md": "sha256:10d1c125aed00ba453c75d0747596274d43499ae499bd24aa2f872be29a56357",
+      "MASTER_SPEC.md": "sha256:8482f50765f1cd372f306f93f8cf3431ce33442498d1a7a97643ddeef01f886e",
+      "docs/status_taxonomy.md": "sha256:c4748d5275306d67a610d57ab81e7d66d58d81dab950714fdd4c4b0014474b7a"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "the sealing session acting as an independent contract-reviewer, separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

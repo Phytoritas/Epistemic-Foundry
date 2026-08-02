@@ -1,0 +1,281 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/result-envelope.schema.json",
+  "title": "ResultEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_-]*-[A-Za-z0-9._:-]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "paper_version_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "section": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bbox": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "char_start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "char_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "passage_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "paper_version_id",
+        "page",
+        "char_start",
+        "char_end",
+        "passage_hash"
+      ]
+    },
+    "quality_vector": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "directness": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "design_strength": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "measurement_validity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "statistical_precision": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "replication": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "independence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scope_match": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "extraction_confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "directness",
+        "design_strength",
+        "measurement_validity",
+        "statistical_precision",
+        "replication",
+        "independence",
+        "scope_match",
+        "extraction_confidence"
+      ]
+    }
+  },
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "node_id": {
+      "type": "string"
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "enum": [
+        "success",
+        "partial",
+        "failed",
+        "blocked",
+        "spec_gap"
+      ]
+    },
+    "output_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "number",
+          "integer",
+          "string",
+          "boolean",
+          "null"
+        ]
+      }
+    },
+    "input_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "output_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "started_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "finished_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "completeness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "expected_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "terminal_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "missing_node_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "partial_allowed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "expected_count",
+        "terminal_count",
+        "missing_node_ids",
+        "partial_allowed"
+      ]
+    },
+    "effect_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "policy_decision_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "schema_validation_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "terminal_reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "run_id",
+    "node_id",
+    "attempt",
+    "status",
+    "output_artifact_ids",
+    "evidence_ids",
+    "errors",
+    "metrics",
+    "input_hash",
+    "output_hash",
+    "started_at",
+    "finished_at",
+    "completeness",
+    "effect_receipt_ids",
+    "policy_decision_ids",
+    "schema_validation_report_id",
+    "terminal_reason"
+  ]
+}

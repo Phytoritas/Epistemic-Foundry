@@ -1,0 +1,101 @@
+{
+  "attempt_id": "S05-0001",
+  "composed_surfaces": {
+    "budget_normalizer": "src/epistemic_foundry/budgets/envelope.py normalize_hard_limits",
+    "mutation_quarantine": "src/epistemic_foundry/governance/quarantine.py may_influence_run/require_not_retroactive",
+    "verifier_firewall": "src/epistemic_foundry/verifier_firewall/firewall.py VerifierFirewall"
+  },
+  "declaring_sources": {
+    "execution_vocabularies": "schemas/validation-target-manifest.schema.json network/safety/approval enums, read positionally with the ordering pinned by a test",
+    "leakage_surfaces": "manifests/product_invariants.yaml EF4-I44 statement",
+    "sandbox_classes_and_threats": "docs/evolution_security_threat_model.md",
+    "search_space": "schemas/v4_c05/family-index.json"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "evidence": [
+        "artifacts/work_packages/S05/attempts/0001/test_provenance_receipts.py"
+      ],
+      "mechanism": "every qualification, coverage record and leakage audit re-derives its own hash from exactly the fields it publishes; an execution cannot qualify without a bound effect-receipt channel; the audit validates against its canonical schema and never carries a score field; and nothing holds a clock the caller did not supply",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "evidence": [
+        "artifacts/work_packages/S05/attempts/0001/test_schema_and_type.py"
+      ],
+      "mechanism": "the sandbox classes and threat register are parsed from the threat model EF4-I64 names as evidence, the leakage surfaces from EF4-I44's own statement, every positional enum assumption is pinned against the schema text, the controls hold no manifest, audit or proposal enum value as a literal, and each of the 15 failure codes carries its reason",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "evidence": [
+        "artifacts/work_packages/S05/attempts/0001/test_unit_contract.py",
+        "artifacts/work_packages/S05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "a bounded closed-network target qualifies and an approved proposal activates for a future run; an open network, an undeclared capability, a missing or misnamed quota, a blank receipt channel, an undeclared sandbox, a quarantined prompt on the active surface, a retroactive application, a skipped audit surface and a drifted evaluator bundle are each refused by their own code",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "evidence": [
+        "artifacts/work_packages/S05/attempts/0001/test_negative_adversarial.py",
+        "artifacts/work_packages/S05/attempts/0001/test_unit_contract.py"
+      ],
+      "mechanism": "candidate-generating roles are probed live against the sealed firewall and denied holdout access unconditionally; a kind outside the sealed search space cannot qualify; unreleased prompt mutations cannot influence a run; and a leakage exposure yields incident actions, never a score adjustment",
+      "status": "PASS"
+    }
+  },
+  "failure_classes": [
+    "APPROVAL_MISSING",
+    "CANDIDATE_KIND_UNQUALIFIED",
+    "CAPABILITY_UNDECLARED",
+    "HOLDOUT_REACHABLE",
+    "INPUT_INVALID",
+    "LEAKAGE_SURFACE_MISSING",
+    "NETWORK_POLICY_OPEN",
+    "QUARANTINED_INFLUENCE",
+    "QUOTA_MISSING",
+    "RECEIPT_CHANNEL_MISSING",
+    "RETROACTIVE_MUTATION",
+    "SANDBOX_CLASS_UNDECLARED",
+    "THREAT_MODEL_UNREADABLE",
+    "THREAT_UNCOVERED",
+    "THREAT_UNDECLARED"
+  ],
+  "implementation_findings": [
+    {
+      "finding": "the minimum leakage surfaces were first held as the literals ('cache', 'log', 'tool'), and 'tool' is a canonical enum value elsewhere, which the repository's EF4-I22 gate refused",
+      "resolution": "the surfaces are parsed from EF4-I44's own statement in the invariant manifest, so the audit floor now widens automatically if the invariant does"
+    }
+  ],
+  "not_derivable": {
+    "execution_itself": "the qualification decides whether candidate code may run; actually running it under the lease and minting the effect receipt belong to the T-phase sandbox and the runtime",
+    "similarity_analysis": "the leakage audit records similarity alerts the caller supplies; deriving them requires content access this module deliberately does not have"
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "module": "artifacts/work_packages/S05/attempts/0001/test_negative_adversarial.py",
+      "status": "PASS",
+      "test_count": 23
+    },
+    "provenance_and_receipt_audit": {
+      "module": "artifacts/work_packages/S05/attempts/0001/test_provenance_receipts.py",
+      "status": "PASS",
+      "test_count": 11
+    },
+    "schema_and_type_check": {
+      "module": "artifacts/work_packages/S05/attempts/0001/test_schema_and_type.py",
+      "status": "PASS",
+      "test_count": 12
+    },
+    "unit_and_contract_tests": {
+      "module": "artifacts/work_packages/S05/attempts/0001/test_unit_contract.py",
+      "status": "PASS",
+      "test_count": 16
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 62
+}

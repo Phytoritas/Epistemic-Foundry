@@ -1,0 +1,126 @@
+{
+  "attempt_id": "F04-0001",
+  "combined_targeted_suite": {
+    "byte_size": 15313,
+    "failures": [],
+    "path": "artifacts/work_packages/F04/attempts/0001/targeted-node-suite.junit.xml",
+    "sha256": "sha256:77140b2c7c74eb21b64a6c922aa9975a60d34a98e07fd602232515dcfa6af6c3",
+    "totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 76,
+      "skipped": 0,
+      "tests": 76,
+      "todo": 0
+    },
+    "xml_failure_count": 0,
+    "xml_testcase_count": 74
+  },
+  "completion_ready": false,
+  "flow_count": 3,
+  "flows": [
+    {
+      "case_id": "E1_LOOKUP_MINIMUM",
+      "path_kind": "MINIMUM",
+      "phase_artifact_set_count": 3,
+      "required_phases": [
+        "F",
+        "O",
+        "E"
+      ],
+      "scientific_outcome": "UNDERDETERMINED",
+      "signal": "LOOKUP",
+      "terminal_phase": "IDLE",
+      "terminal_status": "COMPLETED",
+      "transition_count": 4,
+      "work_class": "E1"
+    },
+    {
+      "case_id": "E3_MECHANISM_FULL",
+      "path_kind": "FULL",
+      "phase_artifact_set_count": 5,
+      "required_phases": [
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ],
+      "scientific_outcome": "UNDERDETERMINED",
+      "signal": "MECHANISM",
+      "terminal_phase": "IDLE",
+      "terminal_status": "COMPLETED",
+      "transition_count": 6,
+      "work_class": "E3"
+    },
+    {
+      "case_id": "E5_AMBIGUOUS_INTERVIEW_FULL",
+      "path_kind": "FULL_WITH_INTERVIEW",
+      "phase_artifact_set_count": 6,
+      "required_phases": [
+        "I",
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ],
+      "scientific_outcome": "UNDERDETERMINED",
+      "signal": "AMBIGUOUS",
+      "terminal_phase": "IDLE",
+      "terminal_status": "COMPLETED",
+      "transition_count": 7,
+      "work_class": "E5"
+    }
+  ],
+  "phase_artifact_set_count": 14,
+  "required_check": "forge_golden_flows",
+  "schema_validation_binding": "Draft 2020-12 validation completes before transition admission; a failed validation aborts the flow and cannot yield an admitted or persisted result.",
+  "source_inventory": [
+    {
+      "byte_size": 957,
+      "path": "tests/golden/forge/f04_forge_golden_flows.json",
+      "sha256": "sha256:0641cbbdf734d107dfb3055a4160656f7974afec3d282e07bcbb31439115e628"
+    },
+    {
+      "byte_size": 22848,
+      "path": "tests/golden/forge/f04-test-support.mjs",
+      "sha256": "sha256:c2bf7746995025713d0814e061bd2465e99bbae1af131deadcce64407508bdc8"
+    },
+    {
+      "byte_size": 4410,
+      "path": "tests/golden/forge/f04_forge_golden_flows.test.mjs",
+      "sha256": "sha256:5f645adb0acdafc45e5a1e30937cb089e83147fe11f2a2c8af2309d03d2778b6"
+    },
+    {
+      "byte_size": 1740,
+      "path": "tests/golden/forge/f04_phase_artifact_reconciliation.test.mjs",
+      "sha256": "sha256:8a7774b4068b12cf4ed56449d9a11fc2825b131b0537195ee458ff756451fd14"
+    }
+  ],
+  "status": "PASS",
+  "targeted_failed": 0,
+  "targeted_passed": 6,
+  "targeted_skipped": 0,
+  "transition_count": 17,
+  "unique_canonical_document_validation_count": 34,
+  "validated_schema_classes": [
+    "EpistemicWorkClassification",
+    "ResultEnvelope",
+    "Adjudication",
+    "PhaseArtifactSet",
+    "GateDecision"
+  ],
+  "verified_contracts": [
+    "E1 executes F-O-E and returns to IDLE",
+    "E3 executes F-O-R-G-E and returns to IDLE",
+    "E5 AMBIGUOUS executes I-F-O-R-G-E and returns to IDLE",
+    "F03 admission and F02 reduction agree on the canonical request hash",
+    "direct reduction and strict replay are exactly equal",
+    "every transition is persisted and resolves byte-for-byte",
+    "E admission requires a resolving PASS GateDecision",
+    "UNDERDETERMINED remains a successful truthful scientific outcome",
+    "classification identity-context mutation fails closed"
+  ],
+  "work_package_id": "F04"
+}

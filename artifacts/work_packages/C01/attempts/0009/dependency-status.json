@@ -1,0 +1,20 @@
+{
+  "attempt_id": "C01-0009",
+  "completion_ready": false,
+  "dependencies": {
+    "A04": "PASS",
+    "A05": "PASS",
+    "C01-0008": "IMMUTABLE_SPEC_GAP_C01_SG005",
+    "J02-0004": "PASS",
+    "S04-0005": "PASS"
+  },
+  "next_state": {
+    "B04-0009": "WAITING_ON_C02_0004",
+    "B04-final": "WAITING_ON_C04_0004",
+    "C01-0009": "PASS",
+    "C02-0004": "DEPENDENCY_READY",
+    "C04-0004": "WAITING_ON_O02_0002_AND_FRESH_PROJECTION",
+    "O02-0002": "WAITING_ON_B04_0009"
+  },
+  "status": "PASS"
+}

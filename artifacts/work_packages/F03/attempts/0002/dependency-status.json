@@ -1,0 +1,48 @@
+{
+  "attempt_id": "F03-0002",
+  "completed": [
+    "C03-0003",
+    "F03-0002"
+  ],
+  "completion_ready": false,
+  "manifest": {
+    "f03_depends_on": [
+      "F01"
+    ],
+    "f03_required_checks": [
+      "transition_receipt_test",
+      "override_provenance_test"
+    ],
+    "f03_write_scope": [
+      "packages/foundry-kernel/src/forge/gates/**"
+    ],
+    "f04_depends_on": [
+      "F02",
+      "F03"
+    ],
+    "package_count": 156,
+    "path": "manifests/development_manifest.yaml",
+    "sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12"
+  },
+  "next_attempt": "F04-0002",
+  "ordered_repair_sequence": [
+    "C03-0003",
+    "F03-0002",
+    "F04-0002",
+    "J02-0003",
+    "S04-0003",
+    "B04-0007",
+    "C04-0002",
+    "B04-0008"
+  ],
+  "schema_version": 1,
+  "static_dag_changed": false,
+  "status": "PASS",
+  "waiting": [
+    "J02-0003",
+    "S04-0003",
+    "B04-0007",
+    "C04-0002",
+    "B04-0008"
+  ]
+}

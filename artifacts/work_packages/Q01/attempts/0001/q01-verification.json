@@ -1,0 +1,61 @@
+{
+  "adjudication": {
+    "adjudicator_must_be_neither_annotator": true,
+    "resolutions": [
+      "ANNOTATOR_A_CORRECT",
+      "ANNOTATOR_B_CORRECT",
+      "GUIDANCE_AMBIGUOUS",
+      "NEITHER_CORRECT"
+    ],
+    "unadjudicated_disagreement_refused": true,
+    "unanimous_case_carries_no_adjudication": true
+  },
+  "agreement": {
+    "contract_kappa_floor": 0.6,
+    "measured_kappa": 0.7486910995,
+    "measured_not_asserted": true,
+    "single_label_corpus_reported_undefined": true
+  },
+  "attempt_id": "Q01-0001",
+  "case_coverage": {
+    "boundary_case_must_state_its_condition": true,
+    "classes": [
+      "BOUNDARY",
+      "FALSE_INSIGHT",
+      "TRUE_INSIGHT"
+    ],
+    "corpus_case_count": 12,
+    "minimum_cases_per_class": 3
+  },
+  "exit_criteria": {
+    "annotator_adjudication_defined": {
+      "evidence": [
+        "evals/gold/test_annotation_agreement.py",
+        "docs/annotation_manual.md"
+      ],
+      "mechanism": "a disagreement must be resolved by an adjudicator who is neither annotator, with a canonical resolution and a cited reason, and agreement is a computed coefficient with its inputs exposed rather than a claim",
+      "status": "PASS"
+    },
+    "false_true_boundary_cases_represented": {
+      "evidence": [
+        "evals/gold/test_gold_dataset.py"
+      ],
+      "mechanism": "at least three cases of each class are required, every case must cite a source span, and a boundary case must name the condition that makes it a boundary",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "annotation_agreement_check": {
+      "module": "evals/gold/test_annotation_agreement.py",
+      "status": "PASS",
+      "test_count": 20
+    },
+    "gold_dataset_validation": {
+      "module": "evals/gold/test_gold_dataset.py",
+      "status": "PASS",
+      "test_count": 21
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 41
+}

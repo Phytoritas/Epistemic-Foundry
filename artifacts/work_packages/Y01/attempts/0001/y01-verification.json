@@ -1,0 +1,47 @@
+{
+  "attempt_id": "Y01-0001",
+  "budget_states": {
+    "hard_over_budget_reservation_is_refused_not_truncated": true,
+    "hard_refusal_leaves_usage_unchanged": true,
+    "mislabelled_envelope_refused_at_seal_time": true,
+    "soft_estimate_records_forecast_and_never_refuses": true,
+    "tampered_budget_hash_or_contract_refused": true,
+    "unmetered_is_honestly_labelled_and_never_refuses": true,
+    "vocabulary_composed_from_sealed_registry_not_restated": true
+  },
+  "exit_criteria": {
+    "fan_out_bounded": {
+      "evidence": [
+        "packages/foundry-kernel/src/budget/adaptive-fleet.test.mjs"
+      ],
+      "mechanism": "target_workers = clamp(backlog, min_workers, effective_max_workers) where effective_max_workers is the declared max_workers capped by the budget's concurrency hard limit when spend is bounded; a declared maximum above a bounding concurrency limit is refused (FLEET_BOUND_EXCEEDS_BUDGET), an explicit worker request outside the window is refused (FLEET_BOUND_EXCEEDED), and even an unbounded backlog cannot raise the target above the budget-bounded maximum, so fan-out is bounded by construction; an advisory budget imposes no concurrency cap but is still bounded by the declared max_workers",
+      "status": "PASS"
+    },
+    "hard_soft_unmetered_states_truthful": {
+      "evidence": [
+        "packages/foundry-kernel/src/budget/budget-enforcement.test.mjs"
+      ],
+      "mechanism": "only HARD_METERED and HARD_PREALLOCATED bound spend, derived from the sealed BudgetEnvelope contract's HARD_ prefix rule; a charge that would push any cumulative dimension past its declared hard limit throws BUDGET_LIMIT_EXCEEDED and leaves usage unchanged, so an over-budget operation is refused, not truncated; SOFT_ESTIMATE records a forecast and UNMETERED records nothing, both report spend_bounded=false and never refuse; a hard bound with no hard limit and an UNMETERED budget with a CANCEL/PAUSE breach policy are refused at seal time, and a tampered budget_hash or contract is rejected",
+      "status": "PASS"
+    }
+  },
+  "fleet_authority": {
+    "fleet_acquires_no_lease_or_capability": true,
+    "receipts_are_plain_data_counts_and_hashes_only": true,
+    "scaling_is_deterministic_and_receipts_re_derivable": true
+  },
+  "required_checks": {
+    "adaptive_fleet_test": {
+      "module": "packages/foundry-kernel/src/budget/adaptive-fleet.test.mjs",
+      "status": "PASS",
+      "test_count": 8
+    },
+    "budget_enforcement_test": {
+      "module": "packages/foundry-kernel/src/budget/budget-enforcement.test.mjs",
+      "status": "PASS",
+      "test_count": 12
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 20
+}

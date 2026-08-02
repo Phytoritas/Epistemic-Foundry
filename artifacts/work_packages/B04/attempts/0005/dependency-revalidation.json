@@ -1,0 +1,101 @@
+{
+  "attempt_id": "B04-0005",
+  "b02_binding": {
+    "attempt_id": "B02-0002",
+    "hashes": {
+      "B02-0002/rah-core-integrity.json": "b7d4ba723c8dea6fbbdf69bd5ca08dd94477ae4c28b571bd300d3bc03acd3563",
+      "B02-0002/report.json": "3c2259e7d4b7ce987960b82f2fb161914637567eacf3030d24899e44f462b33a",
+      "B02-0002/review.md": "4b126d5d36aae2d8c742e5a16c14b7928c249e172be5934a5b1ea937b76c0f84",
+      "canonical-registry.json": "5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+      "pyproject.toml": "31cf5dffa4703052d70536dbbb6e64d917900c70d52b039f9c9cbf09920353db",
+      "uv.lock": "5c3798ff0323f9352d73f17fa93913590d7dbb5382dd0de26b1619e775b58caa"
+    },
+    "rah_seal": {
+      "core_evidence_id": "E0090",
+      "final_evidence_id": "E0091",
+      "observed_generation": "000084-016aba75",
+      "six_snapshot_hashes_verified": 6,
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "clean_environment": {
+    "environment_outside_repository": true,
+    "frozen_sync": "PASS",
+    "sync_exit_code": 0,
+    "tiktoken_version": "0.13.0",
+    "tokenizer_encoding": "o200k_base",
+    "tokenizer_vector_pass_count": 7,
+    "tokenizer_vectors": [
+      {
+        "id": "english",
+        "token_count": 5
+      },
+      {
+        "id": "korean",
+        "token_count": 8
+      },
+      {
+        "id": "mixed",
+        "token_count": 6
+      },
+      {
+        "id": "nfc",
+        "token_count": 2
+      },
+      {
+        "id": "crlf",
+        "token_count": 5
+      },
+      {
+        "id": "tab_newline",
+        "token_count": 3
+      },
+      {
+        "id": "special_literal",
+        "token_count": 7
+      }
+    ]
+  },
+  "dependency_group": {
+    "declaration": "tiktoken==0.13.0",
+    "group": "skill-context",
+    "lock_check": "PASS",
+    "lock_check_output": "",
+    "runtime_dependency_exposure": false
+  },
+  "distribution_metadata": {
+    "sdist": {
+      "name": "epistemic-foundry",
+      "requires_dist": [
+        "jsonschema<5,>=4.23",
+        "PyYAML<7,>=6.0",
+        "pytest<9,>=8.0; extra == \"dev\""
+      ],
+      "runtime_tiktoken_exposure": false,
+      "version": "4.0.0"
+    },
+    "wheel": {
+      "name": "epistemic-foundry",
+      "requires_dist": [
+        "jsonschema<5,>=4.23",
+        "PyYAML<7,>=6.0",
+        "pytest<9,>=8.0; extra == \"dev\""
+      ],
+      "runtime_tiktoken_exposure": false,
+      "version": "4.0.0"
+    }
+  },
+  "reproducibility": {
+    "current_sdist_sha256": "c2d68ad297ae295f30761cc68c48d3bd1d9cc90cd5111597bb7be9cd27ee7eed",
+    "prior_sdist_sha256": "560ce3afa19da1fe885785826336276315b26d1e57f248dddcbb71bc1bc6ce76",
+    "sdist_changed_files": [
+      "pyproject.toml"
+    ],
+    "sdist_member_inventory_equal": true,
+    "unrelated_sdist_drift_count": 0,
+    "wheel_byte_equal_to_B04_0004": true,
+    "wheel_sha256": "cc3aa468f09092134a4bc8448f4bf60822a4d2ff8df6df16bcbc86483238cb7a"
+  },
+  "status": "PASS"
+}

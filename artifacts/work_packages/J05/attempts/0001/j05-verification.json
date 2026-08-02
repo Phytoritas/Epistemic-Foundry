@@ -1,0 +1,67 @@
+{
+  "attempt_id": "J05-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every registration, parameter binding, prompt change, activation and claim re-derives its own digest byte for byte from its published fields with no clock or random draw, so replaying a call reproduces the receipt, and the attempt evidence is hash-pinned",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "operator specs, prompt genomes and prompt-mutation proposals are validated against their canonical schemas; every read field is verified declared and the status vocabularies are selected positionally and cross-checked against the quarantine's own INERT_STATUSES; each of the 27 FINDING_CODES names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the refusals carry the weight: a kind outside the sealed search space, a duplicate operator id, a malformed parameter fragment, a prompt-affecting operator with no quarantined proposal, an edit to a lifecycle or authority field, a retroactive activation and an activation binding no qualification evidence are each refused, and the happy path replays deterministically",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; a prompt genome is born quarantined and cannot be constructed active, a prompt change is a proposal for a future sealed run built by the quarantine module, activation is gated by the S05 inert-mutations gate and the quarantine's may_influence_run / require_not_retroactive, and edits to authority-carrying fields are refused by the evolution chamber's mutation check",
+      "status": "PASS"
+    }
+  },
+  "operator_semantics": {
+    "genome_kind_source": "sealed C05 family index via I05 intake surface",
+    "produces": "typed registration and replayable lineage; no score, selection or promotion",
+    "prompt_genomes_born_quarantined": true,
+    "refusals_are_by_path": true
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent; reviewer: an independent reviewer that did not author the subject code; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 33
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 20
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 13
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 17
+    }
+  },
+  "schema_binding": {
+    "mutable_kinds": "sealed C05 family index via epistemic_foundry.intake.v4_i05",
+    "operator_spec": "canonical mutation-operator-spec schema (re-read per call)",
+    "prompt_genome": "canonical prompt-genome schema; status vocabulary selected positionally",
+    "prompt_proposal": "canonical prompt-mutation-proposal schema; built by governance.quarantine"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_c05": 85,
+    "dependency_regression_i05": 61,
+    "dependency_regression_j04": 10,
+    "full_node_suite": 1129,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 33,
+    "provenance_and_receipt_audit": 20,
+    "schema_and_type_check": 13,
+    "unit_and_contract_tests": 17
+  }
+}

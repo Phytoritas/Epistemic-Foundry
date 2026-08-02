@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="fencing_test: newer overlapping lease makes the old fencing token stale" time="0.167222" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: replacing one scope invalidates the whole multi-scope lease" time="0.099670" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: failed callback rolls back result, lease-use, and event outbox" time="0.105493" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: operation retry is idempotent and does not rerun callback" time="0.108746" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval role is server-derived and client assertion is rejected" time="0.266444" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: exact approval retry returns its immutable result after expiry" time="0.055007" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: self-approval is a non-waivable denial" time="0.021038" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: promotion commit lease fails without approval and passes with exact approval" time="0.141000" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: candidate/model/backend policy cannot grant privileged authority" time="0.000310" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: forged lease fields or hash cannot reach the mutation callback" time="0.054975" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: callback cannot access authority-private scope-head state" time="0.097629" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: async callback is denied and its pre-await mutation rolls back" time="0.058727" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: lease use and revocation are bound to the sealed run" time="0.057943" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval authority role without approval:issue capability is denied" time="0.020553" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: later REVOKE head invalidates an earlier APPROVE-bound lease" time="0.203510" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval head rejects clock regression and rolls back the proposed record" time="0.076686" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: approval head rejects distinct decisions at the same instant" time="0.055900" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: committed state survives E01 outage and reconciles exactly once" time="0.067660" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="fencing_test: same PolicyBundle hash with a different capability projection is rejected" time="0.056372" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\fencing.test.mjs"/>
+	<testcase name="lease_expiry_test: issued leases are canonical, scoped, expiring, and schema-valid" time="0.290624" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: active lease checks and result persistence share one transaction" time="0.101284" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: expiry boundary rejects commit without invoking or persisting callback" time="0.105507" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: a clock before issued_at rejects a not-yet-valid lease" time="0.059130" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: issue rejects zero or negative lifetime before state mutation" time="0.024195" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: policy changes invalidate an otherwise unexpired lease" time="0.055707" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: revocation is explicit and prevents later commits" time="0.101522" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: exact lease issuance retry returns the first logical lease" time="0.061817" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: expiry after callback rolls back the protected mutation" time="0.061810" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: authority clock regression during commit fails closed" time="0.061398" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<testcase name="lease_expiry_test: lease issuance is bound to declared subject run and scope" time="0.023377" classname="test" file="C:\dev\insight\Epistemic-Foundry\packages\foundry-kernel\src\capabilities\lease-expiry.test.mjs"/>
+	<!-- tests 30 -->
+	<!-- suites 0 -->
+	<!-- pass 30 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 2837.304 -->
+</testsuites>

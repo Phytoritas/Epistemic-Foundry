@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "M04-0001-MAP-UI-RANKING-CLAIM-VERIFICATION",
+  "byte_size": 5157,
+  "content_hash": "sha256:890565369c319cf7c623db8c667cf096ca489abc52a9b17553e35d8108ba108f",
+  "created_at": "2026-07-31T01:34:11.342Z",
+  "created_by": {
+    "actor_id": "M04-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/M04/attempts/0001/map-ui-ranking-claim-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:cda79f301ccf4685a4177e9b8570b0db930ce286b5f69fe6839affe0cf668a7f",
+  "receipt_id": "AR-M04-0001-MAP-UI-RANKING-CLAIM-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "map_ui_test",
+      "details": "12/12 coverage, separation, null, escaping, determinism, and fail-closed cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "ranking_claim_audit",
+      "details": "14/14 label, algorithm, hash, order, exclusion, separation, and hostile-input cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Node 719/719 across 71 files, Python 1064/1064, codegen 126/126, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

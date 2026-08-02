@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="app_adversarial: a view binding an operation the client does not export refuses" time="0.001860" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: a write operation not declared as a mutation refuses" time="0.000203" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: a read operation declared as a mutation refuses" time="0.000183" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: two views claiming the same id refuse" time="0.000201" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: an unknown or malformed view spec refuses without invention" time="0.000196" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: a secured view refuses in every non-authenticated state" time="0.001649" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: an expired session is not authorized for a secured view" time="0.000708" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: a rendered-empty claim on a backend failure refuses" time="0.001260" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: a read model state claim that outruns the receipt refuses" time="0.000784" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: a receipt naming another operation refuses" time="0.000899" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: rendering an unregistered view id refuses" time="0.000582" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: an incomplete client surface refuses" time="0.000164" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: credential-shaped material in a view spec refuses" time="0.000242" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: credential-shaped field names are refused wherever they appear" time="0.000549" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: an undeclared auth transition refuses instead of staying put" time="0.000207" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: an undeclared auth state or scheme refuses" time="0.000172" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: an authenticated state without a named scheme refuses" time="0.000128" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="app_adversarial: every finding code is a short machine code with a standing reason" time="0.000364" classname="test" file="web\src\app\app-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: a view binding an operation the client never exported refuses" time="0.002113" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: a write cannot be presented as a read, or a read as a write" time="0.000243" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: duplicate view identifiers and malformed specs refuse" time="0.000358" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: a client that is not the generated surface refuses" time="0.000390" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: an unauthenticated session refuses instead of rendering empty" time="0.001967" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: an unregistered view identifier refuses" time="0.000589" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: undeclared auth transitions and events refuse" time="0.000433" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: an authenticated state cannot simply be asserted" time="0.000268" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: credential material is refused wherever it appears" time="0.001070" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: a backend failure can never be claimed as confirmed empty" time="0.001456" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: receipts that do not match the bound operation refuse" time="0.000977" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: health cannot be claimed without a readiness receipt" time="0.000896" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: a report cannot pass overall while carrying a non passing check" time="0.000385" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: undeclared health vocabulary and malformed reports refuse" time="0.000608" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_adversarial: readiness is refused outright without an authenticated session" time="0.000364" classname="test" file="web\src\app\shell-adversarial.test.mjs"/>
+	<testcase name="shell_schema: every finding code states a reason long enough to stand alone" time="0.001081" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: the read model vocabulary is frozen, complete and distinct" time="0.000785" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: the auth machine is data and references only declared names" time="0.000298" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: the credential field vocabulary is frozen, sorted and lowercase" time="0.000160" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: default view specifications carry exactly the declared fields" time="0.000205" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: the navigation record is deep frozen and shaped as declared" time="0.002349" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: a rendered view record is deep frozen and shaped as declared" time="0.001440" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: the health vocabularies are frozen and the unknown state is local" time="0.000138" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: the health view is deep frozen with stable, always visible sections" time="0.001758" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: the declared local security posture is frozen data" time="0.000341" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: product modules read no clock, no random source and no environment" time="0.002572" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<testcase name="shell_schema: the auth machine record restates the table it was built from" time="0.000332" classname="test" file="web\src\app\shell-schema.test.mjs"/>
+	<!-- tests 45 -->
+	<!-- suites 0 -->
+	<!-- pass 45 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+</testsuites>

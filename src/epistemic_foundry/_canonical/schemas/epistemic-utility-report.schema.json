@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/epistemic-utility-report.schema.json",
+  "title": "EpistemicUtilityReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_information_gain": {
+      "type": "number",
+      "minimum": 0
+    },
+    "realized_information_gain": {
+      "type": "number",
+      "minimum": 0
+    },
+    "coverage_debt_reduction": {
+      "type": "number"
+    },
+    "decision_relevance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "discrimination_power": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "cost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "risk_adjusted_utility": {
+      "type": "number"
+    },
+    "uncertainty": {
+      "type": "number",
+      "minimum": 0
+    },
+    "report_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "report_id",
+    "candidate_id",
+    "expected_information_gain",
+    "realized_information_gain",
+    "coverage_debt_reduction",
+    "decision_relevance",
+    "discrimination_power",
+    "cost",
+    "risk_adjusted_utility",
+    "uncertainty",
+    "report_hash"
+  ],
+  "description": "후보가 새 지식을 얼마나 만들고 어떤 불확실성을 줄였는지 비용과 함께 평가한다."
+}

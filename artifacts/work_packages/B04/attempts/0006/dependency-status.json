@@ -1,0 +1,69 @@
+{
+  "attempt_id": "B04-0006",
+  "blocker": {
+    "id": "B04-SG002",
+    "reason": "The current manifest has no runtime migration owner for GateDecision or HoldoutManifest producers and no authorized pre-C04 F04/J02/S04 correction sequence.",
+    "required_authority": "product_owner_human_decision",
+    "status": "OPEN"
+  },
+  "completion_ready": false,
+  "dependencies": {
+    "C01": {
+      "attempt_id": "C01-0006",
+      "report": "artifacts/work_packages/C01/attempts/0006/report.json",
+      "report_sha256": "sha256:35c9f323ab976c60448e9d4138833d9dd67570fb26e99d8b4298be5e2424ac30",
+      "status": "PASS"
+    },
+    "C02": {
+      "attempt_id": "C02-0002",
+      "report": "artifacts/work_packages/C02/attempts/0002/report.json",
+      "report_sha256": "sha256:f89f0f3bc82697716f7833a57acabd6a3a9666196e3c4ec310f406d6576b45cf",
+      "status": "PASS"
+    },
+    "C03": {
+      "attempt_id": "C03-0002",
+      "report": "artifacts/work_packages/C03/attempts/0002/report.json",
+      "report_sha256": "sha256:2f4b88e64fdd93c73a0b688f8d4f79ec9e2eea54adf9c5d8fabeb182b3a87850",
+      "status": "PASS"
+    }
+  },
+  "forbidden_next_steps": [
+    "C04-0002",
+    "B04 final packaging"
+  ],
+  "node_problem_count": 11,
+  "ownership": {
+    "derived_artifact_ownership": {
+      "manifests/source_bindings/development-manifest.binding.json": {
+        "expected_owner": "S04",
+        "manifest_owners": [
+          "S04"
+        ]
+      },
+      "plugins/epistemic-foundry/skills/skill-inventory.json": {
+        "expected_owner": "J02",
+        "manifest_owners": [
+          "J02",
+          "X01"
+        ]
+      },
+      "tests/golden/forge": {
+        "expected_owner": "F04",
+        "manifest_owners": [
+          "F04"
+        ]
+      }
+    },
+    "development_manifest_sha256": "sha256:8859303ea2fbe8d71655b2c244daf424a9742d4ce700bb93edddc20e3a06f23b",
+    "runtime_migration_ownership": {
+      "src/epistemic_foundry/foundry_kernel/gates.py": [],
+      "src/epistemic_foundry/verifier_firewall/firewall.py": []
+    },
+    "status": "SPEC_GAP_RUNTIME_OWNER_AND_PRE_C04_ORDER_UNDEFINED",
+    "unowned_runtime_path_count": 2
+  },
+  "package_status": "SPEC_GAP",
+  "projection_status": "PASS",
+  "python_problem_count": 67,
+  "status": "WAITING_ON_PRODUCT_OWNER_DECISION"
+}

@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-O02-0002-RETRIEVAL-VERIFICATION",
+  "byte_size": 2932,
+  "content_hash": "sha256:e222ecafc343ca0a171e6599827bb6747de65cbdab870e1670c76ceb5aef95d9",
+  "created_at": "2026-07-31T10:33:58.441Z",
+  "created_by": {
+    "actor_id": "O02-0002-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/O02/attempts/0002/retrieval-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:80420641d5053b41583b8df048e8f87e59f5c94c0638d9e279353798fe01331c",
+  "receipt_id": "AR-O02-0002-RETRIEVAL-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "retrieval_benchmark",
+      "details": "11/11 lanes meet independent Recall@20 and nDCG@20 thresholds; fused and 4/4 critical must-find gates pass",
+      "status": "PASS"
+    },
+    {
+      "check": "retrieval_contract_and_integrity",
+      "details": "42/42 O02 and 83/83 O02+O01 tests pass; replay, binding, tamper, terminal, direction, and release guards pass",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Node 819/819; first Python 1114/1115 with one D04 startup race, isolated D04 1/1, complete recheck 1115/1115",
+      "status": "PASS"
+    }
+  ]
+}

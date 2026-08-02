@@ -1,0 +1,254 @@
+{
+  "a06_findings": {
+    "c01_runtime_authority_claimed": false,
+    "downstream_runtime_ownership": {
+      "A06-F003": "A05 correction owns the complete G00-G14 runtime registry and workflow graph",
+      "A06-F004": "A05 correction owns self-approval, actor-independence, and short-lease enforcement",
+      "A06-F005": "A05 correction owns CAS, crash reconciliation, and receipt-bound commit runtime behavior"
+    },
+    "schema_level_resolved": {
+      "A06-F001": "evaluator bundle mutation and candidate access rejected",
+      "A06-F002": "hidden holdout candidate/model/prompt/backend access rejected"
+    },
+    "status": "PASS_WITH_EXPLICIT_LAYER_BOUNDARY"
+  },
+  "a06_remediation_authority": {
+    "artifact_sha256": "sha256:fa42fb83650a3288f1b7e9c9680a9fcc05efc7111800bf8420d12a4efa365aee",
+    "authority_role": "product_owner",
+    "decision_hash": "sha256:3ed9daaf685214ffe34c6be92301abd046eb6fa7d1c7f625554746afc83fd7be",
+    "decision_id": "HD-EF4-A06-RM001-20260730-001",
+    "status": "PASS"
+  },
+  "attempt_id": "C01-0006",
+  "authority": {
+    "artifact_sha256": "sha256:febccd44dce2639c434e9d328655493defb072b2d988138f432b1ad586fb447a",
+    "authority_role": "product_owner",
+    "decision_hash": "sha256:ebc3434cccdd248b38a36d1a3de5132f4503b4172c1ee11a64dd8f0033f670fd",
+    "decision_id": "HD-EF4-C01-SG004-20260730-001",
+    "status": "PASS"
+  },
+  "canonical_contract": {
+    "openapi": {
+      "all_mutations_require_idempotency_key": true,
+      "all_operations_have_explicit_security_and_capabilities": true,
+      "canonical_file": "openapi/epistemic-foundry-v1.openapi.yaml",
+      "document_registration_request_ref": "../schemas/document-registration-request.schema.json",
+      "document_registration_result_ref": "../schemas/document-registration.schema.json",
+      "document_sha256": "sha256:43429ad9c583b1026bd2445fb77d38b12410d2f6db065cffad45c64297db2cd7",
+      "external_schema_ref_count": 24,
+      "external_validator": {
+        "exit_code": 0,
+        "result": "OK",
+        "tool": "openapi-spec-validator",
+        "version": "0.7.2"
+      },
+      "generated_client_dry_run": {
+        "exit_code": 0,
+        "generator": "python",
+        "generator_version": "7.14.0",
+        "repository_output_count": 0,
+        "tool": "OpenAPI Generator CLI",
+        "wrapper_version": "2.21.4"
+      },
+      "json_schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+      "openapi_version": "3.1.1",
+      "operation_count": 33,
+      "reference_resolution_failures": [],
+      "status": "PASS",
+      "unique_operation_id_count": 33
+    },
+    "schema_examples": {
+      "document_registration": {
+        "immutable_initial_state": "REGISTERED_UNSCREENED",
+        "registration_hash": "sha256:24627a7672298baf20696d7897a009b6fb6b8ed37f0f708b2bae2ff452c882d8",
+        "registration_id": "DREG-24627a7672298baf20696d7897a009b6fb6b8ed37f0f708b2bae2ff452c882d8",
+        "schema_id": "https://epistemic-foundry.local/schemas/document-registration.schema.json",
+        "status": "PASS"
+      },
+      "document_registration_request": {
+        "request_hash": "sha256:808c46aff78f04f8ba58d24447733b6be8294f714d741a2e015e9b3f4c78c2a7",
+        "request_id": "DREQ-808c46aff78f04f8ba58d24447733b6be8294f714d741a2e015e9b3f4c78c2a7",
+        "required_staged_source_artifact": true,
+        "schema_id": "https://epistemic-foundry.local/schemas/document-registration-request.schema.json",
+        "status": "PASS"
+      },
+      "example_count": 126,
+      "legacy_promotion_value_hits": [],
+      "mapped_example_count": 126,
+      "meta_schema_validation": "PASS",
+      "schema_count": 126,
+      "schema_example_one_to_one": true,
+      "status": "PASS",
+      "unique_schema_id_count": 126,
+      "valid_example_count": 126
+    },
+    "status": "PASS",
+    "targeted_tests": {
+      "artifact": "artifacts/work_packages/C01/attempts/0006/targeted-contracts.junit.xml",
+      "artifact_sha256": "sha256:8cbf0699b35d4fe0e25dd9fb2d7eebe8df483bcda8d93d693373e67e80072af3",
+      "errors": 0,
+      "failures": 0,
+      "passed": 77,
+      "skipped": 0,
+      "status": "PASS",
+      "tests": 77
+    }
+  },
+  "canonical_projection_status": "WAITING_ON_PRE_C04_B04",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "full_regression": {
+    "artifact": "artifacts/work_packages/C01/attempts/0006/full-regression-impact.json",
+    "failure_owner_counts": {
+      "B04": 18,
+      "J02": 1
+    },
+    "full_python": {
+      "artifact": "artifacts/work_packages/C01/attempts/0006/full-python-regression.junit.xml",
+      "artifact_sha256": "sha256:d72dd0532e4cd182fe1f616429831a1a9169cb8bf91ede25b7e0c7076bab0752",
+      "errors": 0,
+      "failures": 19,
+      "passed": 951,
+      "skipped": 0,
+      "status": "EXPECTED_DOWNSTREAM_AND_PREEXISTING_FAILURES",
+      "tests": 970
+    },
+    "full_suite_is_not_reported_pass": true,
+    "new_c01_failure_count": 0,
+    "status": "PASS_WITH_DECLARED_RESIDUAL_FAILURES"
+  },
+  "generated_projection_status": "PENDING_C02",
+  "git_diff_check": {
+    "advisory_output": "warning: in the working copy of 'docs/api_contract.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'examples/sample_document-manifest.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'examples/sample_evaluator-bundle.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'examples/sample_gate_decision.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'examples/sample_holdout-manifest.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'examples/sample_promotion-decision.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'schemas/document-manifest.schema.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'schemas/evaluator-bundle.schema.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'schemas/gate-decision.schema.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'schemas/holdout-manifest.schema.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'schemas/phase-artifact-set.schema.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'schemas/promotion-decision.schema.json', LF will be replaced by CRLF the next time Git touches it",
+    "command": "git diff --check -- <C01 exact paths>",
+    "exit_code": 0,
+    "status": "PASS"
+  },
+  "manifest_contract": {
+    "B04_depends_on": [
+      "B02",
+      "B03",
+      "C04"
+    ],
+    "C01": {
+      "depends_on": [
+        "A04",
+        "A05"
+      ],
+      "required_checks": [
+        "schema_meta_validation",
+        "openapi_validation",
+        "canonical_schema_example_cardinality",
+        "document_registration_contract_validation",
+        "evolution_authority_schema_validation",
+        "openapi_126_contract_oracle"
+      ],
+      "write_scope": [
+        "schemas/document-registration-request.schema.json",
+        "schemas/document-registration.schema.json",
+        "schemas/document-manifest.schema.json",
+        "schemas/evaluator-bundle.schema.json",
+        "schemas/holdout-manifest.schema.json",
+        "schemas/evaluator-qualification-report.schema.json",
+        "schemas/gate-decision.schema.json",
+        "schemas/promotion-decision.schema.json",
+        "schemas/attestation.schema.json",
+        "schemas/approval-record.schema.json",
+        "schemas/capability-lease.schema.json",
+        "schemas/action-intent.schema.json",
+        "schemas/effect-receipt.schema.json",
+        "schemas/artifact-receipt.schema.json",
+        "schemas/phase-artifact-set.schema.json",
+        "schemas/hypothesis-passport.schema.json",
+        "schemas/replication-result.schema.json",
+        "schemas/human-decision.schema.json",
+        "examples/sample_document-registration-request.json",
+        "examples/sample_document-registration.json",
+        "examples/sample_document-manifest.json",
+        "examples/sample_evaluator-bundle.json",
+        "examples/sample_holdout-manifest.json",
+        "examples/sample_evaluator-qualification-report.json",
+        "examples/sample_gate_decision.json",
+        "examples/sample_promotion-decision.json",
+        "examples/sample_attestation.json",
+        "examples/sample_approval-record.json",
+        "examples/sample_capability-lease.json",
+        "examples/sample_action-intent.json",
+        "examples/sample_effect-receipt.json",
+        "examples/sample_artifact-receipt.json",
+        "examples/sample_phase-artifact-set.json",
+        "examples/sample_passport.json",
+        "examples/sample_replication-result.json",
+        "examples/sample_human-decision.json",
+        "openapi/epistemic-foundry-v1.openapi.yaml",
+        "docs/api_contract.md",
+        "tests/contracts/openapi/test_scientific_contracts.py",
+        "tests/contracts/openapi/test_openapi_contract.py",
+        "artifacts/work_packages/C01/**"
+      ]
+    },
+    "C02_depends_on": [
+      "C01"
+    ],
+    "C03_depends_on": [
+      "C01",
+      "C02"
+    ],
+    "C04_depends_on": [
+      "C02",
+      "C03"
+    ],
+    "package_count": 156,
+    "pre_C04_B04_is_attempt_level_only": true,
+    "static_dependency_cycle_added": false,
+    "status": "PASS"
+  },
+  "package_status": "PASS",
+  "probe_id": "C01-P006",
+  "repository_full_suite_status": "EXPECTED_DOWNSTREAM_AND_PREEXISTING_FAILURES",
+  "runtime_migration_status": "PENDING_C03",
+  "schema_version": 1,
+  "status": "PASS",
+  "work_package_id": "C01",
+  "write_scope_audit": {
+    "declared_change_count": 31,
+    "declared_changes": [
+      "artifacts/work_packages/C01/attempts/0006/activate_c01_0006.py",
+      "artifacts/work_packages/C01/attempts/0006/build_c01_0006_evidence.py",
+      "artifacts/work_packages/C01/attempts/0006/c01-contract-verification.json",
+      "artifacts/work_packages/C01/attempts/0006/c01_0006_rah_seal.py",
+      "artifacts/work_packages/C01/attempts/0006/commands.jsonl",
+      "artifacts/work_packages/C01/attempts/0006/dependency-status.json",
+      "artifacts/work_packages/C01/attempts/0006/full-python-regression.junit.xml",
+      "artifacts/work_packages/C01/attempts/0006/full-regression-impact.json",
+      "artifacts/work_packages/C01/attempts/0006/rah-core-integrity.json",
+      "artifacts/work_packages/C01/attempts/0006/report.json",
+      "artifacts/work_packages/C01/attempts/0006/review.md",
+      "artifacts/work_packages/C01/attempts/0006/targeted-contracts.junit.xml",
+      "docs/api_contract.md",
+      "examples/sample_document-manifest.json",
+      "examples/sample_document-registration-request.json",
+      "examples/sample_document-registration.json",
+      "examples/sample_evaluator-bundle.json",
+      "examples/sample_gate_decision.json",
+      "examples/sample_holdout-manifest.json",
+      "examples/sample_promotion-decision.json",
+      "openapi/epistemic-foundry-v1.openapi.yaml",
+      "schemas/document-manifest.schema.json",
+      "schemas/document-registration-request.schema.json",
+      "schemas/document-registration.schema.json",
+      "schemas/evaluator-bundle.schema.json",
+      "schemas/gate-decision.schema.json",
+      "schemas/holdout-manifest.schema.json",
+      "schemas/phase-artifact-set.schema.json",
+      "schemas/promotion-decision.schema.json",
+      "tests/contracts/openapi/test_openapi_contract.py",
+      "tests/contracts/openapi/test_scientific_contracts.py"
+    ],
+    "derived_snapshot_change_count": 0,
+    "root_canonical_authority_only": true,
+    "status": "PASS",
+    "violation_count": 0,
+    "violations": []
+  }
+}

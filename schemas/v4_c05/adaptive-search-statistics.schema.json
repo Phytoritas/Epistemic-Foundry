@@ -1,0 +1,30 @@
+{
+  "$id": "https://epistemic-foundry.local/schemas/v4_c05/adaptive-search-statistics.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Adaptive best-of-many search evidence (EF4-I53, EF4-I59): a search result cannot validate without its multiplicity adjustment, its sequential-testing ledger and its selective-inference report; stability and surrogate-triage records may accompany them but replace nothing.",
+  "properties": {
+    "decision_stability_report": {
+      "$ref": "https://epistemic-foundry.local/schemas/decision-stability-report.schema.json"
+    },
+    "multiple_testing_adjustment": {
+      "$ref": "https://epistemic-foundry.local/schemas/multiple-testing-adjustment.schema.json"
+    },
+    "selective_inference_report": {
+      "$ref": "https://epistemic-foundry.local/schemas/selective-inference-report.schema.json"
+    },
+    "sequential_testing_ledger": {
+      "$ref": "https://epistemic-foundry.local/schemas/sequential-testing-ledger.schema.json"
+    },
+    "surrogate_triage_report": {
+      "$ref": "https://epistemic-foundry.local/schemas/surrogate-triage-report.schema.json"
+    }
+  },
+  "required": [
+    "multiple_testing_adjustment",
+    "selective_inference_report",
+    "sequential_testing_ledger"
+  ],
+  "title": "AdaptiveSearchStatistics",
+  "type": "object"
+}

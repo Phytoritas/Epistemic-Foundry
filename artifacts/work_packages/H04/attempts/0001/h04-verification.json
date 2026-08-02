@@ -1,0 +1,56 @@
+{
+  "attempt_id": "H04-0001",
+  "attestation_scope": {
+    "bounded_observation_projection": "H04 authors a capability-probe module that projects supplied observations into hash-bound HostCapabilityReport and PluginHealthReport documents and attests it with the two compatibility suites; it declares no runtime executable",
+    "capability_probe_module": "packages/plugin-host/src/capability-probe/capability-probe.mjs",
+    "compatibility_test_suites": [
+      "tests/compatibility/hooks/hook-feature-probe.test.mjs",
+      "tests/compatibility/hooks/hook-degraded-mode.test.mjs"
+    ]
+  },
+  "exit_criteria": {
+    "changed_hooks_require_retrust": {
+      "mechanism": "hook_feature_probe_test asserts changed active hook bytes, removed hook hashes, and disabled-but-changed hooks each force exact re-trust (state UNKNOWN, HOOK_RETRUST_REQUIRED), and hook_degraded_mode_test asserts re-trust debt is visible in health and cannot be masked as FULL",
+      "status": "PASS_AT_HOOK_TRUST_BOUNDARY"
+    },
+    "unsupported_coverage_explicit": {
+      "mechanism": "hook_feature_probe_test asserts missing observations fall to UNKNOWN rather than optimistic support, empty event/tool scopes never prove FULL, unobserved hosted tool paths stay explicit, and unsupported/forged/hostile inputs fail closed",
+      "status": "PASS_AT_BOUNDED_OBSERVATION_PROJECTION_BOUNDARY"
+    }
+  },
+  "maturity_boundary": {
+    "bounded_observation_projection_only": true,
+    "evolution_holdout_observability_owner": "H05",
+    "hook_disabled_hosted_tool_integration_owner": "H06",
+    "hook_runner_exists": false,
+    "hosted_tool_interception_claimed": false,
+    "live_cross_host_discovery_adapter_claimed": false,
+    "observed_hook_coverage_is_exhaustive_enforcement": false,
+    "plugin_manifest": "plugins/epistemic-foundry/.codex-plugin/plugin.json",
+    "plugin_manifest_capabilities": [],
+    "plugin_manifest_hooks_registered": false,
+    "plugin_manifest_sha256": "sha256:1b1ec359ab93733114c95acb34c4a74615974456ddab52fa7c1c538159318a87",
+    "runtime_hook_runner_registration_claimed": false,
+    "runtime_integration_owner": "X01/G06"
+  },
+  "required_checks": {
+    "hook_degraded_mode_test": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "hook_feature_probe_test": {
+      "status": "PASS",
+      "test_count": 11
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded H04 implementation agent that authored the capability-probe module and its two compatibility suites; reviewer: the independent seal-prep session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "capability_probe_tests": 18,
+    "full_node_suite": 1291,
+    "full_python_suite": 1261
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "attempt_id": "Z01-0001",
+  "declaring_sources": {
+    "host_and_platform_lists": "manifests/compatibility_matrix.yaml is the single declaring source of the host and platform lists; the harness never restates them",
+    "payload_layout": "manifests/compatibility_matrix.yaml payload.expected_top_level over plugins/epistemic-foundry",
+    "real_lifecycle": "G04-0001 local-marketplace fresh-install and clean-uninstall lifecycle (composed, not duplicated)",
+    "sealed_host_provenance": "manifests/compatibility_matrix.yaml sealed_dependencies binds each host to the sealed x04 attempt that establishes it"
+  },
+  "exit_criteria": {
+    "all_supported_hosts_os_tested": {
+      "mechanism": "install_matrix_test evaluates every host/OS cell declared in manifests/compatibility_matrix.yaml as a fail-closed lifecycle proof and refuses any cell claiming SUPPORTED without the recorded fresh-install, lifecycle-hook, MCP, payload, upgrade, rollback and uninstall evidence",
+      "status": "PASS"
+    },
+    "uninstall_preserves_user_data_policy": {
+      "mechanism": "uninstall_data_test proves the declared uninstall lifecycle removes plugin artifacts while preserving the retained user-data policy and refuses any uninstall plan that would delete data the policy retains",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "install_matrix_test": {
+      "status": "PASS",
+      "test_count": 14
+    },
+    "uninstall_data_test": {
+      "status": "PASS",
+      "test_count": 10
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1740,
+    "full_python_suite": 1285,
+    "install_matrix_test": 14,
+    "uninstall_data_test": 10
+  }
+}

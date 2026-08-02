@@ -1,0 +1,27 @@
+{
+  "attempt_id": "O02-0001",
+  "completion_ready": false,
+  "dependency_inputs": {
+    "O01": {
+      "attempt_id": "O01-0002",
+      "report": "artifacts/work_packages/O01/attempts/0002/report.json",
+      "report_sha256": "sha256:21cd6f07ce4caae4d7a7d673a85aec105117f35f2a560ef8310ee532cb188051",
+      "status": "PASS"
+    }
+  },
+  "later_package_started": false,
+  "package_states": {
+    "O01": "PASS",
+    "O02": "SPEC_GAP_O02_SG001",
+    "O03": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O02",
+    "T01": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O02",
+    "W01": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O02",
+    "A06": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_SERIAL_O02"
+  },
+  "reason": "O02 is the earliest manifest-order dependency-ready package, but neither required check nor the two exit criteria can be implemented objectively without inventing candidate, ranking, relation-direction, fusion, and benchmark contracts.",
+  "resume_condition": "A product-owner HumanDecision must define the complete O02 candidate, backend, query-family, relation-direction, ranking, snapshot-binding, fallback, non-vector-only, benchmark, ownership, and exact write-scope contract; O02 must then run as a new attempt while preserving O02-0001.",
+  "schema_version": 1,
+  "spec_gap_id": "O02-SG001",
+  "status": "SPEC_GAP",
+  "work_package_id": "O02"
+}

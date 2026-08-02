@@ -1,0 +1,50 @@
+{
+  "attempt_id": "E04-0001",
+  "exit_criteria": {
+    "semantic_drift_is_reported_not_erased": {
+      "evidence": [
+        "tests/replay/effects/semantic-replay.test.mjs"
+      ],
+      "mechanism": "sealReplayReport classifies distinct run and event identities as SEMANTICALLY_EQUIVALENT and never falsely EXACT; model or prompt pin drift is classified MODEL or MULTIPLE with both the source and replay pins retained in pinned_artifacts rather than erased; gate, verdict, or semantic-state changes are explicit DRIFT; missing required pins make the runs NOT_COMPARABLE with drift_classification=UNKNOWN; the report_hash excludes itself and any mutation or placeholder fails E04_REPLAY_REPORT_HASH_MISMATCH; a floating pin fails E04_PIN_INVALID; a detached strict identity fails E04_STRICT_IDENTITY_INVALID; and canonical hashing rejects accessors and invalid Unicode without execution (E04_NON_CANONICAL_JSON)",
+      "status": "PASS"
+    },
+    "strict_reducer_equivalence_passes": {
+      "evidence": [
+        "tests/replay/effects/strict-replay.test.mjs"
+      ],
+      "mechanism": "the replay harness rebuilds the E02 effect and E03 capability-lease, fencing and approval events from the append-only E01 Noetic Ledger over the sealed C04 artifact store and D04 SQLite state store; rebuilding twice is deepEqual with a matching sha256 state_hash and identical event order, reopening both durable stores preserves stream and reducer identity, exact retries append no events, and an EXACT report requires event_equivalence=EXACT with drift_classification=NONE, zero artifact mismatches, integrity and schema. A tampered or missing payload fails closed (PAYLOAD_HASH_MISMATCH / PAYLOAD_RESOLUTION_FAILED), a duplicated logical payload identity fails E04_REPLAY_SEQUENCE_INVALID, and a forged event binding fails E04_REPLAY_EVENT_BINDING_INVALID before equivalence",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "semantic_replay_report": {
+      "module": "tests/replay/effects/semantic-replay.test.mjs",
+      "status": "PASS",
+      "test_count": 10
+    },
+    "strict_replay_test": {
+      "module": "tests/replay/effects/strict-replay.test.mjs",
+      "status": "PASS",
+      "test_count": 8
+    }
+  },
+  "semantic_drift_is_reported_not_erased": {
+    "canonical_hashing_rejects_accessors_and_invalid_unicode": true,
+    "distinct_identities_are_semantic_never_falsely_exact": true,
+    "floating_or_detached_pins_and_identity_fail_closed": true,
+    "gate_verdict_and_state_changes_are_explicit_drift": true,
+    "missing_pins_are_not_comparable_and_unknown": true,
+    "model_and_prompt_pin_drift_is_retained_not_erased": true,
+    "report_hash_excludes_itself_and_rejects_mutation": true
+  },
+  "status": "PASS",
+  "strict_reducer_equivalence_passes": {
+    "double_rebuild_is_deepequal_with_matching_state_hash": true,
+    "exact_report_requires_exact_none_and_zero_mismatches": true,
+    "exact_retries_append_no_events_and_do_not_change_state": true,
+    "forged_event_binding_fails_closed": true,
+    "reopening_durable_stores_preserves_stream_identity": true,
+    "tampered_or_missing_payload_fails_closed": true
+  },
+  "targeted_test_count": 18
+}

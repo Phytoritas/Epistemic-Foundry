@@ -1,0 +1,69 @@
+{
+  "attempt_id": "B01-0001",
+  "attestation_scope": {
+    "attested_not_authored": "B01 attests the polyglot monorepo scaffold and boundary contract the repository already carries; it makes ZERO substantive edit and does not re-author the component implementation under packages/** and python/**, which other work packages own",
+    "structural_contract_files": [
+      "package.json",
+      "packages/README.md",
+      "packages/boundary-policy.json",
+      "packages/context-capsule/package.json",
+      "packages/contracts/package.json",
+      "packages/foundry-kernel/package.json",
+      "packages/plugin-host/package.json",
+      "packages/repo-checks/check-boundaries.mjs",
+      "packages/repo-checks/check-structure.mjs",
+      "packages/repo-checks/package.json",
+      "packages/role-router/package.json",
+      "packages/skill-vault/package.json",
+      "packages/transport-kernel/package.json",
+      "packages/ui-api/package.json",
+      "packages/workspace-map/package.json",
+      "pnpm-workspace.yaml",
+      "pyproject.toml",
+      "python/README.md",
+      "python/epistemic_foundry/README.md"
+    ]
+  },
+  "cross_tree_boundary_suite": {
+    "proves": "the sealed A03 boundary_cycle_policy_check, re-run against the real src/epistemic_foundry import graph, confirms layer discipline, no authority/adapter in any cycle at any granularity, and a strict module-slice DAG on the Python tree -- the deep boundary invariant the Node check only lightly probes",
+    "status": "PASS",
+    "suite": "boundary_cycle_policy_check",
+    "test_count": 6
+  },
+  "exit_criteria": {
+    "no_component_imports_another_component_source": {
+      "mechanism": "forbidden_source_import_check parses the real Node component sources and asserts no component imports another component's private /src (public-package-api-only), internal dependency versions match exactly, layer direction is inward, tooling is never depended upon by a product component, and the workspace dependency graph is acyclic over 18 internal package edges; the sealed A03 boundary_cycle_policy_check re-run confirms the deep module-slice DAG on the real src/epistemic_foundry Python import graph",
+      "status": "PASS"
+    },
+    "node_and_python_roots_explicit": {
+      "mechanism": "repo_structure_check asserts the Node workspace root is explicit (root package.json private with workspaces == [\"packages/*\"] and a matching pnpm-workspace.yaml) and the Python roots are explicit (pyproject.toml binds node_root=packages, python_runtime_root=src/epistemic_foundry, python_component_root=python/epistemic_foundry and component_source_imports=forbidden, with both Python roots present on disk), across 10 Node components",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "forbidden_source_import_check": {
+      "components": 10,
+      "harness": "npm run check:boundaries",
+      "internal_package_edges": 18,
+      "source_import_policy": "public-package-api-only",
+      "status": "PASS"
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded implementation agent(s) that authored the polyglot scaffold and the two repo-checks Node harnesses; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "repo_structure_check": {
+      "harness": "npm run check:structure",
+      "node_components": 10,
+      "python_component_root": "python/epistemic_foundry",
+      "python_runtime_root": "src/epistemic_foundry",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "boundary_cycle_policy_check": 6,
+    "full_node_suite": 1253,
+    "full_python_suite": 1261
+  }
+}

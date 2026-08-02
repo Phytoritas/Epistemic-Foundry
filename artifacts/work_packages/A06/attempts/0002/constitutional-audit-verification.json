@@ -1,0 +1,253 @@
+{
+  "attempt_id": "A06-0002",
+  "audit_type": "INDEPENDENT_CONSTITUTIONAL_REAUDIT_FROM_PRIMARY_SOURCES",
+  "chamber_audit": {
+    "chamber_node_count": 26,
+    "f003_status": "PASS",
+    "llm_promotion_decision_emitters": [],
+    "passport_depends_on": [
+      "run_evidence_parliament_promotion"
+    ],
+    "promotion_node": {
+      "determinism_class": "deterministic",
+      "executor_ref": "workflows/evolution_promotion.workflow.yaml",
+      "executor_type": "subworkflow",
+      "output_schema_ref": "schemas/result-envelope.schema.json"
+    }
+  },
+  "constitutional_cases": {
+    "junit": "artifacts/work_packages/A06/attempts/0002/targeted-a05-python.junit.xml",
+    "junit_sha256": "sha256:a4bf0e7a64cd76c4a381c4d8744f26c8f4e631ba7c6ebb96e870fb1c107dd702",
+    "missing_case_tokens": [],
+    "negative_case_count": 24,
+    "positive_case_count": 6,
+    "status": "PASS"
+  },
+  "failed_finding_ids": [],
+  "findings": [
+    {
+      "finding_id": "A06-F001",
+      "status": "PASS",
+      "summary": "Canonical evaluator schema rejects candidate-readable, mutable, and candidate-access evaluator bundles."
+    },
+    {
+      "finding_id": "A06-F002",
+      "status": "PASS",
+      "summary": "Canonical holdout schema and the runtime seal path enforce NONE candidate access."
+    },
+    {
+      "finding_id": "A06-F003",
+      "status": "PASS",
+      "summary": "The chamber promotion node is a deterministic subworkflow delegation; no llm node emits a PromotionDecision."
+    },
+    {
+      "finding_id": "A06-F004",
+      "status": "PASS",
+      "summary": "The evolution_promotion graph enforces G00-G14, Parliament, attestation, approval, lease, CAS, and receipt boundaries."
+    },
+    {
+      "finding_id": "A06-F005",
+      "status": "PASS",
+      "summary": "The bounded promotion helper is bound to the canonical workflow through the evolution-authority node entrypoints."
+    }
+  ],
+  "firewall_audit": {
+    "evaluator_hostile_fixtures": {
+      "candidate_access_true_schema_valid": false,
+      "mutable_during_run_true_schema_valid": false,
+      "mutable_errors": [
+        "Additional properties are not allowed ('mutable_during_run' was unexpected)"
+      ],
+      "readable_by_candidates_true_schema_valid": false,
+      "readable_errors": [
+        "Additional properties are not allowed ('readable_by_candidates' was unexpected)"
+      ]
+    },
+    "f001_status": "PASS",
+    "f002_status": "PASS",
+    "holdout_schema_candidate_access_accepted": {
+      "AGGREGATE_ONLY": false,
+      "METADATA_ONLY": false,
+      "NONE": false,
+      "True": false
+    },
+    "runtime_holdout_candidate_access": {
+      "AGGREGATE_ONLY": {
+        "accepted": false,
+        "error_type": "TypeError"
+      },
+      "METADATA_ONLY": {
+        "accepted": false,
+        "error_type": "TypeError"
+      },
+      "NONE": {
+        "accepted": false,
+        "error_type": "TypeError"
+      },
+      "True": {
+        "accepted": false,
+        "error_type": "TypeError"
+      }
+    }
+  },
+  "promotion_workflow_audit": {
+    "authority_artifact_output_nodes": {
+      "action_intent": [
+        "record_promotion_request_intent"
+      ],
+      "adjudication": [
+        "run_parliament_adjudication"
+      ],
+      "approval_record": [
+        "resolve_human_policy_approval"
+      ],
+      "artifact_receipt": [
+        "verify_promotion_pack_receipts"
+      ],
+      "attestation": [
+        "run_independent_attestation"
+      ],
+      "capability_lease": [
+        "acquire_promotion_commit_lease"
+      ],
+      "effect_receipt": [
+        "reconcile_commit_receipts"
+      ],
+      "gate_decision": [
+        "gate_g00_pin_resolution",
+        "gate_g01_policy_authority",
+        "gate_g02_evaluator_holdout_firewall",
+        "gate_g03_schema_lineage_count",
+        "gate_g04_source_provenance",
+        "gate_g05_search_coverage",
+        "gate_g06_method_scope_dependency",
+        "gate_g07_validation_leakage",
+        "gate_g08_adaptive_statistics",
+        "gate_g09_red_queen",
+        "gate_g10_replication_ceiling",
+        "gate_g11_parliament",
+        "gate_g12_independent_attestation",
+        "gate_g13_human_policy_approval"
+      ],
+      "phase_artifact_set": [
+        "build_promotion_pack"
+      ],
+      "promotion_decision": [
+        "commit_promotion_atomically"
+      ]
+    },
+    "declared_gate_nodes": {
+      "G00_PIN_RESOLUTION": [
+        "gate_g00_pin_resolution"
+      ],
+      "G01_POLICY_AUTHORITY": [
+        "gate_g01_policy_authority"
+      ],
+      "G02_EVALUATOR_HOLDOUT_FIREWALL": [
+        "gate_g02_evaluator_holdout_firewall"
+      ],
+      "G03_SCHEMA_LINEAGE_COUNT": [
+        "gate_g03_schema_lineage_count"
+      ],
+      "G04_SOURCE_PROVENANCE": [
+        "gate_g04_source_provenance"
+      ],
+      "G05_SEARCH_COVERAGE": [
+        "gate_g05_search_coverage"
+      ],
+      "G06_METHOD_SCOPE_DEPENDENCY": [
+        "gate_g06_method_scope_dependency"
+      ],
+      "G07_VALIDATION_LEAKAGE": [
+        "gate_g07_validation_leakage"
+      ],
+      "G08_ADAPTIVE_STATISTICS": [
+        "gate_g08_adaptive_statistics"
+      ],
+      "G09_RED_QUEEN": [
+        "gate_g09_red_queen"
+      ],
+      "G10_REPLICATION_CEILING": [
+        "gate_g10_replication_ceiling",
+        "gate_g12_independent_attestation"
+      ],
+      "G11_PARLIAMENT": [
+        "gate_g11_parliament"
+      ],
+      "G12_INDEPENDENT_ATTESTATION": [
+        "gate_g12_independent_attestation"
+      ],
+      "G13_HUMAN_POLICY_APPROVAL": [
+        "gate_g13_human_policy_approval"
+      ],
+      "G14_ATOMIC_PROMOTION_COMMIT": [
+        "commit_promotion_atomically",
+        "reconcile_commit_receipts"
+      ]
+    },
+    "f004_status": "PASS",
+    "gate_order_violations": [],
+    "llm_non_advisory_outputs": [],
+    "missing_authority_artifact_outputs": [],
+    "missing_gate_declarations": [],
+    "promotion_commit_capability_holders": [
+      "commit_promotion_atomically"
+    ],
+    "promotion_decision_emitters": [
+      "commit_promotion_atomically"
+    ],
+    "workflow_node_count": 23
+  },
+  "registry_cross_check": {
+    "chamber": {
+      "promotion_delegation": "workflows/evolution_promotion.workflow.yaml",
+      "status": "PASS",
+      "workflow_id": "evolution_chamber_cycle"
+    },
+    "note": "Cross-check only: the independent findings above are derived from primary sources, not from the audited registry.",
+    "promotion": {
+      "commit_capability_holder": "commit_promotion_atomically",
+      "gate_nodes": {
+        "G00_PIN_RESOLUTION": "gate_g00_pin_resolution",
+        "G01_POLICY_AUTHORITY": "gate_g01_policy_authority",
+        "G02_EVALUATOR_HOLDOUT_FIREWALL": "gate_g02_evaluator_holdout_firewall",
+        "G03_SCHEMA_LINEAGE_COUNT": "gate_g03_schema_lineage_count",
+        "G04_SOURCE_PROVENANCE": "gate_g04_source_provenance",
+        "G05_SEARCH_COVERAGE": "gate_g05_search_coverage",
+        "G06_METHOD_SCOPE_DEPENDENCY": "gate_g06_method_scope_dependency",
+        "G07_VALIDATION_LEAKAGE": "gate_g07_validation_leakage",
+        "G08_ADAPTIVE_STATISTICS": "gate_g08_adaptive_statistics",
+        "G09_RED_QUEEN": "gate_g09_red_queen",
+        "G10_REPLICATION_CEILING": "gate_g10_replication_ceiling",
+        "G11_PARLIAMENT": "gate_g11_parliament",
+        "G12_INDEPENDENT_ATTESTATION": "gate_g12_independent_attestation",
+        "G13_HUMAN_POLICY_APPROVAL": "gate_g13_human_policy_approval",
+        "G14_ATOMIC_PROMOTION_COMMIT": "reconcile_commit_receipts"
+      },
+      "node_count": 23,
+      "status": "PASS",
+      "workflow_id": "evolution_promotion"
+    }
+  },
+  "runtime_binding_audit": {
+    "bindings": {
+      "chamber_delegates_to_promotion_workflow": true,
+      "decider_defined": true,
+      "nodes_delegate_to_committer": true,
+      "nodes_delegate_to_decider": true,
+      "semantic_validator_defined": true
+    },
+    "f005_status": "PASS",
+    "missing_node_entrypoints": [],
+    "runtime_bound_node_count": 21,
+    "unbound_runtime_nodes": []
+  },
+  "schema_meta_audit": {
+    "canonical_schema_count": 127,
+    "duplicate_schema_ids": [],
+    "meta_schema_failures": [],
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "A06"
+}

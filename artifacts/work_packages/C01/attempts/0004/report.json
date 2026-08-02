@@ -1,0 +1,232 @@
+{
+  "work_package_id": "C01",
+  "attempt_id": "C01-0004",
+  "base_checkpoint": "A04:PASS,A05-0002:PASS",
+  "status": "PASS",
+  "package_status": "PASS",
+  "contract_status": "CONFORMANT",
+  "runtime_migration_status": "PENDING_C03",
+  "full_suite_status": "EXPECTED_FAILURES_PENDING_C03",
+  "repository_full_suite_status": "EXPECTED_MIGRATION_FAILURES",
+  "expected_failure_count": 24,
+  "migration_owner": "C03",
+  "completion_ready": false,
+  "authority_decision_id": "HD-EF4-C01-SG003-20260728-001",
+  "authority_decision_hash": "sha256:4717a98cfc987dac28c9b113d843e6f0077947d42589523e8e4cee2f0be64f5b",
+  "resolved_prior_gap": {
+    "id": "C01-SG003",
+    "relationship": "RESOLVED_BY_DECISION",
+    "decision_id": "HD-EF4-C01-SG003-20260728-001",
+    "history_preserved": true,
+    "prior_attempt_status_unchanged": "SPEC_GAP"
+  },
+  "prior_attempts_preserved": [
+    {
+      "attempt": "C01-0001",
+      "status": "SPEC_GAP",
+      "report": "artifacts/work_packages/C01/report.json",
+      "report_sha256": "14d1815150ba37ebc416d637afbb1514fbbb024f9fe6940ed7b976ce33b60d68"
+    },
+    {
+      "attempt": "C01-0002",
+      "status": "SPEC_GAP",
+      "report": "artifacts/work_packages/C01/attempts/0002/report.json",
+      "report_sha256": "c8100002239cf826c9fe521f86f84295e1cdec3bbe5e49f210c4a7e124d31369"
+    },
+    {
+      "attempt": "C01-0003",
+      "status": "SPEC_GAP",
+      "report": "artifacts/work_packages/C01/attempts/0003/report.json",
+      "report_sha256": "d3f14a0f227bc7fa4743b7d2fbb266cb1999cd2524f4a93a9770b19910a130e5"
+    }
+  ],
+  "changed_files": [
+    "schemas/promotion-decision.schema.json",
+    "docs/api_contract.md",
+    "tests/contracts/openapi/test_scientific_contracts.py",
+    "artifacts/work_packages/C01/attempts/0004/c01-contract-verifier.py",
+    "artifacts/work_packages/C01/attempts/0004/c01-rah-seal.py",
+    "artifacts/work_packages/C01/attempts/0004/runtime-migration-baseline.junit.xml",
+    "artifacts/work_packages/C01/attempts/0004/runtime-migration-residual.junit.xml",
+    "artifacts/work_packages/C01/attempts/0004/targeted-contracts.junit.xml",
+    "artifacts/work_packages/C01/attempts/0004/runtime-migration-impact.json",
+    "artifacts/work_packages/C01/attempts/0004/c01-contract-verification.json",
+    "artifacts/work_packages/C01/attempts/0004/dependency-status.json",
+    "artifacts/work_packages/C01/attempts/0004/commands.jsonl",
+    "artifacts/work_packages/C01/attempts/0004/review.md",
+    "artifacts/work_packages/C01/attempts/0004/report.json"
+  ],
+  "canonical_contract_surface": {
+    "status": "PASS",
+    "schema_count": 124,
+    "example_count": 124,
+    "valid_example_count": 124,
+    "unique_schema_id_count": 124,
+    "required_resolved_ref_count": 20,
+    "promotion_level_count": 6,
+    "canonical_gate_count": 15,
+    "openapi_version": "3.1.1",
+    "openapi_operation_count": 33,
+    "unique_operation_id_count": 33,
+    "targeted_contract_tests_passed": 71,
+    "targeted_contract_tests_failed": 0,
+    "targeted_contract_tests_skipped": 0,
+    "legacy_promotion_value_hits": 0,
+    "floating_reference_hits": 0,
+    "spec_hash": "sha256:580392a2d791515a6523472372fa3139321807a9fa3a2a0f183e93b4686948df",
+    "decision_hash": "sha256:781e2449498ee9799c8f62b6a8b4cd08289891587a86a795e8f45459e09f9f5f"
+  },
+  "full_python_regression": {
+    "status": "EXPECTED_FAILURES_PENDING_C03",
+    "baseline": {
+      "collected": 848,
+      "passed": 824,
+      "failed": 24,
+      "skipped": 0
+    },
+    "residual": {
+      "collected": 855,
+      "passed": 831,
+      "failed": 24,
+      "skipped": 0
+    },
+    "failure_groups": {
+      "tests/test_evolution_chamber.py": 2,
+      "tests/test_governance.py": 14,
+      "tests/test_integration_forge_cycle.py": 8
+    },
+    "same_node_ids": true,
+    "normalized_fingerprint_parity": true,
+    "raw_message_changed_count": 22,
+    "new_failure_count": 0,
+    "migration_owner": "C03",
+    "artifact": "artifacts/work_packages/C01/attempts/0004/runtime-migration-impact.json"
+  },
+  "checks": [
+    {
+      "command_id": "C01-0004-C004",
+      "name": "targeted C01 contract regression",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0004/targeted-contracts.junit.xml"
+    },
+    {
+      "command_id": "C01-0004-C005",
+      "name": "OpenAPI 3.1.1 external validation",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0004/c01-contract-verification.json#/canonical_contract/openapi/external_validator"
+    },
+    {
+      "command_id": "C01-0004-C007",
+      "name": "generated Python client dry-run",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0004/c01-contract-verification.json#/canonical_contract/openapi/generated_client_dry_run"
+    },
+    {
+      "command_id": "C01-0004-C008",
+      "name": "full Python regression residual",
+      "exit_code": 1,
+      "expected_by_decision": true,
+      "artifact": "artifacts/work_packages/C01/attempts/0004/runtime-migration-impact.json"
+    },
+    {
+      "command_id": "C01-0004-C010",
+      "name": "deterministic evidence replay",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0004/c01-contract-verification.json"
+    },
+    {
+      "command_id": "C01-0004-C013",
+      "name": "write-scope, history, runtime-boundary, and diff audit",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0004/c01-contract-verification.json#/write_scope_audit"
+    },
+    {
+      "command_id": "C01-0004-C014",
+      "name": "user-authorized primary-session separate contract review",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/attempts/0004/review.md"
+    },
+    {
+      "command_id": "C01-0004-C016",
+      "name": "C01 core PASS evidence append with generation preservation",
+      "exit_code": 0,
+      "artifact": ".rah/ralph/generations/000005-839fd321/evidence_ledger.json#/entries/5"
+    },
+    {
+      "command_id": "C01-0004-C017",
+      "name": "C01 core RAH generation and resume verification",
+      "exit_code": 0,
+      "artifact": ".rah/ralph/generations/000005-839fd321/generation-manifest.json"
+    }
+  ],
+  "review": {
+    "reviewer": "primary-session contract review",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_PASS",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_REVIEW",
+    "product_owner_review_approval": true,
+    "actor_separate_subagent_used": false,
+    "blocking_findings": [],
+    "assurance_limitation": "The product owner prohibited Fleet and subagents. This review is procedurally separate but not actor-independent, and no external certification is claimed."
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/C01/attempts/0004/c01-contract-verifier.py",
+    "artifacts/work_packages/C01/attempts/0004/c01-rah-seal.py",
+    "artifacts/work_packages/C01/attempts/0004/runtime-migration-baseline.junit.xml",
+    "artifacts/work_packages/C01/attempts/0004/runtime-migration-residual.junit.xml",
+    "artifacts/work_packages/C01/attempts/0004/targeted-contracts.junit.xml",
+    "artifacts/work_packages/C01/attempts/0004/runtime-migration-impact.json",
+    "artifacts/work_packages/C01/attempts/0004/c01-contract-verification.json",
+    "artifacts/work_packages/C01/attempts/0004/dependency-status.json",
+    "artifacts/work_packages/C01/attempts/0004/commands.jsonl",
+    "artifacts/work_packages/C01/attempts/0004/review.md",
+    "artifacts/work_packages/C01/attempts/0004/report.json"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000004-d7a75c37",
+    "core_generation": "000005-839fd321",
+    "core_evidence_id": "E0006",
+    "final_closeout_evidence_id": "E0007",
+    "generation_manifest_verified": true,
+    "generation_file_hashes_verified": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "flat_snapshot_content_matches": 6,
+    "retained_generations": [
+      "000001-8cce4954",
+      "000002-e90aad20",
+      "000003-42a86d6d",
+      "000004-d7a75c37",
+      "000005-839fd321"
+    ],
+    "parse_errors": {},
+    "status": "active",
+    "completion_ready": false,
+    "next_package": "C02"
+  },
+  "open_risks": [
+    "The repository-wide Python suite still has the exact 24 C03-owned migration failures; C01 does not report the full suite PASS.",
+    "The preserved dirty worktree produces fourteen PACKAGE_MANIFEST diagnostics in the whole-bundle validator; they are separate from C01's isolated contract checks.",
+    "Review is user-authorized primary-session procedural review rather than actor-independent assurance because Fleet and subagents were prohibited."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "handwritten EvolutionRunSpec and PromotionDecision runtime conformance, which belongs to C03",
+    "repository-wide zero-failure conformance, which belongs to C04",
+    "B04 canonical registry packaging and clean-wheel installation",
+    "production REST handlers, runtime authorization, persistence, or transport behavior",
+    "external actor-independent assurance"
+  ],
+  "dependency_state": {
+    "A04": "PASS",
+    "A05": "PASS",
+    "C01": "PASS",
+    "C02": "READY",
+    "C03": "WAITING_ON_C02",
+    "C04": "WAITING_ON_C02_AND_C03",
+    "B04": "WAITING_ON_C04",
+    "full_156_package_dag_recomputed": false,
+    "subsequent_dag_execution_started": false
+  },
+  "next_ready": [
+    "C02"
+  ]
+}

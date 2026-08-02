@@ -1,0 +1,333 @@
+{
+  "correlation": {
+    "claude_error_rate": 0.3333333333333333,
+    "codex_error_rate": 0.3333333333333333,
+    "contingency": {
+      "both_error": 3,
+      "claude_only_error": 1,
+      "codex_only_error": 1,
+      "neither_error": 7
+    },
+    "dataset_hash": "sha256:ec42e56e98e33e29a0618545bcb3e73cd7cdd94244ad4aa3ff0c35b53817971b",
+    "dataset_id": "X04-PROVIDER-PARITY",
+    "diversity_position": "not_assumed_independent",
+    "eval_id": "X04-ERROR-CORRELATION",
+    "evaluated_at": "2026-08-01T00:00:00Z",
+    "excess_joint_error": 0.1388888888888889,
+    "independence_assumed": false,
+    "joint_error_expected_if_independent": 0.1111111111111111,
+    "joint_error_observed": 0.25,
+    "phi_coefficient": 0.625,
+    "positively_correlated": true,
+    "report_id": "X04-CROSS-PROVIDER-PARITY-AND-DIVERSITY-0001",
+    "sources": {
+      "canonical_registry_ref": {
+        "path": "manifests/role_registry.yaml",
+        "version": "4.0.0"
+      },
+      "claude_adapter_ref": {
+        "path": "adapters/claude-code/role_mapping.yaml",
+        "version": "4.0.0"
+      },
+      "codex_adapter_ref": {
+        "path": "adapters/codex/role_mapping.yaml",
+        "version": "4.0.0"
+      }
+    },
+    "status": "PASS",
+    "synthetic": true,
+    "trial_count": 12,
+    "trial_ids": [
+      "X04-T01",
+      "X04-T02",
+      "X04-T03",
+      "X04-T04",
+      "X04-T05",
+      "X04-T06",
+      "X04-T07",
+      "X04-T08",
+      "X04-T09",
+      "X04-T10",
+      "X04-T11",
+      "X04-T12"
+    ],
+    "version": "4.0.0"
+  },
+  "eval_id": "X04-CROSS-PROVIDER-PARITY-AND-DIVERSITY",
+  "parity": {
+    "adapters": {
+      "claude_code": "adapters/claude-code/role_mapping.yaml",
+      "codex": "adapters/codex/role_mapping.yaml"
+    },
+    "canonical_registry_ref": "manifests/role_registry.yaml",
+    "checks": {
+      "claude_surface_aligned": 28,
+      "codex_agent_type_aligned": 28,
+      "isolation_aligned": 28,
+      "result_schema_aligned": 28,
+      "role_set_aligned": true
+    },
+    "eval_id": "X04-PROVIDER-PARITY",
+    "parity_surface": [
+      "abductive_mediator",
+      "archive_curator",
+      "causal_auditor",
+      "challenge_evolver",
+      "claim_extractor",
+      "contract_reviewer",
+      "deductivist",
+      "defender",
+      "evidence_scout",
+      "evolution_governor",
+      "evolution_promotion_attestor",
+      "experiment_evolver",
+      "hypothesis_mutator",
+      "independent_attestor",
+      "inductivist",
+      "judge",
+      "method_auditor",
+      "minority_reporter",
+      "novelty_examiner",
+      "parent_selection_auditor",
+      "prompt_genome_auditor",
+      "prosecutor",
+      "replication_auditor",
+      "scope_auditor",
+      "shinka_adapter_auditor",
+      "statistical_governor",
+      "validation_executor",
+      "verifier_firewall_auditor"
+    ],
+    "role_count": 28,
+    "roles": [
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "abductive_mediator",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "worker",
+        "output_schema_ref": "schemas/archive-rebalance-plan.schema.json",
+        "role_id": "archive_curator",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "causal_auditor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "worker",
+        "output_schema_ref": "schemas/challenge-genome.schema.json",
+        "role_id": "challenge_evolver",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "worker",
+        "output_schema_ref": "schemas/claim-card.schema.json",
+        "role_id": "claim_extractor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "contract_reviewer",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "deductivist",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "defender",
+        "writable": true
+      },
+      {
+        "claude_isolation": "shared",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "evidence_scout",
+        "writable": false
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/evolution-stop-certificate.schema.json",
+        "role_id": "evolution_governor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/promotion-decision.schema.json",
+        "role_id": "evolution_promotion_attestor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "worker",
+        "output_schema_ref": "schemas/experiment-genome.schema.json",
+        "role_id": "experiment_evolver",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "worker",
+        "output_schema_ref": "schemas/hypothesis-genome.schema.json",
+        "role_id": "hypothesis_mutator",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/attestation.schema.json",
+        "role_id": "independent_attestor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "inductivist",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/adjudication.schema.json",
+        "role_id": "judge",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "method_auditor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/minority-report.schema.json",
+        "role_id": "minority_reporter",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/novelty-assessment.schema.json",
+        "role_id": "novelty_examiner",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/parent-selection-receipt.schema.json",
+        "role_id": "parent_selection_auditor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/prompt-mutation-proposal.schema.json",
+        "role_id": "prompt_genome_auditor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "prosecutor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/replication-result.schema.json",
+        "role_id": "replication_auditor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "scope_auditor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/backend-adapter-qualification.schema.json",
+        "role_id": "shinka_adapter_auditor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/selective-inference-report.schema.json",
+        "role_id": "statistical_governor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "worker",
+        "output_schema_ref": "schemas/result-envelope.schema.json",
+        "role_id": "validation_executor",
+        "writable": true
+      },
+      {
+        "claude_isolation": "worktree",
+        "claude_surface": "custom_agent",
+        "codex_agent_type": "explorer",
+        "output_schema_ref": "schemas/evaluator-qualification-report.schema.json",
+        "role_id": "verifier_firewall_auditor",
+        "writable": true
+      }
+    ],
+    "status": "PASS",
+    "writable_role_count": 27
+  },
+  "report_hash": "sha256:416e2044fea53e8db45f887b7ae8ccb706f6f063cdc47398b0a0c07fd4f3c7ca",
+  "status": "PASS"
+}

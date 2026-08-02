@@ -1,89 +1,191 @@
 {
-  "query_plan_id": "QPLAN-0001",
-  "insight_id": "INS-0001",
-  "insight_revision": 1,
+  "boundary_queries": [
+    "spaced retrieval practice moderator delayed recall"
+  ],
+  "budget": {
+    "max_documents": 80,
+    "max_queries": 40,
+    "max_seconds": 900
+  },
   "canonical_relation": "spaced retrieval practice improves delayed recall",
+  "classification_hash": "sha256:98a5fce99d8b9ea9af2ed5c426c95670a403af981fc5504bd4b21cdc97462ee0",
+  "classification_id": "EWC-O01-E2-0001",
+  "classification_revision": 1,
+  "classifier_version": "4.0.1-f01.1",
+  "created_at": "2026-07-31T00:00:00Z",
   "forward_queries": [
     "spaced retrieval practice delayed recall"
   ],
-  "reverse_queries": [
-    "spaced retrieval practice impairs delayed recall"
-  ],
-  "null_queries": [
-    "spaced retrieval practice no effect delayed recall"
-  ],
-  "boundary_queries": [
-    "spaced retrieval practice moderator delayed recall"
+  "insight_id": "INS-O01-0001",
+  "insight_revision": 1,
+  "lane_decisions": [
+    {
+      "decision_reason": "CLASS_FLOOR",
+      "disposition": "SELECTED",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "lexical"
+    },
+    {
+      "decision_reason": "CLASS_FLOOR",
+      "disposition": "SELECTED",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "semantic"
+    },
+    {
+      "decision_reason": "CLASS_FLOOR",
+      "disposition": "SELECTED",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "citation"
+    },
+    {
+      "decision_reason": "CLASS_FLOOR",
+      "disposition": "SELECTED",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "entity_variable"
+    },
+    {
+      "decision_reason": "NOT_REQUIRED_FOR_CLASS",
+      "disposition": "NOT_REQUIRED_FOR_CLASS",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "mechanism"
+    },
+    {
+      "decision_reason": "CLASS_FLOOR",
+      "disposition": "SELECTED",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "counterevidence"
+    },
+    {
+      "decision_reason": "CLASS_FLOOR",
+      "disposition": "SELECTED",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "null"
+    },
+    {
+      "decision_reason": "CLASS_FLOOR",
+      "disposition": "SELECTED",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "boundary"
+    },
+    {
+      "decision_reason": "CLASS_FLOOR",
+      "disposition": "SELECTED",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "method"
+    },
+    {
+      "decision_reason": "CLASS_FLOOR",
+      "disposition": "SELECTED",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "temporal"
+    },
+    {
+      "decision_reason": "NOT_REQUIRED_FOR_CLASS",
+      "disposition": "NOT_REQUIRED_FOR_CLASS",
+      "evidence_ids": [
+        "EWC-O01-E2-0001"
+      ],
+      "lane": "external_novelty"
+    }
   ],
   "method_queries": [
     "delayed recall measurement reliability spaced practice"
   ],
-  "novelty_queries": [
-    "mechanism spaced retrieval delayed recall"
+  "novelty_queries": [],
+  "null_queries": [
+    "spaced retrieval practice no effect delayed recall"
+  ],
+  "plan_hash": "sha256:2bc841e81f5fed0d6108c7a0242547bc96b97bde5593b3c1e4117737d7945406",
+  "planner_prompt_hash": "sha256:57c4c13784d752c2c4d16c925a30e68c4c0ac903ba1a600d0832f24a8f19348b",
+  "policy_bundle_hash": "sha256:a5d20c342d16ad2ba0ad10fdf7d0b6398812f47eecc6c90a2c87cac94f0767f8",
+  "query_plan_id": "QPLAN-O01-E2-0001",
+  "request_id": "REQ-O01-E2-0001",
+  "request_input_hash": "sha256:453f4fe87790c07668125267bee1346c3e6501455aa64d4962fa18dfe0d9c7b6",
+  "request_revision": 1,
+  "required_lanes": [
+    "lexical",
+    "semantic",
+    "citation",
+    "entity_variable",
+    "counterevidence",
+    "null",
+    "boundary",
+    "method",
+    "temporal"
+  ],
+  "retrieval_requirement": "REQUIRED",
+  "reverse_queries": [
+    "spaced retrieval practice impairs delayed recall"
   ],
   "scope_partitions": [
     {
-      "domain": "learning_science",
-      "population": "adult learners enrolled in introductory university courses",
-      "entity_type": "participant",
-      "entity_subtype": "university student",
-      "unit_of_analysis": "individual learner",
-      "setting": "controlled course-based study",
-      "geography": null,
-      "jurisdiction": null,
-      "language": "English",
-      "lifecycle_stage": null,
-      "spatial_scale": "individual",
-      "temporal_scale": "14-day delayed outcome",
-      "time_period": null,
-      "measurement_time": "14 days after the final study session",
-      "intervention_or_exposure": {
-        "name": "spaced retrieval practice",
-        "category": "learning intervention",
-        "min_value": 3,
-        "max_value": 3,
-        "unit": "sessions",
-        "duration": "one week",
-        "frequency": "three sessions",
-        "rate": null,
-        "route_or_delivery": "computer-based practice"
-      },
       "comparator": "rereading with matched total study time",
+      "conditions": {
+        "feedback_available": true,
+        "matched_total_study_time": true,
+        "retention_interval_days": 14
+      },
+      "domain": "learning_science",
+      "domain_extensions": {
+        "material_type": "expository text",
+        "outcome_instrument": "preregistered delayed-recall test"
+      },
+      "entity_subtype": "university student",
+      "entity_type": "participant",
+      "exclusion_criteria": [
+        "missing delayed outcome"
+      ],
+      "geography": null,
       "inclusion_criteria": [
         "completed baseline assessment",
         "completed all assigned sessions"
       ],
-      "exclusion_criteria": [
-        "missing delayed outcome"
-      ],
-      "conditions": {
-        "matched_total_study_time": true,
-        "feedback_available": true,
-        "retention_interval_days": 14
+      "intervention_or_exposure": {
+        "category": "learning intervention",
+        "duration": "one week",
+        "frequency": "three sessions",
+        "max_value": 3,
+        "min_value": 3,
+        "name": "spaced retrieval practice",
+        "rate": null,
+        "route_or_delivery": "computer-based practice",
+        "unit": "sessions"
       },
-      "domain_extensions": {
-        "material_type": "expository text",
-        "outcome_instrument": "preregistered delayed-recall test"
-      }
+      "jurisdiction": null,
+      "language": "English",
+      "lifecycle_stage": null,
+      "measurement_time": "14 days after the final study session",
+      "population": "adult learners enrolled in introductory university courses",
+      "setting": "controlled course-based study",
+      "spatial_scale": "individual",
+      "temporal_scale": "14-day delayed outcome",
+      "time_period": null,
+      "unit_of_analysis": "individual learner"
     }
   ],
-  "required_lanes": [
-    "lexical",
-    "semantic",
-    "counterevidence",
-    "null",
-    "boundary",
-    "method"
-  ],
-  "budget": {
-    "max_queries": 40,
-    "max_documents": 80,
-    "max_seconds": 900
-  },
   "stop_rules": [
-    "all required lanes terminal",
+    "all selected lanes terminal",
     "two consecutive saturation rounds"
   ],
-  "planner_prompt_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
-  "created_at": "2026-07-25T12:00:00Z"
+  "work_class": "E2"
 }

@@ -1,46 +1,249 @@
 {
-  "certificate_id": "SCC-0001",
-  "run_id": "RUN-0001",
-  "subject_ref": "HYP-0001",
-  "query_plan_id": "QP-0001",
-  "required_lanes": [
-    "support",
+  "absence_claim_ceiling": "CORPUS_CONDITIONAL",
+  "blocked_lanes": [],
+  "certificate_hash": "sha256:af6a3f2369f3786700666133636bd9e93a3ec48ed49361d99570dbcb82226d17",
+  "certificate_id": "SCC-O01-0001",
+  "completed_lanes": [
+    "lexical",
+    "semantic",
+    "citation",
+    "entity_variable",
     "counterevidence",
     "null",
     "boundary",
     "method",
-    "external_novelty"
+    "temporal"
   ],
+  "completion_state": "PASS",
+  "failed_lanes": [],
+  "generated_at": "2026-07-31T00:02:00Z",
+  "known_failures": [],
   "lane_receipt_ids": [
-    "SLR-01",
-    "SLR-02",
-    "SLR-03",
-    "SLR-04",
-    "SLR-05",
-    "SLR-06"
+    "SLR-O01-LEXICAL-0001",
+    "SLR-O01-SEMANTIC-0001",
+    "SLR-O01-CITATION-0001",
+    "SLR-O01-ENTITY_VARIABLE-0001",
+    "SLR-O01-MECHANISM-0001",
+    "SLR-O01-COUNTEREVIDENCE-0001",
+    "SLR-O01-NULL-0001",
+    "SLR-O01-BOUNDARY-0001",
+    "SLR-O01-METHOD-0001",
+    "SLR-O01-TEMPORAL-0001",
+    "SLR-O01-EXTERNAL_NOVELTY-0001"
   ],
-  "completed_lanes": [
-    "support",
+  "lane_reconciliations": [
+    {
+      "executed_scope_ids": [
+        "lane:lexical:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ],
+      "lane": "lexical",
+      "plan_disposition": "SELECTED",
+      "receipt_ids": [
+        "SLR-O01-LEXICAL-0001"
+      ],
+      "receipt_states": [
+        "SEARCHED_WITH_RESULTS"
+      ],
+      "reconciled_state": "SEARCHED_WITH_RESULTS",
+      "selected": true,
+      "unsearched_scope_ids": []
+    },
+    {
+      "executed_scope_ids": [
+        "lane:semantic:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ],
+      "lane": "semantic",
+      "plan_disposition": "SELECTED",
+      "receipt_ids": [
+        "SLR-O01-SEMANTIC-0001"
+      ],
+      "receipt_states": [
+        "SEARCHED_NONE"
+      ],
+      "reconciled_state": "SEARCHED_NONE",
+      "selected": true,
+      "unsearched_scope_ids": []
+    },
+    {
+      "executed_scope_ids": [
+        "lane:citation:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ],
+      "lane": "citation",
+      "plan_disposition": "SELECTED",
+      "receipt_ids": [
+        "SLR-O01-CITATION-0001"
+      ],
+      "receipt_states": [
+        "SEARCHED_NONE"
+      ],
+      "reconciled_state": "SEARCHED_NONE",
+      "selected": true,
+      "unsearched_scope_ids": []
+    },
+    {
+      "executed_scope_ids": [
+        "lane:entity_variable:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ],
+      "lane": "entity_variable",
+      "plan_disposition": "SELECTED",
+      "receipt_ids": [
+        "SLR-O01-ENTITY_VARIABLE-0001"
+      ],
+      "receipt_states": [
+        "SEARCHED_NONE"
+      ],
+      "reconciled_state": "SEARCHED_NONE",
+      "selected": true,
+      "unsearched_scope_ids": []
+    },
+    {
+      "executed_scope_ids": [],
+      "lane": "mechanism",
+      "plan_disposition": "NOT_REQUIRED_FOR_CLASS",
+      "receipt_ids": [
+        "SLR-O01-MECHANISM-0001"
+      ],
+      "receipt_states": [
+        "UNSEARCHED"
+      ],
+      "reconciled_state": "UNSEARCHED",
+      "selected": false,
+      "unsearched_scope_ids": [
+        "lane:mechanism:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ]
+    },
+    {
+      "executed_scope_ids": [
+        "lane:counterevidence:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ],
+      "lane": "counterevidence",
+      "plan_disposition": "SELECTED",
+      "receipt_ids": [
+        "SLR-O01-COUNTEREVIDENCE-0001"
+      ],
+      "receipt_states": [
+        "SEARCHED_NONE"
+      ],
+      "reconciled_state": "SEARCHED_NONE",
+      "selected": true,
+      "unsearched_scope_ids": []
+    },
+    {
+      "executed_scope_ids": [
+        "lane:null:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ],
+      "lane": "null",
+      "plan_disposition": "SELECTED",
+      "receipt_ids": [
+        "SLR-O01-NULL-0001"
+      ],
+      "receipt_states": [
+        "SEARCHED_NONE"
+      ],
+      "reconciled_state": "SEARCHED_NONE",
+      "selected": true,
+      "unsearched_scope_ids": []
+    },
+    {
+      "executed_scope_ids": [
+        "lane:boundary:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ],
+      "lane": "boundary",
+      "plan_disposition": "SELECTED",
+      "receipt_ids": [
+        "SLR-O01-BOUNDARY-0001"
+      ],
+      "receipt_states": [
+        "SEARCHED_NONE"
+      ],
+      "reconciled_state": "SEARCHED_NONE",
+      "selected": true,
+      "unsearched_scope_ids": []
+    },
+    {
+      "executed_scope_ids": [
+        "lane:method:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ],
+      "lane": "method",
+      "plan_disposition": "SELECTED",
+      "receipt_ids": [
+        "SLR-O01-METHOD-0001"
+      ],
+      "receipt_states": [
+        "SEARCHED_NONE"
+      ],
+      "reconciled_state": "SEARCHED_NONE",
+      "selected": true,
+      "unsearched_scope_ids": []
+    },
+    {
+      "executed_scope_ids": [
+        "lane:temporal:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ],
+      "lane": "temporal",
+      "plan_disposition": "SELECTED",
+      "receipt_ids": [
+        "SLR-O01-TEMPORAL-0001"
+      ],
+      "receipt_states": [
+        "SEARCHED_NONE"
+      ],
+      "reconciled_state": "SEARCHED_NONE",
+      "selected": true,
+      "unsearched_scope_ids": []
+    },
+    {
+      "executed_scope_ids": [],
+      "lane": "external_novelty",
+      "plan_disposition": "NOT_REQUIRED_FOR_CLASS",
+      "receipt_ids": [
+        "SLR-O01-EXTERNAL_NOVELTY-0001"
+      ],
+      "receipt_states": [
+        "UNSEARCHED"
+      ],
+      "reconciled_state": "UNSEARCHED",
+      "selected": false,
+      "unsearched_scope_ids": [
+        "lane:external_novelty:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+      ]
+    }
+  ],
+  "novelty_claim_ceiling": "NOT_ASSESSED",
+  "partial_lanes": [],
+  "plan_hash": "sha256:2bc841e81f5fed0d6108c7a0242547bc96b97bde5593b3c1e4117737d7945406",
+  "query_plan_id": "QPLAN-O01-E2-0001",
+  "required_lanes": [
+    "lexical",
+    "semantic",
+    "citation",
+    "entity_variable",
     "counterevidence",
     "null",
     "boundary",
-    "method"
+    "method",
+    "temporal"
   ],
-  "blocked_lanes": [
+  "run_id": "RUN-O01-0001",
+  "searched_scope": [
+    "lane:boundary:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6",
+    "lane:citation:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6",
+    "lane:counterevidence:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6",
+    "lane:entity_variable:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6",
+    "lane:lexical:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6",
+    "lane:method:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6",
+    "lane:null:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6",
+    "lane:semantic:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6",
+    "lane:temporal:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
+  ],
+  "subject_ref": "INS-O01-0001",
+  "unsearched_lanes": [
+    "mechanism",
     "external_novelty"
   ],
-  "searched_scope": [
-    "local-corpus:snapshot-001"
-  ],
   "unsearched_scope": [
-    "external-index:temporarily-unavailable"
+    "lane:external_novelty:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6",
+    "lane:mechanism:scope:sha256:65ba3f1797986290b46a5fb1a38ce18bc0245ba8b24f4c95a237fa8c4a3237a6"
   ],
-  "completion_state": "PARTIAL",
-  "absence_claim_ceiling": "CORPUS_CONDITIONAL",
-  "novelty_claim_ceiling": "CORPUS_NOVEL_ONLY",
-  "known_failures": [
-    "external novelty provider unavailable"
-  ],
-  "generated_at": "2026-07-26T00:00:00Z",
-  "certificate_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  "work_class": "E2"
 }

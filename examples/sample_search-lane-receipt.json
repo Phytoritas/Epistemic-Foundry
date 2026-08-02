@@ -1,68 +1,72 @@
 {
-  "receipt_id": "SLR-0001",
-  "run_id": "RUN-0001",
+  "corpus_snapshot_hash": "sha256:08e722d513d060c23b41c0ffa93ea63972c4a827458dcf952ca5c7119a54a25b",
+  "errors": [],
+  "excluded_count": 0,
+  "finished_at": "2026-07-31T00:01:00Z",
+  "index_versions": {
+    "fixture-index": "o01-2026-07-31"
+  },
   "lane": "counterevidence",
-  "query_text": "spaced practice no effect delayed recall",
-  "query_hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "lane_decision_evidence_ids": [
+    "EWC-O01-E2-0001"
+  ],
+  "plan_hash": "sha256:2bc841e81f5fed0d6108c7a0242547bc96b97bde5593b3c1e4117737d7945406",
+  "query_hash": "sha256:acc81e7a3ac70f7084803798d97b6e3d2b034ab2f294bcdb9afc93ddd6517700",
+  "query_plan_id": "QPLAN-O01-E2-0001",
+  "query_text": "spaced retrieval practice counterevidence",
+  "recall_proxy": 0.8,
+  "receipt_hash": "sha256:2e86674d221ae5f6060938b88aaaa20670ca836acb1bc8a7fab769d2fc9daab7",
+  "receipt_id": "SLR-O01-COUNTEREVIDENCE-0001",
+  "receipt_kind": "EXECUTION",
+  "result_count": 0,
+  "result_ids": [],
+  "run_id": "RUN-O01-0001",
   "scope_filter": {
-    "domain": "learning_science",
-    "population": "adult learners enrolled in introductory university courses",
-    "entity_type": "participant",
-    "entity_subtype": "university student",
-    "unit_of_analysis": "individual learner",
-    "setting": "controlled course-based study",
-    "geography": null,
-    "jurisdiction": null,
-    "language": "English",
-    "lifecycle_stage": null,
-    "spatial_scale": "individual",
-    "temporal_scale": "14-day delayed outcome",
-    "time_period": null,
-    "measurement_time": "14 days after the final study session",
-    "intervention_or_exposure": {
-      "name": "spaced retrieval practice",
-      "category": "learning intervention",
-      "min_value": 3,
-      "max_value": 3,
-      "unit": "sessions",
-      "duration": "one week",
-      "frequency": "three sessions",
-      "rate": null,
-      "route_or_delivery": "computer-based practice"
-    },
     "comparator": "rereading with matched total study time",
+    "conditions": {
+      "feedback_available": true,
+      "matched_total_study_time": true,
+      "retention_interval_days": 14
+    },
+    "domain": "learning_science",
+    "domain_extensions": {
+      "material_type": "expository text",
+      "outcome_instrument": "preregistered delayed-recall test"
+    },
+    "entity_subtype": "university student",
+    "entity_type": "participant",
+    "exclusion_criteria": [
+      "missing delayed outcome"
+    ],
+    "geography": null,
     "inclusion_criteria": [
       "completed baseline assessment",
       "completed all assigned sessions"
     ],
-    "exclusion_criteria": [
-      "missing delayed outcome"
-    ],
-    "conditions": {
-      "matched_total_study_time": true,
-      "feedback_available": true,
-      "retention_interval_days": 14
+    "intervention_or_exposure": {
+      "category": "learning intervention",
+      "duration": "one week",
+      "frequency": "three sessions",
+      "max_value": 3,
+      "min_value": 3,
+      "name": "spaced retrieval practice",
+      "rate": null,
+      "route_or_delivery": "computer-based practice",
+      "unit": "sessions"
     },
-    "domain_extensions": {
-      "material_type": "expository text",
-      "outcome_instrument": "preregistered delayed-recall test"
-    }
+    "jurisdiction": null,
+    "language": "English",
+    "lifecycle_stage": null,
+    "measurement_time": "14 days after the final study session",
+    "population": "adult learners enrolled in introductory university courses",
+    "setting": "controlled course-based study",
+    "spatial_scale": "individual",
+    "temporal_scale": "14-day delayed outcome",
+    "time_period": null,
+    "unit_of_analysis": "individual learner"
   },
-  "corpus_snapshot_hash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-  "index_versions": {
-    "fts": "15.0",
-    "embedding": "bge-m3@1"
-  },
-  "result_ids": [
-    "EV-COUNTER-0001"
-  ],
-  "result_count": 1,
-  "excluded_count": 3,
-  "stop_reason": "exhausted_query_plan",
-  "search_state": "SEARCHED_WITH_RESULTS",
-  "recall_proxy": 0.82,
-  "errors": [],
-  "started_at": "2026-07-25T12:00:00Z",
-  "finished_at": "2026-07-25T12:01:00Z",
-  "receipt_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  "search_state": "SEARCHED_NONE",
+  "sentinel_reason": null,
+  "started_at": "2026-07-31T00:00:00Z",
+  "stop_reason": "exhausted_query_plan"
 }

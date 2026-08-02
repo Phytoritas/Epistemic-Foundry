@@ -1,0 +1,39 @@
+{
+  "attempt_id": "I01-0001",
+  "declaring_sources": {
+    "finding_codes": "INTERVIEW_INPUT_INVALID, INTERVIEW_INPUT_DUPLICATE, INTERVIEW_RULE_DIMENSION_MISMATCH, CONTRADICTION_DISPOSITION_INVALID, CONTRADICTION_EVIDENCE_REQUIRED, CONTRADICTION_BLOCKER_MISMATCH, PRIOR_QUESTION_ID_MISMATCH, PRIOR_QUESTION_TARGET_INVALID, PRIOR_QUESTION_STATE_INVALID",
+    "interview_vocabulary": "the closed InterviewRule/InterviewDimension/NeedCriticality/ContradictionDisposition/PriorQuestionState enums declared in python/epistemic_foundry/intake/interview/engine.py, each bound key-for-key to its wire literal"
+  },
+  "exit_criteria": {
+    "critical_contradictions_recorded": {
+      "mechanism": "every contradiction is recorded verbatim; a critical, unresolved contradiction routes a question, an accepted-as-blocker contradiction sets an explicit sticky blocker that is never silently downgraded, and a conflict need without a recorded critical conflict is refused CONTRADICTION_EVIDENCE_REQUIRED",
+      "status": "PASS"
+    },
+    "only_decision_critical_questions_asked": {
+      "mechanism": "the planner emits a question only for a missing decision-critical dimension or a recorded critical contradiction; non-critical needs are deferred (recorded, never asked), duplicate needs on one dimension merge to a single stable question, and question order is canonical rather than input order",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: the sealing agent, a distinct actor; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "interview_readiness_test": {
+      "status": "PASS",
+      "test_count": 19
+    },
+    "no_repeat_question_test": {
+      "status": "PASS",
+      "test_count": 17
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1702,
+    "full_python_suite": 1261,
+    "interview_readiness_test": 19,
+    "no_repeat_question_test": 17,
+    "wire_literal_discipline": 5
+  }
+}

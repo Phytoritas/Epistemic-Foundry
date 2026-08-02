@@ -1,0 +1,252 @@
+{
+  "bundle_id": "v4-c05-evolution-schema-bundle",
+  "composites": {
+    "adaptive-search-statistics.schema.json": "sha256:3d9984fc7346abed33a8a70d402edc75ca50f0ca8d12db757a349cf27659d3e9",
+    "archive-preservation-record.schema.json": "sha256:5941dccea86fb7c3b2b0e4d5edc631561c0ebe36d9a04592e424592040416d5e",
+    "evaluator-authority-surface.schema.json": "sha256:eed58038fcb6f0a22b0c26d2f411d4a5a4bf766e0cf0d5921366262dc125002b",
+    "evolution-candidate.schema.json": "sha256:82d988fb2ef0d908f6911bbe6f1891d27f4333c4913fe8393e2ed107152db37f",
+    "external-backend-binding.schema.json": "sha256:7fa53be09e7d5b7c949b28b36495b3ffa254195dd1338d894c70c648c2ceac1b"
+  },
+  "excluded": [
+    {
+      "canonical": "schemas/evolution-checkpoint.schema.json",
+      "reason": "atomic resume surface of the EVOLVE subprotocol; the F05 state machine and D05 checkpoint store own it (EF4-I61)"
+    },
+    {
+      "canonical": "schemas/evolution-run-spec.schema.json",
+      "reason": "run-level protocol contract consumed by the F05 EVOLVE state machine"
+    },
+    {
+      "canonical": "schemas/evolution-stop-certificate.schema.json",
+      "reason": "typed stop surface of the EVOLVE subprotocol; F05 owns it (EF4-I62)"
+    },
+    {
+      "canonical": "schemas/red-queen-round.schema.json",
+      "reason": "co-evolution round protocol record consumed by the F05 state machine (EF4-I52)"
+    }
+  ],
+  "families": {
+    "adapter": {
+      "invariants": [
+        "EF4-I63"
+      ],
+      "members": [
+        {
+          "canonical": "schemas/backend-adapter-qualification.schema.json",
+          "sha256": "sha256:cf04c51e2fcdfa5cb053c74a68b0aac32ed8027f901ecb8d9f10ec7be198f997"
+        },
+        {
+          "canonical": "schemas/imported-run-record.schema.json",
+          "sha256": "sha256:ebc4e9e5b8167ccb325c35bad1cee1ffb29cdee1b1a720430edd1054b31b375e"
+        },
+        {
+          "canonical": "schemas/shinka-backend-manifest.schema.json",
+          "sha256": "sha256:b1d9bf7243817d890a6ca2e146d9e0abb3917a3e386d444adb8c61f94c45e61c"
+        }
+      ]
+    },
+    "archive": {
+      "invariants": [
+        "EF4-I48",
+        "EF4-I49",
+        "EF4-I50"
+      ],
+      "members": [
+        {
+          "canonical": "schemas/archive-rebalance-plan.schema.json",
+          "sha256": "sha256:a5654739b393133c15a1a8df0a341e69ccd197bcbd253949d21a4e2345e7fc96"
+        },
+        {
+          "canonical": "schemas/epistemic-archive-entry.schema.json",
+          "sha256": "sha256:71c74f1c9f38258d060ef9528868020d35125253cf263301796629729b9f1b3b"
+        },
+        {
+          "canonical": "schemas/epistemic-niche.schema.json",
+          "sha256": "sha256:6b78e9bc81a681d97dcde1215f012c7aafba841ad84d66b845050d3321cfbbe1"
+        },
+        {
+          "canonical": "schemas/island-state.schema.json",
+          "sha256": "sha256:bfc4d5febe6da89413e5a25103c674a6d5f9a73ae17101684bf39baca25f153a"
+        },
+        {
+          "canonical": "schemas/lineage-diversity-report.schema.json",
+          "sha256": "sha256:4ffcbbf4d8780fa637429ae97f711d07d80569129dc2019b973ad9f58aeb60b9"
+        },
+        {
+          "canonical": "schemas/novelty-assessment.schema.json",
+          "sha256": "sha256:e232003af38f54e96b6ad4f2c2f64357ab604c79fbec67bac9c0bff3f8285ad8"
+        },
+        {
+          "canonical": "schemas/novelty-vector.schema.json",
+          "sha256": "sha256:66d160bb8f18b27c97e5e160d3a57f50f9148ba793a7d1499d5b0924ffeb4466"
+        },
+        {
+          "canonical": "schemas/pareto-front-snapshot.schema.json",
+          "sha256": "sha256:8070f0f9bf541673b48c6daa34aa357ea467a82d49b21ac7a6e5e1f8bf63e446"
+        },
+        {
+          "canonical": "schemas/quality-diversity-map.schema.json",
+          "sha256": "sha256:cf33758d2b9af3ea6a8ecfd93194829c8b7df2f25c0042f66cb483f2739a38d8"
+        }
+      ]
+    },
+    "evaluator": {
+      "invariants": [
+        "EF4-I43",
+        "EF4-I44",
+        "EF4-I56"
+      ],
+      "members": [
+        {
+          "canonical": "schemas/challenge-result.schema.json",
+          "sha256": "sha256:3e96fd1f8899328d1b43c7efd9f159fadfde6cc38d107805da50f010676fcd06"
+        },
+        {
+          "canonical": "schemas/evaluation-run.schema.json",
+          "sha256": "sha256:322fd3bcf75afc4871e96eb5a100482a910a4be22b6cc2abda5ad55f98b32602"
+        },
+        {
+          "canonical": "schemas/evaluator-bundle.schema.json",
+          "sha256": "sha256:27e69c2c8075f42876c85eaed9be72a6e68997c3b22ff1c33a509a44261288c6"
+        },
+        {
+          "canonical": "schemas/evaluator-mutation-proposal.schema.json",
+          "sha256": "sha256:715804b0eff73610f8f0fed3bd62cbf0dd88b3490c7e2e2c001c7b9000366e62"
+        },
+        {
+          "canonical": "schemas/evaluator-qualification-report.schema.json",
+          "sha256": "sha256:4f50a5bc6b76231fad1e34648cdcf8fee1912b3bb6dd59d00593b99a0b09f530"
+        },
+        {
+          "canonical": "schemas/fitness-evidence-receipt.schema.json",
+          "sha256": "sha256:e63051793b8e4504f977a074067d2cefe7fbcdc3e91a3888dcd0ea19b60e1f9a"
+        },
+        {
+          "canonical": "schemas/fitness-vector.schema.json",
+          "sha256": "sha256:bbc0755e35631bce3c21546f21dbca5d594b414050c7569e862b7f72afe112e3"
+        },
+        {
+          "canonical": "schemas/holdout-manifest.schema.json",
+          "sha256": "sha256:f4ab2daa1ade997fb01787e30ef96acc329b0194b3a6b2453b8248302d645fb6"
+        },
+        {
+          "canonical": "schemas/leakage-audit.schema.json",
+          "sha256": "sha256:bf7fef71038895a88615991719d5bb3366fc74bad08b2f5cb293ffc5307cad20"
+        },
+        {
+          "canonical": "schemas/stage-evaluation-result.schema.json",
+          "sha256": "sha256:c7777dd0ee2a58de8f59f495311e4a71dc307c5df638267bf4ce41d216d3886f"
+        }
+      ]
+    },
+    "genome": {
+      "invariants": [
+        "EF4-I41",
+        "EF4-I42",
+        "EF4-I55"
+      ],
+      "members": [
+        {
+          "canonical": "schemas/candidate-generation-record.schema.json",
+          "sha256": "sha256:482f446a720a6ba9903877ade925b8ee1dd41c6d808f0074f92617191731a3ba"
+        },
+        {
+          "canonical": "schemas/candidate-lineage.schema.json",
+          "sha256": "sha256:6f7c804954295d3aca5770e34fcb95dc8fa489c4b757fc75a1bfb9146a9e71b8"
+        },
+        {
+          "canonical": "schemas/challenge-genome.schema.json",
+          "sha256": "sha256:118072f71fec0919e5802c81d02eb84005e8b404cbade1709b06504b30c4e46b"
+        },
+        {
+          "canonical": "schemas/crossover-compatibility-report.schema.json",
+          "sha256": "sha256:81fcf7544104882bc5cfa4780c4060bf998dddcfd179af8693a0a37383682078"
+        },
+        {
+          "canonical": "schemas/experiment-genome.schema.json",
+          "sha256": "sha256:d6fc86c9103229f0b27093a1cb05d1f664c454ae3742afa08f53669408c8c055"
+        },
+        {
+          "canonical": "schemas/falsifier-gene.schema.json",
+          "sha256": "sha256:6b54fb2562c564ee0ab913039dca6d9bd7ee0d48005ec75dc2e6b298d204e6d7"
+        },
+        {
+          "canonical": "schemas/hypothesis-genome.schema.json",
+          "sha256": "sha256:be182d259f09ebf935be3f61a0ab7c75bf069b957e5035e791676ecd1664c4ad"
+        },
+        {
+          "canonical": "schemas/model-routing-receipt.schema.json",
+          "sha256": "sha256:df86feb5c3c2309c7cee0bd4578f986ffe75afea3cd701267880e5b58b0f838a"
+        },
+        {
+          "canonical": "schemas/mutation-operator-spec.schema.json",
+          "sha256": "sha256:95a9fd1b0486c8ad24912933a7db59a4aa0f271e85e9e485ede4ebea9092225f"
+        },
+        {
+          "canonical": "schemas/mutation-receipt.schema.json",
+          "sha256": "sha256:801c936fb961bf4a8489cf8beb0846ab8b606cf29d809e57c2bc2f8c20b577d8"
+        },
+        {
+          "canonical": "schemas/operator-bandit-state.schema.json",
+          "sha256": "sha256:4fb7c0e704fb8c8b0d0f1afc3fff6fa8243c37d391e4ecd5d15f41825281a598"
+        },
+        {
+          "canonical": "schemas/parent-selection-receipt.schema.json",
+          "sha256": "sha256:b4a94e343b680d1c6adbdfa4f16e8347da7bd48bff69a8d1003a0c36465d847a"
+        },
+        {
+          "canonical": "schemas/prediction-gene.schema.json",
+          "sha256": "sha256:a79cfb79b133fa7e22f13c90bad0924316420e1a562cec9f203160930801226d"
+        },
+        {
+          "canonical": "schemas/prompt-genome.schema.json",
+          "sha256": "sha256:e780e190c6685fe6b4a31b5909360e4aade556e321f005077af1837fac47f33a"
+        },
+        {
+          "canonical": "schemas/prompt-mutation-proposal.schema.json",
+          "sha256": "sha256:d49a77301101a2ba86b7c3e37b62b85219132320bba30f6f60fd6de61e66427e"
+        }
+      ]
+    },
+    "statistics": {
+      "invariants": [
+        "EF4-I53",
+        "EF4-I59"
+      ],
+      "members": [
+        {
+          "canonical": "schemas/decision-stability-report.schema.json",
+          "sha256": "sha256:abcf80682841a7e013dbd29625c550025800536ee63e766554c7660d88908724"
+        },
+        {
+          "canonical": "schemas/multiple-testing-adjustment.schema.json",
+          "sha256": "sha256:d7d39530e0d3a28da67c3969c65c6df39aef6f263dd93b06c98992d8fac8c9b3"
+        },
+        {
+          "canonical": "schemas/selective-inference-report.schema.json",
+          "sha256": "sha256:b4328c3440fc911b94c5780bf95a611fc944d9c12d7cf973d7eb0b8b1fa2771d"
+        },
+        {
+          "canonical": "schemas/sequential-testing-ledger.schema.json",
+          "sha256": "sha256:6495b20df72f6a603892cb3ce472cdd5d4d01d65ec0157eceeb4335d9bedc389"
+        },
+        {
+          "canonical": "schemas/surrogate-triage-report.schema.json",
+          "sha256": "sha256:dbe61a13af4e48579d420a74014bf0f2d436d8de0d8c6dde0a302b8031a3daff"
+        }
+      ]
+    }
+  },
+  "generator": {
+    "path": "artifacts/work_packages/C05/attempts/0001/c05_schema_bundle.py",
+    "sha256": "sha256:305e89a1aaa74b35b51b72c57425e77c5f50f158a80fe7346fb1d14c75c921ec"
+  },
+  "index_hash": "sha256:8dbb45f603b16f754937a4b0389f9190ceb0b2ab634c134b87925ed0b7ddf773",
+  "member_count": 42,
+  "mutable_search_space": [
+    "schemas/challenge-genome.schema.json",
+    "schemas/experiment-genome.schema.json",
+    "schemas/hypothesis-genome.schema.json",
+    "schemas/prompt-genome.schema.json"
+  ]
+}

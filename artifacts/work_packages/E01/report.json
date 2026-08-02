@@ -1,0 +1,281 @@
+{
+  "work_package_id": "E01",
+  "attempt_id": "E01-0001",
+  "title": "Append-only Noetic Ledger and reducer",
+  "status": "PASS",
+  "package_status": "PASS",
+  "completion_ready": false,
+  "dependencies": {
+    "C04": {
+      "status": "PASS",
+      "attempt_id": "C04-0001",
+      "report": "artifacts/work_packages/C04/report.json",
+      "report_sha256": "eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f"
+    },
+    "D04": {
+      "status": "PASS",
+      "attempt_id": "D04-0001",
+      "report": "artifacts/work_packages/D04/report.json",
+      "report_sha256": "b47c194e230f4b08ab96b6153e9fc0e170eafb1054318cfaedd8e1ddeb4c5fde",
+      "core_evidence_id": "E0022",
+      "final_closeout_evidence_id": "E0023"
+    }
+  },
+  "write_scope": [
+    "packages/foundry-kernel/src/ledger/**",
+    "artifacts/work_packages/E01/**"
+  ],
+  "changed_files": [
+    {
+      "path": "packages/foundry-kernel/src/ledger/noetic-ledger.mjs",
+      "sha256": "58ea9dc0d52d9c20720b33970ee3b8d8d05703ba7dd0fb4f51a483d9f505f1ed",
+      "byte_size": 34686
+    },
+    {
+      "path": "packages/foundry-kernel/src/ledger/ledger-test-support.mjs",
+      "sha256": "4954d4dd7bc985136d744f0689b91316419fb376e842dba2a428c66c9813d6e9",
+      "byte_size": 2613
+    },
+    {
+      "path": "packages/foundry-kernel/src/ledger/ledger-hash-chain.test.mjs",
+      "sha256": "e478e71b48d74a139a10023033b3fd2d73fcbdf92660feeb920a6c3953e4eb82",
+      "byte_size": 17551
+    },
+    {
+      "path": "packages/foundry-kernel/src/ledger/reducer-replay.test.mjs",
+      "sha256": "a1f9848e08c1231de29ada86236b6a1ffef19d867ce412d16737a8ce44222029",
+      "byte_size": 7575
+    }
+  ],
+  "implementation": {
+    "canonical_storage": "D01 SQLite revisioned records; no JSONL or repository-tree authority",
+    "immutable_event_record_type": "noetic-ledger.event.v1",
+    "run_stream_record_type": "noetic-ledger.run-stream.v1",
+    "append_transaction": "immutable event creation and run-stream create/CAS execute in one D01 transaction",
+    "sequence_policy": "ledger-owned, strictly contiguous, starting at one independently for each run",
+    "payload_integrity": "payload_hash is SHA-256 over exact bytes returned by the D03 integrity-verifying artifact adapter",
+    "event_integrity": "event_hash is SHA-256 over deterministic canonical JSON of every EventRecord field except event_hash",
+    "read_reconciliation": [
+      "immutable event revision is zero",
+      "event storage identity matches event_id",
+      "sequence is contiguous",
+      "previous_event_hash matches the verified tail",
+      "all events belong to the requested run",
+      "stream revision, event_count, event IDs, and chain length reconcile",
+      "stream tail ID and hash match the verified event chain"
+    ],
+    "replay": "explicit canonical initial state plus synchronous reducer; two isolated passes compare every intermediate canonical state",
+    "fail_closed_boundaries": [
+      "missing or corrupt payload",
+      "event or stream tamper",
+      "event-ID conflict or orphan",
+      "stream commit failure",
+      "hash coercion",
+      "async, mutating, non-JSON, or nondeterministic reducer"
+    ],
+    "authority_not_implemented": [
+      "effect success",
+      "capability issuance",
+      "approval",
+      "promotion",
+      "policy mutation"
+    ],
+    "schema_or_dependency_implementation_modified": false,
+    "current_working_directory_fallback": false
+  },
+  "exit_criteria": {
+    "event_ordering_and_hash_chain_verified": "PASS",
+    "state_is_rebuildable": "PASS"
+  },
+  "required_checks": {
+    "ledger_hash_chain_test": {
+      "status": "PASS",
+      "passed": 12,
+      "failed": 0,
+      "sequence_and_chain": true,
+      "schema_conformance": true,
+      "exact_retry_idempotency": true,
+      "conflicting_event_id_rejected": true,
+      "payload_and_event_tamper_rejected": true,
+      "hash_coercion_not_executed": true,
+      "atomic_stream_commit_rollback": true,
+      "concurrent_writer_serialization": true
+    },
+    "reducer_replay_test": {
+      "status": "PASS",
+      "passed": 9,
+      "failed": 0,
+      "reopen_reproducibility": true,
+      "intermediate_state_determinism": true,
+      "async_reducer_rejected": true,
+      "mutating_reducer_rejected": true,
+      "artifact_tamper_precedes_reducer": true,
+      "canonical_state_hashing": true
+    },
+    "combined_targeted_gate": {
+      "status": "PASS",
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0
+    },
+    "final_repetitions": {
+      "status": "PASS",
+      "runs": 10,
+      "test_executions": 210,
+      "failed_runs": 0
+    },
+    "additional_closeout_recheck": {
+      "status": "PASS",
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0
+    },
+    "coverage": {
+      "status": "PASS",
+      "target": "packages/foundry-kernel/src/ledger/noetic-ledger.mjs",
+      "line_percent": 86.67,
+      "branch_percent": 74.6,
+      "function_percent": 97.87
+    }
+  },
+  "regression": {
+    "python": {
+      "status": "PASS",
+      "passed": 913,
+      "failed": 0
+    },
+    "repository_wide_node": {
+      "status": "FAIL_OUTSIDE_E01",
+      "passed": 170,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "actual_manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+      "expected_legacy_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+      "owner_scope": "S04"
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix": "PASS",
+    "cache_key_audit": "PASS",
+    "ci_policy_mutation_tests": {
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0
+    },
+    "text_integrity": {
+      "status": "PASS",
+      "files": 4,
+      "strict_utf8": true,
+      "bom_absent": true,
+      "nul_absent": true,
+      "replacement_character_absent": true
+    },
+    "git_diff_check": "PASS"
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "artifact": "artifacts/work_packages/E01/review.md",
+    "artifact_sha256": "41c9f3633a3db7e97c80f7e31a6febfd912822232a0d706ca3aa5f517a9d392a",
+    "blocking_findings": 0,
+    "assurance_limitation": "The final pass is procedurally separate within the primary session under the product owner's serial-execution decision; it is not external actor-independent certification. E01 does not sandbox or prove the absence of reducer side effects."
+  },
+  "residual_integration_failures": [
+    {
+      "check": "repository-wide Node tests",
+      "status": "FAIL_OUTSIDE_E01",
+      "passed": 170,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "owner_scope": "S04"
+    },
+    {
+      "check": "scripts/build/double_build.py",
+      "status": "FAIL_OUTSIDE_E01",
+      "failure": "staged source omits scripts/ required by the existing build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  ],
+  "preserved_limitations": [
+    "The reducer is a trusted in-process synchronous function; E01 detects divergent state and denies invalid inputs but does not sandbox external side effects.",
+    "Hash chaining provides integrity and ordering, not signatures, actor authentication, non-repudiation, or an external transparency log.",
+    "The tests qualify local D01 SQLite and D03 artifact adapters, not distributed consensus, PostgreSQL ledger concurrency, remote object-store availability, or production throughput.",
+    "The repository-wide S04-TM004 stale manifest-hash residual is outside E01.",
+    "The pre-existing double-build staged scripts omission is outside E01."
+  ],
+  "historical_and_worktree_preservation": {
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "failed_preconditions_and_policy_rejections_preserved_in_commands": true,
+    "unrelated_processes_terminated": false,
+    "implementation_write_scope_violations": 0
+  },
+  "verification_artifacts": [
+    {
+      "path": "artifacts/work_packages/E01/e01-verification.json",
+      "sha256": "404d7c10ddce5dde2925efc0b6b6c2c0f862763ad64661181a32cf96eb6982bf"
+    },
+    {
+      "path": "artifacts/work_packages/E01/rah-core-integrity.json",
+      "sha256": "89f7ba7325978989c55f4ac7ef9d09901aceff9e9421c8d9905ed0a462101c9e"
+    },
+    {
+      "path": "artifacts/work_packages/E01/dependency-status.json",
+      "sha256": "4ba0b153d47da8b96d22b3d88c51a6831d61b2063ab14707161525796d542b07"
+    },
+    {
+      "path": "artifacts/work_packages/E01/e01-rah-integrity.py",
+      "sha256": "0a09b16d9265b794cadeba9a2137adcf26f64d89b1fbe21b1c7fb7fb72f1b05b"
+    },
+    {
+      "path": "artifacts/work_packages/E01/e01-dag-reconciliation.py",
+      "sha256": "b78ae6cfadb7c6f966b071840b7d9650a25b42737e9fb90ef3da954ee9dd5a0b"
+    },
+    {
+      "path": "artifacts/work_packages/E01/e01-rah-seal.py",
+      "sha256": "794d73375a186e391f5315e97a5aa1c39dec0ed10d2e80bc92ba1acf92add13b"
+    }
+  ],
+  "evidence_artifacts": [
+    "artifacts/work_packages/E01/report.json",
+    "artifacts/work_packages/E01/commands.jsonl",
+    "artifacts/work_packages/E01/review.md",
+    "artifacts/work_packages/E01/e01-verification.json",
+    "artifacts/work_packages/E01/rah-core-integrity.json",
+    "artifacts/work_packages/E01/dependency-status.json"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000022-edf53874",
+    "core_generation": "000023-a4d84cfa",
+    "core_generation_manifest_sha256": "f3db15ff9dae0e0891aebcee2bf6d2ecd10f5f99fbf51cd47918fc37574c214b",
+    "core_evidence_id": "E0024",
+    "final_closeout_evidence_id": "E0025",
+    "retained_generation_manifest_count_after_core": 23,
+    "generation_file_hashes_verified_after_core": 138,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "flat_snapshot_content_matches_after_core": 6,
+    "parse_errors": {},
+    "completion_ready": false
+  },
+  "dag_reconciliation": {
+    "status": "PASS",
+    "manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+    "work_package_count": 156,
+    "unique_work_package_count": 156,
+    "unknown_dependency_count": 0,
+    "cycle_count": 0,
+    "topological_layer_count": 42,
+    "maximum_layer_width": 10,
+    "completed_package_count": 22,
+    "ready_packages_manifest_order": [
+      "E02",
+      "E03",
+      "G01",
+      "K01",
+      "A06"
+    ],
+    "next_package": "E02",
+    "completion_ready": false
+  }
+}

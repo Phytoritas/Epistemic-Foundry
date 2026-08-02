@@ -1,0 +1,415 @@
+{
+  "attempt_id": "T05-0001",
+  "attempt_type": "T05_EVOLUTION_TOOLS_BACKEND_ADAPTER",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "T05-0001",
+    "authority_decision": {
+      "decision_id": "HD-EF4-T05-SCOPE-20260802-001",
+      "path": "artifacts/authority_decisions/HD-EF4-T05-SCOPE-20260802-001.human-decision.json",
+      "sha256": "sha256:32fe65a5c3cea9a4b7c401b216140c24d035023e88f54205edfadeff05a58053"
+    },
+    "dependencies": {
+      "G05": {
+        "attempt_id": "G05-0001",
+        "core_evidence_id": "E0169",
+        "final_closeout_evidence_id": "E0170",
+        "report": "artifacts/work_packages/G05/attempts/0001/report.json",
+        "report_sha256": "sha256:c854b5ec890ed3783c55665fafc02f965ccf3616c2bd4d8071ea8101f12484d0",
+        "status": "PASS"
+      },
+      "S05": {
+        "attempt_id": "S05-0001",
+        "core_evidence_id": "E0175",
+        "final_closeout_evidence_id": "E0176",
+        "report": "artifacts/work_packages/S05/attempts/0001/report.json",
+        "report_sha256": "sha256:dbcb94e77fd885f18aa36a00dc352a9d5a788d265b979ff7a23fafd5f261c727",
+        "status": "PASS"
+      },
+      "T04": {
+        "attempt_id": "T04-0001",
+        "core_evidence_id": "E0151",
+        "final_closeout_evidence_id": "E0152",
+        "report": "artifacts/work_packages/T04/attempts/0001/report.json",
+        "report_sha256": "sha256:ef86645d7ca5058df3047b6b53fbb3dd4c56af41b27db481b773d205e96c6272",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_T05_0001_THEN_CONTINUE_DAG",
+    "regression_baseline": {
+      "attempt_id": "S05-0001",
+      "core_evidence_id": "E0175",
+      "final_closeout_evidence_id": "E0176",
+      "report": "artifacts/work_packages/S05/attempts/0001/report.json",
+      "report_sha256": "sha256:dbcb94e77fd885f18aa36a00dc352a9d5a788d265b979ff7a23fafd5f261c727",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": "PASS",
+    "governing_schemas_authority_boundaries_failure_states_exact": "PASS",
+    "happy_negative_crash_resume_adversarial_coverage": "PASS",
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "D06-0001",
+  "not_claimed": [
+    "running ShinkaEvolve: no build was fetched or exercised; capability tests are recorded claims the gate cross-checks, not behavioural evidence",
+    "schema changes: the canonical qualification admits no extra fields, so T05 wraps rather than proposes edits",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 33272,
+      "path": "artifacts/work_packages/T05/attempts/0001/build_t05_0001_evidence.py",
+      "sha256": "sha256:5d501b2c77b254a236627bd52f1af1989f08c2a1d7d47ac47b470dd1dfc54c82"
+    },
+    {
+      "byte_size": 2785,
+      "path": "artifacts/work_packages/T05/attempts/0001/check_packaging.py",
+      "sha256": "sha256:53c7b7fa3e7f0fda37c4c067844a298da1c54f1684fc749fbc0c3119b58772c6"
+    },
+    {
+      "byte_size": 12026,
+      "path": "artifacts/work_packages/T05/attempts/0001/commands.jsonl",
+      "sha256": "sha256:b08f842b6c6402254d3e0168a9cb23c0a55b8362825d71af05633e7762c94326"
+    },
+    {
+      "byte_size": 6677,
+      "path": "artifacts/work_packages/T05/attempts/0001/dependency-regression-s05.junit.xml",
+      "sha256": "sha256:25bec2a7cef8f17709b19b0bea9429e377ae69b3fa1b78bd7a473fb4b3fbc2fe"
+    },
+    {
+      "byte_size": 9346,
+      "path": "artifacts/work_packages/T05/attempts/0001/dependency-regression-shinka.junit.xml",
+      "sha256": "sha256:cdeaa80723ffda21b10c1399c7ed646fe370672f962f5572aa69071a06fb03fe"
+    },
+    {
+      "byte_size": 1697,
+      "path": "artifacts/work_packages/T05/attempts/0001/dependency-status.json",
+      "sha256": "sha256:0582588eb0260b7ff0e65a81695ba88c2cdc687dcb544a4c2e449825f682c0df"
+    },
+    {
+      "byte_size": 8400,
+      "path": "artifacts/work_packages/T05/attempts/0001/fixtures.py",
+      "sha256": "sha256:204d11d931747348f4fc4346f6fcf4cf29ff468820b09f28ece9f044e8537f38"
+    },
+    {
+      "byte_size": 245479,
+      "path": "artifacts/work_packages/T05/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:7f4b94576952182dbf4f54cfcd089406b6b14df3fcac8af5ec81c109e78ed456"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/T05/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 5299,
+      "path": "artifacts/work_packages/T05/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:04e650e4acf4d328abc888e9be44053a959ef11639cfa10116628919ed9d330b"
+    },
+    {
+      "byte_size": 6083,
+      "path": "artifacts/work_packages/T05/attempts/0001/negative-and-adversarial-tests.junit.xml",
+      "sha256": "sha256:5e20da5098ed93738dee5561d042beaabb1009f00869b3079d2322dadad49830"
+    },
+    {
+      "byte_size": 7177,
+      "path": "artifacts/work_packages/T05/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:68ba4897454dde3f287ac148d75fcfad3d5bf4f7d1866d3d4967dc0605f3cac1"
+    },
+    {
+      "byte_size": 1885,
+      "path": "artifacts/work_packages/T05/attempts/0001/provenance-and-receipt-audit.junit.xml",
+      "sha256": "sha256:7f69ea5b197c5cdc0327c75f82cec0f3857cd1afa2182351d5efb5bc8cb706c7"
+    },
+    {
+      "byte_size": 296,
+      "path": "artifacts/work_packages/T05/attempts/0001/pytest.ini",
+      "sha256": "sha256:67f12ac2a4b667d8ad8626bd8e5937dc68c050fe5abb9bbe9d23b1c447e4bbf3"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/T05/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:834655d6fb8a0c6494a6b99bae60b179896285d51ca9d8ed907bf404bc4c2285"
+    },
+    {
+      "byte_size": 1358,
+      "path": "artifacts/work_packages/T05/attempts/0001/review.md",
+      "sha256": "sha256:09b971c70ab539a8689183d2dfea43b3fa697bdebc3a950a84c6afc4f96db2e4"
+    },
+    {
+      "byte_size": 8188,
+      "path": "artifacts/work_packages/T05/attempts/0001/run_t05_0001_checks.py",
+      "sha256": "sha256:b2fab7c7b1b1f8edbc6f38b86925dda52c5202ed87c30ce792516711839c743a"
+    },
+    {
+      "byte_size": 1769,
+      "path": "artifacts/work_packages/T05/attempts/0001/schema-and-type-check.junit.xml",
+      "sha256": "sha256:ad60632856d567e63585f3c9d4d1b645ba7fa8b74046b14f6e217722dfa9d6e0"
+    },
+    {
+      "byte_size": 2811,
+      "path": "artifacts/work_packages/T05/attempts/0001/t05-verification.json",
+      "sha256": "sha256:7b103b35dc047b012c826a351577d9ec33b31df7b9a910545d6c58e6d8806a2d"
+    },
+    {
+      "byte_size": 23415,
+      "path": "artifacts/work_packages/T05/attempts/0001/t05_0001_rah_seal.py",
+      "sha256": "sha256:fefe7ec753443b1b6d36ac19680a245e1b255b360e4414281ae00f3c833d36d1"
+    },
+    {
+      "byte_size": 11414,
+      "path": "artifacts/work_packages/T05/attempts/0001/targeted-t05-adapter.junit.xml",
+      "sha256": "sha256:49650b623642e2c49ac9cc86bf426566e415919ad4020351d3d5b493f5892e01"
+    },
+    {
+      "byte_size": 14061,
+      "path": "artifacts/work_packages/T05/attempts/0001/test_negative_adversarial.py",
+      "sha256": "sha256:7e787cfae451179ff61393b00eb8d3124751189b61a44ab78a4e459c3227d7d9"
+    },
+    {
+      "byte_size": 7965,
+      "path": "artifacts/work_packages/T05/attempts/0001/test_provenance_receipts.py",
+      "sha256": "sha256:36b7668efd767440d354097efc7418660b01eb41cac3e4a68ffd63d27981b984"
+    },
+    {
+      "byte_size": 7489,
+      "path": "artifacts/work_packages/T05/attempts/0001/test_schema_and_type.py",
+      "sha256": "sha256:8ca5ee67836bb0f7430768f12812cf9aa8514ca70059d12bb8d4fec436986dc5"
+    },
+    {
+      "byte_size": 7844,
+      "path": "artifacts/work_packages/T05/attempts/0001/test_unit_contract.py",
+      "sha256": "sha256:564514af44a1877b86ed6ca91c99661cc44c4e19e0d2965b28d0440c11763d1a"
+    },
+    {
+      "byte_size": 2177,
+      "path": "artifacts/work_packages/T05/attempts/0001/unit-and-contract-tests.junit.xml",
+      "sha256": "sha256:3436e1a69962934f0968d56e9b1652f451aade04ea42cde525b39d5f3f6e6f8d"
+    },
+    {
+      "byte_size": 770,
+      "path": "artifacts/work_packages/T05/attempts/0001/wire-literal-discipline.junit.xml",
+      "sha256": "sha256:858c6349b64aea8e6c90870e78b2785c00aaafda78f8c3a16f46eb87b1dd8c4a"
+    },
+    {
+      "byte_size": 2638,
+      "path": "artifacts/work_packages/T05/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:a384fb3037402ee5358fe3e4e9ab6420b41e52d3de205823661964ab483bffa2"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0193",
+    "core_generation": "000191-0197f1cd",
+    "final_closeout_evidence_id": "E0194",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1146,
+    "implementation_gate": "fail",
+    "retained_generation_count": 191,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "T05-0001",
+    "baseline_attempt": "S05-0001",
+    "component_tests_are_targeted_only": true,
+    "new_failure_count": 0,
+    "status": "PASS",
+    "suites": {
+      "dependency_regression_s05": {
+        "collected": 62,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/T05/attempts/0001/dependency-regression-s05.junit.xml",
+        "junit_sha256": "sha256:25bec2a7cef8f17709b19b0bea9429e377ae69b3fa1b78bd7a473fb4b3fbc2fe",
+        "passed": 62,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 62
+      },
+      "dependency_regression_shinka": {
+        "collected": 74,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/T05/attempts/0001/dependency-regression-shinka.junit.xml",
+        "junit_sha256": "sha256:cdeaa80723ffda21b10c1399c7ed646fe370672f962f5572aa69071a06fb03fe",
+        "passed": 74,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 74
+      },
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1276,
+        "failed": 0,
+        "junit": "artifacts/work_packages/T05/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:7f4b94576952182dbf4f54cfcd089406b6b14df3fcac8af5ec81c109e78ed456",
+        "passed": 1276,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1271
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/T05/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "negative_and_adversarial_tests": {
+        "collected": 51,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/T05/attempts/0001/negative-and-adversarial-tests.junit.xml",
+        "junit_sha256": "sha256:5e20da5098ed93738dee5561d042beaabb1009f00869b3079d2322dadad49830",
+        "passed": 51,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 51
+      },
+      "provenance_and_receipt_audit": {
+        "collected": 16,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/T05/attempts/0001/provenance-and-receipt-audit.junit.xml",
+        "junit_sha256": "sha256:7f69ea5b197c5cdc0327c75f82cec0f3857cd1afa2182351d5efb5bc8cb706c7",
+        "passed": 16,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 16
+      },
+      "schema_and_type_check": {
+        "collected": 15,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/T05/attempts/0001/schema-and-type-check.junit.xml",
+        "junit_sha256": "sha256:ad60632856d567e63585f3c9d4d1b645ba7fa8b74046b14f6e217722dfa9d6e0",
+        "passed": 15,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 15
+      },
+      "targeted_t05_adapter": {
+        "collected": 101,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/T05/attempts/0001/targeted-t05-adapter.junit.xml",
+        "junit_sha256": "sha256:49650b623642e2c49ac9cc86bf426566e415919ad4020351d3d5b493f5892e01",
+        "passed": 101,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 101
+      },
+      "unit_and_contract_tests": {
+        "collected": 19,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/T05/attempts/0001/unit-and-contract-tests.junit.xml",
+        "junit_sha256": "sha256:3436e1a69962934f0968d56e9b1652f451aade04ea42cde525b39d5f3f6e6f8d",
+        "passed": 19,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 19
+      },
+      "wire_literal_discipline": {
+        "collected": 5,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/T05/attempts/0001/wire-literal-discipline.junit.xml",
+        "junit_sha256": "sha256:858c6349b64aea8e6c90870e78b2785c00aaafda78f8c3a16f46eb87b1dd8c4a",
+        "passed": 5,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 5
+      }
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 51
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 16
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 15
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 19
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Author/reviewer separation holds (parallel agent authored, primary session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_REVIEW_OF_PARALLEL_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "T05",
+  "write_scope": {
+    "approved_scope": [
+      "src/epistemic_foundry/adapters/v4_t05/**",
+      "artifacts/work_packages/T05/**",
+      "src/epistemic_foundry/adapters/__init__.py (HD-EF4-T05-SCOPE-20260802-001)"
+    ],
+    "attempt_id": "T05-0001",
+    "authored_by": "bounded parallel implementation agent under the product owner's explicit parallel-execution instruction",
+    "authority_decision": "HD-EF4-T05-SCOPE-20260802-001",
+    "composed_modules_modified": false,
+    "product_file_hashes": {
+      "artifacts/work_packages/T05/attempts/0001/check_packaging.py": "sha256:53c7b7fa3e7f0fda37c4c067844a298da1c54f1684fc749fbc0c3119b58772c6",
+      "artifacts/work_packages/T05/attempts/0001/fixtures.py": "sha256:204d11d931747348f4fc4346f6fcf4cf29ff468820b09f28ece9f044e8537f38",
+      "artifacts/work_packages/T05/attempts/0001/pytest.ini": "sha256:67f12ac2a4b667d8ad8626bd8e5937dc68c050fe5abb9bbe9d23b1c447e4bbf3",
+      "artifacts/work_packages/T05/attempts/0001/run_t05_0001_checks.py": "sha256:b2fab7c7b1b1f8edbc6f38b86925dda52c5202ed87c30ce792516711839c743a",
+      "artifacts/work_packages/T05/attempts/0001/test_negative_adversarial.py": "sha256:7e787cfae451179ff61393b00eb8d3124751189b61a44ab78a4e459c3227d7d9",
+      "artifacts/work_packages/T05/attempts/0001/test_provenance_receipts.py": "sha256:36b7668efd767440d354097efc7418660b01eb41cac3e4a68ffd63d27981b984",
+      "artifacts/work_packages/T05/attempts/0001/test_schema_and_type.py": "sha256:8ca5ee67836bb0f7430768f12812cf9aa8514ca70059d12bb8d4fec436986dc5",
+      "artifacts/work_packages/T05/attempts/0001/test_unit_contract.py": "sha256:564514af44a1877b86ed6ca91c99661cc44c4e19e0d2965b28d0440c11763d1a",
+      "src/epistemic_foundry/adapters/__init__.py": "sha256:ff605d61d0b4c5a9968a1bb3d9249102fcf2d7a56368716bc1c1d53424900214",
+      "src/epistemic_foundry/adapters/v4_t05/__init__.py": "sha256:aeca7e07f9a0a46d6abd406d0fa1572daa3a51bf4a3ab0748541f92273fbe343",
+      "src/epistemic_foundry/adapters/v4_t05/backend_adapter.py": "sha256:8003ea463f43d77506f3c7170cf8c603ebf0a7705831ab917764a82581f73090",
+      "src/epistemic_foundry/adapters/v4_t05/findings.py": "sha256:a3963edcbb60577f7bbfcf76b593abd8da72363023531cb7006aa7ffd7c31df6",
+      "src/epistemic_foundry/adapters/v4_t05/tool_surface.py": "sha256:504364a58f8c8a98bcc4be19c1204b60dd026fe41a42fa55c9dafc9dd979f255"
+    },
+    "pyproject_modified": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "primary session (Parent Architect), separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

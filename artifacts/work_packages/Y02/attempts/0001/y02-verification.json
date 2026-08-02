@@ -1,0 +1,60 @@
+{
+  "attempt_id": "Y02-0001",
+  "exit_criteria": {
+    "logs_redacted": {
+      "evidence": [
+        "packages/foundry-kernel/src/observability/log-redaction.test.mjs",
+        "packages/foundry-kernel/src/observability/otel-trace.test.mjs"
+      ],
+      "mechanism": "redactRecord drops any value under a sensitive key whole and rewrites every secret- and PII-shaped substring (email, Bearer, JWT, AWS access key, GitHub token, provider key, SSN, card) anywhere it appears; malformed, proxied, symbol-keyed, or array input fails closed with REDACTION_INPUT_INVALID, and a caller-declared required_redactions path that was not applied fails with REDACTION_REQUIRED_MISSING rather than silently passing through. assertNoResidualSecrets re-scans the output so no sensitive key retains a real value and no secret/PII pattern survives. emitSpan redacts span-level and per-event attributes through the same path before storage and re-scans them, so no literal secret survives span serialization",
+      "status": "PASS"
+    },
+    "trace_ids_and_receipts_correlated": {
+      "evidence": [
+        "packages/foundry-kernel/src/observability/otel-trace.test.mjs"
+      ],
+      "mechanism": "emitSpan builds a span that is well-formed by construction: a 16-byte non-zero trace_id and 8-byte non-zero span_id validated as lowercase hex (all-zero or malformed identifiers, an end before start, and a self-parent all fail closed with SPAN_INVALID), a canonical kind and honest status, a W3C traceparent that round-trips through parseTraceparent, and a span_hash binding the whole record. correlateReceipt ties the span's trace_id and span_id to an effect receipt by receipt_id and sha256 receipt_hash and fails closed on any id or hash mismatch (RECEIPT_CORRELATION_MISMATCH) or a span with no receipt reference (RECEIPT_CORRELATION_MISSING); a span that recorded an exception event cannot claim OK (DISHONEST_SPAN_STATUS), and an SLO with no samples reports UNKNOWN rather than a fabricated healthy state",
+      "status": "PASS"
+    }
+  },
+  "honest_states": {
+    "empty_slo_window_reports_unknown_not_ok": true,
+    "error_span_without_cause_or_message_is_refused": true,
+    "exception_event_forbids_ok_status": true,
+    "zero_good_samples_report_unavailable_not_degraded": true
+  },
+  "logs_redacted": {
+    "assert_no_residual_secrets_rescans_output": true,
+    "malformed_or_proxied_input_fails_closed": true,
+    "required_redaction_not_applied_fails_closed": true,
+    "sensitive_keyed_values_dropped_whole": true,
+    "span_and_event_attributes_redacted_before_storage": true,
+    "value_pattern_secrets_and_pii_redacted_in_place": true
+  },
+  "required_checks": {
+    "log_redaction_test": {
+      "module": "packages/foundry-kernel/src/observability/log-redaction.test.mjs",
+      "status": "PASS",
+      "test_count": 8
+    },
+    "otel_trace_test": {
+      "module": "packages/foundry-kernel/src/observability/otel-trace.test.mjs",
+      "status": "PASS",
+      "test_count": 13
+    }
+  },
+  "schema_registry_observation": {
+    "is_defect": false,
+    "note": "Y02 is a standalone observability module grounded in the manifest exit criteria (trace IDs and receipts correlated; logs redacted); no canonical observability span/redaction/SLO schema exists in the schemas/ registry, so emitted records are validated by the module's own fail-closed structural guards and deterministic sha256 hashing rather than against a registry schema. Disclosed as a non-blocking observation, not a contract violation."
+  },
+  "status": "PASS",
+  "targeted_test_count": 21,
+  "trace_ids_and_receipts_correlated": {
+    "all_zero_or_malformed_identifiers_fail_closed": true,
+    "correlate_receipt_binds_span_to_receipt_by_id_and_hash": true,
+    "mismatch_or_missing_receipt_reference_fails_closed": true,
+    "monotonic_timing_and_self_parent_enforced": true,
+    "span_hash_binds_the_record": true,
+    "w3c_traceparent_emitted_and_round_trips": true
+  }
+}

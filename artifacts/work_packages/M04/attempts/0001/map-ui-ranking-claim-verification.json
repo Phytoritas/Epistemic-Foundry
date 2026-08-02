@@ -1,0 +1,145 @@
+{
+  "artifact_owners_revalidated": [
+    "M01",
+    "M02",
+    "M03"
+  ],
+  "attempt_id": "M04-0001",
+  "claim_count": 4,
+  "claim_types": [
+    "BASELINE_STRUCTURAL_CENTRALITY",
+    "QUERY_LEXICAL_RELEVANCE",
+    "INTRINSIC_RISK",
+    "CHANGE_IMPACT"
+  ],
+  "coverage_and_exclusions_first": true,
+  "coverage_and_exclusions_visible": true,
+  "deep_immutability": "PASS",
+  "deterministic_input_permutation": "PASS",
+  "generic_importance_or_combined_score_forbidden": true,
+  "html_escaping": "PASS",
+  "labels_bound_to_algorithm_version_hash_order_and_score_field": true,
+  "manifest_contract": {
+    "depends_on": [
+      "M02",
+      "M03"
+    ],
+    "exit_criteria": [
+      "labels match algorithms",
+      "coverage/exclusions visible"
+    ],
+    "independent_review": "required",
+    "required_checks": [
+      "map_ui_test",
+      "ranking_claim_audit"
+    ],
+    "risk_class": "medium",
+    "status": "PASS",
+    "write_scope": [
+      "web/src/features/map/**",
+      "artifacts/work_packages/M04/**"
+    ]
+  },
+  "null_query_status": "NOT_PERSONALIZED",
+  "ranking_dimensions_separate": true,
+  "semantic_score": null,
+  "semantic_status": "NOT_COMPUTED",
+  "status": "PASS",
+  "syntax": {
+    "attempt_id": "M04-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "web/src/features/map/ranking-claim-gate.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "web/src/features/map/map-view.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "web/src/features/map/map-test-fixtures.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "web/src/features/map/map-ui.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "web/src/features/map/ranking-claim-audit.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "web/src/features/map/index.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "tamper_and_hostile_input_rejection": "PASS",
+  "targeted": {
+    "cancelled": 0,
+    "collected": 26,
+    "failed": 0,
+    "junit": "artifacts/work_packages/M04/attempts/0001/targeted-m04-node.junit.xml",
+    "junit_sha256": "sha256:e60489370b03be1894fa308c1d75fee6d7737686761f7dbcd731f36413b9e0a5",
+    "map_ui_test_count": 12,
+    "observed_file_count": 2,
+    "observed_files": [
+      "web/src/features/map/map-ui.test.mjs",
+      "web/src/features/map/ranking-claim-audit.test.mjs"
+    ],
+    "passed": 26,
+    "ranking_claim_audit_count": 14,
+    "skipped": 0,
+    "test_names": [
+      "map_ui_test: coverage and exclusions are the first visible section",
+      "map_ui_test: unresolved edges remain visible and excluded in every dimension",
+      "map_ui_test: four ranking dimensions remain separate per node",
+      "map_ui_test: no aggregate importance, confidence, verdict, or semantic rank is invented",
+      "map_ui_test: query and semantic status retain explicit null semantics",
+      "map_ui_test: algorithm name, version, artifact hash, and labels are visible",
+      "map_ui_test: intrinsic risk is not inferred from blast radius",
+      "map_ui_test: untrusted label, query, and unresolved hint are HTML escaped",
+      "map_ui_test: rendered coverage precedes algorithm and entity sections",
+      "map_ui_test: view building is deterministic, deeply frozen, and input preserving",
+      "map_ui_test: tampered upstream artifacts fail closed",
+      "map_ui_test: top-level proxies, accessors, and unknown fields fail without execution",
+      "ranking_claim_audit: exact closed claim set passes",
+      "ranking_claim_audit: generic RANKED or importance claims have no authority",
+      "ranking_claim_audit: algorithm label cannot be changed to importance",
+      "ranking_claim_audit: algorithm name and version must match the sealed artifact",
+      "ranking_claim_audit: artifact hash tampering is rejected",
+      "ranking_claim_audit: ranking order tampering is rejected",
+      "ranking_claim_audit: unresolved-edge exclusions cannot be hidden",
+      "ranking_claim_audit: risk and blast-radius score semantics cannot be conflated",
+      "ranking_claim_audit: absent query cannot be advertised as ranked",
+      "ranking_claim_audit: missing, duplicate, and reordered claims fail closed",
+      "ranking_claim_audit: unknown fields are rejected rather than ignored",
+      "ranking_claim_audit: proxy, accessor, and sparse claim arrays fail without execution",
+      "ranking_claim_audit: upstream artifact tampering cannot be laundered by matching prose",
+      "ranking_claim_audit: claim derivation is deterministic across input permutation"
+    ],
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_logical_test_count": 26,
+    "xml_suite_test_count": 0,
+    "xml_testcase_count": 26
+  },
+  "unreadable_paths_visible": true,
+  "unresolved_edges_excluded_from_every_dimension": true,
+  "unresolved_edges_visible": true,
+  "version": "4.0.0-m04.1"
+}

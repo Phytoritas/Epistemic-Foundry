@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "O01-0002-QUERY-PLAN-VERIFICATION",
+  "byte_size": 1952,
+  "content_hash": "sha256:27300cb597c640a67a90db00d4f41b798a960e72ca807ccb4a35b810f8e734c9",
+  "created_at": "2026-07-31T05:45:09.202Z",
+  "created_by": {
+    "actor_id": "O01-0002-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/O01/attempts/0002/query-plan-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:08f6f86f47ee9eea6b5c18bd1e3b68b47f9e85f1098a7c32a7eabc51b8eddda0",
+  "receipt_id": "AR-O01-0002-QUERY-PLAN-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "query_plan_test",
+      "details": "21/21 exact vocabulary, class-floor, applicability, hashing, replay, and fail-closed cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt_completeness_test",
+      "details": "20/20 six-state, sentinel, all-lane, precedence, query-hash, ceiling, and immutability cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Python 1064/1064, Node 819/819 across 79 files, codegen 126/126, projection current",
+      "status": "PASS"
+    }
+  ]
+}

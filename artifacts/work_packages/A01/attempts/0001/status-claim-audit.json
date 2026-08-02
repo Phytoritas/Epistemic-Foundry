@@ -1,0 +1,84 @@
+{
+  "attempt_id": "A01-0001",
+  "authority_documents": [
+    "MASTER_SPEC.md",
+    "CLAUDE.md",
+    "AGENTS.md",
+    "docs/status_taxonomy.md"
+  ],
+  "check": "status_claim_audit",
+  "exit_criterion": "SPECIFIED is not confused with IMPLEMENTED",
+  "overclaim_audit": {
+    "AGENTS.md": {
+      "overclaim_sentences_checked": 0,
+      "path": "AGENTS.md",
+      "status": "PASS",
+      "un_negated_overclaims": 0
+    },
+    "CLAUDE.md": {
+      "overclaim_sentences_checked": 1,
+      "path": "CLAUDE.md",
+      "status": "PASS",
+      "un_negated_overclaims": 0
+    },
+    "MASTER_SPEC.md": {
+      "overclaim_sentences_checked": 1,
+      "path": "MASTER_SPEC.md",
+      "status": "PASS",
+      "un_negated_overclaims": 0
+    },
+    "docs/status_taxonomy.md": {
+      "overclaim_sentences_checked": 1,
+      "path": "docs/status_taxonomy.md",
+      "status": "PASS",
+      "un_negated_overclaims": 0
+    }
+  },
+  "overclaim_sentences_checked": 3,
+  "pass_from_tests_alone_forbidden": true,
+  "required_clause_audit": {
+    "AGENTS.md": {
+      "path": "AGENTS.md",
+      "required_clauses": {
+        "not_implemented_because_contracts_exist": true,
+        "spec_bundle_reference_blueprint": true
+      },
+      "status": "PASS"
+    },
+    "CLAUDE.md": {
+      "path": "CLAUDE.md",
+      "required_clauses": {
+        "maturity_guard": true,
+        "spec_and_blueprint": true
+      },
+      "status": "PASS"
+    },
+    "MASTER_SPEC.md": {
+      "path": "MASTER_SPEC.md",
+      "required_clauses": {
+        "does_not_claim_runtime": true,
+        "implementation_not_claimed": true,
+        "spec_file_not_execution_evidence": true,
+        "status_honesty_invariant": true,
+        "status_label_vocabulary": true
+      },
+      "status": "PASS"
+    },
+    "docs/status_taxonomy.md": {
+      "path": "docs/status_taxonomy.md",
+      "required_clauses": {
+        "implemented_requires_gates": true,
+        "implemented_requires_runtime_gates": true,
+        "pass_not_from_tests_alone": true,
+        "specified_no_production_code": true,
+        "specified_not_alias_of_implemented": true
+      },
+      "status": "PASS"
+    }
+  },
+  "schema_version": 1,
+  "specified_distinct_from_implemented": true,
+  "status": "PASS",
+  "un_negated_overclaims": 0,
+  "work_package_id": "A01"
+}

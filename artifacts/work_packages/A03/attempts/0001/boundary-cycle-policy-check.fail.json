@@ -1,0 +1,39 @@
+{
+  "acyclic": false,
+  "attempt_id": "A03-0001",
+  "authority_to_adapter_edges": 0,
+  "check": "boundary_cycle_policy_check",
+  "declared_boundary_graph_inward_ordered": true,
+  "documented_policy_anchors_present": true,
+  "forbidden_layer_inverting_edges": [],
+  "forbidden_top_level_cycles": [
+    {
+      "cycle": [
+        "security",
+        "operators",
+        "security"
+      ],
+      "policy": "ADR-032 rule 5: top-level internal component graph must be a DAG"
+    },
+    {
+      "cycle": [
+        "evidence",
+        "retrieval",
+        "evidence"
+      ],
+      "policy": "ADR-032 rule 5: top-level internal component graph must be a DAG"
+    }
+  ],
+  "layer_discipline": "PASS (zero inward-layer inversions)",
+  "python_import_graph": {
+    "component_count": 43,
+    "cross_component_edge_count": 139,
+    "root": "src/epistemic_foundry"
+  },
+  "remediation": "break each 2-cycle in the offending components (operators/security, evidence/retrieval) per ADR-032 rule 7 by moving shared types to L0 (contracts/domain) or inverting the dependency at composition — this is S/J/K/O-phase source work OUTSIDE A03's docs-only write_scope; A03 must not edit src or weaken the check",
+  "root_cause": "post-A03 S/J/K/O-phase modules cross-import paired components' private submodules (rule-4 reach), producing top-level 2-cycles: security.v4_s06->operators.v4_j05 and operators.v4_j05->security.v4_s05; evidence.v4_k06->retrieval.v4_o05 and retrieval.v4_o05->evidence.v4_k05",
+  "schema_version": 1,
+  "scope_note": "A03 write_scope is docs/adr/** + docs/v4_plugin_architecture.md only",
+  "status": "FAIL",
+  "work_package_id": "A03"
+}

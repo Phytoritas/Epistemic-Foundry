@@ -1,0 +1,119 @@
+{
+  "attempt_id": "M01-0001",
+  "edge_resolution": {
+    "attempt_id": "M01-0001",
+    "closed_typed_edge_vocabulary": true,
+    "dependency_and_provenance_direction_preserved": true,
+    "deterministic_input_permutation": "PASS",
+    "missing_target_locator_reason": "MISSING_TARGET_LOCATOR",
+    "resolved_and_unresolved_partitions_explicit": true,
+    "self_edge_rejection": "PASS",
+    "source_owner_and_target_kind_validation": "PASS",
+    "status": "PASS",
+    "target_not_found_reason": "TARGET_NOT_FOUND",
+    "unresolved_edge_suppression_count": 0
+  },
+  "inventory": {
+    "attempt_id": "M01-0001",
+    "canonical_layers": [
+      "CODE",
+      "RESEARCH",
+      "ARTIFACT"
+    ],
+    "closed_source_classes": [
+      "SOURCE",
+      "DIST",
+      "GENERATED",
+      "VENDOR",
+      "TEST",
+      "RESEARCH",
+      "ARTIFACT"
+    ],
+    "deterministic_input_permutation": "PASS",
+    "duplicate_identity_rejection": "PASS",
+    "hostile_input_rejection": "PASS",
+    "immutable_output": "PASS",
+    "portable_path_validation": "PASS",
+    "ranking_or_personalization_emitted": false,
+    "source_dist_generated_vendor_test_separated": true,
+    "status": "PASS",
+    "unreadable_paths_explicit": true
+  },
+  "status": "PASS",
+  "syntax": {
+    "attempt_id": "M01-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "packages/workspace-map/src/inventory/workspace-inventory.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/workspace-map/src/inventory/index.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/workspace-map/src/inventory/map-inventory.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/workspace-map/src/inventory/edge-resolution.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "targeted": {
+    "cancelled": 0,
+    "collected": 22,
+    "edge_resolution_test_count": 11,
+    "failed": 0,
+    "junit": "artifacts/work_packages/M01/attempts/0001/targeted-m01-node.junit.xml",
+    "junit_sha256": "sha256:03cf6dc8fc7c7545ed092a36736752a1cd6db0e80d5442798577fdd0a06577d6",
+    "map_inventory_test_count": 11,
+    "observed_file_count": 2,
+    "observed_files": [
+      "packages/workspace-map/src/inventory/edge-resolution.test.mjs",
+      "packages/workspace-map/src/inventory/map-inventory.test.mjs"
+    ],
+    "passed": 22,
+    "skipped": 0,
+    "test_names": [
+      "edge_resolution_test: code and contract references resolve through typed identity namespaces",
+      "edge_resolution_test: research, provenance, skill, and hook direction is retained",
+      "edge_resolution_test: missing research locators remain explicit unresolved edges",
+      "edge_resolution_test: set permutation preserves edge hashes, IDs, and partition order",
+      "edge_resolution_test: extraction is pure, deeply immutable, and bound to inventory identity",
+      "edge_resolution_test: edge content, count, hash, ID, and partition tampering is detected",
+      "edge_resolution_test: absent sources, owner mismatch, and self edges fail closed",
+      "edge_resolution_test: invalid source or target semantics fail closed",
+      "edge_resolution_test: dependency edges cannot omit typed target identity or use unknown vocabulary",
+      "edge_resolution_test: duplicate references and hostile wrappers fail without accessor execution",
+      "edge_resolution_test: edge vocabulary is closed and contains every canonical layer relation",
+      "map_inventory_test: code, research, and artifact layers are indexed with explicit source classes",
+      "map_inventory_test: source, dist, generated, vendor, and test identities remain distinct",
+      "map_inventory_test: input permutation produces byte-identical deterministic inventory",
+      "map_inventory_test: the mapper is pure and returns deeply immutable data",
+      "map_inventory_test: canonical validation detects entity, count, hash, and ID tampering",
+      "map_inventory_test: duplicate entity IDs, paths, and aliases fail closed",
+      "map_inventory_test: portable paths reject traversal, absolute, drive, and separator variants",
+      "map_inventory_test: unknown vocabularies and source-class mismatches fail closed",
+      "map_inventory_test: location, locator, hash, and unreadable-path contracts are explicit",
+      "map_inventory_test: hostile getters, Proxies, sparse arrays, and extra fields are rejected without access",
+      "map_inventory_test: canonical vocabularies are closed, unique, and mapped"
+    ],
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_logical_test_count": 22,
+    "xml_suite_test_count": 0,
+    "xml_testcase_count": 22
+  }
+}

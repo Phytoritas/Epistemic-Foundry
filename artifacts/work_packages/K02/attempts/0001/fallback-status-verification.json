@@ -1,0 +1,119 @@
+{
+  "attempt_id": "K02-0001",
+  "cases": {
+    "blocked_without_fallback": {
+      "disposition": "PRIMARY_BLOCKED_NO_FALLBACK",
+      "fallback": null,
+      "primary": {
+        "error_code": "GROBID_BACKEND_UNAVAILABLE",
+        "error_message": "the pinned GROBID backend is unavailable",
+        "pin": {
+          "adapter_version": "4.0.0-k02.1",
+          "exact_version": "0.8.2",
+          "executable_digest": "sha256:4a7e866c7fa36f96ccd2455f8c7a3be7668a35b2c433511afd04bbf27541d1d0",
+          "parser_id": "grobid",
+          "profile_hash": "sha256:2345bbca390b5e457fd85a0f31177fe0cb1711f29e9869f91da507a4f912dc3d",
+          "role": "GROBID_STRUCTURE"
+        },
+        "status": "BLOCKED",
+        "stream_hash": null
+      },
+      "resolution_hash": "sha256:25ccd07e51fd3808e19e61fc487f096ab2355ea52745a6cd1d3cf2710ed0e7df",
+      "selected_stream_hash": null,
+      "terminal_status": "BLOCKED"
+    },
+    "failed_fallback": {
+      "disposition": "FALLBACK_FAILED",
+      "fallback": {
+        "error_code": "PARSER_OUTPUT_MALFORMED",
+        "error_message": "parser JSON output must be strict UTF-8 JSON",
+        "pin": {
+          "adapter_version": "4.0.0-k02.1",
+          "exact_version": "5.9.0",
+          "executable_digest": "sha256:cc8d92cdada99503e066645b4bbc610449ca45792909bc0a6bb744683284c299",
+          "parser_id": "pypdf-fallback",
+          "profile_hash": "sha256:9ad53b0ba06259c922af6c101555bb4a3710006896815ab0f34ce860b0ffb627",
+          "role": "FALLBACK"
+        },
+        "status": "FAIL",
+        "stream_hash": null
+      },
+      "primary": {
+        "error_code": "PARSER_OUTPUT_MALFORMED",
+        "error_message": "parser JSON output must be strict UTF-8 JSON",
+        "pin": {
+          "adapter_version": "4.0.0-k02.1",
+          "exact_version": "2.41.0",
+          "executable_digest": "sha256:fee54f0f03aca48a9216ac3cd869e5a4d0f39fee7376d860eab4662ccdd42d18",
+          "parser_id": "docling",
+          "profile_hash": "sha256:5c7b02113cf0b6581646f923a5e2398443a25ed98a0c2379cedee59d9b03423b",
+          "role": "DOCLING_LAYOUT"
+        },
+        "status": "FAIL",
+        "stream_hash": null
+      },
+      "resolution_hash": "sha256:4da5d79ef4a7d16da3b711f708d49135b1e95d2da808ace431390e2a8c4e841e",
+      "selected_stream_hash": null,
+      "terminal_status": "FAIL"
+    },
+    "fallback_used": {
+      "disposition": "FALLBACK_USED",
+      "fallback": {
+        "error_code": null,
+        "error_message": null,
+        "pin": {
+          "adapter_version": "4.0.0-k02.1",
+          "exact_version": "5.9.0",
+          "executable_digest": "sha256:cc8d92cdada99503e066645b4bbc610449ca45792909bc0a6bb744683284c299",
+          "parser_id": "pypdf-fallback",
+          "profile_hash": "sha256:9ad53b0ba06259c922af6c101555bb4a3710006896815ab0f34ce860b0ffb627",
+          "role": "FALLBACK"
+        },
+        "status": "PASS",
+        "stream_hash": "sha256:55b3d1fa61a76dfe312a3f1c4affbb9a0bb3c05f887d212c8ba728734ee1e211"
+      },
+      "primary": {
+        "error_code": "PARSER_OUTPUT_MALFORMED",
+        "error_message": "parser JSON output must be strict UTF-8 JSON",
+        "pin": {
+          "adapter_version": "4.0.0-k02.1",
+          "exact_version": "2.41.0",
+          "executable_digest": "sha256:fee54f0f03aca48a9216ac3cd869e5a4d0f39fee7376d860eab4662ccdd42d18",
+          "parser_id": "docling",
+          "profile_hash": "sha256:5c7b02113cf0b6581646f923a5e2398443a25ed98a0c2379cedee59d9b03423b",
+          "role": "DOCLING_LAYOUT"
+        },
+        "status": "FAIL",
+        "stream_hash": null
+      },
+      "resolution_hash": "sha256:a37614bb8ce19e6cce993fd2935385021ef787e9aedf47f04bdf28c48336259a",
+      "selected_stream_hash": "sha256:55b3d1fa61a76dfe312a3f1c4affbb9a0bb3c05f887d212c8ba728734ee1e211",
+      "terminal_status": "PARTIAL"
+    },
+    "primary_success": {
+      "disposition": "NOT_REQUIRED",
+      "fallback": null,
+      "primary": {
+        "error_code": null,
+        "error_message": null,
+        "pin": {
+          "adapter_version": "4.0.0-k02.1",
+          "exact_version": "2.41.0",
+          "executable_digest": "sha256:fee54f0f03aca48a9216ac3cd869e5a4d0f39fee7376d860eab4662ccdd42d18",
+          "parser_id": "docling",
+          "profile_hash": "sha256:5c7b02113cf0b6581646f923a5e2398443a25ed98a0c2379cedee59d9b03423b",
+          "role": "DOCLING_LAYOUT"
+        },
+        "status": "PASS",
+        "stream_hash": "sha256:7c98245ae5b78874ff52e6263d7134a03ecc5f4c59a54ae535ffcb0707ff9ed4"
+      },
+      "resolution_hash": "sha256:a13b8196b43ef5ea1d62dbfac11fa3c7caf2aa1496386df497f50993d20dbafe",
+      "selected_stream_hash": "sha256:7c98245ae5b78874ff52e6263d7134a03ecc5f4c59a54ae535ffcb0707ff9ed4",
+      "terminal_status": "PASS"
+    }
+  },
+  "primary_failure_retained": true,
+  "replay_identity": "PASS",
+  "silent_fallback_count": 0,
+  "status": "PASS"
+}

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="classification committer: commit, retry, replay, reclassification, and override preserve immutable identity" time="1.153622" classname="test" file="packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: same idempotency key with a changed preimage fails closed" time="0.277531" classname="test" file="packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: same-revision lowering and stale override are rejected without mutation" time="1.028193" classname="test" file="packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: only a resolved canonical HumanDecision can authorize override" time="0.937619" classname="test" file="packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testcase name="classification committer: non-correct or non-human decisions cannot authorize override" time="0.978336" classname="test" file="packages\foundry-kernel\src\forge\classifier\classification-committer.test.mjs"/>
+	<testsuite name="classifier_adversarial_test: all 16 fixed attacks fail closed or preserve the exact projection" time="0.653144" disabled="0" errors="0" tests="16" failures="0" skipped="0">
+		<testcase name="A01_USER_DEMANDS_E0" time="0.003193" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A02_PROMPT_INJECTION_IN_SOURCE" time="0.000618" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A03_LLM_OMITS_HARD_SIGNAL" time="0.000799" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A04_LLM_PROPOSES_UNKNOWN_SIGNAL" time="0.000684" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A05_UNSUPPORTED_LLM_PROPOSAL" time="0.000540" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A06_SIGNAL_ORDER_PERMUTATION" time="0.002678" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A07_DUPLICATE_SIGNALS" time="0.000425" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A08_MONOTONIC_ADDITION" time="0.001141" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A09_OVERRIDE_LOWERING" time="0.001600" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A10_OVERRIDE_RAISE" time="0.399552" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A11_RESULT_ENVELOPE_ONLY" time="0.000295" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A12_CAPABILITY_ALIAS" time="0.000170" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A13_RETRY_IDENTITY" time="0.167889" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A14_HASH_SELF_FIELD_MUTATION" time="0.000739" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A15_AMBIGUITY_REMOVAL_SAME_REVISION" time="0.000524" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+		<testcase name="A16_LLM_DIRECT_CLASS_OUTPUT" time="0.000344" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+	</testsuite>
+	<testcase name="classifier authority guards reject a forged request hash and any non-frozen version" time="0.000463" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-adversarial.test.mjs"/>
+	<testcase name="classifier_gold_test: all 14 fixed cases have exact deterministic projections" time="0.006719" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-gold.test.mjs"/>
+	<testcase name="classifier_gold_test: input ordering and duplicate signals do not change identity" time="0.000599" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-gold.test.mjs"/>
+	<testcase name="classifier_hash_vector_test: every frozen preimage has the exact SHA-256 and ID" time="0.002493" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-hash-vector.test.mjs"/>
+	<testcase name="classifier_hash_vector_test: volatile and self fields are outside the semantic preimage" time="0.000281" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-hash-vector.test.mjs"/>
+	<testcase name="classifier_immutable_override_test: every fixed override is upward-only and immutable" time="0.006086" classname="test" file="packages\foundry-kernel\src\forge\classifier\classifier-override.test.mjs"/>
+	<testcase name="underprocessing_guard: all 1023 non-empty subsets use the exact maximum floor" time="0.151329" classname="test" file="packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: every non-empty subset-to-superset pair preserves protection" time="0.209154" classname="test" file="packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: empty input injects sticky AMBIGUOUS and cannot lose Interview" time="0.001220" classname="test" file="packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: trusted unknown signals fail input validation" time="0.000407" classname="test" file="packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="underprocessing_guard: any class, gate, Interview, role, or phase regression fails" time="0.000603" classname="test" file="packages\foundry-kernel\src\forge\classifier\underprocessing-guard.test.mjs"/>
+	<testcase name="fsm_property_test: every phase pair matches the exact class-specific FORGE graph" time="0.006688" classname="test" file="packages\foundry-kernel\src\forge\fsm\fsm-property.test.mjs"/>
+	<testcase name="fsm_property_test: F01 exact projection drives forward edges and cannot be weakened" time="0.001344" classname="test" file="packages\foundry-kernel\src\forge\fsm\fsm-property.test.mjs"/>
+	<testcase name="fsm_property_test: reducer is immutable, revision-bound, and hash deterministic" time="0.003728" classname="test" file="packages\foundry-kernel\src\forge\fsm\fsm-property.test.mjs"/>
+	<testcase name="fsm_property_test: sealed inputs fail closed and transition identity binds semantic inputs" time="0.005726" classname="test" file="packages\foundry-kernel\src\forge\fsm\fsm-property.test.mjs"/>
+	<testcase name="fsm_property_test: stale revision, wrong from phase, and illegal edges make no state" time="0.002449" classname="test" file="packages\foundry-kernel\src\forge\fsm\fsm-property.test.mjs"/>
+	<testcase name="fsm_property_test: E closes to completed IDLE and completed sessions cannot restart" time="0.001716" classname="test" file="packages\foundry-kernel\src\forge\fsm\fsm-property.test.mjs"/>
+	<testcase name="fsm_property_test: strict event replay reproduces the direct reducer chain" time="0.005253" classname="test" file="packages\foundry-kernel\src\forge\fsm\fsm-property.test.mjs"/>
+	<testcase name="fsm_property_test: empty replay still verifies every sealed initial input" time="0.003621" classname="test" file="packages\foundry-kernel\src\forge\fsm\fsm-property.test.mjs"/>
+	<testcase name="stale_propagation_test: G to O stales target and every downstream projection" time="0.011494" classname="test" file="packages\foundry-kernel\src\forge\fsm\stale-propagation.test.mjs"/>
+	<testcase name="stale_propagation_test: every legal return edge has the target-inclusive suffix" time="0.020459" classname="test" file="packages\foundry-kernel\src\forge\fsm\stale-propagation.test.mjs"/>
+	<testcase name="stale_propagation_test: stale suffix contains only phases reachable for the class" time="0.002128" classname="test" file="packages\foundry-kernel\src\forge\fsm\stale-propagation.test.mjs"/>
+	<testcase name="stale_propagation_test: forward and close edges do not stale artifacts" time="0.001261" classname="test" file="packages\foundry-kernel\src\forge\fsm\stale-propagation.test.mjs"/>
+	<testcase name="stale_propagation_test: projection identity is deterministic and event-bound" time="0.007094" classname="test" file="packages\foundry-kernel\src\forge\fsm\stale-propagation.test.mjs"/>
+	<testcase name="stale_propagation_test: cross-session and unretained artifact sets fail closed" time="0.002348" classname="test" file="packages\foundry-kernel\src\forge\fsm\stale-propagation.test.mjs"/>
+	<testcase name="override_provenance_test: a valid human-authored decision explicitly admits WAIVE" time="0.359597" classname="test" file="packages\foundry-kernel\src\forge\gates\override-provenance.test.mjs"/>
+	<testcase name="override_provenance_test: authority strings never substitute for a HumanDecision receipt" time="0.655521" classname="test" file="packages\foundry-kernel\src\forge\gates\override-provenance.test.mjs"/>
+	<testcase name="override_provenance_test: non-waivable gates stay non-waivable with human approval" time="1.196556" classname="test" file="packages\foundry-kernel\src\forge\gates\override-provenance.test.mjs"/>
+	<testcase name="override_provenance_test: service-authored HumanDecision receipts are rejected" time="0.816966" classname="test" file="packages\foundry-kernel\src\forge\gates\override-provenance.test.mjs"/>
+	<testcase name="override_provenance_test: wrong decision type, authority, scope, run, and hash fail closed" time="4.279315" classname="test" file="packages\foundry-kernel\src\forge\gates\override-provenance.test.mjs"/>
+	<testcase name="override_provenance_test: an undeclared or unused override artifact is never implicit" time="0.487120" classname="test" file="packages\foundry-kernel\src\forge\gates\override-provenance.test.mjs"/>
+	<testcase name="transition_receipt_test: a complete current phase set admits deterministically" time="0.135515" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: prose-only and unresolved receipt transitions fail closed" time="0.006663" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: resolver claims cannot replace byte and receipt integrity" time="0.115085" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: malformed validation evidence fails with a typed error" time="0.136370" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: IDLE requires a real receipt but no fictional prior phase set" time="0.103315" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: IDLE rejects an unrelated receipt and a forged classification identity" time="0.217110" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: IDLE classification projection and state binding fail closed" time="0.341118" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: IDLE classification requires exact schema-validation evidence" time="0.170254" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: incomplete, invalid, and tampered phase sets cannot advance" time="1.486832" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: phase entries bind exact receipt, hash, schema, and state retention" time="1.117604" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: session, revision, phase, and state hash are admission inputs" time="0.314795" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: E requires exact resolving and satisfied GateDecision artifacts" time="0.827837" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: unresolved, failing, blocked, and forged gates cannot admit E" time="1.652697" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: GateDecision evidence IDs must resolve through transition receipts" time="0.460475" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testcase name="transition_receipt_test: FAIL and BLOCK are never absorbed outside E" time="0.704179" classname="test" file="packages\foundry-kernel\src\forge\gates\transition-receipt.test.mjs"/>
+	<testsuite name="forge_golden_flows: E1 minimum and E3/E5 full paths admit, reduce, replay, and complete" time="22.669154" disabled="0" errors="0" tests="3" failures="0" skipped="0">
+		<testcase name="E1_LOOKUP_MINIMUM" time="6.697636" classname="test" file="tests\golden\forge\f04_forge_golden_flows.test.mjs"/>
+		<testcase name="E3_MECHANISM_FULL" time="6.791421" classname="test" file="tests\golden\forge\f04_forge_golden_flows.test.mjs"/>
+		<testcase name="E5_AMBIGUOUS_INTERVIEW_FULL" time="9.178587" classname="test" file="tests\golden\forge\f04_forge_golden_flows.test.mjs"/>
+	</testsuite>
+	<testcase name="forge_golden_flows: UNDERDETERMINED is a receipt-bound truthful terminal outcome" time="6.620512" classname="test" file="tests\golden\forge\f04_forge_golden_flows.test.mjs"/>
+	<testcase name="forge_golden_flows: admission cannot bypass F02 classification identity context" time="3.378418" classname="test" file="tests\golden\forge\f04_forge_golden_flows.test.mjs"/>
+	<testcase name="phase_artifact_reconciliation: every expected F04 transition and phase set resolves exactly once" time="21.413109" classname="test" file="tests\golden\forge\f04_phase_artifact_reconciliation.test.mjs"/>
+	<testcase name="phase_artifact_reconciliation: a missing persisted transition fails closed" time="3.205754" classname="test" file="tests\golden\forge\f04_phase_artifact_reconciliation.test.mjs"/>
+	<!-- tests 76 -->
+	<!-- suites 0 -->
+	<!-- pass 76 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 32930.581 -->
+</testsuites>

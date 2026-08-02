@@ -1,0 +1,39 @@
+{
+  "attempt_id": "B02-0002",
+  "attributed_product_changes": [
+    "pyproject.toml",
+    "uv.lock"
+  ],
+  "attribution_method": "The exact dependency-group block is removed from the current pyproject to reconstruct the sealed pre-B02 hash, then uv 0.7.21 reconstructs the sealed pre-B02 lock and a structural old/new comparison proves that only tiktoken 0.13.0 plus its mandatory transitive closure was added.",
+  "authorized_product_paths": [
+    "pyproject.toml",
+    "uv.lock",
+    "artifacts/work_packages/B02/**"
+  ],
+  "hashes": {
+    "new_pyproject": "sha256:31cf5dffa4703052d70536dbbb6e64d917900c70d52b039f9c9cbf09920353db",
+    "new_uv_lock": "sha256:5c3798ff0323f9352d73f17fa93913590d7dbb5382dd0de26b1619e775b58caa",
+    "old_pyproject": "sha256:29d7a25d530884a4a2dff3d8ca2d9878717a43a4dc3c2710fc5317f533a7be44",
+    "old_uv_lock": "sha256:728e9d36f966b38a0f86ea5300210760b889110ba5adce5e646efa439ea2efac",
+    "production_double_build_helper": "sha256:99f223bd8d4a3d397cf9c560274c498a3a51c15116e094f9896278640aca32df"
+  },
+  "operational_scratch_note": "The listed cache/diagnostic leaves are not product-change attribution. Two exact cleanup attempts were rejected before execution by the Windows safety hook; no destructive workaround was used.",
+  "operational_scratch_residue": [
+    "artifacts/work_packages/B02/attempts/0002/__pycache__/run_double_build_current_inputs.cpython-312.pyc",
+    "artifacts/work_packages/B02/attempts/0002/__pycache__/verify_lock_correction.cpython-312.pyc",
+    ".rah/tmp/b02-build-debug/.gitignore",
+    ".rah/tmp/b02-build-debug/epistemic_foundry-4.0.0-py3-none-any.whl"
+  ],
+  "preservation": {
+    "dirty_worktree_preserved": true,
+    "historical_b02_root_artifacts_immutable": true,
+    "j02_0002_fail_history_immutable": true,
+    "production_helper_modified": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "product_write_scope_violation_count": 0,
+  "product_write_scope_violations": [],
+  "runtime_dependency_exposure": false,
+  "status": "PASS"
+}

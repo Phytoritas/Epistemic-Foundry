@@ -1,0 +1,50 @@
+{
+  "attempt_id": "X02-0001",
+  "declaring_sources": {
+    "host_binding": "adapters/claude-code/claude-binding.json (the declared Claude Code host binding; admitted, never invented)",
+    "role_mapping": "adapters/claude-code/role_mapping.yaml cross-checked row-for-row against manifests/role_registry.yaml (roles are read, not restated)"
+  },
+  "exit_criteria": {
+    "parallel_writes_isolated": {
+      "mechanism": "each parallel write request yields a worktree plan whose branch, path and write scope are disjoint from every other plan in the wave; overlapping scopes are refused and the plan never claims isolation it does not prove — the worktree-isolation test asserts disjointness and refusal",
+      "status": "PASS"
+    },
+    "role_specs_generate_custom_agents": {
+      "mechanism": "each RoleSpec in the declared mapping generates exactly one custom agent definition whose frontmatter and tool grants are derived from the role registry; the binding receipt re-derives its own content hash over the payload facts it verified",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "claude_adapter_test": {
+      "covered_by": [
+        "claude_schema_check",
+        "claude_adapter_test",
+        "claude_adversarial_tests",
+        "claude_receipts"
+      ],
+      "status": "PASS",
+      "test_count": 53
+    },
+    "independent_review": {
+      "evidence": "review.md (author: bounded X02 implementation agent; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "worktree_isolation_test": {
+      "covered_by": [
+        "claude_worktree_isolation_test"
+      ],
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "claude_adapter_test": 10,
+    "claude_adversarial_tests": 21,
+    "claude_receipts": 10,
+    "claude_schema_check": 12,
+    "claude_worktree_isolation_test": 9,
+    "dependency_regression_codex_adapter": 68,
+    "full_node_suite": 1641
+  }
+}

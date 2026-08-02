@@ -1,0 +1,37 @@
+{
+  "approved_scope": [
+    "evals/scale/**",
+    "artifacts/work_packages/Y04/**"
+  ],
+  "attempt_id": "Y04-0001",
+  "authored_by": "a bounded implementation agent (Y04 maker)",
+  "authority_decision": "Y04's manifest write_scope is evals/scale/** and artifacts/work_packages/Y04/**. Every product byte lives inside evals/scale/**; the harness only reads (never writes) the sealed schemas/budget-envelope.schema.json (Y01) for its budget vocabulary and re-applies the Y02 honest-state rule inline. No file outside the approved scope was created or modified, and no root or schema canonical source was mutated.",
+  "component_files": [
+    "evals/scale/load_shedding_results.json",
+    "evals/scale/pytest.ini",
+    "evals/scale/scale_corpus.json",
+    "evals/scale/scale_harness.py",
+    "evals/scale/scale_qualification_results.json",
+    "evals/scale/test_load_shedding.py",
+    "evals/scale/test_scale_qualification.py"
+  ],
+  "composed_modules_modified": false,
+  "product_file_hashes": {
+    "artifacts/work_packages/Y04/attempts/0001/run_y04_0001_checks.py": "sha256:b966398695e347d4afad144c1933fa2249443551eac3c526a3ab77bd94a2eca8",
+    "evals/scale/load_shedding_results.json": "sha256:6a068686bfc90e3f1928fd564fe7ec5bcfeeafa5d85127357ec899e65f6f245a",
+    "evals/scale/pytest.ini": "sha256:08ef26f32794d161333005a7be66602641abfd607c1bf69f05915a1bba741380",
+    "evals/scale/scale_corpus.json": "sha256:46383e23449bf47c766146d7445c2cc8589c63a0612da249583ee4fe26950459",
+    "evals/scale/scale_harness.py": "sha256:6666eb497e57bfb88b15977550616db0ded1dbf11746f48ff78cf8be33b7452f",
+    "evals/scale/scale_qualification_results.json": "sha256:ed329e05c21980c9297b574bf9910c0dca2c810ec2ce7d2a831a5c468461806d",
+    "evals/scale/test_load_shedding.py": "sha256:0bd8575bca78891f135339bdee6c88ead1b4497cad400e80890f41a672aabb3a",
+    "evals/scale/test_scale_qualification.py": "sha256:2a00914c295320e5801f2cd805bd311fdfbdb6cd125b479345af3a93e8be7714"
+  },
+  "pyproject_modified": false,
+  "reset_clean_stash_commit_push_performed": false,
+  "reviewed_by": "an independent seal-preparation session, actor-independent from the author",
+  "root_canonical_source_mutation_count": 0,
+  "schema_or_test_weakening_count": 0,
+  "status": "PASS",
+  "subagents_or_fleet_used": false,
+  "write_scope_violation_count": 0
+}

@@ -1,0 +1,72 @@
+{
+  "attempt_id": "B03-0001",
+  "attestation_scope": {
+    "attested_not_authored": "B03 attests the cross-platform CI workflow, the two required validators, the ten-test fail-closed mutation suite and the cache/reproducibility contract the repository already carries; this sealing session makes ZERO edit and does not re-author them",
+    "ci_config_product_files": [
+      ".github/workflows/ci.yml",
+      "docs/cache_contract.md",
+      "scripts/ci/cache_key_audit.py",
+      "scripts/ci/ci_matrix_lint.py",
+      "scripts/ci/test_ci_policy.py"
+    ]
+  },
+  "exit_criteria": {
+    "caches_are_disposable_and_hash_keyed": {
+      "mechanism": "cache_key_audit asserts exactly one reviewed actions/cache step whose paths live below runner.temp and overlap no canonical or output tree, a key bound to matrix.os + runner.arch + exactly one hashFiles over the four lock inputs (package-lock.json, uv.lock, toolchain-lock.json, python-build-constraints.txt), no prefix restore-keys, enableCrossOsArchive: false and fail-on-cache-miss: false so a cache miss is non-fatal",
+      "status": "PASS"
+    },
+    "linux_macos_windows_lanes_defined": {
+      "mechanism": "ci_matrix_lint parses .github/workflows/ci.yml and asserts matrix.os is exactly the three versioned hosted-runner lanes ['ubuntu-24.04', 'macos-15', 'windows-2025'] (no -latest moving alias), the job runs on ${{ matrix.os }} with fail-fast: false so every OS produces a result, permissions are contents: read with no pull_request_target and no suppressed failures, every action is pinned to the reviewed full commit SHA exactly once, and the setup-node/python/uv versions match the pinned toolchain lock",
+      "status": "PASS"
+    }
+  },
+  "fail_closed_policy_suite": {
+    "proves": "each validator fails closed on the reviewed drift shapes -- a moving runner alias, a moving action tag, a duplicate approved action, pull_request_target, a dropped lock input, a prefix restore key, a cross-OS archive, a fatal cache miss, and a canonical-output cache path",
+    "status": "PASS",
+    "suite": "test_ci_policy",
+    "test_count": 10
+  },
+  "required_checks": {
+    "cache_key_audit": {
+      "cache_action": "actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+      "cache_miss_is_fatal": false,
+      "cross_os_archive": false,
+      "exact_restore_only": true,
+      "failures": [],
+      "key": "efoundry-deps-v1-${{ matrix.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json', 'uv.lock', 'toolchains/toolchain-lock.json', 'toolchains/python-build-constraints.txt') }}",
+      "paths": [
+        "${{ runner.temp }}/efoundry-cache/npm",
+        "${{ runner.temp }}/efoundry-cache/uv"
+      ],
+      "status": "PASS",
+      "validator": "python scripts/ci/cache_key_audit.py"
+    },
+    "ci_matrix_lint": {
+      "action_pins": {
+        "actions/cache": "caa296126883cff596d87d8935842f9db880ef25",
+        "actions/checkout": "d23441a48e516b6c34aea4fa41551a30e30af803",
+        "actions/setup-node": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+        "actions/setup-python": "ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "astral-sh/setup-uv": "94527f2e458b27549849d47d273a16bec83a01e9"
+      },
+      "failures": [],
+      "runners": [
+        "ubuntu-24.04",
+        "macos-15",
+        "windows-2025"
+      ],
+      "status": "PASS",
+      "validator": "python scripts/ci/ci_matrix_lint.py"
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded implementation agent(s) that authored the cross-platform workflow, the two validators, the mutation suite and the cache contract; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1253,
+    "full_python_suite": 1261,
+    "test_ci_policy": 10
+  }
+}

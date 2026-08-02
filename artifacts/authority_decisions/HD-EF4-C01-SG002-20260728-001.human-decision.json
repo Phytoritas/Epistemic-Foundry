@@ -1,0 +1,27 @@
+{
+  "decision_id": "HD-EF4-C01-SG002-20260728-001",
+  "run_id": null,
+  "subject_id": "C01-SG002",
+  "decision_type": "correct",
+  "decision": "Resolve C01-SG002 prospectively by preserving every existing C01 write-scope entry and appending exactly examples/sample_evolution-run-spec.json and examples/sample_promotion-decision.json; authorize new attempt C01-0003 while forbidding schema weakening, Fleet, subagents, broader example authority, runtime work, packaging work, and mutation of prior attempts.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "The mandatory A05 EvolutionRunSpec and PromotionDecision contract changes necessarily invalidate two mapped canonical examples. This minimum correction grants authority over only those exact fixtures, preserves C01-0001, C01-0002, C01-SG002, A05-0002, RAH history, generations, reports, commands, reviews, and the dirty worktree, and does not retroactively convert any prior SPEC_GAP to PASS.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/C01/attempts/0002/report.json",
+    "artifacts/work_packages/C01/attempts/0002/example-scope-conflict-verification.json",
+    "artifacts/work_packages/A05/attempts/0002/report.json",
+    "RAH:E0003",
+    "RAH:generation:000004-0d2babab"
+  ],
+  "affected_artifact_ids": [
+    "manifests/development_manifest.yaml",
+    "examples/sample_evolution-run-spec.json",
+    "examples/sample_promotion-decision.json",
+    "C01-0003"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-28T00:00:00Z",
+  "decision_hash": "sha256:2d3fd1a2a8cd004d67484fb159ef89ecc5bd86a0196bec02e8a421c4ff2a32e7"
+}

@@ -1,0 +1,67 @@
+{
+  "attempt_id": "P06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every refer or withhold decision re-derives byte for byte from its own published fields: the gate id and receipt hash cover the receipt, each composed organ receipt and the attestation re-derive their own hash, and there is no clock or random draw on the decided path (the caller supplies created_at), so replaying a call reproduces the receipt",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the attestation is validated against its canonical schema and required to re-derive its own hash, each organ receipt is matched against its owning gate name (the V05 name pinned at the component boundary rather than imported) and required to re-derive its own hash, the passing attestation status is read positionally from the schema (EF4-I22), and each FINDING_CODE names an exact withholding",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "a fully cleared candidate is referred and replays deterministically, while a single-source promotion (one organ passed twice), a bare-majority docket (dissent dropped), a self- or conflicted attestation, a tampered or promotion-claiming organ receipt, an incomplete or failing attestation chain, a candidate-identity mismatch and a referral above the replication-bounded ceiling are each withheld by path",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the gate refers or withholds and promotes nothing: promotion authority lives in governance.promotion and takes no score, gate_grants_promotion records that in one place, a candidate-generating requesting role is refused from driving the referral, and a parliament receipt that claims promotion authority is refused outright",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "dimensions_stay_separate": "two independent organs (P05 Parliament convened, V05 cascade advanced), preserved minority dissent, and an independent sealed-candidate attestation over both organ receipts are each a distinct dimension, capped by the lower replication-bounded ceiling",
+    "promotion_authority": "governance.promotion (takes no score); this gate holds none and gate_grants_promotion is always False",
+    "receipts_are_by_path": true,
+    "refers_or_withholds": "a sealed candidate to the promotion authority; never promotes"
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation subagent; reviewer: the sealing agent, actor-independent from the author; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 21
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 10
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "schema_binding": {
+    "attestation": "canonical attestation schema (re-derives its own hash; passing status read positionally, EF4-I22)",
+    "attestor_independence": "governance.evolution_authority charter section 6 (attestor independent of the makers)",
+    "parliament_receipt": "parliament.v4_p05 CONVENE receipt (owning gate name + re-derived hash; grants_promotion must stay false)",
+    "promotion_ceiling": "lower of the P05 replication-bounded ceiling and the V05 replication ceiling",
+    "validation_receipt": "validation.v4_v05 ADVANCE receipt verified as opaque integrity-checked data against a pinned boundary gate name (no parliament<->validation component cycle)"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_p05": 46,
+    "dependency_regression_v05": 44,
+    "full_node_suite": 1253,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 21,
+    "provenance_and_receipt_audit": 10,
+    "schema_and_type_check": 9,
+    "unit_and_contract_tests": 9
+  }
+}

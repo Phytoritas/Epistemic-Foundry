@@ -1,0 +1,762 @@
+{
+  "attempt_id": "B04-0006",
+  "classification_counts": {
+    "GATE_DECISION_RUNTIME_SCHEMA_DRIFT": 51,
+    "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT": 15,
+    "J02_TIKTOKEN_DEPENDENCY_DEBT": 1
+  },
+  "completion_ready": false,
+  "junit_path": "artifacts/work_packages/B04/attempts/0006/full-python-suite.junit.xml",
+  "junit_sha256": "sha256:791b3713d793ae5fae16e86ba562ecc90aa4f03d0f988921990c5e89a45479b0",
+  "problem_kind_counts": {
+    "error": 15,
+    "failure": 52
+  },
+  "problems": [
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_evidence_parliament::test_clean_gates_allow_an_advancing_recommendation",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_evidence_parliament.py:43: in test_clean_gates_allow_an_advancing_recommendation\n    record = _adjudicate()\n             ^^^^^^^^^^^^^\ntests/test_evidence_parliament.py:29: in _adjudicate\n    gate_decisions=[_decision(\"leakage_audit\", True)],\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_evidence_parliament.py:17: in _decision\n    return gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_evidence_parliament::test_failed_gate_plus_advancing_recommendation_is_refused",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_evidence_parliament.py:51: in test_failed_gate_plus_advancing_recommendation_is_refused\n    _adjudicate(gate_decisions=[_decision(\"leakage_audit\", False)])\n                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_evidence_parliament.py:17: in _decision\n    return gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_evidence_parliament::test_override_attempt_is_recorded_not_discarded",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_evidence_parliament.py:58: in test_override_attempt_is_recorded_not_discarded\n    gate_decisions=[_decision(\"leakage_audit\", False)],\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_evidence_parliament.py:17: in _decision\n    return gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_evidence_parliament::test_failed_gate_with_blocking_recommendation_is_allowed",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_evidence_parliament.py:75: in test_failed_gate_with_blocking_recommendation_is_allowed\n    gate_decisions=[_decision(\"leakage_audit\", False)],\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_evidence_parliament.py:17: in _decision\n    return gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_evidence_parliament::test_inbox_triage_against_a_failed_gate_is_not_an_override",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_evidence_parliament.py:84: in test_inbox_triage_against_a_failed_gate_is_not_an_override\n    gate_decisions=[_decision(\"leakage_audit\", False)],\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_evidence_parliament.py:17: in _decision\n    return gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_evidence_parliament::test_waived_gate_is_not_treated_as_failure",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_evidence_parliament.py:92: in test_waived_gate_is_not_treated_as_failure\n    waived = gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_evidence_parliament::test_minority_reports_and_unresolved_issues_persist",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_evidence_parliament.py:107: in test_minority_reports_and_unresolved_issues_persist\n    record = _adjudicate(\ntests/test_evidence_parliament.py:29: in _adjudicate\n    gate_decisions=[_decision(\"leakage_audit\", True)],\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_evidence_parliament.py:17: in _decision\n    return gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_evidence_parliament::test_gate_decision_ids_are_bound_to_the_record",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_evidence_parliament.py:116: in test_gate_decision_ids_are_bound_to_the_record\n    passing = _decision(\"leakage_audit\", True)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_evidence_parliament.py:17: in _decision\n    return gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_evidence_parliament::test_a_recommendation_is_never_promotion_authority",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_evidence_parliament.py:122: in test_a_recommendation_is_never_promotion_authority\n    assert recommendation_is_binding(_adjudicate(promotion_recommendation=\"REPLICATED\")) is False\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_evidence_parliament.py:29: in _adjudicate\n    gate_decisions=[_decision(\"leakage_audit\", True)],\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_evidence_parliament.py:17: in _decision\n    return gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_foundry_kernel::test_export_with_failing_gate_is_refused",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_foundry_kernel.py:146: in test_export_with_failing_gate_is_refused\n    failing = gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_foundry_kernel::test_export_succeeds_only_with_a_resolving_passing_gate",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_foundry_kernel.py:166: in test_export_succeeds_only_with_a_resolving_passing_gate\n    passing = gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_foundry_kernel::test_unresolved_gate_ids_are_refused",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_foundry_kernel.py:187: in test_unresolved_gate_ids_are_refused\n    passing = gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_foundry_kernel::test_gate_decisions_are_deterministic_for_equal_inputs",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_foundry_kernel.py:240: in test_gate_decisions_are_deterministic_for_equal_inputs\n    first = gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_complete_evidence_promotes",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:141: in test_complete_evidence_promotes\n    decision = decide_promotion(_complete_request())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_low_risk_candidate_uses_policy_backed_not_required_gates",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:161: in test_low_risk_candidate_uses_policy_backed_not_required_gates\n    decision = decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_not_required_cannot_replace_a_substantive_higher_level_gate",
+      "normalized_diagnostic": "AssertionError: Regex pattern did not match.\n Regex: 'substantively required'\n Input: \"G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\"\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:180: in test_not_required_cannot_replace_a_substantive_higher_level_gate\n    decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nDuring handling of the above exception, another exception occurred:\ntests/test_governance.py:179: in test_not_required_cannot_replace_a_substantive_higher_level_gate\n    with pytest.raises(PromotionRefused, match=\"substantively required\"):\nE   AssertionError: Regex pattern did not match.\nE    Regex: 'substantively required'\nE    Input: \"G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\""
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_gate_decisions_are_structured_hash_bound_and_complete",
+      "normalized_diagnostic": "AssertionError: Regex pattern did not match.\n Regex: 'decision_hash mismatch'\n Input: \"G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\"\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:197: in test_gate_decisions_are_structured_hash_bound_and_complete\n    decide_promotion(_complete_request(gate_decisions=tuple(tampered)))\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nDuring handling of the above exception, another exception occurred:\ntests/test_governance.py:196: in test_gate_decisions_are_structured_hash_bound_and_complete\n    with pytest.raises(PromotionRefused, match=\"decision_hash mismatch\"):\nE   AssertionError: Regex pattern did not match.\nE    Regex: 'decision_hash mismatch'\nE    Input: \"G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\""
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_missing_grounded_evidence_is_underdetermined",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:217: in test_missing_grounded_evidence_is_underdetermined\n    decision = decide_promotion(_complete_request(grounded_evidence_ids=()))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_missing_dependency_correction_is_underdetermined",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:224: in test_missing_dependency_correction_is_underdetermined\n    assert decide_promotion(_complete_request(dependency_cluster_ids=()))[\"decision\"] == \"UNDERDETERMINED\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_missing_parliament_adjudication_is_underdetermined",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:228: in test_missing_parliament_adjudication_is_underdetermined\n    assert decide_promotion(_complete_request(parliament_adjudication_id=None))[\"decision\"] == \"UNDERDETERMINED\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_missing_multiplicity_accounting_is_underdetermined",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:233: in test_missing_multiplicity_accounting_is_underdetermined\n    decide_promotion(_complete_request(selective_inference_report_id=None))[\"decision\"]\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_absent_reference_sentinel_never_accompanies_a_promotion",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:245: in test_absent_reference_sentinel_never_accompanies_a_promotion\n    decision = decide_promotion(_complete_request(**override))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_unchallenged_candidate_is_underdetermined",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:253: in test_unchallenged_candidate_is_underdetermined\n    assert decide_promotion(_complete_request(challenge_survived=False))[\"decision\"] == \"UNDERDETERMINED\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_required_replication_absent_is_underdetermined",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:257: in test_required_replication_absent_is_underdetermined\n    decision = decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_required_human_approval_absent_is_underdetermined",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:265: in test_required_human_approval_absent_is_underdetermined\n    assert decide_promotion(_complete_request(approval_record_ids=()))[\"decision\"] == \"UNDERDETERMINED\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_incompatible_method_is_underdetermined",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:269: in test_incompatible_method_is_underdetermined\n    assert decide_promotion(_complete_request(method_compatible=False))[\"decision\"] == \"UNDERDETERMINED\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_leakage_blocks_even_with_complete_evidence",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:277: in test_leakage_blocks_even_with_complete_evidence\n    decision = decide_promotion(_complete_request(leakage_detected=True))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_failed_hard_cascade_blocks",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:284: in test_failed_hard_cascade_blocks\n    decision = decide_promotion(_complete_request(hard_gate_status=\"FAIL\"))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_partial_cascade_is_conditional_not_promotion",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:289: in test_partial_cascade_is_conditional_not_promotion\n    decision = decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_blocker_outranks_missing_requirements",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:309: in test_blocker_outranks_missing_requirements\n    decision = decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_promote_requires_requested_and_granted_equality",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:327: in test_promote_requires_requested_and_granted_equality\n    decision = decide_promotion(_complete_request())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_conditional_requires_a_non_null_strictly_lower_grant",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:345: in test_conditional_requires_a_non_null_strictly_lower_grant\n    decision = decide_promotion(_complete_request(**common))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_conditional_cannot_exceed_replication_ceiling",
+      "normalized_diagnostic": "AssertionError: Regex pattern did not match.\n Regex: 'exceeds'\n Input: \"G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\"\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:360: in test_conditional_cannot_exceed_replication_ceiling\n    decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nDuring handling of the above exception, another exception occurred:\ntests/test_governance.py:359: in test_conditional_cannot_exceed_replication_ceiling\n    with pytest.raises(PromotionRefused, match=\"exceeds\"):\nE   AssertionError: Regex pattern did not match.\nE    Regex: 'exceeds'\nE    Input: \"G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\""
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_non_granting_decisions_require_null[REJECT-overrides0]",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:385: in test_non_granting_decisions_require_null\n    decision = decide_promotion(_complete_request(**overrides))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_non_granting_decisions_require_null[UNDERDETERMINED-overrides1]",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:385: in test_non_granting_decisions_require_null\n    decision = decide_promotion(_complete_request(**overrides))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_non_granting_decisions_require_null[BLOCKED-overrides2]",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:385: in test_non_granting_decisions_require_null\n    decision = decide_promotion(_complete_request(**overrides))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_governance::test_idempotency_key_must_bind_the_sealed_request",
+      "normalized_diagnostic": "AssertionError: Regex pattern did not match.\n Regex: 'idempotency_key'\n Input: \"G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\"\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_governance.py:460: in test_idempotency_key_must_bind_the_sealed_request\n    decide_promotion(_complete_request(idempotency_key=\"unbound-key\"))\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nDuring handling of the above exception, another exception occurred:\ntests/test_governance.py:459: in test_idempotency_key_must_bind_the_sealed_request\n    with pytest.raises(PromotionRefused, match=\"idempotency_key\"):\nE   AssertionError: Regex pattern did not match.\nE    Regex: 'idempotency_key'\nE    Input: \"G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\""
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_full_cycle_promotes_only_with_complete_evidence",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_integration_forge_cycle.py:340: in firewall\n    holdout = build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_promotion_accepts_canonical_generated_gate_decisions",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_integration_forge_cycle.py:527: in test_promotion_accepts_canonical_generated_gate_decisions\n    gate_decisions = tuple(\ntests/test_integration_forge_cycle.py:528: in <genexpr>\n    gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_partial_cascade_blocks_promotion_end_to_end",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:563: in test_partial_cascade_blocks_promotion_end_to_end\n    decision = decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_failed_cascade_blocks_promotion_end_to_end",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:582: in test_failed_cascade_blocks_promotion_end_to_end\n    decision = decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_leakage_invalidates_the_cycle",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_integration_forge_cycle.py:340: in firewall\n    holdout = build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_unchallenged_candidate_cannot_promote_end_to_end",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:637: in test_unchallenged_candidate_cannot_promote_end_to_end\n    decision = _promote_with([])\n               ^^^^^^^^^^^^^^^^^\ntests/test_integration_forge_cycle.py:627: in _promote_with\n    return decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_refuted_candidate_cannot_promote_end_to_end",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:643: in test_refuted_candidate_cannot_promote_end_to_end\n    decision = _promote_with([_challenge(\"SURVIVED\"), _challenge(\"REFUTED\")])\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_integration_forge_cycle.py:627: in _promote_with\n    return decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_inconclusive_challenge_cannot_promote_end_to_end",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:649: in test_inconclusive_challenge_cannot_promote_end_to_end\n    decision = _promote_with([_challenge(\"INCONCLUSIVE\")])\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_integration_forge_cycle.py:627: in _promote_with\n    return decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_surviving_every_challenge_promotes_end_to_end",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:654: in test_surviving_every_challenge_promotes_end_to_end\n    decision = _promote_with([_challenge(\"SURVIVED\"), _challenge(\"SURVIVED\")])\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_integration_forge_cycle.py:627: in _promote_with\n    return decide_promotion(\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_receipt_bound_promotion_commit_is_atomic",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:693: in test_receipt_bound_promotion_commit_is_atomic\n    decision, effect = _decision_and_effect()\n                       ^^^^^^^^^^^^^^^^^^^^^^\ntests/test_integration_forge_cycle.py:689: in _decision_and_effect\n    return decide_promotion(request), effect\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_crash_before_effect_receipt_does_not_promote",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:707: in test_crash_before_effect_receipt_does_not_promote\n    decision = decide_promotion(_promotion_request())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_stale_candidate_revision_fails_compare_and_swap",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:716: in test_stale_candidate_revision_fails_compare_and_swap\n    decision, effect = _decision_and_effect()\n                       ^^^^^^^^^^^^^^^^^^^^^^\ntests/test_integration_forge_cycle.py:689: in _decision_and_effect\n    return decide_promotion(request), effect\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_same_idempotent_request_replays_the_original_result",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:724: in test_same_idempotent_request_replays_the_original_result\n    decision, effect = _decision_and_effect()\n                       ^^^^^^^^^^^^^^^^^^^^^^\ntests/test_integration_forge_cycle.py:689: in _decision_and_effect\n    return decide_promotion(request), effect\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_idempotency_key_reuse_with_different_request_conflicts",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:735: in test_idempotency_key_reuse_with_different_request_conflicts\n    decision, effect = _decision_and_effect()\n                       ^^^^^^^^^^^^^^^^^^^^^^\ntests/test_integration_forge_cycle.py:689: in _decision_and_effect\n    return decide_promotion(request), effect\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_integration_forge_cycle::test_blocked_decision_with_receipt_preserves_candidate_state",
+      "normalized_diagnostic": "epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nsrc/epistemic_foundry/governance/promotion.py:379: in _validate_gate_decisions\n    validate_artifact(\"gate-decision\", dict(decision))\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\nThe above exception was the direct cause of the following exception:\ntests/test_integration_forge_cycle.py:753: in test_blocked_decision_with_receipt_preserves_candidate_state\n    decision, effect = _decision_and_effect(\ntests/test_integration_forge_cycle.py:689: in _decision_and_effect\n    return decide_promotion(request), effect\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/epistemic_foundry/governance/promotion.py:488: in decide_promotion\n    _validate_request(request)\nsrc/epistemic_foundry/governance/promotion.py:458: in _validate_request\n    _validate_gate_decisions(request)\nsrc/epistemic_foundry/governance/promotion.py:381: in _validate_gate_decisions\n    raise PromotionRefused(\nE   epistemic_foundry.governance.promotion.PromotionRefused: G00_PIN_RESOLUTION is not a valid GateDecision: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "tests/test_j02_context_budget.py"
+      ],
+      "classification": "J02_TIKTOKEN_DEPENDENCY_DEBT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "J02",
+      "node_id": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin",
+      "normalized_diagnostic": "Failed: TOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0\npyproject.toml does not declare exact tiktoken==0.13.0\nDuring handling of the above exception, another exception occurred:\nTOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/foundry_kernel/gates.py"
+      ],
+      "classification": "GATE_DECISION_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "failure",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_product_invariants::test_i09_agent_agreement_cannot_promote",
+      "normalized_diagnostic": "epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)\ntests/test_product_invariants.py:199: in test_i09_agent_agreement_cannot_promote\n    failing = gate_decision(\nsrc/epistemic_foundry/foundry_kernel/gates.py:136: in gate_decision\n    validate_artifact(\"gate-decision\", decision)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: gate-decision: <root>: 'blocker_ids' is a required property; <root>: 'created_at' is a required property; <root>: 'decision' is a required property; <root>: 'gate_version' is a required property; <root>: 'input_artifact_ids' is a required property (+1 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_sealed_bundle_is_candidate_unreadable_and_immutable",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_holdout_defaults_to_no_candidate_access",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_firewall_refuses_a_candidate_readable_bundle",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_firewall_refuses_a_run_mutable_bundle",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_firewall_refuses_a_mismatched_holdout_binding",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_sealed_bundle_verifies_against_itself",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_metric_swap_is_detected_as_drift",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_drift_detection_ignores_a_rewritten_bundle_hash",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_listed_validator_may_read_the_holdout",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_unlisted_principal_is_denied",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_candidate_generating_role_is_denied_even_when_allowlisted",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_search_backend_is_treated_as_a_generator",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    },
+    {
+      "affected_runtime_paths": [
+        "src/epistemic_foundry/verifier_firewall/firewall.py"
+      ],
+      "classification": "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT",
+      "failure_kind": "error",
+      "failure_type": "",
+      "migration_owner": "UNASSIGNED_RUNTIME_MIGRATION_OWNER",
+      "node_id": "tests.test_verifier_firewall::test_leakage_reports_the_touched_holdout_datasets",
+      "normalized_diagnostic": "failed on setup with \"epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)\"\ntests/test_verifier_firewall.py:19: in holdout\n    return build_holdout_manifest(\nsrc/epistemic_foundry/verifier_firewall/firewall.py:85: in build_holdout_manifest\n    validate_artifact(\"holdout-manifest\", manifest)\nsrc/epistemic_foundry/contracts/validation.py:48: in validate_artifact\n    raise ContractViolation(schema_name, sorted(errors))\nE   epistemic_foundry.contracts.validation.ContractViolation: holdout-manifest: <root>: 'acl_policy_hash' is a required property; <root>: 'adversarial_partition_handles' is a required property; <root>: 'backend_access' is a required property; <root>: 'cache_isolation_policy' is a required property; <root>: 'content_hashes' is a required property (+12 more)"
+    }
+  ],
+  "suite": {
+    "collected": 983,
+    "errors": 15,
+    "failed": 52,
+    "passed": 916,
+    "skipped": 0
+  },
+  "unclassified_problem_count": 0
+}

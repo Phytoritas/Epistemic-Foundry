@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/decision-stability-report.schema.json",
+  "title": "DecisionStabilityReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hypothesis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "passport_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "perturbations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "perturbation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "enum": [
+              "remove_top_support",
+              "remove_top_counter",
+              "change_dependency_weight",
+              "change_method_threshold",
+              "change_scope_match",
+              "change_model",
+              "change_prompt",
+              "add_new_evidence",
+              "policy_change"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "resulting_verdict": {
+            "type": "string",
+            "minLength": 1
+          },
+          "resulting_promotion": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "perturbation_id",
+          "type",
+          "description",
+          "resulting_verdict",
+          "resulting_promotion"
+        ]
+      }
+    },
+    "verdict_flip_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "promotion_flip_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stability_class": {
+      "enum": [
+        "ROBUST",
+        "MODERATE",
+        "FRAGILE",
+        "NOT_ASSESSED"
+      ]
+    },
+    "sensitive_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "report_id",
+    "hypothesis_id",
+    "passport_revision",
+    "perturbations",
+    "verdict_flip_count",
+    "promotion_flip_count",
+    "stability_class",
+    "sensitive_inputs",
+    "created_at",
+    "report_hash"
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "attempt_id": "B04-0006",
+  "attempt_type": "PRE_C04_CANONICAL_PROJECTION_RECONCILIATION",
+  "authority_decision_id": "HD-EF4-C01-SG004-20260730-001",
+  "blocker": "B04-SG002",
+  "canonical_projection": {
+    "duplicate_schema_id_count": 0,
+    "extra_path_count": 0,
+    "hash_mismatch_count": 0,
+    "missing_path_count": 0,
+    "openapi_operation_count": 33,
+    "openapi_resource_count": 1,
+    "openapi_version": "3.1.1",
+    "projected_snapshot_bundle_hash": "sha256:d01bda0057584e235331b649238fc2507c60cab329fd6b8e8b6a115fac912559",
+    "registry_hash": "sha256:6b4fcade707639e537744be4075e71d3f7e068cd42eaaaddb20ef084851175d5",
+    "resource_count": 127,
+    "schema_count": 126,
+    "source_bundle_hash": "sha256:1557b03db2ad7e7d23b014d4c9d5fd643803f6613696c966d9b0379573259e7f"
+  },
+  "completion_ready": false,
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "B04_prior_attempts": "IMMUTABLE_HISTORY",
+    "C01_0001_through_0005": "IMMUTABLE_SPEC_GAP_HISTORY",
+    "dirty_worktree_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "VERIFIED_PROJECTION_ONLY",
+  "next_state": {
+    "B04": "WAITING_ON_PRODUCT_OWNER_DECISION",
+    "C04": "PROHIBITED_UNTIL_AUTHORIZED_CORRECTIONS_AND_REVALIDATION_PASS",
+    "final_B04": "PROHIBITED_UNTIL_C04_PASS"
+  },
+  "not_claimed": [
+    "B04 package PASS",
+    "runtime conformance",
+    "F04/J02/S04 conformance",
+    "global Python suite green",
+    "global Node suite green",
+    "C04-0002 started or passed",
+    "final B04 packaging started or passed",
+    "repository-wide conformance",
+    "release or production readiness",
+    "completion_ready=true",
+    "external actor-independent certification"
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/B04/attempts/0006/b04_0006_rah_seal.py",
+    "artifacts/work_packages/B04/attempts/0006/build_b04_0006_evidence.py",
+    "artifacts/work_packages/B04/attempts/0006/canonical-projection-verification.json",
+    "artifacts/work_packages/B04/attempts/0006/capture_projection_inventory.py",
+    "artifacts/work_packages/B04/attempts/0006/commands.jsonl",
+    "artifacts/work_packages/B04/attempts/0006/dependency-status.json",
+    "artifacts/work_packages/B04/attempts/0006/full-node-suite.junit.xml",
+    "artifacts/work_packages/B04/attempts/0006/full-python-failure-inventory.json",
+    "artifacts/work_packages/B04/attempts/0006/full-python-suite.junit.xml",
+    "artifacts/work_packages/B04/attempts/0006/full-regression-impact.json",
+    "artifacts/work_packages/B04/attempts/0006/installed-wheel-verification.json",
+    "artifacts/work_packages/B04/attempts/0006/node-failure-inventory.json",
+    "artifacts/work_packages/B04/attempts/0006/packaging-verification-run.json",
+    "artifacts/work_packages/B04/attempts/0006/parse_full_python_failures.py",
+    "artifacts/work_packages/B04/attempts/0006/projection.artifact-receipt.json",
+    "artifacts/work_packages/B04/attempts/0006/rah-core-integrity.json",
+    "artifacts/work_packages/B04/attempts/0006/report.json",
+    "artifacts/work_packages/B04/attempts/0006/review.md",
+    "artifacts/work_packages/B04/attempts/0006/snapshot-inventory-postprojection.json",
+    "artifacts/work_packages/B04/attempts/0006/snapshot-inventory-preprojection.json",
+    "artifacts/work_packages/B04/attempts/0006/snapshot-inventory.json",
+    "artifacts/work_packages/B04/attempts/0006/source-inventory-postprojection.json",
+    "artifacts/work_packages/B04/attempts/0006/source-inventory-preprojection.json",
+    "artifacts/work_packages/B04/attempts/0006/source-inventory.json",
+    "artifacts/work_packages/B04/attempts/0006/targeted-projection.junit.xml"
+  ],
+  "package_status": "SPEC_GAP",
+  "product_files_modified_by_evidence_closeout": [],
+  "projection_status": "PASS",
+  "rah_state": {
+    "audit_evidence_id": "E0106",
+    "completion_ready": false,
+    "core_generation": "000098-3dcd9214",
+    "documented_gap_evidence_id": "E0107",
+    "final_closeout_evidence_id": "E0108",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 120,
+    "generation_manifest_sha256": "sha256:ebd83c923aa19fa589e1458165ebcd1645530a1f92350d591ecf9e7049e459b4",
+    "implementation_gate": "fail",
+    "retained_generation_count": 20,
+    "status": "blocked"
+  },
+  "regression": {
+    "node": {
+      "failed": 11,
+      "passed": 447,
+      "skipped": 0,
+      "tests": 458
+    },
+    "node_failing_leaf_testcases": 10,
+    "python": {
+      "collected": 983,
+      "errors": 15,
+      "failed": 52,
+      "passed": 916,
+      "skipped": 0
+    },
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_INTEGRATION_REVIEW",
+    "package_status": "SPEC_GAP",
+    "projection_status": "PASS"
+  },
+  "spec_gap": {
+    "id": "B04-SG002",
+    "required_decision": "Assign bounded runtime migration ownership and exact write scope for gates.py, firewall.py, and related tests, and authorize the pre-C04 F04/J02/S04 correction sequence.",
+    "status": "OPEN"
+  },
+  "status": "SPEC_GAP",
+  "work_package_id": "B04"
+}

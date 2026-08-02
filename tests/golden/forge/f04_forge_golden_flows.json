@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "cases": [
+    {
+      "case_id": "E1_LOOKUP_MINIMUM",
+      "path_kind": "MINIMUM",
+      "signal": "LOOKUP",
+      "missing_contract_flags": [],
+      "expected_work_class": "E1",
+      "expected_required_phases": [
+        "F",
+        "O",
+        "E"
+      ]
+    },
+    {
+      "case_id": "E3_MECHANISM_FULL",
+      "path_kind": "FULL",
+      "signal": "MECHANISM",
+      "missing_contract_flags": [],
+      "expected_work_class": "E3",
+      "expected_required_phases": [
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ]
+    },
+    {
+      "case_id": "E5_AMBIGUOUS_INTERVIEW_FULL",
+      "path_kind": "FULL_WITH_INTERVIEW",
+      "signal": "AMBIGUOUS",
+      "missing_contract_flags": [
+        "I01_AMBIGUOUS_SIGNAL"
+      ],
+      "expected_work_class": "E5",
+      "expected_required_phases": [
+        "I",
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ]
+    }
+  ]
+}

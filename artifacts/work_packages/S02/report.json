@@ -1,0 +1,113 @@
+{
+  "work_package_id": "S02",
+  "base_checkpoint": "S01:PASS",
+  "status": "PASS",
+  "implementation_status": "IMPLEMENTED",
+  "changed_files": [
+    "packages/foundry-kernel/src/security/execution/execution-policy.mjs",
+    "packages/foundry-kernel/src/security/execution/secret-exfiltration.test.mjs",
+    "packages/foundry-kernel/src/security/execution/path-escape.test.mjs",
+    "packages/foundry-kernel/src/security/execution/README.md",
+    "artifacts/work_packages/S02/commands.jsonl",
+    "artifacts/work_packages/S02/review.md",
+    "artifacts/work_packages/S02/report.json"
+  ],
+  "checks": [
+    {
+      "command": "secret_exfiltration_test",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S02/commands.jsonl#S02-C002"
+    },
+    {
+      "command": "path_escape_test",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S02/commands.jsonl#S02-C003"
+    },
+    {
+      "command": "security_test_coverage",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S02/commands.jsonl#S02-C004"
+    },
+    {
+      "command": "S01+S02+S03 integrated security regression",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S02/commands.jsonl#S02-C016"
+    },
+    {
+      "command": "npm run check:structure && npm run check:boundaries",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S02/commands.jsonl#S02-C017"
+    },
+    {
+      "command": "uv run --locked pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S02/commands.jsonl#S02-C018"
+    },
+    {
+      "command": "uv run --locked python scripts/build/double_build.py",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S02/commands.jsonl#S02-C019"
+    },
+    {
+      "command": "S02 exact approval-subject hash audit",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S02/commands.jsonl#S02-C015"
+    },
+    {
+      "command": "S02 independent approval gate",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S02/commands.jsonl#S02-C020"
+    }
+  ],
+  "exit_criteria": [
+    {
+      "criterion": "secret handles never enter prompts",
+      "implementation_status": "PASS",
+      "evidence": "Per-boundary opaque handles have no serializable fields and are rejected at prompt, evidence-artifact, log, export, and ordinary network payload boundaries; secret-free inspection produces a non-authoritative PASS record."
+    },
+    {
+      "criterion": "path/egress policy enforced",
+      "implementation_status": "PASS",
+      "evidence": "Branded decisions require operation-scoped canonical same-filesystem no-follow paths with root identity checks and exact canonical-origin egress with redirect reauthorization and sandbox-profile binding."
+    }
+  ],
+  "review": {
+    "approval_authority": "external_human_user",
+    "technical_reviewer": "primary_author",
+    "status": "PASS_USER_EXPLICIT_INDEPENDENT_APPROVAL",
+    "approved_at_utc": "2026-07-27T11:53:31.977Z",
+    "approval_scope": "Exact S02 implementation hashes recorded in S02-C015 and fresh resolving checks S02-C016 through S02-C019; invalid on source or evidence drift.",
+    "findings_resolved": [
+      "S02-RF001",
+      "S02-RF002",
+      "S02-RF003",
+      "S02-RF004",
+      "S02-RF005",
+      "S02-RB001"
+    ],
+    "blocking_findings": [],
+    "assurance_limit": "No separate agent or contract_reviewer performed a second technical audit; the independent decision is the user's external human approval over author-produced technical evidence."
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/S02/commands.jsonl",
+    "artifacts/work_packages/S02/review.md",
+    "artifacts/work_packages/S02/report.json"
+  ],
+  "open_risks": [
+    "The external human approval is not a separate agent-authored technical audit and is valid only for the exact reviewed hashes and resolving evidence.",
+    "The primitive is not yet wired to every future provider, tool, hook, or effect adapter.",
+    "Process/container isolation, DNS rebinding defenses, atomic descriptor-relative filesystem effects, quotas, and effect receipts are outside S02 and remain unimplemented.",
+    "Raw-secret pattern checks are defense in depth and not exhaustive secret detection.",
+    "The private scaffold package has no declared public export map."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "End-to-end effect-time integration across future runtime call sites",
+    "S04 adversarial red-team gate",
+    "T04 sandbox and external-tool adapter gate",
+    "Hosted or production execution behavior"
+  ],
+  "next_ready": [
+    "S04"
+  ]
+}

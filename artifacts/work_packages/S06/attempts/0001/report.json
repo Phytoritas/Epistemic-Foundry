@@ -1,0 +1,362 @@
+{
+  "attempt_id": "S06-0001",
+  "attempt_type": "S06_LEAKAGE_REWARD_HACKING_EVALUATOR_UPDATE_GOVERNANCE",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "S06-0001",
+    "dependencies": {
+      "J05": {
+        "attempt_id": "J05-0001",
+        "core_evidence_id": "E0213",
+        "final_closeout_evidence_id": "E0214",
+        "report": "artifacts/work_packages/J05/attempts/0001/report.json",
+        "report_sha256": "sha256:b039283f320f5d9d963a2ace2e1e17d0f2a61193a7319755db500686bcc8200f",
+        "status": "PASS"
+      },
+      "S05": {
+        "attempt_id": "S05-0001",
+        "core_evidence_id": "E0175",
+        "final_closeout_evidence_id": "E0176",
+        "report": "artifacts/work_packages/S05/attempts/0001/report.json",
+        "report_sha256": "sha256:dbcb94e77fd885f18aa36a00dc352a9d5a788d265b979ff7a23fafd5f261c727",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_S06_0001_THEN_CONTINUE_DAG",
+    "regression_baseline": {
+      "attempt_id": "R06-0001",
+      "core_evidence_id": "E0223",
+      "final_closeout_evidence_id": "E0224",
+      "report": "artifacts/work_packages/R06/attempts/0001/report.json",
+      "report_sha256": "sha256:ca4f56d06df2e3675c80acccc8c74e35a3b8b1a808294537beeb1f8996e6d4c3",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": "PASS",
+    "governing_schemas_authority_boundaries_failure_states_exact": "PASS",
+    "happy_negative_crash_resume_adversarial_coverage": "PASS",
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "leakage, reward-hacking or retroactive evaluator update: S06 refuses each by code and admits only future-only, independently qualified evaluator updates",
+    "scoring, selection, promotion or evaluation of any candidate: S06 gates the reward and evaluator-update surfaces and records an auditable governance receipt only, and grants no evaluator, holdout or promotion authority",
+    "relabelling a proxy score as reward: a hard-gate-failed candidate or an immediate-proxy-only basis is refused rather than admitted",
+    "runtime execution, backend dispatch or evolution-search orchestration of these surfaces",
+    "DSSAT or any plant-model numerical parity",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 41925,
+      "path": "artifacts/work_packages/S06/attempts/0001/build_s06_0001_evidence.py",
+      "sha256": "sha256:80b66a5e9e969d1fa23ecbe806020620cbc56402d32fcc54139ad7ee070b6335"
+    },
+    {
+      "byte_size": 2620,
+      "path": "artifacts/work_packages/S06/attempts/0001/check_packaging.py",
+      "sha256": "sha256:948c483efdd3c95e57a7634d68715036fadedcbee4be6288edf2eecf2de2ea68"
+    },
+    {
+      "byte_size": 10946,
+      "path": "artifacts/work_packages/S06/attempts/0001/commands.jsonl",
+      "sha256": "sha256:78ed8ab6c277d883fa96fb3cd07922f6c0941aab4c6c163afe78308b399c7480"
+    },
+    {
+      "byte_size": 9462,
+      "path": "artifacts/work_packages/S06/attempts/0001/dependency-regression-j05.junit.xml",
+      "sha256": "sha256:24fab0428a7685b8060b99afdf71e7e12db9c2e31f5144ed7879c22016c6bf61"
+    },
+    {
+      "byte_size": 6677,
+      "path": "artifacts/work_packages/S06/attempts/0001/dependency-regression-s05.junit.xml",
+      "sha256": "sha256:25bec2a7cef8f17709b19b0bea9429e377ae69b3fa1b78bd7a473fb4b3fbc2fe"
+    },
+    {
+      "byte_size": 1105,
+      "path": "artifacts/work_packages/S06/attempts/0001/dependency-status.json",
+      "sha256": "sha256:dbdd3146f0960042a76cad302e2d041c7fe52c643dcc906da329b6a030b55c58"
+    },
+    {
+      "byte_size": 7844,
+      "path": "artifacts/work_packages/S06/attempts/0001/fixtures.py",
+      "sha256": "sha256:2286af61ae7ff0e41f064e910622402851955b205f5080ccf0791ff404111860"
+    },
+    {
+      "byte_size": 226694,
+      "path": "artifacts/work_packages/S06/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:47648eabb168d655db40096d2576c0aa6f69a139adaab3ec049d7ea0fabb52f8"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/S06/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 4292,
+      "path": "artifacts/work_packages/S06/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:278a1ffd8ac6c9d7bb48377be46f91aa9c1928f6c5b416c44e60815d7b1caf6f"
+    },
+    {
+      "byte_size": 2376,
+      "path": "artifacts/work_packages/S06/attempts/0001/negative-and-adversarial-tests.junit.xml",
+      "sha256": "sha256:6a2c4dda6664aded58eb212ba981838f63dc157a7e397cd243df9baba47fd551"
+    },
+    {
+      "byte_size": 907,
+      "path": "artifacts/work_packages/S06/attempts/0001/provenance-and-receipt-audit.junit.xml",
+      "sha256": "sha256:077dfb552fb9f592dc2eb5b34c8ce1addf91f17b13cf0896efa79734c07674a3"
+    },
+    {
+      "byte_size": 307,
+      "path": "artifacts/work_packages/S06/attempts/0001/pytest.ini",
+      "sha256": "sha256:a1e4855b40cfb3e156d994603b21d040c76bd13e5f1d9f9e152bea9549c4b775"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/S06/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:143db45f80d5686e24a7d309497fa898b2b80e8539d1b135e115682b853260da"
+    },
+    {
+      "byte_size": 4369,
+      "path": "artifacts/work_packages/S06/attempts/0001/review.md",
+      "sha256": "sha256:6eed9640cc8d042e13b985ff048e724f72452117e495cd922574ff2a471e93ee"
+    },
+    {
+      "byte_size": 8855,
+      "path": "artifacts/work_packages/S06/attempts/0001/run_s06_0001_checks.py",
+      "sha256": "sha256:343e5d8e229fe00262395bccbc6253bd0e84a380e9ad05e7c731956b7f1d4a9f"
+    },
+    {
+      "byte_size": 5258,
+      "path": "artifacts/work_packages/S06/attempts/0001/s06-verification.json",
+      "sha256": "sha256:fd95c7661412b84c2074d66622597540f460b5f4a2f98a3bed937b1e8f88ca0c"
+    },
+    {
+      "byte_size": 26784,
+      "path": "artifacts/work_packages/S06/attempts/0001/s06_0001_rah_seal.py",
+      "sha256": "sha256:f8da99d21ff83898bea3b1e4d6afc7ecf09f7134ccc4ac75aa1238a566b4e83c"
+    },
+    {
+      "byte_size": 1068,
+      "path": "artifacts/work_packages/S06/attempts/0001/schema-and-type-check.junit.xml",
+      "sha256": "sha256:ad0752428ba547208581d08d4d053449f3559aa02a98d8bfe93b539244ab07e4"
+    },
+    {
+      "byte_size": 8394,
+      "path": "artifacts/work_packages/S06/attempts/0001/test_negative_adversarial.py",
+      "sha256": "sha256:afb1a408b11435be3375807ef45941b121310af0e3c504177c9b04b8ef841e26"
+    },
+    {
+      "byte_size": 4887,
+      "path": "artifacts/work_packages/S06/attempts/0001/test_provenance_receipts.py",
+      "sha256": "sha256:f1389141a79208210e74402c56cae3f30f9e98e63bdccff7a19e7ffb28870886"
+    },
+    {
+      "byte_size": 3840,
+      "path": "artifacts/work_packages/S06/attempts/0001/test_schema_and_type.py",
+      "sha256": "sha256:c2bb1ed2b9962008f942062f83e468809a6d0c9349df5a13191f8c04647d8caf"
+    },
+    {
+      "byte_size": 3687,
+      "path": "artifacts/work_packages/S06/attempts/0001/test_unit_contract.py",
+      "sha256": "sha256:bc1ac5f0bab30d5c2a74e40b98166b1c8656e36c78ef7bd9aa1dbbd364bebf39"
+    },
+    {
+      "byte_size": 698,
+      "path": "artifacts/work_packages/S06/attempts/0001/unit-and-contract-tests.junit.xml",
+      "sha256": "sha256:3984a61d4059821d114802bd553359bdfa936d57f048f68a9332c118a742254b"
+    },
+    {
+      "byte_size": 1828,
+      "path": "artifacts/work_packages/S06/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:44f9ed65688aa06ac6c69b7015efcfef82740cb1a62bbebd01a7e1a6aa6190fb"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0229",
+    "core_generation": "000227-aea9d861",
+    "final_closeout_evidence_id": "E0230",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1362,
+    "implementation_gate": "fail",
+    "retained_generation_count": 227,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "S06-0001",
+    "baseline_attempt": "R06-0001",
+    "component_tests_are_targeted_only": true,
+    "count_authority": "derived_from_measured_junit_expected_equals_measured",
+    "new_failure_count": 0,
+    "status": "PASS",
+    "suites": {
+      "dependency_regression_j05": {
+        "collected": 83,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/S06/attempts/0001/dependency-regression-j05.junit.xml",
+        "junit_sha256": "sha256:24fab0428a7685b8060b99afdf71e7e12db9c2e31f5144ed7879c22016c6bf61",
+        "passed": 83,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 83
+      },
+      "dependency_regression_s05": {
+        "collected": 62,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/S06/attempts/0001/dependency-regression-s05.junit.xml",
+        "junit_sha256": "sha256:25bec2a7cef8f17709b19b0bea9429e377ae69b3fa1b78bd7a473fb4b3fbc2fe",
+        "passed": 62,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 62
+      },
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1192,
+        "failed": 0,
+        "junit": "artifacts/work_packages/S06/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:47648eabb168d655db40096d2576c0aa6f69a139adaab3ec049d7ea0fabb52f8",
+        "passed": 1192,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1187
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/S06/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      },
+      "negative_and_adversarial_tests": {
+        "collected": 21,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/S06/attempts/0001/negative-and-adversarial-tests.junit.xml",
+        "junit_sha256": "sha256:6a2c4dda6664aded58eb212ba981838f63dc157a7e397cd243df9baba47fd551",
+        "passed": 21,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 21
+      },
+      "provenance_and_receipt_audit": {
+        "collected": 7,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/S06/attempts/0001/provenance-and-receipt-audit.junit.xml",
+        "junit_sha256": "sha256:077dfb552fb9f592dc2eb5b34c8ce1addf91f17b13cf0896efa79734c07674a3",
+        "passed": 7,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 7
+      },
+      "schema_and_type_check": {
+        "collected": 9,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/S06/attempts/0001/schema-and-type-check.junit.xml",
+        "junit_sha256": "sha256:ad0752428ba547208581d08d4d053449f3559aa02a98d8bfe93b539244ab07e4",
+        "passed": 9,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 9
+      },
+      "unit_and_contract_tests": {
+        "collected": 5,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/S06/attempts/0001/unit-and-contract-tests.junit.xml",
+        "junit_sha256": "sha256:3984a61d4059821d114802bd553359bdfa936d57f048f68a9332c118a742254b",
+        "passed": 5,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 5
+      }
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent dispatched in parallel; reviewer: this sealing session as an independent, actor-independent reviewer distinct from the implementer; verdict PASS, blocking_finding_count=0; external actor-independent certification does not hold)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 21
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 5
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (a bounded implementation agent authored S06 in parallel; this sealing session reviewed it independently as a distinct actor); external actor-independent (provider-independent) certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "S06",
+  "write_scope": {
+    "approved_scope": [
+      "src/epistemic_foundry/security/v4_s06/**",
+      "artifacts/work_packages/S06/**"
+    ],
+    "attempt_id": "S06-0001",
+    "authored_by": "a bounded implementation agent dispatched in parallel under the product owner's explicit aggressive-parallel-agent authorization",
+    "authority_decision": "S06's manifest write_scope is src/epistemic_foundry/security/v4_s06/**. Like R06 and O05, no new package marker one level above that glob was created: the enclosing src/epistemic_foundry/security/__init__.py pre-dates this attempt and is owned by S05, so it sits outside S06's write scope and is neither pinned as S06 product bytes nor listed in approved_scope. packaging-discovery still proves the new security/v4_s06 marker reaches the wheel. Parent marker included: false.",
+    "component_files": [
+      "src/epistemic_foundry/security/v4_s06/__init__.py",
+      "src/epistemic_foundry/security/v4_s06/governance_gate.py"
+    ],
+    "composed_modules_modified": false,
+    "product_file_hashes": {
+      "artifacts/work_packages/S06/attempts/0001/run_s06_0001_checks.py": "sha256:343e5d8e229fe00262395bccbc6253bd0e84a380e9ad05e7c731956b7f1d4a9f",
+      "src/epistemic_foundry/security/v4_s06/__init__.py": "sha256:30df856db0c9b02fbec25f14d13739d371eae9355a5e7cab1dd04277a8f62047",
+      "src/epistemic_foundry/security/v4_s06/governance_gate.py": "sha256:ad6ec0dad6b96a3a0df8f25144d889b4c4c038315fb1738c51fa3af017a48ad5"
+    },
+    "pyproject_modified": false,
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "this sealing session acting as an independent reviewer, actor-independent from and distinct from the implementing agent",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

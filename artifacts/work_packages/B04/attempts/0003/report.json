@@ -1,0 +1,195 @@
+{
+  "work_package_id": "B04",
+  "attempt_id": "B04-0003",
+  "attempt_type": "REENTRANT_CANONICAL_PROJECTION_CORRECTION",
+  "status": "FAIL",
+  "package_status": "FAIL",
+  "failure_classification": "FAIL",
+  "completion_ready": false,
+  "authority_decision_ids": [
+    "HD-EF4-A05-C01-B04-20260727-001",
+    "HD-EF4-C01-SG003-20260728-001",
+    "HD-EF4-F01-SG002-20260729-001"
+  ],
+  "authority_boundary": {
+    "canonical_source_authority": [
+      "schemas/**",
+      "openapi/**"
+    ],
+    "derived_snapshot": "src/epistemic_foundry/_canonical/**",
+    "projection_owner": "B04",
+    "permitted_product_write_scope_for_this_attempt": [
+      "src/epistemic_foundry/_canonical/**"
+    ],
+    "permitted_evidence_write_scope": [
+      "artifacts/work_packages/B04/**"
+    ],
+    "read_only_mechanism_paths": [
+      "scripts/build/canonical_registry/**",
+      "tests/packaging/**",
+      "pyproject.toml"
+    ],
+    "root_canonical_sources_modified": false,
+    "live_derived_snapshot_modified": false,
+    "reverse_synchronization_performed": false,
+    "repository_root_runtime_fallback_used": false
+  },
+  "implementation_status": "FAIL_NON_WAIVABLE_PROJECTION_MECHANISM_DEFECTS",
+  "package_failure_reason": "The shared contract is explicit, but the existing projection mechanism violates six non-waivable requirements. Repairing that mechanism is outside B04-0003's authorized write scope, so this attempt is an implementation FAIL rather than SPEC_GAP or BLOCKED.",
+  "blocking_defects": [
+    {
+      "code": "B04-MECH001_SOURCE_BUNDLE_ALGORITHM_MISMATCH",
+      "summary": "The materializer hashes path and raw bytes rather than the required canonical-JSON source inventory preimage."
+    },
+    {
+      "code": "B04-MECH002_PROJECTED_SNAPSHOT_HASH_MISSING",
+      "summary": "The generated registry omits the projected snapshot bundle hash."
+    },
+    {
+      "code": "B04-MECH003_DISTINCT_SOURCE_PACKAGE_PATHS_MISSING",
+      "summary": "Registry entries do not record distinct source_path and package_path values."
+    },
+    {
+      "code": "B04-MECH004_PROJECTION_TOOL_IDENTITY_MISSING",
+      "summary": "The generated registry omits projection tool identity and version."
+    },
+    {
+      "code": "B04-MECH005_ATOMIC_TREE_REPLACEMENT_MISSING",
+      "summary": "The materializer mutates individual destination files and has no atomic tree replacement."
+    },
+    {
+      "code": "B04-MECH006_SOURCE_CHANGE_ERROR_MISSING",
+      "summary": "The mechanism does not fail closed with SOURCE_CHANGED_DURING_PROJECTION."
+    }
+  ],
+  "canonical_projection_audit": {
+    "status": "FAIL",
+    "source_bundle_hash": "sha256:47a8d63daadae502bc3fc91c19cebc1f8f04f885e24d6d409c444748e04fd340",
+    "existing_mechanism_source_bundle_hash": "sha256:4c207bf3fe666f1b194e441e0cb187dcc20c8495a519960209238d65b4709367",
+    "prior_live_snapshot_bundle_hash": "sha256:bcad7159884180030bc75ee96a984f20a23f692ccfff8efb28376e86ffd48090",
+    "external_staging_snapshot_bundle_hash": "sha256:dde63a97254b2432d0fc1f917e1bd294210f43e19720386ac4295e317a497ed7",
+    "external_staging_registry_hash": "sha256:72bb8310222706193ba51049f853a251b8bee941187e42c81e6a1d48eef655bc",
+    "source_file_count": 125,
+    "snapshot_file_count": 125,
+    "canonical_schema_count": 124,
+    "openapi_version": "3.1.1",
+    "openapi_operation_count": 33,
+    "missing_paths": [],
+    "extra_paths": [],
+    "hash_mismatches": [
+      "schemas/epistemic-work-classification.schema.json"
+    ],
+    "duplicate_schema_ids": [],
+    "root_source_mutation_count": 0,
+    "live_snapshot_mutation_count": 0,
+    "unrelated_write_count": 0,
+    "atomic_replacement_result": "FAIL_NOT_IMPLEMENTED"
+  },
+  "non_waivable_gates": {
+    "live_projection": "NOT_RUN_NON_WAIVABLE_MECHANISM_FAILURE",
+    "clean_wheel_build": "NOT_RUN_NON_WAIVABLE_MECHANISM_FAILURE",
+    "clean_sdist_build": "NOT_RUN_NON_WAIVABLE_MECHANISM_FAILURE",
+    "sdist_to_wheel_rebuild": "NOT_RUN_NON_WAIVABLE_MECHANISM_FAILURE",
+    "installed_wheel_resource_load": "NOT_RUN_NON_WAIVABLE_MECHANISM_FAILURE",
+    "deterministic_rebuild": "NOT_RUN_NON_WAIVABLE_MECHANISM_FAILURE",
+    "full_python_regression": "NOT_RUN_NON_WAIVABLE_MECHANISM_FAILURE",
+    "full_node_regression": "NOT_RUN_NON_WAIVABLE_MECHANISM_FAILURE"
+  },
+  "evidence": {
+    "projection_verification": "artifacts/work_packages/B04/attempts/0003/canonical-projection-verification.json",
+    "source_inventory": "artifacts/work_packages/B04/attempts/0003/source-inventory.json",
+    "snapshot_inventory": "artifacts/work_packages/B04/attempts/0003/snapshot-inventory.json",
+    "installed_wheel_verification": "artifacts/work_packages/B04/attempts/0003/installed-wheel-verification.json",
+    "dependency_status": "artifacts/work_packages/B04/attempts/0003/dependency-status.json",
+    "review": "artifacts/work_packages/B04/attempts/0003/review.md",
+    "commands": "artifacts/work_packages/B04/attempts/0003/commands.jsonl",
+    "rah_core_integrity": "artifacts/work_packages/B04/attempts/0003/rah-core-integrity.json"
+  },
+  "review": {
+    "status": "FAIL",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_INTEGRATION_REVIEW",
+    "blocking_finding_count": 6,
+    "assurance_limitation": "The review is procedurally separated within the primary session but is not external actor-independent certification because Fleet and subagents are forbidden."
+  },
+  "historical_preservation": {
+    "F01_0002_status": "IMMUTABLE_SPEC_GAP_HISTORY",
+    "prior_B04_attempts_preserved": true,
+    "prior_reports_reviews_commands_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "schema_or_gate_weakening_performed": false,
+    "generated_cache_remaining": false
+  },
+  "dependency_state": {
+    "B04": "FAIL_B04_0003",
+    "F01": "WAITING_ON_B04_PROJECTION",
+    "F01_0003_started": false,
+    "F02": "WAITING_ON_F01",
+    "F02_started": false,
+    "F03": "WAITING_ON_F01",
+    "F03_started": false,
+    "full_156_package_dag_recomputed": false,
+    "S04_TM004": "PRE_EXISTING_SEPARATE_DEBT"
+  },
+  "resume_authority_required": {
+    "required": true,
+    "decision_authority": "product_owner",
+    "minimum_new_attempt_write_scope": [
+      "scripts/build/canonical_registry/**",
+      "tests/packaging/**",
+      "artifacts/work_packages/B04/**"
+    ],
+    "purpose": "Authorize a new B04 attempt to correct the six verified projection-mechanism defects and add/repair the corresponding packaging tests without changing root canonical source authority.",
+    "not_requested": [
+      "schemas/**",
+      "openapi/**",
+      "pyproject.toml",
+      "F01/F02/F03 implementation paths"
+    ],
+    "resume_sequence": [
+      "Record a new product-owner correction decision.",
+      "Run a new monotonic B04 correction attempt and preserve B04-0003 as immutable FAIL history.",
+      "Require a verified matching canonical projection receipt and B04 PASS.",
+      "Only then start F01-0003 revalidation.",
+      "Keep F02 and F03 waiting until F01 PASS."
+    ]
+  },
+  "rah_state": {
+    "core_parent_generation": "000036-2428c22d",
+    "core_generation": "000037-775c6bf6",
+    "core_evidence_id": "E0039",
+    "final_closeout_evidence_id": "E0040",
+    "generation_manifest_sha256": "sha256:a4c070ebc4351cfc774f29b7d2a2206ec0f9f76caa88462120e79fae9f9c0772",
+    "retained_generation_manifest_count": 37,
+    "generation_file_hashes_verified": 222,
+    "flat_snapshot_stamps_verified": 6,
+    "flat_snapshot_content_matches": 6,
+    "parse_errors": {},
+    "status": "blocked",
+    "implementation_gate": "fail",
+    "completion_ready": false
+  },
+  "tool_policy_observations": [
+    {
+      "operation": "two aggregate PowerShell validation command shapes",
+      "executed": false,
+      "repository_mutation": false,
+      "resolution": "Validation was moved into the deterministic Python seal verifier."
+    },
+    {
+      "operation": "optional .rah/ralph/CURRENT file read",
+      "result": "PATH_ABSENT_NONFATAL",
+      "repository_mutation": false,
+      "resolution": "The authoritative state_store verifier passed every retained generation and flat projection."
+    }
+  ],
+  "not_verified": [
+    "a conforming live canonical projection",
+    "wheel or sdist production for B04-0003",
+    "installed-wheel resource behavior for B04-0003",
+    "full Python or Node regression after a conforming projection",
+    "external actor-independent certification",
+    "F01-0003, F02, F03, or downstream package behavior"
+  ]
+}

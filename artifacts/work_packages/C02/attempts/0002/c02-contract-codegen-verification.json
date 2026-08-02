@@ -1,0 +1,117 @@
+{
+  "work_package_id": "C02",
+  "check": "c02_contract_codegen_verification",
+  "status": "PASS",
+  "source_authority": "schemas/*.schema.json",
+  "schema_count": 126,
+  "example_count": 126,
+  "schema_bundle_sha256": "sha256:5788bcf163d7a4ca20f5991935d425d7cc18ff8a5fbc43485c93de73e3c42de3",
+  "example_bundle_sha256": "sha256:ac8047fbfdd488fe82dedd55fe466efb329915c33cc93fe6a316de640f7441f0",
+  "generated_file_count": 9,
+  "codegen_clean_diff": {
+    "status": "PASS",
+    "failures": []
+  },
+  "deterministic_double_replay": "PASS",
+  "manifest_parity": "PASS",
+  "schema_example_validation": {
+    "status": "PASS",
+    "schema_count": 126,
+    "valid_example_count": 126,
+    "invalid": []
+  },
+  "python_models": {
+    "status": "PASS",
+    "model_count": 126,
+    "missing_models": [],
+    "schema_id_count": 126,
+    "bundle_sha256": "sha256:5788bcf163d7a4ca20f5991935d425d7cc18ff8a5fbc43485c93de73e3c42de3"
+  },
+  "node_fixture_check": {
+    "status": "PASS",
+    "exit_code": 0,
+    "schema_count": 126,
+    "example_count": 126,
+    "failures": [],
+    "stderr": ""
+  },
+  "cross_language_fixture_parity": "PASS",
+  "full_python_suite": {
+    "status": "EXPECTED_DOWNSTREAM_AND_PREEXISTING_FAILURES",
+    "summary": {
+      "tests": 970,
+      "failures": 19,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 951
+    },
+    "junit_artifact": "artifacts/work_packages/C02/attempts/0002/full-python-regression.junit.xml",
+    "junit_sha256": "sha256:dcc9f942c057b91526be1896a233142949beaad7a7f3e58640eb997cdaf5b44d",
+    "authority_artifact": "artifacts/work_packages/C01/attempts/0006/full-regression-impact.json",
+    "authority_sha256": "sha256:4335095f858d5c3a2a750ecada2313f24f7f6c1097180f5704efa099a95f70d9",
+    "authority_counts": {
+      "tests": 970,
+      "failures": 19,
+      "errors": 0,
+      "skipped": 0
+    },
+    "authority_is_expected": true,
+    "failure_owner_counts": {
+      "B04": 18,
+      "J02": 1
+    },
+    "same_failure_node_ids": true,
+    "raw_failure_message_parity": true,
+    "missing_failure_node_ids": [],
+    "new_failure_node_ids": [],
+    "changed_failure_messages": [],
+    "downstream_failure_owners": [
+      "B04",
+      "J02"
+    ],
+    "c02_new_failure_count": 0
+  },
+  "protected_file_audit": {
+    "status": "PASS",
+    "protected_file_count": 17,
+    "hashes": {
+      "src/epistemic_foundry/evolution_chamber/run_spec.py": "sha256:ce6a135dac6fbfb98184ff46448da88222cdb2de5ef31066d2f146bc25a7dc1c",
+      "src/epistemic_foundry/governance/promotion.py": "sha256:9078dae66ff527b36915d924e579c49b7937ce78d0c084c2f8b00852e0113f51",
+      "tests/test_evolution_chamber.py": "sha256:fa69b90f5d830d0f3552d374733da15a4769aae150fef4ed47ed35d8f19ac59f",
+      "tests/test_governance.py": "sha256:e2b83693db1434d88dbafd8c2f71cb5c9f7b89bf29e3a1cc0eb8fdd2bf99184c",
+      "tests/test_integration_forge_cycle.py": "sha256:0fbd58c632aaf3a5535b739c624c6deba534aaf2b849fb097cc1b75b0430d42f",
+      "artifacts/work_packages/C01/attempts/0006/activate_c01_0006.py": "sha256:90b8a1f5055c2da4396f458516d26f32cf90a31fc51577c2af56555009e14fa9",
+      "artifacts/work_packages/C01/attempts/0006/build_c01_0006_evidence.py": "sha256:a9defa4d663e295724c2f2c4336b9385c14d1bb2aae62cd46f0ae6f6e1a0a233",
+      "artifacts/work_packages/C01/attempts/0006/c01_0006_rah_seal.py": "sha256:b9a49edbe6244c0c0aa9a1f354e1a09e1fab339fdc63b85c1fe419a5b2665091",
+      "artifacts/work_packages/C01/attempts/0006/c01-contract-verification.json": "sha256:84e03501c6ecce9e3e6ea73b2ef70697ab1b175c56d8a28d7498d7f9b8e40cf8",
+      "artifacts/work_packages/C01/attempts/0006/commands.jsonl": "sha256:265816787506d4b21078c2a0ecb9dc8e8ca5cbb4f68475ffc1f8c8579458afab",
+      "artifacts/work_packages/C01/attempts/0006/dependency-status.json": "sha256:4cd94ff83cd06d24134f523b12a3656a80180dffb33ddc107a4881b085339f34",
+      "artifacts/work_packages/C01/attempts/0006/full-python-regression.junit.xml": "sha256:d72dd0532e4cd182fe1f616429831a1a9169cb8bf91ede25b7e0c7076bab0752",
+      "artifacts/work_packages/C01/attempts/0006/full-regression-impact.json": "sha256:4335095f858d5c3a2a750ecada2313f24f7f6c1097180f5704efa099a95f70d9",
+      "artifacts/work_packages/C01/attempts/0006/rah-core-integrity.json": "sha256:19ce31ae08130469617f2ebd342cf46f3970166c94e61dd8d905def06733cb8c",
+      "artifacts/work_packages/C01/attempts/0006/report.json": "sha256:35c9f323ab976c60448e9d4138833d9dd67570fb26e99d8b4298be5e2424ac30",
+      "artifacts/work_packages/C01/attempts/0006/review.md": "sha256:372af5d7c2f05d31d9f51c1690598095b5bbb55914676313ae4e974d0383ac55",
+      "artifacts/work_packages/C01/attempts/0006/targeted-contracts.junit.xml": "sha256:8cbf0699b35d4fe0e25dd9fb2d7eebe8df483bcda8d93d693373e67e80072af3"
+    },
+    "mismatches": []
+  },
+  "write_scope": [
+    "packages/contracts/**",
+    "python/epistemic_foundry/contracts/**",
+    "web/src/generated/**",
+    "artifacts/work_packages/C02/** (manifest-declared evidence artifacts)"
+  ],
+  "legacy_promotion_value_hits": [],
+  "generated_artifact_hashes": {
+    "packages/contracts/src/generated/contract-manifest.json": "sha256:96acd5a496ac234eaf8bffdda8dbf0c87db3e4130822b8cbeab6522b82e3fdcf",
+    "packages/contracts/src/generated/models.d.ts": "sha256:b6921eb4214aaf90296a4112a4683428467ba2bead86b4309ad2b540325df0a9",
+    "packages/contracts/src/generated/registry.mjs": "sha256:17bce5beea2d1a35b2c5601c97f361f8075a8952772f74af86d8a2d72c343107",
+    "python/epistemic_foundry/contracts/__init__.py": "sha256:29a58cf958579f9a2165222059603ea1c4898d85379473b00872ce237dd92095",
+    "python/epistemic_foundry/contracts/contract-manifest.json": "sha256:96acd5a496ac234eaf8bffdda8dbf0c87db3e4130822b8cbeab6522b82e3fdcf",
+    "python/epistemic_foundry/contracts/models.py": "sha256:7f6d33fa16c0d0653c34cb4145974565fa749a7f59716ca5c7ceac2e3fa6f1f6",
+    "python/epistemic_foundry/contracts/py.typed": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "web/src/generated/contract-manifest.json": "sha256:96acd5a496ac234eaf8bffdda8dbf0c87db3e4130822b8cbeab6522b82e3fdcf",
+    "web/src/generated/contracts.ts": "sha256:a8daa36ddf89f3c2a23b74ad5546a194c5f700c133c08ab523d14d542e28dcc9"
+  },
+  "failures": []
+}

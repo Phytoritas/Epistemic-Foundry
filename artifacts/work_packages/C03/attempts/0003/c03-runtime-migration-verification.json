@@ -1,0 +1,216 @@
+{
+  "attempt_id": "C03-0003",
+  "authority_and_history_hashes": {
+    "artifacts/authority_decisions/HD-EF4-B04-SG002-20260730-001.human-decision.json": "sha256:13feb432b4504e11fecabfed4b6fc51c17db315b7a7124106baa82ff1cd63ffe",
+    "artifacts/work_packages/B04/attempts/0006/full-python-failure-inventory.json": "sha256:e2bb4b61032fd7531a348fced3addc7e75ddfba5b883a7bda5bad8e044bd1090",
+    "artifacts/work_packages/B04/attempts/0006/report.json": "sha256:a95d36efd6503bf83724b7da34b10285f1f7e7eae73e8f15e5ef4ff4e67a97ed",
+    "artifacts/work_packages/C03/attempts/0002/commands.jsonl": "sha256:5593fb3da611d5628a1101230b9924f752a800ad2125410e7e130181b53b0cb3",
+    "artifacts/work_packages/C03/attempts/0002/report.json": "sha256:2f4b88e64fdd93c73a0b688f8d4f79ec9e2eea54adf9c5d8fabeb182b3a87850",
+    "artifacts/work_packages/C03/attempts/0002/review.md": "sha256:736f0588a5c5524af1bf1249bebf59ac4a30c970d429a881727bca7855421627",
+    "manifests/development_manifest.yaml": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12"
+  },
+  "authority_decision_id": "HD-EF4-B04-SG002-20260730-001",
+  "completion_ready": false,
+  "gate_decision_runtime": {
+    "canonical_schema_validation": "PASS",
+    "changed_input_changes_hashes": true,
+    "decision_hash_recomputed": true,
+    "equal_input_replay_identity": true,
+    "fixed_decision_hash": "sha256:14c71372382023e04f5bc1daaaa33c15c5f9534b54416af9bdaa29cacc7c457a",
+    "fixed_input_hash": "sha256:18d43ddc153972cfff0d1c162567a891d9bf88414f4d04b176e4a69895cb3991",
+    "missing_required_fields": [],
+    "required_field_count": 20,
+    "required_fields": [
+      "gate_id",
+      "gate_version",
+      "run_id",
+      "name",
+      "status",
+      "reasons",
+      "evidence_ids",
+      "input_artifact_ids",
+      "policy_bundle_hash",
+      "decision",
+      "blocker_ids",
+      "waiver_authority",
+      "waiver_reason",
+      "evaluated_at",
+      "created_at",
+      "policy_version",
+      "non_waivable",
+      "evaluator_type",
+      "input_hash",
+      "decision_hash"
+    ],
+    "status": "PASS"
+  },
+  "legacy_and_fallback_audit": {
+    "audited_paths": [
+      "src/epistemic_foundry/foundry_kernel/gates.py",
+      "src/epistemic_foundry/verifier_firewall/firewall.py"
+    ],
+    "legacy_promotion_alias_hits": [],
+    "retired_runtime_literal_hits": [],
+    "silent_fallback_count": 0,
+    "status": "PASS"
+  },
+  "manifest_contract": {
+    "B04_static_depends_on": [
+      "B02",
+      "B03",
+      "C04"
+    ],
+    "C03": {
+      "depends_on": [
+        "C01",
+        "C02"
+      ],
+      "exit_criteria": [
+        "read/write compatibility explicit",
+        "rollback and backfill required for breaking changes",
+        "legacy document manifests migrate only from sufficient immutable registration evidence",
+        "unresolved legacy registration or constitutional artifacts fail closed",
+        "runtime GateDecision records satisfy the canonical required fields and deterministic decision-hash contract without fabricated defaults",
+        "runtime HoldoutManifest records satisfy the canonical sealed-access contract and fail closed on missing immutable inputs",
+        "C03 resolves the B04-SG002 GateDecision and HoldoutManifest Python migration fingerprints without changing canonical schemas"
+      ],
+      "required_checks": [
+        "compatibility_matrix_test",
+        "migration_fixture_test",
+        "document_registration_migration_test",
+        "evolution_authority_compatibility_test",
+        "gate_decision_runtime_schema_migration_test",
+        "holdout_manifest_runtime_schema_migration_test",
+        "runtime_canonical_hash_identity_test",
+        "b04_sg002_python_failure_reconciliation",
+        "write_scope_audit"
+      ],
+      "write_scope": [
+        "migrations/contracts/**",
+        "docs/schema_evolution.md",
+        "src/epistemic_foundry/evolution_chamber/run_spec.py",
+        "src/epistemic_foundry/governance/promotion.py",
+        "src/epistemic_foundry/foundry_kernel/gates.py",
+        "src/epistemic_foundry/verifier_firewall/firewall.py",
+        "tests/test_evolution_chamber.py",
+        "tests/test_evidence_parliament.py",
+        "tests/test_foundry_kernel.py",
+        "tests/test_governance.py",
+        "tests/test_integration_forge_cycle.py",
+        "tests/test_product_invariants.py",
+        "tests/test_verifier_firewall.py",
+        "artifacts/work_packages/C03/**"
+      ]
+    },
+    "C04_depends_on": [
+      "C02",
+      "C03"
+    ],
+    "attempt_level_repair_cycle_only": true,
+    "package_count": 156,
+    "static_dependency_cycle_added": false,
+    "status": "PASS"
+  },
+  "regression": {
+    "attempt_id": "C03-0003",
+    "b04_sg002_reconciliation": {
+      "authority_attempt": "B04-0006",
+      "classification_counts": {
+        "GATE_DECISION_RUNTIME_SCHEMA_DRIFT": 51,
+        "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT": 15
+      },
+      "missing_prior_nodes": [],
+      "prior_c03_owned_problem_count": 66,
+      "resolved_problem_count": 66,
+      "status": "PASS",
+      "still_failing_prior_nodes": []
+    },
+    "full_python": {
+      "artifact": "artifacts/work_packages/C03/attempts/0003/full-python-regression.junit.xml",
+      "artifact_sha256": "sha256:19df8a1e2e3b620ee4376915fa49c74f8e08faad2749b68ae1f8741e661d864d",
+      "errors": 0,
+      "failures": 1,
+      "passed": 986,
+      "skipped": 0,
+      "status": "EXPECTED_PREEXISTING_J02_FAILURE",
+      "suite_reported_pass": false,
+      "tests": 987
+    },
+    "new_c03_failure_count": 0,
+    "status": "PASS_WITH_DECLARED_PREEXISTING_J02_DEBT",
+    "targeted": {
+      "artifact": "artifacts/work_packages/C03/attempts/0003/targeted-runtime-migration.junit.xml",
+      "artifact_sha256": "sha256:c565cb92b496d4d4f79217e0713e9be24e71a0bb7430af1838ddd7bc6fa98e2f",
+      "errors": 0,
+      "failures": 0,
+      "passed": 174,
+      "skipped": 0,
+      "status": "PASS",
+      "tests": 174
+    },
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "User contract forbids subagents and Fleet; no external actor-independent certification is claimed.",
+    "blocking_c03_owned_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "PASS"
+  },
+  "runtime_and_test_source_hashes": {
+    "src/epistemic_foundry/foundry_kernel/gates.py": "sha256:43ada2a9a223170bb71abecbaac219f8829552f9f5defcffc6fd71a3c4a1a43d",
+    "src/epistemic_foundry/verifier_firewall/firewall.py": "sha256:fe0669976a536d1e9174473a38479d487820157f883bfc4eca2aaa1b84b43761",
+    "tests/test_evidence_parliament.py": "sha256:1621e85c6457a08d2768f8bab3555bbdec024b0653c7b5bb88f18fa51d623194",
+    "tests/test_foundry_kernel.py": "sha256:82624a265bdba95c023ac797be36b71fd73360b1546479e8f55b5becfd64f4ee",
+    "tests/test_product_invariants.py": "sha256:a3a42bf8e02ca9039645bccd43bbdd52f244a9177bb9261e9ac053b937eaa046",
+    "tests/test_verifier_firewall.py": "sha256:0b9c6347f6d8f311df21313db41489820199e9ac97bb7cab002d7c88aa0a6967"
+  },
+  "status": "PASS",
+  "verifier_firewall_runtime": {
+    "binding_mismatch_rejected": true,
+    "candidate_access": false,
+    "canonical_schema_validation": "PASS",
+    "defensive_copy_verified": true,
+    "evaluator_bundle_hash": "sha256:109aa264c1197b3bbe7a4e734e5411b1b76a9a4ba3ebbdcbdd85969d81a90ec1",
+    "evaluator_hash_recomputed": true,
+    "explicit_validator_access": true,
+    "generator_access_denied": true,
+    "holdout_hash_recomputed": true,
+    "holdout_manifest_hash": "sha256:4548a3066a06bb505269050586313221ca3b6022de3e66170b43117d2ed80a90",
+    "status": "PASS"
+  },
+  "work_package_id": "C03",
+  "write_scope_audit": {
+    "additional_product_paths_authorized_by_decision": [
+      "src/epistemic_foundry/foundry_kernel/gates.py",
+      "src/epistemic_foundry/verifier_firewall/firewall.py",
+      "tests/test_evidence_parliament.py",
+      "tests/test_foundry_kernel.py",
+      "tests/test_product_invariants.py",
+      "tests/test_verifier_firewall.py"
+    ],
+    "declared_scope": [
+      "migrations/contracts/**",
+      "docs/schema_evolution.md",
+      "src/epistemic_foundry/evolution_chamber/run_spec.py",
+      "src/epistemic_foundry/governance/promotion.py",
+      "src/epistemic_foundry/foundry_kernel/gates.py",
+      "src/epistemic_foundry/verifier_firewall/firewall.py",
+      "tests/test_evolution_chamber.py",
+      "tests/test_evidence_parliament.py",
+      "tests/test_foundry_kernel.py",
+      "tests/test_governance.py",
+      "tests/test_integration_forge_cycle.py",
+      "tests/test_product_invariants.py",
+      "tests/test_verifier_firewall.py",
+      "artifacts/work_packages/C03/**"
+    ],
+    "git_diff_check": {
+      "command": "git diff --check -- <C03-0003 exact product paths>",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "status": "PASS",
+    "violation_count": 0
+  }
+}

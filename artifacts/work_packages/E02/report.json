@@ -1,0 +1,317 @@
+{
+  "work_package_id": "E02",
+  "attempt_id": "E02-0001",
+  "title": "ActionIntent, Attempt and EffectReceipt",
+  "status": "PASS",
+  "package_status": "PASS",
+  "completion_ready": false,
+  "dependencies": {
+    "E01": {
+      "status": "PASS",
+      "attempt_id": "E01-0001",
+      "report": "artifacts/work_packages/E01/report.json",
+      "report_sha256": "beddc2a3019fcf680435ea6d5f907b5e7b50b0fa8a384673917c6198f49f32e1",
+      "core_evidence_id": "E0024",
+      "final_closeout_evidence_id": "E0025"
+    }
+  },
+  "write_scope": [
+    "packages/foundry-kernel/src/effects/**",
+    "artifacts/work_packages/E02/**"
+  ],
+  "changed_files": [
+    {
+      "path": "packages/foundry-kernel/src/effects/effect-coordinator.mjs",
+      "sha256": "a4d2b9b851f9055869db842d10702e6017a61c18fcc637521fdec398b5abc1f2",
+      "byte_size": 71841
+    },
+    {
+      "path": "packages/foundry-kernel/src/effects/effect-test-support.mjs",
+      "sha256": "df45bdec72a2ed2ffda922189e21f1102cc1cdcf2c50d661f9ac1e98051c0a4a",
+      "byte_size": 4684
+    },
+    {
+      "path": "packages/foundry-kernel/src/effects/effect-reconciliation.test.mjs",
+      "sha256": "998a962b3e193e3b497aa60078f5f3d650332d88f973d81d3b167be025a13402",
+      "byte_size": 20651
+    },
+    {
+      "path": "packages/foundry-kernel/src/effects/idempotency.test.mjs",
+      "sha256": "0d386c1eb2ded877423979838d604e1270ec4112b82f162d2d2222924fda5dec",
+      "byte_size": 15699
+    }
+  ],
+  "implementation": {
+    "canonical_public_artifacts": [
+      "ActionIntent",
+      "EffectReceipt"
+    ],
+    "private_runtime_projection": "Attempt is a Noetic Ledger/D01-owned private runtime record; E02 does not invent another canonical schema",
+    "canonical_hashing": "deterministic canonical JSON encoded as UTF-8; each artifact hash excludes only its own hash field",
+    "durable_state": "D01 immutable intent/attempt/receipt records plus revisioned operation journal, idempotency binding, and publication checkpoint",
+    "idempotency": {
+      "same_key_same_request": "returns the existing logical operation",
+      "same_key_different_request": "IDEMPOTENCY_KEY_REUSED",
+      "same_attempt_concurrency": "one caller receives execute_permitted=true",
+      "immutable_historical_replay": "older attempts and receipts remain idempotent after later attempts"
+    },
+    "reconciliation": {
+      "missing_receipt": "unresolved and retry denied",
+      "unknown_receipt": "reconciliation required and retry denied",
+      "resolving_evidence": "verified result/error artifact or observed_state_hash",
+      "external_operation_id": "identity only; never sufficient observation evidence",
+      "external_operation_identity_change": "rejected during reconciliation",
+      "retry_admission": "only after a resolving receipt and durable publication confirmation"
+    },
+    "publication_protocol": [
+      "commit immutable operation state in D01",
+      "publish exact canonical record bytes through D03 and append the bound E01 event",
+      "re-read and verify ledger ordering, payload hash, event identity, and chain",
+      "advance the D01 publication checkpoint with compare-and-swap",
+      "repair a missing publication or checkpoint by exact replay without granting another execution"
+    ],
+    "completion_authority": "verified resolving EffectReceipt plus reconciled E01 event and D01 publication checkpoint",
+    "narrative_executor_result_has_authority": false,
+    "capability_or_approval_authority_implemented": false,
+    "schema_or_dependency_implementation_modified": false,
+    "current_working_directory_fallback": false
+  },
+  "exit_criteria": {
+    "side_effects_cannot_complete_by_narration": "PASS",
+    "unknown_effects_reconcile_before_retry": "PASS"
+  },
+  "required_checks": {
+    "effect_reconciliation_test": {
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0,
+      "unknown_blocks_retry": true,
+      "missing_receipt_blocks_retry": true,
+      "narrative_completion_rejected": true,
+      "receipt_without_ledger_event_not_complete": true,
+      "publication_checkpoint_crash_recoverable": true,
+      "attempt_chronology_verified": true,
+      "external_operation_identity_preserved": true,
+      "canonical_schema_conformance": true
+    },
+    "idempotency_test": {
+      "status": "PASS",
+      "passed": 9,
+      "failed": 0,
+      "same_key_same_request_replayed": true,
+      "same_key_changed_request_conflict": true,
+      "attempt_execution_permission_once": true,
+      "receipt_replay_idempotent": true,
+      "immutable_older_replay_idempotent": true,
+      "concurrent_same_attempt_serialized": true,
+      "hostile_coercion_not_executed": true
+    },
+    "combined_targeted_gate": {
+      "status": "PASS",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    "final_repetitions": {
+      "status": "PASS",
+      "runs": 5,
+      "test_executions": 95,
+      "failed_runs": 0
+    },
+    "additional_closeout_recheck": {
+      "status": "PASS",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    "coverage": {
+      "status": "PASS",
+      "target": "packages/foundry-kernel/src/effects/effect-coordinator.mjs",
+      "line_percent": 86.31,
+      "branch_percent": 74.17,
+      "function_percent": 97.94
+    }
+  },
+  "regression": {
+    "python": {
+      "status": "PASS",
+      "passed": 913,
+      "failed": 0
+    },
+    "repository_wide_node_initial": {
+      "status": "FAIL_OUTSIDE_E02_WITH_TRANSIENT_D03_OBSERVATION",
+      "passed": 188,
+      "failed": 2,
+      "failures": [
+        {
+          "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+          "owner_scope": "S04"
+        },
+        {
+          "failure": "D03 Windows EPERM during concurrent reader/mutation-lock handoff",
+          "owner_scope": "D03",
+          "classification": "intermittent observation retained; not proof that recurrence is impossible"
+        }
+      ]
+    },
+    "d03_targeted_reproduction": {
+      "status": "PASS",
+      "passed": 1,
+      "failed": 0,
+      "duration_ms": 49831.6235
+    },
+    "repository_wide_node_final": {
+      "status": "FAIL_OUTSIDE_E02",
+      "passed": 189,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "actual_manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+      "expected_legacy_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+      "owner_scope": "S04"
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix": "PASS",
+    "cache_key_audit": "PASS",
+    "ci_policy_mutation_tests": {
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0
+    },
+    "syntax": {
+      "status": "PASS",
+      "files": 4
+    },
+    "text_integrity": {
+      "status": "PASS",
+      "files": 4,
+      "strict_utf8": true,
+      "bom_absent": true,
+      "nul_absent": true,
+      "replacement_character_absent": true
+    },
+    "git_diff_check": "PASS"
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "artifact": "artifacts/work_packages/E02/review.md",
+    "artifact_sha256": "70f02559453c7b43a4ff14d84bdf82d2f707e391616cd87d90249d21fcf6c1bb",
+    "blocking_findings": 0,
+    "resolved_finding_ids": [
+      "E02-RF001_EVIDENCELESS_FAILURE_RETRY",
+      "E02-RF002_ATTEMPT_CHRONOLOGY",
+      "E02-RF003_EXTERNAL_ID_AS_EVIDENCE",
+      "E02-RF004_RECONCILIATION_IDENTITY_CHANGE",
+      "E02-RF005_LEDGER_CHECKPOINT_CRASH_WINDOW",
+      "E02-RF006_HISTORICAL_IMMUTABLE_REPLAY"
+    ],
+    "assurance_limitation": "The final pass is procedurally separate within the primary session under the product owner's serial no-Fleet/no-subagent decision; it is not external actor-independent certification. E02 qualifies local durable coordination, not arbitrary external-service correctness or distributed exactly-once execution."
+  },
+  "residual_integration_failures": [
+    {
+      "check": "repository-wide Node tests",
+      "status": "FAIL_OUTSIDE_E02",
+      "passed": 189,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "owner_scope": "S04"
+    },
+    {
+      "check": "earlier repository-wide Node tests",
+      "status": "INTERMITTENT_OUTSIDE_E02",
+      "failure": "D03 Windows EPERM during concurrent reader/mutation-lock handoff",
+      "subsequent_targeted_result": "1 passed",
+      "subsequent_full_suite_result": "same D03 test passed",
+      "owner_scope": "D03"
+    },
+    {
+      "check": "scripts/build/double_build.py",
+      "status": "FAIL_OUTSIDE_E02",
+      "failure": "staged source build omits scripts/ required by the existing build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  ],
+  "preserved_limitations": [
+    "E02 proves local D01/D03/E01 reconciliation, not the truth of arbitrary external-service outcomes beyond supplied resolving evidence.",
+    "Idempotency and local serialization do not constitute a universal distributed exactly-once guarantee.",
+    "Attempt and publication checkpoint remain private runtime projections and do not create new canonical schema authority.",
+    "The existing S04-TM004 stale manifest-hash binding is outside E02.",
+    "The intermittent D03 Windows EPERM observation is retained even though targeted and subsequent full-suite checks passed.",
+    "The existing double-build staged scripts omission is outside E02."
+  ],
+  "historical_and_worktree_preservation": {
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "failed_and_intermittent_results_preserved_in_commands": true,
+    "unrelated_processes_terminated": false,
+    "implementation_write_scope_violations": 0
+  },
+  "verification_artifacts": [
+    {
+      "path": "artifacts/work_packages/E02/e02-verification.json",
+      "sha256": "a4d5ad7662aad057064e42c5ae3b31d908e688636b28da92c30d19a880927f3c"
+    },
+    {
+      "path": "artifacts/work_packages/E02/rah-core-integrity.json",
+      "sha256": "526b7dd46b2fb9eb493fad766cb9b0716c0768a8878d16d535de2e0641524964"
+    },
+    {
+      "path": "artifacts/work_packages/E02/dependency-status.json",
+      "sha256": "bcd782273e661e729c8ac6f3ec2df4d9246f876981ad6bec706e8d6684665876"
+    },
+    {
+      "path": "artifacts/work_packages/E02/e02-rah-integrity.py",
+      "sha256": "7256e5885bbb0240e5c7ee813baeb5635726b2141f356708c2e341b575133e1b"
+    },
+    {
+      "path": "artifacts/work_packages/E02/e02-dag-reconciliation.py",
+      "sha256": "df0600eb9e338d33e6fa18db8b964fdab3ed2dec6e8f41e4dfa74b4d01f63673"
+    },
+    {
+      "path": "artifacts/work_packages/E02/e02-rah-seal.py",
+      "sha256": "316c56a412aa7c651c482518a73b60599d52ae8c1a50e2be8de9205968b18ee0"
+    }
+  ],
+  "evidence_artifacts": [
+    "artifacts/work_packages/E02/report.json",
+    "artifacts/work_packages/E02/commands.jsonl",
+    "artifacts/work_packages/E02/review.md",
+    "artifacts/work_packages/E02/e02-verification.json",
+    "artifacts/work_packages/E02/rah-core-integrity.json",
+    "artifacts/work_packages/E02/dependency-status.json"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000024-b726715c",
+    "core_generation": "000025-72c61bcc",
+    "core_generation_manifest_sha256": "401cd6b7678459bd82bfd597b67177a743ff5e79379ed2e8c59805c4c9279ab4",
+    "core_evidence_id": "E0026",
+    "final_closeout_evidence_id": "E0027",
+    "retained_generation_manifest_count_after_core": 25,
+    "generation_file_hashes_verified_after_core": 150,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "flat_snapshot_content_matches_after_core": 6,
+    "parse_errors": {},
+    "completion_ready": false
+  },
+  "dag_reconciliation": {
+    "status": "PASS",
+    "manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+    "work_package_count": 156,
+    "unique_work_package_count": 156,
+    "unknown_dependency_count": 0,
+    "cycle_count": 0,
+    "topological_layer_count": 42,
+    "maximum_layer_width": 10,
+    "completed_package_count": 23,
+    "ready_packages_manifest_order": [
+      "E03",
+      "G01",
+      "K01",
+      "A06"
+    ],
+    "next_package": "E03",
+    "completion_ready": false
+  }
+}

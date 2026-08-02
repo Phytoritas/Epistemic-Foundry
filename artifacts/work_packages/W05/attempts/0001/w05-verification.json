@@ -1,0 +1,62 @@
+{
+  "attempt_id": "W05-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every resume, cancellation and reassessment record carries a hash re-derived from its own fields by the shared hashing primitive, with no clock or random draw on the identified path, so replaying a call reproduces the receipt; the cancel certificate is built by the canonical stop-certificate shape and the drift fix is a quarantined proposal receipt",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "a resume point is validated against its canonical evolution-checkpoint schema and must re-derive its own digest; a cancel's stop reason must be one the checkpoint module classifies; the two reassessment statuses are package-local by necessity and deliberately are not schema enum values (EF4-I22); each FINDING_CODE names an exact refusal and composed refusals travel out with their own codes",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the happy path replays deterministically; resume across a committed checkpoint (crash/resume) is handed to the F05 machine and its unsealed/partial refusals are not masked; the adversarial paths carry the weight: a cancel that hides derived remaining work, a cancel whose counts do not reconcile, a disclosure that invents work, a reassessment on an unchanged evaluator, an unbound comparison, and a retroactive fix are each refused",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; drift forces a reassessment that only marks affected comparisons potentially invalid and never re-scores them, the fix is a future-only quarantined proposal, and applying it back to the run that produced it is refused by quarantine's own retroactivity rule rather than by a copy of it here",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent; reviewer: an independent reviewer agent; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 37
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 22
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 17
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 29
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_d05": 84,
+    "dependency_regression_f05": 76,
+    "dependency_regression_n05": 104,
+    "dependency_regression_w04": 41,
+    "full_node_suite": 1129,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 37,
+    "provenance_and_receipt_audit": 22,
+    "schema_and_type_check": 17,
+    "unit_and_contract_tests": 29
+  },
+  "workflow_semantics": {
+    "cancel": "remaining map derived from the run's own accounting; a disclosure narrower than the derived set is refused as a hidden partial result and wider is refused as unaccounted work",
+    "count_reconciliation": "proposed vs evaluated candidates and mapped vs assessed niches are reconciled exactly; a finished id the run never started is refused as CANCEL_COUNTS_UNRECONCILED — enforced, never scored",
+    "drift": "the firewall decides drift by recomputing the digest from content; affected comparisons are marked, never removed or re-scored; the fix is a future-only quarantined proposal",
+    "resume": "expressed as a return edge and handed to the F05 machine, whose verdict is the verdict; the resume record binds atomically only after require_valid_run passes"
+  }
+}

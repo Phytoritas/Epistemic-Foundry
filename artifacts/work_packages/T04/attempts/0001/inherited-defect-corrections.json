@@ -1,0 +1,26 @@
+{
+  "attempt_id": "T04-0001",
+  "corrections": [
+    {
+      "affected_sealed_attempts": [
+        "R02-0001",
+        "R03-0001",
+        "R04-0001",
+        "P01-0001",
+        "P02-0001",
+        "P03-0001",
+        "P04-0001",
+        "Q01-0001",
+        "T03-0001",
+        "W04-0001"
+      ],
+      "correction": "T04-0001 and later attempts record the builder they actually ran; the sealed generations are left byte-identical because rewriting them would break the append-only hash chain",
+      "defect": "commands.jsonl recorded the evidence-build step as build_r01_0001_evidence.py inside the attempt's own directory, a file that does not exist there",
+      "defect_id": "T04-IC001",
+      "impact": "the recorded command string is wrong; the check results, JUnit evidence and artifact hashes those attempts sealed are unaffected, and each attempt's real builder is present and hashed in its own output_artifacts",
+      "severity": "LOW",
+      "status": "CORRECTED_FORWARD"
+    }
+  ],
+  "status": "PASS"
+}

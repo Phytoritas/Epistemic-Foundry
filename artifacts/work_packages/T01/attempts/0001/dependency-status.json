@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "work_package_id": "T01",
+  "attempt_id": "T01-0001",
+  "status": "SPEC_GAP",
+  "spec_gap_id": "T01-SG001",
+  "completion_ready": false,
+  "manifest": {
+    "path": "manifests/development_manifest.yaml",
+    "sha256": "sha256:de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940",
+    "work_package_count": 156
+  },
+  "dependency_inputs": {
+    "E04": {
+      "status": "PASS",
+      "attempt_id": "E04-0001",
+      "report": "artifacts/work_packages/E04/report.json",
+      "report_sha256": "sha256:841dcf60989cfc7ab0eff7be95e1ae721ae18ac513cae653ab6ac8a44942f6c1"
+    },
+    "G04": {
+      "status": "PASS",
+      "attempt_id": "G04-0001",
+      "report": "artifacts/work_packages/G04/report.json",
+      "report_sha256": "sha256:3abe50fc722255bb8f8c2196f133b94425a0b11318423cb756fab614026cf1ea"
+    },
+    "S04": {
+      "status": "PASS",
+      "attempt_id": null,
+      "report": "artifacts/work_packages/S04/report.json",
+      "report_sha256": "sha256:2d727b6be5e847da71a2d24d893e596e5dc7dbec1d7ffbbe1326cbba8555ffa0"
+    }
+  },
+  "dependency_gate": "PASS",
+  "package_states": {
+    "T01": "SPEC_GAP_T01_SG001",
+    "T02": "WAITING_ON_T01",
+    "T03": "WAITING_ON_T01",
+    "K01": "SPEC_GAP_K01_SG001",
+    "K02": "WAITING_ON_K01",
+    "J02": "FAIL_PENDING_PRODUCT_OWNER_DECISION",
+    "A06": "INDEPENDENT_DEPENDENCY_READY_CANDIDATE"
+  },
+  "reason": "T01 dependencies pass, but no authoritative per-tool MCP input/output, handler, side-effect, authorization, error, or protocol matrix exists.",
+  "resume_condition": "A product-owner HumanDecision must resolve T01-SG001 and authorize exact minimal central contract, handler, adapter, fixture, test, documentation, and evidence scopes; T01 must then execute a new attempt without rewriting T01-0001.",
+  "rah_dag_mutated": false,
+  "later_t_package_started": false
+}

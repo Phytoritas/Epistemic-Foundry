@@ -1,0 +1,258 @@
+{
+  "attempt_id": "H04-0001",
+  "attempt_type": "H04_CAPABILITY_PROBE_TRUST_AND_DEGRADED_MODE",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "H04-0001",
+    "dependencies": {
+      "H02": {
+        "attempt_id": "H02-0001",
+        "core_evidence_id": "E0345",
+        "core_generation": "000343-761467df",
+        "final_closeout_evidence_id": "E0346",
+        "report": "artifacts/work_packages/H02/attempts/0001/report.json",
+        "report_sha256": "sha256:f6b98a6ede90ec744d5777108a83b1a15bce013ff1270e89696dc427ab4d0a85",
+        "status": "PASS"
+      },
+      "H03": {
+        "attempt_id": "H03-0001",
+        "core_evidence_id": "E0347",
+        "core_generation": "000345-ffa5c1f4",
+        "final_closeout_evidence_id": "E0348",
+        "report": "artifacts/work_packages/H03/attempts/0001/report.json",
+        "report_sha256": "sha256:153e69b78f1e7b7ca085825e29fb5f0815f9fa4aeb8fdba5948c6730d5a2416d",
+        "status": "PASS"
+      }
+    },
+    "dependency_note": "H04 depends on H02 and H03; both sealed attempts are build dependencies pinned by content-hash and sealed core/final evidence ids. The live ledger frontier advances under concurrent sealing; the parent reconciles the exact frontier when it fills the ledger pins at seal time.",
+    "next_action": "SEAL_H04_0001_THEN_RECOMPUTE_DAG",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "changed_hooks_require_retrust": "PASS",
+    "unsupported_coverage_explicit": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "maturity_boundary": {
+    "bounded_observation_projection_only": true,
+    "evolution_holdout_observability_owner": "H05",
+    "hook_disabled_hosted_tool_integration_owner": "H06",
+    "hook_runner_exists": false,
+    "hosted_tool_interception_claimed": false,
+    "live_cross_host_discovery_adapter_claimed": false,
+    "observed_hook_coverage_is_exhaustive_enforcement": false,
+    "plugin_manifest": "plugins/epistemic-foundry/.codex-plugin/plugin.json",
+    "plugin_manifest_capabilities": [],
+    "plugin_manifest_hooks_registered": false,
+    "plugin_manifest_sha256": "sha256:1b1ec359ab93733114c95acb34c4a74615974456ddab52fa7c1c538159318a87",
+    "runtime_hook_runner_registration_claimed": false,
+    "runtime_integration_owner": "X01/G06"
+  },
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "a live cross-host feature-discovery adapter or runtime hook-runner registration: H04 projects supplied observations into hash-bound HostCapabilityReport and PluginHealthReport documents and adds no hooks key, capability, or dist/hook-runner.mjs",
+    "exhaustive runtime enforcement from observed hook coverage, or hosted-tool interception",
+    "evolution/holdout observability (H05) or hook-disabled hosted-tool integration (H06)",
+    "any runtime hook execution, effect-receipt emission, or packaged runtime integration",
+    "any product-maturity, runtime-executability or release readiness of the v4 plugin or ShinkaEvolve integration",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 42583,
+      "path": "artifacts/work_packages/H04/attempts/0001/build_h04_0001_evidence.py",
+      "sha256": "sha256:d87116e524fd64c519c72f40ee48786cd325fb178abc870ad278abfc31fbdd2f"
+    },
+    {
+      "byte_size": 3711,
+      "path": "artifacts/work_packages/H04/attempts/0001/capability-probe-tests.junit.xml",
+      "sha256": "sha256:665032f83628eda652a4487f6154438c8859776f3189825da05f60c29544e368"
+    },
+    {
+      "byte_size": 8550,
+      "path": "artifacts/work_packages/H04/attempts/0001/commands.jsonl",
+      "sha256": "sha256:264e4dd4ea9c64b7afe1eff8b65e557ba62009f6fcdfc93febd9d48df33bab24"
+    },
+    {
+      "byte_size": 1168,
+      "path": "artifacts/work_packages/H04/attempts/0001/dependency-status.json",
+      "sha256": "sha256:f164eb086868ab5d18c7d32fa7484be7548bcda491220fbeb001e251120a769a"
+    },
+    {
+      "byte_size": 244544,
+      "path": "artifacts/work_packages/H04/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:0eb7106705aac98b464b3338858c1ac37b272ec1dd77050dd6078250fe8595ca"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/H04/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 1200,
+      "path": "artifacts/work_packages/H04/attempts/0001/h04-capability-probe-tests.mjs",
+      "sha256": "sha256:004025bff195165b23b94b5cc2b47f1728214e6567e3794a46348ee1208fb838"
+    },
+    {
+      "byte_size": 2852,
+      "path": "artifacts/work_packages/H04/attempts/0001/h04-verification.json",
+      "sha256": "sha256:777f78eb5b633db8fb9c7bdc480175f3cb1c5574083edd6e2131a155c29517df"
+    },
+    {
+      "byte_size": 27383,
+      "path": "artifacts/work_packages/H04/attempts/0001/h04_0001_rah_seal.py",
+      "sha256": "sha256:327ea9e727ec8adfbc87c565812c15787eff9e2fc26430ddb8b61a931f7661c7"
+    },
+    {
+      "byte_size": 1777,
+      "path": "artifacts/work_packages/H04/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:c6b0f1b8364fb21733fc1c49ca0b565ca76c73e2b1efebd7cdae438b1e3e2873"
+    },
+    {
+      "byte_size": 7566,
+      "path": "artifacts/work_packages/H04/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:caaa1952efa0a3383c8a7b29f96ea5def2462628eb9eda5e4a866409c4619325"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/H04/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:7be7491f704c9156aa39200f9008258b76fdac4d43bab70d56440e03157ebf46"
+    },
+    {
+      "byte_size": 3656,
+      "path": "artifacts/work_packages/H04/attempts/0001/review.md",
+      "sha256": "sha256:697fd26aa2b33d41e6066ecd6ed00feeadc65e86abc23d55028f7322dee503b6"
+    },
+    {
+      "byte_size": 9653,
+      "path": "artifacts/work_packages/H04/attempts/0001/run_h04_0001_checks.py",
+      "sha256": "sha256:a5c20fb018d480363ac2dbc74bf0ec0a1d0056c1d7d4ecb22b82cd96d104a06b"
+    },
+    {
+      "byte_size": 1361,
+      "path": "artifacts/work_packages/H04/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:cc93796dc0f6478e739920519f35594a552c88cf6e132c61002b3915e70f9bde"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0349",
+    "core_generation": "000347-b313478d",
+    "final_closeout_evidence_id": "E0350",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 2082,
+    "implementation_gate": "fail",
+    "retained_generation_count": 347,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "H04-0001",
+    "capability_probe_tests_passed": 18,
+    "count_authority": "derived_from_measured_junit_expected_equals_measured",
+    "full_node_gate": "zero_failures_with_live_inventory_count",
+    "full_node_inventory_count": 115,
+    "full_node_passed": 1291,
+    "full_python_passed": 1261,
+    "new_failure_count": 0,
+    "regression_baseline_attempt": "H03-0001",
+    "status": "PASS",
+    "suites": {
+      "capability_probe_tests": {
+        "cancelled": 0,
+        "collected": 18,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H04/attempts/0001/capability-probe-tests.junit.xml",
+        "junit_sha256": "sha256:665032f83628eda652a4487f6154438c8859776f3189825da05f60c29544e368",
+        "passed": 18,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 18
+      },
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1291,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H04/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:0eb7106705aac98b464b3338858c1ac37b272ec1dd77050dd6078250fe8595ca",
+        "passed": 1291,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1286
+      },
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/H04/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      }
+    }
+  },
+  "required_checks": {
+    "hook_degraded_mode_test": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "hook_feature_probe_test": {
+      "status": "PASS",
+      "test_count": 11
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded H04 implementation agent that authored the capability-probe module and its two compatibility suites; reviewer: the independent seal-prep session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (the bounded H04 implementation agent authored, the seal-prep session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "H04",
+  "write_scope": {
+    "approved_scope": [
+      "packages/plugin-host/src/capability-probe/**",
+      "tests/compatibility/hooks/**",
+      "artifacts/work_packages/H04/**"
+    ],
+    "attempt_id": "H04-0001",
+    "authored_by": "a bounded implementation agent (H04 maker) that authored the capability-probe module packages/plugin-host/src/capability-probe/capability-probe.mjs and its two compatibility test suites under tests/compatibility/hooks/, plus the Node contract harness under artifacts/work_packages/H04/**, without editing any other file",
+    "checked_file_count": 3,
+    "product_file_hashes": {
+      "packages/plugin-host/src/capability-probe/capability-probe.mjs": "sha256:1b419ca7902d4dfcceaaec92f9c533c3d4990ec7c42afc4b7ce45b2827e0d2b4",
+      "tests/compatibility/hooks/hook-degraded-mode.test.mjs": "sha256:7a5c6bbf507b7524f786dfae9aa961817548a5f5c9c45f725b948186335843db",
+      "tests/compatibility/hooks/hook-feature-probe.test.mjs": "sha256:a55247f3eccf223d49c187843be681f056cd40c25681111a2b9f15d50751d4b3"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "an independent seal-prep session acting as a contract-reviewer, distinct from the bounded H04 implementation author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

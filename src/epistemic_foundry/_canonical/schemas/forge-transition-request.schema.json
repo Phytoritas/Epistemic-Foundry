@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/forge-transition-request.schema.json",
+  "title": "ForgeTransitionRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "expected_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "from_phase": {
+      "enum": [
+        "IDLE",
+        "I",
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ]
+    },
+    "to_phase": {
+      "enum": [
+        "IDLE",
+        "I",
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ]
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "actor_type": {
+          "enum": [
+            "human",
+            "agent",
+            "service"
+          ]
+        },
+        "role": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "actor_id",
+        "actor_type",
+        "role"
+      ]
+    },
+    "artifact_receipt_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 128
+      },
+      "uniqueItems": true
+    },
+    "gate_result_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 128
+      },
+      "uniqueItems": true
+    },
+    "human_decision_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8
+    },
+    "requested_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "request_id",
+    "session_id",
+    "expected_revision",
+    "from_phase",
+    "to_phase",
+    "actor",
+    "artifact_receipt_ids",
+    "gate_result_ids",
+    "human_decision_id",
+    "reason",
+    "idempotency_key",
+    "requested_at"
+  ]
+}

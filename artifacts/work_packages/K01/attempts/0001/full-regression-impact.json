@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "work_package_id": "K01",
+  "attempt_id": "K01-0001",
+  "status": "PASS_WITH_OUTSIDE_K01_FAILURES",
+  "completion_ready": false,
+  "targeted_python": {
+    "tests": 34,
+    "passed": 34,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "document_registry_passed": 22,
+    "license_propagation_passed": 12
+  },
+  "full_python": {
+    "collected": 964,
+    "passed": 960,
+    "failed": 4,
+    "skipped_or_xfailed_added_by_k01": 0,
+    "failures": [
+      {
+        "node_id": "tests.test_j02_context_budget::test_inventory_identity_metadata_and_dispositions_are_exact",
+        "failure_type": "J02_TOKENIZER_LOCK_CONTRACT_FAILURE",
+        "owner": "J02",
+        "k01_causal_impact": "NONE"
+      },
+      {
+        "node_id": "tests.test_j02_context_budget::test_all_skill_and_reference_file_seals_use_exact_tokenizer_counts",
+        "failure_type": "J02_TOKENIZER_LOCK_CONTRACT_FAILURE",
+        "owner": "J02",
+        "k01_causal_impact": "NONE"
+      },
+      {
+        "node_id": "tests.test_j02_context_budget::test_pinned_tokenizer_vectors_are_exact_and_repeatable",
+        "failure_type": "J02_TOKENIZER_LOCK_CONTRACT_FAILURE",
+        "owner": "J02",
+        "k01_causal_impact": "NONE"
+      },
+      {
+        "node_id": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin",
+        "failure_type": "J02_TOKENIZER_LOCK_CONTRACT_FAILURE",
+        "owner": "J02",
+        "k01_causal_impact": "NONE"
+      }
+    ],
+    "dependency_evidence": {
+      "required_exact_pin": "tiktoken==0.13.0",
+      "pyproject_exact_pin_present": false,
+      "uv_lock_package_present": false
+    }
+  },
+  "full_node": {
+    "tests": 437,
+    "passed": 436,
+    "failed": 1,
+    "skipped": 0,
+    "failures": [
+      {
+        "node_id": "test::S04-TM004 traceability source bindings fail on undocumented contract drift",
+        "test_file": "tests/security/s04-threat-model-traceability.test.mjs",
+        "debt_id": "S04-TM004",
+        "owner": "S04",
+        "actual_manifest_sha256": "de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940",
+        "expected_manifest_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+        "k01_causal_impact": "NONE"
+      }
+    ]
+  },
+  "repository_checks": {
+    "structure": "PASS",
+    "boundaries": "PASS",
+    "git_diff_check": "PASS_WITH_EXISTING_LINE_ENDING_ADVISORIES",
+    "k01_strict_utf8": "PASS",
+    "k01_bom_absent": true,
+    "k01_replacement_character_absent": true,
+    "k01_generated_pycache_absent": true
+  },
+  "causal_reconciliation": {
+    "k01_caused_python_failure_count": 0,
+    "k01_caused_node_failure_count": 0,
+    "k01_targeted_failure_count": 0,
+    "new_skip_or_xfail_count": 0,
+    "full_repository_green": false
+  }
+}

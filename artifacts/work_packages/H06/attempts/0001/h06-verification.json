@@ -1,0 +1,62 @@
+{
+  "attempt_id": "H06-0001",
+  "declaring_sources": {
+    "coverage_projection": "sealed H05 HOOK_COVERAGE ordered by declared rank and projected through the enabled-host set (imported, not restated)",
+    "degraded_mode_policy": "degraded-mode-policy.json full/degraded mode sets, enabled capability states, and capability-report to gateway host bindings",
+    "gateway_vocab": "hook-gateway HOOK_HOSTS/EVENT_TYPES/DECISIONS/COVERAGE and the capability probe's declared host capabilities (imported)"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every degraded receipt and step-provenance record hashes through the gateway's own sha256HookJson, validateDegradedModeReceipt re-derives the EFH06-DEGRADED-MODE id from the payload, and no clock or randomness exists in any product path",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the policy's mode and capability vocabularies are pinned closed, the coverage order refuses COVERAGE_RANK_AMBIGUOUS when ranks tie, and a claim naming coverage outside the gateway vocabulary is refused COVERAGE_UNDECLARED",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the enabled-host projection is honest by construction: a report or claim that exceeds what the enabled set can observe is refused DEGRADED_OVERCLAIMED, one that understates observed pairs is refused DEGRADED_UNDERSTATED, and an unrestored recovery is refused RECOVERY_COVERAGE_UNRESTORED",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the gate holds no state, detects no degradation and grants no authority; it only reads the host's declared state, emits unverified actions with a bounded reason, and refuses any claim of hook-verified provenance that outruns the declaration",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: sealing session as an independent contract reviewer; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 38
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 20
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 14
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 19
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_capability_probe": 18,
+    "dependency_regression_g05": 81,
+    "dependency_regression_gateway": 11,
+    "dependency_regression_h05": 93,
+    "full_node_suite": 1641,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 38,
+    "provenance_and_receipt_audit": 20,
+    "schema_and_type_check": 14,
+    "targeted_h06_degraded": 91,
+    "unit_and_contract_tests": 19
+  }
+}

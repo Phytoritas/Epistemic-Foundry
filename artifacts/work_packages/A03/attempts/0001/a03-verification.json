@@ -1,0 +1,52 @@
+{
+  "attempt_id": "A03-0001",
+  "attestation_scope": {
+    "architecture_documents": [
+      "docs/adr/ADR-031-plugin-shell-kernel-authority.md",
+      "docs/adr/ADR-032-component-import-boundaries.md",
+      "docs/adr/ADR-033-adapter-isolation-and-degraded-mode.md",
+      "docs/adr/ADR-034-l3-integration-gate-cycle-exception.md",
+      "docs/adr/README.md",
+      "docs/v4_plugin_architecture.md"
+    ],
+    "attested_not_authored": "A03 attests the architecture decision records and the boundary map the documents already carry; it does not re-author or edit their load-bearing content"
+  },
+  "exit_criteria": {
+    "component_import_boundaries_documented": {
+      "mechanism": "adr_index_check asserts ADR-032 (component import boundaries) is indexed and complete; boundary_cycle_policy_check enforces the ADR-032 rule 5 policy as refined by ADR-034 -- a strict module-slice DAG, a closed fingerprinted two-entry top-level L3<->L3 exemption list, and the documented-policy anchors, inward ordering, public-package-api-only source policy and forbidden duplicate-implementation policy all preserved",
+      "status": "PASS"
+    },
+    "plugin_shell_and_kernel_authority_separated": {
+      "mechanism": "adr_index_check asserts ADR-031 (plugin shell / kernel authority) is indexed and structurally complete; boundary_cycle_policy_check asserts no L0/L1/L2 authority component (contracts, domain, noetic_ledger, foundry_kernel) imports an L4 adapter, no authority component appears in any import cycle at any granularity, and no layer inversion exists in the real src/epistemic_foundry import graph",
+      "status": "PASS"
+    }
+  },
+  "fail_closed_negative_suite": {
+    "proves": "evaluate_boundary RAISES on layer inversion, authority-in-cycle, adapter-in-cycle, module-slice cycle, >2 or unlisted top-level cycle, a broken carrier fingerprint, a private-submodule reach-in, and a grown SCC -- and PASSES only the two pinned ADR-034 exemptions",
+    "status": "PASS",
+    "suite": "boundary_cycle_policy_negative",
+    "test_count": 12
+  },
+  "required_checks": {
+    "adr_index_check": {
+      "status": "PASS",
+      "test_count": 4
+    },
+    "boundary_cycle_policy_check": {
+      "status": "PASS",
+      "test_count": 6
+    },
+    "independent_review": {
+      "evidence": "review.md (author: bounded A03 implementation agent(s) that authored ADR-034 and the refined check plus the negative suite; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "adr_index_check": 4,
+    "boundary_cycle_policy_check": 6,
+    "boundary_cycle_policy_negative": 12,
+    "full_node_suite": 1253,
+    "full_python_suite": 1261
+  }
+}

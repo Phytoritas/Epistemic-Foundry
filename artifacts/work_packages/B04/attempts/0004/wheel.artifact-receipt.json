@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-B04-0004-WHEEL",
+  "byte_size": 303618,
+  "content_hash": "sha256:cc3aa468f09092134a4bc8448f4bf60822a4d2ff8df6df16bcbc86483238cb7a",
+  "created_at": "2026-07-29T00:00:00Z",
+  "created_by": {
+    "actor_id": "B04-0004-packaging-verifier",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/B04/attempts/0004/dist/epistemic_foundry-4.0.0-py3-none-any.whl",
+  "media_type": "application/zip",
+  "receipt_hash": "sha256:6b511198062cdd9423a52bce77e95508fcf8e541509691e7e378976610c26e65",
+  "receipt_id": "AR-B04-0004-WHEEL",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "raw_byte_hash_and_size",
+      "details": "Raw distribution SHA-256 and byte size match the formal B04-0004 packaging verification artifact.",
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_source_projection_convergence",
+      "details": "All 125 canonical resources match the root authority with zero missing, extra, duplicate-ID, or hash-mismatched resources.",
+      "status": "PASS"
+    },
+    {
+      "check": "deterministic_build_and_installed_isolation",
+      "details": "Two clean builds and the sdist-derived wheel are byte-equal; installed-only loading, arbitrary-cwd operation, no-source-fallback, missing-resource rejection, and tamper rejection pass.",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "attempt_id": "I05-0001",
+  "canonical_enum_value_count": 749,
+  "gate": "tests/test_wire_literal_discipline.py",
+  "gate_exit_code": 1,
+  "gate_failing_modules": {
+    "cartography/v4_m06/gate.py": [
+      "citation",
+      "required"
+    ],
+    "memory/v4_l06/gate.py": [
+      "hold",
+      "required"
+    ],
+    "scheduler/v4_n05/__init__.py": [
+      "FAIL"
+    ],
+    "scheduler/v4_n05/lanes.py": [
+      "contract",
+      "verdict"
+    ]
+  },
+  "gate_failure_owner": "not I05",
+  "i05_modules": {
+    "src/epistemic_foundry/intake/v4_i05/__init__.py": [],
+    "src/epistemic_foundry/intake/v4_i05/screening.py": []
+  },
+  "note": "the shared EF4-I22 gate fails on three concurrently authored packages (M06, L06, N05) outside the I05 write scope; the I05 engine itself holds no canonical enum value, checked here against the unfiltered enum vocabulary rather than the gate's generic-value allowlist",
+  "scan_mode": "unfiltered (no GENERIC_VALUES allowlist)",
+  "status": "PASS for I05 scope; FAIL for the repository gate"
+}

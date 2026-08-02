@@ -1,0 +1,33 @@
+{
+  "check": "build_smoke",
+  "status": "FAIL",
+  "source_date_epoch": 1767225600,
+  "wheel": {
+    "name": "epistemic_foundry-4.0.0-py3-none-any.whl",
+    "bytes": 159852,
+    "sha256": "fb6f1b7fe5452118108656fc66d05b78db026d1be9735e91c597e1aeec150014",
+    "schema_file_count": 0
+  },
+  "source": {
+    "exit_code": 0,
+    "version": "4.0.0",
+    "release_level": "SPEC_BUNDLE",
+    "runtime_status": "PARTIAL_IMPLEMENTATION",
+    "canonical_schemas_loaded": 124
+  },
+  "distribution": {
+    "exit_code": 1,
+    "exception": "SchemaNotFound",
+    "error": "epistemic_foundry.contracts.registry.SchemaNotFound: schema directory not found: <TEMP>\\schemas"
+  },
+  "convergence": {
+    "exit_codes_equal": false,
+    "stdout_equal": false,
+    "source_dist_converge": false
+  },
+  "failures": [
+    "built wheel contains no canonical schema files",
+    "distribution status command cannot construct the canonical schema registry",
+    "source and distribution execution paths do not converge"
+  ]
+}

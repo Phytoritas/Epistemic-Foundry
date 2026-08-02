@@ -1,0 +1,110 @@
+{
+  "attempt_id": "L03-0001",
+  "canonical_interop": {
+    "action_intent_schema_and_hash": true,
+    "effect_receipt_schema_and_hash": true,
+    "event_record_schema_and_hash": true,
+    "status": "PASS"
+  },
+  "coverage": {
+    "aggregate": {
+      "branch_percent": 73.54,
+      "function_percent": 56.92,
+      "line_percent": 51.73
+    },
+    "memory_lifecycle_implementation": {
+      "branch_percent": 79.95,
+      "function_percent": 94.79,
+      "line_percent": 94.53
+    },
+    "status": "PASS",
+    "stderr_empty": true
+  },
+  "deduplication": {
+    "duplicate_count_or_score_amplification": false,
+    "representative_order": "score_desc_memory_id_asc_source_hash_asc",
+    "representative_source_binding": true,
+    "source_hash_identity": true
+  },
+  "forget_and_delete": {
+    "cache_eviction_is_not_forget": true,
+    "canonical_artifact_content_removed": true,
+    "effect_receipt_required": true,
+    "immutable_revision_increment": true,
+    "terminal_revision_rewrite_rejected": true,
+    "tombstone_hash_requires_policy_and_law_authority": true
+  },
+  "legal_hold": {
+    "active_matching_hold_blocks_effect": true,
+    "authority_record_required": true,
+    "blocked_receipt_status": "NOT_EXECUTED",
+    "hash_sealed": true,
+    "scope_and_time_bound": true,
+    "source_state_preserved_when_blocked": true
+  },
+  "redaction": {
+    "derived_artifact_only": true,
+    "explicit_utf8_byte_spans": true,
+    "profile_without_authoritative_rules_fails_closed": true,
+    "source_bytes_immutable": true,
+    "source_hash_and_span_integrity": true
+  },
+  "replay": {
+    "different_request_conflict": true,
+    "memory_lineage_binding": true,
+    "policy_hash_binding": true,
+    "same_request_identity": true
+  },
+  "status": "PASS",
+  "syntax": {
+    "attempt_id": "L03-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/lifecycle/memory-lifecycle.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/lifecycle/index.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/lifecycle/memory-lifecycle-test-support.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/lifecycle/redaction.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "packages/foundry-kernel/src/memory/lifecycle/forget-legal-hold.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "targeted": {
+    "cancelled": 0,
+    "collected": 44,
+    "failed": 0,
+    "forget_legal_hold_test_count": 25,
+    "junit": "artifacts/work_packages/L03/attempts/0001/targeted-l03-node.junit.xml",
+    "junit_sha256": "sha256:2bd816afeac96e2af54d9916f4fe8db36a30667f33e5a6adfe8f5c1f3c8745b7",
+    "passed": 44,
+    "redaction_test_count": 19,
+    "skipped": 0,
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_testcase_count": 44
+  }
+}

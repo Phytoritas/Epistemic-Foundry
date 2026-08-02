@@ -1,0 +1,22 @@
+{
+  "attempt_id": "K01-0002",
+  "case_ids": [
+    "VALID_SUPERSESSION",
+    "UNKNOWN_PREDECESSOR",
+    "CROSS_SCOPE_PREDECESSOR",
+    "CYCLIC_PREDECESSOR",
+    "IMMUTABLE_HISTORY_REWRITE"
+  ],
+  "immutable_history": "PASS",
+  "lineage_case_count": 5,
+  "semantic_probes": {
+    "bounded_cycle_guard": true,
+    "cross_scope_rejected": true,
+    "immutable_rewrite_rejected": true,
+    "preflight_before_controlled_effect": true,
+    "replay_reopens_predecessor_chain": true,
+    "self_or_cycle_rejected": true,
+    "unknown_predecessor_rejected": true
+  },
+  "status": "PASS"
+}

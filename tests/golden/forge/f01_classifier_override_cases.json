@@ -1,0 +1,68 @@
+{
+  "classifier_version": "4.0.1-f01.1",
+  "cases": [
+    {
+      "case_id": "O01_RAISE_E2_TO_E4",
+      "base_signals": ["SYNTHESIS"],
+      "target_work_class": "E4",
+      "add_interview": false,
+      "interview_rule": null,
+      "expected": {
+        "work_class": "E4",
+        "required_phases": ["F", "O", "R", "G", "E"],
+        "default_role_count": 10,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "O02_RAISE_E4_TO_E5_WITH_INTERVIEW",
+      "base_signals": ["CAUSAL"],
+      "target_work_class": "E5",
+      "add_interview": true,
+      "interview_rule": "I04_MISSING_SCOPE",
+      "expected": {
+        "work_class": "E5",
+        "required_phases": ["I", "F", "O", "R", "G", "E"],
+        "default_role_count": 12,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "O03_ADD_INTERVIEW_AT_E4",
+      "base_signals": ["VALIDATION"],
+      "target_work_class": "E4",
+      "add_interview": true,
+      "interview_rule": "I07_MISSING_HIGH_RISK_CONTRACT",
+      "expected": {
+        "work_class": "E4",
+        "required_phases": ["I", "F", "O", "R", "G", "E"],
+        "default_role_count": 10,
+        "human_gate_required": true
+      }
+    },
+    {
+      "case_id": "O04_NO_OP_REJECTED",
+      "base_signals": ["CAUSAL"],
+      "target_work_class": "E4",
+      "add_interview": false,
+      "interview_rule": null,
+      "expected_error": "HUMAN_OVERRIDE_NO_OP"
+    },
+    {
+      "case_id": "O05_LOW_CLASS_INTERVIEW_REJECTED",
+      "base_signals": ["MECHANISM"],
+      "target_work_class": "E3",
+      "add_interview": true,
+      "interview_rule": "I05_MISSING_FALSIFIER",
+      "expected_error": "HUMAN_OVERRIDE_INVALID"
+    },
+    {
+      "case_id": "O06_LOWERING_REJECTED",
+      "base_signals": ["HIGH_STAKES"],
+      "target_work_class": "E1",
+      "add_interview": false,
+      "interview_rule": null,
+      "expected_error": "HUMAN_OVERRIDE_LOWERING_DENIED"
+    }
+  ]
+}

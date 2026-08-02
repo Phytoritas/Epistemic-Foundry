@@ -1,0 +1,348 @@
+{
+  "attempt_id": "X02-0001",
+  "attempt_type": "X02_CLAUDE_CODE_SKILLS_AGENTS_WORKTREE_ADAPTER",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "X02-0001",
+    "dependencies": {
+      "X01": {
+        "attempt_id": "X01-0001",
+        "core_evidence_id": "E0203",
+        "core_generation": "000201-e6bf05b3",
+        "final_closeout_evidence_id": "E0204",
+        "report": "artifacts/work_packages/X01/attempts/0001/report.json",
+        "report_sha256": "sha256:976e23a05d826aa10c3f757d652c3c6fd8f56ed05f9bf0dcba09aa033c2a924c",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_X02_0001_THEN_RECOMPUTE_DAG",
+    "regression_baseline": {
+      "attempt_id": "V03-0001",
+      "core_evidence_id": "E0239",
+      "core_generation": "000237-13451b87",
+      "final_closeout_evidence_id": "E0240",
+      "report": "artifacts/work_packages/V03/attempts/0001/report.json",
+      "report_sha256": "sha256:63ebb4c43c819d1a9863dca6c76e538bf3031669f32abfb4802c79bc42f8ad31",
+      "status": "PASS"
+    },
+    "regression_baseline_note": "V03-0001 is the live latest-sealed attempt (highest core generation on the ledger frontier) at the time this evidence was built.",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "parallel_writes_isolated": "PASS",
+    "role_specs_generate_custom_agents": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "any adapter, role or worktree plan acquiring evaluator, holdout, or promotion authority",
+    "any role mapping or host binding invented rather than declared and cross-checked",
+    "launching any custom agent or creating any git worktree (the adapter plans and translates only)",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 33509,
+      "path": "artifacts/work_packages/X02/attempts/0001/build_x02_0001_evidence.py",
+      "sha256": "sha256:805717071a8de34052aef986478c99f1841265028c6b4cb254cb71c9b23bbf16"
+    },
+    {
+      "byte_size": 1994,
+      "path": "artifacts/work_packages/X02/attempts/0001/claude-adapter-test.junit.xml",
+      "sha256": "sha256:271fa7b1e806c1d0f565c1c81ffb282f9b5038716526ba40636c7a07b578824d"
+    },
+    {
+      "byte_size": 4053,
+      "path": "artifacts/work_packages/X02/attempts/0001/claude-adversarial-tests.junit.xml",
+      "sha256": "sha256:cda79d6b3cd5207d41fdf19f91f248393eec0078ca67449c83fd21b9ad446eb0"
+    },
+    {
+      "byte_size": 1905,
+      "path": "artifacts/work_packages/X02/attempts/0001/claude-receipts.junit.xml",
+      "sha256": "sha256:ced8939496b48a29109c3e3bcf11b3bf775659a5b2e1368652d8c75043c8721e"
+    },
+    {
+      "byte_size": 2304,
+      "path": "artifacts/work_packages/X02/attempts/0001/claude-schema-check.junit.xml",
+      "sha256": "sha256:5cda608712242bb8cd128d05583b3c184fa504c170a99d233f66ddbb40092fdf"
+    },
+    {
+      "byte_size": 1782,
+      "path": "artifacts/work_packages/X02/attempts/0001/claude-worktree-isolation-test.junit.xml",
+      "sha256": "sha256:e7380bde0d4ac61c2596af9cb8813989d643aa07e618d86acb43ee98a0d1da41"
+    },
+    {
+      "byte_size": 10984,
+      "path": "artifacts/work_packages/X02/attempts/0001/commands.jsonl",
+      "sha256": "sha256:2763cdd2747d9b897e383012852a7b17cf5ef1ec8b53699340220b857e619593"
+    },
+    {
+      "byte_size": 11675,
+      "path": "artifacts/work_packages/X02/attempts/0001/dependency-regression-codex-adapter.junit.xml",
+      "sha256": "sha256:5786fbd286de81c2f8d0884c76d50d321d2663644f15a4ddf0fc6513bd30fb06"
+    },
+    {
+      "byte_size": 1028,
+      "path": "artifacts/work_packages/X02/attempts/0001/dependency-status.json",
+      "sha256": "sha256:35be207622e9dffc494277a1bb4f07677685314735af914431b871199ad1b4e4"
+    },
+    {
+      "byte_size": 314439,
+      "path": "artifacts/work_packages/X02/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:e8ca6def7c32d213c672c69df07425443ac735601b355b1cf4bca19b4396597b"
+    },
+    {
+      "byte_size": 3786,
+      "path": "artifacts/work_packages/X02/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:5d30119e1163a26845f950274974fb3276bd73c0d27f1cf97722d84ee3d6ed3c"
+    },
+    {
+      "byte_size": 9092,
+      "path": "artifacts/work_packages/X02/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:f7547315d66c60f1d7bf1ae3154654b7b8cf789c7dd8be21330c2549e864387b"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/X02/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:604fdbdb8f275c9bdb54b243bafb20c9ce7c7621c529671c1e7036a711519575"
+    },
+    {
+      "byte_size": 2061,
+      "path": "artifacts/work_packages/X02/attempts/0001/review.md",
+      "sha256": "sha256:70fbc66c64042508b3552d90b440a3a35d51b9c8f9e1b77e13ef03e4bd65351c"
+    },
+    {
+      "byte_size": 10456,
+      "path": "artifacts/work_packages/X02/attempts/0001/run_x02_0001_checks.py",
+      "sha256": "sha256:a980cc3953f8ac2fe1e398f65ba740e49ec1b31dace1766ba468038c05bea44f"
+    },
+    {
+      "byte_size": 4349,
+      "path": "artifacts/work_packages/X02/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:0bcafa69a30b633761e6b7f7fdf9f571b6c7dc9538713e429d43886c6816340e"
+    },
+    {
+      "byte_size": 2071,
+      "path": "artifacts/work_packages/X02/attempts/0001/x02-verification.json",
+      "sha256": "sha256:c77b7fc9158020ac32ef80460bf2dbd31d386fa98085773dbe7d1b41dec7cb03"
+    },
+    {
+      "byte_size": 25979,
+      "path": "artifacts/work_packages/X02/attempts/0001/x02_0001_rah_seal.py",
+      "sha256": "sha256:de76a6b496eed46662cb311f300c45967d4253a447cd772287a5716f7027be6a"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0245",
+    "core_generation": "000243-8fe916d4",
+    "final_closeout_evidence_id": "E0246",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1458,
+    "implementation_gate": "fail",
+    "retained_generation_count": 243,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "X02-0001",
+    "full_node_gate": "zero_failures_with_x02_claude_tests_in_inventory",
+    "full_node_inventory_count": 132,
+    "full_node_passed": 1641,
+    "new_failure_count": 0,
+    "regression_baseline_attempt": "V03-0001",
+    "status": "PASS",
+    "suites": {
+      "claude_adapter_test": {
+        "cancelled": 0,
+        "collected": 10,
+        "failed": 0,
+        "junit": "artifacts/work_packages/X02/attempts/0001/claude-adapter-test.junit.xml",
+        "junit_sha256": "sha256:271fa7b1e806c1d0f565c1c81ffb282f9b5038716526ba40636c7a07b578824d",
+        "passed": 10,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 10
+      },
+      "claude_adversarial_tests": {
+        "cancelled": 0,
+        "collected": 21,
+        "failed": 0,
+        "junit": "artifacts/work_packages/X02/attempts/0001/claude-adversarial-tests.junit.xml",
+        "junit_sha256": "sha256:cda79d6b3cd5207d41fdf19f91f248393eec0078ca67449c83fd21b9ad446eb0",
+        "passed": 21,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 21
+      },
+      "claude_receipts": {
+        "cancelled": 0,
+        "collected": 10,
+        "failed": 0,
+        "junit": "artifacts/work_packages/X02/attempts/0001/claude-receipts.junit.xml",
+        "junit_sha256": "sha256:ced8939496b48a29109c3e3bcf11b3bf775659a5b2e1368652d8c75043c8721e",
+        "passed": 10,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 10
+      },
+      "claude_schema_check": {
+        "cancelled": 0,
+        "collected": 12,
+        "failed": 0,
+        "junit": "artifacts/work_packages/X02/attempts/0001/claude-schema-check.junit.xml",
+        "junit_sha256": "sha256:5cda608712242bb8cd128d05583b3c184fa504c170a99d233f66ddbb40092fdf",
+        "passed": 12,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 12
+      },
+      "claude_worktree_isolation_test": {
+        "cancelled": 0,
+        "collected": 9,
+        "failed": 0,
+        "junit": "artifacts/work_packages/X02/attempts/0001/claude-worktree-isolation-test.junit.xml",
+        "junit_sha256": "sha256:e7380bde0d4ac61c2596af9cb8813989d643aa07e618d86acb43ee98a0d1da41",
+        "passed": 9,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 9
+      },
+      "dependency_regression_codex_adapter": {
+        "cancelled": 0,
+        "collected": 68,
+        "failed": 0,
+        "junit": "artifacts/work_packages/X02/attempts/0001/dependency-regression-codex-adapter.junit.xml",
+        "junit_sha256": "sha256:5786fbd286de81c2f8d0884c76d50d321d2663644f15a4ddf0fc6513bd30fb06",
+        "passed": 68,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 68
+      },
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1641,
+        "failed": 0,
+        "junit": "artifacts/work_packages/X02/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:e8ca6def7c32d213c672c69df07425443ac735601b355b1cf4bca19b4396597b",
+        "passed": 1641,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1636
+      }
+    }
+  },
+  "required_checks": {
+    "claude_adapter_test": {
+      "covered_by": [
+        "claude_schema_check",
+        "claude_adapter_test",
+        "claude_adversarial_tests",
+        "claude_receipts"
+      ],
+      "status": "PASS",
+      "test_count": 53
+    },
+    "independent_review": {
+      "evidence": "review.md (author: bounded X02 implementation agent; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "worktree_isolation_test": {
+      "covered_by": [
+        "claude_worktree_isolation_test"
+      ],
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (a bounded X02 implementation agent authored, the sealing session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "X02",
+  "write_scope": {
+    "approved_scope": [
+      "adapters/claude-code/**"
+    ],
+    "attempt_id": "X02-0001",
+    "authored_by": "bounded implementation agent (X02 maker) under the product owner's explicit parallel-execution instruction",
+    "checked_file_count": 30,
+    "composed_modules_modified": false,
+    "product_file_hashes": {
+      "adapters/claude-code/README.md": "sha256:9e15c3893f8c07fb7227519d5862ce987d8f0ea1299d920ad8e6e5a12fe4ccaf",
+      "adapters/claude-code/agent-binding.mjs": "sha256:50e6a4557ebe51691e0657894ad3684943a58ae810d93351d5e4d0b52198deb4",
+      "adapters/claude-code/claude-adversarial.test.mjs": "sha256:9842a869e64bed833db16230a9a028b2ca2b8a0832d8815a696efd37a453f3ba",
+      "adapters/claude-code/claude-binding.json": "sha256:a9e770f3a98bf04c8464b8e8b583c65f5fbca99716bf958c1260b4d988e607a7",
+      "adapters/claude-code/claude-contract.test.mjs": "sha256:f3c1bd628f6c14dfd138cffbcf653a83d0fc789b45f1c7eeb75de362ddfbc99f",
+      "adapters/claude-code/claude-declarations.mjs": "sha256:8c509f16439941e4b3ef60896f13d831d677daf644c2a1e194adf50bd3d509aa",
+      "adapters/claude-code/claude-fixtures.mjs": "sha256:728e9cba63fa48d23458254e2a9a6ce570f54905911dcae4c3b00b760e2e242f",
+      "adapters/claude-code/claude-receipts.test.mjs": "sha256:f7c9ef2f328342a600f32339a69ef1b8f2e73b15e2383ac414bfef75f7a3b0ce",
+      "adapters/claude-code/claude-schema.test.mjs": "sha256:aa90669d2480c7f736dbeb35d210bbfce576647b755a55b2f26045c2554c8063",
+      "adapters/claude-code/claude-worktree.test.mjs": "sha256:31dd424556fcd2d205971944b89d5315023aa75217639f465208b918d9053028",
+      "adapters/claude-code/ef-abductive-mediator.md": "sha256:dce18df9bb01220bc56f394e3194506121c7ff2fb7c7cfa1918afccdbdddf967",
+      "adapters/claude-code/ef-causal-auditor.md": "sha256:09fc246ae512be20ba3a430d29b2c3a45c8fb1344d86143e8f94b60cfa454162",
+      "adapters/claude-code/ef-claim-extractor.md": "sha256:e6e20618a4a505e31f75684447e3b195e680e83d0ac0532a343a4004d383e9a2",
+      "adapters/claude-code/ef-contract-reviewer.md": "sha256:f3410402866b104984e9c81f5ac5c02134e0ed2f115ac45e35c4ee072a5c5325",
+      "adapters/claude-code/ef-deductivist.md": "sha256:5e89c3cf5488e01bd36a1555243e57c06d7f7d4498d3b87c7fc79ad812f69aea",
+      "adapters/claude-code/ef-defender.md": "sha256:13394f0754e30277c223a372a255b183a063a679b31dea7b9e8e647ce7c89a91",
+      "adapters/claude-code/ef-evidence-scout.md": "sha256:696e7f45c54ea90e8b5c569b38c0198a235ee073a3cf1923f8d8ce20a3d9992c",
+      "adapters/claude-code/ef-independent-attestor.md": "sha256:157e6d94bd4fbc6dfd9817981b673cc8c29a98193f4139055e4a6a7130afaff2",
+      "adapters/claude-code/ef-inductivist.md": "sha256:9c5e942735666f8b3f0de76b951ebd9f91c8fc36c0adacab1c15b025e063cbb1",
+      "adapters/claude-code/ef-judge.md": "sha256:e29f9fc83c44ef23b55ea1841b4b6d48ee800b6e25f9ae70f06a0e92869e5882",
+      "adapters/claude-code/ef-method-auditor.md": "sha256:86d7d59f998131859268622eaaa8bef2493b4c0acf70590bec4e533b40a6a797",
+      "adapters/claude-code/ef-minority-reporter.md": "sha256:086a44461df56ea2e56054c172d5afcb66654f8af05d7b424c38ac60014dd77d",
+      "adapters/claude-code/ef-novelty-examiner.md": "sha256:b6fee6f0d37f2e57fce594196b87ad8ced65098fcf53f786c591e30ac3b9da15",
+      "adapters/claude-code/ef-prosecutor.md": "sha256:16089a96fa2e6444d010a4c7f172033690dd56eac122f74c5f5e8d461ecabb67",
+      "adapters/claude-code/ef-scope-auditor.md": "sha256:e0e7a3e58ef0fbca60e04ee277580c67651fbba5fc6ba7fc4a9eb228d0206a2e",
+      "adapters/claude-code/ef-validation-executor.md": "sha256:e282f6223addd196162be8376e7f8bcf48f0da8da930fa4c043fbd7599d20ca9",
+      "adapters/claude-code/index.mjs": "sha256:3a1080fd2c6aae3b2d3948d7d74241bc441c5de714d2b66a23a2daf03200cb1e",
+      "adapters/claude-code/role-adapter.mjs": "sha256:7719e8025fb0dc2f671940ad86fd3c2dda23dd808e54761e249e5fd33a6fa72c",
+      "adapters/claude-code/role_mapping.yaml": "sha256:c9b387472f672318d9e65bb66c7c13746af2e65fa5d2a9b1c54748b35fe5256f",
+      "adapters/claude-code/worktree-plan.mjs": "sha256:79be5ca44e52896636304d8b459030c0705e863761b785818f463b750e9d4bfb"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "sealing session acting as an independent contract-reviewer, separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

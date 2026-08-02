@@ -1,0 +1,90 @@
+name: Cross-platform CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: efoundry-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cross-platform:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - macos-15
+          - windows-2025
+    env:
+      SOURCE_DATE_EPOCH: "1767225600"
+      PYTHONHASHSEED: "0"
+      NO_COLOR: "1"
+      NPM_CONFIG_AUDIT: "false"
+      NPM_CONFIG_FUND: "false"
+      NPM_CONFIG_CACHE: ${{ runner.temp }}/efoundry-cache/npm
+      UV_CACHE_DIR: ${{ runner.temp }}/efoundry-cache/uv
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "26.4.0"
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12.3"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: "0.7.21"
+          enable-cache: false
+
+      - name: Restore disposable dependency cache
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            ${{ runner.temp }}/efoundry-cache/npm
+            ${{ runner.temp }}/efoundry-cache/uv
+          key: efoundry-deps-v1-${{ matrix.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json', 'uv.lock', 'toolchains/toolchain-lock.json', 'toolchains/python-build-constraints.txt') }}
+          enableCrossOsArchive: false
+          fail-on-cache-miss: false
+
+      - name: Verify pinned toolchain and lockfiles
+        run: python scripts/build/check_locks.py
+
+      - name: Install locked dependencies
+        run: |
+          npm ci --ignore-scripts
+          uv sync --locked --extra dev --no-python-downloads
+
+      - name: Validate CI and cache policy
+        run: |
+          uv run --locked python scripts/ci/ci_matrix_lint.py
+          uv run --locked python scripts/ci/cache_key_audit.py
+          uv run --locked python scripts/ci/test_ci_policy.py
+
+      - name: Verify workspace boundaries
+        run: |
+          npm run check:structure
+          npm run check:boundaries
+
+      - name: Run Python regression suite
+        run: uv run --locked pytest tests -p no:cacheprovider
+
+      - name: Compare independent builds
+        run: uv run --locked python scripts/build/double_build.py

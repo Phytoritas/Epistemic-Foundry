@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-B04-0005-SDIST",
+  "byte_size": 252494,
+  "content_hash": "sha256:c2d68ad297ae295f30761cc68c48d3bd1d9cc90cd5111597bb7be9cd27ee7eed",
+  "created_at": "2026-07-30T05:30:00Z",
+  "created_by": {
+    "actor_id": "B04-0005-packaging-revalidator",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/B04/attempts/0005/dist/epistemic_foundry-4.0.0.tar.gz",
+  "media_type": "application/gzip",
+  "receipt_hash": "sha256:76981036d28e881ad9abc8e497e8a2d5c205e24954642a4872ca47830d5514f9",
+  "receipt_id": "AR-B04-0005-SDIST",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "raw_byte_hash_and_size",
+      "details": "Raw distribution bytes match the B04-0005 formal packaging inventory.",
+      "status": "PASS"
+    },
+    {
+      "check": "deterministic_build",
+      "details": "Two builds and the sdist-derived wheel satisfy the deterministic build contract.",
+      "status": "PASS"
+    },
+    {
+      "check": "installed_package_isolation",
+      "details": "Installed-only registry, schema, and OpenAPI loading pass from an arbitrary empty cwd with fallback success count zero.",
+      "status": "PASS"
+    }
+  ]
+}

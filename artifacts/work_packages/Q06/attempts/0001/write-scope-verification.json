@@ -1,0 +1,27 @@
+{
+  "approved_scope": [
+    "src/epistemic_foundry/evaluation/v4_q06/**",
+    "artifacts/work_packages/Q06/**"
+  ],
+  "attempt_id": "Q06-0001",
+  "authored_by": "a bounded implementation agent under the primary session's brief",
+  "authority_decision": "Q06's manifest write_scope is src/epistemic_foundry/evaluation/v4_q06/**; both product files (the v4_q06 package marker __init__.py and gate.py) sit squarely within that glob. The parent ``evaluation`` package marker src/epistemic_foundry/evaluation/__init__.py was introduced and sealed by Q05, is not in Q06's write scope and is not modified here (composed_modules_modified=false). The new evaluation.v4_q06 wheel-discovery marker is proven by check_packaging.py; no separate HumanDecision was recorded.",
+  "component_files": [
+    "src/epistemic_foundry/evaluation/v4_q06/__init__.py",
+    "src/epistemic_foundry/evaluation/v4_q06/gate.py"
+  ],
+  "composed_modules_modified": false,
+  "product_file_hashes": {
+    "artifacts/work_packages/Q06/attempts/0001/run_q06_0001_checks.py": "sha256:9703d84978a2eb4979d8a9a0341110915c622467628290bec4b690eb118ea8d9",
+    "src/epistemic_foundry/evaluation/v4_q06/__init__.py": "sha256:d9eb7cee8c2b758f3a55801e3aeb00b26595d5cb243f00bb79d3046acc53978c",
+    "src/epistemic_foundry/evaluation/v4_q06/gate.py": "sha256:99a677dd805a2e98cc742fdfca133b7a71afaaaa940e6621d439b530d177c274"
+  },
+  "pyproject_modified": false,
+  "reset_clean_stash_commit_push_performed": false,
+  "reviewed_by": "the primary sealing session, procedurally separate from the bounded implementation agent that authored the subject code; actor-independent from the author",
+  "root_canonical_source_mutation_count": 0,
+  "schema_or_test_weakening_count": 0,
+  "status": "PASS",
+  "subagents_or_fleet_used": true,
+  "write_scope_violation_count": 0
+}

@@ -1,0 +1,84 @@
+{
+  "acceptance_metrics": {
+    "accepted_signal_normalization_accuracy": "1.000",
+    "classification_id_exact_match_accuracy": "1.000",
+    "default_role_count_exact_match_accuracy": "1.000",
+    "hash_vector_exact_match_accuracy": "1.000",
+    "human_gate_exact_match_accuracy": "1.000",
+    "interview_routing_exact_match_accuracy": "1.000",
+    "required_phases_exact_match_accuracy": "1.000",
+    "work_class_exact_match_accuracy": "1.000"
+  },
+  "attempt_id": "F01-0003",
+  "authority_decision": {
+    "artifact_sha256": "sha256:e3d8d2bd5844f71f286bfd02a3fac7a6997d8deebc37b4b378cf90ea134ee8ba",
+    "authority_role": "product_owner",
+    "canonical_decision_hash": "sha256:923e5b94303626de6aceb41cedfbf405c3037828fb160e2645ac4ac4fc564eea",
+    "decision_id": "HD-EF4-F01-SG002-20260729-001",
+    "decision_type": "correct",
+    "schema_validation": "PASS",
+    "status": "PASS",
+    "subject_id": "F01-SG002"
+  },
+  "canonical_contracts": {
+    "additional_properties_false_count": 124,
+    "example_count": 124,
+    "mapped_example_count": 124,
+    "schema_count": 124,
+    "status": "PASS",
+    "unique_schema_id_count": 124,
+    "valid_example_count": 124
+  },
+  "classifier_version": "4.0.1-f01.1",
+  "fixed_oracles": {
+    "counts": {
+      "adversarial": 16,
+      "gold": 14,
+      "hash_vectors": 4,
+      "override": 6
+    },
+    "fixture_hashes": {
+      "tests/golden/forge/f01_classifier_adversarial_cases.json": "sha256:93a7617d29a52fe3af9bcc15a395056f5a38afc5d36b80034a1f3c547f0d6f66",
+      "tests/golden/forge/f01_classifier_gold_cases.json": "sha256:3adf6be1dc5ce43455ece62a26ba2ce02d064cb46bb249bf5c408387070843c7",
+      "tests/golden/forge/f01_classifier_hash_vectors.json": "sha256:9715c2e6e374fdfedc4d6011fec498f71e4396ad788773c93b3b49bae25b0915",
+      "tests/golden/forge/f01_classifier_override_cases.json": "sha256:afe77ea97803b280fb6333bc629dd3c7d7bcc96090d7e1f4155567251cf9264c"
+    },
+    "status": "PASS"
+  },
+  "implementation": {
+    "authority_regressions": {
+      "classifier_version_frozen": true,
+      "human_decision_correct_only": true,
+      "human_receipt_required": true,
+      "request_text_hash_bound": true,
+      "resolved_human_decision_required": true
+    },
+    "classifier_version": "4.0.1-f01.1",
+    "implementation_file_hashes": {
+      "packages/foundry-kernel/src/forge/classifier/classification-committer.mjs": "sha256:a745eb42e9b21e160ac5daa68da1983807b3462bf7edf1935129a93537823235",
+      "packages/foundry-kernel/src/forge/classifier/classification-committer.test.mjs": "sha256:c6497aa6fc971758eb55338b31145f8f9dc1281987dc2ad5225fb5813e9fc955",
+      "packages/foundry-kernel/src/forge/classifier/classifier-adversarial.test.mjs": "sha256:de1955680211ef10c370cb61cdbfab5c21b6f9e7361b0bbdc03482d8ebda5b07",
+      "packages/foundry-kernel/src/forge/classifier/classifier-override.test.mjs": "sha256:d78b92e5172ae6258cbadf51c4277ea2504de18a4dbc83658e3b7454206a255f",
+      "packages/foundry-kernel/src/forge/classifier/epistemic-work-classifier.mjs": "sha256:d0d3724a4ce5bb70355c530187dcb88fabafa565ff3309786ede58e684f984e3",
+      "tests/test_f01_workflow_contract.py": "sha256:0752d91e28c70c09393c43c18cb54de916ef26207074b84c420f81d4b425dc16"
+    },
+    "status": "PASS",
+    "workflow_capabilities": [
+      "artifact_read",
+      "artifact_write"
+    ],
+    "workflow_output_schema_ref": "schemas/epistemic-work-classification.schema.json"
+  },
+  "live_llm_or_external_network_dependency_count": 0,
+  "new_regression_failure_count": 0,
+  "new_skip_or_xfail_count": 0,
+  "openapi_contract": {
+    "document_sha256": "sha256:c77aa89918cc33cded07755bbf2cbec7fcb6554e573efbca2ebd9480b78344d7",
+    "operation_count": 33,
+    "operation_id_unique_count": 33,
+    "status": "PASS",
+    "version": "3.1.1"
+  },
+  "status": "PASS",
+  "work_package_id": "F01"
+}

@@ -1,0 +1,233 @@
+{
+  "work_package_id": "E04",
+  "attempt_id": "E04-0001",
+  "title": "E-phase strict and semantic replay gate",
+  "status": "PASS",
+  "package_status": "PASS",
+  "completion_ready": false,
+  "dependencies": {
+    "E02": {
+      "status": "PASS",
+      "attempt_id": "E02-0001",
+      "report": "artifacts/work_packages/E02/report.json",
+      "report_sha256": "97a308d90bd0f57334a5d9505e672d402b0409adcb17547780b2803f9c417772",
+      "core_evidence_id": "E0026",
+      "final_closeout_evidence_id": "E0027"
+    },
+    "E03": {
+      "status": "PASS",
+      "attempt_id": "E03-0001",
+      "report": "artifacts/work_packages/E03/report.json",
+      "report_sha256": "e4737460f2375d46d4b348d79cdfa5c51ee84f1db2bcf34b8a3f5aea1d0091d2",
+      "core_evidence_id": "E0028",
+      "final_closeout_evidence_id": "E0029"
+    }
+  },
+  "write_scope": [
+    "tests/replay/effects/**",
+    "artifacts/work_packages/E04/**"
+  ],
+  "changed_files": [
+    {
+      "path": "tests/replay/effects/replay-test-support.mjs",
+      "sha256": "da299cd4d9fd44a30d4851be3c4f7ac5104aadb94de57fe525cb2b1c8a98ca4b",
+      "byte_size": 28712
+    },
+    {
+      "path": "tests/replay/effects/strict-replay.test.mjs",
+      "sha256": "b4d930073c16169139ae480a9fca549f6216a538adce5dec5c7da11f3f35adc1",
+      "byte_size": 7784
+    },
+    {
+      "path": "tests/replay/effects/semantic-replay.test.mjs",
+      "sha256": "bfb99786cdc201c486fb710ffa973d2c0a241af4e53fb6be2cbb6a0587b036ed",
+      "byte_size": 7047
+    }
+  ],
+  "implementation": {
+    "strict_reducer": "ordered E02 intent/attempt/receipt and E03 approval/lease/use/revocation events rebuild a deterministic E-phase state",
+    "durable_equivalence": "repeat and reopened-store rebuilds preserve event count, state hash, tail hash, and public live-projection parity",
+    "sequence_integrity": "receipts bind the replayed tail Attempt; logical identities are unique; payload identity must match the event run and aggregate envelope",
+    "strict_exact": "same run, all eight exact pins, semantic state, event count, state hash, and tail event hash are required",
+    "semantic_comparison": "SEMANTICALLY_EQUIVALENT, DRIFT, and NOT_COMPARABLE remain distinct; semantic-state, gate, verdict, and pin drift are not erased",
+    "pin_provenance": "source and replay run_spec/context/adapter_model/tools/receipts/policy/corpus/prompts pins are retained with side-qualified missing pins",
+    "report_integrity": "canonical UTF-8 JSON; report_hash excludes only itself; emitted reports validate against the unchanged ReplayReport schema",
+    "hostile_input_boundary": "proxy, accessor, symbol, decorated or sparse arrays, non-finite numbers, invalid Unicode, malformed/floating pins, placeholder hashes, and report mutation fail closed",
+    "production_files_modified": 0,
+    "schema_or_dependency_implementation_modified": false
+  },
+  "exit_criteria": {
+    "strict_reducer_equivalence_passes": "PASS",
+    "semantic_drift_is_reported_not_erased": "PASS"
+  },
+  "required_checks": {
+    "strict_replay_test": {
+      "status": "PASS",
+      "passed": 8,
+      "failed": 0
+    },
+    "semantic_replay_report": {
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0
+    },
+    "combined_targeted_gate": {
+      "status": "PASS",
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0
+    },
+    "final_repetitions": {
+      "status": "PASS",
+      "runs": 5,
+      "test_executions": 90,
+      "failed_runs": 0
+    },
+    "coverage": {
+      "status": "PASS",
+      "target": "tests/replay/effects/replay-test-support.mjs",
+      "line_percent": 93.02,
+      "branch_percent": 77.78,
+      "function_percent": 95.92
+    }
+  },
+  "regression": {
+    "python": {
+      "status": "PASS",
+      "passed": 913,
+      "failed": 0
+    },
+    "repository_wide_node_final": {
+      "status": "FAIL_OUTSIDE_E04",
+      "passed": 237,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "actual_manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+      "expected_legacy_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+      "owner_scope": "S04"
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix": "PASS",
+    "cache_key_audit": "PASS",
+    "ci_policy_mutation_tests": {
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0
+    },
+    "syntax_and_text_integrity": "PASS",
+    "debug_marker_audit": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "artifact": "artifacts/work_packages/E04/review.md",
+    "artifact_sha256": "18cda4135b66486a91151f3c15b68ed90bbcef44d00663b6433dc9341162ef78",
+    "blocking_findings": 0,
+    "resolved_finding_ids": [
+      "E04-RF001_RECEIPT_TAIL_ATTEMPT_BINDING",
+      "E04-RF002_SEMANTIC_PROJECTION_DRIFT",
+      "E04-RF003_NON_VACUOUS_STRICT_IDENTITY",
+      "E04-RF004_BIDIRECTIONAL_PIN_PROVENANCE",
+      "E04-RF005_DUPLICATE_LOGICAL_IDENTITY",
+      "E04-RF006_EVENT_ENVELOPE_REBIND",
+      "E04-RF007_CANONICAL_JSON_ACCESSOR_UNICODE"
+    ],
+    "assurance_limitation": "The final pass is procedurally separate within the primary session under the product owner's serial no-Fleet/no-subagent decision; it is not external actor-independent certification."
+  },
+  "residual_integration_failures": [
+    {
+      "check": "repository-wide Node tests",
+      "status": "FAIL_OUTSIDE_E04",
+      "passed": 237,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "owner_scope": "S04"
+    },
+    {
+      "check": "scripts/build/double_build.py",
+      "status": "FAIL_OUTSIDE_E04",
+      "failure": "staged source build omits scripts required by the existing build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  ],
+  "preserved_limitations": [
+    "E04 proves the implemented local E01/E02/E03 replay surface, not arbitrary future reducers, distributed consensus, or cross-region exactly-once execution.",
+    "Semantic equivalence is limited to the declared projection, gates, verdicts, and pins; it does not make different models, corpora, prompts, or policies scientifically interchangeable.",
+    "The test-scope replay gate does not implement a runtime transport or operational replay service.",
+    "The existing S04-TM004 stale manifest-hash binding and staged-source double-build failure remain outside E04."
+  ],
+  "historical_and_worktree_preservation": {
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "failed_results_preserved_in_commands": true,
+    "unrelated_processes_terminated": false,
+    "implementation_write_scope_violations": 0
+  },
+  "verification_artifacts": [
+    {
+      "path": "artifacts/work_packages/E04/e04-verification.json",
+      "sha256": "37e9a9367a6c1bfaf75c2c0e3d93498631e2ff47a9beaebec18d1050738b13dd"
+    },
+    {
+      "path": "artifacts/work_packages/E04/rah-core-integrity.json",
+      "sha256": "17d13fb2b31d708aca152db47a42f05d83fd33839ad53f77375ba5191033246b"
+    },
+    {
+      "path": "artifacts/work_packages/E04/dependency-status.json",
+      "sha256": "f8dc63fc12e484601c21cd11fb1b3670083bcc4ea01f853c4fd07e0c226d9597"
+    },
+    {
+      "path": "artifacts/work_packages/E04/e04-rah-integrity.py",
+      "sha256": "0a2806167f5c2ce3b6a4a0a31e828e7cfeaecc83b02087b0915c6f518cb9928f"
+    },
+    {
+      "path": "artifacts/work_packages/E04/e04-dag-reconciliation.py",
+      "sha256": "3e37063af93ba7d875acae649c9917039cece9a35366c490688b22e68dc189cb"
+    },
+    {
+      "path": "artifacts/work_packages/E04/e04-rah-seal.py",
+      "sha256": "8fc7826880bc687ebe194411811261a5e0e47f2aa6fbadffec73b4ec5c37d8f5"
+    }
+  ],
+  "evidence_artifacts": [
+    "artifacts/work_packages/E04/report.json",
+    "artifacts/work_packages/E04/commands.jsonl",
+    "artifacts/work_packages/E04/review.md",
+    "artifacts/work_packages/E04/e04-verification.json",
+    "artifacts/work_packages/E04/rah-core-integrity.json",
+    "artifacts/work_packages/E04/dependency-status.json"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000028-2f543628",
+    "core_generation": "000029-9a5e961a",
+    "core_generation_manifest_sha256": "3811a53aed74a15f265e9fb66d0830f41b21da570b3a612845abad835c0d36d1",
+    "core_evidence_id": "E0030",
+    "final_closeout_evidence_id": "E0031",
+    "retained_generation_manifest_count_after_core": 29,
+    "generation_file_hashes_verified_after_core": 174,
+    "flat_snapshot_stamps_verified_after_core": 6,
+    "flat_snapshot_content_matches_after_core": 6,
+    "parse_errors": {},
+    "completion_ready": false
+  },
+  "dag_reconciliation": {
+    "status": "PASS",
+    "manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+    "work_package_count": 156,
+    "unique_work_package_count": 156,
+    "unknown_dependency_count": 0,
+    "cycle_count": 0,
+    "completed_package_count": 25,
+    "ready_packages_manifest_order": [
+      "F01",
+      "G01",
+      "K01",
+      "A06"
+    ],
+    "next_package": "F01",
+    "completion_ready": false
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "decision_id": "HD-EF4-F01-SG002-20260729-001",
+  "run_id": null,
+  "subject_id": "F01-SG002",
+  "decision_type": "correct",
+  "decision": "Resolve F01-SG002 prospectively. The repository-root schemas/** and openapi/** trees are the sole canonical source authority; src/epistemic_foundry/_canonical/** is a deterministic derived package snapshot owned by B04. Authorize the next unused B04 correction attempt to restore and receipt projection freshness, followed only after B04 PASS by F01-0003 revalidation. Preserve the package-level DAG without a static F01-B04 cycle, preserve F01-0002 and all prior B04 and RAH history, keep F02 and F03 waiting on F01 PASS, prohibit reverse synchronization and stale fallbacks, and keep completion_ready false.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "F01-0002 correctly found that its verified root canonical schema change made the B04-owned derived snapshot stale. This decision fixes source authority, projection ownership, attempt-level correction sequencing, receipt and freshness gates, and the separation of the pre-existing S04-TM004 debt without granting F01 snapshot ownership, creating a static dependency cycle, weakening schemas, modifying prior evidence, or permitting Fleet or subagents.",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/F01/attempts/0002/report.json",
+    "artifacts/work_packages/F01/attempts/0002/full-regression-impact.json",
+    "artifacts/work_packages/F01/attempts/0002/rah-core-integrity.json",
+    "artifacts/work_packages/B04/attempts/0002/report.json",
+    "RAH:E0036",
+    "RAH:E0037",
+    "RAH:generation:000035-80b64468"
+  ],
+  "affected_artifact_ids": [
+    "manifests/development_manifest.yaml",
+    "src/epistemic_foundry/_canonical/**",
+    "B04-0003",
+    "F01-0003",
+    "F02",
+    "F03"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-29T00:00:00Z",
+  "decision_hash": "sha256:923e5b94303626de6aceb41cedfbf405c3037828fb160e2645ac4ac4fc564eea"
+}

@@ -1,0 +1,75 @@
+{
+  "work_package_id": "B01",
+  "base_checkpoint": "A04:PASS",
+  "status": "PASS",
+  "changed_files": [
+    "package.json",
+    "pnpm-workspace.yaml",
+    "pyproject.toml",
+    "packages/README.md",
+    "packages/boundary-policy.json",
+    "packages/contracts/package.json",
+    "packages/transport-kernel/package.json",
+    "packages/foundry-kernel/package.json",
+    "packages/role-router/package.json",
+    "packages/context-capsule/package.json",
+    "packages/workspace-map/package.json",
+    "packages/skill-vault/package.json",
+    "packages/plugin-host/package.json",
+    "packages/ui-api/package.json",
+    "packages/repo-checks/package.json",
+    "packages/repo-checks/check-structure.mjs",
+    "packages/repo-checks/check-boundaries.mjs",
+    "python/README.md",
+    "python/epistemic_foundry/README.md",
+    "artifacts/work_packages/B01/commands.jsonl",
+    "artifacts/work_packages/B01/review.md",
+    "artifacts/work_packages/B01/report.json"
+  ],
+  "checks": [
+    {
+      "command": "repo_structure_check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B01/commands.jsonl#B01-C001"
+    },
+    {
+      "command": "forbidden_source_import_check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B01/commands.jsonl#B01-C002"
+    },
+    {
+      "command": "python -m pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B01/commands.jsonl#B01-C003"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/B01/commands.jsonl#B01-C007"
+    }
+  ],
+  "review": {
+    "agent": "primary_author",
+    "status": "PASS_WITH_RECORDED_PROCEDURE_DEVIATION",
+    "findings_resolved": []
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/B01/commands.jsonl",
+    "artifacts/work_packages/B01/review.md",
+    "artifacts/work_packages/B01/report.json"
+  ],
+  "open_risks": [
+    "Review was performed by the author under explicit user instruction and is not independent assurance.",
+    "pnpm and Python build frontend provisioning are pending B02/B04.",
+    "The python/ component root is reserved but intentionally not importable until a later package adds uniquely owned modules."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "reproducible clean build (B02/B04 scope)"
+  ],
+  "next_ready": [
+    "B02",
+    "B03",
+    "S01"
+  ]
+}

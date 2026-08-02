@@ -1,0 +1,342 @@
+{
+  "attempt_id": "F03-0002",
+  "authority_decision_id": "HD-EF4-B04-SG002-20260730-001",
+  "changed_files": [
+    {
+      "byte_size": 48489,
+      "path": "packages/foundry-kernel/src/forge/gates/transition-admission-gate.mjs",
+      "sha256": "sha256:62549b467fccd773c89ae751db8f01e9bd3ee7e314087076f01a582081d0a0c1"
+    },
+    {
+      "byte_size": 50,
+      "path": "packages/foundry-kernel/src/forge/gates/index.mjs",
+      "sha256": "sha256:002d53b0ed821fc5b2cb9b089616e9830aa08a19a42f9d56b845dc96c186f9c6"
+    },
+    {
+      "byte_size": 9719,
+      "path": "packages/foundry-kernel/src/forge/gates/gate-test-support.mjs",
+      "sha256": "sha256:33dfc20a5c0ccb5cd0facef7167c0663ea01c43c6ba9f2711c94e8597f369b8b"
+    },
+    {
+      "byte_size": 22584,
+      "path": "packages/foundry-kernel/src/forge/gates/transition-receipt.test.mjs",
+      "sha256": "sha256:1f3cc002196c50934832a0b2ee1a79031e3321c9d0209f75a46bcf4ee8166a31"
+    },
+    {
+      "byte_size": 8505,
+      "path": "packages/foundry-kernel/src/forge/gates/override-provenance.test.mjs",
+      "sha256": "sha256:9cdd09ed0dd88cb41f2e7917724d8fc756c6307d6f39c70173cf8865e4a2bfa3"
+    }
+  ],
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_effect": {
+    "attempt_id": "F03-0002",
+    "completed": [
+      "C03-0003",
+      "F03-0002"
+    ],
+    "completion_ready": false,
+    "manifest": {
+      "f03_depends_on": [
+        "F01"
+      ],
+      "f03_required_checks": [
+        "transition_receipt_test",
+        "override_provenance_test"
+      ],
+      "f03_write_scope": [
+        "packages/foundry-kernel/src/forge/gates/**"
+      ],
+      "f04_depends_on": [
+        "F02",
+        "F03"
+      ],
+      "package_count": 156,
+      "path": "manifests/development_manifest.yaml",
+      "sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12"
+    },
+    "next_attempt": "F04-0002",
+    "ordered_repair_sequence": [
+      "C03-0003",
+      "F03-0002",
+      "F04-0002",
+      "J02-0003",
+      "S04-0003",
+      "B04-0007",
+      "C04-0002",
+      "B04-0008"
+    ],
+    "schema_version": 1,
+    "static_dag_changed": false,
+    "status": "PASS",
+    "waiting": [
+      "J02-0003",
+      "S04-0003",
+      "B04-0007",
+      "C04-0002",
+      "B04-0008"
+    ]
+  },
+  "evidence_artifacts": [
+    {
+      "byte_size": 4677,
+      "path": "artifacts/work_packages/F03/attempts/0002/gate-decision-correction-verification.json",
+      "sha256": "sha256:0ea06a583921bc13e2b92c948ff1a58bdcf9e776513ee5a3fd067040968c7abd"
+    },
+    {
+      "byte_size": 7303,
+      "path": "artifacts/work_packages/F03/attempts/0002/full-regression-impact.json",
+      "sha256": "sha256:95a143f200c71ddd0177e35057253494963369f11093c178f5e56f297a9adeef"
+    },
+    {
+      "byte_size": 949,
+      "path": "artifacts/work_packages/F03/attempts/0002/dependency-status.json",
+      "sha256": "sha256:64576d2553cf5f750239424602cf812a5265b6dc734774a067607109923c2682"
+    },
+    {
+      "byte_size": 5909,
+      "path": "artifacts/work_packages/F03/attempts/0002/targeted-node-suite.junit.xml",
+      "sha256": "sha256:1f7fb41600e2213ec95b7f80867a1b6b00710f2c2f70e94e82b372fe0b668c4c"
+    },
+    {
+      "byte_size": 7555,
+      "path": "artifacts/work_packages/F03/attempts/0002/combined-f03-f04-node-suite.junit.xml",
+      "sha256": "sha256:20828c89de66383209a4e2fa2a9d4d7adea95803bf4f9442f189f532380ed21d"
+    },
+    {
+      "byte_size": 108398,
+      "path": "artifacts/work_packages/F03/attempts/0002/full-node-suite.junit.xml",
+      "sha256": "sha256:a1c86ca241da1082eda87e0fbd19f39f8f1075a0c2bf4e4066cd7481b9fb928a"
+    },
+    {
+      "byte_size": 126841,
+      "path": "artifacts/work_packages/F03/attempts/0002/full-python-suite.junit.xml",
+      "sha256": "sha256:eba919e71525d0e44fd1fc3de10ba41885502a21035f1d81ff510be9d09bdfbe"
+    },
+    {
+      "byte_size": 4725,
+      "path": "artifacts/work_packages/F03/attempts/0002/commands.jsonl",
+      "sha256": "sha256:2ec0434e160d56fc8f3892b4d9bc2bbdf71b4d64104a2f6fa46904af72751275"
+    },
+    {
+      "byte_size": 3710,
+      "path": "artifacts/work_packages/F03/attempts/0002/review.md",
+      "sha256": "sha256:73f846faa16a1635b82713b062ece5024a90787dde66ceb82c784e9620dee5c3"
+    },
+    {
+      "byte_size": 667,
+      "path": "artifacts/work_packages/F03/attempts/0002/rah-core-integrity.json",
+      "sha256": "sha256:584fa2dca268a37bc36a8544cec7c6ef3afd5d86ea87d3dbf8f2b81f47562c59"
+    }
+  ],
+  "exit_criteria": {
+    "canonical_gate_decision_runtime_parity": "PASS",
+    "human_override_remains_explicit": "PASS",
+    "no_prose_only_transition": "PASS"
+  },
+  "global_status": {
+    "completion_ready": false,
+    "implementation_gate": "fail",
+    "next_attempt": "F04-0002",
+    "repository_fully_green": false
+  },
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_c03_attempt_preserved": true,
+    "prior_f03_attempt_preserved": true,
+    "prior_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "write_scope_violation_count": 0
+  },
+  "integration_evidence": {
+    "owner": "F04",
+    "path": "tests/golden/forge/f04-test-support.mjs",
+    "sha256": "sha256:bde8970e2520697211bc24f30ae6f75cf10811daa71616d88f6e76a72cf5b52b",
+    "used_only_as_integration_evidence": true
+  },
+  "package_status": "PASS",
+  "preserved_limitations": [
+    "The C01-owned sample GateDecision stored decision_hash is stale and is not represented as passing.",
+    "That canonical example debt must be reconciled by its owner before C04 full conformance."
+  ],
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0004",
+    "core_generation": "000004-f64c5033",
+    "final_closeout_evidence_id": "E0005",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 24,
+    "implementation_gate": "fail",
+    "retained_generation_count": 4,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "F03-0002",
+    "canonical_example_debt": {
+      "classification": "PREEXISTING_OUTSIDE_F03_WRITE_SCOPE",
+      "expected_decision_hash": "sha256:a6a50d4285e844b71093e999b5addccf969d09d4c14221a92531d73172369851",
+      "f03_acceptance_effect": "NONE",
+      "must_be_reconciled_before_c04_full_conformance": true,
+      "owner": "C01_CANONICAL_CONTRACT",
+      "path": "examples/sample_gate_decision.json",
+      "stored_decision_hash": "sha256:816c793545f4c3a194ce6b4fa842856defbcb34d991f27277ea9cd2a082e4be1"
+    },
+    "full_node": {
+      "byte_size": 108398,
+      "classification": "EXPECTED_LATER_ATTEMPT_FAILURES",
+      "f03_causal_failure_count": 0,
+      "failure_owner_counts": {
+        "J02": 2,
+        "S04": 1
+      },
+      "failures": [
+        {
+          "body": "[Error [ERR_TEST_FAILURE]: EFREF-BACKEND-SHINKA-V4 authority source has changed] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: Error [SkillContextError]: EFREF-BACKEND-SHINKA-V4 authority source has changed\n      at failSkillContext (file:///C:/dev/insight/Epistemic-Foundry/packages/plugin-host/src/skill-context/errors.ts:49:9)\n      at verifyAuthoritySources (file:///C:/dev/insight/Epistemic-Foundry/packages/plugin-host/src/skill-context/loader.ts:218:7)\n      at async verifyInventoryFiles (file:///C:/dev/insight/Epistemic-Foundry/packages/plugin-host/src/skill-context/loader.ts:296:5)\n      at async TestContext.<anonymous> (file:///C:/dev/insight/Epistemic-Foundry/tests/node/j02-skill-context-loader.test.mjs:57:18)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    code: 'REFERENCE_AUTHORITY_STALE',\n    details: { source_path: 'MASTER_SPEC.md', expected: 'sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3', actual: 'sha256:d4854c916594610e0503f9b017c57b0dbac9f52eef78b825b922fdf26b1a0fe3' }\n  }\n}",
+          "file": "C:/dev/insight/Epistemic-Foundry/tests/node/j02-skill-context-loader.test.mjs",
+          "message": "EFREF-BACKEND-SHINKA-V4 authority source has changed",
+          "name": "loader verifies all sealed production files and authority pointers"
+        },
+        {
+          "body": "[Error [ERR_TEST_FAILURE]: EFREF-CORE-CONSTITUTION-V4 authority source has changed] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: Error [SkillContextError]: EFREF-CORE-CONSTITUTION-V4 authority source has changed\n      at failSkillContext (file:///C:/dev/insight/Epistemic-Foundry/packages/plugin-host/src/skill-context/errors.ts:49:9)\n      at verifyAuthoritySources (file:///C:/dev/insight/Epistemic-Foundry/packages/plugin-host/src/skill-context/loader.ts:218:7)\n      at async resolveSkillContext (file:///C:/dev/insight/Epistemic-Foundry/packages/plugin-host/src/skill-context/loader.ts:359:5)\n      at async TestContext.<anonymous> (file:///C:/dev/insight/Epistemic-Foundry/tests/node/j02-skill-context-loader.test.mjs:198:17)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    code: 'REFERENCE_AUTHORITY_STALE',\n    details: { source_path: 'MASTER_SPEC.md', expected: 'sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3', actual: 'sha256:d4854c916594610e0503f9b017c57b0dbac9f52eef78b825b922fdf26b1a0fe3' }\n  }\n}",
+          "file": "C:/dev/insight/Epistemic-Foundry/tests/node/j02-skill-context-loader.test.mjs",
+          "message": "EFREF-CORE-CONSTITUTION-V4 authority source has changed",
+          "name": "ResolvedSkillContext is identical across 100 repeated sealed loads"
+        },
+        {
+          "body": "[Error [ERR_TEST_FAILURE]: active manifest does not match the bound successor\n+ actual - expected\n\n+ '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n- '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'\n] {\n  code: 'ERR_TEST_FAILURE',\n  failureType: 'testCodeFailure',\n  cause: AssertionError [ERR_ASSERTION]: active manifest does not match the bound successor\n  + actual - expected\n  \n  + '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n  - '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'\n  \n      at validateActiveManifestBinding (file:///C:/dev/insight/Epistemic-Foundry/tests/security/s04-threat-model-traceability.test.mjs:89:10)\n      at TestContext.<anonymous> (file:///C:/dev/insight/Epistemic-Foundry/tests/security/s04-threat-model-traceability.test.mjs:362:20)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12',\n    expected: '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n}",
+          "file": "C:/dev/insight/Epistemic-Foundry/tests/security/s04-threat-model-traceability.test.mjs",
+          "message": "active manifest does not match the bound successor\n+ actual - expected\n\n+ '5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12'\n- '7d1d3248dc3e2ca56d8f08ec282aa3d95bea9466ba6b7580fccff81e0f639319'",
+          "name": "S04-TM004 traceability source bindings fail on undocumented contract drift"
+        }
+      ],
+      "leaf_failure_count": 3,
+      "leaf_testcase_count": 457,
+      "path": "artifacts/work_packages/F03/attempts/0002/full-node-suite.junit.xml",
+      "sha256": "sha256:a1c86ca241da1082eda87e0fbd19f39f8f1075a0c2bf4e4066cd7481b9fb928a",
+      "tap_totals": {
+        "cancelled": 0,
+        "fail": 3,
+        "pass": 457,
+        "skipped": 0,
+        "tests": 460,
+        "todo": 0
+      }
+    },
+    "full_python": {
+      "byte_size": 126841,
+      "classification": "EXPECTED_J02_0003_DEPENDENCY_DEBT",
+      "f03_causal_failure_count": 0,
+      "failure_owner": "J02",
+      "failures": [
+        {
+          "body": "pyproject.toml does not declare exact tiktoken==0.13.0\n\nDuring handling of the above exception, another exception occurred:\nTOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0",
+          "message": "Failed: TOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0",
+          "node_id": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin"
+        }
+      ],
+      "path": "artifacts/work_packages/F03/attempts/0002/full-python-suite.junit.xml",
+      "sha256": "sha256:eba919e71525d0e44fd1fc3de10ba41885502a21035f1d81ff510be9d09bdfbe",
+      "totals": {
+        "errors": 0,
+        "failures": 1,
+        "skipped": 0,
+        "tests": 987
+      }
+    },
+    "new_f03_failure_count": 0,
+    "next_resolving_attempts": [
+      "F04-0002",
+      "J02-0003",
+      "S04-0003"
+    ],
+    "repository_fully_green": false,
+    "status": "PASS_WITH_DECLARED_J02_AND_S04_DEBT",
+    "unexpected_failure_count": 0,
+    "unexpected_skip_or_xfail_count": 0
+  },
+  "repository_checks": {
+    "node_syntax": {
+      "file_count": 5,
+      "status": "PASS"
+    },
+    "package_boundaries": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "repository_structure": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "scoped_git_diff_check": {
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "override_provenance_test": {
+      "failed": 0,
+      "passed": 6,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "transition_receipt_test": {
+      "failed": 0,
+      "passed": 17,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "artifact": "artifacts/work_packages/F03/attempts/0002/review.md",
+    "artifact_sha256": "sha256:73f846faa16a1635b82713b062ece5024a90787dde66ceb82c784e9620dee5c3",
+    "blocking_findings": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "status": "PASS_WITH_PRIMARY_SESSION_SEPARATE_REVIEW",
+    "subagents_used": false
+  },
+  "status": "PASS",
+  "supersedes_runtime_revision": "4.0.0-f03.1",
+  "targeted_results": {
+    "combined_f03_f04": {
+      "byte_size": 7555,
+      "failures": [],
+      "leaf_failure_count": 0,
+      "leaf_testcase_count": 30,
+      "path": "artifacts/work_packages/F03/attempts/0002/combined-f03-f04-node-suite.junit.xml",
+      "sha256": "sha256:20828c89de66383209a4e2fa2a9d4d7adea95803bf4f9442f189f532380ed21d",
+      "tap_totals": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 31,
+        "skipped": 0,
+        "tests": 31,
+        "todo": 0
+      }
+    },
+    "f03": {
+      "byte_size": 5909,
+      "failures": [],
+      "leaf_failure_count": 0,
+      "leaf_testcase_count": 23,
+      "path": "artifacts/work_packages/F03/attempts/0002/targeted-node-suite.junit.xml",
+      "sha256": "sha256:1f7fb41600e2213ec95b7f80867a1b6b00710f2c2f70e94e82b372fe0b668c4c",
+      "tap_totals": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 23,
+        "skipped": 0,
+        "tests": 23,
+        "todo": 0
+      }
+    }
+  },
+  "title": "Canonical GateDecision transition-admission correction",
+  "transition_admission_version": "4.0.0-f03.2",
+  "work_package_id": "F03",
+  "write_scope": [
+    "packages/foundry-kernel/src/forge/gates/**"
+  ]
+}

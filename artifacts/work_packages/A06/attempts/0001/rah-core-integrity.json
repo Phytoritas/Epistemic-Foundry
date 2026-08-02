@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "work_package_id": "A06",
+  "attempt_id": "A06-0001",
+  "status": "PASS_READ_ONLY_SNAPSHOT",
+  "mode": "READ_ONLY",
+  "completion_ready": false,
+  "current_generation": "000081-843d5565",
+  "generation_manifest": ".rah/ralph/generations/000081-843d5565/generation-manifest.json",
+  "generation_manifest_sha256": "sha256:0aa10f1d9e112955401c56e4b7f07c6aedc490c973c27a2b4c872bd8c8869413",
+  "generation_payload_count": 6,
+  "generation_payload_hashes_verified": 6,
+  "generation_payload_hash_mismatches": 0,
+  "generation_payloads": [
+    {
+      "path": "goal.json",
+      "sha256": "sha256:b111064c38643f8605325ded3872005a24e0af81693dcefcb2fea7c82216688d",
+      "match": true
+    },
+    {
+      "path": "loop_state.json",
+      "sha256": "sha256:e343ad0f1188eb6195acf86134e4f6c78e76d0183dcb8f3b74c3d1a24c865665",
+      "match": true
+    },
+    {
+      "path": "evidence_ledger.json",
+      "sha256": "sha256:e499c656f6f6a2e5bdadaa05da0b54a32dda6ed7ce46348c83db326bc40b85a6",
+      "match": true
+    },
+    {
+      "path": "plan_graph.json",
+      "sha256": "sha256:fa5be5c29ffd8487d8145a1e227c2d7a92006ecc7c84cb5754e31a41dd3d62d8",
+      "match": true
+    },
+    {
+      "path": "goal_bridge.json",
+      "sha256": "sha256:23bca48517bf7ecb9d8077f3d5a3d0eda5e69dbab0cbd08281e798380bfcd5a2",
+      "match": true
+    },
+    {
+      "path": "review_gate.json",
+      "sha256": "sha256:b018965c11286deb7d4ba8838cedcc20ec5949a937f647d74537503c725dfb77",
+      "match": true
+    }
+  ],
+  "latest_evidence_id": "E0084",
+  "issued_evidence_id_high_water": 84,
+  "ralph_status": "blocked",
+  "implementation_gate": "fail",
+  "state_files": {
+    ".rah/state/status.json": "sha256:03c9acd3531ba09afebace99af02ec3e6675f7b29975cced5e0cf1ed90d9a2a0",
+    ".rah/state/gates.json": "sha256:72652b07ea7163fed73eb96902e41ba0ab8eeca047e0ca188dc777148b857b45"
+  },
+  "blockers": [
+    {
+      "owner": "J02",
+      "summary": "The executable dependency graph does not lock exact tiktoken==0.13.0."
+    },
+    {
+      "owner": "S04",
+      "debt_id": "S04-TM004",
+      "summary": "The development manifest hash no longer matches the sealed S04 traceability fingerprint."
+    }
+  ],
+  "preservation": {
+    "rah_lifecycle_command_run_by_a06": false,
+    "evidence_appended_by_a06": false,
+    "generation_created_by_a06": false,
+    "flat_projection_rewritten_by_a06": false,
+    "prior_generations_and_evidence_preserved": true,
+    "dirty_worktree_preserved": true
+  },
+  "limitations": {
+    "flat_snapshot_reseal_or_resume_verification": "NOT_RUN_DUE_FORENSIC_BLOCK",
+    "rah_completion_claim": false,
+    "reason": "Advancing or resealing RAH while its implementation gate is failed would misrepresent unresolved J02 and S04 evidence."
+  }
+}

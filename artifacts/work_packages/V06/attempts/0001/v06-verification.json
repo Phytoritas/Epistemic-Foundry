@@ -1,0 +1,76 @@
+{
+  "attempt_id": "V06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every integrate-or-refuse decision resolves to one immutable receipt that is a pure function of its inputs: there is no clock and no random draw, the caller supplies created_at, and the gate id and receipt hash re-derive byte for byte from the receipt's own published fields, so replaying a call reproduces the receipt",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the gate validates no schema of its own but binds each composed sub-receipt to the sealed gate's own exported GATE_NAME, re-derives each sub-receipt hash, reads each sealed decision against that gate's own ADMIT/ADVANCE/CONVENE token, takes the candidate-generating roles from the verifier firewall, and every FINDING_CODE names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the happy path integrates and replays deterministically; each of a candidate-generating requester, a sub-receipt of the wrong gate, a tampered sub-receipt, a receipt for a different candidate, a Parliament receipt claiming promotion authority, two downstream gates on different clearances, and each of the three sealed decisions failing to clear is refused; crash/resume maps to replay determinism for this pure module, and the two adversarial disguises (re-sealing a tampered field, swapping in a different-but-valid clearance) are both refused",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; a candidate-generating requesting role is refused with the set the verifier firewall declares, integration_grants_promotion is an always-False predicate, the composed Parliament receipt is re-checked against parliament_grants_promotion and refused if it claimed otherwise, and promotion authority lives in governance.promotion and takes no score from this gate",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "composed_surfaces": [
+      "evaluation.v4_q05 statistical-admissibility receipt",
+      "validation.v4_v05 validation-cascade advancement receipt",
+      "parliament.v4_p05 promotion-Parliament receipt",
+      "verifier_firewall.firewall candidate-generating roles"
+    ],
+    "decision_tokens": [
+      "INTEGRATE",
+      "REFUSE"
+    ],
+    "end_to_end_binding": "every receipt names the one candidate, and the V05 and P05 receipts both reference the same Q05 clearance hash this gate was handed",
+    "produces": "integrate-or-refuse receipt; no score, selection or promotion",
+    "refusals_are_by_path": true
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: this seal-prep session; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 17
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 8
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 8
+    }
+  },
+  "schema_binding": {
+    "candidate_generating_roles": "verifier_firewall.firewall CANDIDATE_GENERATING_ROLES",
+    "parliament_promotion_predicate": "parliament.v4_p05 parliament_grants_promotion (always False)",
+    "sub_gate_names": "sealed Q05/V05/P05 exported GATE_NAME constants"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_p05": 46,
+    "dependency_regression_q05": 40,
+    "dependency_regression_v05": 44,
+    "full_node_suite": 1253,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 17,
+    "provenance_and_receipt_audit": 8,
+    "schema_and_type_check": 9,
+    "unit_and_contract_tests": 8,
+    "wire_literal_discipline": 5
+  }
+}

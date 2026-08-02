@@ -38,7 +38,6 @@ from typing import Any, Mapping, Sequence
 from ..contracts import validate_artifact
 from ..domain.hashing import hash_excluding, sha256_of_payload
 from ..domain.ids import new_id
-from ..domain.time import utc_now_iso
 
 #: Resource dimensions a candidate sandbox must bound. Absence of any one of
 #: these is a denial, not a default.

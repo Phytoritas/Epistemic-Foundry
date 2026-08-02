@@ -1,0 +1,19 @@
+{
+  "attempt_id": "C02-0004",
+  "dependencies": {
+    "C01": {
+      "attempt_id": "C01-0009",
+      "receipt_hash": "sha256:e81903ff8f4fd44c902b7caab028623758a80be90f0175552932be6894c27703",
+      "report_sha256": "sha256:48797e915d6a9916bd56710b4b85b65e6cbcd5b6733eb0c9244f0f06162577ed",
+      "status": "PASS"
+    }
+  },
+  "next_state": {
+    "B04-0009": "DEPENDENCY_READY",
+    "B04-final": "WAITING_ON_C04_0004",
+    "C02-0004": "PASS",
+    "C04-0004": "WAITING_ON_O02_0002_AND_FRESH_PROJECTION",
+    "O02-0002": "WAITING_ON_B04_0009"
+  },
+  "status": "PASS"
+}

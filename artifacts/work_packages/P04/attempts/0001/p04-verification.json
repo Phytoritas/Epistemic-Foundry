@@ -1,0 +1,49 @@
+{
+  "attempt_id": "P04-0001",
+  "attestation_independence": {
+    "attestation_must_rest_on_exactly_the_pack": true,
+    "checks_bound_to_canonical_shape": true,
+    "judge_may_not_attest_to_itself": true,
+    "pack_carries_no_persuasive_field": true
+  },
+  "exit_criteria": {
+    "attestor_sees_structured_pack": {
+      "evidence": [
+        "python/epistemic_foundry/parliament/adjudication/test_attestation.py"
+      ],
+      "mechanism": "the pack carries ids, hashes, statuses, ceilings, and counts only; any field carrying brief or challenge prose is refused anywhere in the pack or its checks, and the attestor must differ from the judge and attest to exactly the pack it was given",
+      "status": "PASS"
+    },
+    "majority_cannot_promote": {
+      "evidence": [
+        "python/epistemic_foundry/parliament/adjudication/test_majority_independence.py"
+      ],
+      "mechanism": "the recommendation is bounded by the deterministic P02 ceiling, a sustained veto or an unanswered challenge forces BLOCK, agreement among briefs is recorded as non-load-bearing, and a gate override attempt is refused",
+      "status": "PASS"
+    }
+  },
+  "promotion_bound": {
+    "block_on_open_challenge": true,
+    "block_on_sustained_veto": true,
+    "derived_from_deterministic_gates": true,
+    "unanswered_challenge_must_be_an_unresolved_issue": true
+  },
+  "required_checks": {
+    "attestation_test": {
+      "module": "python/epistemic_foundry/parliament/adjudication/test_attestation.py",
+      "status": "PASS",
+      "test_count": 30
+    },
+    "majority_independence_test": {
+      "module": "python/epistemic_foundry/parliament/adjudication/test_majority_independence.py",
+      "status": "PASS",
+      "test_count": 22
+    }
+  },
+  "schema_binding": {
+    "adjudication": "schemas/adjudication.schema.json",
+    "attestation": "schemas/attestation.schema.json"
+  },
+  "status": "PASS",
+  "targeted_test_count": 52
+}

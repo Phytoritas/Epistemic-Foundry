@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/leakage-audit.schema.json",
+  "title": "LeakageAudit",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "leakage_audit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_or_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surfaces_checked": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "detected_exposures": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "similarity_alerts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "access_log_artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "INCONCLUSIVE",
+        "NOT_RUN"
+      ]
+    },
+    "required_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "audit_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "leakage_audit_id",
+    "run_or_bundle_id",
+    "surfaces_checked",
+    "detected_exposures",
+    "similarity_alerts",
+    "access_log_artifact_id",
+    "status",
+    "required_actions",
+    "audit_hash"
+  ],
+  "description": "후보·프롬프트·모델·도구가 숨은 평가정보를 노출받았는지 감사한다."
+}

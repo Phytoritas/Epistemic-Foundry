@@ -1,0 +1,283 @@
+{
+  "work_package_id": "C04",
+  "attempt_id": "C04-0001",
+  "base_checkpoint": "C01-0004:PASS+C02-0001:PASS+C03-0001:PASS",
+  "status": "PASS",
+  "package_status": "PASS",
+  "contract_status": "CONFORMANT",
+  "repository_full_suite_status": "ZERO_FAILURE",
+  "migration_allowlist_status": "EMPTY",
+  "completion_ready": false,
+  "authority_decision_id": "HD-EF4-C01-SG003-20260728-001",
+  "authority_boundary": {
+    "C01": "canonical JSON Schema, examples, OpenAPI, and API contract authority",
+    "C02": "generated TypeScript, Python, and UI contract projections",
+    "C03": "handwritten runtime migration and compatibility authority",
+    "C04": "artifact-only C-phase conformance and repository-wide Python zero-failure gate",
+    "B04": "canonical registry packaging after C04 PASS"
+  },
+  "changed_files": [
+    "artifacts/work_packages/C04/c04-conformance-verifier.py",
+    "artifacts/work_packages/C04/c04-conformance-verification.json",
+    "artifacts/work_packages/C04/full-python-conformance.junit.xml",
+    "artifacts/work_packages/C04/targeted-contract-conformance.junit.xml",
+    "artifacts/work_packages/C04/c04-rah-seal.py",
+    "artifacts/work_packages/C04/dependency-status.json",
+    "artifacts/work_packages/C04/commands.jsonl",
+    "artifacts/work_packages/C04/review.md",
+    "artifacts/work_packages/C04/report.json"
+  ],
+  "resolved_review_findings": [
+    {
+      "id": "C04-RF001",
+      "finding": "The first executable promotion probe omitted the required attestation linkage and was correctly rejected by the runtime contract.",
+      "resolution": "Bind sealed fixture attestation ATT-C04-1 and rerun the unchanged production FORGE/promotion path through EffectReceipt, CAS, replay, and ledger verification.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "C04-RF002",
+      "finding": "The successful verifier emitted an incidental random promotion event ID, making otherwise equivalent evidence bytes non-deterministic.",
+      "resolution": "Keep event append and ledger-chain verification, omit only the random identifier from serialized evidence, and prove byte equality across two complete verifier executions.",
+      "status": "RESOLVED"
+    }
+  ],
+  "verification": {
+    "status": "PASS",
+    "artifact": "artifacts/work_packages/C04/c04-conformance-verification.json",
+    "sha256": "sha256:17ba27252b163696a5a41cafaf4594b6c83faf699354e072a01bbfd6eaae3a13",
+    "verifier": "artifacts/work_packages/C04/c04-conformance-verifier.py",
+    "verifier_sha256": "sha256:1f0c1eb5ee093204210b0eaca29d91ae10192f4c3532d465ef127bc564a702fc",
+    "deterministic_replay_count": 2,
+    "deterministic_byte_equality": true,
+    "failures": []
+  },
+  "canonical_contracts": {
+    "status": "PASS",
+    "schema_count": 124,
+    "unique_schema_id_count": 124,
+    "example_count": 124,
+    "valid_example_count": 124,
+    "openapi_version": "3.1.1",
+    "openapi_operation_count": 33,
+    "unique_operation_id_count": 33,
+    "scientific_reference_resolution": "PASS",
+    "security_idempotency_revision_contract": "PASS"
+  },
+  "generated_contracts": {
+    "status": "PASS",
+    "generated_file_count": 9,
+    "generated_clean_diff": true,
+    "manifest_byte_equality": true,
+    "cross_language_fixture_parity": true,
+    "typescript_5_9_3_strict_compile": "PASS",
+    "legacy_promotion_value_hits": 0
+  },
+  "runtime_contract": {
+    "status": "PASS",
+    "resolved_refs_required_without_default": true,
+    "missing_empty_floating_range_and_unversioned_alias_rejected": true,
+    "canonical_promotion_ladder": true,
+    "promote_equality_rule": true,
+    "conditional_strict_lower_rule": true,
+    "non_grant_null_and_no_state_change_rule": true,
+    "legacy_aliases": false,
+    "runtime_schema_semantic_parity": true
+  },
+  "migration_reconciliation": {
+    "status": "PASS",
+    "historical_debt_count": 24,
+    "present_and_passing_debt_node_count": 24,
+    "remaining_allowlist_count": 0,
+    "xfail_or_skip_suppression_hits": 0
+  },
+  "full_python_conformance": {
+    "status": "PASS",
+    "collected": 898,
+    "passed": 898,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_artifact": "artifacts/work_packages/C04/full-python-conformance.junit.xml",
+    "junit_sha256": "sha256:c26d83ac45f678ac7045c4381ffae7a46b818c1f7479bdd6bd97f438053b5627",
+    "current_source_replay": "898 passed"
+  },
+  "targeted_contract_conformance": {
+    "status": "PASS",
+    "collected": 163,
+    "passed": 163,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_artifact": "artifacts/work_packages/C04/targeted-contract-conformance.junit.xml",
+    "junit_sha256": "sha256:a2c47d02c0e447f935773aff2a10af393094b283490bf1962d5283ee84b908c8"
+  },
+  "phase_artifact_reconciliation": {
+    "status": "PASS",
+    "forge_transition": "IDLE→F→O→R→G→E",
+    "phase_e_required_kind_count": 27,
+    "phase_e_complete": true,
+    "gate_decision_count": 15,
+    "effect_receipt_bound": true,
+    "crash_without_receipt_rejected_without_mutation": true,
+    "atomic_cas_commit": true,
+    "idempotent_replay": true,
+    "ledger_chain_verified": true
+  },
+  "checks": [
+    {
+      "command_id": "C04-0001-C002",
+      "name": "formal repository-wide Python conformance",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C04/full-python-conformance.junit.xml"
+    },
+    {
+      "command_id": "C04-0001-C003",
+      "name": "targeted contract conformance",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C04/targeted-contract-conformance.junit.xml"
+    },
+    {
+      "command_id": "C04-0001-C007",
+      "name": "deterministic C04 conformance verification",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C04/c04-conformance-verification.json"
+    },
+    {
+      "command_id": "C04-0001-C008",
+      "name": "generated contract clean-diff",
+      "exit_code": 0
+    },
+    {
+      "command_id": "C04-0001-C009",
+      "name": "cross-language fixture parity",
+      "exit_code": 0
+    },
+    {
+      "command_id": "C04-0001-C010",
+      "name": "TypeScript and UI strict compile",
+      "exit_code": 0
+    },
+    {
+      "command_id": "C04-0001-C011",
+      "name": "OpenAPI external validation",
+      "exit_code": 0
+    },
+    {
+      "command_id": "C04-0001-C015",
+      "name": "user-authorized primary-session separate integration review",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C04/review.md"
+    },
+    {
+      "command_id": "C04-0001-C018",
+      "name": "C04 core PASS evidence append with generation preservation",
+      "exit_code": 0,
+      "artifact": ".rah/ralph/generations/000011-ffe0da9f/evidence_ledger.json#/entries/11"
+    },
+    {
+      "command_id": "C04-0001-C019",
+      "name": "C04 core RAH generation and resume verification",
+      "exit_code": 0,
+      "artifact": ".rah/ralph/generations/000011-ffe0da9f/generation-manifest.json"
+    }
+  ],
+  "review": {
+    "reviewer": "primary-session integration review",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_PASS",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_REVIEW",
+    "product_owner_review_approval": true,
+    "actor_separate_subagent_used": false,
+    "blocking_findings": [],
+    "resolved_findings": [
+      "C04-RF001",
+      "C04-RF002"
+    ],
+    "assurance_limitation": "The product-owner shared contract fixes this serial sequence to the primary session and forbids Fleet and subagents. This review is procedurally separate but not actor-independent assurance, and no external certification is claimed."
+  },
+  "claim_boundary": {
+    "verified": [
+      "canonical JSON Schema and examples",
+      "OpenAPI REST v1 contract shape",
+      "generated Python transport models",
+      "generated TypeScript transport models",
+      "generated UI descriptors",
+      "handwritten EvolutionRunSpec and PromotionDecision semantics",
+      "bounded in-process FORGE and promotion integration"
+    ],
+    "not_claimed": [
+      "production HTTP handlers",
+      "MCP transport runtime",
+      "durable persistence adapters",
+      "deployed system behavior",
+      "external actor-independent certification"
+    ]
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/C04/c04-conformance-verifier.py",
+    "artifacts/work_packages/C04/c04-conformance-verification.json",
+    "artifacts/work_packages/C04/full-python-conformance.junit.xml",
+    "artifacts/work_packages/C04/targeted-contract-conformance.junit.xml",
+    "artifacts/work_packages/C04/c04-rah-seal.py",
+    "artifacts/work_packages/C04/dependency-status.json",
+    "artifacts/work_packages/C04/commands.jsonl",
+    "artifacts/work_packages/C04/review.md",
+    "artifacts/work_packages/C04/report.json"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000010-1f48c0b3",
+    "core_generation": "000011-ffe0da9f",
+    "core_evidence_id": "E0012",
+    "final_closeout_evidence_id": "E0013",
+    "generation_manifest_verified": true,
+    "retained_generation_manifest_count": 11,
+    "generation_file_hashes_verified": 66,
+    "flat_snapshot_stamps_verified": 6,
+    "flat_snapshot_content_matches": 6,
+    "retained_generations": [
+      "000001-8cce4954",
+      "000002-e90aad20",
+      "000003-42a86d6d",
+      "000004-d7a75c37",
+      "000005-839fd321",
+      "000006-6dc736b8",
+      "000007-1e720769",
+      "000008-19dde058",
+      "000009-f708496e",
+      "000010-1f48c0b3",
+      "000011-ffe0da9f"
+    ],
+    "parse_errors": {},
+    "status": "active",
+    "completion_ready": false,
+    "next_package": "B04"
+  },
+  "open_risks": [
+    "B04 has not yet proven canonical registry wheel/sdist inclusion, installed-wheel-only loading, tamper detection, or deterministic rebuild.",
+    "Review is user-authorized primary-session procedural review rather than actor-independent assurance because the fixed sequence forbids Fleet and subagents.",
+    "Production HTTP/MCP/persistence runtime behavior belongs to later packages and is not claimed by C04."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "B04 canonical registry packaging, sdist/wheel reproducibility, and clean-wheel installation",
+    "production REST handlers, MCP transport, persistence, or deployed authorization behavior",
+    "external actor-independent assurance",
+    "the full 156-package downstream DAG, which remains pending B04 PASS"
+  ],
+  "dependency_state": {
+    "A04": "PASS",
+    "A05": "PASS",
+    "B02": "PASS",
+    "B03": "PASS",
+    "C01": "PASS",
+    "C02": "PASS",
+    "C03": "PASS",
+    "C04": "PASS",
+    "B04": "READY_FOR_NEW_ATTEMPT",
+    "historical_B04_SPEC_GAP_preserved": true,
+    "full_156_package_dag_recomputed": false,
+    "subsequent_dag_execution_started": false
+  },
+  "next_ready": [
+    "B04"
+  ]
+}

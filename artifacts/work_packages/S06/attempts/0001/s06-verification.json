@@ -1,0 +1,66 @@
+{
+  "attempt_id": "S06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every gate decision resolves to a receipt whose receipt_id and receipt_hash are pure sha256 functions of the decision's own published content: the reward, evaluator-update and integration receipts each re-derive their id as a prefix-plus-digest of their own body and their hash as hash_excluding(receipt_hash), there is no clock or random draw on the identified path (the embedded S05 leakage audit id is fixed, not the builder's random default), and a refusal raises the same GovernanceGateError code, so replaying the gate over equal inputs reproduces the receipt byte for byte",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the evaluator-proposal, qualification, fitness and routing vocabularies (approved-for-future, qualified, hard-gate-failed and immediate-proxy tokens) are read positionally from the canonical schemas at call time rather than restated (EF4-I22) and each read fails closed on an enum reshape; every supplied fitness vector, routing receipt, proposal and qualification report is validated against its canonical schema and the evaluator bundle re-verified against its own sealed hash; and each FINDING_CODES entry names an exact refusal that the shipped gate is proven to raise",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the refusals carry the weight: a non-mapping or malformed input, a hard-gate-failed candidate routed as reward, an immediate-proxy-only reward basis, feedback carrying a holdout handle, an incomplete leakage-surface set, a waived or retroactive evaluator update, an update aimed at its own source run, an unapproved or un-independent qualification, a reachable holdout, a drifted evaluator bundle, a missing workflow node, and a tampered sub-gate receipt are each refused; the happy path and the two-run replay check still reproduce deterministically",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; a reward signal is refused unless its fitness vector already passed the hard gate and its routing receipt already learns from a delayed-holdout basis, an evaluator update is refused unless it is future-only and independently qualified against a bundle distinct from the current one, no receipt carries a scalar score or a promotion grant, and the qualification report's promotion_ceiling cannot change any decision",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "admits_requires": "a hard-gate-passed fitness vector, a non-immediate-proxy reward basis, a clean leakage audit over the required surfaces, and — for an evaluator update — an approved future-only proposal targeting a later run with an independent qualification of the future bundle",
+    "axes_source": "the fitness vector's own hard-gate status and the routing receipt's own reward basis (reward hacking), the firewall's own leakage set and required-surface audit through epistemic_foundry.security.v4_s05 (feedback isolation), and the proposal's own governance flags and the J05 quarantine workflow node through epistemic_foundry.operators.v4_j05 (evaluator update)",
+    "produces": "an immutable, re-derivable governance receipt; no score, selection or promotion",
+    "refusals_are_by_code": true,
+    "trusts_asserted_score": false
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent dispatched in parallel; reviewer: this sealing session as an independent, actor-independent reviewer distinct from the implementer; verdict PASS, blocking_finding_count=0; external actor-independent certification does not hold)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 21
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 5
+    }
+  },
+  "schema_binding": {
+    "evaluator_update": "evaluator-mutation-proposal governance flags and evaluator-qualification-report status, composed through the J05 quarantine workflow node via epistemic_foundry.operators.v4_j05 (re-read per call, never trusted)",
+    "feedback_isolation": "verifier-firewall leakage set and the EF4-I44 required leakage surfaces via epistemic_foundry.security.v4_s05 (audit embedded verbatim, self-hash verified)",
+    "reward_basis": "model-routing-receipt reward_basis and hypothesis-fitness-vector hard_gate_status (read positionally from the canonical schemas via _vocab)"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_j05": 83,
+    "dependency_regression_s05": 62,
+    "full_node_suite": 1192,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 21,
+    "provenance_and_receipt_audit": 7,
+    "schema_and_type_check": 9,
+    "unit_and_contract_tests": 5
+  }
+}

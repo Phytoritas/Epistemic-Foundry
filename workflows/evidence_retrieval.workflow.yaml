@@ -1,18 +1,26 @@
 workflow_id: evidence_retrieval
 version: 4.0.0
 kind: dag
-description: Compile a relation-aware query plan, execute eleven evidence lanes, and
-  issue a completeness-bounded EvidencePack.
+description: Compile an immutable class-bound QueryPlan, execute only selected evidence
+  lanes, reconcile all eleven canonical lanes, and issue a scope-bounded certificate.
 input_schema_ref: schemas/node-invocation.schema.json
 output_schema_ref: schemas/result-envelope.schema.json
 canonical_runtime: Foundry Kernel
 state_authority: Noetic Ledger
 invariants:
 - vector similarity is never the sole retrieval channel
-- support, counter, null, boundary, method, temporal, and novelty searches are independently
-  receipted
-- searched-none is distinct from unsearched
-- absence and novelty claims are bounded by recorded search scope
+- RetrievalCandidate is the O02 business output and ResultEnvelope is telemetry only
+- every backend request binds the QueryPlan, query batch, snapshot, index, policy, backend, and adapter versions
+- raw backend responses are untrusted until receipt, request, provenance, rank, and content hashes validate
+- lane-local exact deduplication precedes deterministic RRF k=60 fusion and candidate-id tie-breaking
+- silent cross-channel fallback and learned reranking are forbidden
+- metadata-only candidates cannot directly become EvidenceNode or promoted evidence
+- the closed lane vocabulary and canonical order come from O01
+- class-floor lanes are non-waivable and optional selection may only add protection
+- support is an evidence role, not a retrieval lane
+- selected lanes emit execution receipts and unselected lanes emit one UNSEARCHED sentinel
+- searched-none is distinct from unsearched, blocked, partial, and failed
+- absence and novelty claims are bounded by reconciled executed scope
 - dependent evidence is deduplicated before ranking or counting
 terminal_states:
 - PASS
@@ -24,6 +32,53 @@ completeness_contract:
   expected_node_count_source: compiled_run_spec
   missing_node_policy: FAIL
   partial_result_policy: typed_and_visible_only
+  lane_dispatch_policy: QueryPlan SELECTED dispositions only
+  compiled_run_projection: omit unselected retrieval nodes and remove their dependency
+    edges before execution
+  fan_in_dependency_policy: emit_lane_receipts depends only on selected retrieval nodes
+    in the compiled run; omitted lanes are reconciled from QueryPlan decisions
+  unselected_lane_backend_calls: 0
+  all_lane_reconciliation_count: 11
+  e0_business_completion_state: NOT_REQUIRED
+  selected_lane_state_precedence:
+  - FAILED
+  - BLOCKED
+  - PARTIAL
+  - SEARCHED_WITH_RESULTS
+  - SEARCHED_NONE
+retrieval_candidate_contract:
+  business_output_schema_ref: schemas/retrieval-candidate.schema.json
+  execution_envelope_schema_ref: schemas/result-envelope.schema.json
+  result_envelope_role: telemetry_sidecar_only
+  result_envelope_output_binding: output_artifact_ids
+  provider_request_binding:
+  - run_id
+  - query_plan_id
+  - plan_hash
+  - lane
+  - query_families
+  - canonical_query_batch
+  - query_hash
+  - scope_filter
+  - corpus_snapshot_hash
+  - index_versions
+  - max_candidates
+  - cutoff_policy_id
+  - deterministic_seed
+  - policy_bundle_hash
+  - capability_lease_id
+  - backend_id
+  - backend_version
+  - adapter_id
+  - adapter_version
+  snapshot_mismatch_result: FAILED/integrity_failure/STALE_RETRIEVAL_SNAPSHOT
+  silent_fallback_allowed: false
+  non_vector_release_origins:
+  - LEXICAL
+  - CITATION_GRAPH
+  - RELATION_GRAPH
+  - EXTERNAL_INDEX
+  vector_only_run_ceiling: PARTIAL
 nodes:
 - node_id: validate_insight_readiness
   purpose: Validate statement, scope, mechanism, predictions, and falsifiers before
@@ -61,15 +116,17 @@ nodes:
   - policy_bundle_valid
   - capability_scope_valid
 - node_id: compile_query_plan
-  purpose: Compile directional, scoped, relation-aware queries and lane quotas
-  executor_type: llm
-  executor_ref: prompts/retrieval_planner.md
+  purpose: Deterministically compile classification-bound queries, lane decisions, and
+    quotas into an immutable QueryPlan
+  executor_type: deterministic
+  executor_ref: epistemic_foundry.retrieval.planning:compile_query_plan
   input_schema_ref: schemas/node-invocation.schema.json
-  output_schema_ref: schemas/result-envelope.schema.json
+  output_schema_ref: schemas/query-plan.schema.json
   depends_on:
   - validate_insight_readiness
   read_scope:
   - db.insights
+  - db.epistemic_work_classifications
   - domain_packs/**
   - config/retrieval_policy.example.yaml
   write_scope:
@@ -78,21 +135,26 @@ nodes:
   - database_read
   - filesystem_read
   - database_write
-  - llm_inference
-  model_tier: frontier
+  model_tier: deterministic
   timeout_seconds: 900
-  max_attempts: 2
+  max_attempts: 1
   failure_policy: fail_run
   acceptance_checks:
-  - forward and reverse relations explicit
-  - scope expansions bounded
-  - lane-specific stop criteria present
+  - immutable request and classification revision/hash binding present
+  - exact E0-E5 class floor applied
+  - all eleven lane decisions use canonical order
+  - optional selection never removes a floor lane
+  - plan_hash matches deterministic canonical JSON
   resource_dependencies: []
-  determinism_class: provider_nondeterministic
+  determinism_class: deterministic
   idempotency_key_fields:
-  - run_id
-  - node_id
-  - input_hash
+  - request_id
+  - request_revision
+  - request_input_hash
+  - classification_id
+  - classification_revision
+  - classification_hash
+  - policy_bundle_hash
   loop_contract_ref: null
   expected_effects:
   - query_plan_created
@@ -124,6 +186,12 @@ nodes:
   max_attempts: 2
   failure_policy: fail_run
   acceptance_checks:
+  - dispatch only when QueryPlan lexical disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - lane-local exact deduplication precedes stable ranks, RRF k=60, cutoff, and candidate-id tie-break
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
@@ -165,6 +233,12 @@ nodes:
   max_attempts: 2
   failure_policy: fail_run
   acceptance_checks:
+  - dispatch only when QueryPlan semantic disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - vector-only candidates remain unverified and cap the run at PARTIAL
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
@@ -206,6 +280,12 @@ nodes:
   max_attempts: 2
   failure_policy: mark_partial
   acceptance_checks:
+  - dispatch only when QueryPlan citation disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - lane-local exact deduplication precedes stable ranks, RRF k=60, cutoff, and candidate-id tie-break
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
@@ -247,6 +327,12 @@ nodes:
   max_attempts: 2
   failure_policy: mark_partial
   acceptance_checks:
+  - dispatch only when QueryPlan entity_variable disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - relation direction uses only the closed vocabulary and versioned ontology mappings
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
@@ -289,6 +375,12 @@ nodes:
   max_attempts: 2
   failure_policy: mark_partial
   acceptance_checks:
+  - dispatch only when QueryPlan mechanism disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - relation direction uses only the closed vocabulary and versioned ontology mappings
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
@@ -305,10 +397,10 @@ nodes:
   required_policy_checks:
   - policy_bundle_valid
   - capability_scope_valid
-- node_id: retrieve_counter
+- node_id: retrieve_counterevidence
   purpose: Opposite direction, refutation, reverse causation, and alternative explanation
   executor_type: retrieval
-  executor_ref: epistemic_foundry.retrieval.lanes:counter
+  executor_ref: epistemic_foundry.retrieval.lanes:counterevidence
   input_schema_ref: schemas/node-invocation.schema.json
   output_schema_ref: schemas/result-envelope.schema.json
   depends_on:
@@ -320,7 +412,7 @@ nodes:
   - db.dependency_clusters
   - domain_packs/**
   write_scope:
-  - artifacts/retrieval/counter/**
+  - artifacts/retrieval/counterevidence/**
   capabilities:
   - fulltext_search
   - vector_search
@@ -331,11 +423,17 @@ nodes:
   max_attempts: 2
   failure_policy: fail_run
   acceptance_checks:
+  - dispatch only when QueryPlan counterevidence disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - both FORWARD and REVERSE query families execute before a complete result is allowed
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
   resource_dependencies:
-  - quota:retrieval:counter
+  - quota:retrieval:counterevidence
   determinism_class: seeded_nondeterministic
   idempotency_key_fields:
   - run_id
@@ -343,7 +441,7 @@ nodes:
   - input_hash
   loop_contract_ref: null
   expected_effects:
-  - counter_lane_result_created
+  - counterevidence_lane_result_created
   required_policy_checks:
   - policy_bundle_valid
   - capability_scope_valid
@@ -373,6 +471,12 @@ nodes:
   max_attempts: 2
   failure_policy: fail_run
   acceptance_checks:
+  - dispatch only when QueryPlan null disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - only the NULL query family is accepted for this lane
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
@@ -415,6 +519,12 @@ nodes:
   max_attempts: 2
   failure_policy: mark_partial
   acceptance_checks:
+  - dispatch only when QueryPlan boundary disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - only the BOUNDARY query family is accepted for this lane
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
@@ -457,6 +567,12 @@ nodes:
   max_attempts: 2
   failure_policy: fail_run
   acceptance_checks:
+  - dispatch only when QueryPlan method disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - only the METHOD query family is accepted for this lane
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
@@ -498,6 +614,12 @@ nodes:
   max_attempts: 2
   failure_policy: mark_partial
   acceptance_checks:
+  - dispatch only when QueryPlan temporal disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - a versioned date and correction filter is sealed before execution
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
@@ -514,10 +636,10 @@ nodes:
   required_policy_checks:
   - policy_bundle_valid
   - capability_scope_valid
-- node_id: retrieve_novelty
+- node_id: retrieve_external_novelty
   purpose: Corpus-external prior art and independent formulations
   executor_type: retrieval
-  executor_ref: epistemic_foundry.retrieval.lanes:novelty
+  executor_ref: epistemic_foundry.retrieval.lanes:external_novelty
   input_schema_ref: schemas/node-invocation.schema.json
   output_schema_ref: schemas/result-envelope.schema.json
   depends_on:
@@ -529,7 +651,7 @@ nodes:
   - db.dependency_clusters
   - domain_packs/**
   write_scope:
-  - artifacts/retrieval/novelty/**
+  - artifacts/retrieval/external_novelty/**
   capabilities:
   - approved_external_search
   - database_read
@@ -539,11 +661,17 @@ nodes:
   max_attempts: 2
   failure_policy: mark_partial
   acceptance_checks:
+  - dispatch only when QueryPlan external_novelty disposition is SELECTED
+  - unselected lane performs no backend call and is represented by one sentinel
+  - external scope and stop rule are sealed before execution
+  - provider request and response bind the exact plan, query, snapshot, index, backend, and adapter revisions
+  - RetrievalCandidate business artifacts are schema-valid and listed in ResultEnvelope output_artifact_ids
+  - no silent fallback or learned reranker is used
   - query hash and index snapshot recorded
   - result/rank/cutoff retained
   - lane stop reason typed
   resource_dependencies:
-  - quota:retrieval:novelty
+  - quota:retrieval:external_novelty
   determinism_class: seeded_nondeterministic
   idempotency_key_fields:
   - run_id
@@ -551,14 +679,15 @@ nodes:
   - input_hash
   loop_contract_ref: null
   expected_effects:
-  - novelty_lane_result_created
+  - external_novelty_lane_result_created
   required_policy_checks:
   - policy_bundle_valid
   - capability_scope_valid
 - node_id: emit_lane_receipts
-  purpose: Emit signed SearchLaneReceipts including zero-result and failed-lane states
+  purpose: Seal execution receipts for selected lanes and exactly one UNSEARCHED sentinel
+    for every unselected lane
   executor_type: deterministic
-  executor_ref: epistemic_foundry.retrieval.receipts:emit
+  executor_ref: epistemic_foundry.retrieval.planning:seal_search_lane_receipt
   input_schema_ref: schemas/node-invocation.schema.json
   output_schema_ref: schemas/result-envelope.schema.json
   depends_on:
@@ -567,24 +696,24 @@ nodes:
   - retrieve_citation
   - retrieve_entity_variable
   - retrieve_mechanism
-  - retrieve_counter
+  - retrieve_counterevidence
   - retrieve_null
   - retrieve_boundary
   - retrieve_method
   - retrieve_temporal
-  - retrieve_novelty
+  - retrieve_external_novelty
   read_scope:
   - artifacts/retrieval/lexical/**
   - artifacts/retrieval/semantic/**
   - artifacts/retrieval/citation/**
   - artifacts/retrieval/entity_variable/**
   - artifacts/retrieval/mechanism/**
-  - artifacts/retrieval/counter/**
+  - artifacts/retrieval/counterevidence/**
   - artifacts/retrieval/null/**
   - artifacts/retrieval/boundary/**
   - artifacts/retrieval/method/**
   - artifacts/retrieval/temporal/**
-  - artifacts/retrieval/novelty/**
+  - artifacts/retrieval/external_novelty/**
   write_scope:
   - db.search_lane_receipts
   capabilities:
@@ -597,7 +726,10 @@ nodes:
   acceptance_checks:
   - all eleven lanes reconciled
   - SEARCHED_NONE distinct from UNSEARCHED
-  - failures visible
+  - unselected lanes have one sentinel and zero backend execution fields
+  - selected lanes have execution receipts and no sentinel
+  - query, result count, plan, and receipt hashes verified
+  - PARTIAL, BLOCKED, and FAILED remain visible
   resource_dependencies: []
   determinism_class: deterministic
   idempotency_key_fields:
@@ -771,9 +903,9 @@ nodes:
   purpose: Issue a bounded certificate of executed lanes, databases, dates, cutoffs,
     failures, and unsearched regions
   executor_type: deterministic
-  executor_ref: epistemic_foundry.retrieval.completeness:certify
+  executor_ref: epistemic_foundry.retrieval.planning:reconcile_search_run
   input_schema_ref: schemas/node-invocation.schema.json
-  output_schema_ref: schemas/result-envelope.schema.json
+  output_schema_ref: schemas/search-completeness-certificate.schema.json
   depends_on:
   - build_coverage_snapshot
   read_scope:
@@ -790,9 +922,13 @@ nodes:
   max_attempts: 2
   failure_policy: fail_run
   acceptance_checks:
+  - exactly eleven canonical lanes reconciled in order
+  - status precedence is FAIL then BLOCKED then PARTIAL then PASS
+  - E0 completion is NOT_REQUIRED
   - absence claims limited to certificate scope
   - external index outage visible
-  - certificate hash stable
+  - claim ceilings use executed scope only
+  - certificate hash stable under replay
   resource_dependencies: []
   determinism_class: deterministic
   idempotency_key_fields:
@@ -830,9 +966,13 @@ nodes:
   max_attempts: 1
   failure_policy: fail_run
   acceptance_checks:
-  - counter/null/method mandatory lanes enforced
+  - exact work-class floor enforced without waiver
   - partial novelty search caps novelty status
+  - FAIL, BLOCKED, PARTIAL, PASS, and E0 NOT_REQUIRED remain distinct
   - silent lane failure impossible
+  - every non-empty release includes a lexical, citation-graph, relation-graph, or external-index origin
+  - vector-only candidates are retained as unverified and cap the run at PARTIAL
+  - metadata-only candidates are excluded from direct evidence and promotion inputs
   resource_dependencies: []
   determinism_class: deterministic
   idempotency_key_fields:

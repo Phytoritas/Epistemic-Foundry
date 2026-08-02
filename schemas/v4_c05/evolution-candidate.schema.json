@@ -1,0 +1,20 @@
+{
+  "$id": "https://epistemic-foundry.local/schemas/v4_c05/evolution-candidate.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The mutable search space, exactly (EF4-I41, EF4-I42): the Evolution Chamber may mutate candidate genomes only, so a document is a candidate if and only if it is one of the four canonical genome kinds. Evaluator, holdout, policy, promotion and archive documents can never validate here.",
+  "oneOf": [
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/challenge-genome.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/experiment-genome.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/hypothesis-genome.schema.json"
+    },
+    {
+      "$ref": "https://epistemic-foundry.local/schemas/prompt-genome.schema.json"
+    }
+  ],
+  "title": "EvolutionCandidate"
+}

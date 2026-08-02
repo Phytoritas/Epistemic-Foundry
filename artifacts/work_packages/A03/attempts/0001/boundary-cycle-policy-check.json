@@ -1,0 +1,92 @@
+{
+  "adr_034_permitted_cycles": [
+    {
+      "adr": "ADR-034",
+      "both_l3_services": true,
+      "carrier_edges": [
+        "operators/v4_j05 -> security/v4_s05",
+        "security/v4_s06 -> operators/v4_j05"
+      ],
+      "components": [
+        "operators",
+        "security"
+      ],
+      "exemption": "E1",
+      "justification": "ADR-034: L3<->L3 integration gate. security.v4_s06 consumes the governance-retroactivity public surface of operators.v4_j05; operators.v4_j05 consumes the inert-mutation threat-control public surface of security.v4_s05. Module-slice graph is a strict DAG; no authority/adapter participates; sealed public APIs unchanged.",
+      "module_slice_subgraph_acyclic": true,
+      "public_package_api_only": true
+    },
+    {
+      "adr": "ADR-034",
+      "both_l3_services": true,
+      "carrier_edges": [
+        "evidence/v4_k06 -> retrieval/v4_o05",
+        "retrieval/v4_o05 -> evidence/v4_k05",
+        "retrieval/v4_o06 -> evidence/v4_k05"
+      ],
+      "components": [
+        "evidence",
+        "retrieval"
+      ],
+      "exemption": "E2",
+      "justification": "ADR-034: L3<->L3 integration gate. evidence.v4_k06 consumes the plan-identity / receipt-schema public surface of retrieval.v4_o05; retrieval.v4_o05 and retrieval.v4_o06 consume the novelty-within-boundary public surface of evidence.v4_k05. Module-slice graph is a strict DAG; no authority/adapter participates; sealed public APIs unchanged.",
+      "module_slice_subgraph_acyclic": true,
+      "public_package_api_only": true
+    }
+  ],
+  "attempt_id": "A03-0001",
+  "authority_or_adapter_in_any_cycle": false,
+  "check": "boundary_cycle_policy_check",
+  "declared_boundary_graph": {
+    "declared_component_count": 10,
+    "inward_ordered": true,
+    "layer_ranks": {
+      "adapter": 4,
+      "authority": 2,
+      "foundation": 0,
+      "service": 3
+    }
+  },
+  "documented_policy_anchors": {
+    "L4 composition-only": true,
+    "acyclic requirement": true,
+    "authority never imports adapters": true,
+    "boundary change needs ADR": true,
+    "contracts/domain are L0": true,
+    "foundry_kernel is L2": true,
+    "inward-only rule": true,
+    "module-slice granularity (ADR-034)": true,
+    "noetic_ledger is L1": true
+  },
+  "exit_criterion": {
+    "component_import_boundaries_documented": true,
+    "plugin_shell_and_kernel_authority_separated": true
+  },
+  "governing_records": [
+    "ADR-032",
+    "ADR-034"
+  ],
+  "layer_discipline": {
+    "authority_imports_adapter": false,
+    "layer_inversions": 0
+  },
+  "module_slice_graph_is_strict_dag": true,
+  "python_import_graph": {
+    "component_count": 43,
+    "layer_histogram": {
+      "L0 foundation": 2,
+      "L1 ledger": 1,
+      "L2 kernel": 1,
+      "L3 service": 34,
+      "L4 adapter": 5
+    },
+    "module_slice_edge_count": 214,
+    "module_slice_node_count": 79,
+    "root": "src/epistemic_foundry",
+    "top_level_edge_count": 141
+  },
+  "schema_version": 2,
+  "status": "PASS",
+  "top_level_forbidden_cycle_count": 0,
+  "work_package_id": "A03"
+}

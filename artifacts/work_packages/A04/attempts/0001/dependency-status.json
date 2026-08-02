@@ -1,0 +1,36 @@
+{
+  "attempt_id": "A04-0001",
+  "dependencies": {
+    "A02": {
+      "attempt_id": "A02-0001",
+      "core_evidence_id": "E0261",
+      "core_generation": "000259-cd38d991",
+      "final_closeout_evidence_id": "E0262",
+      "report": "artifacts/work_packages/A02/attempts/0001/report.json",
+      "report_sha256": "sha256:b3f8fa7257a6d70441c38134699ffae35d65da9571329d8919c7ed565b9aad63",
+      "status": "PASS"
+    },
+    "A03": {
+      "attempt_id": "A03-0001",
+      "core_evidence_id": "E0277",
+      "core_generation": "000275-00026745",
+      "final_closeout_evidence_id": "E0278",
+      "report": "artifacts/work_packages/A03/attempts/0001/report.json",
+      "report_sha256": "sha256:1c8e72fbb233608ad536d97d6c92a5b35ac56c380ac65371dfb5f9a1a07f6d7f",
+      "status": "PASS"
+    }
+  },
+  "dependency_note": "A04 depends on A02 and A03; the sealed A02-0001 and A03-0001 attempts are the build dependencies. A04 transitively reconciles the sealed A01-0001 through the phase_artifact_reconciliation ledger chain.",
+  "next_action": "SEAL_A04_0001_THEN_RECOMPUTE_DAG",
+  "regression_baseline": {
+    "attempt_id": "A02-0001",
+    "core_evidence_id": "E0261",
+    "core_generation": "000259-cd38d991",
+    "final_closeout_evidence_id": "E0262",
+    "report": "artifacts/work_packages/A02/attempts/0001/report.json",
+    "report_sha256": "sha256:b3f8fa7257a6d70441c38134699ffae35d65da9571329d8919c7ed565b9aad63",
+    "status": "PASS"
+  },
+  "regression_baseline_note": "A02-0001 is a sealed PASS attempt (A04's P00-A ancestor) bound as the regression baseline. The live ledger frontier advances under concurrent sealing; the parent reconciles the exact frontier when it fills the ledger pins at seal time.",
+  "status": "PASS"
+}

@@ -1,0 +1,49 @@
+{
+  "attempt_id": "H01-0001",
+  "decision_bounding": {
+    "callback_rejection_is_bounded_error_without_message_leak": true,
+    "invalid_callback_output_is_sealed_error_never_allow": true,
+    "late_resolution_cannot_mutate_frozen_result": true,
+    "non_settling_callback_times_out_to_sealed_error": true,
+    "timeout_ms_validated_positive_platform_bounded_before_callback": true
+  },
+  "envelope_normalization": {
+    "emitted_keys_vocab_and_hash_patterns_match_schema": true,
+    "hostile_payloads_fail_closed_before_callback_or_traps": true,
+    "raw_payload_asserted_canonical_json_and_hashed": true,
+    "sealed_envelope_is_deep_frozen_and_hash_bound": true,
+    "tamper_is_rejected_hash_mismatch_or_invalid": true
+  },
+  "exit_criteria": {
+    "hook_decisions_schema_valid": {
+      "evidence": [
+        "packages/plugin-host/src/hooks/gateway/hook-schema-fixture.test.mjs",
+        "packages/plugin-host/src/hooks/gateway/hook-timeout.test.mjs"
+      ],
+      "mechanism": "every emitted HookEventEnvelope carries exactly the schema required keys with additionalProperties false, canonical vocabulary, and sha256 hash patterns; a timeout, callback rejection, or invalid callback output becomes a sealed ERROR envelope (HOOK_DECISION_TIMEOUT / HOOK_DECISION_CALLBACK_ERROR / HOOK_DECISION_INVALID) rather than being coerced to ALLOW, and a tampered envelope is rejected with HOOK_ENVELOPE_HASH_MISMATCH or HOOK_ENVELOPE_INVALID",
+      "status": "PASS"
+    },
+    "host_payloads_hash_and_normalize": {
+      "evidence": [
+        "packages/plugin-host/src/hooks/gateway/hook-schema-fixture.test.mjs",
+        "packages/plugin-host/src/hooks/gateway/hook-timeout.test.mjs"
+      ],
+      "mechanism": "the raw host payload is asserted canonical JSON, rejected with NON_CANONICAL_JSON on cycles, sparse or accessor-backed arrays, Proxies, BigInt, NaN, -0, Infinity, lone surrogates, or prototype-polluted and symbol-keyed objects before the decision callback runs, hashed under sha256:<hex>, and cloned into a frozen normalized_payload with sorted keys so insertion order cannot change either hash",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "hook_schema_fixture_test": {
+      "module": "packages/plugin-host/src/hooks/gateway/hook-schema-fixture.test.mjs",
+      "status": "PASS",
+      "test_count": 6
+    },
+    "hook_timeout_test": {
+      "module": "packages/plugin-host/src/hooks/gateway/hook-timeout.test.mjs",
+      "status": "PASS",
+      "test_count": 5
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 11
+}

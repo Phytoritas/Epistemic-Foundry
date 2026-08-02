@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/multiple-testing-adjustment.schema.json",
+  "title": "MultipleTestingAdjustment",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "adjustment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "family_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method": {
+      "enum": [
+        "BH_FDR",
+        "BY_FDR",
+        "Bonferroni",
+        "Holm",
+        "alpha_wealth",
+        "e_values",
+        "none_justified"
+      ]
+    },
+    "raw_test_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "effective_test_count": {
+      "type": "number",
+      "minimum": 1
+    },
+    "target_error_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "adjusted_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "test_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "raw_value": {
+            "type": "number",
+            "minimum": 0
+          },
+          "adjusted_value": {
+            "type": "number",
+            "minimum": 0
+          },
+          "decision": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "test_id",
+          "raw_value",
+          "adjusted_value",
+          "decision"
+        ]
+      },
+      "minItems": 1
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "adjustment_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "adjustment_id",
+    "family_id",
+    "method",
+    "raw_test_count",
+    "effective_test_count",
+    "target_error_rate",
+    "adjusted_results",
+    "assumptions",
+    "adjustment_hash"
+  ],
+  "description": "후보군·가설가족의 다중비교 보정과 결정 영향을 기록한다."
+}

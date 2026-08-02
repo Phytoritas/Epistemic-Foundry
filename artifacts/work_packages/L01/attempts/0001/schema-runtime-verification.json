@@ -1,0 +1,62 @@
+{
+  "attempt_id": "L01-0001",
+  "final_status": "PASS",
+  "node_exit_code": 0,
+  "node_stderr": "",
+  "schemas": {
+    "consent-record.schema.json": {
+      "error_count": 0,
+      "errors": [],
+      "status": "PASS"
+    },
+    "memory-policy.schema.json": {
+      "error_count": 0,
+      "errors": [],
+      "status": "PASS"
+    }
+  },
+  "sealed_artifacts": {
+    "consent": {
+      "consent_id": "CONS-L01-SCHEMA",
+      "data_classes": [
+        "research decisions"
+      ],
+      "decision": "GRANTED",
+      "expires_at": "2027-07-01T00:00:00Z",
+      "granted_at": "2026-07-01T00:00:00Z",
+      "policy_hash": "sha256:b7d2c43b2a5ad244828cd9e687c02ad55dbfba8a03851b61ecf2a284ed5ab227",
+      "purposes": [
+        "workspace recall"
+      ],
+      "record_hash": "sha256:cc601348b65974a0ccc7c399e81b77e80efb0371500d18f62aa19cc0dc934ad6",
+      "recorded_by": "USER-L01-SCHEMA",
+      "revoked_at": null,
+      "scopes": [
+        "WORKSPACE"
+      ],
+      "subject_id": "USER-L01-SCHEMA",
+      "workspace_id": "WS-L01-SCHEMA"
+    },
+    "policy": {
+      "allowed_classes": [
+        "WORKSPACE",
+        "USER"
+      ],
+      "class_rules": [
+        {
+          "class": "WORKSPACE",
+          "external_sync": "DENY",
+          "redaction_profile": "workspace-default",
+          "requires_consent": true,
+          "retention_days": 90
+        }
+      ],
+      "cross_workspace_retrieval": "DENY",
+      "default_retention_days": 30,
+      "effective_at": "2026-07-01T00:00:00Z",
+      "policy_hash": "sha256:b7d2c43b2a5ad244828cd9e687c02ad55dbfba8a03851b61ecf2a284ed5ab227",
+      "policy_id": "MP-L01-SCHEMA",
+      "workspace_id": "WS-L01-SCHEMA"
+    }
+  }
+}

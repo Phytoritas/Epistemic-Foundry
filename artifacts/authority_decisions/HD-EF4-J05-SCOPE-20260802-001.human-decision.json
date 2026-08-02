@@ -1,0 +1,27 @@
+{
+  "affected_artifact_ids": [
+    "src/epistemic_foundry/operators/__init__.py",
+    "src/epistemic_foundry/operators/v4_j05/**",
+    "artifacts/work_packages/J05/**",
+    "J05-0001"
+  ],
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "created_at": "2026-08-02T23:00:00Z",
+  "decision": "Authorize exactly one file beyond the J05 write scope of src/epistemic_foundry/operators/v4_j05/**: the package marker src/epistemic_foundry/operators/__init__.py. It contains a docstring only and declares no vocabulary, no API and no behaviour. This mirrors HD-EF4-E05-SCOPE-20260802-001, HD-EF4-F05-SCOPE-20260802-001 and HD-EF4-M05-SCOPE-20260802-001 and authorizes nothing beyond the single marker. J05 otherwise writes only under its granted scope and artifacts/work_packages/J05/**, reads its vocabularies from canonical schemas, manifests and declaring modules, and holds no canonical schema enum value as a string literal.",
+  "decision_hash": "sha256:aa21efbd3225c90f915db203702a2395f5a897a471ce5c50caaa53ef3f4bb9f8",
+  "decision_id": "HD-EF4-J05-SCOPE-20260802-001",
+  "decision_type": "correct",
+  "evidence_artifact_ids": [
+    "pyproject.toml",
+    "manifests/development_manifest.yaml",
+    "artifacts/authority_decisions/HD-EF4-E05-SCOPE-20260802-001.human-decision.json",
+    "artifacts/authority_decisions/HD-EF4-M05-SCOPE-20260802-001.human-decision.json",
+    "artifacts/work_packages/B04/attempts/0010/report.json"
+  ],
+  "non_mutation_acknowledgement": true,
+  "rationale": "pyproject.toml discovers packages with setuptools find_packages (where = ['src']), which requires __init__.py at every level; verified empirically under HD-EF4-E05-SCOPE-20260802-001 that without the marker the nested package imports from a checkout but is absent from the built wheel — the source/dist divergence the sealed B04 build gate exists to prevent. Changing the discovery mode in pyproject remains rejected: pyproject is B04's sealed territory. The J05 attempt (typed mutation-operator registry and prompt-genome quarantine) carries a packaging-discovery check proving the package stays discoverable.",
+  "run_id": null,
+  "subject_id": "J05",
+  "supersedes_decision_id": null
+}

@@ -1,0 +1,48 @@
+{
+  "reconciliation_id": "A04-RECON-001",
+  "phase": "P00-A",
+  "base_commit": "475b16374140b25f00d90aa7b821b237f255ca8e",
+  "packages": [
+    {
+      "work_package_id": "A01",
+      "status": "PASS",
+      "report_sha256": "892c5afcab7af0ad4c173c9abe64f80c70f6062f8ac585f3d333f72e51d78c31",
+      "commands_sha256": "956d095cc4f90ab3a8bbeeabf390b1e19447f5f66c6c047435482da6f176ba8f",
+      "review_sha256": "9b359accbd9b4fc969581ca91a2f975052570a6dab3849517b85751cc7004aff",
+      "required_check_count": 4,
+      "review_mode": "USER_AUTHORIZED_SELF_REVIEW"
+    },
+    {
+      "work_package_id": "A02",
+      "status": "PASS",
+      "report_sha256": "ef8ea64be13746823a3c80474bc9d58ba06887c72763c518a7d51008df700e76",
+      "commands_sha256": "4a07da65fc9e2dc8800d00b110fbc95fa9943a10f2af23bb32fef8d10572e4f2",
+      "review_sha256": "eecc2f33014dc81beecfc17c00854ad984652457cb40b9f59a1cc6b1a0407747",
+      "required_check_count": 4,
+      "review_mode": "USER_AUTHORIZED_SELF_REVIEW"
+    },
+    {
+      "work_package_id": "A03",
+      "status": "PASS",
+      "report_sha256": "23d1ab7df17afc2afb41ab989c4da2f2cf32f13872ad55dd692e4a89d31214ac",
+      "commands_sha256": "9bd3c94da5886202f41abfdc1d46eecdce1db300867d87224a5be33b7921aabb",
+      "review_sha256": "e9d69c3dacac2c6274505bae05dcc71dbe23fe216a23159e78985b7824febdfd",
+      "required_check_count": 4,
+      "review_mode": "USER_AUTHORIZED_SELF_REVIEW"
+    }
+  ],
+  "resolved_exit_criteria": [
+    "authority order is unambiguous and conflict handling returns SPEC_GAP",
+    "SPECIFIED and REFERENCE_BLUEPRINT are not confused with IMPLEMENTED",
+    "64 invariants are exact, traceable, and paired with explicit non-goals",
+    "Plugin Shell and Kernel authority are separated",
+    "the current Python component import graph is acyclic with zero forbidden authority-to-adapter edges"
+  ],
+  "open_assurance_limitations": [
+    "A01-A04 review was performed by the primary author under explicit user instruction and is not independent assurance",
+    "polyglot boundary checks remain future B01 work",
+    "final-byte package manifest remains a release-stage operation"
+  ],
+  "complete": true,
+  "reconciled_at_utc": "2026-07-27T07:53:15.4225616Z"
+}

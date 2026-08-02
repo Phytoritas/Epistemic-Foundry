@@ -1,0 +1,55 @@
+{
+  "append_only": {
+    "events_are_written_once_at_revision_zero": true,
+    "immutable_event_records_are_never_updated_or_deleted": true,
+    "mutated_event_revision_fails_closed": true,
+    "reads_return_deep_frozen_events": true,
+    "rebinding_an_event_id_to_new_bytes_is_denied": true
+  },
+  "attempt_id": "E01-0001",
+  "exit_criteria": {
+    "event_ordering_and_hash_chain_verified": {
+      "evidence": [
+        "packages/foundry-kernel/src/ledger/ledger-hash-chain.test.mjs"
+      ],
+      "mechanism": "append assigns the next contiguous per-run sequence, links previous_event_hash to the verified run tail, and commits the immutable EventRecord and its run stream in one D04 SQLite transaction; verifyEventChain recomputes each event_hash and fails closed on sequence gaps or reorder (EVENT_SEQUENCE_MISMATCH), hash tamper (EVENT_HASH_MISMATCH), cross-run splice (EVENT_RUN_MISMATCH), payload drift (PAYLOAD_HASH_MISMATCH), and a missing immutable tail (EVENT_RECORD_MISSING); concurrent writers serialize through the run-stream compare-and-swap",
+      "status": "PASS"
+    },
+    "state_is_rebuildable": {
+      "evidence": [
+        "packages/foundry-kernel/src/ledger/reducer-replay.test.mjs"
+      ],
+      "mechanism": "rebuild re-resolves and hash-verifies every payload, then runs the caller's synchronous reducer twice and asserts an identical canonical trace, rejecting non-deterministic (REDUCER_NON_DETERMINISTIC), async (ASYNC_REDUCER_DENIED), mutating (REDUCER_FAILED), and non-JSON (REDUCER_OUTPUT_INVALID) reducers; reopening both durable stores reproduces byte-identical state and state_hash, and an empty run deterministically preserves the canonical initial state without invoking the reducer",
+      "status": "PASS"
+    }
+  },
+  "hash_chain_and_ordering": {
+    "concurrent_writers_serialize_into_one_contiguous_chain": true,
+    "cross_run_splice_fails_closed": true,
+    "missing_immutable_tail_fails_closed": true,
+    "payload_hash_drift_fails_closed": true,
+    "sequence_gap_or_reorder_fails_closed": true,
+    "tamper_fails_closed": true
+  },
+  "required_checks": {
+    "ledger_hash_chain_test": {
+      "module": "packages/foundry-kernel/src/ledger/ledger-hash-chain.test.mjs",
+      "status": "PASS",
+      "test_count": 12
+    },
+    "reducer_replay_test": {
+      "module": "packages/foundry-kernel/src/ledger/reducer-replay.test.mjs",
+      "status": "PASS",
+      "test_count": 9
+    }
+  },
+  "state_rebuildable": {
+    "async_or_mutating_or_non_json_reducers_rejected": true,
+    "empty_run_preserves_canonical_initial_state": true,
+    "non_deterministic_reducer_rejected": true,
+    "reopening_durable_stores_reproduces_state_hash": true,
+    "two_isolated_reducer_passes_produce_identical_trace": true
+  },
+  "status": "PASS",
+  "targeted_test_count": 21
+}

@@ -1,0 +1,53 @@
+{
+  "attempt_id": "C03-0003",
+  "b04_sg002_reconciliation": {
+    "authority_attempt": "B04-0006",
+    "classification_counts": {
+      "GATE_DECISION_RUNTIME_SCHEMA_DRIFT": 51,
+      "HOLDOUT_MANIFEST_RUNTIME_SCHEMA_DRIFT": 15
+    },
+    "missing_prior_nodes": [],
+    "prior_c03_owned_problem_count": 66,
+    "resolved_problem_count": 66,
+    "status": "PASS",
+    "still_failing_prior_nodes": []
+  },
+  "full_python": {
+    "artifact": "artifacts/work_packages/C03/attempts/0003/full-python-regression.junit.xml",
+    "artifact_sha256": "sha256:19df8a1e2e3b620ee4376915fa49c74f8e08faad2749b68ae1f8741e661d864d",
+    "errors": 0,
+    "failures": 1,
+    "passed": 986,
+    "skipped": 0,
+    "status": "EXPECTED_PREEXISTING_J02_FAILURE",
+    "suite_reported_pass": false,
+    "tests": 987
+  },
+  "new_c03_failure_count": 0,
+  "residual_failures": [
+    {
+      "c03_causal_impact": "NONE",
+      "classification": "J02_TIKTOKEN_DEPENDENCY_DEBT",
+      "debt_owner": "J02",
+      "expected_resolution_attempt": "J02-0003",
+      "failure_kind": "failure",
+      "message": "TOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0",
+      "message_sha256": "sha256:02dcd2e6c41db3cdd90e6092371090a82599aa394f95d13edfecd3885811a288",
+      "node_id": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin",
+      "pre_existing": true,
+      "raw_message": "Failed: TOKENIZER_CONTRACT_UNAVAILABLE: pyproject.toml does not declare exact tiktoken==0.13.0"
+    }
+  ],
+  "status": "PASS_WITH_DECLARED_PREEXISTING_J02_DEBT",
+  "targeted": {
+    "artifact": "artifacts/work_packages/C03/attempts/0003/targeted-runtime-migration.junit.xml",
+    "artifact_sha256": "sha256:c565cb92b496d4d4f79217e0713e9be24e71a0bb7430af1838ddd7bc6fa98e2f",
+    "errors": 0,
+    "failures": 0,
+    "passed": 174,
+    "skipped": 0,
+    "status": "PASS",
+    "tests": 174
+  },
+  "unexpected_skip_or_xfail_count": 0
+}

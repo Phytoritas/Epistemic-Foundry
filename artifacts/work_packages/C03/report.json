@@ -1,0 +1,276 @@
+{
+  "work_package_id": "C03",
+  "attempt_id": "C03-0001",
+  "base_checkpoint": "C01-0004:PASS+C02-0001:PASS",
+  "status": "PASS",
+  "package_status": "PASS",
+  "runtime_migration_status": "CONFORMANT",
+  "repository_full_suite_status": "ZERO_FAILURE_OBSERVED_PENDING_C04_GATE",
+  "migration_debt_status": "RESOLVED_24_OF_24",
+  "completion_ready": false,
+  "authority_decision_id": "HD-EF4-C01-SG003-20260728-001",
+  "authority_boundary": {
+    "C01": "canonical contract authority and immutable PASS checkpoint",
+    "C02": "generated TypeScript, Python, and UI projections and immutable PASS checkpoint",
+    "C03": "sole handwritten runtime migration owner for the two modules and three tests named by the decision",
+    "C04": "artifact-only repository-wide zero-failure conformance gate",
+    "B04": "packaging after C04 PASS"
+  },
+  "changed_files": [
+    "migrations/contracts/compatibility-matrix.json",
+    "migrations/contracts/evolution-run-spec-v3-to-v4.migration.json",
+    "migrations/contracts/migration-record.schema.json",
+    "migrations/contracts/fixtures/evolution-run-spec-v3.json",
+    "migrations/contracts/fixtures/evolution-run-spec-resolution.json",
+    "migrations/contracts/fixtures/evolution-run-spec-migration-record.json",
+    "migrations/contracts/fixtures/promotion-level-review.json",
+    "docs/schema_evolution.md",
+    "src/epistemic_foundry/evolution_chamber/run_spec.py",
+    "src/epistemic_foundry/governance/promotion.py",
+    "tests/test_evolution_chamber.py",
+    "tests/test_governance.py",
+    "tests/test_integration_forge_cycle.py",
+    "artifacts/work_packages/C03/c03-runtime-migration-verifier.py",
+    "artifacts/work_packages/C03/c03-runtime-migration-verification.json",
+    "artifacts/work_packages/C03/targeted-runtime-migration.junit.xml",
+    "artifacts/work_packages/C03/full-python-regression.junit.xml",
+    "artifacts/work_packages/C03/c03-rah-seal.py",
+    "artifacts/work_packages/C03/dependency-status.json",
+    "artifacts/work_packages/C03/commands.jsonl",
+    "artifacts/work_packages/C03/review.md",
+    "artifacts/work_packages/C03/report.json"
+  ],
+  "runtime_contract": {
+    "status": "PASS",
+    "resolved_refs_required_without_default": true,
+    "resolved_refs_non_empty": true,
+    "floating_or_range_refs_rejected": true,
+    "unversioned_provider_alias_rejected": true,
+    "external_backend_immutable_pin_required": true,
+    "top_level_authority_binding_checked": true,
+    "spec_hash_includes_resolved_refs": true,
+    "new_write_version": "v4 only",
+    "legacy_read": "explicit v3-to-v4 migration only",
+    "unresolved_legacy_code": "LEGACY_RUN_SPEC_RESOLUTION_REQUIRED",
+    "no_inferred_or_default_refs": true
+  },
+  "promotion_contract": {
+    "status": "PASS",
+    "levels": [
+      "INBOX",
+      "CANDIDATE",
+      "LITERATURE_GROUNDED",
+      "VALIDATION_SCREENED",
+      "EMPIRICALLY_TESTED",
+      "REPLICATED"
+    ],
+    "promote_rule": "granted_level equals requested_level",
+    "conditional_rule": "current_level < granted_level < requested_level",
+    "non_grant_rule": "REJECT, UNDERDETERMINED, and BLOCKED require granted_level null and no candidate state mutation",
+    "downgrade_boundary": "separate reassessment/invalidation workflow",
+    "legacy_aliases": false,
+    "legacy_review_required_code": "LEGACY_PROMOTION_LEVEL_REVIEW_REQUIRED",
+    "gate_binding": "semantic G00-G14 order in GateDecision.name; unique opaque GateDecision.gate_id artifact IDs",
+    "receipt_bound_commit": true,
+    "cas_and_idempotency": true,
+    "crash_before_effect_receipt_promotes": false
+  },
+  "migration_contract": {
+    "status": "PASS",
+    "compatibility_matrix": "migrations/contracts/compatibility-matrix.json",
+    "read_window": "v3 persisted artifacts only through the explicit v3-to-v4 migration entry point",
+    "write_window": "v4 only",
+    "silent_fallback": false,
+    "dry_run_before_write": true,
+    "partial_success_is_batch_success": false,
+    "source_retained": true,
+    "exact_source_hash_rollback": true,
+    "migration_records_retained": true,
+    "fixtures_valid": true
+  },
+  "resolved_review_findings": [
+    {
+      "id": "C03-RF001",
+      "finding": "Promotion runtime originally conflated opaque GateDecision.gate_id artifact identity with semantic G00-G14 identity.",
+      "resolution": "Validate semantic order through GateDecision.name, require unique non-empty artifact IDs, and pass canonical gate_decision() output through an integration regression.",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "C03-RF002",
+      "finding": "Renaming the partial-cascade test broke continuity with one C01 migration-debt pytest node ID.",
+      "resolution": "Restore the historical node ID and machine-reconcile all 24 authority node IDs to passing full-suite cases.",
+      "status": "RESOLVED"
+    }
+  ],
+  "verification": {
+    "status": "PASS",
+    "artifact": "artifacts/work_packages/C03/c03-runtime-migration-verification.json",
+    "sha256": "sha256:51c22895ee9f0b8ae8ab44b61af13a1ab9600f5f1a8751efd890c1caacbfd4ff",
+    "verifier": "artifacts/work_packages/C03/c03-runtime-migration-verifier.py",
+    "verifier_sha256": "sha256:5cb73f686085f0cab82737203e3bc0a281373da55139260217ee0ac9d648993e",
+    "migration_debt_authority_count": 24,
+    "passing_debt_node_count": 24,
+    "required_test_count": 14,
+    "present_required_test_count": 14,
+    "active_legacy_value_hits": 0,
+    "xfail_or_skip_suppression_hits": 0
+  },
+  "targeted_runtime_migration": {
+    "status": "PASS",
+    "collected": 92,
+    "passed": 92,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_artifact": "artifacts/work_packages/C03/targeted-runtime-migration.junit.xml",
+    "junit_sha256": "sha256:d768d1268aa29c56f6dceb2e765b5b45ffda0d5aa154f220b50faf72415a972e",
+    "current_source_replay": "PASS"
+  },
+  "full_python_regression": {
+    "status": "PASS_PENDING_C04_FORMAL_GATE",
+    "collected": 898,
+    "passed": 898,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "c01_migration_debt_nodes_present_and_passing": 24,
+    "new_failure_count": 0,
+    "junit_artifact": "artifacts/work_packages/C03/full-python-regression.junit.xml",
+    "junit_sha256": "sha256:b30c079f4b65c92f23974cf6597d5e2ccbb1516b9e45bb4150ad7deccd4114d8",
+    "current_source_replay": "PASS",
+    "formal_repository_gate_owner": "C04"
+  },
+  "checks": [
+    {
+      "command_id": "C03-0001-C003",
+      "name": "targeted runtime migration suite",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C03/targeted-runtime-migration.junit.xml"
+    },
+    {
+      "command_id": "C03-0001-C004",
+      "name": "full Python migration regression",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C03/full-python-regression.junit.xml"
+    },
+    {
+      "command_id": "C03-0001-C005",
+      "name": "deterministic C03 runtime migration verification",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C03/c03-runtime-migration-verification.json"
+    },
+    {
+      "command_id": "C03-0001-C008",
+      "name": "compatibility matrix and executable migration fixtures",
+      "exit_code": 0
+    },
+    {
+      "command_id": "C03-0001-C010",
+      "name": "user-authorized primary-session separate contract review",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C03/review.md"
+    },
+    {
+      "command_id": "C03-0001-C013",
+      "name": "write-scope, history, cache, hash, dirty-worktree, and diff audit",
+      "exit_code": 0
+    },
+    {
+      "command_id": "C03-0001-C014",
+      "name": "C03 core PASS evidence append with generation preservation",
+      "exit_code": 0,
+      "artifact": ".rah/ralph/generations/000009-f708496e/evidence_ledger.json#/entries/9"
+    },
+    {
+      "command_id": "C03-0001-C015",
+      "name": "C03 core RAH generation and resume verification",
+      "exit_code": 0,
+      "artifact": ".rah/ralph/generations/000009-f708496e/generation-manifest.json"
+    }
+  ],
+  "review": {
+    "reviewer": "primary-session contract review",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_PASS",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_REVIEW",
+    "product_owner_review_approval": true,
+    "actor_separate_subagent_used": false,
+    "blocking_findings": [],
+    "resolved_findings": [
+      "C03-RF001",
+      "C03-RF002"
+    ],
+    "assurance_limitation": "The product-owner shared contract forbids Fleet and subagents for this serial sequence. This review is procedurally separate but not actor-independent, and no external certification is claimed."
+  },
+  "output_artifacts": [
+    "migrations/contracts/compatibility-matrix.json",
+    "migrations/contracts/evolution-run-spec-v3-to-v4.migration.json",
+    "migrations/contracts/migration-record.schema.json",
+    "migrations/contracts/fixtures/evolution-run-spec-v3.json",
+    "migrations/contracts/fixtures/evolution-run-spec-resolution.json",
+    "migrations/contracts/fixtures/evolution-run-spec-migration-record.json",
+    "migrations/contracts/fixtures/promotion-level-review.json",
+    "artifacts/work_packages/C03/c03-runtime-migration-verifier.py",
+    "artifacts/work_packages/C03/c03-runtime-migration-verification.json",
+    "artifacts/work_packages/C03/targeted-runtime-migration.junit.xml",
+    "artifacts/work_packages/C03/full-python-regression.junit.xml",
+    "artifacts/work_packages/C03/c03-rah-seal.py",
+    "artifacts/work_packages/C03/dependency-status.json",
+    "artifacts/work_packages/C03/commands.jsonl",
+    "artifacts/work_packages/C03/review.md",
+    "artifacts/work_packages/C03/report.json"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000008-19dde058",
+    "core_generation": "000009-f708496e",
+    "core_evidence_id": "E0010",
+    "final_closeout_evidence_id": "E0011",
+    "generation_manifest_verified": true,
+    "retained_generation_manifest_count": 9,
+    "generation_file_hashes_verified_per_generation": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "flat_snapshot_content_matches": 6,
+    "retained_generations": [
+      "000001-8cce4954",
+      "000002-e90aad20",
+      "000003-42a86d6d",
+      "000004-d7a75c37",
+      "000005-839fd321",
+      "000006-6dc736b8",
+      "000007-1e720769",
+      "000008-19dde058",
+      "000009-f708496e"
+    ],
+    "parse_errors": {},
+    "status": "active",
+    "completion_ready": false,
+    "next_package": "C04"
+  },
+  "open_risks": [
+    "C04 has not yet performed the formal repository-wide conformance gate, even though the C03 full suite currently records 898 passed and zero failures/skips.",
+    "Review is user-authorized primary-session procedural review rather than actor-independent assurance because Fleet and subagents are forbidden in this fixed sequence.",
+    "B04 wheel/sdist canonical registry packaging, installed-wheel isolation, integrity mutation, and reproducibility checks remain unstarted and dependency-blocked on C04."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "C04 artifact-only full C-phase conformance and independent integration gate",
+    "B04 canonical registry packaging, sdist/wheel reproducibility, and clean-wheel installation",
+    "production REST handlers, persistence, runtime authorization, or transport behavior",
+    "external actor-independent assurance"
+  ],
+  "dependency_state": {
+    "A04": "PASS",
+    "A05": "PASS",
+    "B02": "PASS",
+    "B03": "PASS",
+    "C01": "PASS",
+    "C02": "PASS",
+    "C03": "PASS",
+    "C04": "READY",
+    "B04": "WAITING_ON_C04",
+    "full_156_package_dag_recomputed": false,
+    "subsequent_dag_execution_started": false
+  },
+  "next_ready": [
+    "C04"
+  ]
+}

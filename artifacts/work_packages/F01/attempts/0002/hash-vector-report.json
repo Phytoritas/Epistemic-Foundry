@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "work_package_id": "F01",
+  "attempt_id": "F01-0002",
+  "check": "classifier_hash_vector_test",
+  "status": "PASS",
+  "classifier_version": "4.0.1-f01.1",
+  "canonicalization": "RFC 8785 JCS equivalent canonical JSON",
+  "digest": "SHA-256",
+  "vector_count": 4,
+  "passed": 4,
+  "failed": 0,
+  "exact_match_accuracy": "1.000",
+  "self_and_volatile_fields_excluded": [
+    "classification_id",
+    "classified_at",
+    "classification_hash",
+    "ArtifactReceipt ID",
+    "ResultEnvelope ID",
+    "storage locator",
+    "ledger sequence number",
+    "retry attempt number",
+    "wall-clock duration",
+    "provider request ID"
+  ],
+  "vectors": [
+    {
+      "vector_id": "H01_LOOKUP",
+      "classification_hash": "sha256:e00916568c0c251090862229629f08253252a950e20ef60cb83a76ad13d3dc1d",
+      "classification_id": "EWC-e00916568c0c251090862229629f08253252a950e20ef60cb83a76ad13d3dc1d",
+      "status": "PASS"
+    },
+    {
+      "vector_id": "H02_MIXED",
+      "classification_hash": "sha256:04be3fb9a6efa8236d4e0f28ad5961557a872f0ae311a882e169a53adc696a0e",
+      "classification_id": "EWC-04be3fb9a6efa8236d4e0f28ad5961557a872f0ae311a882e169a53adc696a0e",
+      "status": "PASS"
+    },
+    {
+      "vector_id": "H03_NOVELTY_INTERVIEW",
+      "classification_hash": "sha256:0460bf7b6ab68162f960aa152ee41fcb41fd7291fe0b960a9e19c5921d7ab843",
+      "classification_id": "EWC-0460bf7b6ab68162f960aa152ee41fcb41fd7291fe0b960a9e19c5921d7ab843",
+      "status": "PASS"
+    },
+    {
+      "vector_id": "H04_EMPTY",
+      "classification_hash": "sha256:75b4b4e9f86d982eff74db308ebc1afaa2aaa4189f76533db3bca0985ae4b316",
+      "classification_id": "EWC-75b4b4e9f86d982eff74db308ebc1afaa2aaa4189f76533db3bca0985ae4b316",
+      "status": "PASS"
+    }
+  ],
+  "canonical_example_binding": {
+    "vector_id": "H02_MIXED",
+    "example_path": "examples/sample_epistemic-work-classification.json",
+    "example_sha256": "sha256:ab805fed88f6c25eb6cb708ea9cb854193d90ccd21ce87baa06457f2fb018b7c",
+    "status": "PASS"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "work_package_id": "C02",
+  "check": "c02_contract_codegen_verification",
+  "status": "PASS",
+  "source_authority": "schemas/*.schema.json",
+  "schema_count": 124,
+  "example_count": 124,
+  "schema_bundle_sha256": "sha256:be7158b4642bb1df4f5b56ad769c84cf4e36c5f8756a5b60b853531e9abb145c",
+  "example_bundle_sha256": "sha256:24804ea2212948fc6a4b547006a459c6db7af8e854488c4272f20c0afe4e3428",
+  "generated_file_count": 9,
+  "codegen_clean_diff": {
+    "status": "PASS",
+    "failures": []
+  },
+  "deterministic_double_replay": "PASS",
+  "manifest_parity": "PASS",
+  "schema_example_validation": {
+    "status": "PASS",
+    "schema_count": 124,
+    "valid_example_count": 124,
+    "invalid": []
+  },
+  "python_models": {
+    "status": "PASS",
+    "model_count": 124,
+    "missing_models": [],
+    "schema_id_count": 124,
+    "bundle_sha256": "sha256:be7158b4642bb1df4f5b56ad769c84cf4e36c5f8756a5b60b853531e9abb145c"
+  },
+  "node_fixture_check": {
+    "status": "PASS",
+    "exit_code": 0,
+    "schema_count": 124,
+    "example_count": 124,
+    "failures": [],
+    "stderr": ""
+  },
+  "cross_language_fixture_parity": "PASS",
+  "full_python_suite": {
+    "status": "EXPECTED_FAILURES_PENDING_C03",
+    "summary": {
+      "tests": 855,
+      "failures": 24,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 831
+    },
+    "junit_artifact": "artifacts/work_packages/C02/full-python-regression.junit.xml",
+    "junit_sha256": "sha256:13ca652d4efad7ff290781a42834d9b61a0cb82a8f81fece852c356beea6f5bc",
+    "authority_artifact": "artifacts/work_packages/C01/attempts/0004/runtime-migration-impact.json",
+    "authority_sha256": "sha256:3c35cc5cfe003055f2e039a4837e74527a843c4ed6795eee1d28b56954d36877",
+    "same_failure_node_ids": true,
+    "raw_failure_message_parity": true,
+    "missing_failure_node_ids": [],
+    "new_failure_node_ids": [],
+    "changed_failure_messages": [],
+    "migration_owner": "C03"
+  },
+  "protected_file_audit": {
+    "status": "PASS",
+    "protected_file_count": 10,
+    "hashes": {
+      "src/epistemic_foundry/evolution_chamber/run_spec.py": "sha256:b18ac50a737f2ffd2e948a67541737e6dad4feafc8f7262f464311bafc55eb4b",
+      "src/epistemic_foundry/governance/promotion.py": "sha256:a05013fdd9ea83a51071f376075b540a2fc371bb7e9f2ff12f786feb0ba90e71",
+      "tests/test_evolution_chamber.py": "sha256:8034125cb1f1e4a4dec9667dc8880f6e695eafbbfa14c15b4e8ec99bff3988d9",
+      "tests/test_governance.py": "sha256:6e588dc71df2da2abade7e06fc1b8817c1eb1d66eca82972080f17cd278ec7fa",
+      "tests/test_integration_forge_cycle.py": "sha256:a137c6f16c64ecfcc10c49d2d2dba96c360fcd0f25e7943f06d0a3fc19e4bc75",
+      "artifacts/work_packages/C01/attempts/0004/report.json": "sha256:424f40396e93bd6826bf5ad85c3580cac7bd4ea8171b93f24816bc6a78c4a5d6",
+      "artifacts/work_packages/C01/attempts/0004/review.md": "sha256:0ef71039bd87cf04c4dc6fcf127f61b18b8e9482483d50ce87e3f00cbce6a2bc",
+      "artifacts/work_packages/C01/attempts/0004/commands.jsonl": "sha256:bffe3385961d89acb14fac26e186decd5f4099a1d0bf9cbf52646d73237da8e7",
+      "artifacts/work_packages/C01/attempts/0004/dependency-status.json": "sha256:b43aea17c2e96cdbd870438c70279ca62941469aabbf5056854ee680719be03b",
+      "artifacts/work_packages/C01/attempts/0004/c01-rah-seal.py": "sha256:5c6c832f17d1bc4ca39cbb53782af9652d689501840d121a0106fcf34074afcc"
+    },
+    "mismatches": []
+  },
+  "write_scope": [
+    "packages/contracts/**",
+    "python/epistemic_foundry/contracts/**",
+    "web/src/generated/**",
+    "artifacts/work_packages/C02/** (manifest-declared evidence artifacts)"
+  ],
+  "legacy_promotion_value_hits": [],
+  "generated_artifact_hashes": {
+    "packages/contracts/src/generated/contract-manifest.json": "sha256:e4af39d5b08532bcc6997e862a3f70702a15f11bb24b01a6b049e49d417ef94f",
+    "packages/contracts/src/generated/models.d.ts": "sha256:2f6db9fde8009209e6fce33c6851c068babd694674759d729787035bc206e758",
+    "packages/contracts/src/generated/registry.mjs": "sha256:73a23f4e233430a1c95958cd5037596416571feccbcbce913125e7d513996b4f",
+    "python/epistemic_foundry/contracts/__init__.py": "sha256:29a58cf958579f9a2165222059603ea1c4898d85379473b00872ce237dd92095",
+    "python/epistemic_foundry/contracts/contract-manifest.json": "sha256:e4af39d5b08532bcc6997e862a3f70702a15f11bb24b01a6b049e49d417ef94f",
+    "python/epistemic_foundry/contracts/models.py": "sha256:876bde5d7447553e4a308f7fe66714328309225bbc8b310386f4cfcc8cb427da",
+    "python/epistemic_foundry/contracts/py.typed": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "web/src/generated/contract-manifest.json": "sha256:e4af39d5b08532bcc6997e862a3f70702a15f11bb24b01a6b049e49d417ef94f",
+    "web/src/generated/contracts.ts": "sha256:2c17676e8149317b2fd4b89c2b384f75bad71a8047672cf4115ef7267c871f02"
+  },
+  "failures": []
+}

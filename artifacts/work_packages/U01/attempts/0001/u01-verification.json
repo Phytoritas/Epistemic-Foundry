@@ -1,0 +1,43 @@
+{
+  "attempt_id": "U01-0001",
+  "declaring_sources": {
+    "openapi": "openapi/epistemic-foundry-v1.openapi.yaml (33 operations; packaged copy asserted byte-identical)"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "the Node projector and the Python generator independently derive identical route-table hashes — a cross-implementation check that also validates the hand-written YAML subset reader, which was additionally diffed field-for-field against PyYAML with zero differences",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the route table is projected from the canonical OpenAPI document — operation ids unique, responses schema-bound, verbs declared — and the generated client is emitted by a generator whose header binds the source document hash",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "handler coverage is bidirectional: a handler for an undeclared operation refuses, a declared operation without a handler is listed rather than tolerated, and client regeneration is byte-identical with the function list equal to the operation-id list",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "a dispatch table binds nothing but shape: no listener, no auth, no middleware, and the boundary and structure gates stayed PASS with no new dependency edges",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_contracts": 5,
+    "full_node_suite": 1276,
+    "full_python_suite": 1261,
+    "generated_client_test": 24,
+    "openapi_adversarial": 17,
+    "openapi_conformance": 41,
+    "openapi_contract": 13,
+    "openapi_receipts": 11,
+    "openapi_schema": 11,
+    "targeted_u01_surface": 52
+  }
+}

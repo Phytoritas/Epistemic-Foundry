@@ -1,0 +1,86 @@
+{
+  "attempt_id": "T01-0002",
+  "catalog_facts": {
+    "planning_tool_count": 4,
+    "protocol_version": "2026-07-28",
+    "read_tool_count": 9,
+    "stateless": true,
+    "tool_count": 13,
+    "transports": [
+      "stdio",
+      "streamable-http-post-/mcp"
+    ]
+  },
+  "exit_criteria": {
+    "authorization_confidentiality_receipts_idempotency_fail_closed": {
+      "evidence": [
+        "tests/mcp/test_t01_authorization.py",
+        "tests/mcp/test_t01_planning_artifacts.py",
+        "tests/mcp/test_t01_error_contract.py"
+      ],
+      "status": "PASS"
+    },
+    "exact_nine_read_four_planning_tools": {
+      "evidence": [
+        "tests/mcp/test_t01_shared_handlers.py",
+        "tests/node/t01-tool-catalog.test.mjs"
+      ],
+      "status": "PASS"
+    },
+    "read_tools_side_effect_free": {
+      "evidence": [
+        "tests/mcp/test_t01_read_side_effects.py"
+      ],
+      "status": "PASS"
+    },
+    "stdio_and_http_share_handlers_and_envelopes": {
+      "evidence": [
+        "tests/mcp/test_t01_shared_handlers.py",
+        "tests/node/t01-transport-framing.test.mjs"
+      ],
+      "status": "PASS"
+    },
+    "tool_schemas_canonical": {
+      "evidence": [
+        "tests/node/t01-schema-resolution.test.mjs",
+        "tests/mcp/test_t01_shared_handlers.py"
+      ],
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "mcp_authorization_and_confidentiality_test": {
+      "module": "tests/mcp/test_t01_authorization.py",
+      "status": "PASS"
+    },
+    "mcp_planning_artifact_receipt_test": {
+      "module": "tests/mcp/test_t01_planning_artifacts.py",
+      "status": "PASS"
+    },
+    "mcp_schema_resolution_test": {
+      "module": "tests/node/t01-schema-resolution.test.mjs",
+      "status": "PASS"
+    },
+    "mcp_schema_test": {
+      "module": "tests/mcp/test_t01_shared_handlers.py",
+      "status": "PASS"
+    },
+    "mcp_tool_catalog_exact_13": {
+      "module": "tests/node/t01-tool-catalog.test.mjs",
+      "status": "PASS"
+    },
+    "mcp_transport_framing_test": {
+      "module": "tests/node/t01-transport-framing.test.mjs",
+      "status": "PASS"
+    },
+    "read_side_effect_test": {
+      "module": "tests/mcp/test_t01_read_side_effects.py",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "targeted_test_counts": {
+    "node": 15,
+    "python": 41
+  }
+}

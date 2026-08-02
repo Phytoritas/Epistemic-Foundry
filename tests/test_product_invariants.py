@@ -41,6 +41,7 @@ from epistemic_foundry.retrieval import (
 )
 
 ALL_LANES = ("support", "counter", "null", "boundary", "method")
+POLICY_HASH = "sha256:" + "a" * 64
 
 
 # -- EF4-I01 Kernel authority -------------------------------------------
@@ -201,6 +202,10 @@ def test_i09_agent_agreement_cannot_promote() -> None:
         run_id="RUN-1",
         policy_version="4.0.0",
         inputs={},
+        gate_version="4.0.0",
+        input_artifact_ids=("ART-LEAKAGE-AUDIT-INPUT-0001",),
+        policy_bundle_hash=POLICY_HASH,
+        blocker_ids=(),
     )
     with pytest.raises(GateOverrideAttempted):
         build_adjudication(

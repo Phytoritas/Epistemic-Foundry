@@ -1,0 +1,282 @@
+{
+  "artifact_inventory": {
+    "epistemic_foundry-4.0.0-py3-none-any.whl": {
+      "byte_size": 307863,
+      "sha256": "95cc1c1ef09be5cff3271072588e0a1cca98958339e0ff972f3dfeaa93136fb8"
+    },
+    "epistemic_foundry-4.0.0.tar.gz": {
+      "byte_size": 256787,
+      "sha256": "afcff2501eb94514a2e562944e28c628ae098deb01f3b6f6bca3783fe11a4ed8"
+    }
+  },
+  "backend": {
+    "build_backend": "setuptools.build_meta",
+    "constraint_sha256": "cfa3ae583cf955843a6d2370005d65587afe021f73ac93af8aaec586580d22b7",
+    "exact_requirement": "setuptools==82.0.1",
+    "name": "setuptools",
+    "sdist_constraint_embedded": true,
+    "sdist_constraint_sha256": "cfa3ae583cf955843a6d2370005d65587afe021f73ac93af8aaec586580d22b7",
+    "sdist_exact_requirement": "setuptools==82.0.1",
+    "source_sdist_constraint_byte_equal": true,
+    "version": "82.0.1"
+  },
+  "canonical_registry": {
+    "build_epoch": 1767225600,
+    "bundle_version": "4.0.0",
+    "duplicate_document_ids": 0,
+    "file_count": 127,
+    "generated_at": "2026-01-01T00:00:00Z",
+    "openapi_document_count": 1,
+    "projected_snapshot_bundle_hash": "sha256:d01bda0057584e235331b649238fc2507c60cab329fd6b8e8b6a115fac912559",
+    "projection_tool_identity": "epistemic_foundry.canonical_registry.materialize",
+    "projection_tool_version": "2.0.0",
+    "registry_format_version": "2.0.0",
+    "registry_sha256": "sha256:6b4fcade707639e537744be4075e71d3f7e068cd42eaaaddb20ef084851175d5",
+    "resource_count": 127,
+    "schema_count": 126,
+    "schema_version": 2,
+    "source_bundle_hash": "sha256:1557b03db2ad7e7d23b014d4c9d5fd643803f6613696c966d9b0379573259e7f",
+    "source_revision": "sha256:1557b03db2ad7e7d23b014d4c9d5fd643803f6613696c966d9b0379573259e7f"
+  },
+  "checks": {
+    "b01_boundary_regression": "PASS",
+    "b01_structure_regression": "PASS",
+    "clean_checkout_equivalent_build": "PASS",
+    "installed_wheel": {
+      "arbitrary_empty_cwd": "PASS",
+      "clean_venv_install": "PASS",
+      "fallback_attempt_count": 1,
+      "fallback_decoy_source_present": true,
+      "fallback_decoy_source_resource_count": 127,
+      "fallback_success_count": 0,
+      "installed_module_outside_source_tree": true,
+      "missing_packaged_resource_error_code": "CANONICAL_REGISTRY_MISSING",
+      "openapi_load": "PASS",
+      "representative_schema_validation": "PASS",
+      "schema_count": 126,
+      "tamper_error_code": "CANONICAL_REGISTRY_HASH_MISMATCH"
+    },
+    "registry_comparisons": {
+      "clean_stage_authority": {
+        "extra": 0,
+        "hash_mismatches": 0,
+        "missing": 0,
+        "resource_count": 127,
+        "status": "PASS"
+      },
+      "clean_stage_projection": {
+        "extra": 0,
+        "hash_mismatches": 0,
+        "missing": 0,
+        "resource_count": 127,
+        "status": "PASS"
+      },
+      "sdist_authority": {
+        "extra": 0,
+        "hash_mismatches": 0,
+        "missing": 0,
+        "resource_count": 127,
+        "status": "PASS"
+      },
+      "sdist_projection": {
+        "extra": 0,
+        "hash_mismatches": 0,
+        "missing": 0,
+        "resource_count": 127,
+        "status": "PASS"
+      },
+      "sdist_wheel_projection": {
+        "extra": 0,
+        "hash_mismatches": 0,
+        "missing": 0,
+        "resource_count": 127,
+        "status": "PASS"
+      },
+      "second_wheel_projection": {
+        "extra": 0,
+        "hash_mismatches": 0,
+        "missing": 0,
+        "resource_count": 127,
+        "status": "PASS"
+      },
+      "source_projection": {
+        "extra": 0,
+        "hash_mismatches": 0,
+        "missing": 0,
+        "resource_count": 127,
+        "status": "PASS"
+      },
+      "wheel_projection": {
+        "extra": 0,
+        "hash_mismatches": 0,
+        "missing": 0,
+        "resource_count": 127,
+        "status": "PASS"
+      }
+    },
+    "sdist_to_wheel": "PASS",
+    "source_tree_fallback": {
+      "attempt_count": 1,
+      "success_count": 0
+    },
+    "two_build_reproducibility": {
+      "sdist_byte_equal": true,
+      "sdist_derived_wheel_byte_equal": true,
+      "wheel_byte_equal": true
+    }
+  },
+  "commands": [
+    {
+      "command": [
+        "uv",
+        "build",
+        "--sdist",
+        "--wheel",
+        "--build-constraints",
+        "<TEMP>\\source-one\\toolchains\\python-build-constraints.txt",
+        "--require-hashes",
+        "--no-python-downloads",
+        "--no-build-logs",
+        "--out-dir",
+        "<TEMP>\\build-one",
+        "<TEMP>\\source-one"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "build",
+        "--sdist",
+        "--wheel",
+        "--build-constraints",
+        "<TEMP>\\source-two\\toolchains\\python-build-constraints.txt",
+        "--require-hashes",
+        "--no-python-downloads",
+        "--no-build-logs",
+        "--out-dir",
+        "<TEMP>\\build-two",
+        "<TEMP>\\source-two"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "build",
+        "--wheel",
+        "--build-constraints",
+        "<TEMP>\\sdist-unpacked\\epistemic_foundry-4.0.0\\toolchains\\python-build-constraints.txt",
+        "--require-hashes",
+        "--no-python-downloads",
+        "--no-build-logs",
+        "--out-dir",
+        "<TEMP>\\sdist-wheel",
+        "<TEMP>\\sdist-unpacked\\epistemic_foundry-4.0.0"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "<PYTHON>",
+        "-m",
+        "venv",
+        "<TEMP>\\installed-venv"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "pip",
+        "install",
+        "--python",
+        "<TEMP>\\installed-venv\\Scripts\\python.exe",
+        "--offline",
+        "--no-python-downloads",
+        "<TEMP>\\build-one\\epistemic_foundry-4.0.0-py3-none-any.whl"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "<VENV_PYTHON>",
+        "-I",
+        "<TEMP>/installed_smoke.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "<VENV_PYTHON>",
+        "-I",
+        "<TEMP>/missing_resource_no_fallback.py"
+      ],
+      "cwd": "<TEMP>/complete-source-decoy",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "<VENV_PYTHON>",
+        "-I",
+        "<TEMP>/tamper_check.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "node",
+        "packages/repo-checks/check-structure.mjs"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "node",
+        "packages/repo-checks/check-boundaries.mjs"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "<PYTHON>",
+        "scripts/build/check_locks.py",
+        "--root",
+        "<REPO_ROOT>"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "dependency_reconciliation": {
+    "dependencies": {
+      "B02": {
+        "report_sha256": "98abe689dbfb9399d2f50f87a18376ca9a85ed4a50c938513778e312e3e67dad",
+        "status": "PASS"
+      },
+      "B03": {
+        "report_sha256": "baa07e997402a290f2602cea39a78a1acdeeb69dd7ea8c89331c84e78976338f",
+        "status": "PASS"
+      },
+      "C04": {
+        "report_sha256": "eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f",
+        "status": "PASS"
+      }
+    },
+    "status": "PASS"
+  },
+  "historical_b04_evidence": {
+    "artifact_count": 5,
+    "hashes": {
+      "build-smoke.json": "e9184f3d59b1b7b1d90cfc5ff5b418038a1fb6058fab3b369b325488befc2591",
+      "commands.jsonl": "77d10bbf83fb9b734f9a5e6767e7c8a1579ca83964d7df36365006de85c80102",
+      "reconciliation.json": "73b9671d6622a42e892e4aab7f4b29b171d3da7b46f42bb818230cc22001e258",
+      "report.json": "3b239d90f30257ef79e95caedbeb5d2b020e34710b4ddac3d5ebb07e981d775a",
+      "review.md": "5c32fb9c7e811d23ee569bd3202a2176137202e073ef5d357fa72f3de33a819d"
+    },
+    "mismatches": [],
+    "status": "PASS"
+  },
+  "source_date_epoch": 1767225600,
+  "source_snapshot_sha256": "1ef6e91e9cbfde3a026b3ace0bd9b8fee9ae33e44d74a1f4be29503784a0b565",
+  "status": "PASS"
+}

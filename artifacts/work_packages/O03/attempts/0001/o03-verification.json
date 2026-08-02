@@ -1,0 +1,78 @@
+{
+  "attempt_id": "O03-0001",
+  "exit_criteria": {
+    "counter_null_boundary_included": {
+      "evidence": [
+        "test_pack_diversity_test_assembly_keeps_counter_null_boundary_visible",
+        "test_pack_diversity_test_silent_counterevidence_drop_fails_closed",
+        "test_pack_diversity_test_typed_unresolved_counter_result_is_visible_not_silent",
+        "test_pack_diversity_test_searched_none_counter_lane_is_honestly_empty",
+        "test_pack_diversity_test_blocked_counter_lane_is_incomplete_not_complete"
+      ],
+      "status": "PASS"
+    },
+    "shared_samples_preprints_deduplicated": {
+      "evidence": [
+        "test_dependency_cluster_test_shared_dataset_and_preprint_family_merge",
+        "test_dependency_cluster_test_transitive_union_uses_weakest_confidence",
+        "test_pack_diversity_test_assembly_keeps_counter_null_boundary_visible"
+      ],
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "dependency_cluster_test": {
+      "junit": "artifacts/work_packages/O03/attempts/0001/targeted-evidence-pack.junit.xml",
+      "module": "python/epistemic_foundry/retrieval/evidence_pack/test_dependency_cluster.py",
+      "status": "PASS"
+    },
+    "pack_diversity_test": {
+      "junit": "artifacts/work_packages/O03/attempts/0001/targeted-evidence-pack.junit.xml",
+      "module": "python/epistemic_foundry/retrieval/evidence_pack/test_pack_diversity.py",
+      "status": "PASS"
+    }
+  },
+  "schema_conformance": {
+    "canonical_examples_validated": [
+      "examples/sample_evidence-dependency-cluster.json",
+      "examples/sample_evidence_pack.json"
+    ],
+    "draft": "2020-12",
+    "emitted_instances_validated_against": [
+      "schemas/evidence-dependency-cluster.schema.json",
+      "schemas/evidence-pack.schema.json"
+    ],
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "targeted_test_count": 45,
+  "typed_failure_codes_tested": [
+    "ADJUSTED_COUNT_INVALID",
+    "CITATION_TARGET_UNKNOWN",
+    "CLUSTER_HASH_MISMATCH",
+    "DEPENDENCY_TYPE_ORDER_INVALID",
+    "DEPENDENCY_TYPE_UNKNOWN",
+    "EVIDENCE_ID_DUPLICATE",
+    "EVIDENCE_NOT_RETRIEVED",
+    "EVIDENCE_ORDER_INVALID",
+    "EVIDENCE_UNACCOUNTED",
+    "EVIDENCE_UNKNOWN",
+    "FIELD_SET_INVALID",
+    "INDEPENDENT_COUNT_INVALID",
+    "INPUT_INVALID",
+    "LINK_SELF_REFERENCE",
+    "LINK_TARGET_UNKNOWN",
+    "METADATA_ONLY_EVIDENCE",
+    "PACK_RECONSTRUCTION_MISMATCH",
+    "PACK_SUBJECT_MISMATCH",
+    "REPRESENTATIVE_NOT_MEMBER",
+    "RESULT_SILENTLY_DROPPED",
+    "REVIEW_TARGET_UNKNOWN",
+    "ROLE_ASSIGNMENT_CONFLICT",
+    "ROLE_SET_INVALID",
+    "STALE_RETRIEVAL_SNAPSHOT",
+    "UNRESOLVED_CONTRADICTION",
+    "UNRESOLVED_REASON_INVALID",
+    "UNRESOLVED_UNKNOWN_RESULT"
+  ]
+}

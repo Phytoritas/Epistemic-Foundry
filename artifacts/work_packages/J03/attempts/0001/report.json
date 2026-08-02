@@ -1,0 +1,280 @@
+{
+  "attempt_id": "J03-0001",
+  "attempt_type": "J03_CONTEXT_CAPSULE_ASSEMBLY_AND_EXCLUSIONS",
+  "authority_boundary": {
+    "allowed_capabilities_and_sets_canonicalized": true,
+    "canonical_context_capsule_schema": "schemas/context-capsule.schema.json",
+    "canonical_schema_count": 127,
+    "canonical_schema_modified_by_j03": false,
+    "capsule_hash_binds_exact_canonical_preimage": true,
+    "capsule_output_deeply_frozen": true,
+    "complete_current_artifact_accounting_required": true,
+    "excluded_content_or_summary_denied": true,
+    "exclusions_are_explicit": true,
+    "freshness_binds_expiry_session_phase_run_spec_policy_and_inventory": true,
+    "generated_contract_bound_at_module_load": true,
+    "included_artifact_requires_source_hash_and_nonblank_summary": true,
+    "input_mutation_performed": false,
+    "no_clock_random_id_filesystem_or_previous_capsule_authority": true,
+    "proxy_accessor_sparse_array_and_custom_prototype_rejected": true,
+    "schema_contract_drift_fails_closed_at_module_load": true,
+    "summary_hash_binds_exact_summary_bytes": true
+  },
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "J03-0001",
+    "dependencies": {
+      "J01": {
+        "attempt_id": "J01-0001",
+        "core_evidence_id": "E0343",
+        "final_closeout_evidence_id": "E0344",
+        "report": "artifacts/work_packages/J01/attempts/0001/report.json",
+        "report_sha256": "sha256:1dccbcea776444456c2a6f7ddbf224a23b5d3b77094dec6c7943aa8a9e56344f",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_J03_0001_THEN_CONTINUE_DAG",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "capsule_rebuilt_from_canonical_state": "PASS",
+    "exclusions_and_freshness_explicit": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false
+  },
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "post-compaction recovery or the J04 compaction-resume gate",
+    "reading the live ledger, driving compaction, or resuming a session",
+    "RAH lifecycle advancement, generation binding, or completion",
+    "external actor-independent certification of this review",
+    "repository-wide release or production readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 37073,
+      "path": "artifacts/work_packages/J03/attempts/0001/build_j03_0001_evidence.py",
+      "sha256": "sha256:4713e57472595cf17f7213455f19155e3617750cd9d6cfac4829057f30fbb533"
+    },
+    {
+      "byte_size": 2285,
+      "path": "artifacts/work_packages/J03/attempts/0001/capsule-hash-test.junit.xml",
+      "sha256": "sha256:853280a44092d7cb023e96132ed9c994af349fc61893a75894b33437adf8cd9f"
+    },
+    {
+      "byte_size": 9401,
+      "path": "artifacts/work_packages/J03/attempts/0001/commands.jsonl",
+      "sha256": "sha256:534d564d7ca1e857806f0868a20d6f57212a983a5651b87ad3f737ade1268cf3"
+    },
+    {
+      "byte_size": 453,
+      "path": "artifacts/work_packages/J03/attempts/0001/dependency-status.json",
+      "sha256": "sha256:ebdb6f8250a85f28e99a0190b57dbf4648f8fcacc9b073c16175d0ddb49f6aa4"
+    },
+    {
+      "byte_size": 244544,
+      "path": "artifacts/work_packages/J03/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:346f137528f440821a9ef40924333e24459a332a38386e70441c97c148cb8fd7"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/J03/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 2503,
+      "path": "artifacts/work_packages/J03/attempts/0001/j03-verification.json",
+      "sha256": "sha256:187d663882b139969ee842e83a4561c1eb9b196bdeb7ab3a74ebf9b4a33fa978"
+    },
+    {
+      "byte_size": 26113,
+      "path": "artifacts/work_packages/J03/attempts/0001/j03_0001_rah_seal.py",
+      "sha256": "sha256:e179520a8e4be84a636a6ff258384578211b48663d017549b5c9be1b985b3de8"
+    },
+    {
+      "byte_size": 2732,
+      "path": "artifacts/work_packages/J03/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:e387f65dce2d2d7baf403728527bf83e4f7493b7ea5eaf9be34e0d0af55c8cad"
+    },
+    {
+      "byte_size": 7445,
+      "path": "artifacts/work_packages/J03/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:be9f5892bc948f00a2c2ce5e847c8f8b052e2169856572503bb53bf59d875cc2"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/J03/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:bc49d8c9f32a6843e05ba829f5badfd6c6538d74fcc702c9903729fd476139e9"
+    },
+    {
+      "byte_size": 3866,
+      "path": "artifacts/work_packages/J03/attempts/0001/review.md",
+      "sha256": "sha256:117b203c76907baa4cf34b5029dc7664193000cfbd806605434582c216164b27"
+    },
+    {
+      "byte_size": 6311,
+      "path": "artifacts/work_packages/J03/attempts/0001/run_j03_0001_checks.py",
+      "sha256": "sha256:69a33b666e0051248a2eedc4648671bca85c49642e95815d1c5d37ab26c3e982"
+    },
+    {
+      "byte_size": 1998,
+      "path": "artifacts/work_packages/J03/attempts/0001/stale-capsule-test.junit.xml",
+      "sha256": "sha256:755b01f5086fb355551ac14512224c39fa199f37348f68edf03cf9f74ec5594f"
+    },
+    {
+      "byte_size": 4085,
+      "path": "artifacts/work_packages/J03/attempts/0001/targeted-context-capsule.junit.xml",
+      "sha256": "sha256:cc920fecf4d8fac671984059986d935bb070eed86b5da43655378bfcde211655"
+    },
+    {
+      "byte_size": 1251,
+      "path": "artifacts/work_packages/J03/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:03fad4f96da074dcf3789396a23afbd195697117d62dc6dfcc7edc6122c6db09"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "binding": "BOUND_TO_LEDGER",
+    "completion_ready": false,
+    "core_evidence_id": "E0351",
+    "core_generation": "000349-89d247bf",
+    "final_closeout_evidence_id": "E0352",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 2094,
+    "implementation_gate": "fail",
+    "rah_touched_by_j03": false,
+    "retained_generation_count": 349,
+    "status": "active"
+  },
+  "ready_for_seal": true,
+  "regression": {
+    "attempt_id": "J03-0001",
+    "capsule_hash_test": {
+      "cancelled": 0,
+      "collected": 11,
+      "failed": 0,
+      "junit": "artifacts/work_packages/J03/attempts/0001/capsule-hash-test.junit.xml",
+      "junit_sha256": "sha256:853280a44092d7cb023e96132ed9c994af349fc61893a75894b33437adf8cd9f",
+      "passed": 11,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 11
+    },
+    "component_tests_are_targeted_only": true,
+    "full_node": {
+      "cancelled": 0,
+      "collected": 1291,
+      "failed": 0,
+      "junit": "artifacts/work_packages/J03/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:346f137528f440821a9ef40924333e24459a332a38386e70441c97c148cb8fd7",
+      "passed": 1291,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 1286
+    },
+    "full_python": {
+      "collected": 1261,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/J03/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+      "passed": 1261,
+      "semantic_counter_authority": "pytest_testsuite_attributes",
+      "skipped": 0,
+      "xml_testcase_count": 1261
+    },
+    "new_failure_count": 0,
+    "stale_capsule_test": {
+      "cancelled": 0,
+      "collected": 10,
+      "failed": 0,
+      "junit": "artifacts/work_packages/J03/attempts/0001/stale-capsule-test.junit.xml",
+      "junit_sha256": "sha256:755b01f5086fb355551ac14512224c39fa199f37348f68edf03cf9f74ec5594f",
+      "passed": 10,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 10
+    },
+    "status": "PASS",
+    "targeted_context_capsule": {
+      "cancelled": 0,
+      "collected": 21,
+      "failed": 0,
+      "junit": "artifacts/work_packages/J03/attempts/0001/targeted-context-capsule.junit.xml",
+      "junit_sha256": "sha256:cc920fecf4d8fac671984059986d935bb070eed86b5da43655378bfcde211655",
+      "passed": 21,
+      "semantic_counter_authority": "node_test_footer",
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 21
+    },
+    "unexpected_skip_xfail_todo_or_cancellation_count": 0
+  },
+  "required_checks": {
+    "capsule_hash_test": {
+      "module": "packages/context-capsule/src/capsule-hash.test.mjs",
+      "status": "PASS",
+      "test_count": 11
+    },
+    "stale_capsule_test": {
+      "module": "packages/context-capsule/src/stale-capsule.test.mjs",
+      "status": "PASS",
+      "test_count": 10
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Independent review of bounded-agent work by a distinct actor in this seal-prep session; not external actor-independent certification.",
+    "author": "bounded implementation agent",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "reviewer": "independent seal-prep session (distinct actor)",
+    "status": "PASS"
+  },
+  "seal_prep_only": false,
+  "status": "PASS",
+  "work_package_id": "J03",
+  "write_scope": {
+    "approved_scope": [
+      "packages/context-capsule/**"
+    ],
+    "attempt_id": "J03-0001",
+    "j03_product_file_hashes": {
+      "packages/context-capsule/package.json": "sha256:f768694a12bac2de3e187770b6f3c0c47b2226246eda22d13226e70cd3b36d4e",
+      "packages/context-capsule/src/capsule-hash.test.mjs": "sha256:89c01ee1981e93d6a6666d246c70061dbf00f5443129bde8ea034f4e263c192d",
+      "packages/context-capsule/src/context-capsule.mjs": "sha256:017b9b7d8638df51fa2f5a0a218eaf797bdca1ca64b4c02e2d8fde7f3c2c45a6",
+      "packages/context-capsule/src/index.mjs": "sha256:f92d0efb43f6bee745e0cfe442cfb0f8f3acc8002f8fecc979837a39d427a5d0",
+      "packages/context-capsule/src/stale-capsule.test.mjs": "sha256:29073639bde615df9edfe827d8c118fc8df4c12ecd3139aba6d4c8d516035ca8"
+    },
+    "j03_product_files": [
+      "packages/context-capsule/package.json",
+      "packages/context-capsule/src/capsule-hash.test.mjs",
+      "packages/context-capsule/src/context-capsule.mjs",
+      "packages/context-capsule/src/index.mjs",
+      "packages/context-capsule/src/stale-capsule.test.mjs"
+    ],
+    "reset_clean_stash_commit_push_performed": false,
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "write_scope_violation_count": 0
+  }
+}

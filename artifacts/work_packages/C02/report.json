@@ -1,0 +1,246 @@
+{
+  "work_package_id": "C02",
+  "attempt_id": "C02-0001",
+  "base_checkpoint": "C01-0004:PASS",
+  "status": "PASS",
+  "package_status": "PASS",
+  "generated_contract_status": "CONFORMANT",
+  "runtime_migration_status": "PENDING_C03",
+  "full_suite_status": "EXPECTED_FAILURES_PENDING_C03",
+  "repository_full_suite_status": "EXPECTED_MIGRATION_FAILURES",
+  "expected_failure_count": 24,
+  "migration_owner": "C03",
+  "completion_ready": false,
+  "authority_decision_id": "HD-EF4-C01-SG003-20260728-001",
+  "authority_boundary": {
+    "C01": "canonical contract authority and immutable PASS checkpoint",
+    "C02": "generated TypeScript, Python, and UI projections only",
+    "C03": "sole handwritten runtime migration owner",
+    "C04": "repository-wide zero-failure conformance gate",
+    "B04": "packaging after C04 PASS"
+  },
+  "changed_files": [
+    "packages/contracts/package.json",
+    "packages/contracts/codegen/generate.py",
+    "packages/contracts/codegen/verify.py",
+    "packages/contracts/codegen/cross_language_fixture.mjs",
+    "packages/contracts/src/generated/contract-manifest.json",
+    "packages/contracts/src/generated/models.d.ts",
+    "packages/contracts/src/generated/registry.mjs",
+    "python/epistemic_foundry/contracts/__init__.py",
+    "python/epistemic_foundry/contracts/contract-manifest.json",
+    "python/epistemic_foundry/contracts/models.py",
+    "python/epistemic_foundry/contracts/py.typed",
+    "web/src/generated/contract-manifest.json",
+    "web/src/generated/contracts.ts",
+    "artifacts/work_packages/C02/c02-contract-codegen-verification.json",
+    "artifacts/work_packages/C02/full-python-regression.junit.xml",
+    "artifacts/work_packages/C02/c02-rah-seal.py",
+    "artifacts/work_packages/C02/dependency-status.json",
+    "artifacts/work_packages/C02/commands.jsonl",
+    "artifacts/work_packages/C02/review.md",
+    "artifacts/work_packages/C02/report.json"
+  ],
+  "generation_surface": {
+    "status": "PASS",
+    "source_authority": "schemas/*.schema.json",
+    "example_authority": "examples/sample_*.json",
+    "schema_count": 124,
+    "example_count": 124,
+    "valid_example_count": 124,
+    "generated_file_count": 9,
+    "schema_bundle_sha256": "sha256:be7158b4642bb1df4f5b56ad769c84cf4e36c5f8756a5b60b853531e9abb145c",
+    "example_bundle_sha256": "sha256:24804ea2212948fc6a4b547006a459c6db7af8e854488c4272f20c0afe4e3428",
+    "manifest_sha256": "sha256:e4af39d5b08532bcc6997e862a3f70702a15f11bb24b01a6b049e49d417ef94f",
+    "deterministic_double_replay": true,
+    "three_manifest_byte_parity": true,
+    "python_model_count": 124,
+    "node_fixture_count": 124,
+    "cross_language_fixture_parity": true,
+    "typescript_version": "5.9.3",
+    "typescript_typecheck": "PASS",
+    "legacy_promotion_value_hits": 0,
+    "manual_duplicate_enum": false,
+    "production_dependency_added": false,
+    "package_lock_sha256": "sha256:32d30423475de0cadc8d5fe04802b0833f396d9bb36f78ee156d5a4306f2616a"
+  },
+  "fail_closed_contracts": [
+    "missing canonical schema",
+    "missing, duplicate, or unmapped canonical example",
+    "duplicate schema $id",
+    "duplicate schema title",
+    "generated root or $defs model-name collision",
+    "unresolved local or external schema reference",
+    "missing, stale, or extra generated file",
+    "manifest or bundle-hash divergence",
+    "cross-language fixture divergence",
+    "protected C01 or C03 file mutation",
+    "new, missing, or message-changed full-suite failure"
+  ],
+  "generated_artifact_hashes": {
+    "packages/contracts/src/generated/contract-manifest.json": "sha256:e4af39d5b08532bcc6997e862a3f70702a15f11bb24b01a6b049e49d417ef94f",
+    "packages/contracts/src/generated/models.d.ts": "sha256:2f6db9fde8009209e6fce33c6851c068babd694674759d729787035bc206e758",
+    "packages/contracts/src/generated/registry.mjs": "sha256:73a23f4e233430a1c95958cd5037596416571feccbcbce913125e7d513996b4f",
+    "python/epistemic_foundry/contracts/__init__.py": "sha256:29a58cf958579f9a2165222059603ea1c4898d85379473b00872ce237dd92095",
+    "python/epistemic_foundry/contracts/contract-manifest.json": "sha256:e4af39d5b08532bcc6997e862a3f70702a15f11bb24b01a6b049e49d417ef94f",
+    "python/epistemic_foundry/contracts/models.py": "sha256:876bde5d7447553e4a308f7fe66714328309225bbc8b310386f4cfcc8cb427da",
+    "python/epistemic_foundry/contracts/py.typed": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "web/src/generated/contract-manifest.json": "sha256:e4af39d5b08532bcc6997e862a3f70702a15f11bb24b01a6b049e49d417ef94f",
+    "web/src/generated/contracts.ts": "sha256:2c17676e8149317b2fd4b89c2b384f75bad71a8047672cf4115ef7267c871f02"
+  },
+  "full_python_regression": {
+    "status": "EXPECTED_FAILURES_PENDING_C03",
+    "collected": 855,
+    "passed": 831,
+    "failed": 24,
+    "errors": 0,
+    "skipped": 0,
+    "same_failure_node_ids_as_C01_0004": true,
+    "raw_failure_message_parity": true,
+    "new_failure_count": 0,
+    "changed_failure_message_count": 0,
+    "migration_owner": "C03",
+    "junit_artifact": "artifacts/work_packages/C02/full-python-regression.junit.xml",
+    "junit_sha256": "sha256:13ca652d4efad7ff290781a42834d9b61a0cb82a8f81fece852c356beea6f5bc",
+    "authority_artifact": "artifacts/work_packages/C01/attempts/0004/runtime-migration-impact.json",
+    "authority_sha256": "sha256:3c35cc5cfe003055f2e039a4837e74527a843c4ed6795eee1d28b56954d36877"
+  },
+  "protected_file_audit": {
+    "status": "PASS",
+    "protected_file_count": 10,
+    "mismatch_count": 0,
+    "C03_runtime_and_test_files_unchanged": true,
+    "C01_closeout_files_unchanged": true
+  },
+  "checks": [
+    {
+      "command_id": "C02-0001-C003",
+      "name": "codegen clean diff",
+      "exit_code": 0
+    },
+    {
+      "command_id": "C02-0001-C004",
+      "name": "deterministic contract code-generation verification",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C02/c02-contract-codegen-verification.json"
+    },
+    {
+      "command_id": "C02-0001-C005",
+      "name": "cross-language package-export fixture check",
+      "exit_code": 0
+    },
+    {
+      "command_id": "C02-0001-C006",
+      "name": "TypeScript 5.9.3 strict typecheck",
+      "exit_code": 0
+    },
+    {
+      "command_id": "C02-0001-C009",
+      "name": "full Python regression",
+      "exit_code": 1,
+      "expected_by_decision": true,
+      "artifact": "artifacts/work_packages/C02/full-python-regression.junit.xml"
+    },
+    {
+      "command_id": "C02-0001-C011",
+      "name": "write-scope, protected history, dependency, cache, and diff audit",
+      "exit_code": 0
+    },
+    {
+      "command_id": "C02-0001-C012",
+      "name": "user-authorized primary-session separate contract review",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C02/review.md"
+    },
+    {
+      "command_id": "C02-0001-C014",
+      "name": "C02 core PASS evidence append with generation preservation",
+      "exit_code": 0,
+      "artifact": ".rah/ralph/generations/000007-1e720769/evidence_ledger.json#/entries/7"
+    },
+    {
+      "command_id": "C02-0001-C015",
+      "name": "C02 core RAH generation and resume verification",
+      "exit_code": 0,
+      "artifact": ".rah/ralph/generations/000007-1e720769/generation-manifest.json"
+    }
+  ],
+  "review": {
+    "reviewer": "primary-session contract review",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_PASS",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_REVIEW",
+    "product_owner_review_approval": true,
+    "actor_separate_subagent_used": false,
+    "blocking_findings": [],
+    "assurance_limitation": "The product-owner shared contract forbids Fleet and subagents for this serial sequence. This review is procedurally separate but not actor-independent, and no external certification is claimed."
+  },
+  "output_artifacts": [
+    "packages/contracts/src/generated/contract-manifest.json",
+    "packages/contracts/src/generated/models.d.ts",
+    "packages/contracts/src/generated/registry.mjs",
+    "python/epistemic_foundry/contracts/__init__.py",
+    "python/epistemic_foundry/contracts/contract-manifest.json",
+    "python/epistemic_foundry/contracts/models.py",
+    "python/epistemic_foundry/contracts/py.typed",
+    "web/src/generated/contract-manifest.json",
+    "web/src/generated/contracts.ts",
+    "artifacts/work_packages/C02/c02-contract-codegen-verification.json",
+    "artifacts/work_packages/C02/full-python-regression.junit.xml",
+    "artifacts/work_packages/C02/c02-rah-seal.py",
+    "artifacts/work_packages/C02/dependency-status.json",
+    "artifacts/work_packages/C02/commands.jsonl",
+    "artifacts/work_packages/C02/review.md",
+    "artifacts/work_packages/C02/report.json"
+  ],
+  "rah_state": {
+    "core_parent_generation": "000006-6dc736b8",
+    "core_generation": "000007-1e720769",
+    "core_evidence_id": "E0008",
+    "final_closeout_evidence_id": "E0009",
+    "generation_manifest_verified": true,
+    "retained_generation_manifest_count": 7,
+    "generation_file_hashes_verified_per_generation": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "flat_snapshot_content_matches": 6,
+    "retained_generations": [
+      "000001-8cce4954",
+      "000002-e90aad20",
+      "000003-42a86d6d",
+      "000004-d7a75c37",
+      "000005-839fd321",
+      "000006-6dc736b8",
+      "000007-1e720769"
+    ],
+    "parse_errors": {},
+    "status": "active",
+    "completion_ready": false,
+    "next_package": "C03"
+  },
+  "open_risks": [
+    "The repository-wide Python suite still has the exact 24 C03-owned runtime migration failures; C02 does not report the full suite PASS.",
+    "Generated language types are transport projections bound to canonical schema hashes and are not substitute Draft 2020-12 semantic validators.",
+    "Review is user-authorized primary-session procedural review rather than actor-independent assurance because Fleet and subagents are forbidden in this fixed sequence."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "handwritten EvolutionRunSpec and PromotionDecision runtime conformance, which belongs to C03",
+    "repository-wide zero-failure conformance, which belongs to C04",
+    "B04 canonical registry packaging, sdist/wheel reproducibility, and clean-wheel installation",
+    "production REST handlers, persistence, runtime authorization, or transport behavior",
+    "external actor-independent assurance"
+  ],
+  "dependency_state": {
+    "A04": "PASS",
+    "A05": "PASS",
+    "C01": "PASS",
+    "C02": "PASS",
+    "C03": "READY",
+    "C04": "WAITING_ON_C03",
+    "B04": "WAITING_ON_C04",
+    "full_156_package_dag_recomputed": false,
+    "subsequent_dag_execution_started": false
+  },
+  "next_ready": [
+    "C03"
+  ]
+}

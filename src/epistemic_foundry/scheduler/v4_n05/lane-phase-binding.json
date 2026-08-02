@@ -1,0 +1,29 @@
+{
+  "$comment": "Which declared EVOLVE workflow nodes each scheduler lane drives. Kept as data, not Python literals, so the lane module holds no node identity of its own (EF4-I22). The loader reads the node vocabulary from the F05 graph loader and requires every identity here to be one the workflow declares, and requires each lane's nodes to depend transitively on the previous lane's nodes, so a workflow edit fails loudly here instead of letting the scheduler claim a phase progression the graph never described.",
+  "binding_contract": "epistemic-foundry-lane-phase-binding/v1",
+  "lanes": {
+    "evaluated": {
+      "node_ids": [
+        "compute_constrained_fitness_vectors",
+        "run_contract_and_static_stages",
+        "run_evidence_simulation_adversarial_stages"
+      ],
+      "reason": "the evaluation lane drives the staged evaluation of a generated candidate, from the contract and static stages through the evidence, simulation and adversarial stages to the constrained fitness vector that concludes the work"
+    },
+    "generated": {
+      "node_ids": [
+        "generate_challenge_candidates",
+        "generate_experiment_candidates",
+        "generate_hypothesis_candidates"
+      ],
+      "reason": "the proposal lane drives the typed mutation nodes that turn a proposed identity into a generated candidate genome, and nothing downstream of them"
+    },
+    "persisted": {
+      "node_ids": [
+        "commit_evolution_checkpoint",
+        "issue_hypothesis_passport_revisions"
+      ],
+      "reason": "the persistence lane drives the nodes that write an evaluated candidate into durable state, the passport revision and the atomic checkpoint, which are the only nodes whose completion makes a candidate persisted"
+    }
+  }
+}

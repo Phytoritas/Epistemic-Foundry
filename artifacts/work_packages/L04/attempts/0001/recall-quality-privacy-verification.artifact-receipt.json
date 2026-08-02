@@ -1,0 +1,38 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "L04-0001-RECALL-QUALITY-PRIVACY-VERIFICATION",
+  "byte_size": 4591,
+  "content_hash": "sha256:fff23b0ccdf8e2fe51cc54aeaa497f6bdf96c86aedec37a5127cbd808684e6e2",
+  "created_at": "2026-07-31T00:05:12.345Z",
+  "created_by": {
+    "actor_id": "L04-0001-PRIMARY-SESSION-VERIFIER",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/L04/attempts/0001/recall-quality-privacy-verification.json",
+  "media_type": "application/json",
+  "receipt_hash": "sha256:17173033d369b97e53bc3afd511b967272de731be745a3386d1da86593967f08",
+  "receipt_id": "AR-L04-0001-RECALL-QUALITY-PRIVACY-VERIFICATION",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "recall_precision_test",
+      "details": "10/10 exact needed-fact, bounded top-k, dedupe, redaction, replay, and receipt cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "cross_workspace_leak_test",
+      "details": "15/15 default-deny, consent, class/workspace isolation, injection, raw-text, and fail-closed cases pass",
+      "status": "PASS"
+    },
+    {
+      "check": "memory_pipeline_regression",
+      "details": "L01 27/27, L02 41/41, L03 44/44",
+      "status": "PASS"
+    },
+    {
+      "check": "full_regression",
+      "details": "Node 613/613, Python 1064/1064, codegen 126/126, no suppression",
+      "status": "PASS"
+    }
+  ]
+}

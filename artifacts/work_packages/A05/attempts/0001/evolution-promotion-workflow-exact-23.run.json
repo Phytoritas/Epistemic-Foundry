@@ -1,0 +1,20 @@
+{
+  "attempt_id": "A05-0001",
+  "check": "evolution-promotion-workflow-exact-23",
+  "command": [
+    "uv",
+    "run",
+    "--locked",
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/governance/a05/test_a05_gate_registry.py::test_a05_registry_promotion_workflow_binding_passes_on_the_canonical_file",
+    "tests/governance/a05/test_a05_gate_registry.py::test_a05_registry_workflow_tampering_fails_closed",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=C:\\dev\\insight\\Epistemic-Foundry\\artifacts\\work_packages\\A05\\attempts\\0001\\evolution-promotion-workflow-exact-23.junit.xml"
+  ],
+  "exit_code": 0,
+  "status": "PASS"
+}

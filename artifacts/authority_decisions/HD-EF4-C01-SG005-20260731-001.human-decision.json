@@ -1,0 +1,37 @@
+{
+  "decision_id": "HD-EF4-C01-SG005-20260731-001",
+  "run_id": null,
+  "subject_id": "C01-SG005",
+  "decision_type": "correct",
+  "decision": "Resolve C01-SG005 prospectively by preserving C01-0008 as immutable SPEC_GAP history and authorizing the exact serial correction and revalidation sequence J02-0004, S04-0004, C01-0009, C02-0004, B04-0009, O02-0002, C04-0004, and the next-unused B04 final packaging attempt. J02-0004 may correct only plugins/epistemic-foundry/skills/skill-inventory.json and its package evidence; S04-0004 may correct only manifests/source_bindings/development-manifest.binding.json and its package evidence. J02 must bind every MASTER_SPEC authority source to the current bytes and recompute inventory_hash. S04 must create a new immutable binding revision for the current development manifest while preserving lineage, authorizing-decision binding, and its self-hash. C01-0009 must rerun its targeted, full Python, and full Node gates. No later attempt may start after a non-PASS result.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "C01-0008 verified a conformant 127-schema and 127-example RetrievalCandidate contract but correctly stopped because two J02 tests still observed the prior MASTER_SPEC authority hash and one S04 test still observed the prior development-manifest successor hash. The two unchanged projection files belong to J02 and S04 and exactly match their earlier PASS evidence, so C01 could not correct them without a new cross-package authority decision. This decision grants only those exact corrections, preserves all prior attempts and the dirty worktree, forbids schema weakening and skip or xfail masking, forbids Fleet and subagents, and keeps completion_ready false.",
+  "evidence_artifact_ids": [
+    "C01-SG005_무엇을_승인해야_하는가.md",
+    "artifacts/work_packages/C01/attempts/0008/report.json",
+    "artifacts/work_packages/C01/attempts/0008/full-regression-impact.json",
+    "artifacts/work_packages/C01/attempts/0008/review.md",
+    "RAH:E0089",
+    "RAH:generation:000088-768298c8"
+  ],
+  "affected_artifact_ids": [
+    "plugins/epistemic-foundry/skills/skill-inventory.json",
+    "manifests/source_bindings/development-manifest.binding.json",
+    "artifacts/work_packages/J02/attempts/0004/**",
+    "artifacts/work_packages/S04/attempts/0004/**",
+    "artifacts/work_packages/C01/attempts/0009/**",
+    "J02-0004",
+    "S04-0004",
+    "C01-0009",
+    "C02-0004",
+    "B04-0009",
+    "O02-0002",
+    "C04-0004",
+    "B04-next-unused-final-packaging"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-31T00:00:00Z",
+  "decision_hash": "sha256:b833da71edfd31f8a41da371baad9aa75775d527ded2617b9a0b41d2353e028b"
+}

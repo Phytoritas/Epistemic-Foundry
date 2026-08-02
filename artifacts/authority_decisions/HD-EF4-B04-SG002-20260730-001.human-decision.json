@@ -1,0 +1,39 @@
+{
+  "decision_id": "HD-EF4-B04-SG002-20260730-001",
+  "run_id": null,
+  "subject_id": "B04-SG002",
+  "decision_type": "correct",
+  "decision": "Resolve B04-SG002 prospectively. Preserve B04-0006 canonical projection as verified PASS and its package status as SPEC_GAP. Assign C03 as the bounded runtime migration owner for canonical GateDecision and HoldoutManifest production, authorize only the six exact additional C03 implementation and test paths plus C03 evidence, and authorize serial pre-C04 correction attempts F04-0002, J02-0003, and S04-0003. After those PASS, require B04-0007 projection and regression revalidation, C04-0002 full conformance, B04-0008 final packaging, and then 156-package DAG recomputation. Preserve all prior attempts, reports, reviews, commands, RAH evidence, generations, and the dirty worktree; prohibit schema weakening, failure masking, silent fallback, static dependency cycles, Fleet, subagents, and premature completion.",
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "rationale": "B04-0006 proved exact 126-schema plus one-OpenAPI projection and installed-package integrity, but the activated contracts exposed 51 GateDecision runtime failures, 15 HoldoutManifest runtime errors, seven F04 fixture failures, two J02 sealed-inventory failures, one S04 active-binding failure, and one pre-existing J02 dependency debt. The active manifest did not assign the two runtime producers and their direct tests to a migration owner or authorize the required pre-C04 correction sequence. This decision supplies only that missing ownership and attempt ordering without changing canonical source authority or relabeling prior evidence.",
+  "evidence_artifact_ids": [
+    "B04-SG002_무엇을_승인해야_하는가.md",
+    "artifacts/work_packages/B04/attempts/0006/report.json",
+    "artifacts/work_packages/B04/attempts/0006/full-regression-impact.json",
+    "artifacts/work_packages/B04/attempts/0006/node-failure-inventory.json",
+    "RAH:E0107",
+    "RAH:E0108",
+    "RAH:generation:000099-8ad30098"
+  ],
+  "affected_artifact_ids": [
+    "manifests/development_manifest.yaml",
+    "src/epistemic_foundry/foundry_kernel/gates.py",
+    "src/epistemic_foundry/verifier_firewall/firewall.py",
+    "tests/test_evidence_parliament.py",
+    "tests/test_foundry_kernel.py",
+    "tests/test_product_invariants.py",
+    "tests/test_verifier_firewall.py",
+    "C03-0003",
+    "F04-0002",
+    "J02-0003",
+    "S04-0003",
+    "B04-0007",
+    "C04-0002",
+    "B04-0008"
+  ],
+  "supersedes_decision_id": null,
+  "non_mutation_acknowledgement": true,
+  "created_at": "2026-07-30T11:20:57Z",
+  "decision_hash": "sha256:421c238aa3bdb2a2e961a1c4c1a87f3c580a4affec1253439ddd842d8bbb4448"
+}

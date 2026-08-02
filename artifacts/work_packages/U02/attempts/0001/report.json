@@ -1,0 +1,246 @@
+{
+  "attempt_id": "U02-0001",
+  "attempt_type": "U02_DASHBOARD_SHELL_AUTH_HEALTH_STATES",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "U02-0001",
+    "dependencies": {
+      "U01": {
+        "attempt_id": "U01-0001",
+        "core_evidence_id": "E0199",
+        "final_closeout_evidence_id": "E0200",
+        "report": "artifacts/work_packages/U01/attempts/0001/report.json",
+        "report_sha256": "sha256:f7fd6b37c297466a25eec37f70e29f12a66a3346876a88d3ce4c63b3078a3a8a",
+        "status": "PASS"
+      }
+    },
+    "next_action": "SEAL_U02_0001_THEN_RECOMPUTE_DAG",
+    "regression_baseline": {
+      "attempt_id": "R06-0001",
+      "core_evidence_id": "E0223",
+      "final_closeout_evidence_id": "E0224",
+      "report": "artifacts/work_packages/R06/attempts/0001/report.json",
+      "report_sha256": "sha256:ca4f56d06df2e3675c80acccc8c74e35a3b8b1a808294537beeb1f8996e6d4c3",
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "empty_confirmed_differs_from_unavailable": "PASS",
+    "loopback_auth_csrf_csp": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": true
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "a running web server, backend, or live HTTP endpoint",
+    "authority acquisition by any view, client, auth state or health receipt",
+    "security beyond the loopback auth/CSRF/CSP posture",
+    "any conflation of EMPTY_CONFIRMED with UNAVAILABLE",
+    "actor-independent external certification of this review",
+    "overall product completion or release readiness",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 27404,
+      "path": "artifacts/work_packages/U02/attempts/0001/build_u02_0001_evidence.py",
+      "sha256": "sha256:c22d1152034d3d250c33965f8c986fecb3970d86e34dcb9a9788ad7c1e4d1d06"
+    },
+    {
+      "byte_size": 8567,
+      "path": "artifacts/work_packages/U02/attempts/0001/commands.jsonl",
+      "sha256": "sha256:f02fde177f14f828e774a10d5fbf052ff0f0498c9b1b4f7572ce5993286df989"
+    },
+    {
+      "byte_size": 6637,
+      "path": "artifacts/work_packages/U02/attempts/0001/degraded-state-test.junit.xml",
+      "sha256": "sha256:95cacdd0a3dbb5436ba0c2eaab66eda4983c68af98b81116c789007c89ebc374"
+    },
+    {
+      "byte_size": 780,
+      "path": "artifacts/work_packages/U02/attempts/0001/dependency-status.json",
+      "sha256": "sha256:1f13c0252e338c304ad59acd9490dac96666ee42ea3c96f759c3f66359a9ba88"
+    },
+    {
+      "byte_size": 226693,
+      "path": "artifacts/work_packages/U02/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:3013868265f0bd161c9d51295f53484a29050ca8d085edd0c1e9224d72c505ea"
+    },
+    {
+      "byte_size": 1472,
+      "path": "artifacts/work_packages/U02/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:8e520b61c408a3d17b0fe212c45e7275f3939a2998402b513d6c29d05113d9d8"
+    },
+    {
+      "byte_size": 7019,
+      "path": "artifacts/work_packages/U02/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:c835f3e1eae7fee52c787dbde28a4627a2638c13bd99a59d42e39a07c13f7841"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/U02/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:11259bda9d498bc028c20e7446f26e65166bd9635ccf293b800aa8e80b8277a5"
+    },
+    {
+      "byte_size": 2073,
+      "path": "artifacts/work_packages/U02/attempts/0001/review.md",
+      "sha256": "sha256:e4725fc063e8056c109d45adc0ca6515cea05a20d914d8fd6960ce422c604885"
+    },
+    {
+      "byte_size": 8608,
+      "path": "artifacts/work_packages/U02/attempts/0001/run_u02_0001_checks.py",
+      "sha256": "sha256:3ff3dccabf134ff73ce6b08205b318afaa53254faba2db18fd63f6999806dd69"
+    },
+    {
+      "byte_size": 1477,
+      "path": "artifacts/work_packages/U02/attempts/0001/u02-verification.json",
+      "sha256": "sha256:676b42eba4d128b3dda750a2fa4be438efd784a5f5961d7fb7840808c25bbf25"
+    },
+    {
+      "byte_size": 25391,
+      "path": "artifacts/work_packages/U02/attempts/0001/u02_0001_rah_seal.py",
+      "sha256": "sha256:99db75bf720bd5a0afa266835020ceb8e8e301f561f95db2f86ec8ab30c5e6ad"
+    },
+    {
+      "byte_size": 7825,
+      "path": "artifacts/work_packages/U02/attempts/0001/ui-security-test.junit.xml",
+      "sha256": "sha256:3b3c9630da6967f2471d327e4832cab5c889d27205f0403cd03906b69cb5a002"
+    },
+    {
+      "byte_size": 2286,
+      "path": "artifacts/work_packages/U02/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:25d51c05fc010a67caa3c6ce721358a27af6ab6c5008e09159566ee50bfad728"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0225",
+    "core_generation": "000223-aac36df3",
+    "final_closeout_evidence_id": "E0226",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1338,
+    "implementation_gate": "fail",
+    "retained_generation_count": 223,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "U02-0001",
+    "full_node_inventory_is_integration_owned": true,
+    "new_failure_count": 0,
+    "regression_baseline_attempt": "R06-0001",
+    "status": "PASS",
+    "suites": {
+      "degraded_state_test": {
+        "cancelled": 0,
+        "collected": 37,
+        "failed": 0,
+        "junit": "artifacts/work_packages/U02/attempts/0001/degraded-state-test.junit.xml",
+        "junit_sha256": "sha256:95cacdd0a3dbb5436ba0c2eaab66eda4983c68af98b81116c789007c89ebc374",
+        "passed": 37,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 37
+      },
+      "full_node_suite": {
+        "cancelled": 0,
+        "collected": 1192,
+        "failed": 0,
+        "junit": "artifacts/work_packages/U02/attempts/0001/full-node-suite.junit.xml",
+        "junit_sha256": "sha256:3013868265f0bd161c9d51295f53484a29050ca8d085edd0c1e9224d72c505ea",
+        "passed": 1192,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 1187
+      },
+      "ui_security_test": {
+        "cancelled": 0,
+        "collected": 45,
+        "failed": 0,
+        "junit": "artifacts/work_packages/U02/attempts/0001/ui-security-test.junit.xml",
+        "junit_sha256": "sha256:3b3c9630da6967f2471d327e4832cab5c889d27205f0403cd03906b69cb5a002",
+        "passed": 45,
+        "semantic_counter_authority": "node_test_footer",
+        "skipped": 0,
+        "todo": 0,
+        "xml_error_count": 0,
+        "xml_failure_count": 0,
+        "xml_testcase_count": 45
+      }
+    }
+  },
+  "required_checks": {
+    "degraded_state_test": {
+      "junit": "artifacts/work_packages/U02/attempts/0001/degraded-state-test.junit.xml",
+      "status": "PASS",
+      "test_count": 37
+    },
+    "ui_security_test": {
+      "junit": "artifacts/work_packages/U02/attempts/0001/ui-security-test.junit.xml",
+      "status": "PASS",
+      "test_count": 45
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (a bounded implementation agent authored, a separate sealing agent reviewed); external actor-independent certification does not.",
+    "author": "bounded implementation agent",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "reviewer": "separate sealing agent (did not author U02)",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "work_package_id": "U02",
+  "write_scope": {
+    "approved_scope": [
+      "web/src/app/**",
+      "web/src/features/health/**"
+    ],
+    "attempt_id": "U02-0001",
+    "authored_by": "bounded implementation agent under the product owner's instruction",
+    "composed_modules_modified": false,
+    "product_file_hashes": {
+      "web/src/app/app-adversarial.test.mjs": "sha256:88cc24eb8ff9775a3c793d1e746c1087001786c162fc9aae83c434b9f44aa873",
+      "web/src/app/app-contract.test.mjs": "sha256:79417fa5eaa9c29e55996f66257a147d88cfec89d3357119ed563befdf4bd6f3",
+      "web/src/app/app-test-fixtures.mjs": "sha256:85800b28e52d4093c15c71091a41407cfd9cd4ef108a44e59abdc5ca1c806c22",
+      "web/src/app/auth.mjs": "sha256:4f0419497b193c65e5c6008fca92d1736dd2f1b49faf35e4b2380b09ab03cd2a",
+      "web/src/app/index.mjs": "sha256:c34483e8980fe5b8c54af45452f5895cc43e14ae33de4a014d0738ab04a247d2",
+      "web/src/app/record-hash.mjs": "sha256:2c116d9b9f453a9c67ac898164be970d0e9cefea413b90500a78a68688b88069",
+      "web/src/app/shell-adversarial.test.mjs": "sha256:a13324ff26a07b42155cbdd47e67897ba62d2ee94e2414f77b169eb4e8f0e841",
+      "web/src/app/shell-contract.test.mjs": "sha256:9a0e2a68f9c8b9593a8d58223900f21884419033bccf4b76b380cf187eb7b557",
+      "web/src/app/shell-schema.test.mjs": "sha256:8be1d8ff3b390cdd1268140e6bc7e7474373b56b5312bbb83a0c10a140429fdd",
+      "web/src/app/shell.mjs": "sha256:a30a0fc2d6cfc4bad2a6f372727d22425bf4a725946562ae667957c2742cb365",
+      "web/src/features/health/health-states.test.mjs": "sha256:48dbe820ee760b1bc558f182fbe4cd2fdf5e9a4abdd09256d8b5e36f9d6198c0",
+      "web/src/features/health/health-test-fixtures.mjs": "sha256:82f5c25861add4a0cfc13a8d87eb274317169c2e628ae16006f39f0bde821aa3",
+      "web/src/features/health/health-view.mjs": "sha256:105c195a87c6abcf68b74ccdbe05d7d2b2e333cb45ad860a92153d2ccdec115c",
+      "web/src/features/health/index.mjs": "sha256:3a77daac937fcfb23171e5494ee2e0431955bec3b345663d024c5b1e3b96c156"
+    },
+    "product_roots": [
+      "web/src/app",
+      "web/src/features/health"
+    ],
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "separate sealing agent, distinct from the author (independent review)",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": true,
+    "write_scope_violation_count": 0
+  }
+}

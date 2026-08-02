@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/challenge-genome.schema.json",
+  "title": "ChallengeGenome",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "challenge_genome_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_genome_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "challenge_class": {
+      "enum": [
+        "counterexample",
+        "null_model",
+        "confounder",
+        "measurement_artifact",
+        "scope_shift",
+        "ood_shift",
+        "leakage_probe",
+        "adversarial_input",
+        "replication_failure"
+      ]
+    },
+    "construction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "success_criterion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "safety_class": {
+      "enum": [
+        "safe",
+        "controlled",
+        "restricted"
+      ]
+    },
+    "lineage_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "challenge_genome_id",
+    "target_genome_id",
+    "challenge_class",
+    "construction",
+    "success_criterion",
+    "required_capabilities",
+    "safety_class",
+    "lineage_id"
+  ],
+  "description": "Red Queen 반증 집단이 생성하는 반례·교란·누수·OOD 공격을 타입화한다."
+}

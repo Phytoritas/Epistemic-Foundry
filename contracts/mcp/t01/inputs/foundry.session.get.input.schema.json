@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t01/inputs/foundry.session.get.input.schema.json",
+  "title": "FoundrySessionGetInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "workspace_id",
+    "session_id"
+  ]
+}

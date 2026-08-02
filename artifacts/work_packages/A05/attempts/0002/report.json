@@ -1,0 +1,129 @@
+{
+  "work_package_id": "A05",
+  "attempt_id": "A05-0002",
+  "base_checkpoint": "A04:PASS",
+  "status": "PASS",
+  "authority_decision_id": "HD-EF4-A05-C01-B04-20260727-001",
+  "authority_decision_hash": "sha256:9c09bc531bb69df8b6394157651fc681e13dbfb8027e5a3713fa65a073733e59",
+  "supersedes": {
+    "attempt": "A05-0001",
+    "status": "SPEC_GAP",
+    "report_path": "artifacts/work_packages/A05/report.json",
+    "report_sha256": "9454f609060d652bcb4073e2da85dccfdfce79298337dbf8ae0233ff5c651b13",
+    "gap_ids": [
+      "A05-SG001",
+      "A05-SG002"
+    ],
+    "history_preserved": true
+  },
+  "resolving_evidence": [
+    "artifacts/authority_decisions/EF4-A05-C01-B04-SHARED-CONTRACT.human-decision.json",
+    "artifacts/authority_decisions/EF4-A05-C01-B04-SHARED-CONTRACT.md",
+    "docs/v4_a05/evolution_authority_and_promotion_charter.md",
+    "docs/v4_a05/adversarial_contract_tests.md",
+    "artifacts/work_packages/A05/attempts/0002/authority-contract-verification.json",
+    "artifacts/work_packages/A05/attempts/0002/review.md"
+  ],
+  "changed_files": [
+    "docs/v4_a05/evolution_authority_and_promotion_charter.md",
+    "docs/v4_a05/adversarial_contract_tests.md",
+    "artifacts/work_packages/A05/attempts/0002/authority-contract-verifier.py",
+    "artifacts/work_packages/A05/attempts/0002/authority-contract-verification.json",
+    "artifacts/work_packages/A05/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/A05/attempts/0002/review.md",
+    "artifacts/work_packages/A05/attempts/0002/report.json"
+  ],
+  "checks": [
+    {
+      "command_id": "A05-0002-C002",
+      "name": "deterministic authority contract verification",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A05/attempts/0002/authority-contract-verification.json"
+    },
+    {
+      "command_id": "A05-0002-C003",
+      "name": "verifier compilation",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A05/attempts/0002/commands.jsonl#A05-0002-C003"
+    },
+    {
+      "command_id": "A05-0002-C004",
+      "name": "targeted governance and evolution tests",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A05/attempts/0002/commands.jsonl#A05-0002-C004"
+    },
+    {
+      "command_id": "A05-0002-C005",
+      "name": "full Python regression",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A05/attempts/0002/commands.jsonl#A05-0002-C005"
+    },
+    {
+      "command_id": "A05-0002-C007",
+      "name": "user-authorized primary-session separate contract review",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A05/attempts/0002/review.md"
+    },
+    {
+      "command_id": "A05-0002-C008",
+      "name": "scope, history, encoding, and diff integrity audit",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/A05/attempts/0002/commands.jsonl#A05-0002-C008"
+    }
+  ],
+  "review": {
+    "reviewer": "primary-session contract review",
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_PASS",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_REVIEW",
+    "product_owner_review_approval": true,
+    "actor_separate_subagent_used": false,
+    "procedurally_separate_from_authoring": true,
+    "blocking_findings": [],
+    "assurance_limitation": "The product owner prohibited Fleet and subagents. This review is procedurally separate but not actor-independent, and no external certification is claimed."
+  },
+  "contract_summary": {
+    "resolved_reference_tuple_fields": 9,
+    "resolved_reference_keys": 21,
+    "promotion_levels": 6,
+    "canonical_gate_count": 15,
+    "workflow_steps": 18,
+    "negative_contract_tests": 24,
+    "positive_boundary_controls": 4,
+    "schema_workflow_runtime_files_modified_by_a05": 0,
+    "production_runtime_implemented_by_a05": false
+  },
+  "resolved_spec_gaps": [
+    {
+      "id": "A05-SG001",
+      "resolution": "The charter defines the complete immutable resolved-reference tuple, inventory, hash/canonicalization, floating-reference, remote-model, seal, revision, and typed-failure contract."
+    },
+    {
+      "id": "A05-SG002",
+      "resolution": "The charter fixes the six-level vocabulary, G00-G14 authority order and applicability, replication ceilings, Parliament/attestation/approval separation, and receipt-bound idempotent CAS workflow."
+    }
+  ],
+  "output_artifacts": [
+    "docs/v4_a05/evolution_authority_and_promotion_charter.md",
+    "docs/v4_a05/adversarial_contract_tests.md",
+    "artifacts/work_packages/A05/attempts/0002/authority-contract-verifier.py",
+    "artifacts/work_packages/A05/attempts/0002/authority-contract-verification.json",
+    "artifacts/work_packages/A05/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/A05/attempts/0002/review.md",
+    "artifacts/work_packages/A05/attempts/0002/report.json"
+  ],
+  "open_risks": [
+    "The A05 charter is a canonical contract, not evidence that C01 schemas or later promotion runtime behavior are implemented.",
+    "Review is user-authorized primary-session procedural review rather than actor-independent assurance because Fleet and subagents were prohibited.",
+    "The preserved dirty worktree still causes seven PACKAGE_MANIFEST diagnostics outside A05's write scope."
+  ],
+  "not_verified": [
+    "C01 schema realization of the A05 contract",
+    "production evaluator/holdout isolation, promotion execution, crash recovery, and ledger reconciliation",
+    "external actor-independent assurance"
+  ],
+  "next_ready": [
+    "C01",
+    "A06"
+  ],
+  "blocked_dependents": []
+}

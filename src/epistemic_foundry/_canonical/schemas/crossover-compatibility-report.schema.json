@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/crossover-compatibility-report.schema.json",
+  "title": "CrossoverCompatibilityReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 2
+    },
+    "scope_compatibility": {
+      "enum": [
+        "compatible",
+        "conditional",
+        "incompatible",
+        "unknown"
+      ]
+    },
+    "measurement_compatibility": {
+      "enum": [
+        "compatible",
+        "stratify",
+        "incompatible",
+        "unknown"
+      ]
+    },
+    "causal_compatibility": {
+      "enum": [
+        "compatible",
+        "requires_new_assumption",
+        "incompatible",
+        "unknown"
+      ]
+    },
+    "unit_compatibility": {
+      "enum": [
+        "compatible",
+        "convertible",
+        "incompatible",
+        "unknown"
+      ]
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required_repairs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "decision": {
+      "enum": [
+        "ALLOW",
+        "ALLOW_WITH_REPAIR",
+        "REJECT",
+        "NOT_ASSESSED"
+      ]
+    },
+    "report_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "report_id",
+    "candidate_ids",
+    "scope_compatibility",
+    "measurement_compatibility",
+    "causal_compatibility",
+    "unit_compatibility",
+    "conflicts",
+    "required_repairs",
+    "decision",
+    "report_hash"
+  ],
+  "description": "서로 다른 후보의 범위·측정·인과·단위 호환성을 교차 전 검사한다."
+}

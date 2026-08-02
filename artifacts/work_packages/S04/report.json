@@ -1,0 +1,132 @@
+{
+  "work_package_id": "S04",
+  "base_checkpoint": "S02:PASS,S03:PASS",
+  "status": "PASS",
+  "implementation_status": "GATE_IMPLEMENTED",
+  "scope": "S01-S03 trust, execution-policy, and Skill Vault primitives only",
+  "production_security_qualified": false,
+  "changed_files": [
+    "tests/security/s04-red-team.test.mjs",
+    "tests/security/s04-threat-model-traceability.test.mjs",
+    "artifacts/work_packages/S04/threat_model_traceability.json",
+    "artifacts/work_packages/S04/commands.jsonl",
+    "artifacts/work_packages/S04/review.md",
+    "artifacts/work_packages/S04/report.json"
+  ],
+  "checks": [
+    {
+      "command": "security_gate",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S04/commands.jsonl#S04-C005"
+    },
+    {
+      "command": "threat_model_traceability",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S04/commands.jsonl#S04-C006"
+    },
+    {
+      "command": "S01-S04 integrated security regression",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S04/commands.jsonl#S04-C007"
+    },
+    {
+      "command": "npm run check:structure",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S04/commands.jsonl#S04-C008"
+    },
+    {
+      "command": "npm run check:boundaries",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S04/commands.jsonl#S04-C009"
+    },
+    {
+      "command": "uv run --locked pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S04/commands.jsonl#S04-C010"
+    },
+    {
+      "command": "uv run --locked python scripts/build/double_build.py",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S04/commands.jsonl#S04-C011"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S04/commands.jsonl#S04-C012"
+    },
+    {
+      "command": "S04 exact approval-subject hash audit",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S04/commands.jsonl#S04-C013"
+    },
+    {
+      "command": "S04 independent approval gate",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/S04/commands.jsonl#S04-C015"
+    }
+  ],
+  "exit_criteria": [
+    {
+      "criterion": "zero critical unresolved findings",
+      "implementation_status": "PASS",
+      "evidence": "The drift-checked matrix reports zero unresolved current-scope CRITICAL findings. One HIGH static token-shape limitation is explicitly retained as S04-NF001 and blocks exhaustive detector and production claims without weakening the composite hostile-package denial."
+    },
+    {
+      "criterion": "hook bypass limitations documented",
+      "implementation_status": "PASS",
+      "evidence": "Five tested limitations state that hooks are guardrails, some hosted paths may be unobserved, primitives are not an OS sandbox, effect adapters remain future scope, and DNS, quotas, and effect-time receipts are not implemented here."
+    }
+  ],
+  "traceability": {
+    "owned_lenses": 24,
+    "canonical_plugin_threats": 20,
+    "source_bindings": 9,
+    "hook_bypass_limitations": 5,
+    "current_scope_critical_findings": 0,
+    "current_scope_noncritical_findings": 1,
+    "production_release_blockers": [
+      "J12",
+      "M12"
+    ]
+  },
+  "review": {
+    "approval_authority": "external_human_user",
+    "technical_reviewer": "primary_author",
+    "status": "PASS_USER_EXPLICIT_INDEPENDENT_APPROVAL",
+    "approved_at_utc": "2026-07-27T12:20:37.044Z",
+    "approval_scope": "Exact S04 approval-subject hashes recorded in S04-C013 and resolving evidence S04-C005 through S04-C014; invalid on source or evidence drift.",
+    "findings_resolved": [
+      "S04-RF001",
+      "S04-RB001"
+    ],
+    "declared_noncritical_findings": [
+      "S04-NF001"
+    ],
+    "blocking_findings": [],
+    "assurance_limit": "No separate agent, integration_reviewer, security assessor, or penetration tester performed a second technical audit; the independent decision is the user's external human approval over author-produced technical evidence."
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/S04/threat_model_traceability.json",
+    "artifacts/work_packages/S04/commands.jsonl",
+    "artifacts/work_packages/S04/review.md",
+    "artifacts/work_packages/S04/report.json"
+  ],
+  "open_risks": [
+    "S04-NF001: directly quoted atob payloads fall outside the present static encoded-payload token shape; this blocks exhaustive detector claims and is assigned to T04/Z01/Z04.",
+    "J12 remains conditional because no licensed real-catalog or production packaging variation corpus was available.",
+    "M12 remains conditional because no production-host external security review or penetration test was performed.",
+    "Hooks are guardrails and may not observe specialized hosted paths.",
+    "OS/container isolation, DNS rebinding defenses, quotas, effect adapters, and effect-time receipts are not implemented or qualified by S04.",
+    "The external human approval is not a separate agent-authored technical audit and is valid only for the exact reviewed hashes and resolving evidence."
+  ],
+  "spec_gaps": [],
+  "not_verified": [
+    "Production host or release security qualification",
+    "Real catalog and packaging variation coverage",
+    "External penetration testing",
+    "Exhaustive static or dynamic malware detection",
+    "OS/container sandbox and effect-time adapter enforcement",
+    "DNS rebinding resistance, quotas, and complete effect receipts"
+  ],
+  "next_ready": []
+}

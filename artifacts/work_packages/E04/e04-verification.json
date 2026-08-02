@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "work_package_id": "E04",
+  "attempt_id": "E04-0001",
+  "status": "PASS",
+  "recorded_at_utc": "2026-07-28T16:23:07Z",
+  "dependencies": {
+    "E02": {
+      "attempt_id": "E02-0001",
+      "status": "PASS",
+      "report": "artifacts/work_packages/E02/report.json",
+      "report_sha256": "97a308d90bd0f57334a5d9505e672d402b0409adcb17547780b2803f9c417772",
+      "core_evidence_id": "E0026",
+      "closeout_evidence_id": "E0027"
+    },
+    "E03": {
+      "attempt_id": "E03-0001",
+      "status": "PASS",
+      "report": "artifacts/work_packages/E03/report.json",
+      "report_sha256": "e4737460f2375d46d4b348d79cdfa5c51ee84f1db2bcf34b8a3f5aea1d0091d2",
+      "core_evidence_id": "E0028",
+      "closeout_evidence_id": "E0029"
+    }
+  },
+  "source_files": [
+    {
+      "path": "tests/replay/effects/replay-test-support.mjs",
+      "sha256": "da299cd4d9fd44a30d4851be3c4f7ac5104aadb94de57fe525cb2b1c8a98ca4b",
+      "byte_size": 28712
+    },
+    {
+      "path": "tests/replay/effects/strict-replay.test.mjs",
+      "sha256": "b4d930073c16169139ae480a9fca549f6216a538adce5dec5c7da11f3f35adc1",
+      "byte_size": 7784
+    },
+    {
+      "path": "tests/replay/effects/semantic-replay.test.mjs",
+      "sha256": "bfb99786cdc201c486fb710ffa973d2c0a241af4e53fb6be2cbb6a0587b036ed",
+      "byte_size": 7047
+    }
+  ],
+  "authority_hashes": {
+    "replay_report_schema": "6828658341f34f5ebf7dee947b3483f79440d68c48b91aa1cae689cbcbd7b798",
+    "development_manifest": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+    "noetic_ledger": "58ea9dc0d52d9c20720b33970ee3b8d8d05703ba7dd0fb4f51a483d9f505f1ed",
+    "effect_coordinator": "a4d2b9b851f9055869db842d10702e6017a61c18fcc637521fdec398b5abc1f2",
+    "capability_authority": "a8e3376568350229ca1a997aafbc1c4c138f2f01fbee945c916d390283a3720a"
+  },
+  "required_checks": {
+    "strict_replay_test": {
+      "status": "PASS",
+      "passed": 8,
+      "failed": 0,
+      "durable_rebuild_exact": true,
+      "store_reopen_exact": true,
+      "live_projection_parity": true,
+      "exact_retry_is_event_neutral": true,
+      "missing_or_tampered_payload_fails_closed": true,
+      "duplicate_logical_identity_rejected": true,
+      "event_payload_rebinding_rejected": true,
+      "non_vacuous_exact_identity": true
+    },
+    "semantic_replay_report": {
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0,
+      "distinct_identity_not_exact": true,
+      "semantic_equivalence_preserved": true,
+      "semantic_state_drift_visible": true,
+      "gate_and_verdict_drift_visible": true,
+      "missing_pin_not_comparable": true,
+      "source_and_replay_pin_provenance": true,
+      "report_hash_verified": true,
+      "schema_conformance": true,
+      "floating_pin_rejected": true,
+      "accessor_and_invalid_unicode_rejected": true
+    },
+    "combined_targeted_gate": {
+      "status": "PASS",
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0
+    },
+    "final_repetitions": {
+      "status": "PASS",
+      "runs": 5,
+      "test_executions": 90,
+      "failed_runs": 0
+    },
+    "coverage": {
+      "status": "PASS",
+      "target": "tests/replay/effects/replay-test-support.mjs",
+      "line_percent": 93.02,
+      "branch_percent": 77.78,
+      "function_percent": 95.92
+    }
+  },
+  "adversarial_cases": {
+    "receipt_resolves_tail_attempt": true,
+    "attempt_sequence_contiguous": true,
+    "duplicate_payload_identity_rejected": true,
+    "event_envelope_payload_binding": true,
+    "missing_payload_rejected": true,
+    "tampered_payload_rejected": true,
+    "exact_retry_state_neutral": true,
+    "strict_run_identity_required": true,
+    "strict_state_hash_bound": true,
+    "strict_tail_hash_bound": true,
+    "source_and_replay_pins_retained": true,
+    "missing_pin_side_qualified": true,
+    "semantic_projection_drift_reported": true,
+    "gate_drift_reported": true,
+    "verdict_drift_reported": true,
+    "floating_pin_rejected": true,
+    "report_mutation_rejected": true,
+    "placeholder_hash_rejected": true,
+    "canonical_accessor_rejected_without_execution": true,
+    "invalid_unicode_rejected": true
+  },
+  "regression": {
+    "python": {
+      "status": "PASS",
+      "passed": 913,
+      "failed": 0
+    },
+    "repository_wide_node_final": {
+      "status": "FAIL_OUTSIDE_E04",
+      "passed": 237,
+      "failed": 1,
+      "failure": "S04-TM004 stale development_manifest.yaml hash binding",
+      "actual_manifest_sha256": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
+      "expected_legacy_sha256": "456330ae4aa950d1410d5180ad704927c5ec78a741d3c616d7a1cfd5bb0054a7",
+      "owner_scope": "S04"
+    },
+    "repository_structure": "PASS",
+    "package_boundaries": "PASS",
+    "lockfile_and_toolchain": "PASS",
+    "ci_matrix": "PASS",
+    "cache_key_audit": "PASS",
+    "ci_policy_mutation_tests": {
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0
+    },
+    "syntax": {
+      "status": "PASS",
+      "files": 3
+    },
+    "text_integrity": {
+      "status": "PASS",
+      "files": 3,
+      "strict_utf8": true,
+      "bom_absent": true,
+      "nul_absent": true,
+      "replacement_character_absent": true
+    },
+    "debug_marker_audit": "PASS",
+    "git_diff_check": "PASS",
+    "double_build": {
+      "status": "FAIL_OUTSIDE_E04",
+      "failure": "staged source build omits scripts required by the existing build hook",
+      "owner_scope": "B02/B04 build integration"
+    }
+  },
+  "review": {
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
+    "artifact": "artifacts/work_packages/E04/review.md",
+    "artifact_sha256": "18cda4135b66486a91151f3c15b68ed90bbcef44d00663b6433dc9341162ef78",
+    "blocking_findings": 0,
+    "resolved_finding_ids": [
+      "E04-RF001_RECEIPT_TAIL_ATTEMPT_BINDING",
+      "E04-RF002_SEMANTIC_PROJECTION_DRIFT",
+      "E04-RF003_NON_VACUOUS_STRICT_IDENTITY",
+      "E04-RF004_BIDIRECTIONAL_PIN_PROVENANCE",
+      "E04-RF005_DUPLICATE_LOGICAL_IDENTITY",
+      "E04-RF006_EVENT_ENVELOPE_REBIND",
+      "E04-RF007_CANONICAL_JSON_ACCESSOR_UNICODE"
+    ],
+    "assurance_limitation": "The final pass is procedurally separate within the primary session under the product owner's serial no-Fleet/no-subagent decision; it is not external actor-independent certification. E04 qualifies the implemented local E01/E02/E03 replay surface, not arbitrary future reducers or distributed exactly-once execution."
+  },
+  "preserved_failed_observations": {
+    "initial_schema_harness": {
+      "status": "FAIL_RESOLVED",
+      "passed": 10,
+      "failed": 13,
+      "cause": "validator source and instance were combined on stdin",
+      "resolution": "pass the instance as a separate argv value"
+    },
+    "nonexistent_rah_path_reads": 2,
+    "blocked_powershell_foreach_pipeline": 1
+  },
+  "scope_and_preservation": {
+    "implementation_write_scope_violations": 0,
+    "production_files_modified_by_e04": 0,
+    "schema_or_dependency_implementation_modified_by_e04": false,
+    "prior_reports_and_generations_preserved": true,
+    "dirty_worktree_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "residual_failures_preserved": true,
+    "completion_ready": false
+  }
+}

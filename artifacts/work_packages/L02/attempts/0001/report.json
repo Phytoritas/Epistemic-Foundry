@@ -1,0 +1,463 @@
+{
+  "artifact_receipt": {
+    "path": "artifacts/work_packages/L02/attempts/0001/memory-index-retrieval-verification.artifact-receipt.json",
+    "receipt_hash": "sha256:5e3172e151ae091388cd9aa588dc7a2b830626c659cf1eac135a000f2d67a0a8",
+    "receipt_id": "AR-L02-0001-MEMORY-INDEX-RETRIEVAL-VERIFICATION"
+  },
+  "attempt_id": "L02-0001",
+  "changed_files": [
+    {
+      "byte_size": 40369,
+      "path": "packages/foundry-kernel/src/memory/index/memory-index.mjs",
+      "sha256": "sha256:aacf4bbf21ba1ee0d1d5a423e1e24fa729d3a6cb3a9ba693f004ecbc4596584f",
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 393,
+      "path": "packages/foundry-kernel/src/memory/index/index.mjs",
+      "sha256": "sha256:8fed13dc3d843bff8316fb4fd8c0bb5f7671741410ab2eb2bad83f15466faa1b",
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 4228,
+      "path": "packages/foundry-kernel/src/memory/index/memory-index-test-support.mjs",
+      "sha256": "sha256:da72f337ffdd5887c3364450eacfcf046274cc5c6b4ffde00df5189e93f1300b",
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 11365,
+      "path": "packages/foundry-kernel/src/memory/index/memory-scope.test.mjs",
+      "sha256": "sha256:8a8af77d216af18c3e26aa31b98a0eb7106844bb1da0c7df51fd0a0f8c9fb989",
+      "utf8_bom": false
+    },
+    {
+      "byte_size": 9512,
+      "path": "packages/foundry-kernel/src/memory/index/retrieval-receipt.test.mjs",
+      "sha256": "sha256:d1a9bb2fdb3f440ca61c0c8eed7dbee87bfe7f476875feba6599657f958e22ca",
+      "utf8_bom": false
+    }
+  ],
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependencies": {
+    "L01": {
+      "attempt_id": "L01-0001",
+      "final_closeout_evidence_id": "E0042",
+      "report": "artifacts/work_packages/L01/attempts/0001/report.json",
+      "report_sha256": "sha256:010ce588e3e0783012aea46ab2b4ab748cef16f83e16c46a7a47454be59ae68e",
+      "status": "PASS"
+    }
+  },
+  "diagnostics_preserved": [
+    {
+      "classification": "TEST_ORACLE_MISMATCH",
+      "resolution": "tests corrected without product weakening; final targeted execution 41/41 after adding one workflow allowlist negative case",
+      "result": "initial targeted execution 38/40; canonical record ordering and deterministic integrity-error precedence required two bounded expectation corrections"
+    }
+  ],
+  "evidence_artifacts": [
+    {
+      "byte_size": 4344,
+      "path": "artifacts/work_packages/L02/attempts/0001/memory-index-retrieval-verification.json",
+      "sha256": "sha256:08a6cc382473579519c31e96fd5fdf22aff2b30bd4467cf54422aede380371d9"
+    },
+    {
+      "byte_size": 1379,
+      "path": "artifacts/work_packages/L02/attempts/0001/memory-index-retrieval-verification.artifact-receipt.json",
+      "sha256": "sha256:f14e86cb45497cd060ca4b0d5c4dd769f331a70c7331b6b1d1f1e63e343d6449"
+    },
+    {
+      "byte_size": 1526,
+      "path": "artifacts/work_packages/L02/attempts/0001/full-regression-impact.json",
+      "sha256": "sha256:d9872f6168a688b4492e31c6511b3e1ecaaccb47270081cf662073dfcdac0434"
+    },
+    {
+      "byte_size": 391,
+      "path": "artifacts/work_packages/L02/attempts/0001/dependency-status.json",
+      "sha256": "sha256:ad37fc10aa9238ef0ce9e66eef1e1d7a28eeb7fdb46298a428bde66e69c0ea03"
+    },
+    {
+      "byte_size": 775,
+      "path": "artifacts/work_packages/L02/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:b4487a60d85a5ee9a32f0624ffe77427f8e9dfa336430e92cfa15fc459410ab0"
+    },
+    {
+      "byte_size": 841,
+      "path": "artifacts/work_packages/L02/attempts/0001/syntax-verification.json",
+      "sha256": "sha256:aa484fb504efef175742edb7f5e411604e3db8520674727e1159d9824b9aada4"
+    },
+    {
+      "byte_size": 1304,
+      "path": "artifacts/work_packages/L02/attempts/0001/schema-runtime-verification.json",
+      "sha256": "sha256:e6caf69b46cad132681a5da7fc339a6721068914695f89e58ae85f639d15a85b"
+    },
+    {
+      "byte_size": 9726,
+      "path": "artifacts/work_packages/L02/attempts/0001/targeted-l02-node.junit.xml",
+      "sha256": "sha256:8bbfec2c52ba549ea57f79843cbea75d73b9d885f866de99ea7d1ce11c9e6674"
+    },
+    {
+      "byte_size": 6915,
+      "path": "artifacts/work_packages/L02/attempts/0001/targeted-l02-coverage.stdout.log",
+      "sha256": "sha256:32bc123b0037a57269160f19590c400ac18b94180eba29a1463fe0263a658d61"
+    },
+    {
+      "byte_size": 6137,
+      "path": "artifacts/work_packages/L02/attempts/0001/predecessor-l02-node.junit.xml",
+      "sha256": "sha256:a31d354a4c8ba7cf3bf97de41d31bbf43429489649b76ee3c3545eab107716a0"
+    },
+    {
+      "byte_size": 122517,
+      "path": "artifacts/work_packages/L02/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:445def4d30076909fd0e1549164e69dd833bf6737e559fb5635a22beb5913afc"
+    },
+    {
+      "byte_size": 138393,
+      "path": "artifacts/work_packages/L02/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:a8d1fb2b05da2db719b503de5d4f43a86ae3c376e05fe5dad1048a8a448952fc"
+    },
+    {
+      "byte_size": 4033,
+      "path": "artifacts/work_packages/L02/attempts/0001/node-test-inventory.json",
+      "sha256": "sha256:567f00111cfebe74d87d520050e61b9d89a152a24ca0b03aa0fe6eb10d4a0483"
+    },
+    {
+      "byte_size": 2910,
+      "path": "artifacts/work_packages/L02/attempts/0001/codegen-verification.stdout.log",
+      "sha256": "sha256:582d58db1b7861b506572d56b823f9681cc1a2b71ee3d1d678e2f873e9a82800"
+    },
+    {
+      "byte_size": 320,
+      "path": "artifacts/work_packages/L02/attempts/0001/structure-check.stdout.log",
+      "sha256": "sha256:a0f4e1b43cc5f2576d0bba4325fd0df83b05f2d439bcb34208dbfb80a0fa724d"
+    },
+    {
+      "byte_size": 260,
+      "path": "artifacts/work_packages/L02/attempts/0001/boundary-check.stdout.log",
+      "sha256": "sha256:2a48ac08975188e29c6403dde604a168834e1aa8f1ddcc2bf26cfab913152884"
+    },
+    {
+      "byte_size": 0,
+      "path": "artifacts/work_packages/L02/attempts/0001/git-diff-check.stdout.log",
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "byte_size": 6385,
+      "path": "artifacts/work_packages/L02/attempts/0001/git-diff-check.stderr.log",
+      "sha256": "sha256:5d598dde66a2fd6d038c840dcb6b09f11638efb57306c868eaa57b1f4ae2fc2f"
+    },
+    {
+      "byte_size": 4564,
+      "path": "artifacts/work_packages/L02/attempts/0001/commands.jsonl",
+      "sha256": "sha256:1d550b4b05efee592510e55d4c94fe2b859063cb2eb064a7410444170b9d66ed"
+    },
+    {
+      "byte_size": 3188,
+      "path": "artifacts/work_packages/L02/attempts/0001/review.md",
+      "sha256": "sha256:67fd5d21ec51bbfd7d924f3a1750ca82cf9c8f0294c059fd7455fefb4451a5af"
+    },
+    {
+      "byte_size": 108,
+      "path": "artifacts/work_packages/L02/attempts/0001/attempt-metadata.json",
+      "sha256": "sha256:d756961c50a56904454bf5cb6b950a87d6470622a92ba5569d46c58c55da0f25"
+    },
+    {
+      "byte_size": 9594,
+      "path": "artifacts/work_packages/L02/attempts/0001/run_l02_0001_checks.py",
+      "sha256": "sha256:6dd0aee1f90ffe70f2287b621931c44c2867ff1725dffa69847c1748587b91d2"
+    },
+    {
+      "byte_size": 37291,
+      "path": "artifacts/work_packages/L02/attempts/0001/build_l02_0001_evidence.py",
+      "sha256": "sha256:8457ab3e513b5af8e0f9099ea6bccfaeabd2fe7189d4218742ac430b1d543a35"
+    },
+    {
+      "byte_size": 23686,
+      "path": "artifacts/work_packages/L02/attempts/0001/l02_0001_rah_seal.py",
+      "sha256": "sha256:f92b6d3243510f7e34f59eb415253f1b453d08c060b62f3477a54616c3b8c738"
+    },
+    {
+      "byte_size": 1595,
+      "path": "artifacts/work_packages/L02/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:ced15f3c3231f37ca160f24ffa3612dc05383f073fe8b72c1c091859bad14621"
+    }
+  ],
+  "exit_criteria": {
+    "only_permitted_stores_searched": "PASS",
+    "retrieval_receipts_complete": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "actor-independent certification",
+    "production database or vector service",
+    "L03 redaction, dedupe, forget, deletion, or legal-hold implementation",
+    "release or production readiness",
+    "completion_ready=true"
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0044",
+    "core_generation": "000044-3130f15c",
+    "final_closeout_evidence_id": "E0045",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 264,
+    "implementation_gate": "fail",
+    "retained_generation_count": 44,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "L02-0001",
+    "canonical_codegen": {
+      "example_count": 126,
+      "schema_count": 126,
+      "status": "PASS"
+    },
+    "full_node": {
+      "cancelled": 0,
+      "collected": 544,
+      "failed": 0,
+      "junit": "artifacts/work_packages/L02/attempts/0001/full-node-suite.junit.xml",
+      "junit_sha256": "sha256:445def4d30076909fd0e1549164e69dd833bf6737e559fb5635a22beb5913afc",
+      "passed": 544,
+      "skipped": 0,
+      "test_file_count": 59,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 539
+    },
+    "full_python": {
+      "collected": 1064,
+      "errors": 0,
+      "failed": 0,
+      "junit": "artifacts/work_packages/L02/attempts/0001/full-python-suite.junit.xml",
+      "junit_sha256": "sha256:a8d1fb2b05da2db719b503de5d4f43a86ae3c376e05fe5dad1048a8a448952fc",
+      "passed": 1064,
+      "skipped": 0,
+      "xml_testcase_count": 1064
+    },
+    "git_diff_check": "PASS_WITH_PREEXISTING_LINE_ENDING_ADVISORIES",
+    "new_failure_count": 0,
+    "new_skip_xfail_todo_or_cancellation_count": 0,
+    "package_boundaries": "PASS",
+    "predecessor_l01_node": {
+      "cancelled": 0,
+      "collected": 27,
+      "failed": 0,
+      "junit": "artifacts/work_packages/L02/attempts/0001/predecessor-l02-node.junit.xml",
+      "junit_sha256": "sha256:a31d354a4c8ba7cf3bf97de41d31bbf43429489649b76ee3c3545eab107716a0",
+      "passed": 27,
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 25
+    },
+    "repository_structure": "PASS",
+    "status": "PASS"
+  },
+  "required_checks": {
+    "independent_review": {
+      "actor_independence": false,
+      "blocking_finding_count": 0,
+      "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+      "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_REVIEW"
+    },
+    "memory_scope_test": {
+      "failed": 0,
+      "passed": 22,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "retrieval_receipt_test": {
+      "failed": 0,
+      "passed": 19,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "actor_independence": false,
+    "artifact": "artifacts/work_packages/L02/attempts/0001/review.md",
+    "artifact_sha256": "sha256:67fd5d21ec51bbfd7d924f3a1750ca82cf9c8f0294c059fd7455fefb4451a5af",
+    "blocking_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_REVIEW"
+  },
+  "status": "PASS",
+  "title": "Memory indexing and scoped retrieval",
+  "verification": {
+    "canonical_schema_validation": "1/1",
+    "full_node": "544/544",
+    "full_python": "1064/1064",
+    "predecessor_l01_node": "27/27",
+    "targeted_l02": "41/41",
+    "write_scope_violation_count": 0
+  },
+  "verification_details": {
+    "attempt_id": "L02-0001",
+    "canonical_memory_classes": [
+      "EPHEMERAL",
+      "SESSION",
+      "WORKSPACE",
+      "USER",
+      "EVIDENCE",
+      "REGULATED"
+    ],
+    "canonical_schema_validation": {
+      "draft": "2020-12",
+      "error_count": 0,
+      "schema": "schemas/memory-retrieval-receipt.schema.json",
+      "sealed_receipt": {
+        "consent_id": "CONS-L02-001",
+        "context_capsule_id": "CC-L02-001",
+        "excluded_classes": [
+          "EPHEMERAL",
+          "SESSION",
+          "USER",
+          "EVIDENCE",
+          "REGULATED"
+        ],
+        "hits": [
+          {
+            "class": "WORKSPACE",
+            "memory_id": "MEM-L02-001",
+            "redacted": false,
+            "score": 1,
+            "source_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "class": "WORKSPACE",
+            "memory_id": "MEM-L02-002",
+            "redacted": false,
+            "score": 1,
+            "source_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        ],
+        "purpose": "resume research",
+        "query": "prior scope decision",
+        "receipt_id": "MRR-545b90e93c20c286523a6580a1de2c6e84c7403eef25d7ed7e092819cd3af751",
+        "redaction_count": 0,
+        "result_hash": "sha256:224e5955ea9b392636de9f784dd6dae1511fe6b0af7e1aa4f916e0745efd16cd",
+        "retrieved_at": "2026-07-31T00:00:00.000Z",
+        "searched_classes": [
+          "WORKSPACE"
+        ],
+        "workspace_id": "WS-L02-001"
+      },
+      "status": "PASS"
+    },
+    "coverage": {
+      "aggregate": {
+        "branch_percent": 73.6,
+        "function_percent": 95.74,
+        "line_percent": 89.89
+      },
+      "memory_index_implementation": {
+        "branch_percent": 75.97,
+        "function_percent": 97.73,
+        "line_percent": 91.49
+      },
+      "status": "PASS",
+      "stderr_empty": true
+    },
+    "determinism": {
+      "algorithm": "unicode_nfkc_token_overlap_v1",
+      "canonical_score_and_tie_break": true,
+      "maximum_result_count": 200,
+      "replay_identity": true
+    },
+    "fail_closed_integrity": {
+      "index_and_store_hashes": true,
+      "receipt_id_and_result_hash": true,
+      "receipt_time_binding": true,
+      "scope_partition": true,
+      "tamper_and_forged_hit_rejection": true
+    },
+    "l01_policy_binding": {
+      "admission_before_index_access": true,
+      "cross_workspace_default_deny": true,
+      "record_timestamp_retention_recheck": true
+    },
+    "retrieval_receipt": {
+      "complete_searched_excluded_partition": true,
+      "consent_and_context_capsule_explicit": true,
+      "raw_search_text_absent": true,
+      "searched_none_distinct_from_unsearched": true,
+      "source_hash_preserved": true
+    },
+    "scope_boundary": {
+      "l01_policy_authority_reused": true,
+      "l02_index_and_receipt_only": true,
+      "l03_redaction_dedupe_forget_delete_and_legal_hold_not_implemented": true,
+      "retrievable_classes": [
+        "SESSION",
+        "WORKSPACE",
+        "USER",
+        "EVIDENCE"
+      ]
+    },
+    "status": "PASS",
+    "syntax": {
+      "attempt_id": "L02-0001",
+      "checks": [
+        {
+          "exit_code": 0,
+          "path": "packages/foundry-kernel/src/memory/index/memory-index.mjs",
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "exit_code": 0,
+          "path": "packages/foundry-kernel/src/memory/index/index.mjs",
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "exit_code": 0,
+          "path": "packages/foundry-kernel/src/memory/index/memory-index-test-support.mjs",
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "exit_code": 0,
+          "path": "packages/foundry-kernel/src/memory/index/memory-scope.test.mjs",
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "exit_code": 0,
+          "path": "packages/foundry-kernel/src/memory/index/retrieval-receipt.test.mjs",
+          "stderr": "",
+          "stdout": ""
+        }
+      ],
+      "final_status": "PASS"
+    },
+    "targeted": {
+      "cancelled": 0,
+      "collected": 41,
+      "failed": 0,
+      "junit": "artifacts/work_packages/L02/attempts/0001/targeted-l02-node.junit.xml",
+      "junit_sha256": "sha256:8bbfec2c52ba549ea57f79843cbea75d73b9d885f866de99ea7d1ce11c9e6674",
+      "memory_scope_test_count": 22,
+      "passed": 41,
+      "retrieval_receipt_test_count": 19,
+      "skipped": 0,
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_testcase_count": 41
+    }
+  },
+  "work_package_id": "L02"
+}

@@ -1,0 +1,49 @@
+{
+  "attempt_id": "W03-0001",
+  "exit_criteria": {
+    "correction_retraction_propagates": {
+      "evidence": [
+        "python/epistemic_foundry/reassessment/test_retraction_fixture.py"
+      ],
+      "status": "PASS"
+    },
+    "dependent_passports_marked_stale": {
+      "evidence": [
+        "python/epistemic_foundry/reassessment/test_stale_propagation.py"
+      ],
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "closure_is_transitive_and_cycle_tolerant": true,
+    "invalidating_triggers": [
+      "claim_correction",
+      "document_correction",
+      "document_retraction",
+      "ontology_update",
+      "policy_update",
+      "schema_migration"
+    ],
+    "passport_states": [
+      "FRESH",
+      "STALE",
+      "INVALIDATED"
+    ],
+    "reached_passport_can_never_stay_fresh": true,
+    "voiding_triggers": [
+      "document_retraction"
+    ]
+  },
+  "required_checks": {
+    "retraction_fixture_test": {
+      "module": "python/epistemic_foundry/reassessment/test_retraction_fixture.py",
+      "status": "PASS"
+    },
+    "stale_propagation_test": {
+      "module": "python/epistemic_foundry/reassessment/test_stale_propagation.py",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 18
+}

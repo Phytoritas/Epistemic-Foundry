@@ -1,0 +1,29 @@
+{
+  "affected_artifact_ids": [
+    "src/epistemic_foundry/cartography/__init__.py",
+    "src/epistemic_foundry/cartography/v4_m05/**",
+    "artifacts/work_packages/M05/**",
+    "M05-0001"
+  ],
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "created_at": "2026-08-02T11:00:00Z",
+  "decision": "Authorize exactly one file beyond the M05 write scope of src/epistemic_foundry/cartography/v4_m05/**: the package marker src/epistemic_foundry/cartography/__init__.py. It contains a docstring only and declares no vocabulary, no API and no behaviour. This mirrors HD-EF4-E05-SCOPE-20260802-001 and HD-EF4-F05-SCOPE-20260802-001 for the effects and evolution packages and authorizes nothing beyond the single marker. M05 otherwise writes only under its granted scope and artifacts/work_packages/M05/**, reads its niche axis names from schemas/epistemic-niche.schema.json and its entry-class partition from the sealed archive module, and holds no canonical schema enum value as a string literal.",
+  "decision_hash": "sha256:e2c315251c189984d9baadef69ddc5e98d0e12eeabfc6f1472a1b6e2490d8101",
+  "decision_id": "HD-EF4-M05-SCOPE-20260802-001",
+  "decision_type": "correct",
+  "evidence_artifact_ids": [
+    "pyproject.toml",
+    "manifests/development_manifest.yaml",
+    "schemas/epistemic-niche.schema.json",
+    "artifacts/authority_decisions/HD-EF4-E05-SCOPE-20260802-001.human-decision.json",
+    "artifacts/authority_decisions/HD-EF4-F05-SCOPE-20260802-001.human-decision.json",
+    "artifacts/work_packages/B04/attempts/0010/report.json",
+    "artifacts/work_packages/M04/attempts/0001/report.json"
+  ],
+  "non_mutation_acknowledgement": true,
+  "rationale": "pyproject.toml discovers packages with setuptools find_packages (where = ['src']), which requires __init__.py at every level. The same condition was verified empirically for the effects package under HD-EF4-E05-SCOPE-20260802-001: without the marker, find_packages returns nothing for the nested package while find_namespace_packages finds it, so the module imports from a source checkout but is absent from the built wheel. That is the source/dist divergence the sealed B04 build gate exists to prevent. Changing the discovery mode in pyproject was rejected again: pyproject is B04's sealed territory and switching the project to namespace discovery for one package would alter packaging behaviour repository-wide. The M05 attempt carries a packaging-discovery check that proves the package stays discoverable.",
+  "run_id": null,
+  "subject_id": "M05",
+  "supersedes_decision_id": null
+}

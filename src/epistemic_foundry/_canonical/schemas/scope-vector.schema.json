@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/scope-vector.schema.json",
+  "title": "ScopeVector",
+  "description": "Domain-neutral boundary conditions for comparing claims and evidence. Domain-specific fields belong in domain_extensions and must be governed by a DomainPack.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "scalar": {
+      "type": [
+        "string",
+        "number",
+        "boolean",
+        "null"
+      ]
+    },
+    "scalar_or_list": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/scalar"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/scalar"
+          }
+        }
+      ]
+    },
+    "intervention_or_exposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "min_value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "max_value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "duration": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "frequency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rate": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "route_or_delivery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "category",
+        "min_value",
+        "max_value",
+        "unit",
+        "duration",
+        "frequency",
+        "rate",
+        "route_or_delivery"
+      ]
+    }
+  },
+  "properties": {
+    "domain": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "population": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "entity_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "entity_subtype": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "unit_of_analysis": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "setting": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "geography": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "jurisdiction": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "language": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "lifecycle_stage": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "spatial_scale": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "temporal_scale": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "time_period": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "measurement_time": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "intervention_or_exposure": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/intervention_or_exposure"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "comparator": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "inclusion_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exclusion_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conditions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/scalar_or_list"
+      }
+    },
+    "domain_extensions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/scalar_or_list"
+      }
+    }
+  },
+  "required": [
+    "domain",
+    "population",
+    "entity_type",
+    "entity_subtype",
+    "unit_of_analysis",
+    "setting",
+    "geography",
+    "jurisdiction",
+    "language",
+    "lifecycle_stage",
+    "spatial_scale",
+    "temporal_scale",
+    "time_period",
+    "measurement_time",
+    "intervention_or_exposure",
+    "comparator",
+    "inclusion_criteria",
+    "exclusion_criteria",
+    "conditions",
+    "domain_extensions"
+  ]
+}

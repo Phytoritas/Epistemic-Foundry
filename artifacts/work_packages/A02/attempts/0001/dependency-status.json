@@ -1,0 +1,27 @@
+{
+  "attempt_id": "A02-0001",
+  "dependencies": {
+    "A01": {
+      "attempt_id": "A01-0001",
+      "core_evidence_id": "E0249",
+      "core_generation": "000247-53a0d135",
+      "final_closeout_evidence_id": "E0250",
+      "report": "artifacts/work_packages/A01/attempts/0001/report.json",
+      "report_sha256": "sha256:23d100e7a546a72703d8239688c35601861e417b624ce1cac50b578c29d1d298",
+      "status": "PASS"
+    }
+  },
+  "dependency_note": "A02 depends on A01; the sealed A01-0001 attempt is the build dependency",
+  "next_action": "SEAL_A02_0001_THEN_RECOMPUTE_DAG",
+  "regression_baseline": {
+    "attempt_id": "U04-0001",
+    "core_evidence_id": "E0259",
+    "core_generation": "000257-f15ea056",
+    "final_closeout_evidence_id": "E0260",
+    "report": "artifacts/work_packages/U04/attempts/0001/report.json",
+    "report_sha256": "sha256:a59cad7db20bdd2fb143fef591cfa7dedac01e88e78a15feb53b6a8b250fe974",
+    "status": "PASS"
+  },
+  "regression_baseline_note": "U04-0001 is the live latest-sealed attempt (highest core generation on the ledger frontier) at the time this evidence was built.",
+  "status": "PASS"
+}

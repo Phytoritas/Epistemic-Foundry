@@ -1,0 +1,215 @@
+{
+  "attempt_id": "O01-0001",
+  "authority_hashes": {
+    "AGENTS.md": "sha256:858e537ed3e49754b8e60d31c985467ee1246ed258c7763d6de4ef0767e381ea",
+    "MASTER_SPEC.md": "sha256:d4854c916594610e0503f9b017c57b0dbac9f52eef78b825b922fdf26b1a0fe3",
+    "config/retrieval_policy.example.yaml": "sha256:e4421bca6c8e8f3464850a117d7260d57ffa8291d57ce7cfcef1f9b4e8668250",
+    "docs/search_completeness.md": "sha256:3dd47a2abd8e740ff5b6a5f460aa30d7d9500d3b70ba1a0eee982f0fb3da1597",
+    "examples/sample_query-plan.json": "sha256:5891543074dedc6a648743c683feb4d57751f498d0f24361df34bdd64f6b027c",
+    "examples/sample_search-completeness-certificate.json": "sha256:e2c401f7f9b6083e6dd2d630b313b615ef01869a7acc3cd04a05a6b60b123924",
+    "examples/sample_search-lane-receipt.json": "sha256:f83baaae4179804b0cbaf6b8f4c5c418dc2759032b1e7837f68034375d2a982f",
+    "manifests/development_manifest.yaml": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "schemas/query-plan.schema.json": "sha256:f3692d2f5b1afe7fd07ad4470748ada9d88691ec4ca77472144558d3947c6a0c",
+    "schemas/search-completeness-certificate.schema.json": "sha256:3c51eabfeecb4f086a66995187fe1f058c062ef83463e6f9b4e7d790657179e9",
+    "schemas/search-lane-receipt.schema.json": "sha256:20501e9f261047b251be0eb8a7d9b88fb49f1afc2c52c462da98687640e1c449",
+    "workflows/evidence_retrieval.workflow.yaml": "sha256:4f7ad322ed20bf56099e51c1ce76bd52ff8d55cad90abd3a41dfd90ec7016ae5"
+  },
+  "classification": {
+    "not_blocked_reason": "No required host capability, credential, licensed source, tool, backend, or external service is unavailable.",
+    "not_fail_reason": "No implementation was attempted because the mandatory-lane selection, applicability, receipt, and reconciliation oracle is undefined and internally inconsistent.",
+    "typed_outcome": "SPEC_GAP"
+  },
+  "completion_ready": false,
+  "contract_conflicts": [
+    {
+      "id": "O01-C001",
+      "observation": "The O01 manifest requires mandatory lanes to be class-aware, but no authoritative E0-E5 to mandatory-lane matrix exists.",
+      "surfaces": [
+        "manifests/development_manifest.yaml",
+        "docs/search_completeness.md",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    },
+    {
+      "id": "O01-C002",
+      "observation": "QueryPlan has no work-class or EpistemicWorkClassification ID, revision, input hash, or classification hash binding, while required_lanes accepts arbitrary strings.",
+      "surfaces": [
+        "schemas/query-plan.schema.json",
+        "examples/sample_query-plan.json"
+      ]
+    },
+    {
+      "id": "O01-C003",
+      "observation": "SearchLaneReceipt defines counterevidence, but retrieval policy and workflow use counter; no authoritative alias or migration rule exists.",
+      "surfaces": [
+        "schemas/search-lane-receipt.schema.json",
+        "config/retrieval_policy.example.yaml",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    },
+    {
+      "id": "O01-C004",
+      "observation": "SearchCompletenessCertificate required/completed/blocked lanes accept arbitrary strings, and its canonical example uses support even though support is not a SearchLaneReceipt lane.",
+      "surfaces": [
+        "schemas/search-completeness-certificate.schema.json",
+        "examples/sample_search-completeness-certificate.json",
+        "schemas/search-lane-receipt.schema.json"
+      ]
+    },
+    {
+      "id": "O01-C005",
+      "observation": "The workflow executes eleven retrieval nodes and always requires all eleven receipts, while the O01 exit criterion says mandatory lanes are class-aware; no selected, applicable, waived, or intentionally unselected semantics reconciles those statements.",
+      "surfaces": [
+        "manifests/development_manifest.yaml",
+        "workflows/evidence_retrieval.workflow.yaml",
+        "docs/search_completeness.md"
+      ]
+    },
+    {
+      "id": "O01-C006",
+      "observation": "SearchLaneReceipt requires non-empty query text, a query hash, scope, corpus hash, index versions, and timestamps even for UNSEARCHED, but no rule defines truthful values for an intentionally unselected lane.",
+      "surfaces": [
+        "schemas/search-lane-receipt.schema.json"
+      ]
+    },
+    {
+      "id": "O01-C007",
+      "observation": "No canonical mapping defines whether provider_failure, policy_blocked, budget exhaustion, time exhaustion, or manual stop produces PARTIAL, BLOCKED, lane failure, or run failure.",
+      "surfaces": [
+        "schemas/search-lane-receipt.schema.json",
+        "schemas/search-completeness-certificate.schema.json",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    },
+    {
+      "id": "O01-C008",
+      "observation": "The architecture uses whenever-applicable language but provides no typed applicability input, decision artifact, authority, waiver vocabulary, non-waivable floor, or deterministic evaluator.",
+      "surfaces": [
+        "MASTER_SPEC.md",
+        "docs/search_completeness.md",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    },
+    {
+      "id": "O01-C009",
+      "observation": "Support is used as an evidence role and certificate lane, while lexical and semantic are retrieval mechanisms; no authoritative role-to-lane mapping says whether support is a lane, a projection, or a result label.",
+      "surfaces": [
+        "config/retrieval_policy.example.yaml",
+        "examples/sample_search-completeness-certificate.json",
+        "workflows/evidence_retrieval.workflow.yaml"
+      ]
+    }
+  ],
+  "implementation": {
+    "authorized_product_files_created": 0,
+    "implementation_files_modified_by_attempt": 0,
+    "out_of_scope_product_changes": 0,
+    "product_path_exists": false,
+    "product_write_scope": [
+      "python/epistemic_foundry/retrieval/planning/**"
+    ],
+    "schemas_workflows_config_docs_or_examples_modified_by_attempt": 0,
+    "tests_or_fixtures_created_by_attempt": 0
+  },
+  "lane_vocabulary_observed": {
+    "config_policy_lanes": [
+      "lexical",
+      "semantic",
+      "citation",
+      "entity_variable",
+      "mechanism",
+      "counter",
+      "null",
+      "boundary",
+      "method",
+      "temporal",
+      "external_novelty"
+    ],
+    "receipt_schema_lanes": [
+      "lexical",
+      "semantic",
+      "citation",
+      "entity_variable",
+      "mechanism",
+      "counterevidence",
+      "null",
+      "boundary",
+      "method",
+      "temporal",
+      "external_novelty",
+      "custom"
+    ],
+    "sample_certificate_non_receipt_lane_values": [
+      "support"
+    ],
+    "workflow_retrieval_node_lanes": [
+      "lexical",
+      "semantic",
+      "citation",
+      "entity_variable",
+      "mechanism",
+      "counter",
+      "null",
+      "boundary",
+      "method",
+      "temporal",
+      "novelty"
+    ]
+  },
+  "manifest_contract": {
+    "depends_on": [
+      "I04",
+      "K04",
+      "M04"
+    ],
+    "exit_criteria": [
+      "searched/unsearched scope explicit",
+      "mandatory lanes class-aware"
+    ],
+    "independent_review": "required",
+    "required_checks": [
+      "query_plan_test",
+      "receipt_completeness_test"
+    ],
+    "risk_class": "medium",
+    "stop_condition_applied": "SPEC_GAP if a shared contract, authority boundary, or acceptance threshold is ambiguous",
+    "write_scope": [
+      "python/epistemic_foundry/retrieval/planning/**"
+    ]
+  },
+  "missing_contracts": [
+    "exact E0-E5 to mandatory retrieval-lane matrix",
+    "typed applicability inputs, deterministic authority, waiver vocabulary, and non-waivable lane floor",
+    "one canonical lane vocabulary and explicit counter/counterevidence, novelty/external_novelty, and support mappings",
+    "selected, intentionally unselected, inapplicable, waived, zero-result, partial, provider-failed, and policy-blocked receipt semantics",
+    "whether every canonical lane must always emit a receipt and truthful UNSEARCHED field rules",
+    "QueryPlan binding to immutable EpistemicWorkClassification request/classification revision and hashes",
+    "deterministic required/completed/blocked lane reconciliation and lane/run failure mapping",
+    "exact resolving schema, workflow, policy, example, implementation, test, and evidence write scopes",
+    "objective fixtures and thresholds for query_plan_test and receipt_completeness_test"
+  ],
+  "required_checks": {
+    "query_plan_test": {
+      "reason": "No authoritative class-to-lane matrix, classification binding, applicability rule, or closed required-lane vocabulary exists.",
+      "status": "NOT_RUN_SPEC_GAP"
+    },
+    "receipt_completeness_test": {
+      "reason": "No authoritative all-lane receipt rule, UNSEARCHED representation, failure mapping, or certificate reconciliation oracle exists.",
+      "status": "NOT_RUN_SPEC_GAP"
+    }
+  },
+  "required_product_owner_decisions": [
+    "Define the exact E0-E5 to mandatory retrieval-lane matrix, including any minimum invariant lanes.",
+    "Define typed applicability inputs, decision authority, deterministic rules, waiver vocabulary, evidence requirements, and non-waivable lanes.",
+    "Freeze one canonical lane vocabulary and explicitly map or retire counter, counterevidence, novelty, external_novelty, support, and custom.",
+    "Define receipt requirements and field semantics for selected, intentionally unselected, inapplicable, waived, zero-result, partial, provider-failed, and policy-blocked lanes.",
+    "Define QueryPlan binding to immutable request and EpistemicWorkClassification identifiers, revisions, input hashes, and classification hashes.",
+    "Define deterministic completeness reconciliation, absence/novelty ceilings, and lane-to-run terminal-state mapping.",
+    "Authorize exact schema, workflow, policy, example, implementation, test, and artifact paths for the resolving attempt and freeze objective fixtures and thresholds."
+  ],
+  "schema_version": 1,
+  "spec_gap_id": "O01-SG001",
+  "status": "SPEC_GAP",
+  "subagents_or_fleet_used": false,
+  "work_package_id": "O01"
+}

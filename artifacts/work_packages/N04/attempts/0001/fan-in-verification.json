@@ -1,0 +1,235 @@
+{
+  "attempt_id": "N04-0001",
+  "count_reconciliation": {
+    "dispatch_expected_count_matches_role_identity_count": true,
+    "every_expected_result_identity_is_exactly_once": true,
+    "every_expected_scheduler_node_is_exactly_once": true,
+    "every_expected_spawn_descriptor_is_exactly_once": true,
+    "missing_duplicate_and_unexpected_identities_fail_closed": true,
+    "partial_fan_in_cannot_pass": true
+  },
+  "dependency_binding": {
+    "n02_spawn_descriptor_integrity_verified": true,
+    "n03_command_replay_and_snapshot_binding_verified": true,
+    "scheduler_success_requires_terminal_receipt": true
+  },
+  "immutable_outputs": [
+    "fan_in_decision",
+    "independent_review"
+  ],
+  "independent_review": {
+    "author_self_approval_forbidden": true,
+    "distinct_actor_and_independence_group_required": true,
+    "review_scope_binds_every_and_only_maker_output": true,
+    "reviewer_depends_on_every_and_only_maker": true,
+    "sealed_pass_review_artifact_required": true
+  },
+  "manifest_contract": {
+    "depends_on": [
+      "N02",
+      "N03"
+    ],
+    "exit_criteria": [
+      "expected/actual counts reconcile",
+      "author cannot self-approve"
+    ],
+    "independent_review": "required",
+    "required_checks": [
+      "missing_node_detection_test",
+      "independent_review_test"
+    ],
+    "risk_class": "high",
+    "status": "PASS",
+    "write_scope": [
+      "tests/golden/multiagent/**",
+      "artifacts/work_packages/N04/**"
+    ]
+  },
+  "result_contract": {
+    "business_artifact_required": true,
+    "completeness_reconciles_one_of_one": true,
+    "prose_only_success_rejected": true
+  },
+  "status": "PASS",
+  "syntax": {
+    "attempt_id": "N04-0001",
+    "checks": [
+      {
+        "exit_code": 0,
+        "path": "tests/golden/multiagent/fan-in-gate.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "tests/golden/multiagent/fan-in-test-support.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "tests/golden/multiagent/independent-review.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "exit_code": 0,
+        "path": "tests/golden/multiagent/missing-node-detection.test.mjs",
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "final_status": "PASS"
+  },
+  "targeted": {
+    "cancelled": 0,
+    "collected": 26,
+    "failed": 0,
+    "independent_review_test_count": 12,
+    "junit": "artifacts/work_packages/N04/attempts/0001/targeted-n04-node.junit.xml",
+    "junit_sha256": "sha256:3e1df14ac4c1cb3fb7b31dab6f99d0974675a03e0a9e074f4b6b0ee04fe7746f",
+    "missing_node_detection_test_count": 14,
+    "observed_file_count": 2,
+    "observed_files": [
+      "tests/golden/multiagent/independent-review.test.mjs",
+      "tests/golden/multiagent/missing-node-detection.test.mjs"
+    ],
+    "passed": 26,
+    "skipped": 0,
+    "test_names": [
+      "independent_review_test: a distinct actor and independence group can approve full maker scope",
+      "independent_review_test: an absent review cannot be inferred from successful execution",
+      "independent_review_test: an author cannot self-approve",
+      "independent_review_test: reviewer cannot share a maker independence group",
+      "independent_review_test: only a PASS verdict satisfies the gate",
+      "independent_review_test: review scope must contain every and only maker receipt",
+      "independent_review_test: review binds the exact dispatch and replayed scheduler state",
+      "independent_review_test: every maker output and output hash is in review scope",
+      "independent_review_test: reviewer must be scheduled after every maker role",
+      "independent_review_test: review hash and derived ID reject mutation",
+      "independent_review_test: reviewer actor and receipt must bind the N03 terminal attempt",
+      "independent_review_test: reviewer ResultEnvelope must emit the sealed review artifact",
+      "missing_node_detection_test: exact N02/N03 fan-in is deterministic, immutable, and receipt-bound",
+      "missing_node_detection_test: dispatch expected count and role identity count must agree",
+      "missing_node_detection_test: partial fan-in policies cannot pass the N04 gate",
+      "missing_node_detection_test: a missing or duplicate spawn descriptor is visible",
+      "missing_node_detection_test: descriptor tampering is rejected by the N02 integrity boundary",
+      "missing_node_detection_test: scheduler missing and unexpected node identities fail closed",
+      "missing_node_detection_test: snapshot must be exact N03 command replay for the bound plan and run",
+      "missing_node_detection_test: a rehashed fabricated earlier attempt cannot enter fan-in",
+      "missing_node_detection_test: truncated scheduler command history cannot support completion",
+      "missing_node_detection_test: non-terminal scheduler attempts cannot be narrated as success",
+      "missing_node_detection_test: terminal receipt mismatch remains visible",
+      "missing_node_detection_test: ResultEnvelope completeness must reconcile one-of-one",
+      "missing_node_detection_test: prose-only success without a business artifact is rejected",
+      "missing_node_detection_test: missing, duplicate, and unexpected result identities fail closed"
+    ],
+    "todo": 0,
+    "xml_error_count": 0,
+    "xml_failure_count": 0,
+    "xml_logical_test_count": 26,
+    "xml_suite_test_count": 0,
+    "xml_testcase_count": 26
+  },
+  "upstream_regressions": {
+    "n02_adapter_contract": {
+      "cancelled": 0,
+      "collected": 29,
+      "failed": 0,
+      "junit": "artifacts/work_packages/N04/attempts/0001/n02-adapter-regression.junit.xml",
+      "junit_sha256": "sha256:e0ebb9ecd5e41581623a34e817642343fb73679bffc359ce540ccf56b5375fc2",
+      "observed_file_count": 2,
+      "observed_files": [
+        "packages/role-router/src/adapters/adapter-compilation.test.mjs",
+        "packages/role-router/src/adapters/prompt-injection-boundary.test.mjs"
+      ],
+      "passed": 29,
+      "skipped": 0,
+      "test_names": [
+        "adapter_compilation_test: Codex compilation is deterministic, immutable, and content-addressed",
+        "adapter_compilation_test: Codex and Claude preserve identical canonical role authority",
+        "adapter_compilation_test: descriptor binds exact runtime, routing receipt, output, and count",
+        "adapter_compilation_test: subagent unavailability uses only explicit serial fallback",
+        "adapter_compilation_test: missing subagent and serial capabilities blocks instead of substituting",
+        "adapter_compilation_test: blocked and safe-mode hosts cannot compile executable work",
+        "adapter_compilation_test: a read-only host cannot receive a write-capable RoleSpec",
+        "adapter_compilation_test: policy-approved RoleSpec fallback tier is explicit and recorded",
+        "adapter_compilation_test: unauthorized or unapproved model fallback fails closed",
+        "adapter_compilation_test: floating model and runtime references are rejected",
+        "adapter_compilation_test: capability report hash and host identity are verified",
+        "adapter_compilation_test: rehashed non-canonical capability reports fail closed",
+        "adapter_compilation_test: a tampered RoleSpec never reaches host compilation",
+        "adapter_compilation_test: serialized descriptor mutation is detected",
+        "adapter_compilation_test: attacker rehash cannot authorize an altered internal binding",
+        "adapter_compilation_test: Codex Desktop is explicit and still preserves RoleSpec authority",
+        "adapter_compilation_test: unknown host and unknown Codex built-in role both fail closed",
+        "prompt_injection_boundary_test: host capability evidence is data, not prompt authority",
+        "prompt_injection_boundary_test: caller-supplied prompt and authority fields are rejected",
+        "prompt_injection_boundary_test: model routing cannot smuggle role semantics",
+        "prompt_injection_boundary_test: only the verified RoleSpec can supply mission and ACL text",
+        "prompt_injection_boundary_test: mutation without a new RoleSpec hash is rejected",
+        "prompt_injection_boundary_test: copied capability state cannot bypass its report hash",
+        "prompt_injection_boundary_test: accessor-backed compile fields never execute",
+        "prompt_injection_boundary_test: Proxy compile requests are rejected without trap execution",
+        "prompt_injection_boundary_test: host-specific target never changes canonical prompt",
+        "prompt_injection_boundary_test: descriptor prompt replacement fails integrity validation",
+        "prompt_injection_boundary_test: prompt replacement plus attacker rehash still fails semantic verification",
+        "prompt_injection_boundary_test: custom prototypes cannot carry hidden authority"
+      ],
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_logical_test_count": 29,
+      "xml_suite_test_count": 0,
+      "xml_testcase_count": 29
+    },
+    "n03_scheduler_contract": {
+      "cancelled": 0,
+      "collected": 24,
+      "failed": 0,
+      "junit": "artifacts/work_packages/N04/attempts/0001/n03-scheduler-regression.junit.xml",
+      "junit_sha256": "sha256:d3061f97d60584db38e49f2bf6c746fa78c4fa38db22bf44a99dad2018c94c7e",
+      "observed_file_count": 2,
+      "observed_files": [
+        "packages/foundry-kernel/src/scheduler/resource-conflict.test.mjs",
+        "packages/foundry-kernel/src/scheduler/scheduler-property.test.mjs"
+      ],
+      "passed": 24,
+      "skipped": 0,
+      "test_names": [
+        "resource_conflict_test: exclusive resources admit exactly one owner",
+        "resource_conflict_test: multi-resource acquisition is all-or-none",
+        "resource_conflict_test: bounded quota permits capacity owners and rejects overflow",
+        "resource_conflict_test: quota capacities must be explicit and exclusive capacity cannot broaden",
+        "resource_conflict_test: expiry releases ownership only into reconciliation",
+        "resource_conflict_test: stale token cannot commit after a newer node lease",
+        "resource_conflict_test: exact acquisition retry returns one lease and one reservation",
+        "resource_conflict_test: active lease retry rejects changed admission or reservation",
+        "resource_conflict_test: failed admission does not consume token, budget, or resource",
+        "scheduler_property_test: graph compilation is deterministic across every node permutation",
+        "scheduler_property_test: unknown, duplicate, self, and hostile dependencies fail closed",
+        "scheduler_property_test: every real cycle requires one hash-valid matching LoopContract",
+        "scheduler_property_test: readiness requires successful predecessor terminal receipts",
+        "scheduler_property_test: admission evidence is explicit and capability leases remain external",
+        "scheduler_property_test: retries create immutable attempts and preserve idempotency",
+        "scheduler_property_test: idempotency conflicts and semantic failures never retry",
+        "scheduler_property_test: attempt activity and retry lease clocks never regress",
+        "scheduler_property_test: expired attempts reconcile before a retry can be assigned",
+        "scheduler_property_test: unknown effects can reconcile to success only with receipts",
+        "scheduler_property_test: typed hard budgets enforce calls and concurrency without inventing meters",
+        "scheduler_property_test: bounded loops dedupe all seen items and enforce dry rounds and limits",
+        "scheduler_property_test: failure policy remains visible to downstream readiness",
+        "scheduler_property_test: command replay reproduces exact state and rejects tamper",
+        "scheduler_property_test: plan, lease, attempt, and snapshot outputs are immutable"
+      ],
+      "todo": 0,
+      "xml_error_count": 0,
+      "xml_failure_count": 0,
+      "xml_logical_test_count": 24,
+      "xml_suite_test_count": 0,
+      "xml_testcase_count": 24
+    },
+    "status": "PASS"
+  },
+  "version": "4.0.0-n04.1"
+}

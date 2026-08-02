@@ -1,0 +1,74 @@
+{
+  "attempt_id": "Q06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every govern-or-refuse decision resolves to one immutable receipt that is a pure function of its inputs: there is no clock and no random draw, the caller supplies created_at, and the gate id and receipt hash re-derive byte for byte from the receipt's own published fields, so replaying a call reproduces the receipt",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the passing calibration status is read from the calibration-report schema's own status ladder (EF4-I22); the calibration and selective-inference reports are validated against their canonical schemas; the candidate-generating roles come from the verifier firewall; the composed Q05 receipt is authenticated by gate name, hash re-derivation and candidate; and every FINDING_CODE names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the happy path governs and replays deterministically; a candidate-generating requester, a tampered or foreign admissibility receipt, an advancement stitched onto a foreign clearance, a selective report laundered past the winner's-curse deflation, a miscalibrated report, and an unadmitted or unadvanced verdict are each refused; crash/resume maps to replay determinism for this pure module",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; a candidate-generating requesting role is refused with the set the verifier firewall declares; no single dimension carries the decision (three orthogonal all-must-pass concerns, EF4-I45); promotion authority lives in governance.promotion and takes no score, and this gate holds none of it",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "composed_surfaces": [
+      "evaluation.v4_q05 statistical-admissibility receipt",
+      "validation.v4_v05 advancement receipt (composed by hash, not imported)",
+      "calibration-report schema",
+      "selective-inference-report schema (winner's-curse, bound to Q05's accounting)"
+    ],
+    "decision_tokens": [
+      "GOVERN",
+      "REFUSE"
+    ],
+    "produces": "govern-or-refuse receipt; no score, selection or promotion",
+    "refusals_are_by_path": true
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded implementation agent; reviewer: the primary sealing session; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 19
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 10
+    }
+  },
+  "schema_binding": {
+    "calibration_pass_status": "calibration-report calibration_status first rung",
+    "selective_report_binding": "sha256(canonical_json(report)) == Q05 recorded selective_report_hash",
+    "winner_curse_predicate": "statistics.selective permits_promotion_without_replication (recorded, not gated)"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_q05": 40,
+    "dependency_regression_v05": 44,
+    "full_node_suite": 1253,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 19,
+    "provenance_and_receipt_audit": 7,
+    "schema_and_type_check": 9,
+    "unit_and_contract_tests": 10,
+    "wire_literal_discipline": 5
+  }
+}

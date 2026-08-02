@@ -1,0 +1,62 @@
+{
+  "attempt_id": "Y06-0001",
+  "declaring_sources": {
+    "budget_dimensions": "budgets/envelope.py LIMIT_DIMENSIONS and the Y05 bounded-budget attestation (composed)",
+    "promotion_capability": "governance/evolution_authority/registry.py PROMOTION_COMMIT_CAPABILITY (imported, never a literal)",
+    "reconciliation_stages": "evolution_chamber/reconciliation.py STAGES/TERMINAL_DISPOSITIONS (composed, not restated)",
+    "surrogate_token": "surrogate-triage-report schema acceptance token, read positionally"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "the reconciliation, budget, surrogate and authority sub-receipts each re-derive their own hashes, the final verdict binds all four sub-receipt hashes, and every record is deterministic under caller-supplied ids with no clock or randomness",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "reconciliation stages, budget dimensions, the surrogate acceptance token and the promotion-commit capability are read from their declaring owners (composed or imported, never restated), and the gate holds no canonical enum value as a literal after renaming three own collisions (capability_id, qualification_passed, accepted_count), proven by the package scan and the repository EF4-I22 gate 5/5",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "caller-declared per-stage counts are reconciled against the composed E05 ledger (submitted == admitted + refused fan-in), and a silent partial fan-in, an orphan effect, a count declaration mismatch, an unbounded or overrun budget dimension, and a surrogate acceptance above its ceiling are each refused by their own code",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the scale run acquires no evaluator, holdout or promotion authority: promotion capability is grounded in the imported canonical constant, a mutable-search holder granted protected authority refuses SCALE_RUN_ACQUIRES_PROMOTION_AUTHORITY, and a numeric score bound into a promotion decision refuses SCORE_BOUND_INTO_PROMOTION_FIELD",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 18
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 8
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 8
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_effects": 66,
+    "dependency_regression_operations": 47,
+    "full_node_suite": 1740,
+    "full_python_suite": 1285,
+    "negative_and_adversarial_tests": 18,
+    "provenance_and_receipt_audit": 7,
+    "schema_and_type_check": 8,
+    "targeted_y06_qualification": 41,
+    "unit_and_contract_tests": 8,
+    "wire_literal_discipline": 5
+  }
+}

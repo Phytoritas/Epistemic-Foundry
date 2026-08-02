@@ -1,0 +1,25 @@
+{
+  "attempt_id": "B02-0001",
+  "check": "j02-tokenizer-vector-test",
+  "command": [
+    "uv",
+    "run",
+    "--locked",
+    "--extra",
+    "dev",
+    "--group",
+    "skill-context",
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/test_j02_context_budget.py",
+    "-p",
+    "no:cacheprovider",
+    "-o",
+    "addopts=",
+    "--junitxml=artifacts/work_packages/B02/attempts/0001/j02-tokenizer-vector-test.junit.xml"
+  ],
+  "exit_code": 0,
+  "status": "PASS"
+}

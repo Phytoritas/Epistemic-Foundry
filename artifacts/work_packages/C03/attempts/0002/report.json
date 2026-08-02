@@ -1,0 +1,140 @@
+{
+  "attempt_id": "C03-0002",
+  "authority_decision_id": "HD-EF4-C01-SG004-20260730-001",
+  "canonical_contract": {
+    "document_registration_contracts_present": true,
+    "example_count": 126,
+    "schema_count": 126,
+    "schema_example_one_to_one": true,
+    "status": "PASS",
+    "unique_schema_id_count": 126
+  },
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "B04_final": "WAITING_ON_C04",
+    "B04_pre_C04": "DEPENDENCY_READY",
+    "C01": "PASS",
+    "C02": "PASS",
+    "C03": "PASS",
+    "C04": "WAITING_ON_FRESH_PROJECTION",
+    "full_156_package_dag_recomputed": false,
+    "next_package": "B04-0006"
+  },
+  "document_registration_migration": {
+    "canonical_output_validation": "PASS",
+    "environment_or_repository_discovery_count": 0,
+    "failure_code": "LEGACY_DOCUMENT_REGISTRATION_EVIDENCE_REQUIRED",
+    "immutable_evidence_required": true,
+    "migration_hash": "sha256:dd3f3046b90dee537d87f90898bfe97848fa4b7172a523762a644021b2417ece",
+    "nested_request_adversarial_validation": "PASS",
+    "rollback_exact_source_payload": "PASS",
+    "source_manifest_hash": "sha256:ec847a102b74d7b60099694a91aba65c9de660450625268b9180dde4be1db48f",
+    "status": "PASS"
+  },
+  "full_python_regression": {
+    "artifact": "artifacts/work_packages/C03/attempts/0002/full-python-regression.junit.xml",
+    "artifact_sha256": "sha256:d6488cb7d773fb18de0e57ce9ecfde8b0f2af76b8d659305b83bb8a6ea312925",
+    "errors": 0,
+    "failed": 19,
+    "failure_owner_counts": {
+      "B04": 18,
+      "J02": 1
+    },
+    "new_c03_failure_count": 0,
+    "passed": 964,
+    "same_failure_messages": true,
+    "same_failure_node_ids": true,
+    "same_normalized_fingerprints": true,
+    "skipped": 0,
+    "status": "EXPECTED_DOWNSTREAM_AND_PREEXISTING_FAILURES",
+    "suite_reported_pass": false,
+    "tests": 983
+  },
+  "global_implementation_gate": "fail",
+  "historical_preservation": {
+    "C01_0001_through_C01_0006_preserved": true,
+    "C02_0001_through_C02_0002_preserved": true,
+    "C03_0001_preserved": true,
+    "dirty_worktree_preserved": true,
+    "prior_RAH_evidence_preserved": true,
+    "prior_RAH_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "legacy_contract_migration": {
+    "active_legacy_promotion_value_hits": 0,
+    "compatibility_matrix": "PASS",
+    "default_or_inferred_resolved_refs": 0,
+    "document_registration_backfill": "EXPLICIT_AND_FAIL_CLOSED",
+    "migration_fixture": "PASS",
+    "rollback": "HASH_BOUND"
+  },
+  "not_claimed": [
+    "repository-wide Python suite green",
+    "package canonical projection current",
+    "C04 full conformance",
+    "B04 final packaging complete",
+    "external actor-independent certification",
+    "completion_ready=true"
+  ],
+  "open_risks": [
+    "The full Python suite has exactly 18 B04-owned pre-C04 projection failures and one pre-existing J02 tokenizer-lock debt; it is not reported PASS.",
+    "The package snapshot remains stale until the authorized pre-C04 B04-0006 attempt deterministically reprojects the 126-schema root authority.",
+    "Review is primary-session procedural review rather than actor-independent assurance because Fleet and subagents are prohibited."
+  ],
+  "output_artifacts": [
+    "artifacts/work_packages/C03/attempts/0002/build_c03_0002_evidence.py",
+    "artifacts/work_packages/C03/attempts/0002/c03_0002_rah_seal.py",
+    "artifacts/work_packages/C03/attempts/0002/c03-runtime-migration-verification.json",
+    "artifacts/work_packages/C03/attempts/0002/full-regression-impact.json",
+    "artifacts/work_packages/C03/attempts/0002/dependency-status.json",
+    "artifacts/work_packages/C03/attempts/0002/targeted-runtime-migration.junit.xml",
+    "artifacts/work_packages/C03/attempts/0002/full-python-regression.junit.xml",
+    "artifacts/work_packages/C03/attempts/0002/rah-core-integrity.json",
+    "artifacts/work_packages/C03/attempts/0002/commands.jsonl",
+    "artifacts/work_packages/C03/attempts/0002/review.md",
+    "artifacts/work_packages/C03/attempts/0002/report.json"
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0104",
+    "core_generation": "000096-ffc48194",
+    "core_parent_generation": "000095-fba392da",
+    "final_closeout_evidence_id": "E0105",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 108,
+    "generation_manifest_sha256": "sha256:3fef577e12ddf96cc8213c2f2182cbe221e5b01d7d0882a6458108d6c688aa21",
+    "implementation_gate": "fail",
+    "retained_generation_manifest_count": 18,
+    "status": "active"
+  },
+  "repository_full_suite_status": "EXPECTED_DOWNSTREAM_AND_PREEXISTING_FAILURES",
+  "review": {
+    "actor_independence": false,
+    "assurance_limitation": "Primary-session separate review; not external actor-independent certification.",
+    "blocking_c03_owned_finding_count": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_CONTRACT_REVIEW",
+    "status": "PASS"
+  },
+  "runtime_migration_status": "PASS",
+  "status": "PASS",
+  "targeted_runtime_migration": {
+    "artifact": "artifacts/work_packages/C03/attempts/0002/targeted-runtime-migration.junit.xml",
+    "artifact_sha256": "sha256:5cf17aff2edb272bc8e4f721903a731449925ed2a6483901705a96e9b7a7525a",
+    "errors": 0,
+    "failed": 0,
+    "passed": 105,
+    "skipped": 0,
+    "status": "PASS",
+    "tests": 105
+  },
+  "work_package_id": "C03",
+  "write_scope_audit": {
+    "status": "PASS",
+    "unauthorized_migrations_init_present": false,
+    "violation_count": 0
+  }
+}

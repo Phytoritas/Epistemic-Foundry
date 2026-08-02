@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "work_package_id": "T01",
+  "attempt_id": "T01-0001",
+  "status": "SPEC_GAP",
+  "spec_gap_id": "T01-SG001",
+  "completion_ready": false,
+  "authority_hashes": {
+    "MASTER_SPEC.md": "sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3",
+    "AGENTS.md": "sha256:858e537ed3e49754b8e60d31c985467ee1246ed258c7763d6de4ef0767e381ea",
+    "manifests/development_manifest.yaml": "sha256:de457bc4b141aef332d76f16357d4ba44daa663dd15c195d2e9575bc59a79940",
+    "manifests/product_invariants.yaml": "sha256:de74929aed1566bf2487dcdeba54cea68aa75e09a29add7c2010af6d84d32871",
+    "docs/plugin_ux_cli_and_mcp.md": "sha256:2ee67657a192e8e1086949ab689e4a81d656dc9c86f943791b51c97eb2279b7b",
+    "openapi/epistemic-foundry-v1.openapi.yaml": "sha256:c77aa89918cc33cded07755bbf2cbec7fcb6554e573efbca2ebd9480b78344d7"
+  },
+  "manifest_contract": {
+    "dependencies": [
+      "E04",
+      "G04",
+      "S04"
+    ],
+    "write_scope": [
+      "packages/plugin-host/src/mcp/read/**"
+    ],
+    "exit_criteria": [
+      "tool schemas canonical",
+      "read tools side-effect free"
+    ],
+    "required_checks": [
+      "mcp_schema_test",
+      "read_side_effect_test"
+    ],
+    "spec_gap_stop_condition": true
+  },
+  "canonical_surface_facts": {
+    "read_tools": [
+      "foundry.status",
+      "foundry.health",
+      "foundry.session.get",
+      "foundry.artifact.get",
+      "foundry.claim.get",
+      "foundry.atlas.query",
+      "foundry.passport.get",
+      "foundry.replay.diff",
+      "foundry.map.query"
+    ],
+    "planning_tools": [
+      "foundry.frame.compile",
+      "foundry.search.plan",
+      "foundry.parliament.plan",
+      "foundry.validation.plan"
+    ],
+    "read_model_states": [
+      "READY",
+      "EMPTY_CONFIRMED",
+      "DEGRADED",
+      "UNAVAILABLE"
+    ],
+    "domain_schema_authority": "schemas/*.schema.json",
+    "http_transport_authority": "openapi/epistemic-foundry-v1.openapi.yaml",
+    "wire_literal_rule": "EF4-I22 prohibits duplicated CLI, MCP, HTTP, persistence, and UI wire literals"
+  },
+  "repository_facts": {
+    "canonical_schema_count": 124,
+    "mcp_named_canonical_schema_count": 0,
+    "tool_name_matches_in_machine_readable_contract_and_implementation_roots": {
+      "foundry.status": 0,
+      "foundry.health": 0,
+      "foundry.session.get": 0,
+      "foundry.artifact.get": 0,
+      "foundry.claim.get": 0,
+      "foundry.atlas.query": 0,
+      "foundry.passport.get": 0,
+      "foundry.replay.diff": 0,
+      "foundry.map.query": 0,
+      "foundry.frame.compile": 0,
+      "foundry.search.plan": 0,
+      "foundry.parliament.plan": 0,
+      "foundry.validation.plan": 0
+    },
+    "searched_machine_readable_roots": [
+      "schemas",
+      "openapi",
+      "workflows",
+      "manifests",
+      "packages",
+      "tests"
+    ],
+    "mcp_read_path_exists": false,
+    "transport_kernel_files": [
+      "packages/transport-kernel/package.json"
+    ],
+    "handler_service_implementation_found": false,
+    "per_tool_descriptor_or_conformance_fixture_found": false
+  },
+  "plausible_but_unauthorized_schema_candidates": [
+    "ForgeSessionState",
+    "PluginHealthReport",
+    "HostCapabilityReport",
+    "ArtifactManifest",
+    "ClaimCard",
+    "CoverageSnapshot",
+    "HypothesisPassport",
+    "ReplayReport",
+    "WorkspaceMapSnapshot",
+    "InsightCard",
+    "RunSpec",
+    "QueryPlan",
+    "RoleDispatchPlan",
+    "ValidationPlan"
+  ],
+  "contradictions_or_gaps": [
+    {
+      "id": "T01-SG001-PER_TOOL_BINDING",
+      "description": "The thirteen names are canonical, but no authority maps each name to an exact request schema, response schema, handler operation, or read-model envelope."
+    },
+    {
+      "id": "T01-SG001-PLANNING_EFFECT",
+      "description": "Planning tools are placed in T01 beside side-effect-free reads, but the contract does not say whether they are pure computation or durable plan-artifact creation with receipts."
+    },
+    {
+      "id": "T01-SG001-TRANSPORT",
+      "description": "No MCP protocol/version, descriptor, schema-reference resolution base, content framing, or error mapping is frozen."
+    },
+    {
+      "id": "T01-SG001-AUTHORITY",
+      "description": "Handler-service, authorization, workspace scoping, audit telemetry, receipt, and cross-surface conformance ownership are not assigned."
+    },
+    {
+      "id": "T01-SG001-WRITE-SCOPE",
+      "description": "T01 may write only the plugin-host read adapter path, so it cannot lawfully invent or repair the missing central/generated contract, handler, or conformance-test authorities."
+    }
+  ],
+  "classification": {
+    "typed_outcome": "SPEC_GAP",
+    "not_fail_reason": "No authorized implementation was attempted and therefore no implementation defect is established.",
+    "not_blocked_reason": "The gap does not result from a missing external service, credential, licensed source, toolchain, or host capability.",
+    "prohibited_shortcuts": [
+      "embed ad hoc request or response JSON Schema in the T01 adapter",
+      "guess one candidate domain schema for ambiguous tools",
+      "treat OpenAPI transport envelopes as MCP authority without a mapping contract",
+      "silently make planning tools persistent or silently make them ephemeral",
+      "invent authorization scopes, workspace rules, or errors",
+      "claim read side-effect freedom while emitting undefined audit or receipt effects",
+      "create handler services outside T01 write scope"
+    ]
+  },
+  "required_product_owner_decisions": [
+    "exact per-tool input, output, envelope, handler, side-effect, and capability matrix",
+    "MCP version, descriptor, schema-reference, framing, and error contract",
+    "planning purity versus durable artifact and receipt semantics",
+    "authorization, workspace, confidentiality, and concealment rules",
+    "read audit telemetry and receipt allowance under side-effect freedom",
+    "provider-neutral handler-service and cross-surface parity owner",
+    "minimum exact resolving write scopes and acceptance fixtures"
+  ],
+  "subagents_or_fleet_used": false
+}

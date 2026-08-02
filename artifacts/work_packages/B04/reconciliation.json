@@ -1,0 +1,42 @@
+{
+  "reconciliation_id": "B04-RECON-001",
+  "phase": "P01-B",
+  "status": "FAIL",
+  "packages": [
+    {
+      "work_package_id": "B02",
+      "status": "PASS",
+      "report_sha256": "98abe689dbfb9399d2f50f87a18376ca9a85ed4a50c938513778e312e3e67dad",
+      "commands_sha256": "4512079c4e3fee831c8bfb65b352ac072eb546496b94b331bf75f50ce46b6fae",
+      "review_sha256": "4e400b8809e1f5b44fb053c150865472c4017818ed2f5683a34160821e8ed228",
+      "failed_report_checks": 0,
+      "missing_output_artifacts": 0,
+      "review_mode": "USER_AUTHORIZED_SELF_REVIEW"
+    },
+    {
+      "work_package_id": "B03",
+      "status": "PASS",
+      "report_sha256": "baa07e997402a290f2602cea39a78a1acdeeb69dd7ea8c89331c84e78976338f",
+      "commands_sha256": "a4a873fafa01eaa8ac437b3ae5547964773a3c05d353788f0d826a8dd8dbe1cc",
+      "review_sha256": "5b1beea973fbfae448da7517bdfe3a1993015c003668b6c7ad6dd20644230d55",
+      "failed_report_checks": 0,
+      "missing_output_artifacts": 0,
+      "review_mode": "USER_AUTHORIZED_SELF_REVIEW"
+    }
+  ],
+  "dependency_evidence_complete": true,
+  "build_smoke_status": "FAIL",
+  "source_dist_converge": false,
+  "complete": false,
+  "blocker": {
+    "outcome": "SPEC_GAP",
+    "summary": "The Python wheel does not include the canonical schema bundle required by the runtime contract registry.",
+    "required_decision": "Assign one authorized work package a write scope that covers both Python packaging metadata and installed-runtime schema resource resolution.",
+    "unowned_change_surface": [
+      "pyproject.toml",
+      "src/epistemic_foundry/contracts/registry.py"
+    ],
+    "authority_conflict": "B01 owns pyproject.toml, C01 owns schemas/**, and no dependency-ready package owns the installed runtime registry together with packaging metadata; B04 may write only artifacts/work_packages/B04/**."
+  },
+  "reconciled_at_utc": "2026-07-27T09:49:51.815Z"
+}

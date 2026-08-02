@@ -1,0 +1,17 @@
+export {
+  EDGE_KINDS,
+  ENTITY_KINDS,
+  ENTITY_LAYERS,
+  IDENTITY_NAMESPACES,
+  SOURCE_CLASSES,
+  WORKSPACE_EDGE_EXTRACTION_VERSION,
+  WORKSPACE_INVENTORY_VERSION,
+  WorkspaceInventoryError,
+  buildWorkspaceInventory,
+  canonicalizeWorkspaceMapJson,
+  computeWorkspaceEdgeExtractionHash,
+  computeWorkspaceInventoryHash,
+  extractWorkspaceEdges,
+  validateWorkspaceEdgeExtraction,
+  validateWorkspaceInventory,
+} from "./workspace-inventory.mjs";

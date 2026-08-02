@@ -1,0 +1,42 @@
+{
+  "attempt_id": "O02-0002",
+  "authority": {
+    "attempt_id": "O02-0002",
+    "decision_file_sha256": "sha256:5e986212a409db12121d15ab936998d15478037fa06bcb8c0b2480292b4b29fe",
+    "decision_hash": "sha256:3695c59b67788b0f144f033627a9ef3294b75418f78dfb15fcebccc14a8ef221",
+    "decision_id": "HD-EF4-O02-SG001-20260731-001",
+    "dependency": "O01-0002 PASS",
+    "manifest_sha256": "sha256:6ccf07571c34c9010a10605ba201ba698a09f6343a281565520d392e4c77e063",
+    "package_count": 156,
+    "prior_O02_0001_preserved": true,
+    "required_checks": [
+      "retrieval_benchmark",
+      "relation_direction_test",
+      "retrieval_candidate_contract_test",
+      "retrieval_integrity_and_fallback_test",
+      "non_vector_release_guard_test",
+      "deterministic_replay_test"
+    ],
+    "status": "PASS"
+  },
+  "dependencies": {
+    "B04_pre_O02_projection": {
+      "attempt_id": "B04-0009",
+      "projection_status": "PASS_CURRENT",
+      "report_sha256": "sha256:beafcbc89b687bb61d53a4941fdbc52373aa8e311869dab731f36e0e3baab58c",
+      "status": "PASS"
+    },
+    "O01": {
+      "attempt_id": "O01-0002",
+      "report_sha256": "sha256:21cd6f07ce4caae4d7a7d673a85aec105117f35f2a560ef8310ee532cb188051",
+      "status": "PASS"
+    }
+  },
+  "next_state": {
+    "B04_final": "WAITING_ON_C04_0004",
+    "C04-0004": "DEPENDENCY_READY",
+    "O02-0002": "PASS",
+    "O03": "DEPENDENCY_READY_BUT_NOT_STARTED_DURING_ORDERED_C04_SEQUENCE"
+  },
+  "status": "PASS"
+}

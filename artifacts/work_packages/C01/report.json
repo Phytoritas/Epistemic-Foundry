@@ -1,0 +1,75 @@
+{
+  "work_package_id": "C01",
+  "base_checkpoint": "A04:PASS",
+  "status": "SPEC_GAP",
+  "changed_files": [
+    "artifacts/work_packages/C01/schema-meta-validation.json",
+    "artifacts/work_packages/C01/openapi-authority-audit.json",
+    "artifacts/work_packages/C01/commands.jsonl",
+    "artifacts/work_packages/C01/review.md",
+    "artifacts/work_packages/C01/report.json"
+  ],
+  "checks": [
+    {
+      "command": "schema_meta_validation",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/schema-meta-validation.json"
+    },
+    {
+      "command": "openapi_validation",
+      "exit_code": 1,
+      "artifact": "artifacts/work_packages/C01/openapi-authority-audit.json"
+    },
+    {
+      "command": "write_scope_audit",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/commands.jsonl#C01-C005"
+    },
+    {
+      "command": "uv run --locked pytest tests -p no:cacheprovider",
+      "exit_code": 0,
+      "artifact": "artifacts/work_packages/C01/commands.jsonl#C01-C009"
+    }
+  ],
+  "review": {
+    "agent": "primary_author",
+    "status": "SPEC_GAP_WITH_RECORDED_PROCEDURE_DEVIATION",
+    "findings_resolved": [],
+    "blocking_findings": [
+      "The endpoint authority referenced by docs/api_contract.md resolves to an unrelated MASTER_SPEC.md section, and no canonical REST v1 method/path inventory exists."
+    ]
+  },
+  "output_artifacts": [
+    "artifacts/work_packages/C01/schema-meta-validation.json",
+    "artifacts/work_packages/C01/openapi-authority-audit.json",
+    "artifacts/work_packages/C01/commands.jsonl",
+    "artifacts/work_packages/C01/review.md",
+    "artifacts/work_packages/C01/report.json"
+  ],
+  "open_risks": [
+    "Review was performed by the primary author under explicit user instruction and is not independent assurance.",
+    "REST v1 paths, methods, operation semantics, and schema mappings remain undefined.",
+    "The bundle-wide PACKAGE_MANIFEST is stale relative to pre-existing dirty-worktree changes; this does not invalidate the isolated schema check but prevents a clean whole-bundle pass."
+  ],
+  "spec_gaps": [
+    {
+      "id": "C01-SG001",
+      "summary": "No valid higher-order authority defines the REST v1 path/method and request/response contract required to author canonical OpenAPI without invention.",
+      "required_decision": "Correct the authoritative reference and define the versioned REST v1 operation inventory and canonical schema mappings."
+    }
+  ],
+  "not_verified": [
+    "OpenAPI 3.1 parsing and reference resolution because no authoritative OpenAPI document can be authored",
+    "generated HTTP clients or server conformance",
+    "production REST runtime, authentication, authorization, CSRF, or network behavior"
+  ],
+  "next_ready": [
+    "S01"
+  ],
+  "blocked_dependents": [
+    "C02",
+    "C03",
+    "C04",
+    "U01"
+  ]
+}

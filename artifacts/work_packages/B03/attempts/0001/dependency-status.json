@@ -1,0 +1,27 @@
+{
+  "attempt_id": "B03-0001",
+  "dependencies": {
+    "B01": {
+      "attempt_id": "B01-0001",
+      "core_evidence_id": "E0295",
+      "core_generation": "000293-7ff781e9",
+      "final_closeout_evidence_id": "E0296",
+      "report": "artifacts/work_packages/B01/attempts/0001/report.json",
+      "report_sha256": "sha256:9bc65c52408117105ee5da16f2d7b04995fd54a3a679f1fe341566f409d110bd",
+      "status": "PASS"
+    }
+  },
+  "dependency_note": "B03 depends on B01; the sealed B01-0001 attempt is the build dependency",
+  "next_action": "SEAL_B03_0001_THEN_RECOMPUTE_DAG",
+  "regression_baseline": {
+    "attempt_id": "B01-0001",
+    "core_evidence_id": "E0295",
+    "core_generation": "000293-7ff781e9",
+    "final_closeout_evidence_id": "E0296",
+    "report": "artifacts/work_packages/B01/attempts/0001/report.json",
+    "report_sha256": "sha256:9bc65c52408117105ee5da16f2d7b04995fd54a3a679f1fe341566f409d110bd",
+    "status": "PASS"
+  },
+  "regression_baseline_note": "B01-0001 is the sealed PASS attempt B03 depends on, bound as the regression baseline. The live ledger frontier advances under concurrent sealing; the parent reconciles the exact frontier when it fills the ledger pins at seal time.",
+  "status": "PASS"
+}

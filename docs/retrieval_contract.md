@@ -1,128 +1,158 @@
 # Retrieval, Ranking, and Evidence-Pack Contract
 
-## 1. Goal
+## 1. Authority and ownership
 
-Retrieval optimizes **decision coverage**, not generic semantic similarity. It must find support, refutation, nulls, boundaries, methods, and prior art.
+Retrieval optimizes decision coverage, not generic semantic similarity. O01
+owns `QueryPlan`, the eleven-lane reconciliation, `SearchLaneReceipt`, and
+`SearchCompletenessCertificate`. O02 owns provider adapters, untrusted-response
+validation, `RetrievalCandidate`, lane-local deduplication, rank fusion, and the
+candidate-set result. O03 alone resolves candidates to `SourceSpan`,
+`EvidenceNode`, dependency clusters, and an Evidence Pack.
 
-## 2. Query compilation
+`RetrievalCandidate` is the O02 business output. `ResultEnvelope` is telemetry
+only and records candidate IDs in `output_artifact_ids`; it is not candidate
+truth. The O01 sealer verifies candidate IDs, hashes, counts, query, snapshot,
+and index bindings before it emits a lane receipt.
 
-From InsightCard generate:
-- canonical proposition
-- synonyms/ontology terms
-- relation direction
-- reversed/negated relation
-- null/no-effect language
-- scope ranges and neighboring scopes
-- methods and measurement constructs
-- mechanism chain edges
-- citation seeds
-- date/version/correction queries
+## 2. Provider-neutral backend request
 
-Queries and hashes are retained in the retrieval manifest.
+Every backend request seals these values:
 
-## 3. Lanes
+- `run_id`, `query_plan_id`, `plan_hash`, and `lane`
+- `query_families`, canonical `query_batch`, and `query_hash`
+- `scope_filter`, `corpus_snapshot_hash`, and `index_versions`
+- `max_candidates`, `cutoff_policy_id`, and `deterministic_seed`
+- `policy_bundle_hash` and `capability_lease_id`
+- `backend_id`, `backend_version`, `adapter_id`, and `adapter_version`
 
-Required lanes are configured in `config/retrieval_policy.example.yaml`. Each lane returns:
-- candidate ID
-- lane
-- lexical/semantic/graph score
-- matched terms/edges
-- scope estimate
-- retrieval explanation
-- source snapshot/version
+`query_batch` is an object containing the lane and a canonical-family-ordered
+array of deduplicated ordered queries. `SearchLaneReceipt.query_text` stores its
+exact JCS-equivalent JSON string, and `query_hash` is the SHA-256 of those UTF-8
+bytes. A raw backend response is untrusted until its schema, request, receipt,
+query, snapshot, index, rank, and source locator all validate.
 
-## 4. Fusion
+## 3. Lanes and query families
 
-Candidate generation may use Reciprocal Rank Fusion:
+The lane-to-family binding is fixed:
+
+| Lane | Required query family | Additional contract |
+|---|---|---|
+| `lexical` | `FORWARD` | Preserve exact terms, identifiers, and phrases. |
+| `semantic` | `FORWARD` | Record vector provenance explicitly. |
+| `citation` | `FORWARD` | Use queries as citation seeds. |
+| `entity_variable` | `FORWARD` | Entity, variable, and unit edges may expand the query. |
+| `mechanism` | `FORWARD` | Preserve mechanism edges and intermediate nodes. |
+| `counterevidence` | `FORWARD`, `REVERSE` | Both families are required. |
+| `null` | `NULL` | Use only null, no-effect, or equivalence queries. |
+| `boundary` | `BOUNDARY` | Include moderator, threshold, or neighboring scope. |
+| `method` | `METHOD` | Include measurement, design, or construct terms. |
+| `temporal` | `FORWARD` | A versioned date/correction filter is required. |
+| `external_novelty` | `NOVELTY` | External scope and a stop rule are required. |
+
+A selected lane with a missing required family fails closed with
+`INVALID_QUERY_FAMILY_BINDING`.
+
+## 4. Canonical candidate identity and content hash
+
+`candidate_id` is `RC-` plus the lowercase SHA-256 of the JCS-equivalent object
+containing, in the schema-declared identity preimage, `plan_hash`, `lane`,
+`query_hash`, `canonical_source_key`, `source_version`, and
+`source_snapshot_hash`.
+
+`candidate_hash` covers the schema-declared full canonical content: resolved
+provenance, backend observations and receipts, ranks, scores, features, and
+duplicate lineage. It excludes only `candidate_id`, `candidate_hash`, generated
+time, and storage locator. Placeholder hashes are invalid. Nullable values keep
+their keys.
+
+The duplicate identity is the tuple `canonical_source_key`, `source_version`,
+`source_snapshot_hash`, and `source_locator`. Same-lane duplicates collapse to
+one candidate while retaining every channel observation and duplicate ID.
+Cross-lane evidence-dependency deduplication remains O03 responsibility.
+
+A candidate with `source_span_id=null` is metadata-only. It may be retained for
+discovery but cannot directly become an `EvidenceNode` or promoted evidence.
+
+## 5. Relation direction
+
+The closed vocabulary is `SAME_DIRECTION`, `REVERSE_DIRECTION`,
+`INVERSE_PREDICATE`, `BIDIRECTIONAL`, `NO_DIRECTION`, and `UNRESOLVED`.
+
+For canonical `A parent_of B`, `A parent_of B` is `SAME_DIRECTION`,
+`B parent_of A` is `REVERSE_DIRECTION`, and registered inverse
+`B child_of A` is `INVERSE_PREDICATE`. Explicit claims in both directions are
+`BIDIRECTIONAL`; symmetric relations are `NO_DIRECTION`; insufficient trusted
+grounding is `UNRESOLVED`. Neither `NO_DIRECTION` nor `UNRESOLVED` is a
+direction match. Only a versioned ontology or DomainPack may register an
+inverse predicate; a model cannot invent one.
+
+## 6. Deterministic deduplication, ranking, and cutoff
+
+Each lane processes results in exactly this order:
+
+1. validate backend response and receipt;
+2. validate QueryPlan, corpus snapshot, and index bindings;
+3. generate `canonical_source_key`;
+4. collapse exact duplicates within each channel;
+5. stably order channel hits by `raw_rank`, then `canonical_source_key`;
+6. fuse multi-channel candidates with RRF;
+7. calculate transparent ranking features;
+8. apply the policy `max_candidates` cutoff;
+9. resolve final ties by ascending `candidate_id`;
+10. record excluded, duplicate, and cutoff counts.
+
+RRF is mandatory for multi-channel fusion and is fixed at:
 
 ```text
-RRF(d) = Σ_l 1 / (k + rank_l(d))
+RRF(d) = Σ_channel 1 / (60 + rank_channel(d))
 ```
 
-Then compute transparent features:
-- scope overlap
-- relation-direction match
-- directness/evidence layer
-- method compatibility
-- dependency cluster novelty
-- publication/version status
-- extraction/grounding confidence
+Raw scores are never compared across channels. O02-0002 has no learned
+reranker. A future learned reranker requires a separate product decision,
+version, qualification, and replay contract. Retrieval rank and score are
+search priority, never scientific evidence strength.
 
-Search priority may be a configured linear or learned reranker, but the final scientific verdict never uses this scalar as evidence strength.
+## 7. Snapshot, integrity, terminal state, and fallback
 
-## 5. Dependency-adjusted diversity
+`plan_hash`, `corpus_snapshot_hash`, `index_versions`, backend and adapter
+versions, `policy_bundle_hash`, and cutoff policy are immutable during a lane
+execution. A request/response mismatch or a source/index change during the run
+ends as `FAILED / integrity_failure / STALE_RETRIEVAL_SNAPSHOT`. Candidate,
+hash, or receipt mismatch also fails.
 
-Selection objective favors new independent clusters:
+Policy denial, missing credentials, and a missing required backend are typed
+`BLOCKED`. Provider errors and malformed or unknown responses are `FAILED`.
+Valid bounded interruption is `PARTIAL`. Only a fully executed zero-result plan
+is `SEARCHED_NONE`; only a fully executed non-empty plan is
+`SEARCHED_WITH_RESULTS`. Silent cross-channel fallback is forbidden, and an
+incomplete planned backend or query family cannot be reported as complete.
 
-```text
-marginal_value(d) =
-  relevance(d)
-  + λ_scope · scope_match(d)
-  + λ_role · missing_role_gain(d)
-  + λ_cluster · new_cluster(d)
-  - λ_dup · redundancy(d, selected)
-```
+## 8. Non-vector guard
 
-A second paper from the same experiment can add detail but not an independent replication count.
+For E1 or higher, the O01-required lexical, semantic, citation, and temporal
+lanes actually execute. A semantic-only run cannot pass. Any non-empty release
+set contains at least one candidate originating from `LEXICAL`,
+`CITATION_GRAPH`, `RELATION_GRAPH`, or `EXTERNAL_INDEX`. Vector-only candidates
+remain retained with `multi_channel_verified=false`, and the run ceiling is
+`PARTIAL`. A bounded complete search in which all required lanes are
+`SEARCHED_NONE` may pass.
 
-## 6. Scope overlap
+## 9. Evaluation oracle
 
-Per dimension classify:
-- exact
-- overlapping
-- adjacent/extrapolated
-- disjoint
-- unknown
+Acceptance uses versioned local, network-free, and LLM-free fixtures. Contract,
+direction, provenance, integrity rejection, invalid-response rejection,
+deduplication, and replay cases require 100% exact results. Per-required-lane
+Recall@20 is at least 0.90 and nDCG@20 at least 0.85; fused Recall@20 is at
+least 0.95. Critical counter, null, boundary, and method must-find cases require
+100%. Vector-only violations, silent fallbacks, skips, and xfails are zero. A
+failing lane cannot be averaged away, and `PARTIAL`, `BLOCKED`, or `FAILED`
+runs are not successful benchmark samples.
 
-Overall scope match is a vector and a policy-derived category, not only a cosine score. Unknown does not equal match.
+## 10. Evidence-pack boundary
 
-## 7. Quotas
-
-Evidence Pack is stratified:
-- direct support 2–4
-- counter 2–4
-- null 1–3
-- boundary 2–3
-- method 1–2
-- alternatives/prior art as needed
-
-Quotas are targets, not permission to invent. Empty lane must be `searched-none-found` or `unsearched`, with search record.
-
-## 8. Full-text activation
-
-Tier-0 metadata can identify candidates. Before evidence promotion:
-- inspect exact full-text source span
-- run grounding verification
-- normalize scope/method
-- resolve version/dependency
-
-Abstract-only evidence is labeled accordingly and cannot masquerade as direct measurement.
-
-## 9. External novelty
-
-Order:
-1. local corpus
-2. authoritative bibliographic indexes
-3. preprint indexes
-4. broader discovery tools
-
-Output:
-- `PRIOR_ART_FOUND`
-- `NOT_FOUND_WITHIN_SEARCH_SCOPE`
-- `NOT_ASSESSED`
-
-Never output absolute “novel” based on a bounded search.
-
-## 10. Evaluation
-
-Per lane and fused:
-- Recall@k
-- nDCG
-- role recall
-- cluster diversity
-- scope precision
-- null/counter recall
-- evidence-pack completeness
-- cost/latency
-
-Reranking is accepted only if it improves the registered decision metrics, not merely semantic benchmark scores.
+Before evidence promotion, O03 resolves an exact full-text source span,
+verifies grounding, normalizes scope and method, and resolves source version
+and dependency. Abstract-only and metadata-only candidates remain labeled and
+cannot masquerade as direct measurement. Evidence Pack quotas are targets, not
+permission to invent missing evidence; truthful searched-none and unsearched
+states remain visible.

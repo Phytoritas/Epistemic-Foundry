@@ -1,0 +1,238 @@
+{
+  "additional_checks": {
+    "git_diff_check": "PASS_WITH_EXISTING_LINE_ENDING_ADVISORIES_ONLY",
+    "node_syntax": "PASS",
+    "npm_check_boundaries": "PASS",
+    "npm_check_structure": "PASS",
+    "s04_traceability_direct": "4/4 PASS"
+  },
+  "attempt_id": "S04-0005",
+  "full_node": {
+    "byte_size": 159611,
+    "cancelled": 0,
+    "collected": 819,
+    "failed": 0,
+    "junit": "artifacts/work_packages/S04/attempts/0005/full-node-suite.junit.xml",
+    "junit_sha256": "sha256:3896c7c6d167f2aea8f959048e3e656d4a92dddf8a1ee7d3d525fc3ea641a5e0",
+    "passed": 819,
+    "semantic_counter_authority": "node_test_footer",
+    "skipped": 0,
+    "todo": 0,
+    "xml_errors": 0,
+    "xml_failures": 0,
+    "xml_footer_testcase_delta": 5,
+    "xml_skipped": 0,
+    "xml_testcase_count": 814
+  },
+  "full_python": {
+    "byte_size": 181169,
+    "collected": 1073,
+    "errors": 0,
+    "failed": 17,
+    "junit": "artifacts/work_packages/S04/attempts/0005/full-python-suite.junit.xml",
+    "junit_sha256": "sha256:c84830b856dd63b682cf32c2a3040767e12528a2389dbb7a5867354848bf3394",
+    "passed": 1056,
+    "semantic_counter_authority": "pytest_testsuite_attributes",
+    "skipped": 0,
+    "xml_testcase_count": 1073
+  },
+  "new_failure_count": 0,
+  "new_skip_xfail_todo_or_cancellation_count": 0,
+  "node_failure_count": 0,
+  "python_failure_error_text_match_count": 17,
+  "python_failure_fingerprint_match_count": 17,
+  "python_failure_node_id_match_count": 17,
+  "python_failures": [
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_duplicate_document_id_fails_closed",
+      "normalized_failure_fingerprint": "sha256:439a57e659fd1f5eaf796d7d863839c90a50ca74df58e9e7efc611cef45763f2",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_materialization_is_deterministic",
+      "normalized_failure_fingerprint": "sha256:bf8ec63f0c73dc97eefffc0bd3957fbcefbc20da83d55c0e05b9942fbb67b0df",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_materialize_atomically_replaces_complete_existing_projection",
+      "normalized_failure_fingerprint": "sha256:79c4d82a141438b561d0cbf75a4992023d04dff4ed0422300fe3ba976cae3fee",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_materialize_preserves_unrelated_empty_directory",
+      "normalized_failure_fingerprint": "sha256:b87b96c16e4964d0db15358042298fdc8561387eab8af7db8c36b81b53917573",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_missing_packaged_resource_fails_closed",
+      "normalized_failure_fingerprint": "sha256:0f6390dddbdaca8d0dbbbc61752eb98e0fed7011ce02742bca84926817a00e4c",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_one_byte_tamper_fails_closed",
+      "normalized_failure_fingerprint": "sha256:39e8ffbaa995b566cd3b65bd63d93826182c0a75fe630c2f8b3570aeac9034c4",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_registry_v2_binding_tamper_fails_closed[projected_snapshot_bundle_hash-sha256:0000000000000000000000000000000000000000000000000000000000000000]",
+      "normalized_failure_fingerprint": "sha256:5668fdb7b2c3e334999b3c13d57f9dbc77f35b71f1bd4b38ca34aac885111243",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_registry_v2_binding_tamper_fails_closed[projection_tool_identity-unapproved.projector]",
+      "normalized_failure_fingerprint": "sha256:aa6eb5a3a875d3680d6474f3d9d8993b3a409ff3d6554926a5b1b629b31627f9",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_registry_v2_binding_tamper_fails_closed[projection_tool_version-999.0.0]",
+      "normalized_failure_fingerprint": "sha256:bad821c97eb624cdac1abc4519cd9505d14ffe07b2702ce7c68a91e46edf3095",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_registry_v2_binding_tamper_fails_closed[source_revision-sha256:0000000000000000000000000000000000000000000000000000000000000000]",
+      "normalized_failure_fingerprint": "sha256:a6f07f415f832ad5fd6df06ea960df930e7b38c7fad25dc1ef25dda87689ee01",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_registry_v2_binds_source_snapshot_paths_and_projection_tool",
+      "normalized_failure_fingerprint": "sha256:6bc2fac8ddd1f7545d51ea86dc25d740829e794f773d5b804d726a368df0b1a3",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_runtime_accepts_registry_v2_external_projection",
+      "normalized_failure_fingerprint": "sha256:254c283595e4111d8d967e88703c7dd7b5f9dbc817bd3ef1891d9d8869c08825",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_second_rename_failure_restores_old_tree",
+      "normalized_failure_fingerprint": "sha256:9dc8d10634aedf556b801a21ee443f1ee825b190ef3b0ec6728b58d0d0980617",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_source_mutation_after_swap_rolls_back_old_tree",
+      "normalized_failure_fingerprint": "sha256:5b6f8ca8b6a24ac8bc9f4b6cd06ffeaebe8b718dcf5c4d1b1228949509ccff23",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_source_mutation_before_swap_fails_without_live_change",
+      "normalized_failure_fingerprint": "sha256:97cc0079cb0b7cf735e8dc8102809e9c718675156447e9d7eca7ee01a094eb38",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_source_projection_is_current_and_complete",
+      "normalized_failure_fingerprint": "sha256:f37f494118405f9da3b58cdc326d112c09b84e75047e0eb5e8c1506744e51a15",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    },
+    {
+      "classification": "EXPECTED_B04_0009_PROJECTION_DEBT",
+      "message": "scripts.build.canonical_registry.materialize.CanonicalMaterializationError: expected 126 canonical schemas, found 127",
+      "node_id": "tests.packaging.test_canonical_registry::test_unregistered_extra_resource_fails_closed",
+      "normalized_failure_fingerprint": "sha256:792b53c16972ce8a89ecfdfd50550597927897706e40ad8944f6d929e5d09d13",
+      "owner": "B04",
+      "problem_type": "",
+      "resolving_attempt": "B04-0009",
+      "s04_causal_impact": "NONE"
+    }
+  ],
+  "python_projection_debt_failure_count": 17,
+  "repository_fully_green": false,
+  "s04_causal_failure_count": 0,
+  "status": "PASS_WITH_AUTHORIZED_DOWNSTREAM_DEBT",
+  "targeted_security": {
+    "byte_size": 13260,
+    "cancelled": 0,
+    "collected": 67,
+    "failed": 0,
+    "junit": "artifacts/work_packages/S04/attempts/0005/targeted-security-suite.junit.xml",
+    "junit_sha256": "sha256:789ca82cb12b98b4b73246684ce690fd2fec25f8df499e371cb09fb0025816d5",
+    "passed": 67,
+    "semantic_counter_authority": "node_test_footer",
+    "skipped": 0,
+    "todo": 0,
+    "xml_errors": 0,
+    "xml_failures": 0,
+    "xml_footer_testcase_delta": 0,
+    "xml_skipped": 0,
+    "xml_testcase_count": 67
+  }
+}

@@ -27,7 +27,7 @@ def test_status_reports_partial_implementation(capsys) -> None:
     assert payload["runtime_status"] == "PARTIAL_IMPLEMENTATION"
     assert payload["release_level"] == "SPEC_BUNDLE"
     assert "noetic_ledger" in payload["implemented"]
-    assert payload["canonical_schemas_loaded"] == 124
+    assert payload["canonical_schemas_loaded"] == 127
 
 
 def test_status_still_refuses_to_claim_plugin_alpha(capsys) -> None:

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/corpus-register.input.schema.json",
+  "title": "CorpusRegisterInput",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "../common-mutation-input.schema.json"
+    }
+  ],
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dry_run": {
+      "type": "boolean"
+    },
+    "expected_revision": {
+      "type": "null"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "approval_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "target_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "arguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "license_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "license_id",
+        "source_sha256",
+        "source_uri"
+      ]
+    }
+  },
+  "required": [
+    "workspace_id",
+    "dry_run",
+    "expected_revision",
+    "idempotency_key",
+    "approval_record_ids",
+    "target_ref",
+    "arguments"
+  ]
+}

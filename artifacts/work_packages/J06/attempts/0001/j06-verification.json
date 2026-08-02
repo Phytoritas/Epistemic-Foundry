@@ -1,0 +1,66 @@
+{
+  "attempt_id": "J06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every admission produces one receipt whose receipt_hash re-derives from the fields it publishes, the budget assessment names its budget and manifest by id and hash, and there is no clock or random draw on the identified path, so replaying an identified admission reproduces the receipt byte for byte and verify_gate_receipt refuses a tampered one",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the context total is re-derived from the manifest's own instruction/evidence/tool components against the canonical context-assembly-manifest schema, the token ceiling is read through the budget module's normalize_hard_limits, whether the envelope bounds spend is the budget module's own spend_is_bounded, and each FINDING_CODE names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the refusals carry the weight: an unregistered operator, a quarantined prompt, a prompt binding no qualification evidence, a prompt aimed at the run that produced it (retroactive), an understated token total, an unenforced or ceiling-less budget, over-budget work and a tampered receipt are each refused, and the happy path replays deterministically (crash/resume maps to byte-for-byte replay of a pure gate)",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, selects, promotes or evaluates; the receipt carries a verdict (ADMITTED) not a fitness, a prompt mutation is admitted only after the composed J05/S05 surfaces release it from quarantine and confirm a future target run, and no receipt field grants evaluator/holdout/promotion authority",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "admits": "one operator application against qualification and context budget",
+    "budget_source": "budget-envelope module (spend_is_bounded, normalize_hard_limits)",
+    "produces": "a self-proving receipt; no score, selection or promotion",
+    "qualification_source": "sealed J05 registry/prompt-workflow composing the S05 inert-mutations gate",
+    "refusals_are_by_code": true
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: a bounded implementation agent; reviewer: the sealing agent, independent; actor_independence between author and reviewer holds, external certification does not; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 20
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 10
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 8
+    }
+  },
+  "schema_binding": {
+    "budget_ceiling": "budget-envelope hard_limits.tokens via normalize_hard_limits",
+    "context_accounting": "context-assembly-manifest token_accounting (total re-derived per call)",
+    "qualification_vocabulary": "sealed J05/S05 surfaces, remapped to J06 finding codes"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_j05": 83,
+    "dependency_regression_s05": 62,
+    "full_node_suite": 1129,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 20,
+    "provenance_and_receipt_audit": 10,
+    "schema_and_type_check": 7,
+    "unit_and_contract_tests": 8
+  }
+}

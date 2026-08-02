@@ -1,0 +1,100 @@
+{
+  "attempt_id": "M05-0001",
+  "composed_surfaces": {
+    "coverage_summary": "src/epistemic_foundry/epistemic_species_archive/archive.py build_quality_diversity_map",
+    "lineage_memory": "src/epistemic_foundry/memory/v4_l05 LineageMemory",
+    "persistence_store": "migrations/v4_d05/0001_evolution_store.sql"
+  },
+  "declaring_sources": {
+    "inbreeding_rules": "src/epistemic_foundry/cartography/v4_m05/mapper.py INBREEDING_RULES (this module owns the vocabulary; recommendations only)",
+    "lineage_report": "schemas/lineage-diversity-report.schema.json",
+    "niche_axes": "schemas/epistemic-niche.schema.json axis_values properties",
+    "quality_diversity_map": "schemas/quality-diversity-map.schema.json"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "evidence": [
+        "artifacts/work_packages/M05/attempts/0001/test_provenance_receipts.py"
+      ],
+      "mechanism": "every emitted record re-derives its own hash from exactly the fields it publishes, the niche id re-derives from the published coordinates, the entropy pair re-derives one figure from the other, the recommended actions re-derive from the alerts, and nothing carries a clock the caller did not supply",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "evidence": [
+        "artifacts/work_packages/M05/attempts/0001/test_schema_and_type.py"
+      ],
+      "mechanism": "axis names are read from the canonical niche schema and every niche, coverage map and diversity report validates against its canonical schema; the mapper holds no archive entry class or stop reason as a literal; and each of the 11 failure codes carries its reason",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "evidence": [
+        "artifacts/work_packages/M05/attempts/0001/test_unit_contract.py",
+        "artifacts/work_packages/M05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "entropy figures agree with hand-computed values on known populations and the blast radius reaches exactly the descendants; a duplicated cell, a forged cell id, a candidate in two cells, an overfull niche, an elite outside its cell, a partial attribution, a meaningless threshold and an off-map stagnant niche are each refused by their own code",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "evidence": [
+        "artifacts/work_packages/M05/attempts/0001/test_unit_contract.py"
+      ],
+      "mechanism": "the map is descriptive: alerts carry recommendations only, the blast radius is a record rather than a permission, and nothing in this module promotes, evicts, erases or touches evaluator or holdout surfaces",
+      "status": "PASS"
+    }
+  },
+  "failure_classes": [
+    "ATTRIBUTION_INCOMPLETE",
+    "AXIS_UNDECLARED",
+    "CANDIDATE_UNKNOWN",
+    "CELL_DUPLICATED",
+    "ELITE_NOT_OCCUPANT",
+    "INPUT_INVALID",
+    "NICHE_IDENTITY_FORGED",
+    "NICHE_OVERFULL",
+    "NICHE_UNKNOWN",
+    "OCCUPANCY_AMBIGUOUS",
+    "THRESHOLD_INVALID"
+  ],
+  "implementation_findings": [
+    {
+      "finding": "the axis vocabulary was first read from the schema's required list, but the literal 'required' is itself a canonical enum value (minority-report preservation status), which the repository's EF4-I22 gate refused",
+      "resolution": "the axis names are read from the axis object's property keys instead, and the schema-and-type suite separately asserts the two declarations agree"
+    },
+    {
+      "finding": "deriving the effective lineage count from the unrounded entropy left the published pair off by one ulp of the rounding, so a reader could not re-derive one figure from the other",
+      "resolution": "the effective count is the exponential of the published entropy, proven by a re-derivation test; coherence beats prettiness (four uniform founders report 3.999999)"
+    }
+  ],
+  "not_derivable": {
+    "model_attribution": "lineage records carry no model identity, so the caller must attribute every candidate or the report refuses; publishing entropy over a partial population would be fiction",
+    "stagnation": "stagnation is temporal and belongs to the run that observes it; this module only checks that a declared stagnant niche is one the map holds"
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "module": "artifacts/work_packages/M05/attempts/0001/test_negative_adversarial.py",
+      "status": "PASS",
+      "test_count": 26
+    },
+    "provenance_and_receipt_audit": {
+      "module": "artifacts/work_packages/M05/attempts/0001/test_provenance_receipts.py",
+      "status": "PASS",
+      "test_count": 11
+    },
+    "schema_and_type_check": {
+      "module": "artifacts/work_packages/M05/attempts/0001/test_schema_and_type.py",
+      "status": "PASS",
+      "test_count": 13
+    },
+    "unit_and_contract_tests": {
+      "module": "artifacts/work_packages/M05/attempts/0001/test_unit_contract.py",
+      "status": "PASS",
+      "test_count": 19
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 69
+}

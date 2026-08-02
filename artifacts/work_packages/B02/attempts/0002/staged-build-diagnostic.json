@@ -1,0 +1,26 @@
+{
+  "attempt_id": "B02-0002",
+  "command": [
+    "uv",
+    "build",
+    "--wheel",
+    "--build-constraints",
+    "toolchains/python-build-constraints.txt",
+    "--require-hashes",
+    "--no-python-downloads",
+    "--out-dir",
+    "<OUTPUT>",
+    "."
+  ],
+  "exit_code": 2,
+  "staged_directories": [
+    "packages",
+    "src",
+    "toolchains",
+    "scripts",
+    "schemas",
+    "openapi"
+  ],
+  "stderr": "Building wheel...\nTraceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\build_meta.py\", line 333, in get_requires_for_build_wheel\n    return self._get_build_requires(config_settings, requirements=[])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\build_meta.py\", line 301, in _get_build_requires\n    self.run_setup()\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\build_meta.py\", line 317, in run_setup\n    exec(code, locals())\n  File \"<string>\", line 1, in <module>\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\__init__.py\", line 117, in setup\n    return distutils.core.setup(**attrs)  # type: ignore[return-value]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\_distutils\\core.py\", line 160, in setup\n    dist.parse_config_files()\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\_virtualenv.py\", line 20, in parse_config_files\n    result = old_parse_config_files(self, *args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\dist.py\", line 762, in parse_config_files\n    pyprojecttoml.apply_configuration(self, filename, ignore_option_errors)\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\config\\pyprojecttoml.py\", line 72, in apply_configuration\n    config = read_configuration(filepath, True, ignore_option_errors, dist)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\config\\pyprojecttoml.py\", line 153, in read_configuration\n    return expand_configuration(asdict, root_dir, ignore_option_errors, dist)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\config\\pyprojecttoml.py\", line 178, in expand_configuration\n    return _ConfigExpander(config, root_dir, ignore_option_errors, dist).expand()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\config\\pyprojecttoml.py\", line 225, in expand\n    self._expand_cmdclass(package_dir)\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\config\\pyprojecttoml.py\", line 250, in _expand_cmdclass\n    self._process_field(self.setuptools_cfg, \"cmdclass\", cmdclass)\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\config\\pyprojecttoml.py\", line 208, in _process_field\n    container[field] = fn(container[field])\n                       ^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\config\\expand.py\", line 262, in cmdclass\n    return {k: resolve_class(v, package_dir, root_dir) for k, v in values.items()}\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\config\\expand.py\", line 250, in resolve_class\n    module = _load_spec(_find_spec(pkg_name, path), pkg_name)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\yhmoo\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpCj0POt\\Lib\\site-packages\\setuptools\\config\\expand.py\", line 196, in _find_spec\n    spec = spec or importlib.util.find_spec(module_name)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen importlib.util>\", line 92, in find_spec\nModuleNotFoundError: No module named 'scripts'\n  × Failed to build\n  │ `C:\\Users\\Public\\Documents\\ESTsoft\\CreatorTemp\\efoundry-b02-stage-diagnostic-ul8_b9px\\source`\n  ├─▶ The build backend returned an error\n  ╰─▶ Call to `setuptools.build_meta.build_wheel` failed (exit code: 1)\n      hint: This usually indicates a problem with the package or the build\n      environment.\n",
+  "stdout": ""
+}

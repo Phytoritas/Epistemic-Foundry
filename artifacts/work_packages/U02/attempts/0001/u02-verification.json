@@ -1,0 +1,35 @@
+{
+  "attempt_id": "U02-0001",
+  "declared_required_checks": [
+    "ui_security_test",
+    "degraded_state_test"
+  ],
+  "exit_criteria": {
+    "empty_confirmed_differs_from_unavailable": {
+      "mechanism": "read model state follows the receipt, never the caller: a backend failure renders UNAVAILABLE and can never be claimed as confirmed empty, while EMPTY_CONFIRMED, UNAVAILABLE and UNKNOWN stay three distinct first-class states (health-states, shell-contract EF4-I23 and app-contract all assert the distinction non-vacuously)",
+      "status": "PASS"
+    },
+    "loopback_auth_csrf_csp": {
+      "mechanism": "the local security posture is frozen data, the credential field vocabulary is frozen/sorted/lowercase and refused wherever it appears, the auth machine advances only along declared transitions, and every secured view refuses in every non-authenticated state; product modules read no clock, no random source and no environment",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "degraded_state_test": {
+      "junit": "artifacts/work_packages/U02/attempts/0001/degraded-state-test.junit.xml",
+      "status": "PASS",
+      "test_count": 37
+    },
+    "ui_security_test": {
+      "junit": "artifacts/work_packages/U02/attempts/0001/ui-security-test.junit.xml",
+      "status": "PASS",
+      "test_count": 45
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "degraded_state_test": 37,
+    "full_node_suite": 1192,
+    "ui_security_test": 45
+  }
+}

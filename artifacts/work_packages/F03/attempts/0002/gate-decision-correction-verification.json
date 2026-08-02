@@ -1,0 +1,131 @@
+{
+  "attempt_id": "F03-0002",
+  "authority_decision_id": "HD-EF4-B04-SG002-20260730-001",
+  "canonical_gate_decision": {
+    "additional_properties": false,
+    "canonical_example_expected_decision_hash": "sha256:a6a50d4285e844b71093e999b5addccf969d09d4c14221a92531d73172369851",
+    "canonical_example_hash_finding": "PREEXISTING_CANONICAL_EXAMPLE_HASH_DEBT_OUTSIDE_F03_WRITE_SCOPE",
+    "canonical_example_hash_is_f03_acceptance_gate": false,
+    "canonical_example_hash_owner": "C01_CANONICAL_CONTRACT",
+    "canonical_example_hash_recomputed": false,
+    "canonical_example_schema_validation": "PASS",
+    "canonical_example_stored_decision_hash": "sha256:816c793545f4c3a194ce6b4fa842856defbcb34d991f27277ea9cd2a082e4be1",
+    "example_path": "examples/sample_gate_decision.json",
+    "example_sha256": "sha256:3680818e3376ab2592e6df0876ab6dcb67843bf73d3dbbb4c3ada366ba93b035",
+    "pass_not_required_schema_validation": "PASS",
+    "property_count": 20,
+    "required_field_count": 20,
+    "schema_path": "schemas/gate-decision.schema.json",
+    "schema_sha256": "sha256:ee341a7adab98d1814906c2f37b36cdbb03842b77ea8b52e94a164d061b7379c"
+  },
+  "combined_f03_f04_junit": {
+    "byte_size": 7555,
+    "failures": [],
+    "leaf_failure_count": 0,
+    "leaf_testcase_count": 30,
+    "path": "artifacts/work_packages/F03/attempts/0002/combined-f03-f04-node-suite.junit.xml",
+    "sha256": "sha256:20828c89de66383209a4e2fa2a9d4d7adea95803bf4f9442f189f532380ed21d",
+    "tap_totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 31,
+      "skipped": 0,
+      "tests": 31,
+      "todo": 0
+    }
+  },
+  "completion_ready": false,
+  "integration_fixture": {
+    "owner": "F04",
+    "path": "tests/golden/forge/f04-test-support.mjs",
+    "sha256": "sha256:bde8970e2520697211bc24f30ae6f75cf10811daa71616d88f6e76a72cf5b52b",
+    "used_only_as_integration_evidence": true
+  },
+  "manifest_contract": {
+    "f03_depends_on": [
+      "F01"
+    ],
+    "f03_required_checks": [
+      "transition_receipt_test",
+      "override_provenance_test"
+    ],
+    "f03_write_scope": [
+      "packages/foundry-kernel/src/forge/gates/**"
+    ],
+    "f04_depends_on": [
+      "F02",
+      "F03"
+    ],
+    "package_count": 156,
+    "path": "manifests/development_manifest.yaml",
+    "sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12"
+  },
+  "required_checks": {
+    "override_provenance_test": {
+      "failed": 0,
+      "passed": 6,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "transition_receipt_test": {
+      "failed": 0,
+      "passed": 17,
+      "skipped": 0,
+      "status": "PASS"
+    }
+  },
+  "source_inventory": [
+    {
+      "byte_size": 48489,
+      "path": "packages/foundry-kernel/src/forge/gates/transition-admission-gate.mjs",
+      "sha256": "sha256:62549b467fccd773c89ae751db8f01e9bd3ee7e314087076f01a582081d0a0c1"
+    },
+    {
+      "byte_size": 50,
+      "path": "packages/foundry-kernel/src/forge/gates/index.mjs",
+      "sha256": "sha256:002d53b0ed821fc5b2cb9b089616e9830aa08a19a42f9d56b845dc96c186f9c6"
+    },
+    {
+      "byte_size": 9719,
+      "path": "packages/foundry-kernel/src/forge/gates/gate-test-support.mjs",
+      "sha256": "sha256:33dfc20a5c0ccb5cd0facef7167c0663ea01c43c6ba9f2711c94e8597f369b8b"
+    },
+    {
+      "byte_size": 22584,
+      "path": "packages/foundry-kernel/src/forge/gates/transition-receipt.test.mjs",
+      "sha256": "sha256:1f3cc002196c50934832a0b2ee1a79031e3321c9d0209f75a46bcf4ee8166a31"
+    },
+    {
+      "byte_size": 8505,
+      "path": "packages/foundry-kernel/src/forge/gates/override-provenance.test.mjs",
+      "sha256": "sha256:9cdd09ed0dd88cb41f2e7917724d8fc756c6307d6f39c70173cf8865e4a2bfa3"
+    }
+  ],
+  "status": "PASS",
+  "targeted_junit": {
+    "byte_size": 5909,
+    "failures": [],
+    "leaf_failure_count": 0,
+    "leaf_testcase_count": 23,
+    "path": "artifacts/work_packages/F03/attempts/0002/targeted-node-suite.junit.xml",
+    "sha256": "sha256:1f7fb41600e2213ec95b7f80867a1b6b00710f2c2f70e94e82b372fe0b668c4c",
+    "tap_totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 23,
+      "skipped": 0,
+      "tests": 23,
+      "todo": 0
+    }
+  },
+  "transition_admission_version": "4.0.0-f03.2",
+  "verified_guards": [
+    "all 20 canonical GateDecision fields are required and hashed",
+    "input_artifact_ids are non-empty, unique, and receipt-resolved",
+    "policy_bundle_hash equals the active ForgeSessionState policy_hash",
+    "status-valued conclusions equal status",
+    "policy-backed NOT_REQUIRED is accepted only with status PASS",
+    "FAIL and BLOCK remain transition-rejecting statuses",
+    "transition admission version is 4.0.0-f03.2"
+  ]
+}

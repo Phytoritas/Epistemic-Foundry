@@ -1,0 +1,72 @@
+{
+  "attempt_id": "C01-0007",
+  "canonical_contract": {
+    "draft": "2020-12",
+    "example_count": 126,
+    "legacy_promotion_value_hits": [],
+    "mapped_example_count": 126,
+    "meta_schema_validation": "PASS",
+    "schema_count": 126,
+    "schema_example_one_to_one": true,
+    "status": "PASS",
+    "unique_schema_id_count": 126,
+    "valid_example_count": 126
+  },
+  "gate_decision": {
+    "attempt_id": "C01-0007",
+    "canonicalization": "RFC_8785_JCS_EQUIVALENT_FOR_THIS_JSON_DOMAIN",
+    "computed_decision_hash": "sha256:a6a50d4285e844b71093e999b5addccf969d09d4c14221a92531d73172369851",
+    "fixture_byte_hash": "sha256:6224cf4f32e1da439fa9418f551f7dd6333c6d19e70c4a20cd6bb1a38b754982",
+    "fixture_path": "examples/sample_gate_decision.json",
+    "prior_stale_decision_hash": "sha256:816c793545f4c3a194ce6b4fa842856defbcb34d991f27277ea9cd2a082e4be1",
+    "schema_id": "https://epistemic-foundry.local/schemas/gate-decision.schema.json",
+    "schema_validation": "PASS",
+    "self_field_excluded": "decision_hash",
+    "status": "PASS",
+    "stored_decision_hash": "sha256:a6a50d4285e844b71093e999b5addccf969d09d4c14221a92531d73172369851",
+    "tamper_rejection": "PASS"
+  },
+  "git_diff_check": {
+    "advisory_output": "warning: in the working copy of 'examples/sample_gate_decision.json', LF will be replaced by CRLF the next time Git touches it",
+    "command": "git diff --check -- examples/sample_gate_decision.json artifacts/work_packages/C01/attempts/0007",
+    "exit_code": 0,
+    "status": "PASS"
+  },
+  "manifest_contract": {
+    "B04_depends_on": [
+      "B02",
+      "B03",
+      "C04"
+    ],
+    "C01_depends_on": [
+      "A04",
+      "A05"
+    ],
+    "C01_owns_gate_fixture": true,
+    "C04_depends_on": [
+      "C02",
+      "C03"
+    ],
+    "manifest_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "package_count": 156,
+    "static_dependency_cycle_added": false,
+    "status": "PASS"
+  },
+  "openapi": {
+    "all_mutations_require_idempotency_key": true,
+    "all_operations_have_explicit_security_and_capabilities": true,
+    "canonical_file": "openapi/epistemic-foundry-v1.openapi.yaml",
+    "document_registration_request_ref": "../schemas/document-registration-request.schema.json",
+    "document_registration_result_ref": "../schemas/document-registration.schema.json",
+    "document_sha256": "sha256:43429ad9c583b1026bd2445fb77d38b12410d2f6db065cffad45c64297db2cd7",
+    "external_schema_ref_count": 24,
+    "json_schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+    "openapi_version": "3.1.1",
+    "operation_count": 33,
+    "reference_resolution_failures": [],
+    "status": "PASS",
+    "unique_operation_id_count": 33
+  },
+  "package_status": "PASS",
+  "status": "PASS"
+}

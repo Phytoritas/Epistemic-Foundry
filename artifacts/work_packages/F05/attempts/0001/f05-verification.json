@@ -1,0 +1,91 @@
+{
+  "attempt_id": "F05-0001",
+  "composed_surfaces": {
+    "checkpoint_components": "src/epistemic_foundry/evolution_chamber/checkpoint.py",
+    "node_graph": "workflows/evolution_chamber_cycle.workflow.yaml",
+    "stop_classification": "src/epistemic_foundry/evolution_chamber/checkpoint.py ORDERLY_STOPS/ADVERSE_STOPS"
+  },
+  "declaring_sources": {
+    "loop_bounds": "schemas/loop-contract.schema.json",
+    "node_ids": "workflows/evolution_chamber_cycle.workflow.yaml",
+    "stop_reasons": "schemas/evolution-stop-certificate.schema.json",
+    "terminal_states": "workflows/evolution_chamber_cycle.workflow.yaml"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "evidence": [
+        "artifacts/work_packages/F05/attempts/0001/test_provenance_receipts.py"
+      ],
+      "mechanism": "the stop certificate and the checkpoint are minted by the runtime's own builders and validated against their canonical schemas, each self-hash is re-derived, an unexplained stop yields no certificate at all, and the machine mints nothing of its own",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "evidence": [
+        "artifacts/work_packages/F05/attempts/0001/test_schema_and_type.py"
+      ],
+      "mechanism": "the node graph, dependencies and terminal states are compared against the declaring workflow rather than restated; the machine source is scanned and holds no node id, terminal state or stop reason as a literal; and a workflow with a dangling or duplicated node fails closed",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "evidence": [
+        "artifacts/work_packages/F05/attempts/0001/test_unit_contract.py",
+        "artifacts/work_packages/F05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "a run that walks the declared graph, loops within budget and stops with a certificate is accepted under every orderly stop reason; an undeclared jump, an uncheckpointed or misplaced return edge, an incomplete resume point, a run past its iteration budget and a run that never certifies its stop are each refused by their own code",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "evidence": [
+        "artifacts/work_packages/F05/attempts/0001/test_negative_adversarial.py"
+      ],
+      "mechanism": "the machine admits only transitions the workflow declares, so a run cannot skip the evaluation, audit and Parliament nodes between qualification and promotion; and a stop certificate naming a resume point the run never committed is refused rather than trusted",
+      "status": "PASS"
+    }
+  },
+  "failure_classes": [
+    "CHECKPOINT_INCOMPLETE",
+    "ITERATION_BUDGET_EXCEEDED",
+    "RETURN_EDGE_MISPLACED",
+    "RETURN_EDGE_UNCHECKPOINTED",
+    "RUN_UNTERMINATED",
+    "STOP_CERTIFICATE_INVALID",
+    "TRANSITION_UNDECLARED"
+  ],
+  "graph": {
+    "declared_nodes": 26,
+    "entry_nodes": 1,
+    "stop_reasons": 9,
+    "terminal_states": 5
+  },
+  "not_derivable": {
+    "stop_ordering": "the caller supplies a run and how it ended with no evidence of which came first, so the machine does not claim to order the stop against the transitions; it checks the derivable property instead, that the certified resume point is one the run committed"
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (primary-session separate, actor_independence=false)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "module": "artifacts/work_packages/F05/attempts/0001/test_negative_adversarial.py",
+      "status": "PASS",
+      "test_count": 21
+    },
+    "provenance_and_receipt_audit": {
+      "module": "artifacts/work_packages/F05/attempts/0001/test_provenance_receipts.py",
+      "status": "PASS",
+      "test_count": 11
+    },
+    "schema_and_type_check": {
+      "module": "artifacts/work_packages/F05/attempts/0001/test_schema_and_type.py",
+      "status": "PASS",
+      "test_count": 23
+    },
+    "unit_and_contract_tests": {
+      "module": "artifacts/work_packages/F05/attempts/0001/test_unit_contract.py",
+      "status": "PASS",
+      "test_count": 21
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 76
+}

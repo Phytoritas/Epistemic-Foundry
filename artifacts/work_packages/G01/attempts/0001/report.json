@@ -1,0 +1,228 @@
+{
+  "attempt_id": "G01-0001",
+  "attempt_type": "G01_NATIVE_PLUGIN_MANIFEST_AND_ASSET_ATTESTATION",
+  "completion_ready": false,
+  "contract_status": "CONFORMANT",
+  "dependency_state": {
+    "attempt_id": "G01-0001",
+    "dependencies": {
+      "B04": {
+        "attempt_id": "B04-0010",
+        "core_evidence_id": "E0109",
+        "core_generation": "000107-71117d4c",
+        "final_closeout_evidence_id": "E0110",
+        "report": "artifacts/work_packages/B04/attempts/0010/report.json",
+        "report_sha256": "sha256:40c89af4ce4d8eed6a9a6f7b9f90895bf157e6d894020d185174558ce845be54",
+        "status": "PASS"
+      },
+      "C04": {
+        "attempt_id": "C04-0001",
+        "core_evidence_id": "E0012",
+        "core_generation": "000011-ffe0da9f",
+        "final_closeout_evidence_id": "E0013",
+        "report": "artifacts/work_packages/C04/report.json",
+        "report_sha256": "sha256:eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f",
+        "status": "PASS"
+      },
+      "S01": {
+        "report": "artifacts/work_packages/S01/report.json",
+        "report_sha256": "sha256:6aa7a2ae6c3c047df6293e227ac3206a2e213b322ef1619eb1814e589f3ea7d6",
+        "status": "PASS"
+      }
+    },
+    "dependency_note": "G01 depends on B04, C04 and S01; each is a sealed PASS work package bound here by content as the build dependency",
+    "next_action": "SEAL_G01_0001_THEN_RECOMPUTE_DAG",
+    "status": "PASS"
+  },
+  "exit_criteria": {
+    "manifest_paths_remain_inside_plugin_root": "PASS",
+    "version_and_capabilities_accurate": "PASS"
+  },
+  "global_implementation_gate": "fail",
+  "history_and_worktree": {
+    "dirty_worktree_preserved": true,
+    "prior_attempts_reports_and_rah_generations_preserved": true,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "implementation_status": "PASS",
+  "next_package": "RECOMPUTE_DAG",
+  "not_claimed": [
+    "editing the plugin manifest or brand assets: G01 attests plugins/epistemic-foundry/.codex-plugin/plugin.json and plugins/epistemic-foundry/assets/** and does not alter their content",
+    "that the whole-plugin validate_plugin walk passes: it reports skill-scoped errors owned by the downstream skill packages (G02-G05 etc.) and a later whole-plugin integration gate; zero of them reference G01's own manifest or assets, so they are neither a G01 defect nor gated by this attempt",
+    "fresh marketplace installation, payload-resident dispatcher behavior, or PLUGIN_ROOT/PLUGIN_DATA resolution",
+    "any skill, hook, MCP server, app, or runtime capability declared by G01",
+    "any product-maturity, runtime-executability or release readiness of the v4 plugin or ShinkaEvolve integration",
+    "actor-independent certification of this review",
+    "overall product completion",
+    "completion_ready=true"
+  ],
+  "output_artifacts": [
+    {
+      "byte_size": 36905,
+      "path": "artifacts/work_packages/G01/attempts/0001/build_g01_0001_evidence.py",
+      "sha256": "sha256:6d21806ab283a2cf088d722dfe8327eded3a861366a7807dff543ef99d1e3c32"
+    },
+    {
+      "byte_size": 1849,
+      "path": "artifacts/work_packages/G01/attempts/0001/commands.jsonl",
+      "sha256": "sha256:888ad7b4f496d91711b648f6a3f27277c5c75e48fc912bbdbcd3bf8b465cd4f5"
+    },
+    {
+      "byte_size": 1192,
+      "path": "artifacts/work_packages/G01/attempts/0001/dependency-status.json",
+      "sha256": "sha256:30cf1ee9a513a4e32423f6b7e6e3933d6435d513c6fe4c6d854eb83dfb276739"
+    },
+    {
+      "byte_size": 150908,
+      "path": "artifacts/work_packages/G01/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec"
+    },
+    {
+      "byte_size": 2210,
+      "path": "artifacts/work_packages/G01/attempts/0001/g01-0001-verification.json",
+      "sha256": "sha256:0a55d66cbc15be4674e210dcf61a6692306750e26febd0ae9019a05adbbd6994"
+    },
+    {
+      "byte_size": 21052,
+      "path": "artifacts/work_packages/G01/attempts/0001/g01-verification.json",
+      "sha256": "sha256:72c4bc0936518db6be38dea0e6d183ddbcc6731b6c7d8c6508e1e26fdbfd4290"
+    },
+    {
+      "byte_size": 27120,
+      "path": "artifacts/work_packages/G01/attempts/0001/g01_0001_rah_seal.py",
+      "sha256": "sha256:37a19ac25788615247702aa54295afe3ac5c24bdbdf07a48b145790db6c09756"
+    },
+    {
+      "byte_size": 13196,
+      "path": "artifacts/work_packages/G01/attempts/0001/g01_verify.py",
+      "sha256": "sha256:f3e2115072df33024a6bdec5d17fd0360abad7cfec3e96fd5c231d06cd1acfbd"
+    },
+    {
+      "byte_size": 711,
+      "path": "artifacts/work_packages/G01/attempts/0001/junit-normalization-verification.json",
+      "sha256": "sha256:7da61c9ce3c1a119552aa00a3f64e147d85675eceade00fbcba8591d76c6b1be"
+    },
+    {
+      "byte_size": 554,
+      "path": "artifacts/work_packages/G01/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:3d2b79376a1b447a5a467a00c4680f3cb0384d641f7e620b5389533a3277debd"
+    },
+    {
+      "byte_size": 4022,
+      "path": "artifacts/work_packages/G01/attempts/0001/review.md",
+      "sha256": "sha256:5a68a961d76420c96a5b89c88e603152a19334dbacedc9c501850e8a61acb6cb"
+    },
+    {
+      "byte_size": 15144,
+      "path": "artifacts/work_packages/G01/attempts/0001/run_g01_0001_checks.py",
+      "sha256": "sha256:d238240e0e427a1988a521e96765c737a4880e38d3d0bea588fa839cf3a5eca9"
+    },
+    {
+      "byte_size": 1358,
+      "path": "artifacts/work_packages/G01/attempts/0001/whole-plugin-validator-disclosure.json",
+      "sha256": "sha256:10e21bb614f97a9ec8e9f817eaf894631731ef20e6da047b042ec62d2b6c02d5"
+    },
+    {
+      "byte_size": 1612,
+      "path": "artifacts/work_packages/G01/attempts/0001/write-scope-verification.json",
+      "sha256": "sha256:dc1def9f1ce358f42a0d32babb968a2ddb17a3186c2a92ece17fd585f3631f7d"
+    }
+  ],
+  "package_status": "PASS",
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0321",
+    "core_generation": "000319-62540eaf",
+    "final_closeout_evidence_id": "E0322",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 1914,
+    "implementation_gate": "fail",
+    "retained_generation_count": 319,
+    "status": "active"
+  },
+  "regression": {
+    "attempt_id": "G01-0001",
+    "count_authority": "derived_from_measured_junit_expected_equals_measured",
+    "full_python_passed": 1261,
+    "new_failure_count": 0,
+    "node_suite": "NOT_A_G01_GATE: G01 attests plugin manifest + asset paths only; its regression baseline is the repository-wide Python suite plus git diff --check. The Node suite carries a pre-existing repository-owned debt (S04-TM004) unrelated to G01's files and is not part of this attestation's contract.",
+    "regression_baseline": "repository_full_python_suite_zero_failures",
+    "status": "PASS",
+    "suites": {
+      "full_python_suite": {
+        "collected": 1261,
+        "errors": 0,
+        "failed": 0,
+        "junit": "artifacts/work_packages/G01/attempts/0001/full-python-suite.junit.xml",
+        "junit_sha256": "sha256:44b2b748413cffdf47766a8bfcc64541a1a4c2492351907b9dc31f3de23bb5ec",
+        "passed": 1261,
+        "semantic_counter_authority": "pytest_testsuite_attributes",
+        "skipped": 0,
+        "xml_testcase_count": 1261
+      }
+    }
+  },
+  "required_checks": {
+    "asset_path_test": {
+      "negative_case_count": 7,
+      "negative_case_pass_count": 7,
+      "status": "PASS"
+    },
+    "independent_review": {
+      "evidence": "review.md (author: the bounded implementation agent(s) that authored plugin.json, the two SVG brand assets and g01_verify.py; reviewer: the sealing session, a distinct actor that did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "plugin_manifest_validation": {
+      "error_count": 0,
+      "status": "PASS"
+    }
+  },
+  "review": {
+    "actor_independence": true,
+    "assurance_limitation": "Author/reviewer separation holds (bounded G01 implementation agent(s) authored the manifest, assets and verifier; the sealing session reviewed); external actor-independent certification does not.",
+    "blocking_finding_count": 0,
+    "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+    "role": "contract_reviewer",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "title": "Native plugin manifest and package layout",
+  "whole_plugin_validator_disclosure": {
+    "g01_write_scope_error_count": 0,
+    "gating": false,
+    "note": "Cross-package integration item owned by the downstream skill packages and a later whole-plugin integration gate; not a G01 defect, not a weakening of this attestation.",
+    "ownership": "cross_package_integration_item_owned_by_downstream_skill_packages",
+    "total_error_count": 120,
+    "validator_available": true
+  },
+  "work_package_id": "G01",
+  "write_scope": {
+    "approved_scope": [
+      "plugins/epistemic-foundry/.codex-plugin/plugin.json",
+      "plugins/epistemic-foundry/assets/**"
+    ],
+    "attempt_id": "G01-0001",
+    "attestation_only_no_manifest_or_asset_edits": true,
+    "attested_product_files": [
+      "plugins/epistemic-foundry/.codex-plugin/plugin.json",
+      "plugins/epistemic-foundry/assets/composer-icon.svg",
+      "plugins/epistemic-foundry/assets/logo.svg"
+    ],
+    "authored_by": "the bounded implementation agent(s) that authored the G01 native plugin manifest (plugins/epistemic-foundry/.codex-plugin/plugin.json), the two square SVG brand assets under plugins/epistemic-foundry/assets/, and the deterministic verifier g01_verify.py under artifacts/work_packages/G01/attempts/0001/; this sealing session attests these authored files without editing them",
+    "checked_file_count": 3,
+    "product_file_hashes": {
+      "plugins/epistemic-foundry/.codex-plugin/plugin.json": "sha256:1b1ec359ab93733114c95acb34c4a74615974456ddab52fa7c1c538159318a87",
+      "plugins/epistemic-foundry/assets/composer-icon.svg": "sha256:ca04da7e14c09211ee56fd8568f11f757837e7490fb8c059e5907889ccf22cfd",
+      "plugins/epistemic-foundry/assets/logo.svg": "sha256:ed2847842f2108ec64cd98700ffa1d0ef4d4195095b1b92c47fe9783b4b9a4d4"
+    },
+    "reset_clean_stash_commit_push_performed": false,
+    "reviewed_by": "the sealing session acting as an independent contract-reviewer, a distinct actor separate from the author",
+    "root_canonical_source_mutation_count": 0,
+    "schema_or_test_weakening_count": 0,
+    "status": "PASS",
+    "subagents_or_fleet_used": false,
+    "write_scope_violation_count": 0
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "request": {
+    "run_id": "RUN-O02-FIXTURE-0001",
+    "query_plan_id": "QPLAN-O02-FIXTURE-0001",
+    "plan_hash": "sha256:6dc33a46d8e6411961a20893400656f0c9b40b75bf01237017cafdda11490bad",
+    "lane": "lexical",
+    "query_families": ["FORWARD"],
+    "query_batch": {
+      "families": [
+        {
+          "family": "FORWARD",
+          "queries": ["spaced retrieval practice delayed recall"]
+        }
+      ],
+      "lane": "lexical"
+    },
+    "query_hash": "sha256:3f3774dcef95e25747d1bcd771685c7029e77eeae5feea5cdd518b5175ba655b",
+    "scope_filter": {
+      "domain": "learning_science",
+      "population": "adult learners enrolled in introductory university courses",
+      "entity_type": "participant",
+      "entity_subtype": "university student",
+      "unit_of_analysis": "individual learner",
+      "setting": "controlled course-based study",
+      "geography": null,
+      "jurisdiction": null,
+      "language": "English",
+      "lifecycle_stage": null,
+      "spatial_scale": "individual",
+      "temporal_scale": "14-day delayed outcome",
+      "time_period": null,
+      "measurement_time": "14 days after the final study session",
+      "intervention_or_exposure": {
+        "name": "spaced retrieval practice",
+        "category": "learning intervention",
+        "min_value": 3,
+        "max_value": 3,
+        "unit": "sessions",
+        "duration": "one week",
+        "frequency": "three sessions",
+        "rate": null,
+        "route_or_delivery": "computer-based practice"
+      },
+      "comparator": "rereading with matched total study time",
+      "inclusion_criteria": ["completed baseline assessment", "completed all assigned sessions"],
+      "exclusion_criteria": ["missing delayed outcome"],
+      "conditions": {
+        "feedback_available": true,
+        "matched_total_study_time": true,
+        "retention_interval_days": 14
+      },
+      "domain_extensions": {
+        "material_type": "expository text",
+        "outcome_instrument": "preregistered delayed-recall test"
+      }
+    },
+    "corpus_snapshot_hash": "sha256:cef8f5479795274dbeb5a8f01d1fe2a2ea8ffc60e53252ca4b8e1fb7f63fb9bd",
+    "index_versions": {
+      "lexical": "fixture-v1@sha256:75480a2967126e980034a509577795b7447d830d092a7f668cb98616c03f9a67",
+      "semantic": "fixture-v1@sha256:812296a70eb5d1fd5e4ea382f18a698a965867eed1801158d52d5fcde28678e1"
+    },
+    "max_candidates": 20,
+    "cutoff_policy_id": "cutoff-o02-fixture-v1",
+    "deterministic_seed": 20260731,
+    "policy_bundle_hash": "sha256:c26afcbd8c770e90f01478db94dfecd6a54a85bcc48a7308fc242e8fad8e6be5",
+    "capability_lease_id": "LEASE-O02-FIXTURE-0001",
+    "backend_id": "fixture-hybrid-retrieval",
+    "backend_version": "1.0.0",
+    "adapter_id": "epistemic-foundry-fixture-adapter",
+    "adapter_version": "1.0.0"
+  },
+  "response_values": {
+    "backend_receipt_id": "BREC-O02-FIXTURE-0001",
+    "executed_query_families": ["FORWARD"],
+    "status": "OK",
+    "complete": true,
+    "interrupted": false,
+    "error_code": null,
+    "hits": [
+      {
+        "query_family": "FORWARD",
+        "retrieval_channel": "LEXICAL",
+        "raw_rank": 2,
+        "raw_score": 0.92,
+        "canonical_source_key": "doi:10.5555/ef.fixture.support",
+        "source_record_id": "SRC-O02-SUPPORT",
+        "source_artifact_id": "ART-O02-SUPPORT",
+        "source_locator": "doi:10.5555/ef.fixture.support",
+        "source_version": "version:1",
+        "source_snapshot_hash": "sha256:d79c7cad6ad67a36097e2f7249761edfe01735015492e14ec32604054ee4624f",
+        "source_span_id": "SPAN-O02-SUPPORT-1",
+        "ranking_features": {
+          "scope_overlap": 0.9,
+          "relation_direction_match": 1.0,
+          "source_directness": 1.0,
+          "method_compatibility": 0.9,
+          "publication_version_status": 1.0,
+          "extraction_grounding_confidence": 0.95
+        },
+        "matched_terms": ["spaced retrieval", "delayed recall"],
+        "matched_edges": [],
+        "relation_direction": "SAME_DIRECTION",
+        "scope_estimate": null
+      },
+      {
+        "query_family": "FORWARD",
+        "retrieval_channel": "LEXICAL",
+        "raw_rank": 3,
+        "raw_score": 0.89,
+        "canonical_source_key": "doi:10.5555/ef.fixture.support",
+        "source_record_id": "SRC-O02-SUPPORT",
+        "source_artifact_id": "ART-O02-SUPPORT",
+        "source_locator": "doi:10.5555/ef.fixture.support",
+        "source_version": "version:1",
+        "source_snapshot_hash": "sha256:d79c7cad6ad67a36097e2f7249761edfe01735015492e14ec32604054ee4624f",
+        "source_span_id": "SPAN-O02-SUPPORT-1",
+        "ranking_features": {
+          "scope_overlap": 0.9,
+          "relation_direction_match": 1.0,
+          "source_directness": 1.0,
+          "method_compatibility": 0.9,
+          "publication_version_status": 1.0,
+          "extraction_grounding_confidence": 0.95
+        },
+        "matched_terms": ["spaced retrieval", "delayed recall"],
+        "matched_edges": [],
+        "relation_direction": "SAME_DIRECTION",
+        "scope_estimate": null
+      },
+      {
+        "query_family": "FORWARD",
+        "retrieval_channel": "CITATION_GRAPH",
+        "raw_rank": 1,
+        "raw_score": 12.0,
+        "canonical_source_key": "doi:10.5555/ef.fixture.support",
+        "source_record_id": "SRC-O02-SUPPORT",
+        "source_artifact_id": "ART-O02-SUPPORT",
+        "source_locator": "doi:10.5555/ef.fixture.support",
+        "source_version": "version:1",
+        "source_snapshot_hash": "sha256:d79c7cad6ad67a36097e2f7249761edfe01735015492e14ec32604054ee4624f",
+        "source_span_id": "SPAN-O02-SUPPORT-1",
+        "ranking_features": {
+          "scope_overlap": 0.9,
+          "relation_direction_match": 1.0,
+          "source_directness": 1.0,
+          "method_compatibility": 0.9,
+          "publication_version_status": 1.0,
+          "extraction_grounding_confidence": 0.95
+        },
+        "matched_terms": ["delayed recall"],
+        "matched_edges": ["citation:seed->SRC-O02-SUPPORT"],
+        "relation_direction": "SAME_DIRECTION",
+        "scope_estimate": null
+      },
+      {
+        "query_family": "FORWARD",
+        "retrieval_channel": "SEMANTIC",
+        "raw_rank": 1,
+        "raw_score": 0.99,
+        "canonical_source_key": "record:metadata-replication",
+        "source_record_id": "SRC-O02-METADATA",
+        "source_artifact_id": null,
+        "source_locator": "fixture:metadata-replication",
+        "source_version": "record:1",
+        "source_snapshot_hash": "sha256:d4e7db8f73ced728c024091738038ea104642d49aedaff7a3c501e656c5e3e33",
+        "source_span_id": null,
+        "ranking_features": {
+          "scope_overlap": 0.5,
+          "relation_direction_match": null,
+          "source_directness": 0.0,
+          "method_compatibility": null,
+          "publication_version_status": 0.5,
+          "extraction_grounding_confidence": 0.4
+        },
+        "matched_terms": ["replication"],
+        "matched_edges": [],
+        "relation_direction": "UNRESOLVED",
+        "scope_estimate": null
+      }
+    ]
+  },
+  "terminal_cases": [
+    {"case_id": "POLICY", "status": "POLICY_DENIED", "complete": false, "interrupted": false, "error_code": "POLICY_DENIED", "expected_state": "BLOCKED", "expected_reason": "policy_blocked"},
+    {"case_id": "CREDENTIAL", "status": "CREDENTIAL_UNAVAILABLE", "complete": false, "interrupted": false, "error_code": "CREDENTIAL_UNAVAILABLE", "expected_state": "BLOCKED", "expected_reason": "credential_unavailable"},
+    {"case_id": "BACKEND", "status": "BACKEND_UNAVAILABLE", "complete": false, "interrupted": false, "error_code": "BACKEND_UNAVAILABLE", "expected_state": "BLOCKED", "expected_reason": "backend_unavailable"},
+    {"case_id": "PROVIDER", "status": "PROVIDER_ERROR", "complete": false, "interrupted": false, "error_code": "PROVIDER_FAILURE", "expected_state": "FAILED", "expected_reason": "provider_failure"},
+    {"case_id": "PARTIAL", "status": "PARTIAL", "complete": false, "interrupted": true, "error_code": "BOUNDED_TIMEOUT", "expected_state": "PARTIAL", "expected_reason": "bounded_interruption"}
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "attempt_id": "G02-0001",
+  "dispatcher_contract": {
+    "alternate_fallback_count": 0,
+    "byte_size": 734,
+    "domain_logic_present": false,
+    "executable_source": "process.execPath",
+    "forbidden_token_count": 0,
+    "import_specifiers": [
+      "node:child_process",
+      "node:url"
+    ],
+    "path": "plugins/epistemic-foundry/bin/efoundry.mjs",
+    "payload_target": "../dist/cli.mjs",
+    "payload_target_site_count": 1,
+    "sha256": "sha256:17723d450644508b755e725300a600f3792c05714056c794517bd9de2d005e05",
+    "spawn_site_count": 1
+  },
+  "exit_criteria": {
+    "dispatcher_contains_no_domain_logic": {
+      "evidence": [
+        "packages/plugin-host/src/cli-dispatch/dispatcher-boundary.test.mjs",
+        "plugins/epistemic-foundry/bin/efoundry.mjs"
+      ],
+      "mechanism": "the dispatcher imports only node:child_process and node:url, spawns exactly once, and holds no PLUGIN_ROOT, PLUGIN_DATA, PATH, policy, promotion, schema, ledger, or other domain token, and no exec/execFile/fork/spawnSync or shell invocation; static boundary assertions plus a byte-size ceiling keep it a fixed process adapter rather than a second CLI implementation",
+      "status": "PASS"
+    },
+    "path_less_invocation_works": {
+      "evidence": [
+        "packages/plugin-host/src/cli-dispatch/payload-cli-smoke.test.mjs"
+      ],
+      "mechanism": "a copied installed-plugin fixture with an empty PATH, spaces and Korean characters in its paths and data, resolves the payload as ../dist/cli.mjs relative to the dispatcher module URL and spawns the current process.execPath with shell:false; argv, stdin, stdout, stderr, cwd, env, and a non-zero exit code 23 are preserved, and a missing packaged payload fails closed with a non-zero exit and no repository or PATH fallback",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "dispatcher_boundary_test": {
+      "module": "packages/plugin-host/src/cli-dispatch/dispatcher-boundary.test.mjs",
+      "status": "PASS",
+      "test_count": 2
+    },
+    "payload_cli_smoke": {
+      "module": "packages/plugin-host/src/cli-dispatch/payload-cli-smoke.test.mjs",
+      "status": "PASS",
+      "test_count": 2
+    }
+  },
+  "status": "PASS",
+  "targeted_test_count": 4
+}

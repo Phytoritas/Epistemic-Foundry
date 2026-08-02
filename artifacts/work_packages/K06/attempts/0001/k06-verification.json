@@ -1,0 +1,65 @@
+{
+  "attempt_id": "K06-0001",
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every version binding and admission re-derives byte for byte from its own published fields: each id is the digest of the record's body and each hash covers the record, with no clock or random draw on the decided path, so replaying a call reproduces the receipt; the deterministic leakage-audit id keeps even the embedded S05 audit replayable",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "every snapshot, partition, holdout and boundary identity is re-derived through the K05 function that owns it, the O05 lane receipt validates against its canonical schema, the S05 firewall's sealed evaluator bundle hash is bound verbatim, and each FINDING_CODE names an exact refusal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the three invariant refusals carry the weight — a stale evidence/holdout version, a hidden-holdout exposure, and evaluator feedback intersecting the holdout — each exercised from more than one angle, including a lying firewall that reports the holdout reachable; the gate re-verifies rather than trusts the composed surface, and the happy path still replays deterministically",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "nothing here scores, promotes or evaluates; a candidate, mutation-model, prompt or backend surface that can reach the hidden holdout is refused by path, a live probe proves no candidate-generating role may read the holdout, and the gate surfaces the sealed S05 refusal instead of re-qualifying around it",
+      "status": "PASS"
+    }
+  },
+  "gate_semantics": {
+    "binds": "one re-derivable evidence/holdout version over the K05 snapshot bytes, the concealed partition, the holdout manifest, the S05 evaluator bundle and the prior-art date",
+    "concealed_partition_source": "K05 partition hidden/ood/adversarial fields",
+    "produces": "immutable admission receipts; no score, selection or promotion",
+    "refusals_are_by_path": true
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: implementing agent; reviewer: an independent reviewer actor-independent from the author; verdict PASS, blocking_finding_count=0)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 24
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 7
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 6
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 8
+    }
+  },
+  "schema_binding": {
+    "evaluator_bundle": "S05 VerifierFirewall sealed_hash (bound verbatim)",
+    "evidence_boundaries": "K05 snapshot/partition/holdout/boundary identities",
+    "retrieval_surface": "O05 plan and lane-receipt identities and RECEIPT_SCHEMA"
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_k05": 95,
+    "dependency_regression_o05": 91,
+    "full_node_suite": 1129,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 24,
+    "provenance_and_receipt_audit": 7,
+    "schema_and_type_check": 6,
+    "unit_and_contract_tests": 8
+  }
+}

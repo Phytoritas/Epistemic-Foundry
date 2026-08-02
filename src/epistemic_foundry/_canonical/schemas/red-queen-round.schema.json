@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/red-queen-round.schema.json",
+  "title": "RedQueenRound",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "round_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "hypothesis_candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "challenge_candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "match_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "survivor_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "refuted_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "new_boundary_condition_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "challenge_overfit_checks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "round_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "round_id",
+    "evolution_run_id",
+    "generation",
+    "hypothesis_candidate_ids",
+    "challenge_candidate_ids",
+    "match_ids",
+    "survivor_ids",
+    "refuted_ids",
+    "new_boundary_condition_ids",
+    "challenge_overfit_checks",
+    "round_hash"
+  ],
+  "description": "가설과 challenge 집단의 한 라운드 입력·대결·학습·안전 상태를 기록한다."
+}

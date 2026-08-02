@@ -1,0 +1,52 @@
+{
+  "attempt_id": "H03-0001",
+  "attestation_scope": {
+    "hook_declarations": [
+      "plugins/epistemic-foundry/hooks/tools.json",
+      "plugins/epistemic-foundry/hooks/delegation.json"
+    ],
+    "installed_byte_for_byte_from_blueprint": "H03 installs the two static tool and delegation hook declarations byte-for-byte from the authority blueprint and attests them; it declares no runtime executable"
+  },
+  "exit_criteria": {
+    "observed_tools_use_policy_receipts": {
+      "mechanism": "tool_hook_policy_test asserts tools.json routes PermissionRequest (matcher Bash|apply_patch|mcp__.*) to the H01 gateway hook-runner permission-request command and binds PreToolUse guardrails and PostToolUse effect receipts with symmetric coverage; a direct allow, a timeout expansion, dropped policy or receipt coverage, an asymmetric pre/post matcher, and any extra event all fail closed",
+      "status": "PASS_AT_STATIC_DECLARATION_BOUNDARY"
+    },
+    "subagent_expected_count_enforced": {
+      "mechanism": "subagent_result_gate_test asserts delegation.json binds SubagentStart -> RoleSpec and SubagentStop -> ResultEnvelope over every subagent (matcher .*); a substituted accept-partial-result stop handler, a partial matcher, and a missing start or stop route all fail closed, and the harness confirms no premature runtime claim (no plugin-manifest hooks, empty capabilities, no dist/hook-runner.mjs)",
+      "status": "PASS_AT_STATIC_HANDLER_BINDING_BOUNDARY"
+    }
+  },
+  "maturity_boundary": {
+    "capability_probe_and_degraded_mode_owner": "H04",
+    "expected_identity_and_count_reconciliation_owner": "N04",
+    "hook_runner_exists": false,
+    "observed_hook_coverage_is_exhaustive_enforcement": false,
+    "plugin_manifest": "plugins/epistemic-foundry/.codex-plugin/plugin.json",
+    "plugin_manifest_capabilities": [],
+    "plugin_manifest_hooks_registered": false,
+    "plugin_manifest_sha256": "sha256:1b1ec359ab93733114c95acb34c4a74615974456ddab52fa7c1c538159318a87",
+    "runtime_integration_owner": "X01/G06",
+    "static_declaration_only": true
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: bounded H03 implementation agent(s) that installed the two hook declarations from the blueprint and authored the Node contract harness; reviewer: the sealing session, which did not author this attempt; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "subagent_result_gate_test": {
+      "status": "PASS",
+      "test_count": 4
+    },
+    "tool_hook_policy_test": {
+      "status": "PASS",
+      "test_count": 4
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "full_node_suite": 1291,
+    "full_python_suite": 1261,
+    "hook_contract_tests": 8
+  }
+}

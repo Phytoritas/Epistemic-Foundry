@@ -1,0 +1,59 @@
+{
+  "attempt_id": "E06-0001",
+  "declaring_sources": {
+    "effect_statuses": "application/mcp_mutating/ports.py EFFECT_STATUSES/STATUS_PROJECTION",
+    "reconciliation": "effects/v4_e05 engine (composed, verdict carried in the report)"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "schedule verdicts re-derive their own hashes, every declared refusal code has a proven raise site, and determinism is asserted across orderings of equivalent interleavings",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "effect statuses and the tri-state landed projection are read from the declaring ports module, receipts in fixtures are minted by the runtime's own builders, and the module holds no canonical enum value as a literal (package-scoped scan plus the repository gate)",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "the same idempotency key retried yields exactly one effect receipt, the same key with a different payload is refused as reuse, and a lost update, a double mint and a divergent interleaving are each refused naming the exact conflicting pair ordered by replay position",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "the gate verifies schedules handed to it and mints nothing; E05's reconciliation verdict is composed into the report rather than re-derived, and its refusals propagate unwrapped",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 30
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 18
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 20
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 19
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_effects": 96,
+    "full_node_suite": 1276,
+    "full_python_suite": 1261,
+    "negative_and_adversarial_tests": 30,
+    "provenance_and_receipt_audit": 18,
+    "schema_and_type_check": 20,
+    "targeted_e06_concurrency": 87,
+    "unit_and_contract_tests": 19,
+    "wire_literal_discipline": 5
+  }
+}

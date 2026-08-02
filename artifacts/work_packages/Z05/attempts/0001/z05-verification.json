@@ -1,0 +1,62 @@
+{
+  "attempt_id": "Z05-0001",
+  "declaring_sources": {
+    "attestation_status": "schemas/attestation.schema.json overall_status enum (the PASS token is read positionally, never held)",
+    "maturity_floor": "manifests/acceptance_matrix.yaml status_of_this_bundle (SPEC_BUNDLE floor, read not restated)",
+    "promotion_capability": "epistemic_foundry.governance.evolution_authority.registry.PROMOTION_COMMIT_CAPABILITY (imported, never a literal)",
+    "signing_provenance": "schemas/plugin-release-provenance.schema.json, validated by the composed epistemic_foundry.release.provenance surface"
+  },
+  "exit_criteria": {
+    "all_completion_and_external_effects_resolve_to_immutable_receipts": {
+      "mechanism": "every gate emits a content-addressed receipt (receipt_id is a prefix plus sha256 of the body, receipt_hash via hash_excluding) and the sealed ZTR- verdict binds every sub-receipt by hash so it cannot be forged without reproducing each composed gate",
+      "status": "PASS"
+    },
+    "governing_schemas_authority_boundaries_failure_states_exact": {
+      "mechanism": "the release verdict is built over the canonical attestation and plugin-release-provenance schemas, the passing status token is read positionally from the attestation enum and the provenance is validated by the sealed release-provenance surface so a reshaped schema fails closed, and the module holds no canonical enum value as a literal",
+      "status": "PASS"
+    },
+    "happy_negative_crash_resume_adversarial_coverage": {
+      "mechanism": "happy-path (unit/contract and real-artifact composition), negative and adversarial (every one of the thirteen FINDING_CODES provoked and its exact code asserted), and crash/resume is degenerate because every gate is a pure, clock-free, entropy-free function whose receipts are byte-identical on re-run",
+      "status": "PASS"
+    },
+    "no_candidate_model_prompt_backend_or_hook_acquires_authority": {
+      "mechanism": "require_no_release_authority_capture refuses any candidate, model, prompt, backend or hook that acquires promotion, holdout or evaluator authority or binds a numeric score into a promotion decision, grounding the promotion capability in the imported registry constant",
+      "status": "PASS"
+    }
+  },
+  "required_checks": {
+    "independent_review": {
+      "evidence": "review.md (author: parallel agent; reviewer: primary session; actor_independence between author and reviewer holds, external certification does not)",
+      "status": "PASS"
+    },
+    "negative_and_adversarial_tests": {
+      "status": "PASS",
+      "test_count": 22
+    },
+    "provenance_and_receipt_audit": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "schema_and_type_check": {
+      "status": "PASS",
+      "test_count": 9
+    },
+    "unit_and_contract_tests": {
+      "status": "PASS",
+      "test_count": 10
+    }
+  },
+  "status": "PASS",
+  "suite_counts": {
+    "dependency_regression_operations": 47,
+    "dependency_regression_security": 62,
+    "full_node_suite": 1740,
+    "full_python_suite": 1312,
+    "negative_and_adversarial_tests": 22,
+    "provenance_and_receipt_audit": 9,
+    "schema_and_type_check": 9,
+    "targeted_z05_release": 50,
+    "unit_and_contract_tests": 10,
+    "wire_literal_discipline": 5
+  }
+}

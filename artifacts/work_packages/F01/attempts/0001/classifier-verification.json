@@ -1,0 +1,157 @@
+{
+  "attempt_id": "F01-0001",
+  "fixed_oracles": {
+    "counts": {
+      "adversarial": 16,
+      "gold": 14,
+      "hash_vectors": 4,
+      "override": 6
+    },
+    "fixture_hashes": {
+      "tests/golden/forge/f01_classifier_adversarial_cases.json": "sha256:93a7617d29a52fe3af9bcc15a395056f5a38afc5d36b80034a1f3c547f0d6f66",
+      "tests/golden/forge/f01_classifier_gold_cases.json": "sha256:3adf6be1dc5ce43455ece62a26ba2ce02d064cb46bb249bf5c408387070843c7",
+      "tests/golden/forge/f01_classifier_hash_vectors.json": "sha256:9715c2e6e374fdfedc4d6011fec498f71e4396ad788773c93b3b49bae25b0915",
+      "tests/golden/forge/f01_classifier_override_cases.json": "sha256:afe77ea97803b280fb6333bc629dd3c7d7bcc96090d7e1f4155567251cf9264c"
+    },
+    "status": "PASS"
+  },
+  "verification": {
+    "attempt_id": "F01-0001",
+    "classifier_version": "4.0.1-f01.1",
+    "exit_criteria": {
+      "added_signals_cannot_reduce_class_or_protection": {
+        "mechanism": "the underprocessing guard proves every one of the 1023 non-empty signal subsets resolves to the exact maximum floor and every subset-to-superset pair preserves class, gate, Interview, role and phase; unknown signals fail input validation closed",
+        "status": "PASS"
+      },
+      "classification_identity_retry_replay_override_hold": {
+        "mechanism": "the identity preimage re-derives byte for byte from the record's own published fields; a changed preimage on the same idempotency key is refused (IDEMPOTENCY_CONFLICT); strict replay refuses any self-field mutation (REPLAY_DIVERGENCE); and override is upward-only, immutable, and requires a resolved canonical correct HumanDecision",
+        "status": "PASS"
+      },
+      "closed_vocabulary_and_maximum_floor_are_deterministic": {
+        "mechanism": "the signal vocabulary is closed; trusted unknown signals fail input validation and untrusted LLM unknown signals are rejected; classification is a deterministic maximum floor over the accepted signal set with no clock or random draw on the identified path",
+        "status": "PASS"
+      },
+      "workflow_emits_canonical_business_artifact": {
+        "mechanism": "the classify_epistemic_work workflow node is a deterministic policy executor bound to the canonical epistemic-work-classification schema; the plugin prompt is advisory only and cannot change classification truth",
+        "status": "PASS"
+      }
+    },
+    "fixed_oracles": {
+      "adversarial_cases": 16,
+      "gold_cases": 14,
+      "hash_vectors": 4,
+      "override_cases": 6
+    },
+    "hash_vector_exact_match": {
+      "digest": "SHA-256",
+      "passed": 4,
+      "recomputed_independently": true
+    },
+    "required_checks": {
+      "canonical_projection_freshness": {
+        "status": "PASS",
+        "steps": {
+          "canonical-projection-freshness": 24
+        }
+      },
+      "canonical_schema_example_validation": {
+        "status": "PASS",
+        "steps": {
+          "canonical-schema-example-validation": 16
+        }
+      },
+      "classifier_adversarial_test": {
+        "status": "PASS",
+        "steps": {
+          "classifier-adversarial-test": 18
+        }
+      },
+      "classifier_gold_test": {
+        "status": "PASS",
+        "steps": {
+          "classifier-gold-test": 2
+        }
+      },
+      "classifier_hash_vector_test": {
+        "status": "PASS",
+        "steps": {
+          "classifier-hash-vector-test": 2
+        }
+      },
+      "classifier_immutable_override_test": {
+        "status": "PASS",
+        "steps": {
+          "classifier-immutable-override-test": 1
+        }
+      },
+      "classifier_retry_replay_test": {
+        "status": "PASS",
+        "steps": {
+          "classifier-retry-replay-test": 5
+        }
+      },
+      "classifier_workflow_contract_test": {
+        "status": "PASS",
+        "steps": {
+          "classifier-workflow-contract-test": 5
+        }
+      },
+      "full_repository_regression": {
+        "status": "PASS",
+        "steps": {
+          "full-node-suite": 1291,
+          "full-python-suite": 1261
+        }
+      },
+      "independent_implementation_review": {
+        "evidence": "review.md",
+        "mode": "INDEPENDENT_REVIEW_OF_BOUNDED_AGENT_WORK",
+        "status": "PASS"
+      },
+      "underprocessing_guard": {
+        "status": "PASS",
+        "steps": {
+          "underprocessing-guard-node": 5,
+          "underprocessing-guard-python": 3
+        }
+      }
+    },
+    "schema_contract": {
+      "additional_properties_false": true,
+      "dialect": "https://json-schema.org/draft/2020-12/schema",
+      "example": "examples/sample_epistemic-work-classification.json",
+      "example_sha256": "sha256:ab805fed88f6c25eb6cb708ea9cb854193d90ccd21ce87baa06457f2fb018b7c",
+      "example_valid": true,
+      "risk_factor_vocabulary": [
+        "AMBIGUOUS",
+        "NOVELTY",
+        "HIGH_STAKES",
+        "EXPENSIVE",
+        "CAUSAL",
+        "VALIDATION",
+        "MECHANISM"
+      ],
+      "schema": "schemas/epistemic-work-classification.schema.json",
+      "schema_sha256": "sha256:dbe8437eae1ec8c956b1290556efa7f2bb89c862134870d80f15e6e49679efa9",
+      "status": "PASS"
+    },
+    "status": "PASS",
+    "suite_counts": {
+      "canonical-projection-freshness": 24,
+      "canonical-schema-example-validation": 16,
+      "classifier-adversarial-test": 18,
+      "classifier-gold-test": 2,
+      "classifier-hash-vector-test": 2,
+      "classifier-immutable-override-test": 1,
+      "classifier-retry-replay-test": 5,
+      "classifier-workflow-contract-test": 5,
+      "full-node-suite": 1291,
+      "full-python-suite": 1261,
+      "regression-a03-boundary": 6,
+      "regression-wire-literal": 5,
+      "underprocessing-guard-node": 5,
+      "underprocessing-guard-python": 3
+    }
+  },
+  "work_package_id": "F01"
+}

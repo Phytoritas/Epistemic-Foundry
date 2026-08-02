@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/plugin-health-report.schema.json",
+  "title": "PluginHealthReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "health_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "plugin_version": {
+      "type": "string"
+    },
+    "host_capability_report_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "profile": {
+      "enum": [
+        "LITE",
+        "RESEARCH",
+        "TEAM",
+        "REGULATED"
+      ]
+    },
+    "overall": {
+      "enum": [
+        "PASS",
+        "DEGRADED",
+        "FAIL",
+        "SAFE_MODE"
+      ]
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "check_id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "WARN",
+              "FAIL",
+              "NOT_RUN"
+            ]
+          },
+          "details": {
+            "type": "string"
+          },
+          "remediation": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "check_id",
+          "status",
+          "details",
+          "remediation"
+        ]
+      },
+      "minItems": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "health_id",
+    "plugin_version",
+    "host_capability_report_id",
+    "profile",
+    "overall",
+    "checks",
+    "generated_at",
+    "report_hash"
+  ]
+}

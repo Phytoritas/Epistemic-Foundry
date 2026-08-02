@@ -1,0 +1,48 @@
+{
+  "attempt_id": "I04-0001",
+  "exit_criteria": {
+    "frame_export_round_trips": {
+      "evidence": [
+        "web/src/features/intake/frame-roundtrip.test.mjs"
+      ],
+      "mechanism": "an eligible frame serializes to canonical UTF-8 JSON whose SHA-256 matches the Node oracle; re-importing that envelope and re-exporting yields identical bytes, input object key order does not change the bytes, and meaningful array order is preserved. Import fails closed on invalid UTF-8 (INTAKE_FRAME_INVALID_UTF8), non-canonical whitespace (INTAKE_FRAME_NOT_CANONICAL), one-byte content tampering (INTAKE_FRAME_HASH_MISMATCH), unknown envelope fields (INTAKE_FIELD_SET_INVALID), and a fabricated derived gate (INTAKE_FRAME_DERIVATION_MISMATCH); an Inbox frame refuses export with INTAKE_EXPORT_BLOCKED",
+      "status": "PASS"
+    },
+    "inbox_and_blockers_visible": {
+      "evidence": [
+        "web/src/features/intake/intake-ui.test.mjs"
+      ],
+      "mechanism": "the projection reconstructs the frame from authority inputs and renders Blockers as the first visible section under an aria-live=assertive region; council, scope, ontology, and measurement blockers keep their canonical I02 vocabulary and order, untrusted statement and blocker text is HTML-escaped, and the export control is disabled with truthful reason_codes when not exportable. No confidence or verdict is invented, and a forged assembled frame with cleared blockers is rejected",
+      "status": "PASS"
+    }
+  },
+  "honest_degradation": {
+    "confidence_or_verdict_fabricated": false,
+    "export_fails_closed_with_reason_codes_when_blocked": true,
+    "forged_frame_with_cleared_blockers_rejected": true,
+    "inbox_frame_refuses_export": true,
+    "method_boundary_visible_not_relabelled_a_blocker": true,
+    "untrusted_text_html_escaped": true
+  },
+  "required_checks": {
+    "frame_roundtrip_test": {
+      "module": "web/src/features/intake/frame-roundtrip.test.mjs",
+      "status": "PASS",
+      "test_count": 12
+    },
+    "intake_ui_test": {
+      "module": "web/src/features/intake/intake-ui.test.mjs",
+      "status": "PASS",
+      "test_count": 20
+    }
+  },
+  "round_trip_properties": {
+    "byte_for_byte_export_reexport": true,
+    "canonical_export_is_key_order_independent": true,
+    "meaningful_array_order_preserved": true,
+    "no_lossy_transform": true,
+    "sha256_matches_node_oracle": true
+  },
+  "status": "PASS",
+  "targeted_test_count": 32
+}

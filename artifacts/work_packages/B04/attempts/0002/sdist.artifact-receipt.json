@@ -1,0 +1,33 @@
+{
+  "action_intent_id": null,
+  "artifact_id": "ART-B04-0002-SDIST",
+  "byte_size": 246149,
+  "content_hash": "sha256:dc5a40c8e9a92f58219e3b031038b745a00c30ce381cf43478f591d3041464d1",
+  "created_at": "2026-07-28T00:00:00Z",
+  "created_by": {
+    "actor_id": "B04-packaging-verifier",
+    "actor_type": "tool"
+  },
+  "locator": "artifacts/work_packages/B04/attempts/0002/dist/epistemic_foundry-4.0.0.tar.gz",
+  "media_type": "application/gzip",
+  "receipt_hash": "sha256:485567bb10a85f2829463f686c97182dfc839d0de762779ac231df4555f71a5d",
+  "receipt_id": "AR-B04-0002-SDIST",
+  "schema_ref": null,
+  "validation_results": [
+    {
+      "check": "raw_byte_hash_and_size",
+      "details": "Raw distribution SHA-256 and byte size match the formal B04 packaging verification artifact.",
+      "status": "PASS"
+    },
+    {
+      "check": "canonical_registry_source_dist_convergence",
+      "details": "All 125 canonical resources match source authority with zero missing, extra, or hash-mismatched resources.",
+      "status": "PASS"
+    },
+    {
+      "check": "deterministic_rebuild_and_installed_isolation",
+      "details": "Two clean builds are byte-equal; the sdist-derived wheel matches; installed-only loading, no-source-fallback, and tamper rejection pass.",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "artifact_receipt": {
+    "path": "artifacts/work_packages/G03/attempts/0001/g03-verification.artifact-receipt.json",
+    "receipt_id": "AR-G03-0001-PATH-AUTHORITY-VERIFICATION"
+  },
+  "attempt_id": "G03-0001",
+  "changed_files": [
+    {
+      "byte_size": 12243,
+      "path": "packages/plugin-host/src/paths/path-resolution.mjs",
+      "sha256": "sha256:b53b406829787bf3d93c4fe13744b0aeea4df2ab9dca0186a756a4f6bdca20fe"
+    },
+    {
+      "byte_size": 7043,
+      "path": "packages/plugin-host/src/paths/path-resolution.test.mjs",
+      "sha256": "sha256:b84c28f6060f6223454a542977367cbdaede605da3692470d9ce674990344fee"
+    },
+    {
+      "byte_size": 6748,
+      "path": "packages/plugin-host/src/paths/path-traversal.test.mjs",
+      "sha256": "sha256:f5b57d3989149c820278aee4545c98d6d73805bf03048839b4daf221f019d8b9"
+    }
+  ],
+  "completion_ready": false,
+  "dependency": {
+    "G01": {
+      "attempt_id": "G01-0001",
+      "report": "artifacts/work_packages/G01/report.json",
+      "report_sha256": "sha256:893bb9d7c01e7213fb2aed347dca03099ab8ba770d072a82030ffa1216f17cf0",
+      "status": "PASS"
+    }
+  },
+  "dependency_effect": {
+    "blocked_package_count": 120,
+    "completed_package_count": 32,
+    "dag_recomputed": true,
+    "next_package": "G04",
+    "ready_packages_manifest_order": [
+      "G04",
+      "I01",
+      "K01",
+      "A06"
+    ]
+  },
+  "evidence_artifacts": [
+    {
+      "byte_size": 4184,
+      "path": "artifacts/work_packages/G03/attempts/0001/g03-verification.json",
+      "sha256": "sha256:615addbf87af72c7b4ce1139bbc1f36042f3926b15ff4f91d48bd92b73370db4"
+    },
+    {
+      "byte_size": 1425,
+      "path": "artifacts/work_packages/G03/attempts/0001/full-regression-impact.json",
+      "sha256": "sha256:4c365affb792a87c7727502aa80ab1293348635a4a7c278800c2dac1a5de3a46"
+    },
+    {
+      "byte_size": 661,
+      "path": "artifacts/work_packages/G03/attempts/0001/preexisting-debt-reconciliation.json",
+      "sha256": "sha256:4922ce4cb204c1ba64d5f54f0e33d6a00430600aa02e93531a43f91b3414b0f8"
+    },
+    {
+      "byte_size": 1778,
+      "path": "artifacts/work_packages/G03/attempts/0001/dependency-status.json",
+      "sha256": "sha256:c08ad465da9cc85658c438fe5209091bf87ff2afd0f81a607f23cf8248cb97d9"
+    },
+    {
+      "byte_size": 1112,
+      "path": "artifacts/work_packages/G03/attempts/0001/g03-verification.artifact-receipt.json",
+      "sha256": "sha256:2c46c1e6283b6c0492aa0c4831224ed6d518abbceb8fe1ea6f0c9b26d6cdbf79"
+    },
+    {
+      "byte_size": 449,
+      "path": "artifacts/work_packages/G03/attempts/0001/rah-core-integrity.json",
+      "sha256": "sha256:66e994320b95be836c1fbdca13bacfc17e0a3c51525a4f5e4564ae54f2343cd5"
+    },
+    {
+      "byte_size": 3191,
+      "path": "artifacts/work_packages/G03/attempts/0001/commands.jsonl",
+      "sha256": "sha256:d7eff73bf5139d3fc08fe8f218c380ce5718ac2a8da35b39dea8018a786306f2"
+    },
+    {
+      "byte_size": 3727,
+      "path": "artifacts/work_packages/G03/attempts/0001/review.md",
+      "sha256": "sha256:0a6f33ec288bca82ad21aac0422eda486b3a098d903197bd1baa208ae4df0339"
+    },
+    {
+      "byte_size": 2758,
+      "path": "artifacts/work_packages/G03/attempts/0001/targeted-node-suite.junit.xml",
+      "sha256": "sha256:ab57277781682104254fb4f5e707140971061bcb0fb12c58f112329f03835c88"
+    },
+    {
+      "byte_size": 66861,
+      "path": "artifacts/work_packages/G03/attempts/0001/full-node-suite.junit.xml",
+      "sha256": "sha256:7ae0c18361034f1543adab832d8d86068cb340f28e3d7068f285886b3c35218e"
+    },
+    {
+      "byte_size": 120469,
+      "path": "artifacts/work_packages/G03/attempts/0001/full-python-suite.junit.xml",
+      "sha256": "sha256:a2b6a9886f12997759195be66e3e3e51b1bbdee733c4f2debafc08c08307f3e9"
+    },
+    {
+      "byte_size": 44759,
+      "path": "artifacts/work_packages/G03/attempts/0001/g03_evidence.py",
+      "sha256": "sha256:1e34220f96e35f336433fe2ef4da89325e264b6da0357fbd262bc7546b6aa2fe"
+    },
+    {
+      "byte_size": 16467,
+      "path": "artifacts/work_packages/G03/attempts/0001/g03_rah_seal.py",
+      "sha256": "sha256:03837daacf8d3b109564d0c03409d7e5e2a100dd97803ea6fdf6e39e1769428e"
+    }
+  ],
+  "exit_criteria": {
+    "installed_code_and_writable_data_separated": "PASS",
+    "non_ascii_and_spaces_paths_supported": "PASS"
+  },
+  "historical_and_worktree_preservation": {
+    "dirty_worktree_preserved": true,
+    "prior_reports_and_generations_preserved": true,
+    "product_write_scope_violations": 0,
+    "reset_clean_stash_commit_push_performed": false,
+    "subagents_or_fleet_used": false
+  },
+  "not_claimed": [
+    "marketplace fresh-install, enable, disable, or uninstall success",
+    "OS-enforced sandbox or race-free durable file-handle capability",
+    "downstream effect execution or CLI command semantics",
+    "release readiness or product completion"
+  ],
+  "package_status": "PASS",
+  "path_authority_contract": {
+    "effect_time_reresolution_required": true,
+    "installed_code_boundary": "PLUGIN_ROOT/read-only",
+    "plugin_writable_boundary": "PLUGIN_DATA",
+    "returned_path_is_durable_capability": false,
+    "workspace_boundary": "WORKSPACE_ROOT/.epistemic-foundry"
+  },
+  "preserved_limitations": [
+    "G03 proves path authority resolution, not marketplace install lifecycle behavior.",
+    "G03 does not claim OS-enforced sandboxing or race-free durable file-handle capabilities.",
+    "Returned checked paths require effect-time re-resolution and are not durable capabilities.",
+    "G04 owns fresh install, enable, disable, and uninstall verification.",
+    "S04-TM004 remains an exact pre-existing S04-owned debt.",
+    "Review is not actor-independent because the product owner forbids subagents in this sequence."
+  ],
+  "rah_state": {
+    "completion_ready": false,
+    "core_evidence_id": "E0056",
+    "core_generation": "000054-ce6d03dd",
+    "final_closeout_evidence_id": "E0057",
+    "flat_snapshot_content_matches": 6,
+    "flat_snapshot_stamps_verified": 6,
+    "generation_file_hashes_verified": 324,
+    "inspect_alternative": "state_store.verify_current plus all generation manifests, six flat snapshots, and continuous evidence IDs verified",
+    "inspect_status": "UNAVAILABLE_OR_GUARD_BLOCKED",
+    "retained_generation_manifest_count": 54,
+    "status": "active"
+  },
+  "regression": {
+    "git_diff_check": "PASS",
+    "node": {
+      "failed": 1,
+      "g03_caused_failure_count": 0,
+      "passed": 330,
+      "skipped": 0,
+      "status": "BOUNDED_PREEXISTING_DEBT_S04_TM004"
+    },
+    "package_boundaries": "PASS",
+    "python": {
+      "failed": 0,
+      "passed": 947,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "repository_structure": "PASS",
+    "targeted_node": {
+      "failed": 0,
+      "passed": 13,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "utf8_and_bom_check": "PASS"
+  },
+  "required_checks": {
+    "path_resolution_test": {
+      "case_count": 8,
+      "cwd_environment_repository_fallback_count": 0,
+      "explicit_absolute_roots_required": true,
+      "fresh_workspace_requires_resolution_refresh_after_state_creation": true,
+      "plugin_root_data_workspace_pairwise_disjoint": true,
+      "spaces_and_non_ascii_supported": true,
+      "status": "PASS"
+    },
+    "path_traversal_test": {
+      "case_count": 5,
+      "copied_resolution_rejected": true,
+      "create_limited_to_state_boundaries": true,
+      "mixed_separator_and_windows_alias_inputs_rejected": true,
+      "root_identity_rechecked": true,
+      "status": "PASS",
+      "symlink_junction_reparse_and_mount_crossing_rejected": true,
+      "traversal_and_absolute_inputs_rejected": true
+    }
+  },
+  "review": {
+    "artifact": "artifacts/work_packages/G03/attempts/0001/review.md",
+    "artifact_sha256": "sha256:0a6f33ec288bca82ad21aac0422eda486b3a098d903197bd1baa208ae4df0339",
+    "assurance_limitation": "Procedurally separate primary-session review; not actor-independent certification.",
+    "blocking_findings": 0,
+    "mode": "PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "status": "PASS_WITH_USER_AUTHORIZED_PRIMARY_SESSION_SEPARATE_CONTRACT_REVIEW",
+    "subagents_used": false
+  },
+  "serial_prior": {
+    "G02": {
+      "attempt_id": "G02-0001",
+      "report": "artifacts/work_packages/G02/report.json",
+      "report_sha256": "sha256:0ff22dc37020f244390469edf77fd956150e6838c5717dc812d62c2c528a9e92",
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "title": "PLUGIN_ROOT/PLUGIN_DATA and workspace resolution",
+  "work_package_id": "G03",
+  "write_scope": [
+    "packages/plugin-host/src/paths/**",
+    "artifacts/work_packages/G03/**"
+  ]
+}

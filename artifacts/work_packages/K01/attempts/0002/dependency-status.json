@@ -1,0 +1,106 @@
+{
+  "attempt_id": "K01-0002",
+  "dependencies": {
+    "B04": {
+      "attempt_id": "B04-0008",
+      "report": "artifacts/work_packages/B04/attempts/0008/report.json",
+      "report_sha256": "sha256:9c5ee50f3be039c44209a248a142b12f4ba46796673597b147e6197011b042b7",
+      "selection_rule": "HIGHEST_NUMERIC_ATTEMPT_OR_ROOT_REPORT",
+      "status": "PASS"
+    },
+    "C04": {
+      "attempt_id": "C04-0003",
+      "report": "artifacts/work_packages/C04/attempts/0003/report.json",
+      "report_sha256": "sha256:2610c509309d6f5aa5262cb2267f6fb17aea19d81fb2c33b4b3949c6371de297",
+      "selection_rule": "HIGHEST_NUMERIC_ATTEMPT_OR_ROOT_REPORT",
+      "status": "PASS"
+    },
+    "D04": {
+      "attempt_id": "D04-0001",
+      "report": "artifacts/work_packages/D04/report.json",
+      "report_sha256": "sha256:b47c194e230f4b08ab96b6153e9fc0e170eafb1054318cfaedd8e1ddeb4c5fde",
+      "selection_rule": "HIGHEST_NUMERIC_ATTEMPT_OR_ROOT_REPORT",
+      "status": "PASS"
+    },
+    "S01": {
+      "attempt_id": null,
+      "report": "artifacts/work_packages/S01/report.json",
+      "report_sha256": "sha256:6aa7a2ae6c3c047df6293e227ac3206a2e213b322ef1619eb1814e589f3ea7d6",
+      "selection_rule": "HIGHEST_NUMERIC_ATTEMPT_OR_ROOT_REPORT",
+      "status": "PASS"
+    }
+  },
+  "manifest": {
+    "depends_on": [
+      "B04",
+      "C04",
+      "D04",
+      "S01"
+    ],
+    "exit_criteria": [
+      "source bytes immutable",
+      "license/retraction/version status retained",
+      "initial registration emits an immutable DocumentRegistration before downstream final-manifest construction",
+      "source-byte, registry, ledger, lease, CAS and receipt effects reconcile without reimplementing D/E primitives",
+      "legacy records without sufficient immutable evidence fail closed"
+    ],
+    "independent_review": "required",
+    "manifest_sha256": "sha256:5dd99d2aae1e9ef662b9b8242b5fa921621434c6600c9c06e3a573d03079bb12",
+    "package_count": 156,
+    "required_checks": [
+      "document_registry_test",
+      "license_propagation_test",
+      "document_registration_oracle_22",
+      "document_lineage_test",
+      "document_effect_reconciliation_test",
+      "document_contract_validation"
+    ],
+    "status": "PASS",
+    "write_scope": [
+      "workflows/corpus_ingest.workflow.yaml",
+      "src/epistemic_foundry/ingest/registry/__init__.py",
+      "src/epistemic_foundry/ingest/registry/models.py",
+      "src/epistemic_foundry/ingest/registry/service.py",
+      "src/epistemic_foundry/ingest/registry/hash.py",
+      "src/epistemic_foundry/ingest/registry/lineage.py",
+      "src/epistemic_foundry/ingest/registry/repository.py",
+      "src/epistemic_foundry/ingest/registry/errors.py",
+      "docs/ingest_lifecycle_contract.md",
+      "tests/fixtures/k01/document-registration-request.valid.json",
+      "tests/fixtures/k01/document-registration.valid.json",
+      "tests/fixtures/k01/document-registration.invalid.json",
+      "tests/fixtures/k01/document-lineage-cases.json",
+      "tests/fixtures/k01/document-effect-cases.json",
+      "tests/ingest/test_k01_document_registration.py",
+      "tests/ingest/test_k01_document_lineage.py",
+      "tests/ingest/test_k01_effect_reconciliation.py",
+      "tests/contracts/test_k01_document_contracts.py",
+      "tests/integration/test_k01_register_document_node.py",
+      "artifacts/work_packages/K01/**"
+    ]
+  },
+  "post_k01_projection": {
+    "blocked_package_count": 104,
+    "completed_package_count": 46,
+    "completion_ready": false,
+    "next_package": "K02",
+    "ready_package_count": 6,
+    "ready_packages_manifest_order": [
+      "K02",
+      "K03",
+      "L01",
+      "N01",
+      "T01",
+      "A06"
+    ],
+    "status": "PASS"
+  },
+  "pre_k01_sealed_projection": {
+    "artifact": "artifacts/work_packages/J04/attempts/0001/post-j04-0001-dag-reconciliation.json",
+    "artifact_sha256": "sha256:3d744dfee28124eba088f0ac4755ea8d4591999150acb8ad4396b9cb883cd6a5",
+    "completed_package_count": 45,
+    "next_package": "K01",
+    "status": "PASS"
+  },
+  "status": "PASS"
+}
