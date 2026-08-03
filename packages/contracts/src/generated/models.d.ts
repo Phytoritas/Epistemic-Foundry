@@ -285,7 +285,7 @@ export type ClaimCardQualityVector = { readonly "design_strength": number | null
 
 export type ClaimCardSha256 = string;
 
-export type ClaimCardSourceLocator = { readonly "bbox"?: ReadonlyArray<number> | null; readonly "char_end": number; readonly "char_start": number; readonly "page": number; readonly "paper_version_id": string; readonly "passage_hash": ClaimCardSha256; readonly "section"?: string | null; };
+export type ClaimCardSourceLocator = (JsonValue);
 
 export type ClaimCardTimestamp = string;
 
@@ -783,7 +783,7 @@ export type EvidenceNodeQualityVector = { readonly "design_strength": number | n
 
 export type EvidenceNodeSha256 = string;
 
-export type EvidenceNodeSourceLocator = { readonly "bbox"?: ReadonlyArray<number> | null; readonly "char_end": number; readonly "char_start": number; readonly "page": number; readonly "paper_version_id": string; readonly "passage_hash": EvidenceNodeSha256; readonly "section"?: string | null; };
+export type EvidenceNodeSourceLocator = (JsonValue);
 
 export type EvidenceNodeTimestamp = string;
 
@@ -1212,7 +1212,7 @@ export type InsightCardQualityVector = { readonly "design_strength": number | nu
 
 export type InsightCardSha256 = string;
 
-export type InsightCardSourceLocator = { readonly "bbox"?: ReadonlyArray<number> | null; readonly "char_end": number; readonly "char_start": number; readonly "page": number; readonly "paper_version_id": string; readonly "passage_hash": InsightCardSha256; readonly "section"?: string | null; };
+export type InsightCardSourceLocator = (JsonValue);
 
 export type InsightCardTimestamp = string;
 
@@ -1431,6 +1431,8 @@ export interface NodeContract {
   readonly "depends_on": ReadonlyArray<string>;
   readonly "determinism_class": "deterministic" | "seeded_nondeterministic" | "provider_nondeterministic";
   readonly "executor_ref": string;
+  /** Whether executor_ref resolves to a real callable in this release. 'executor_bound' asserts the reference is live and is checked by the executor-resolution gate; 'executor_unbound' declares a specified-but-unbuilt node. Absent means unverified, which the gate reports as a census figure rather than a pass. A workflow whose completeness_contract sets missing_node_policy: FAIL is unsatisfiable while any node it needs is unbound, so this field makes that condition declarable instead of silent. */
+  readonly "executor_status"?: "executor_bound" | "executor_unbound";
   readonly "executor_type": "deterministic" | "llm" | "parser" | "retrieval" | "sandbox" | "subworkflow" | "policy" | "human_gate";
   readonly "expected_effects": ReadonlyArray<string>;
   readonly "failure_policy": "fail_run" | "mark_partial" | "skip_downstream" | "escalate";
@@ -1840,7 +1842,7 @@ export type ResultEnvelopeQualityVector = { readonly "design_strength": number |
 
 export type ResultEnvelopeSha256 = string;
 
-export type ResultEnvelopeSourceLocator = { readonly "bbox"?: ReadonlyArray<number> | null; readonly "char_end": number; readonly "char_start": number; readonly "page": number; readonly "paper_version_id": string; readonly "passage_hash": ResultEnvelopeSha256; readonly "section"?: string | null; };
+export type ResultEnvelopeSourceLocator = (JsonValue);
 
 export type ResultEnvelopeTimestamp = string;
 
@@ -1963,7 +1965,7 @@ export type RunSpecQualityVector = { readonly "design_strength": number | null; 
 
 export type RunSpecSha256 = string;
 
-export type RunSpecSourceLocator = { readonly "bbox"?: ReadonlyArray<number> | null; readonly "char_end": number; readonly "char_start": number; readonly "page": number; readonly "paper_version_id": string; readonly "passage_hash": RunSpecSha256; readonly "section"?: string | null; };
+export type RunSpecSourceLocator = (JsonValue);
 
 export type RunSpecTimestamp = string;
 
@@ -2184,7 +2186,8 @@ export interface SourceSpan {
   readonly "char_start": number;
   readonly "coordinate_system": "pdf_points_bottom_left" | "pdf_points_top_left" | "normalized_top_left" | "not_available";
   readonly "document_id": string;
-  readonly "page": number;
+  /** Page number in the source document, or null when the extraction carries no page geometry. A null page requires coordinate_system 'not_available' and a null bbox; it is never a substitute for an unextracted page. */
+  readonly "page": number | null;
   readonly "paper_version_id": string;
   readonly "parser_name": string;
   readonly "parser_version": string;
@@ -2335,7 +2338,7 @@ export type CanonicalContract = ActionIntent | Adjudication | ApprovalRecord | A
 export declare const contractManifest: {
   readonly schema_count: 127;
   readonly example_count: 127;
-  readonly schema_bundle_sha256: "sha256:907570a9fe2a346c0c8f1795362bd64ad1521388065935089333224751c44000";
+  readonly schema_bundle_sha256: "sha256:ca2cae307a1d19f37504c27fc0e143fd22d0b94a7f1f93626c7c9a4dc74955cd";
   readonly example_bundle_sha256: "sha256:6a3847eb8b95e23c8166a8889b1723c260c0fe9c63cc17c06bf010c1c6c538c2";
   readonly contracts: readonly GeneratedContractRecord[];
 };

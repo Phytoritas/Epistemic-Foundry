@@ -29,6 +29,13 @@
       "type": "string",
       "minLength": 1
     },
+    "executor_status": {
+      "enum": [
+        "executor_bound",
+        "executor_unbound"
+      ],
+      "description": "Whether executor_ref resolves to a real callable in this release. 'executor_bound' asserts the reference is live and is checked by the executor-resolution gate; 'executor_unbound' declares a specified-but-unbuilt node. Absent means unverified, which the gate reports as a census figure rather than a pass. A workflow whose completeness_contract sets missing_node_policy: FAIL is unsatisfiable while any node it needs is unbound, so this field makes that condition declarable instead of silent."
+    },
     "input_schema_ref": {
       "type": "string",
       "minLength": 1

@@ -7,7 +7,7 @@ from typing import ForwardRef, Literal, NotRequired, Required, TypeAlias, TypedD
 JsonScalar: TypeAlias = Union[None, bool, int, float, str]
 JsonValue: TypeAlias = Union[JsonScalar, list[object], dict[str, object]]
 
-CONTRACT_BUNDLE_SHA256 = 'sha256:907570a9fe2a346c0c8f1795362bd64ad1521388065935089333224751c44000'
+CONTRACT_BUNDLE_SHA256 = 'sha256:ca2cae307a1d19f37504c27fc0e143fd22d0b94a7f1f93626c7c9a4dc74955cd'
 EXAMPLE_BUNDLE_SHA256 = 'sha256:6a3847eb8b95e23c8166a8889b1723c260c0fe9c63cc17c06bf010c1c6c538c2'
 
 ActionIntent = TypedDict(
@@ -358,7 +358,8 @@ ClaimCardSourceLocator = TypedDict(
         'bbox': NotRequired[Union[list[float], None]],
         'char_end': Required[int],
         'char_start': Required[int],
-        'page': Required[int],
+        'coordinate_system': NotRequired[Literal['pdf_points_bottom_left', 'pdf_points_top_left', 'normalized_top_left', 'not_available']],
+        'page': Required[Union[int, None]],
         'paper_version_id': Required[str],
         'passage_hash': Required[str],
         'section': NotRequired[Union[str, None]],
@@ -1013,7 +1014,8 @@ EvidenceNodeSourceLocator = TypedDict(
         'bbox': NotRequired[Union[list[float], None]],
         'char_end': Required[int],
         'char_start': Required[int],
-        'page': Required[int],
+        'coordinate_system': NotRequired[Literal['pdf_points_bottom_left', 'pdf_points_top_left', 'normalized_top_left', 'not_available']],
+        'page': Required[Union[int, None]],
         'paper_version_id': Required[str],
         'passage_hash': Required[str],
         'section': NotRequired[Union[str, None]],
@@ -1552,7 +1554,8 @@ InsightCardSourceLocator = TypedDict(
         'bbox': NotRequired[Union[list[float], None]],
         'char_end': Required[int],
         'char_start': Required[int],
-        'page': Required[int],
+        'coordinate_system': NotRequired[Literal['pdf_points_bottom_left', 'pdf_points_top_left', 'normalized_top_left', 'not_available']],
+        'page': Required[Union[int, None]],
         'paper_version_id': Required[str],
         'passage_hash': Required[str],
         'section': NotRequired[Union[str, None]],
@@ -1837,6 +1840,7 @@ NodeContract = TypedDict(
         'depends_on': Required[list[str]],
         'determinism_class': Required[Literal['deterministic', 'seeded_nondeterministic', 'provider_nondeterministic']],
         'executor_ref': Required[str],
+        'executor_status': NotRequired[Literal['executor_bound', 'executor_unbound']],
         'executor_type': Required[Literal['deterministic', 'llm', 'parser', 'retrieval', 'sandbox', 'subworkflow', 'policy', 'human_gate']],
         'expected_effects': Required[list[str]],
         'failure_policy': Required[Literal['fail_run', 'mark_partial', 'skip_downstream', 'escalate']],
@@ -2348,7 +2352,8 @@ ResultEnvelopeSourceLocator = TypedDict(
         'bbox': NotRequired[Union[list[float], None]],
         'char_end': Required[int],
         'char_start': Required[int],
-        'page': Required[int],
+        'coordinate_system': NotRequired[Literal['pdf_points_bottom_left', 'pdf_points_top_left', 'normalized_top_left', 'not_available']],
+        'page': Required[Union[int, None]],
         'paper_version_id': Required[str],
         'passage_hash': Required[str],
         'section': NotRequired[Union[str, None]],
@@ -2523,7 +2528,8 @@ RunSpecSourceLocator = TypedDict(
         'bbox': NotRequired[Union[list[float], None]],
         'char_end': Required[int],
         'char_start': Required[int],
-        'page': Required[int],
+        'coordinate_system': NotRequired[Literal['pdf_points_bottom_left', 'pdf_points_top_left', 'normalized_top_left', 'not_available']],
+        'page': Required[Union[int, None]],
         'paper_version_id': Required[str],
         'passage_hash': Required[str],
         'section': NotRequired[Union[str, None]],
@@ -2801,7 +2807,7 @@ SourceSpan = TypedDict(
         'char_start': Required[int],
         'coordinate_system': Required[Literal['pdf_points_bottom_left', 'pdf_points_top_left', 'normalized_top_left', 'not_available']],
         'document_id': Required[str],
-        'page': Required[int],
+        'page': Required[Union[int, None]],
         'paper_version_id': Required[str],
         'parser_name': Required[str],
         'parser_version': Required[str],

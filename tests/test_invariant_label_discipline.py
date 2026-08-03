@@ -77,10 +77,52 @@ def test_every_cited_label_exists_in_the_spec() -> None:
     assert unknown == {}
 
 
+#: Invariants whose enforcement genuinely spans more than one test module, with
+#: the reason. The rule below is a drift heuristic — it assumes a repeated label
+#: means a copied header — and a review found the case it does not model: an
+#: invariant with two distinct enforcement surfaces. Suppressing the true
+#: citation to satisfy the heuristic made `rg EF4-I38 tests/` under-report which
+#: tests enforce it, which is the same wrong-coverage-evidence the rule exists to
+#: prevent. An entry here must name every file and say why they are not drift.
+MULTI_MODULE_INVARIANTS: dict[str, dict[str, object]] = {
+    "EF4-I38": {
+        "files": {
+            "tests/test_updates.py",
+            "tests/packaging/test_receipt_invalidation.py",
+        },
+        "reason": (
+            "Downstream invalidation has two enforcement surfaces that do not "
+            "overlap: test_updates.py covers the runtime update path, where new "
+            "evidence invalidates a claim, and test_receipt_invalidation.py "
+            "covers the build and evidence-graph path, where a canonical "
+            "correction invalidates the receipts projecting it. Neither is a "
+            "copy of the other and neither subsumes the other."
+        ),
+    },
+}
+
+
+def test_multi_module_allowlist_is_exact_and_justified() -> None:
+    """An allowlist that outlives its reason becomes a blanket exemption."""
+    for label, entry in MULTI_MODULE_INVARIANTS.items():
+        assert str(entry["reason"]).strip(), f"{label} allowlisted with no reason"
+        cited = {
+            location.split(":", 1)[0]
+            for location in cited_labels().get(label, [])
+            if location.startswith("tests/")
+        }
+        assert cited == entry["files"], (
+            f"{label} is allowlisted for {sorted(entry['files'])} but is cited "
+            f"from {sorted(cited)}; update the allowlist deliberately rather "
+            "than letting it drift into cover for a real duplicate"
+        )
+
+
 def test_no_invariant_is_cited_from_two_unrelated_test_modules() -> None:
     """A label appearing in several test files usually means a copied section
     header drifted. Enforcement may legitimately span source modules, so only
-    test-file citations are constrained here."""
+    test-file citations are constrained here. The exceptions are enumerated in
+    MULTI_MODULE_INVARIANTS, which requires the exact file set and a reason."""
     per_label: dict[str, set[str]] = {}
     for label, locations in cited_labels().items():
         files = {
@@ -90,7 +132,12 @@ def test_no_invariant_is_cited_from_two_unrelated_test_modules() -> None:
         }
         if files:
             per_label[label] = files
-    offenders = {label: sorted(files) for label, files in per_label.items() if len(files) > 1}
+    offenders = {
+        label: sorted(files)
+        for label, files in per_label.items()
+        if len(files) > 1
+        and files != MULTI_MODULE_INVARIANTS.get(label, {}).get("files")
+    }
     assert offenders == {}
 
 
@@ -111,7 +158,9 @@ def test_no_invariant_is_cited_from_two_unrelated_test_modules() -> None:
         ("EF4-I62", "Typed stop certificate"),
     ],
 )
-def test_previously_drifted_labels_keep_their_spec_title(label: str, expected_title: str) -> None:
+def test_previously_drifted_labels_keep_their_spec_title(
+    label: str, expected_title: str
+) -> None:
     """These twelve numbers were once cited one position off (or swapped), which
     made recorded coverage evidence point at a neighbouring invariant. Pinning the
     titles turns a repeat of that mistake into a test failure."""

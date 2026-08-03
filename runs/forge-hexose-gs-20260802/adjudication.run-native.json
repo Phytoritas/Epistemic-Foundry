@@ -1,0 +1,144 @@
+{
+  "run_id": "FORGE-HEXOSE-GS-20260802",
+  "recorded_at_utc": "2026-08-02T12:00:00.000Z",
+  "gates": {
+    "claim_span_grounding": {
+      "status": "PASS",
+      "gate_id": "GATE-C840E9796CFB6689"
+    },
+    "causal_identification": {
+      "status": "FAIL",
+      "gate_id": "GATE-D595F601F35AF5AF"
+    },
+    "method_audit": {
+      "status": "FAIL",
+      "gate_id": "GATE-39101A81CEAA4269"
+    },
+    "scope_transfer": {
+      "status": "FAIL",
+      "gate_id": "GATE-10DE6868347F1356"
+    },
+    "evidence_direction_balance": {
+      "status": "FAIL",
+      "gate_id": "GATE-171D19E9B21B229C"
+    }
+  },
+  "gate_override_refusal": "adjudication recommends CANDIDATE while deterministic gate(s) causal_identification, evidence_direction_balance, method_audit, scope_transfer did not pass; a verdict cannot override a hard gate",
+  "adjudication_as_stated": {
+    "adjudication_id": "ADJ-HEXOSE-AS-STATED",
+    "run_id": "FORGE-HEXOSE-GS-20260802",
+    "hypothesis_id": "HYP-HEXOSE-GS-001",
+    "gate_decision_ids": [
+      "GATE-C840E9796CFB6689",
+      "GATE-D595F601F35AF5AF",
+      "GATE-39101A81CEAA4269",
+      "GATE-10DE6868347F1356",
+      "GATE-171D19E9B21B229C"
+    ],
+    "brief_ids": [
+      "BRIEF-DEFENDER",
+      "BRIEF-PROSECUTOR"
+    ],
+    "cross_examination_ids": [
+      "XEX-DEDUCTIVE",
+      "XEX-CAUSAL",
+      "XEX-METHOD",
+      "XEX-SCOPE",
+      "XEX-ABDUCTIVE"
+    ],
+    "minority_report_ids": [
+      "MIN-HEXOSE-DAWN-CARBON-REPLETE"
+    ],
+    "verdict": "CONTRADICTED",
+    "scope_narrowing": [
+      "verdict applies to (guard-cell hexose) x (greenhouse fruiting crop) x (dawn/dark phase)",
+      "does not apply to the night-temperature -> morning-gs association, which is not adjudicated here"
+    ],
+    "strongest_support_id": "GC-0ba30129c397cfea2c687444",
+    "strongest_counterevidence_id": "GC-221cfda9982b97513c2ffd03",
+    "unresolved_issue_ids": [
+      "EXPLANANDUM-AMBIGUITY",
+      "C3-SIGN-CONFLICT",
+      "DAWN-CARBON-REPLETE-CELL-UNMEASURED"
+    ],
+    "promotion_recommendation": "BLOCK",
+    "rationale": "As stated, the chain fails on four independent grounds. The mechanism is asserted at the dawn phase and in the guard-cell compartment, where every direct measurement in the corpus shows hexose ENABLING opening (loss of the dawn guard-cell glucose pool increases the opening time constant by 40 min). The closure literature it relies on sits 18-250x above the physiological apoplastic concentration and is reproduced by an equi-osmolar mannitol control, so it is osmotic rather than hexose sensing. The premise that a cool night leaves residual leaf hexose is contested by the only pre-dawn-sampled experiment, which is a null, and the causal path is not identified observationally because night temperature is a common cause of the exposure and of six other determinants of morning conductance. BLOCK applies to the mechanism as stated, not to the observation, which remains real and worth explaining.",
+    "deterministic_gate_override_attempted": false,
+    "created_at": "2026-08-02T12:00:00.000Z",
+    "adjudication_hash": "sha256:f4e1af7da71639fe0d3c5dc76ad2108538588a162b62b8927d181708732a8c7b"
+  },
+  "adjudication_b1_reformulated": {
+    "adjudication_id": "ADJ-HEXOSE-B1-REFORMULATED",
+    "run_id": "FORGE-HEXOSE-GS-20260802",
+    "hypothesis_id": "HYP-HEXOSE-GS-001-B1",
+    "gate_decision_ids": [
+      "GATE-C840E9796CFB6689",
+      "GATE-83DA9F0B15221D96",
+      "GATE-EC89A0AFED9B0FFC",
+      "GATE-6C2F6871E226076A"
+    ],
+    "brief_ids": [
+      "BRIEF-DEFENDER"
+    ],
+    "cross_examination_ids": [
+      "XEX-CAUSAL",
+      "XEX-SCOPE"
+    ],
+    "minority_report_ids": [],
+    "verdict": "UNDERDETERMINED",
+    "scope_narrowing": [
+      "greenhouse tomato / cucumber",
+      "night temperature band where growth is inhibited but carbon supply is not"
+    ],
+    "strongest_support_id": "GC-f5e3cbc187f6cc1f1d9a5cf1",
+    "strongest_counterevidence_id": "GC-51ad9501a278adf336aa587c",
+    "unresolved_issue_ids": [
+      "MEDIATOR-NOT-IDENTIFIED"
+    ],
+    "promotion_recommendation": "BLOCK",
+    "rationale": "The reformulated claim - morning gs is reduced after nights cool enough to suppress sink activity, mediated by reduced sink demand rather than by residual hexose - survives the scope and method audits and has a direct crop-scale demonstration in which sink limitation alone depressed conductance at constant temperature. It is nevertheless recorded as BLOCK rather than CANDIDATE because its own causal-identification gate fails: the mediator is no better identified than the hexose one. The gate, not the argument, sets this ceiling, and it lifts the moment an intervention design supplies the missing identification.",
+    "deterministic_gate_override_attempted": false,
+    "created_at": "2026-08-02T12:00:00.000Z",
+    "adjudication_hash": "sha256:84c5afdc571a5231f5ab74ce2d8ffa7d7d6729d07f41a7a846a212e7430c9d92"
+  },
+  "minority_report": {
+    "minority_report_id": "MIN-HEXOSE-DAWN-CARBON-REPLETE",
+    "run_id": "FORGE-HEXOSE-GS-20260802",
+    "author_role": "defender",
+    "minority_claim": "Every corpus source that establishes hexose as a positive requirement for dawn stomatal opening measured a NORMAL dawn, which is carbon-depleted by construction. The owner's scenario specifies a bright prior day followed by a night too cool to consume the surplus - a carbon-replete dawn. That combination is an empty cell in the corpus: the required guard-cell apoplastic concentration band (above the 0.4-5.5 mM measured range, below the 30 mM where opposition first appears) contains zero measurements. The hypothesis is therefore unmeasured in its own regime, not refuted in it.",
+    "evidence_ids": [
+      "GC-0ba30129c397cfea2c687444",
+      "GC-4195a56fca23ad41c1fe060b",
+      "GC-0636cc5a34caf0251f97792e",
+      "GC-d5c3ded814651516fe5fc4e8",
+      "GC-221cfda9982b97513c2ffd03",
+      "GC-b2ae2946489df6baa18e80f7",
+      "GC-eecf2185ecef83af0ae757bc",
+      "GC-8734ec3db48f33af3165bb05",
+      "GC-b6dcc1cb39686a9b13d73ee6",
+      "GC-81002b124822dd74c5529f73",
+      "GC-60f856abc2cf58539dc9da1b",
+      "GC-31f42b0b3784ab9db881889c"
+    ],
+    "why_majority_may_be_wrong": "The majority reads the dawn evidence as fixing the sign of the hexose-aperture derivative. It does not: the positive branch is itself carbon-status-gated - exogenous sugar promoted opening only under carbon starvation and had no effect under a normal photoperiod - so a loss-of-function result obtained at a carbon-depleted dawn cannot determine the derivative's sign at a carbon-replete dawn. The majority also treats the 5-30 mM gap as absence of effect when it is absence of measurement.",
+    "unresolved_test": "Measure guard-cell apoplastic and cytosolic glucose and fructose at -60 and -10 min before effective light onset on matched clear mornings contrasted on prior-day light and night temperature, and pair them with a continuous gs time course; then run a dose-response across 1-30 mM with an equi-osmolar mannitol arm and a non-metabolizable analogue. Cheapest prior falsifier: does the morning depression persist after cool nights that followed a LOW-light day? If it does, the carbon-carryover family fails regardless of mediator.",
+    "expected_information_gain": 0.72,
+    "preservation_status": "required",
+    "created_at": "2026-08-02T12:00:00.000Z",
+    "report_hash": "sha256:20419ab86f63266a80ecd4a932f7af65852ebb65c7d245c8fb59b13ece4391de"
+  },
+  "b1_gates": {
+    "claim_span_grounding": {
+      "status": "PASS"
+    },
+    "scope_transfer_b1": {
+      "status": "PASS"
+    },
+    "method_audit_b1": {
+      "status": "PASS"
+    },
+    "causal_identification_b1": {
+      "status": "FAIL"
+    }
+  }
+}

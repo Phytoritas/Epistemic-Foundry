@@ -1,0 +1,1477 @@
+{
+  "role": "ef-claim-extractor",
+  "assignment": "C1",
+  "documents_read": [
+    "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+    "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+    "438_Guard_Cell_Starch_Degradation_Yields_Glucose_for_Rapid_Stoma",
+    "437_Guard_cell_starch_and_malate_metabolism_facilitate_stomatal",
+    "806_TOR_promotes_guard_cell_starch_degradation_by_regulating_the",
+    "263_Blue_Light_Induces_a_Distinct_Starch_Degradation_Pathway_in",
+    "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+    "665_Rethinking_Guard_Cell_Metabolism",
+    "270_Calvin_cycle_and_guard_cell_metabolism_impact_stomatal_funct",
+    "537_Mesophyll_photosynthesis_and_guard_cell_metabolism_impacts_o",
+    "663_Resolving_the_central_metabolism_of_Arabidopsis_guard_cells",
+    "090_Is_carbon_not_water_the_resource_that_limits_stomatal_openin",
+    "034_CO2_responsiveness_of_plants_a_possible_link_to_phloem_loadi",
+    "538_Metabolism_within_the_specialized_guard_cells_of_plants"
+  ],
+  "claims": [
+    {
+      "claim_ref": "A1-001",
+      "document_id": "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+      "semantic_unit": "other",
+      "section": "review body: guard cell sugar sensing and stomatal closure",
+      "char_start": 47158,
+      "char_end": 47600,
+      "verbatim_text": "Subsequently, recent studies have examined the response\nof stomata to different concentrations of externally added sucrose (133) and the HXK substrates\nglucose, fructose, and mannose (70, 113). While low concentrations had little or no effect, higher\nconcentrations of sucrose and the HXK substrates resulted in stomatal closure, further supporting\nthe idea that sucrose accumulation in the guard cells and hexokinase activity stimulate stoma",
+      "text_hash": "sha256:9702cb23d3044c150c8a8ac17f45af3a1d746474d8a2ea430a03c8581c7abd7e",
+      "claim_statement": "Externally applied hexoses (glucose, fructose, mannose) and sucrose caused stomatal closure at higher concentrations while having little or no effect at low concentrations.",
+      "claim_type": "review_synthesis",
+      "author_stance": "supported",
+      "subject": "externally applied hexoses (glucose, fructose, mannose) and sucrose at higher concentrations",
+      "relation": "induces",
+      "object": "stomatal closure",
+      "direction": "nonmonotonic",
+      "evidence_layer": "review",
+      "hedging_level": 1,
+      "scope": {
+        "species": "not stated in span (review of studies in tomato, Arabidopsis, Vicia faba)",
+        "compartment": "external bathing medium / guard cell apoplast and symplast; hexokinase acts in the guard cell",
+        "conditions": "exogenous sugar application at graded concentrations",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": "low concentrations had little or no effect; higher concentrations caused closure",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "It is the most direct statement in the assigned corpus that the hexoses themselves (not only sucrose) close stomata, and it supplies the concentration threshold the hypothesis needs."
+    },
+    {
+      "claim_ref": "A1-002",
+      "document_id": "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+      "semantic_unit": "other",
+      "section": "review body: guard cell sugar sensing and stomatal closure",
+      "char_start": 46087,
+      "char_end": 46406,
+      "verbatim_text": "It has further been suggested that sugars themselves do not act as\nguard cell osmolytes but are instead degraded by invertase and sucrose synthase producing hexose\nmonomers that are sensed by hexokinase, and result in stomatal closure via a mechanism mediated\nby abscisic acid (ABA) produced in the guard cells (66,89).",
+      "text_hash": "sha256:fdc4215f31b1d35b2b8312e70809698012e3d957622d8e6f159bd3c1be54dd0a",
+      "claim_statement": "Hexose monomers released from sucrose cleavage are sensed by hexokinase and cause stomatal closure through an ABA-mediated mechanism in guard cells, rather than acting as osmolytes.",
+      "claim_type": "mechanism",
+      "author_stance": "suggested",
+      "subject": "hexose monomers produced by invertase/sucrose synthase and sensed by hexokinase",
+      "relation": "causes via guard-cell ABA",
+      "object": "stomatal closure",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 2,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "guard cell symplast (hexokinase and ABA production inside the guard cell)",
+        "conditions": "not stated in span",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "It names hexose (not sucrose) as the sensed species and gives a signalling, non-osmotic route from hexose to closure, which is the mechanism the hypothesis presupposes."
+    },
+    {
+      "claim_ref": "A1-003",
+      "document_id": "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+      "semantic_unit": "other",
+      "section": "review body: guard cell sugar sensing and stomatal closure",
+      "char_start": 46672,
+      "char_end": 46872,
+      "verbatim_text": "Constitutive overexpression of hexokinase (HXK) in tomato and\nArabidopsis enhanced sugar sensing and reduced stomatal conductance, transpiration rate (87, 89),\nphotosynthesis, and growth (36, 80, 87).",
+      "text_hash": "sha256:e970012a6773b653a60b281f71302f5f4ab93f4c35d2e50900d88720772a635d",
+      "claim_statement": "Constitutive hexokinase overexpression in tomato and Arabidopsis enhanced sugar sensing and reduced stomatal conductance and transpiration rate.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "constitutive hexokinase overexpression (enhanced hexose sensing)",
+      "relation": "reduces",
+      "object": "stomatal conductance and transpiration rate",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Solanum lycopersicum (tomato); Arabidopsis thaliana",
+        "compartment": "whole plant, constitutive (not guard-cell restricted)",
+        "conditions": "not stated in span",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "Amplifying the hexose-sensing step lowers stomatal conductance, consistent with hexose acting as a negative regulator of aperture."
+    },
+    {
+      "claim_ref": "A1-004",
+      "document_id": "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+      "semantic_unit": "other",
+      "section": "review body: guard cell sugar sensing and stomatal closure",
+      "char_start": 46873,
+      "char_end": 47157,
+      "verbatim_text": "Furthermore, overexpression of HXK in guard cells using\na guard cell–specific promotor (88) also resulted in reduced stomatal apertures and transpiration\nrates (89, 119), demonstrating that guard cell sucrose metabolism could represent a target for\nmanipulation for crop improvements.",
+      "text_hash": "sha256:5a4a177aeb76e26dddbf7e9e19c0471c2f9576441c3ddab95840c214f208de77",
+      "claim_statement": "Guard-cell-specific hexokinase overexpression reduced stomatal apertures and transpiration rates.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "guard-cell-specific hexokinase overexpression",
+      "relation": "reduces",
+      "object": "stomatal aperture and transpiration rate",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "not stated in span (cited work in tomato and Arabidopsis)",
+        "compartment": "guard cell symplast (cell-autonomous, guard-cell-specific promoter)",
+        "conditions": "not stated in span",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "Restricting the manipulation to guard cells localises the hexose-sensing-to-closure effect inside the guard cell, ruling out a purely mesophyll-side artefact."
+    },
+    {
+      "claim_ref": "A1-005",
+      "document_id": "665_Rethinking_Guard_Cell_Metabolism",
+      "semantic_unit": "other",
+      "section": "Role for Suc Other Than Osmoregulation",
+      "char_start": 68694,
+      "char_end": 69009,
+      "verbatim_text": "Transgenic plants overexpressing hexokinase (HK, a\nsugar-phosphorylating enzyme involved in sugar\nsensing) speciﬁcally in guard cells exhibited accelerated\nstomatal closure induced by sugar. This observation\nsupports the idea of photosynthesis feedback inhibition\nof stomatal conductance by Suc (Kelly et al., 2013)",
+      "text_hash": "sha256:cd3e6521d78cc134ee9f297f3c27d0644cd72a48f0f499c343916028b353e94e",
+      "claim_statement": "Guard-cell hexokinase overexpression accelerated sugar-induced stomatal closure, supporting photosynthesis feedback inhibition of stomatal conductance by sucrose.",
+      "claim_type": "mechanism",
+      "author_stance": "supported",
+      "subject": "sugar acting through guard-cell hexokinase",
+      "relation": "accelerates",
+      "object": "stomatal closure",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 1,
+      "scope": {
+        "species": "not stated in span (Kelly et al. 2013 worked in tomato and Arabidopsis)",
+        "compartment": "guard cell symplast",
+        "conditions": "sugar-induced closure assay",
+        "timescale": "not stated in span; framed as photosynthesis feedback"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "It is the canonical hexokinase-mediated closure result restated by an independent review, and frames sugar as a negative feedback on conductance."
+    },
+    {
+      "claim_ref": "A1-006",
+      "document_id": "665_Rethinking_Guard_Cell_Metabolism",
+      "semantic_unit": "other",
+      "section": "Role for Suc Other Than Osmoregulation",
+      "char_start": 69446,
+      "char_end": 70049,
+      "verbatim_text": "When the\nproduction of Suc in the mesophyll exceeds phloem\nloading, the excess Suc is carried to the guard cells and\nstimulates stomatal closure via hexokinase, thereby\nreducing water loss when photosynthesis is saturated\n(Kelly et al., 2013). Although this process may provide\nlong-term coordination between transpiration and\nphotosynthesis, such a mechanism could not account\nfor short-term coordination between photosynthesis\nand stomatal behavior, as reduced stomatal conduc-\ntance is not usually observed under conditions of high\nphotosynthetic rates (Wong et al., 1979; Lawson et al.,\n2010, 2014).",
+      "text_hash": "sha256:797c2ee8b4d21b7d044afc039625ca97ff84fab6e1873fabeb0247c05ae5f244",
+      "claim_statement": "Sucrose in excess of phloem loading reaches guard cells and stimulates hexokinase-mediated closure, but this can only provide long-term, not short-term, coordination because reduced conductance is not usually seen at high photosynthetic rates.",
+      "claim_type": "limitation",
+      "author_stance": "qualified",
+      "subject": "excess mesophyll sucrose delivered to guard cells",
+      "relation": "stimulates closure only on a long timescale, not short-term",
+      "object": "stomatal conductance",
+      "direction": "mixed",
+      "evidence_layer": "review",
+      "hedging_level": 2,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "mesophyll-to-guard-cell apoplastic route; hexokinase in guard cell",
+        "conditions": "photosynthesis saturated / high photosynthetic rates",
+        "timescale": "explicitly long-term coordination; explicitly NOT short-term"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "It puts an explicit timescale boundary on sugar-driven closure, which is load-bearing because the hypothesis asserts an effect on a single morning after one cold night."
+    },
+    {
+      "claim_ref": "A1-007",
+      "document_id": "538_Metabolism_within_the_specialized_guard_cells_of_plants",
+      "semantic_unit": "other",
+      "section": "review body, end of section V (immediately preceding 'VI. Challenges and perspectives')",
+      "char_start": 67669,
+      "char_end": 67985,
+      "verbatim_text": "By contrast, in periods of high A, the excess of sucrose\nderived from mesophyll cells would induce stomatal closure by two\nmechanisms; via an osmotic effect at the apoplast (Lu et al., 1995,\n1997; Kang et al., 2007) and by activating the ABA signalling\npathway within guard cells via hexokinase (Kelly et al., 2013).",
+      "text_hash": "sha256:cdaac4bf966e4be37ce0f2d021ed270f12b8249e898f1cae765467924c9967da",
+      "claim_statement": "During periods of high assimilation, excess mesophyll-derived sucrose is proposed to close stomata by two distinct mechanisms: an osmotic effect in the apoplast and hexokinase-dependent activation of ABA signalling inside the guard cell.",
+      "claim_type": "mechanism",
+      "author_stance": "suggested",
+      "subject": "excess mesophyll-derived sucrose during high assimilation",
+      "relation": "induces closure via an apoplastic osmotic route and a symplastic hexokinase/ABA route",
+      "object": "stomatal aperture",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 2,
+      "scope": {
+        "species": "not stated in span (cited work in Vicia faba, tomato, Arabidopsis)",
+        "compartment": "explicitly two compartments: guard cell apoplast (osmotic) and guard cell symplast (hexokinase/ABA)",
+        "conditions": "periods of high net assimilation (A)",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "It separates the two closure routes by compartment, so an apoplastic-osmotic result and a symplastic-signalling result need not be evidence for the same claim."
+    },
+    {
+      "claim_ref": "A1-008",
+      "document_id": "537_Mesophyll_photosynthesis_and_guard_cell_metabolism_impacts_o",
+      "semantic_unit": "figure_caption",
+      "section": "Fig. 1 legend",
+      "char_start": 19940,
+      "char_end": 20026,
+      "verbatim_text": "Sensing of Glc and Fru by hexokinases (HXK) may generate a signal that closes stomata.",
+      "text_hash": "sha256:2ebfbd4d925e5a9ee337185ddb60dccaac778950e3ef9f79cb6cb19636ebdacf",
+      "claim_statement": "Sensing of cytosolic glucose and fructose by hexokinases may generate a signal that closes stomata.",
+      "claim_type": "mechanism",
+      "author_stance": "speculative",
+      "subject": "cytosolic glucose and fructose sensed by hexokinases",
+      "relation": "may generate a closing signal for",
+      "object": "stomata",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 3,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "guard cell cytosol (the span's surrounding legend describes cytosolic Glc and Fru from sucrose cleavage or starch degradation)",
+        "conditions": "not stated in span",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "It names glucose and fructose specifically, in the guard cell cytosol, as the closing signal, which is exactly the hexose species and compartment the hypothesis invokes; but it is hedged as 'may'."
+    },
+    {
+      "claim_ref": "A1-009",
+      "document_id": "537_Mesophyll_photosynthesis_and_guard_cell_metabolism_impacts_o",
+      "semantic_unit": "discussion",
+      "section": "review body: sugars in guard cell function",
+      "char_start": 43643,
+      "char_end": 43966,
+      "verbatim_text": "They also claimed that Suc moving\nthroughout the apoplast of a transpiring leaf may accumulate in\nan osmotically signiﬁcant concentration in the guard cell wall and\nstimulate stomatal closure as a means to coordinate photosynthesis\nwith transpiration (Ewert et al., 2000; Outlaw & De Vlieghere-He,\n2001; Kang et al., 2007).",
+      "text_hash": "sha256:350a46a1480296c0bb19ea146977bb3c94a45a764c61a68b400011542332a106",
+      "claim_statement": "Sucrose carried by the transpiration stream may accumulate to osmotically significant concentrations in the guard cell wall and stimulate stomatal closure, coordinating photosynthesis with transpiration.",
+      "claim_type": "mechanism",
+      "author_stance": "suggested",
+      "subject": "sucrose accumulating in the guard cell wall (apoplast) of a transpiring leaf",
+      "relation": "stimulates",
+      "object": "stomatal closure",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 2,
+      "scope": {
+        "species": "not stated in span (cited work in Vicia faba)",
+        "compartment": "guard cell wall / apoplast, explicitly osmotic rather than signalling",
+        "conditions": "transpiring leaf",
+        "timescale": "not stated in span; framed as accumulation over the transpiring period"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "The proposed closing agent is apoplastic sucrose acting osmotically, not symplastic hexose acting as a signal, so it is a different mechanism from the one the hypothesis needs."
+    },
+    {
+      "claim_ref": "A1-010",
+      "document_id": "537_Mesophyll_photosynthesis_and_guard_cell_metabolism_impacts_o",
+      "semantic_unit": "figure_caption",
+      "section": "Fig. 2 legend",
+      "char_start": 82805,
+      "char_end": 82947,
+      "verbatim_text": "Guard cell-speciﬁc expression of hexokinase reduces whole-plant\ntranspiration and increases water-use efﬁciency (WUE) in Solanum\nlycopersicum.",
+      "text_hash": "sha256:07128aba42e6a1fc342552002f3073c45c2903a43e8a70866c045158d67dfd13",
+      "claim_statement": "Guard-cell-specific hexokinase expression reduces whole-plant transpiration and increases water-use efficiency in tomato.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "guard-cell-specific hexokinase expression",
+      "relation": "reduces",
+      "object": "whole-plant transpiration",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Solanum lycopersicum",
+        "compartment": "guard cell symplast",
+        "conditions": "lysimeter measurement through the day",
+        "timescale": "whole diel course (monitored continuously throughout the day)"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "It shows the hexose-sensing-to-closure link has a whole-plant transpiration consequence in a crop species, not only an aperture-assay artefact."
+    },
+    {
+      "claim_ref": "A1-011",
+      "document_id": "090_Is_carbon_not_water_the_resource_that_limits_stomatal_openin",
+      "semantic_unit": "other",
+      "section": "Commentary body: 'Are we asking the right question?'",
+      "char_start": 10471,
+      "char_end": 10675,
+      "verbatim_text": "Likewise, the model’s prediction that NSC accumula-\ntion should promote stomatal closure aligns with the observation\nthat the accumulation of excess photosynthate drives stomatal\nclosure in the afternoon.",
+      "text_hash": "sha256:8b00d756f27358ec49d769cf6d5864fd5f2cbec35e1c0c02fce4a6de3cf257c9",
+      "claim_statement": "Accumulation of nonstructural carbohydrate / excess photosynthate is observed to drive stomatal closure in the afternoon, matching the Potkay-Feng model prediction.",
+      "claim_type": "model",
+      "author_stance": "asserted",
+      "subject": "accumulation of nonstructural carbohydrates / excess photosynthate",
+      "relation": "promotes",
+      "object": "stomatal closure",
+      "direction": "negative",
+      "evidence_layer": "modeling",
+      "hedging_level": 1,
+      "scope": {
+        "species": "not stated in span (general plant model)",
+        "compartment": "whole-leaf nonstructural carbohydrate pool",
+        "conditions": "afternoon, photosynthate accumulating",
+        "timescale": "within-day (afternoon)"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "It is the only claim in my set that links a bulk leaf carbohydrate pool (not just apoplastic sucrose) to reduced aperture, which is the pool level the hypothesis actually manipulates."
+    },
+    {
+      "claim_ref": "A1-012",
+      "document_id": "090_Is_carbon_not_water_the_resource_that_limits_stomatal_openin",
+      "semantic_unit": "other",
+      "section": "Commentary body: 'Are we asking the right question?'",
+      "char_start": 10676,
+      "char_end": 10852,
+      "verbatim_text": "This is apparently due to the apoplastic\ntransport of excess sucrose from mesophyll to guard cells, where it\ninduces stomatal closure (Kelly et al., 2013; Lawson et al., 2014).",
+      "text_hash": "sha256:9b14e589990711e90b4bdbc5820eb955fbdae178d2493f6cd10182a115f02f84",
+      "claim_statement": "Afternoon stomatal closure is attributed to apoplastic transport of excess sucrose from mesophyll to guard cells, where it induces closure.",
+      "claim_type": "causal",
+      "author_stance": "qualified",
+      "subject": "excess sucrose transported apoplastically from mesophyll to guard cells",
+      "relation": "induces",
+      "object": "stomatal closure",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 2,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "apoplast (mesophyll-to-guard-cell route)",
+        "conditions": "excess photosynthate, afternoon",
+        "timescale": "within-day (afternoon)"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "It attributes the closure to sucrose in the apoplast in the afternoon, not to residual hexose at dawn, so the timing and the chemical species both differ from the hypothesis."
+    },
+    {
+      "claim_ref": "A1-013",
+      "document_id": "090_Is_carbon_not_water_the_resource_that_limits_stomatal_openin",
+      "semantic_unit": "other",
+      "section": "Commentary body: 'Are we asking the right question?'",
+      "char_start": 10853,
+      "char_end": 11059,
+      "verbatim_text": "Furthermore, progressive stomatal opening as NSC stores are\ndepleted by nocturnal growth could help explain nocturnal\nstomatal opening, which is otherwise seemingly maladaptive\n(Resco de Dios et al., 2019).",
+      "text_hash": "sha256:eda37dfdb223a4963e2c795c394401b934c94a50703a33fac58e9b7f68d8c4a7",
+      "claim_statement": "Progressive stomatal opening as nonstructural carbohydrate stores are depleted by nocturnal growth could explain otherwise maladaptive nocturnal stomatal opening.",
+      "claim_type": "speculation",
+      "author_stance": "speculative",
+      "subject": "depletion of nonstructural carbohydrate stores by nocturnal growth",
+      "relation": "progressively permits",
+      "object": "stomatal opening overnight",
+      "direction": "negative",
+      "evidence_layer": "modeling",
+      "hedging_level": 3,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "whole-plant nonstructural carbohydrate store",
+        "conditions": "night, growth ongoing",
+        "timescale": "overnight, hours"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C3",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "This is the closest analogue in my set to the hypothesis' overnight mechanism: if nocturnal growth fails to draw down the carbohydrate pool, the model implies opening is not released; but it is explicitly speculative."
+    },
+    {
+      "claim_ref": "A1-014",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "discussion",
+      "section": "Discussion",
+      "char_start": 54819,
+      "char_end": 55168,
+      "verbatim_text": "Indeed, high sucrose \nconcentrations accumulating around transpiring guard cells have been \nhypothesized to constitute an osmotic feedback mechanism limiting \ntranspirational water loss, for example, under high vapour pressure \ndifference38,39, and we did observe such inhibition by 100 mM sucrose \nor mannitol in gas exchange experiments (Fig. 3f).",
+      "text_hash": "sha256:f9def647df49d316e5aba6d3ed82c3bb1cacae1089a5596af3c116d19ff04918",
+      "claim_statement": "In gas exchange experiments 100 mM sucrose, and equally 100 mM of the metabolically inactive osmoticum mannitol, inhibited stomatal conductance.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "100 mM sucrose or mannitol supplied to a transpiring leaf",
+      "relation": "inhibits",
+      "object": "stomatal conductance",
+      "direction": "negative",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Vicia faba (gas exchange panel Fig. 3f)",
+        "compartment": "apoplast, via petiole feeding; effect reproduced by a non-metabolisable sugar alcohol, so osmotic not metabolic",
+        "conditions": "red light gas exchange",
+        "timescale": "tens of minutes (gas exchange time course)"
+      },
+      "quantitative": {
+        "magnitude_text": "100 mM sucrose or mannitol",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "High-sugar inhibition is reproduced by mannitol, so at this concentration the closure is an osmotic artefact of the treatment rather than hexose signalling."
+    },
+    {
+      "claim_ref": "A1-015",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "discussion",
+      "section": "Discussion",
+      "char_start": 55169,
+      "char_end": 55449,
+      "verbatim_text": "In summary, we posit that at low apoplastic sucrose concentra-\ntions, sucrose enhancement of stomatal opening reduces CO2 limita-\ntion on photosynthesis, while at high apoplastic sugar concentrations, \nindicative of photosynthetic saturation, further stomatal opening is \nopposed.",
+      "text_hash": "sha256:18e1a90f633053716c649534e3174b987a4130eaaf1cb61ad40e6601a1d1d130",
+      "claim_statement": "Low apoplastic sucrose concentrations enhance stomatal opening whereas high apoplastic sugar concentrations oppose further opening, giving a biphasic concentration response.",
+      "claim_type": "theory",
+      "author_stance": "suggested",
+      "subject": "apoplastic sugar concentration",
+      "relation": "biphasically modulates",
+      "object": "stomatal opening",
+      "direction": "nonmonotonic",
+      "evidence_layer": "primary_analysis",
+      "hedging_level": 2,
+      "scope": {
+        "species": "Arabidopsis thaliana and Vicia faba",
+        "compartment": "guard cell apoplast",
+        "conditions": "red light; low vs high apoplastic sugar",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "This is the single best reconciling statement in the corpus: the sign of the sugar effect flips with apoplastic concentration, so both literatures can be right."
+    },
+    {
+      "claim_ref": "A1-016",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "discussion",
+      "section": "IV. Mesophyll-derived glucose and sucrose have distinct functions during stomatal opening at dawn",
+      "char_start": 24263,
+      "char_end": 24433,
+      "verbatim_text": "Interestingly, the same mesophyll-derived sugars have been\ndemonstrated to promote stomatal closure via hexokinase (HXK)-\ndependent sugar signalling (Kelly et al., 2013).",
+      "text_hash": "sha256:c36f1568c40c5b71574b5d8cafd95006909723c8854aaba3f7adad667578f98a",
+      "claim_statement": "The same mesophyll-derived sugars that supply stomatal opening have also been shown to promote stomatal closure through hexokinase-dependent sugar signalling.",
+      "claim_type": "review_synthesis",
+      "author_stance": "asserted",
+      "subject": "mesophyll-derived sugars acting through hexokinase-dependent signalling",
+      "relation": "promote",
+      "object": "stomatal closure",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "mesophyll-derived, sensed via hexokinase in guard cells",
+        "conditions": "not stated in span",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "A review whose entire thesis is that sugars open stomata nevertheless concedes the closure result for the identical sugar pool, so the contradiction is acknowledged inside one source."
+    },
+    {
+      "claim_ref": "A1-017",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "discussion",
+      "section": "IV. Mesophyll-derived glucose and sucrose have distinct functions during stomatal opening at dawn",
+      "char_start": 24460,
+      "char_end": 24594,
+      "verbatim_text": "several studies reported that exogenously applied sugars fail\nto induce stomatal opening (Lee & Bowling, 1992; Medeiros et al.,\n2018).",
+      "text_hash": "sha256:fca4249b58e813677b118acbfe0f7249c815dcfb4b6e7afd49f2a2ce731806f4",
+      "claim_statement": "Several studies reported that exogenously applied sugars fail to induce stomatal opening.",
+      "claim_type": "review_synthesis",
+      "author_stance": "asserted",
+      "subject": "exogenously applied sugars",
+      "relation": "fail to induce",
+      "object": "stomatal opening",
+      "direction": "null",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "not stated in span (cited work in Commelina communis and Arabidopsis/tobacco)",
+        "compartment": "exogenous application, compartment not specified",
+        "conditions": "not stated in span",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "A null for the opening direction weakens the 'sugar opens stomata' literature without itself demonstrating suppression, so it narrows rather than settles the question."
+    },
+    {
+      "claim_ref": "A1-018",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "discussion",
+      "section": "IV. Mesophyll-derived glucose and sucrose have distinct functions during stomatal opening at dawn",
+      "char_start": 25403,
+      "char_end": 25535,
+      "verbatim_text": "Therefore, it\nseems plausible that depending on the concentration of sugars either\nstomatal opening or stomatal closure is promoted.",
+      "text_hash": "sha256:e9672c7ffbf0a522b3a198fdd9c508872189a4f7fdd84b9ff14c60e4dd0138e4",
+      "claim_statement": "Depending on sugar concentration, either stomatal opening or stomatal closure is promoted.",
+      "claim_type": "theory",
+      "author_stance": "speculative",
+      "subject": "sugar concentration",
+      "relation": "determines the sign of the effect on",
+      "object": "stomatal aperture",
+      "direction": "nonmonotonic",
+      "evidence_layer": "review",
+      "hedging_level": 3,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "not stated in span",
+        "conditions": "not stated in span",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "Independent of A1-015, a second review reaches the same concentration-dependent reconciliation, though it is offered only as plausible."
+    },
+    {
+      "claim_ref": "A1-019",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "discussion",
+      "section": "IV. Mesophyll-derived glucose and sucrose have distinct functions during stomatal opening at dawn",
+      "char_start": 25047,
+      "char_end": 25402,
+      "verbatim_text": "Work on Vicia faba led to the formulation of the\ntwo-phase model for guard cell osmoregulation, suggesting that\nsugars and predominantly K+ ions accumulate during the early\nmorning, whereas Suc accumulates during the afternoon to maintain\nstomatal opening up until a certain concentration, after which\nstomatal closure is induced (Talbott & Zeiger, 1996).",
+      "text_hash": "sha256:8db321c0062adbb730f647ce5fc9249d8e624937419b8107ad3b44f254b49747",
+      "claim_statement": "In the two-phase model of guard cell osmoregulation, sugars and K+ accumulate in the early morning while afternoon sucrose maintains opening only up to a threshold concentration beyond which closure is induced.",
+      "claim_type": "model",
+      "author_stance": "suggested",
+      "subject": "diel sugar accumulation in guard cells",
+      "relation": "maintains opening up to a threshold, then induces",
+      "object": "stomatal closure",
+      "direction": "nonmonotonic",
+      "evidence_layer": "review",
+      "hedging_level": 2,
+      "scope": {
+        "species": "Vicia faba",
+        "compartment": "guard cell osmoregulation",
+        "conditions": "diel cycle, early morning vs afternoon",
+        "timescale": "within-day, phase-separated (early morning vs afternoon)"
+      },
+      "quantitative": {
+        "magnitude_text": "threshold concentration not numerically specified in span",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "It places sugar-driven closure in the afternoon phase and sugar accumulation with opening in the early morning, which is the opposite phasing to the hypothesis' dawn suppression."
+    },
+    {
+      "claim_ref": "A1-020",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "results",
+      "section": "Sugars and maleic acid enhance red-light-induced stomatal opening",
+      "char_start": 7648,
+      "char_end": 7779,
+      "verbatim_text": "Most significantly, low mM concentrations of sucrose, fructose, \nglucose and sorbose consistently promoted stomatal opening in both",
+      "text_hash": "sha256:ce2a237e8c9aa0e93a8875c2285abb84d9a6076dfea8c84de31a7c656df5c100",
+      "claim_statement": "Low millimolar concentrations of sucrose, fructose, glucose and sorbose consistently promoted stomatal opening in both tested species.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "low millimolar sucrose, fructose, glucose and sorbose",
+      "relation": "promote",
+      "object": "stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana and Vicia faba (the span's 'both' refers to the two study species; the sentence is truncated by a column break in the extracted text)",
+        "compartment": "applied to epidermal peels, i.e. the guard cell apoplast",
+        "conditions": "red light",
+        "timescale": "epidermal peel bioassay, minutes to hours"
+      },
+      "quantitative": {
+        "magnitude_text": "low mM concentrations (0.4 mM and 1 mM tested)",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "The named hexoses glucose and fructose at physiological low-mM concentrations OPEN stomata, which is the direct opposite of the suppression the hypothesis requires."
+    },
+    {
+      "claim_ref": "A1-021",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "figure_caption",
+      "section": "Fig. 3 legend",
+      "char_start": 36128,
+      "char_end": 36362,
+      "verbatim_text": "Sugar-induced enhancement of stomatal opening under red light \noccurs at low sugar concentrations. a–d, Low concentrations of fructose \n(a,b) or sucrose (c,d) enhance RL-induced stomatal opening, whereas higher \nconcentrations do not.",
+      "text_hash": "sha256:30e0f1d50c2f37a7d7715f521756d23ba4206210e6652ec3078d06040a1517fa",
+      "claim_statement": "Low concentrations of fructose or sucrose enhance red-light-induced stomatal opening whereas higher concentrations do not.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "fructose or sucrose concentration",
+      "relation": "enhances opening at low levels but not at high levels",
+      "object": "red-light-induced stomatal opening",
+      "direction": "nonmonotonic",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana and Vicia faba",
+        "compartment": "epidermal peel bathing medium (guard cell apoplast)",
+        "conditions": "red light, 125 µmol m-2 s-1 per the same legend",
+        "timescale": "epidermal peel aperture bioassay"
+      },
+      "quantitative": {
+        "magnitude_text": "doses tested spanned 0.4, 1, 30, 50 and 100 mM; enhancement at 0.4-1 mM, absent at 30-100 mM",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "The measured dose-response is enhancement then loss of enhancement, i.e. high sugar is inert here rather than suppressive, so it does not deliver the suppression the hypothesis needs."
+    },
+    {
+      "claim_ref": "A1-022",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "abstract",
+      "section": "Abstract",
+      "char_start": 812,
+      "char_end": 951,
+      "verbatim_text": "We discovered that extracellular (apoplastic) \nfluid from Arabidopsis thaliana and Vicia faba enhances red-light-induced \nstomatal opening.",
+      "text_hash": "sha256:4e8374605de0e45f11e1aadfacbf7dfb18dba2d644f9824c9129e54b2304df7c",
+      "claim_statement": "Apoplastic fluid from Arabidopsis thaliana and Vicia faba enhances red-light-induced stomatal opening.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "native apoplastic fluid",
+      "relation": "enhances",
+      "object": "red-light-induced stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana; Vicia faba",
+        "compartment": "apoplast (extracted apoplastic fluid applied to epidermal peels)",
+        "conditions": "red light",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Native apoplastic fluid, i.e. the endogenous mixture at endogenous concentrations, is a net opener under red light, not a suppressor."
+    },
+    {
+      "claim_ref": "A1-023",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "discussion",
+      "section": "Discussion",
+      "char_start": 52369,
+      "char_end": 52533,
+      "verbatim_text": "Reported apoplastic sucrose concen-\ntrations are 0.4–5.5 mM (refs. 28,38,39), matching the range at which \nwe detected enhancement of stomatal opening (Figs. 3–5a).",
+      "text_hash": "sha256:7f88631614d61293000fc2f7afb532f5c6d03532c76125bc9b84121ebefa7dfc",
+      "claim_statement": "Reported apoplastic sucrose concentrations of 0.4-5.5 mM fall in the same range at which enhancement of stomatal opening was detected.",
+      "claim_type": "association",
+      "author_stance": "asserted",
+      "subject": "physiological apoplastic sucrose concentration (0.4-5.5 mM)",
+      "relation": "coincides with the effective range for",
+      "object": "enhancement of stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "primary_analysis",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana; Vicia faba (plus literature values)",
+        "compartment": "guard cell apoplast",
+        "conditions": "red light",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": "0.4-5.5 mM apoplastic sucrose",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "It anchors the OPENING effect, not the closing effect, to the physiologically realised apoplastic concentration range, weakening the claim that in-vivo sugar levels suppress aperture."
+    },
+    {
+      "claim_ref": "A1-024",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "results",
+      "section": "Results, sucrose in intact leaves",
+      "char_start": 27270,
+      "char_end": 27538,
+      "verbatim_text": "Sucrose also \nenhanced red-light-induced stomatal opening in intact V. faba leaves. \nA 1 mM concentration of sucrose fed through the petiole increased \nstomatal conductance in gas exchange experiments under red light \n(Fig. 3f) but not darkness (Extended Data Fig. 3d)",
+      "text_hash": "sha256:fc12efedcc22204a8c61b7744becefef8987085576885adcb9488ece8a469c82",
+      "claim_statement": "1 mM sucrose fed through the petiole increased stomatal conductance of intact Vicia faba leaves under red light but not in darkness.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "1 mM sucrose fed through the petiole",
+      "relation": "increases",
+      "object": "stomatal conductance under red light (no effect in darkness)",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Vicia faba",
+        "compartment": "apoplast, delivered via the transpiration stream in an intact leaf",
+        "conditions": "red light versus darkness; effect is light-conditional",
+        "timescale": "gas exchange time course, tens of minutes"
+      },
+      "quantitative": {
+        "magnitude_text": "1 mM sucrose",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "This is an intact-leaf gas exchange result, the same measurement class as the hypothesis, and the sign is positive; the light-dependence also shows the effect is gated by illumination."
+    },
+    {
+      "claim_ref": "A1-025",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "results",
+      "section": "Results, tests of the hexokinase hypothesis",
+      "char_start": 29064,
+      "char_end": 29433,
+      "verbatim_text": "Previous reports in the literature42 have suggested a role for \nhexokinase as a guard-cell sugar sensor. However, neither treatment \nwith N-acetyl-glucosamine (NAG), a pharmacological inhibitor of \nhexokinase43, nor genetic overexpression of hexokinase42 impacted \nsucrose enhancement of the guard-cell red-light response (Fig. 4e,f), \nruling out a role for hexokinase.",
+      "text_hash": "sha256:965249d8ab693073bb77fed8a86b34fe98009a7cf206319123077a32ffa35121",
+      "claim_statement": "Neither pharmacological inhibition of hexokinase nor hexokinase overexpression affected sucrose enhancement of the guard-cell red-light response, ruling out hexokinase in that effect.",
+      "claim_type": "causal",
+      "author_stance": "negated",
+      "subject": "hexokinase",
+      "relation": "is not required for",
+      "object": "sucrose enhancement of the guard-cell red-light response",
+      "direction": "null",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana (NAG treatment and 35S::HXK1)",
+        "compartment": "guard cell",
+        "conditions": "red light; sucrose applied at 1 and 100 mM per the same figure",
+        "timescale": "aperture bioassay"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "It dissociates the sugar-opening pathway from hexokinase, so the opening and closing literatures can coexist through different sensors rather than being a direct contradiction."
+    },
+    {
+      "claim_ref": "A1-026",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "abstract",
+      "section": "Abstract",
+      "char_start": 1161,
+      "char_end": 1391,
+      "verbatim_text": "Immunohistochemical assays demonstrated sucrose \nupregulation of H+-ATPase phosphorylation, indicating increased ATPase \nactivity. Patch clamp assays revealed that sucrose inhibits slow anion \ncurrents, thus opposing anion efflux.",
+      "text_hash": "sha256:05e7e3f5883686a8a1a3db6331ef645aa05fe3df7049baa61e86ee4a4a40c74f",
+      "claim_statement": "Sucrose upregulates guard-cell H+-ATPase phosphorylation and inhibits slow anion currents, two ion-transport changes that both favour opening.",
+      "claim_type": "mechanism",
+      "author_stance": "asserted",
+      "subject": "sucrose",
+      "relation": "activates H+-ATPase and inhibits slow anion currents in",
+      "object": "guard cells",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana and Vicia faba",
+        "compartment": "guard cell plasma membrane",
+        "conditions": "red light; endogenous sucrose concentrations",
+        "timescale": "seconds to minutes (patch clamp)"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "It supplies a positive-direction molecular mechanism at the same membrane targets that closure signalling would have to act on, making the opening effect mechanistically concrete."
+    },
+    {
+      "claim_ref": "A1-027",
+      "document_id": "438_Guard_Cell_Starch_Degradation_Yields_Glucose_for_Rapid_Stoma",
+      "semantic_unit": "abstract",
+      "section": "Abstract",
+      "char_start": 1815,
+      "char_end": 2139,
+      "verbatim_text": "Enzymatic quantiﬁcation\nrevealed that after 30 min of blue light illumination, amy3 bam1 guard cells had similar malate levels as the wild type, but had\ndramatically altered sugar homeostasis, with almost undetectable amounts of Glc. Thus, Glc, not malate, is the major starch-\nderived metabolite in Arabidopsis guard cells.",
+      "text_hash": "sha256:44cf93927ec1d7fb0be7dcf30888704acd7438466dd415274a76f394ada144ba",
+      "claim_statement": "After 30 min of blue light, starch-degradation-deficient amy3 bam1 guard cells had wild-type malate but almost undetectable glucose, identifying glucose as the major starch-derived guard cell metabolite.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "guard cell starch degradation",
+      "relation": "yields",
+      "object": "glucose (not malate) in guard cells",
+      "direction": "not_applicable",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard cell (isolated guard-cell-enriched epidermal peels)",
+        "conditions": "blue light at dawn, 30 min illumination",
+        "timescale": "30 minutes"
+      },
+      "quantitative": {
+        "magnitude_text": "almost undetectable Glc in amy3 bam1 after 30 min blue light",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C3"
+      ],
+      "bearing_on_hypothesis": "neutral",
+      "why": "It establishes that the guard cell hexose pool at dawn is real and starch-derived, which the hypothesis needs, but it does not itself assign a direction to aperture."
+    },
+    {
+      "claim_ref": "A1-028",
+      "document_id": "438_Guard_Cell_Starch_Degradation_Yields_Glucose_for_Rapid_Stoma",
+      "semantic_unit": "abstract",
+      "section": "Abstract",
+      "char_start": 2140,
+      "char_end": 2424,
+      "verbatim_text": "We further show that impaired starch degradation in the amy3 bam1 mutant\nresulted in an increase in the time constant for opening of 40 min. We conclude that rapid starch degradation at dawn is\nrequired to maintain the cytoplasmic sugar pool, clearly needed for fast stomatal opening.",
+      "text_hash": "sha256:d34e250e4bcb3b78203658e3d1b742c8d8682f9762021a05e5934369eee7dd46",
+      "claim_statement": "Impaired guard cell starch degradation increased the time constant for stomatal opening by 40 min, so the cytoplasmic sugar pool maintained by dawn starch degradation is required for fast opening.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "loss of the guard cell cytoplasmic sugar (glucose) pool at dawn",
+      "relation": "slows",
+      "object": "stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard cell cytosol (cytoplasmic sugar pool)",
+        "conditions": "dawn, blue light-induced opening",
+        "timescale": "opening kinetics; +40 min in the opening time constant"
+      },
+      "quantitative": {
+        "magnitude_text": "increase in the time constant for opening of 40 min",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "It is the most direct dawn-timed, guard-cell-cytosolic test in the corpus and the sign is opposite to the hypothesis: less hexose at dawn gives slower morning opening, not faster."
+    },
+    {
+      "claim_ref": "A1-029",
+      "document_id": "263_Blue_Light_Induces_a_Distinct_Starch_Degradation_Pathway_in",
+      "semantic_unit": "results",
+      "section": "Results, stomatal and growth phenotypes of starch degradation mutants",
+      "char_start": 14120,
+      "char_end": 14435,
+      "verbatim_text": "First, amy3bam1 plants failed to\nopen stomata efﬁciently in response to light (Figure 3A). Conse-\nquently, amy3bam1 had lower gs (Figure 3B), decreased leaf\nintercellular CO2 concentration (Ci; Figure 3C), and slightly lower\nCO2 assimilation rates (Figure S2G) immediately after illumina-\ntion compared with the WT.",
+      "text_hash": "sha256:a410731a080646f038770263c3e38cf651259c629291e87c376e49aab3b0f7b4",
+      "claim_statement": "amy3bam1 plants, which cannot degrade guard cell starch to glucose, failed to open stomata efficiently in response to light and had lower stomatal conductance immediately after illumination.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "loss of guard cell starch degradation (and hence of starch-derived glucose)",
+      "relation": "reduces",
+      "object": "light-induced stomatal opening and stomatal conductance",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard cell chloroplast/cytosol",
+        "conditions": "immediately after illumination (start of day)",
+        "timescale": "minutes after light onset"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Reduced guard-cell sugar availability at light onset lowers morning gs, the opposite of the hypothesis' prediction that residual hexose lowers morning gs."
+    },
+    {
+      "claim_ref": "A1-030",
+      "document_id": "806_TOR_promotes_guard_cell_starch_degradation_by_regulating_the",
+      "semantic_unit": "discussion",
+      "section": "Discussion",
+      "char_start": 43061,
+      "char_end": 43488,
+      "verbatim_text": "In this study,\nwe found that sugar supply significantly promoted the\nstomatal opening under certain carbon starvation condi-\ntions, such as low light quantity or very short photoperiod.\nUnder normal light conditions or photoperiods with 412-h\nlight, exogenous sugar supplementation did not affect sto-\nmatal opening, suggesting that the sugar produced by pho-\ntosynthesis of plants is sufficient for promoting stomatal\nopening.",
+      "text_hash": "sha256:e0f2c015eec0c1308c373b5eb42bb06864aa0b910aa9daae7ba5444c5b9d981d",
+      "claim_statement": "Exogenous sugar significantly promoted stomatal opening under carbon starvation (low light or very short photoperiod) but had no effect under normal light conditions or longer photoperiods.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "exogenous sugar supply",
+      "relation": "promotes opening only when carbon is limiting; otherwise no effect on",
+      "object": "stomatal opening",
+      "direction": "mixed",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 1,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "whole seedling, sugar supplied in the growth medium",
+        "conditions": "carbon starvation (low light photon irradiance or very short photoperiod) versus normal light/photoperiod. NOTE: the extracted text renders the threshold as '412-h light'; this is almost certainly a mis-extraction of a greater-than-or-equal sign before '12-h', and I did not verify the original symbol",
+        "timescale": "growth-condition timescale (days), assayed as opening upon light exposure"
+      },
+      "quantitative": {
+        "magnitude_text": "no effect under photoperiods with (>=)12-h light; promotion under low light or very short photoperiod",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C2"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Adding sugar never suppressed opening; it either helped or did nothing, so raising leaf sugar is not by itself sufficient to reduce morning aperture in this system."
+    },
+    {
+      "claim_ref": "A1-031",
+      "document_id": "806_TOR_promotes_guard_cell_starch_degradation_by_regulating_the",
+      "semantic_unit": "abstract",
+      "section": "Abstract",
+      "char_start": 2332,
+      "char_end": 2516,
+      "verbatim_text": "Starvation caused by plants growing under short photoperiod or low light photon irradiance, as well\nas inactivation of TOR, impaired guard cell starch degradation and stomatal opening.",
+      "text_hash": "sha256:7a8e42d2be2529a44ce41e437cfcfbce3256f953117dc4968841beb29fcfc411",
+      "claim_statement": "Carbon starvation from short photoperiod or low light, and TOR inactivation, impaired guard cell starch degradation and stomatal opening.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "carbon starvation (short photoperiod or low light) and TOR inactivation",
+      "relation": "impairs",
+      "object": "guard cell starch degradation and stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard cell",
+        "conditions": "short photoperiod or low light photon irradiance; pharmacological/genetic TOR inactivation",
+        "timescale": "growth conditions over days; opening assayed on light exposure"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C2"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Low carbon status reduces morning opening via a sugar-TOR-BAM1 route, so a plant carrying MORE residual sugar would, on this mechanism, open more rather than less."
+    },
+    {
+      "claim_ref": "A1-032",
+      "document_id": "806_TOR_promotes_guard_cell_starch_degradation_by_regulating_the",
+      "semantic_unit": "results",
+      "section": "Sugar promotes guard cell starch metabolism under certain carbon starvation conditions",
+      "char_start": 15742,
+      "char_end": 16034,
+      "verbatim_text": "When plants were grown under\nlow light photon irradiance without sucrose, the starch con-\ntent in guard cells was low and did not decrease after light\nexposure. However, guard cell starch level and degradation\nupon light exposure were partially recovered when exoge-\nnous sucrose was supplied",
+      "text_hash": "sha256:206678986eb23972a3ca8f67c6e39f7d3f026a543c7ec79f6e5d7eede9b4cdbf",
+      "claim_statement": "Under low light, guard cell starch was low and did not degrade after light exposure, but both starch level and its light-triggered degradation were partially recovered by exogenous sucrose.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "exogenous sucrose under low light",
+      "relation": "partially restores",
+      "object": "guard cell starch accumulation and its light-triggered degradation",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard cell chloroplast (starch)",
+        "conditions": "low light photon irradiance growth, plus or minus sucrose in the medium",
+        "timescale": "growth over days; degradation assayed upon light exposure"
+      },
+      "quantitative": {
+        "magnitude_text": "partially recovered",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C3"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Supplying sugar rescues rather than blocks the dawn starch-to-glucose step that drives opening, so elevated sugar is enabling, not inhibitory, in this assay."
+    },
+    {
+      "claim_ref": "A1-033",
+      "document_id": "437_Guard_cell_starch_and_malate_metabolism_facilitate_stomatal",
+      "semantic_unit": "abstract",
+      "section": "Summary",
+      "char_start": 1164,
+      "char_end": 1364,
+      "verbatim_text": "Low CO2 triggered rapid starch degradation and increased Mal levels in guard cells, acceler-\nating stomatal opening. Mutants defective in starch degradation or hexose uptake showed\nimpaired responses.",
+      "text_hash": "sha256:bd6873515aec844dd8581ca8508bf5f9c3e106ef7c6fa4ac1ad05739e907516c",
+      "claim_statement": "Low CO2 before light onset triggered rapid guard cell starch degradation and malate accumulation and accelerated stomatal opening, and mutants defective in starch degradation or hexose uptake had impaired responses.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "guard cell starch degradation and hexose uptake",
+      "relation": "are required for accelerated",
+      "object": "stomatal opening under low CO2",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard cell; hexose uptake across the guard cell plasma membrane via STP1/STP4",
+        "conditions": "low CO2 applied before light onset, short-day 9:15 growth regime",
+        "timescale": "1-2 h after light onset"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Hexose uptake into guard cells at the start of the day is required for FASTER morning opening, so blocking hexose supply slows opening rather than releasing it."
+    },
+    {
+      "claim_ref": "A1-034",
+      "document_id": "437_Guard_cell_starch_and_malate_metabolism_facilitate_stomatal",
+      "semantic_unit": "introduction",
+      "section": "Introduction",
+      "char_start": 3842,
+      "char_end": 4079,
+      "verbatim_text": "In the stp1stp4 double mutant, guard cells are\ndevoid of starch, and light-induced stomatal opening is severely\ncompromised, underscoring the importance of mesophyll-\nderived carbohydrates in supporting guard cell metabolism and\nfunction",
+      "text_hash": "sha256:4881cd9537bea4b3717730f1a507d553beacb1a32e8d0659406bd884f6abe992",
+      "claim_statement": "In the stp1stp4 hexose-transporter double mutant guard cells lack starch and light-induced stomatal opening is severely compromised.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "loss of guard cell hexose import via STP1 and STP4",
+      "relation": "severely compromises",
+      "object": "light-induced stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard cell plasma membrane hexose import (apoplast to symplast)",
+        "conditions": "light-induced opening",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Removing the hexose import route into guard cells cripples opening, which is hard to reconcile with hexose being the agent that suppresses opening."
+    },
+    {
+      "claim_ref": "A1-035",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "discussion",
+      "section": "IV. Mesophyll-derived glucose and sucrose have distinct functions during stomatal opening at dawn",
+      "char_start": 23100,
+      "char_end": 23335,
+      "verbatim_text": "demonstrated that Glc import to guard cells at dawn via the\ncoordinated action of the monosaccharide-H+ symporters Sugar\nTransport Protein 1 and 4 (STP1 and STP4) is essential for (white)\nlight-induced stomatal opening and plant growth",
+      "text_hash": "sha256:17df9b60cf717c69c753c8471f99a970848e54adcf732cba7f6a97edb946c430",
+      "claim_statement": "Glucose import into guard cells at dawn via the STP1 and STP4 monosaccharide-H+ symporters is essential for light-induced stomatal opening and plant growth.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "glucose import into guard cells at dawn via STP1/STP4",
+      "relation": "is essential for",
+      "object": "light-induced stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "apoplast-to-guard-cell-symplast hexose transport",
+        "conditions": "dawn, white light",
+        "timescale": "dawn / start of day"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "It is glucose specifically, at dawn specifically, and it is required FOR opening, which directly opposes the hypothesised sign at exactly the time of day in question."
+    },
+    {
+      "claim_ref": "A1-036",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "conclusion",
+      "section": "V. Conclusions and outlook",
+      "char_start": 25975,
+      "char_end": 26160,
+      "verbatim_text": "At dawn, rapid degradation of\nstarch releases Glc which promotes efﬁcient and fast stomatal\nopening to increase the carbon gain when photosynthesis-derived\nsugars are not yet available.",
+      "text_hash": "sha256:0cfbf1e7ab617e0b11b8ef2038cfe68094f137c96acbe9ce99a41a3c1023499e",
+      "claim_statement": "At dawn, rapid starch degradation releases glucose which promotes efficient and fast stomatal opening before photosynthesis-derived sugars are available.",
+      "claim_type": "review_synthesis",
+      "author_stance": "asserted",
+      "subject": "glucose released by dawn starch degradation",
+      "relation": "promotes",
+      "object": "fast stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana (basis of the cited work)",
+        "compartment": "guard cell cytosol",
+        "conditions": "dawn, before photosynthate is available",
+        "timescale": "dawn, minutes to tens of minutes"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "The review's summary position is that dawn guard cell glucose is the fuel for morning opening, which is the direct antithesis of dawn hexose suppressing opening."
+    },
+    {
+      "claim_ref": "A1-037",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "discussion",
+      "section": "IV. Mesophyll-derived glucose and sucrose have distinct functions during stomatal opening at dawn",
+      "char_start": 23996,
+      "char_end": 24262,
+      "verbatim_text": "A member of the SWEET\ngene family, Closed Stomata 1 (CST1), was identiﬁed in a forward\ngenetic screen in maize (Zea mays) as a subsidiary cell membrane-\nlocalized glucose transporter which positively regulates stomatal\nopening and photosynthesis (Wang et al., 2019).",
+      "text_hash": "sha256:92a52a754bbc6463a32c45bb47befc968f3c34c324a20c44b0584caba6ad5d03",
+      "claim_statement": "In maize, the subsidiary-cell glucose transporter CST1 positively regulates stomatal opening and photosynthesis.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "subsidiary-cell glucose transport (CST1) in maize",
+      "relation": "positively regulates",
+      "object": "stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Zea mays (grass-type stomata with subsidiary cells)",
+        "compartment": "subsidiary cell plasma membrane",
+        "conditions": "not stated in span",
+        "timescale": "not stated in span"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "It extends the positive glucose-to-opening direction beyond dicot kidney-shaped stomata to a grass with a different stomatal architecture, broadening the scope of the contradicting evidence."
+    },
+    {
+      "claim_ref": "A1-038",
+      "document_id": "270_Calvin_cycle_and_guard_cell_metabolism_impact_stomatal_funct",
+      "semantic_unit": "introduction",
+      "section": "Introduction",
+      "char_start": 5368,
+      "char_end": 5554,
+      "verbatim_text": "recently, Flütsch et al. [11] have suggested that glucose rather than \nmalate is the main result of starch breakdown and is required for rapid \nstomatal opening in blue light (Fig. 1.6).",
+      "text_hash": "sha256:ac5801c3ba55ee64a0d5696da30c2d889469046275f98ec0e98cd928e39a6e12",
+      "claim_statement": "Glucose rather than malate is the main product of guard cell starch breakdown and is required for rapid stomatal opening under blue light.",
+      "claim_type": "review_synthesis",
+      "author_stance": "suggested",
+      "subject": "glucose from guard cell starch breakdown",
+      "relation": "is required for",
+      "object": "rapid stomatal opening under blue light",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 1,
+      "scope": {
+        "species": "not stated in span (cited work in Arabidopsis thaliana)",
+        "compartment": "guard cell",
+        "conditions": "blue light",
+        "timescale": "rapid opening"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "An independent review team restates the positive glucose-to-opening link, showing it is not confined to the Santelia group's own reviews."
+    },
+    {
+      "claim_ref": "A1-039",
+      "document_id": "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+      "semantic_unit": "other",
+      "section": "review body: guard cell sugar transporters",
+      "char_start": 48101,
+      "char_end": 48269,
+      "verbatim_text": "It has been suggested that these cotransporters exhibit high\nlevels of expression at times when guard cells accumulate high amounts of sugars, such as midday\n(182, 187)",
+      "text_hash": "sha256:294f3249af361b69fab3a969d1a4e87282c7bdf473d7a2e3444d4d0a85c0e500",
+      "claim_statement": "Guard cell sucrose and monosaccharide cotransporters are suggested to be most highly expressed at times of high guard cell sugar accumulation such as midday.",
+      "claim_type": "background_assertion",
+      "author_stance": "suggested",
+      "subject": "guard cell sugar cotransporter expression",
+      "relation": "peaks at times of",
+      "object": "high guard cell sugar accumulation (midday)",
+      "direction": "not_applicable",
+      "evidence_layer": "review",
+      "hedging_level": 2,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "guard cell plasma membrane transporters",
+        "conditions": "diel, midday",
+        "timescale": "within-day"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "It places the peak of guard cell sugar accumulation at midday rather than dawn, so the machinery the closure hypothesis relies on may not be maximally active at the time the hypothesis specifies."
+    },
+    {
+      "claim_ref": "A1-040",
+      "document_id": "806_TOR_promotes_guard_cell_starch_degradation_by_regulating_the",
+      "semantic_unit": "introduction",
+      "section": "Introduction",
+      "char_start": 4465,
+      "char_end": 4641,
+      "verbatim_text": "This transitory\nstarch breakdown in guard cells produces glucose, but not\nmalate, maintaining the cytoplasmic sugar pool and induc-\ning stomatal opening (Flutsch et al., 2020).",
+      "text_hash": "sha256:4b74e5c05091966866790ad746bea97fbf1c58221f6b3574cecfc4c0bbc87183",
+      "claim_statement": "Transitory guard cell starch breakdown produces glucose, maintaining the cytoplasmic sugar pool and inducing stomatal opening.",
+      "claim_type": "background_assertion",
+      "author_stance": "asserted",
+      "subject": "glucose from transitory guard cell starch breakdown",
+      "relation": "maintains the cytoplasmic sugar pool and induces",
+      "object": "stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana (cited work)",
+        "compartment": "guard cell cytosol",
+        "conditions": "within 1 h of light exposure per the preceding sentence in the source",
+        "timescale": "within 1 hour of light onset"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "A third independent group states, as settled background, that cytosolic guard cell glucose induces opening."
+    }
+  ],
+  "notes": "SCOPE OF THIS FILE. Only link C1 was extracted, from the 14 assigned papers. All 40 spans were located with the run's quote_locator.py offset semantics and every span was re-read from disk and byte-compared before writing; no span is hand-counted and no quote is paraphrased inside verbatim_text.\n\nTHE CORPUS CONTAINS BOTH DIRECTIONS AND THEY ARE NOT THE SAME EXPERIMENT. The two literatures differ systematically along four axes, and those differences are the reconciliation:\n(1) COMPARTMENT. Closure evidence is either apoplastic-osmotic (sucrose accumulating in the guard cell wall of a transpiring leaf: A1-009, A1-012, A1-014) or symplastic-signalling (hexose phosphorylated by hexokinase inside the guard cell, triggering ABA: A1-002, A1-005, A1-008). 538 (A1-007) states these as two explicitly separate mechanisms. Opening evidence is about the guard cell CYTOSOLIC pool sourced from starch (A1-027, A1-028, A1-036) or imported through STP1/STP4 (A1-033, A1-034, A1-035).\n(2) CONCENTRATION. This is the strongest single reconciler. 432 (A1-001) reports that hexoses and sucrose have little or no effect at low concentrations and close stomata at higher ones; 236 (A1-015, A1-021) reports the mirror image from the other side, enhancement at 0.4-1 mM and loss of enhancement at 30-100 mM. Two reviews independently converge on concentration-dependent sign flip (A1-018, A1-019). Caution: in 236 the 100 mM inhibition is reproduced by mannitol (A1-014), so the high-concentration arm is at least partly an osmotic artefact of the treatment, not sugar signalling.\n(3) TIMESCALE / TIME OF DAY. Opening evidence is concentrated at dawn and in the first 30-60 min of light (A1-027, A1-028, A1-029, A1-033, A1-035, A1-036). Closure evidence is concentrated at midday and afternoon under carbon saturation (A1-006, A1-011, A1-012, A1-019, A1-039). 665 (A1-006) explicitly states the sucrose-hexokinase route can only provide LONG-term coordination and cannot account for short-term coordination. This is directly load-bearing: the hypothesis asserts a next-morning effect from one cold night, which sits in the short-term window that 665 says this mechanism does not cover.\n(4) SENSOR PATHWAY. 236 (A1-025) actively rules hexokinase out of the sugar-enhancement-of-opening effect using both a pharmacological inhibitor and overexpression. So the opening route and the hexokinase closing route are dissociable, and the two literatures need not be in direct conflict.\n\nWHAT THE ASSIGNED PAPERS DO NOT SHOW. I found no span in these 14 papers that measures dawn or early-morning leaf hexose against same-morning stomatal conductance, which is the specific test C4 requires. I also found no span linking night temperature to guard cell sugar status. Absence here is absence in my assigned set only, not evidence of absence in the 1,281-paper corpus.\n\nPAPERS THAT YIELDED NOTHING FOR C1. 034_CO2_responsiveness_of_plants_a_possible_link_to_phloem_loadi contains no occurrence of 'stomat' or 'conductance' anywhere in its text; it is about leaf TNC and phloem-loading type under elevated CO2 and carries zero C1 evidence (it may serve C2/C3). 663_Resolving_the_central_metabolism_of_Arabidopsis_guard_cells is a flux-balance/13C study of guard cell central metabolism (it predicts a sucrose futile cycle and PEPc-derived malate) but makes no directional claim about sugar and aperture, so I extracted no claim from it rather than manufacturing one.\n\nCLAIMS I DROPPED FOR LACK OF VERIFIABILITY. None were dropped for failed span verification; every candidate I kept re-extracted byte-identically. Four candidate quotes were rejected earlier in drafting because the extracted PDF text broke them across a column or box boundary so that a contiguous span would have spliced unrelated sentences (notably the 1106 sentence ending 'whereas the same sugars initiate stomatal closure later', which is separated from its continuation 'during the day when plants are carbon-saturated' by the whole of Box 2 in the extracted text). I did not quote across those breaks.\n\nONE TRANSCRIPTION CAVEAT, FLAGGED NOT HIDDEN. In A1-030 the extracted text of 806 reads 'photoperiods with 412-h light'. The verbatim_text and hash reproduce the file exactly, including '412-h'. I believe this is a mis-extraction of a greater-than-or-equal glyph before '12-h', but I could not verify the original symbol from the text file alone, so I recorded the uncertainty in scope.conditions rather than silently correcting the quote.\n\nDIRECTION AND BEARING TALLIES ARE COMPUTED FROM THE CLAIM OBJECTS BELOW AND ARE REPORTED IN THE ROLE'S RETURN MESSAGE."
+}

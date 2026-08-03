@@ -1,0 +1,30 @@
+{
+  "affected_artifact_ids": [
+    "web/src/generated/contract-manifest.json",
+    "web/src/generated/contracts.ts",
+    "packages/contracts/src/generated/contract-manifest.json",
+    "packages/contracts/src/generated/models.d.ts",
+    "packages/contracts/src/generated/registry.mjs",
+    "python/epistemic_foundry/contracts/contract-manifest.json",
+    "python/epistemic_foundry/contracts/models.py",
+    "U01-0001"
+  ],
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "created_at": "2026-08-03T00:30:00Z",
+  "decision": "Authorize regenerating the cross-language contract projections with their own generator packages/contracts/codegen/generate.py --write, and supersede the two U01-0001 product pins this necessarily moves: web/src/generated/contract-manifest.json and web/src/generated/contracts.ts. U01-0001 remains sealed and unmodified. This authorization covers only the seven files the generator owns; it does not authorize deleting web/src/generated/ui-client/index.d.ts, index.mjs or route-manifest.json, which the generator removed as unrecognized and which were restored byte-identically from their git blobs.",
+  "decision_hash": "sha256:ec7a964a31e058a41e987a6d1d4c20a1ca493079d67b0c0e630e4a7041533f5f",
+  "decision_id": "HD-EF4-CODEGEN-REPROJECTION-20260803-001",
+  "decision_type": "correct",
+  "evidence_artifact_ids": [
+    "packages/contracts/codegen/generate.py",
+    "artifacts/work_packages/U01/attempts/0001/report.json",
+    "artifacts/work_packages/receipt-invalidations.json",
+    "artifacts/integrity-hardening-20260802/verification-receipt.json"
+  ],
+  "non_mutation_acknowledgement": true,
+  "rationale": "An independent review found that the schema amendments made under HD-EF4-INTEGRITY-SCOPE-20260802-001 left five shipped cross-language artifacts embedding the pre-amendment source digest sha256:19e12fe0affb, and that two of them were sealed-pinned and therefore passed the byte-comparison gate while asserting a projection of a tree that no longer exists. The repository's own generator confirmed the staleness independently: --check reported seven stale generated files before the regeneration and zero after. Leaving them stale would reproduce, one layer out, exactly the dependent-projection failure the invalidation registry was built to close. The generator is the declared authority for these files, so regenerating is preferred over hand-editing or over widening a waiver to cover stale output.",
+  "run_id": null,
+  "subject_id": "U01-0001",
+  "supersedes_decision_id": null
+}

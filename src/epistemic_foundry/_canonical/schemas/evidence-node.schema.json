@@ -26,8 +26,12 @@
           "minLength": 1
         },
         "page": {
-          "type": "integer",
-          "minimum": 1
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "description": "Page number in the source document, or null when the extraction carries no page geometry. A null page requires coordinate_system 'not_available' and a null bbox; it is never a substitute for an unextracted page."
         },
         "section": {
           "type": [
@@ -45,6 +49,15 @@
           },
           "minItems": 4,
           "maxItems": 4
+        },
+        "coordinate_system": {
+          "enum": [
+            "pdf_points_bottom_left",
+            "pdf_points_top_left",
+            "normalized_top_left",
+            "not_available"
+          ],
+          "description": "Coordinate frame for bbox. 'not_available' declares an extraction with no page geometry and is mandatory when page is null."
         },
         "char_start": {
           "type": "integer",
@@ -64,6 +77,33 @@
         "char_start",
         "char_end",
         "passage_hash"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "page": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "page"
+            ]
+          },
+          "then": {
+            "properties": {
+              "coordinate_system": {
+                "const": "not_available"
+              },
+              "bbox": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "coordinate_system"
+            ]
+          }
+        }
       ]
     },
     "quality_vector": {

@@ -1,0 +1,127 @@
+{
+  "receipt_id": "IH-20260803-004",
+  "recorded_at": "2026-08-03T02:00:00.000Z",
+  "wave": "integrity-hardening",
+  "python_suite": {
+    "tests": 1477,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "ruff_authored_files_exit": 0,
+  "git_diff_check_exit": 0,
+  "canonical_materialize": {
+    "atomic_replacement": "NOT_REQUIRED_ALREADY_CURRENT",
+    "changed_file_count": 0,
+    "destination": "C:\\dev\\insight\\Epistemic-Foundry\\src\\epistemic_foundry\\_canonical",
+    "expected_file_count": 129,
+    "extra": [],
+    "mismatches": [],
+    "missing": [],
+    "projected_snapshot_bundle_hash": "sha256:2e5b0ff2081eba59b3a7b9dd655ca491c1f3660817ccb62079cf93bac46eed57",
+    "source_bundle_hash": "sha256:296b248948480b1ff248243cd4265b40b98a12968770a2903c43649f6b3dbe20",
+    "source_resource_count": 128,
+    "status": "PASS"
+  },
+  "declared_registry": {
+    "path": "artifacts/work_packages/pin-supersessions.json",
+    "sha256": "sha256:703de49d2d5dd2d0cd1cc7b5cb3d4c8ec2baf50b342216029e0524e796b93b18",
+    "entries": 6
+  },
+  "schema_amendment": {
+    "path": "schemas/document-registration.schema.json",
+    "sha256": "sha256:a09a5e9e23501bd8bc15e2061867fdea155654ae4b524740e966c8a733f8730c",
+    "change": "x-canonical-hash.field_sources declares schema_id resolves from $id",
+    "hash_values_changed": false
+  },
+  "negative_tests_run": [
+    "removed a supersession entry -> undeclared-drift assertion fired",
+    "corrupted a superseding_hash -> second-change assertion fired",
+    "re-materialized after a real schema edit -> gate fired unprompted and required re-declaration"
+  ],
+  "supersedes_receipt_id": "IH-20260803-003",
+  "regeneration_reason": "Fourth pass: .gitattributes and scripts/build staged (the CRLF fix was untracked and reached no clone), .gitignore build/ anchored, invalidation scan widened to build/v4_b05 and log/txt/xml, standing-receipt scoping bypass closed, census limitation pinned by a test, contract codegen gated.",
+  "gate_files": [
+    {
+      "path": "tests/packaging/test_sealed_pin_integrity.py",
+      "sha256": "sha256:512e38cb4f3c970e771a5b8293bb85e49f652906f30d88e833e1a80a5c26889b"
+    },
+    {
+      "path": "tests/packaging/test_receipt_invalidation.py",
+      "sha256": "sha256:726cedf119ac6bb484aba60a07744de0d6b9b6830f9be9aefe07e9403c3b3060"
+    },
+    {
+      "path": "tests/packaging/test_generation_store_integrity.py",
+      "sha256": "sha256:f804fea75b92e731d51498cbe783f17a75387002fc848ba98ce1816f706574de"
+    },
+    {
+      "path": "tests/packaging/test_contract_codegen_gate.py",
+      "sha256": "sha256:5532be28fb61c3aed09e87ce4ab6c9316310417ef61c08d1aded8f218875c379"
+    },
+    {
+      "path": "tests/contracts/test_canonical_hash_contracts.py",
+      "sha256": "sha256:ba4abb3a2d48dcd2d7686f960bd2b824dc23ecee2e6cb8e362f0650eecb3f3f8"
+    },
+    {
+      "path": "tests/workflows/test_executor_resolution.py",
+      "sha256": "sha256:1e0a05f453dcad38811262c1861deffb691965dd32ead28c86646d809d1e9a21"
+    }
+  ],
+  "declared_registries": [
+    {
+      "path": "artifacts/work_packages/pin-supersessions.json",
+      "sha256": "sha256:703de49d2d5dd2d0cd1cc7b5cb3d4c8ec2baf50b342216029e0524e796b93b18"
+    },
+    {
+      "path": "artifacts/work_packages/pin-census.json",
+      "sha256": "sha256:53d20e1ac3a3df0c5d8e81e68ff4e38137d76588644879cfc6fbbb8777a5b94b"
+    },
+    {
+      "path": "artifacts/work_packages/receipt-invalidations.json",
+      "sha256": "sha256:f7996e0dd681e7ef3a0d00f20f53898d1b99259ca12511cf9980f8dc73736c19"
+    }
+  ],
+  "invalidation": {
+    "superseded_values": 10,
+    "dependent_receipts": 64
+  },
+  "authority_decisions": [
+    "HD-EF4-INTEGRITY-SCOPE-20260802-001",
+    "HD-EF4-PIN-SUPERSESSION-20260802-001",
+    "HD-EF4-CODEGEN-REPROJECTION-20260803-001"
+  ],
+  "gitattributes": {
+    "path": ".gitattributes",
+    "sha256": "sha256:7f10a606e38420ccc403ec4b2b3ecf159fb5d9bc09d3b8fb1d077ab789a8fd0d",
+    "fresh_checkout_pin_reproduction": {
+      "before": "10 hold / 811 fail",
+      "after": "813 hold / 3 fail",
+      "residual": "three files were sealed while their worktree copy carried CRLF; re-sealing belongs to the owning packages"
+    }
+  },
+  "review_outcome": {
+    "contract_review": "APPROVE",
+    "independent_attestation": "REJECT",
+    "state": "remediated; re-review not yet requested at time of writing"
+  },
+  "cross_language_codegen": {
+    "generator": "packages/contracts/codegen/generate.py",
+    "stale_files_before": 7,
+    "stale_files_after": 0,
+    "note": "The generator also removed three web/src/generated/ui-client/* files it does not own; they were restored byte-identically from their git blobs and are not part of this regeneration."
+  },
+  "portability": {
+    "gitattributes_tracked": true,
+    "scripts_build_tracked": true,
+    "fresh_checkout_pins": "813 hold / 3 CRLF-sealed fail / 5 absent-from-HEAD",
+    "correction": "An earlier receipt said the residual was 3. It is 8: 3 CRLF-sealed plus 5 pinned-but-absent. Byte translation and file presence are separate failures and .gitattributes addresses only the first.",
+    "commit_required": "The staged .gitattributes and scripts/build/** only reach a clone once committed; staging alone does not."
+  },
+  "codegen": {
+    "gated_by": "tests/packaging/test_contract_codegen_gate.py",
+    "stale": 0,
+    "generator_exit_code": 1,
+    "declared_reason": "3 web/src/generated/ui-client/* files owned by a different generator",
+    "correction": "An earlier report described --check as reporting 0; it reports 0 stale but exits 1 on unexpected files."
+  }
+}

@@ -38,7 +38,11 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 *.egg-info/
-build/
+# Anchored 2026-08-03: a bare `build/` matches any directory named build at
+# any depth, which silently excluded scripts/build/** -- the canonical
+# projection tool that tests/packaging imports and that five sealed pins
+# reference. Only the top-level build output is meant to be ignored.
+/build/
 dist/
 .venv/
 .ruff_cache/

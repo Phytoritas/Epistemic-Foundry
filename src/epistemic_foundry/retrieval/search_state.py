@@ -34,6 +34,96 @@ class SearchState(str, Enum):
 MANDATORY_LANES: tuple[str, ...] = ("support", "counter", "null", "boundary", "method")
 
 
+# ---------------------------------------------------------------------------
+# Canonical retrieval vocabulary (EF4-I22: declared once, imported everywhere).
+#
+# These values are enum members of `schemas/search-lane-receipt.schema.json`,
+# `schemas/retrieval-candidate.schema.json`, and `schemas/query-plan.schema.json`.
+# They live here rather than in each retrieval module because a second copy is
+# how a wire literal drifts from the contract it claims to satisfy.
+# ---------------------------------------------------------------------------
+
+LANE_LEXICAL = "lexical"
+LANE_SEMANTIC = "semantic"
+LANE_CITATION = "citation"
+LANE_ENTITY_VARIABLE = "entity_variable"
+LANE_MECHANISM = "mechanism"
+LANE_COUNTEREVIDENCE = "counterevidence"
+LANE_NULL = "null"
+LANE_BOUNDARY = "boundary"
+LANE_METHOD = "method"
+LANE_TEMPORAL = "temporal"
+LANE_EXTERNAL_NOVELTY = "external_novelty"
+
+#: The closed lane vocabulary in canonical order (O01, via
+#: `workflows/evidence_retrieval.workflow.yaml`). Order is part of the contract:
+#: `query-plan.schema.json` pins lane_decisions positionally.
+CANONICAL_LANES: tuple[str, ...] = (
+    LANE_LEXICAL,
+    LANE_SEMANTIC,
+    LANE_CITATION,
+    LANE_ENTITY_VARIABLE,
+    LANE_MECHANISM,
+    LANE_COUNTEREVIDENCE,
+    LANE_NULL,
+    LANE_BOUNDARY,
+    LANE_METHOD,
+    LANE_TEMPORAL,
+    LANE_EXTERNAL_NOVELTY,
+)
+#: `completeness_contract.all_lane_reconciliation_count`.
+ALL_LANE_RECONCILIATION_COUNT = 11
+
+CHANNEL_LEXICAL = "LEXICAL"
+CHANNEL_SEMANTIC = "SEMANTIC"
+CHANNEL_CITATION_GRAPH = "CITATION_GRAPH"
+CHANNEL_RELATION_GRAPH = "RELATION_GRAPH"
+CHANNEL_EXTERNAL_INDEX = "EXTERNAL_INDEX"
+
+#: RetrievalCandidate `retrieval_channel` vocabulary, in canonical order.
+RETRIEVAL_CHANNELS: tuple[str, ...] = (
+    CHANNEL_LEXICAL,
+    CHANNEL_SEMANTIC,
+    CHANNEL_CITATION_GRAPH,
+    CHANNEL_RELATION_GRAPH,
+    CHANNEL_EXTERNAL_INDEX,
+)
+#: `retrieval_candidate_contract.non_vector_release_origins`. A release drawn
+#: only from outside this set is a vector-only release, which the workflow caps
+#: at PARTIAL because vector similarity may never be the sole retrieval channel.
+NON_VECTOR_RELEASE_ORIGINS: frozenset[str] = frozenset(
+    {
+        CHANNEL_LEXICAL,
+        CHANNEL_CITATION_GRAPH,
+        CHANNEL_RELATION_GRAPH,
+        CHANNEL_EXTERNAL_INDEX,
+    }
+)
+
+QUERY_FAMILY_FORWARD = "FORWARD"
+
+FUSION_SINGLE_CHANNEL = "SINGLE_CHANNEL"
+FUSION_RRF_K60 = "RRF_K60"
+#: `lane-local exact deduplication precedes deterministic RRF k=60 fusion`.
+RRF_K = 60
+
+RELATION_DIRECTION_NONE = "NO_DIRECTION"
+RELATION_DIRECTION_UNRESOLVED = "UNRESOLVED"
+
+RECEIPT_KIND_EXECUTION = "EXECUTION"
+RECEIPT_KIND_SENTINEL = "SENTINEL"
+SENTINEL_NOT_REQUIRED_FOR_CLASS = "NOT_REQUIRED_FOR_CLASS"
+SENTINEL_NOT_APPLICABLE = "NOT_APPLICABLE"
+SENTINEL_REASONS: frozenset[str] = frozenset(
+    {SENTINEL_NOT_REQUIRED_FOR_CLASS, SENTINEL_NOT_APPLICABLE}
+)
+
+STOP_REASON_EXHAUSTED_QUERY_PLAN = "exhausted_query_plan"
+
+RUN_CEILING_PASS = "PASS"
+RUN_CEILING_PARTIAL = "PARTIAL"
+
+
 class LaneCoverageFailure(ValueError):
     """A retrieval plan omits a mandatory adversarial lane."""
 
@@ -49,7 +139,10 @@ def is_absence_of_evidence(state: SearchState | str) -> bool:
 
 def is_conclusive(state: SearchState | str) -> bool:
     """True when the lane produced a usable result, empty or not."""
-    return SearchState(state) in {SearchState.SEARCHED_NONE, SearchState.SEARCHED_WITH_RESULTS}
+    return SearchState(state) in {
+        SearchState.SEARCHED_NONE,
+        SearchState.SEARCHED_WITH_RESULTS,
+    }
 
 
 def missing_lanes(

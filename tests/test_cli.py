@@ -17,7 +17,11 @@ def test_every_typed_outcome_has_a_distinct_exit_code() -> None:
     assert set(EXIT_CODES) == set(ExitStatus)
     assert len(set(EXIT_CODES.values())) == len(EXIT_CODES)
     assert EXIT_CODES[ExitStatus.PASS] == 0
-    assert all(code != 0 for status, code in EXIT_CODES.items() if status is not ExitStatus.PASS)
+    assert all(
+        code != 0
+        for status, code in EXIT_CODES.items()
+        if status is not ExitStatus.PASS
+    )
 
 
 def test_status_reports_partial_implementation(capsys) -> None:
@@ -31,15 +35,22 @@ def test_status_reports_partial_implementation(capsys) -> None:
 
 
 def test_status_still_refuses_to_claim_plugin_alpha(capsys) -> None:
-    """Every component having a package does not advance the release level.
+    """Having a package for every component does not advance the release level.
 
     PLUGIN_ALPHA requires install-matrix, sandbox, hook-degradation, and UI
     evidence that no unit test supplies, so the runtime must keep reporting
     SPEC_BUNDLE and PARTIAL_IMPLEMENTATION.
+
+    Corrected 2026-08-02: this test previously also asserted
+    ``specified_only == []``. That assertion did not test the refusal its name
+    describes — it *required* the maturity report to claim that nothing is
+    specified-only, which is how `retrieval`, `providers` and `shinka_adapter`
+    came to be reported as implemented while none of them could execute. An
+    empty specified-only list is a claim about the world, not an invariant, and
+    a test must not pin it.
     """
     main(["--json", "status"])
     payload = json.loads(capsys.readouterr().out)
-    assert payload["specified_only"] == []
     assert payload["release_level"] == "SPEC_BUNDLE"
     assert payload["runtime_status"] == "PARTIAL_IMPLEMENTATION"
     assert "production" in payload["note"] or "working-plugin" in payload["note"]
@@ -57,16 +68,59 @@ def test_implemented_list_matches_the_shipped_packages(capsys) -> None:
     Claiming a component is implemented when no package exists is exactly the
     overclaim `docs/status_taxonomy.md` separates SPECIFIED from IMPLEMENTED to
     prevent, so the claim is checked against the filesystem.
+
+    Corrected 2026-08-02: the previous version also asserted that a
+    specified-only component has NO package directory. That encoded
+    "a package exists therefore the component is implemented", which is false
+    and was the mechanism by which the overclaim was enforced: a component can
+    ship its verification half (contracts, gates, refusals) while its execution
+    half does not exist at all. `retrieval` has lane-coverage gates but no
+    index, `providers` has neutrality assertions but no transport. Both have
+    packages and neither is implemented.
+
+    The invariant kept is the one that is actually true: every shipped component
+    package must be classified, so a new package cannot silently escape the
+    maturity report in either direction.
+
+    Corrected again after review: an earlier version of this docstring called
+    that "strictly stronger than before". It is not. The old assertion said
+    ``specified_only`` and the package listing are disjoint; the new one says
+    ``specified_only`` is drawn from it. Those are close to negations of each
+    other, so the claim is incomparable, not stronger, and describing it as a
+    strengthening overstated the change in the same direction the correction was
+    supposed to fix. The same review also removed a check that ``specified_only``
+    may only name shipped packages: `docs/status_taxonomy.md` defines SPECIFIED
+    as a normative contract with production code *not* implied, so a
+    specified-only capability with no package at all is exactly the case the
+    taxonomy exists to express, and forbidding it would have made the maturity
+    report a pure function of the directory listing.
     """
     main(["--json", "status"])
     payload = json.loads(capsys.readouterr().out)
     package_root = repo_root() / "src" / "epistemic_foundry"
-    for name in payload["implemented"]:
-        assert (package_root / name).is_dir(), f"{name} is claimed implemented but has no package"
-    for name in payload["specified_only"]:
-        assert not (package_root / name).is_dir(), (
-            f"{name} is listed specified_only but a package exists; update the maturity report"
+    implemented = set(payload["implemented"])
+    specified_only = set(payload["specified_only"])
+
+    for name in implemented:
+        assert (package_root / name).is_dir(), (
+            f"{name} is claimed implemented but has no package"
         )
+
+    shipped = {
+        entry.name
+        for entry in package_root.iterdir()
+        if entry.is_dir()
+        and (entry / "__init__.py").is_file()
+        and not entry.name.startswith("_")
+        and entry.name != "cli"
+    }
+    unclassified = shipped - implemented - specified_only
+    assert not unclassified, (
+        f"shipped component packages missing from the maturity report: {sorted(unclassified)}"
+    )
+    # No converse assertion. A specified-only component is permitted to have no
+    # package: that is what SPECIFIED means. Constraining it to shipped names
+    # would quietly convert this report into a directory listing.
 
 
 def test_validate_passes_a_conformant_artifact(capsys) -> None:
@@ -80,7 +134,10 @@ def test_validate_passes_a_conformant_artifact(capsys) -> None:
 def test_validate_fails_a_nonconformant_artifact(tmp_path, capsys) -> None:
     bad = tmp_path / "bad.json"
     bad.write_text(json.dumps({"session_id": "FS-001"}), encoding="utf-8")
-    assert main(["--json", "validate", "forge-session-state", str(bad)]) == EXIT_CODES[ExitStatus.FAIL]
+    assert (
+        main(["--json", "validate", "forge-session-state", str(bad)])
+        == EXIT_CODES[ExitStatus.FAIL]
+    )
     payload = json.loads(capsys.readouterr().out)
     assert payload["outcome"] == "FAIL"
     assert payload["error_count"] > 0
@@ -134,7 +191,9 @@ def test_ledger_verify_reports_invalidated_on_tampering(tmp_path, capsys) -> Non
 
 
 def test_missing_artifact_fails_without_traceback(tmp_path, capsys) -> None:
-    code = main(["--json", "validate", "forge-session-state", str(tmp_path / "absent.json")])
+    code = main(
+        ["--json", "validate", "forge-session-state", str(tmp_path / "absent.json")]
+    )
     assert code == EXIT_CODES[ExitStatus.FAIL]
 
 

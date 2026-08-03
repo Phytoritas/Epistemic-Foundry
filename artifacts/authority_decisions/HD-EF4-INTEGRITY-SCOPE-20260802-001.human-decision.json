@@ -1,0 +1,39 @@
+{
+  "affected_artifact_ids": [
+    "schemas/document-registration.schema.json",
+    "schemas/retrieval-candidate.schema.json",
+    "schemas/node-contract.schema.json",
+    "schemas/source-span.schema.json",
+    "schemas/claim-card.schema.json",
+    "schemas/evidence-node.schema.json",
+    "schemas/insight-card.schema.json",
+    "schemas/result-envelope.schema.json",
+    "schemas/run-spec.schema.json",
+    "tests/contracts/test_canonical_hash_contracts.py",
+    "tests/workflows/test_executor_resolution.py",
+    "tests/packaging/test_sealed_pin_integrity.py",
+    "artifacts/work_packages/pin-supersessions.json",
+    "artifacts/work_packages/pin-census.json",
+    "artifacts/work_packages/receipt-invalidations.json",
+    "src/epistemic_foundry/_canonical/**"
+  ],
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "created_at": "2026-08-02T14:30:00Z",
+  "decision": "Authorize the integrity-hardening wave to write the files listed in affected_artifact_ids even though they fall outside the declared write_scope of any A-Z work package. This covers three categories: (1) canonical schema amendments that close contract defects — source_locator nullable page across six schemas plus source-span, node-contract executor_status, document-registration x-canonical-hash.field_sources, and retrieval-candidate x-canonical-identity exclusion_policy — of which document-registration and node-contract sit in C01's declared scope; (2) new verification gates under tests/contracts/** and tests/workflows/**, neither of which appears in any write_scope glob; (3) the integrity registries artifacts/work_packages/pin-supersessions.json, pin-census.json and receipt-invalidations.json, which belong to no package because they are cross-package by nature. This authorization does not reopen any sealed package, does not extend to remote or destructive operations, and does not grant push, merge or release authority.",
+  "decision_hash": "sha256:09f4f0190032792e1d4550476f0009342ffcf84c8571169ad58341a14bb67daf",
+  "decision_id": "HD-EF4-INTEGRITY-SCOPE-20260802-001",
+  "decision_type": "correct",
+  "evidence_artifact_ids": [
+    "manifests/development_manifest.yaml",
+    "artifacts/work_packages/pin-supersessions.json",
+    "artifacts/work_packages/pin-census.json",
+    "artifacts/integrity-hardening-20260802/verification-receipt.json",
+    "artifacts/authority_decisions/HD-EF4-W05-SCOPE-20260802-001.human-decision.json"
+  ],
+  "non_mutation_acknowledgement": true,
+  "rationale": "An independent contract review (finding F10) established that these writes had no covering scope and no authority record, while the repository requires a resolving artifact for every implementation claim (manifests/development_manifest.yaml). The product owner was shown the finding verbatim, including that the affected files sit outside every declared scope and that schemas/document-registration.schema.json belongs to C01 rather than the B04 supersession the change was booked against, and instructed that all findings be remediated. The alternative — amending each package's write_scope in manifests/development_manifest.yaml — would edit a higher authority document to retroactively legalise work already done, which is the weaker record. A scope decision recorded at the point of the exception is the mechanism this repository already uses 46 times.",
+  "run_id": null,
+  "subject_id": "INTEGRITY-HARDENING",
+  "supersedes_decision_id": null
+}

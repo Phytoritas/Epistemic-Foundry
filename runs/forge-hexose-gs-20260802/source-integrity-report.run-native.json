@@ -1,0 +1,118 @@
+{
+  "source_integrity_report_id": "SIR-PAPER-CURATION-20260802",
+  "run_id": "FORGE-HEXOSE-GS-20260802",
+  "recorded_at_utc": "2026-08-02T12:00:00.000Z",
+  "corpus_root": "C:/dev/insight/paper-curation/docs/papers",
+  "finding": "content-duplicated directories with mismatched titles",
+  "severity": "high for citation integrity, low for this run's span grounding",
+  "counts": {
+    "directories": 1281,
+    "distinct_texts": 1224,
+    "duplicate_directories": 109,
+    "duplicate_groups": 52,
+    "redundant_directories": 57
+  },
+  "explanation": "Multiple paper directories contain byte-identical text.md under DIFFERENT titles. The extracted text therefore cannot be attributed to a title by directory name alone: at least one member of each group is mislabelled. Span grounding is unaffected (the quote provably comes from that file), but bibliographic attribution is not trustworthy for these directories.",
+  "impact_on_this_run": {
+    "documents_cited": 29,
+    "claims_total": 107,
+    "cited_duplicate_directories": [
+      "1238_The_circadian_clock_ticks_in_plant_stress_responses",
+      "1256_Tomato_growth_and_yield_quantitative_analysis_and_synthesis",
+      "857_A_methodology_for_model-based_greenhouse_design_Part_2_descr"
+    ],
+    "claims_resting_on_duplicates": 9,
+    "note": "extraction roles independently detected 2 of these and cited under a single name; the residual risk is title attribution, not quote authenticity"
+  },
+  "duplicate_groups_sample": [
+    [
+      "009_A_System_Dynamics_Approach_to_Model_Photosynthesis_at_Leaf_L",
+      "973_Development_of_plant_production_factory_system_for_a_fresh_l"
+    ],
+    [
+      "015_An_analytical_solution_for_coupled_leaf_photosynthesis_and_s",
+      "027_Biochemical_Models_of_Leaf_Photosynthesis"
+    ],
+    [
+      "021_Assessing_the_CO2_concentration_at_the_surface_of_photosynth",
+      "022_Assessing_the_CO2_concentration_at_the_surface_of_photosynth"
+    ],
+    [
+      "026_Biochemical_limitations_to_carbon_assimilation_in_C3_plantsA",
+      "1166_Plant_Growth_Curves_The_Functional_Approach_to_Plant_Growth"
+    ],
+    [
+      "049_Effect_of_Leaf_Area_on_Tomato_Yield",
+      "050_Effect_of_leaf-area_management_on_tomato_plant_growth_in_gre",
+      "951_CropAssist_an_automated_system_for_direct_measurement_of_gre"
+    ],
+    [
+      "060_Estimation_of_photosynthesis_parameters_for_a_modified_Farqu",
+      "136_Some_relationships_between_the_biochemistry_of_photosynthesi"
+    ],
+    [
+      "063_Explainable_machine_learning_for_predicting_stomatal_conduct",
+      "155_The_response_of_mesophyll_conductance_to_short-term_CO2_vari"
+    ],
+    [
+      "092_Leaf_photosynthesis_and_respiration_of_three_bioenergy_crops",
+      "1234_Temperature_Dependence_of_Whole-Leaf_Photosynthesis_in_Eucal"
+    ],
+    [
+      "1001_Energy-saving_effect_assessment_of_various_factors_in_contai",
+      "876_AI-enabled_cyber-physical-biological_systems_for_smart_energ"
+    ],
+    [
+      "1024_Exploring_the_landscape_of_controlled_environment_agricultur",
+      "881_An_Economic_and_Environmental_Comparison_of_Conventional_and"
+    ],
+    [
+      "1032_Grafting_onto_eggplant_rootstock_improves_water_status_and_f",
+      "1062_Improving_Water_Use_Strategies_in_Greenhouse_Tomato_with_Sup",
+      "1197_Regulated_deficit_irrigation_based_on_plant_water_status_and",
+      "942_Comprehensive_study_of_the_developmental_and_growth_processe"
+    ],
+    [
+      "1034_Greenhouse_Crop_Simulation_Models_and_Microclimate_Control_S",
+      "1051_Horizon_scanning_and_review_of_the_impact_of_five_food_and_f"
+    ],
+    [
+      "1043_Growth_of_Lettuce_Onion_and_Red_Beet_1_Growth_Analysis_Light",
+      "983_Dynamic_light_intensity_improves_light_use_efficiency_of_let"
+    ],
+    [
+      "1050_Historical_changes_in_the_stomatal_limitation_of_photosynthe",
+      "1231_Surprising_implications_of_the_optimality_hypothesis_of_stom"
+    ],
+    [
+      "1057_Hydrogen-rich_water_alleviates_drought_stress_in_tomato_Insi",
+      "1156_Physiological_and_nutritional_mechanisms_underlying_chloride"
+    ],
+    [
+      "1061_Improving_Water_Efficiencies_in_Rural_Agriculture_for_Sustai",
+      "1233_Sustainable_Water_Use_in_Agriculture_A_Review_of_Worldwide_R"
+    ],
+    [
+      "1065_Incorporating_dynamic_schemes_of_canopy_light_extinction_coe",
+      "965_Development_of_a_Light_Extinction_Coefficient_Change_Model_a"
+    ],
+    [
+      "1080_Leaf_initiation_rate_is_determined_by_more_than_just_air_tem",
+      "1260_Towards_user_accepted_optimal_control_of_greenhouse_climate"
+    ],
+    [
+      "1096_LSTM-Based_Deep_Learning_for_Crop_Production_Prediction_With",
+      "853_A_machine_learning_approach_for_prediction_system_and_analys"
+    ],
+    [
+      "1109_Methods_of_modelling_relative_growth_rate",
+      "1183_Principles_of_Relative_Growth_Analysis"
+    ]
+  ],
+  "remediation": [
+    "de-duplicate by content hash and re-derive titles from the PDF/DOI metadata rather than the directory name",
+    "record a content-hash -> canonical bibliographic identity map in the curation pipeline",
+    "treat directory name as a local handle, never as a citation"
+  ],
+  "owner": "paper-curation pipeline"
+}

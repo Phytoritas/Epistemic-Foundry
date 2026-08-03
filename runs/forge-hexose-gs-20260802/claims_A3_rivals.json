@@ -1,0 +1,1237 @@
+{
+  "role": "ef-prosecutor",
+  "assignment": "RIVALS",
+  "corpus_snapshot": "CSNAP-8e1c4c767aef2c7cac93976da0fd44aa",
+  "documents_read": [
+    "012_Advances_in_Physiological_and_Molecular_Mechanisms_of_Cucumb",
+    "016_An_improved_representative_of_stomatal_models_for_predicting",
+    "023_Assessing_the_potential_functions_of_nocturnal_stomatal_cond",
+    "046_Dynamically_optimizing_stomatal_conductance_for_maximum_turg",
+    "073_Generalized_Stomatal_Optimization_of_Evolutionary_Fitness_Pr",
+    "090_Is_carbon_not_water_the_resource_that_limits_stomatal_openin",
+    "1060_Improving_the_CROPGRO-Tomato_Model_for_Predicting_Growth_and",
+    "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+    "1187_Processes_driving_nocturnal_transpiration_and_implications_f",
+    "1209_Root_hydraulic_phenotypes_impacting_water_uptake_in_drying_s",
+    "1238_The_circadian_clock_ticks_in_plant_stress_responses",
+    "146_Temporal_heterogeneity_of_cold_acclimation_phenotypes_in_Ara",
+    "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+    "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+    "438_Guard_Cell_Starch_Degradation_Yields_Glucose_for_Rapid_Stoma",
+    "507_Light-Mediated_Signaling_and_Metabolic_Changes_Coordinate_St"
+  ],
+  "claims": [
+    {
+      "claim_ref": "A3-001",
+      "document_id": "438_Guard_Cell_Starch_Degradation_Yields_Glucose_for_Rapid_Stoma",
+      "semantic_unit": "abstract",
+      "section": "Abstract",
+      "char_start": 2140,
+      "char_end": 2280,
+      "verbatim_text": "We further show that impaired starch degradation in the amy3 bam1 mutant\nresulted in an increase in the time constant for opening of 40 min.",
+      "text_hash": "sha256:b65c34ab27718b8b10ae16dc497d248b65b002a7e943c54bc2dfbf1448d947ce",
+      "claim_statement": "In Arabidopsis, blocking guard-cell starch degradation (amy3 bam1), which leaves guard cells with almost undetectable glucose, increased the time constant of light-induced stomatal opening by 40 min.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "impaired guard-cell starch degradation (amy3 bam1; near-absent guard-cell Glc)",
+      "relation": "increases",
+      "object": "time constant of light-induced stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard cell (cytosolic sugar pool)",
+        "conditions": "dark-to-blue-light transition at dawn",
+        "timescale": "minutes (opening kinetics)"
+      },
+      "quantitative": {
+        "magnitude_text": "an increase in the time constant for opening of 40 min",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Less dawn guard-cell hexose, not more, slows morning stomatal opening, inverting the sign the hypothesis assigns to the hexose-to-opening link."
+    },
+    {
+      "claim_ref": "A3-002",
+      "document_id": "438_Guard_Cell_Starch_Degradation_Yields_Glucose_for_Rapid_Stoma",
+      "semantic_unit": "abstract",
+      "section": "Abstract",
+      "char_start": 2281,
+      "char_end": 2424,
+      "verbatim_text": "We conclude that rapid starch degradation at dawn is\nrequired to maintain the cytoplasmic sugar pool, clearly needed for fast stomatal opening.",
+      "text_hash": "sha256:0294c12e30ed9b5ae5f966e4c652a2d762a028326fe7c7d726cb11c8411b220f",
+      "claim_statement": "Rapid starch degradation at dawn is required to maintain the guard-cell cytoplasmic sugar pool needed for fast stomatal opening.",
+      "claim_type": "mechanism",
+      "author_stance": "asserted",
+      "subject": "dawn guard-cell starch degradation maintaining the cytoplasmic sugar pool",
+      "relation": "is required for",
+      "object": "fast stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "primary_analysis",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard cell cytoplasm",
+        "conditions": "dawn, blue light",
+        "timescale": "minutes to about 1 h"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "States hexose as a positive requirement for morning opening, the opposite of the hypothesised suppressive residual hexose."
+    },
+    {
+      "claim_ref": "A3-003",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "introduction",
+      "section": "I. Introduction",
+      "char_start": 4714,
+      "char_end": 4925,
+      "verbatim_text": "As a\nconsequence, stomata in amy3bam1 mutantsopen more slowly and\nto a lesser extent, indicating that light-induced mobilization of\nstarch contributes to fast and efﬁcient stomatal opening (Horrer\net al., 2016).",
+      "text_hash": "sha256:38c65a827284ca24d52817f00f1e1d5ad66cdfc52ed9bfc49095950571194944",
+      "claim_statement": "Blocking guard-cell starch breakdown makes stomata open more slowly and to a lesser extent, indicating starch mobilisation contributes to fast and efficient stomatal opening.",
+      "claim_type": "causal",
+      "author_stance": "supported",
+      "subject": "loss of light-induced guard-cell starch mobilisation (amy3bam1)",
+      "relation": "reduces speed and extent of",
+      "object": "stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard cell",
+        "conditions": "light-induced opening",
+        "timescale": "minutes to hours"
+      },
+      "quantitative": {
+        "magnitude_text": "open more slowly and to a lesser extent",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Independent restatement that lower guard-cell sugar supply produces exactly the reduced morning opening the hypothesis attributes to excess hexose."
+    },
+    {
+      "claim_ref": "A3-004",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "discussion",
+      "section": "III. Glucose is the main guard cell starch-derived metabolite under blue light",
+      "char_start": 9932,
+      "char_end": 10005,
+      "verbatim_text": "Already in darkness, amy3bam1 guard cells had half as much Glc as\nthe WT.",
+      "text_hash": "sha256:04c5dd264fdfb39f90c914758a1e61ffe7f9ba51451f31137d8d9f515d858d91",
+      "claim_statement": "In darkness, amy3bam1 guard cells contained half as much glucose as wild type.",
+      "claim_type": "observation",
+      "author_stance": "supported",
+      "subject": "guard-cell glucose content in darkness",
+      "relation": "is halved in",
+      "object": "the starch-degradation mutant relative to wild type",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "isolated guard cells",
+        "conditions": "darkness at end of night",
+        "timescale": "end of night to early morning"
+      },
+      "quantitative": {
+        "magnitude_text": "half as much Glc as the WT",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C3",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Defines a real dawn guard-cell glucose contrast whose low-glucose arm is the one with impaired opening, opposing the hypothesised direction."
+    },
+    {
+      "claim_ref": "A3-005",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "discussion",
+      "section": "IV. Mesophyll-derived glucose and sucrose have distinct functions during stomatal opening at dawn",
+      "char_start": 23100,
+      "char_end": 23335,
+      "verbatim_text": "demonstrated that Glc import to guard cells at dawn via the\ncoordinated action of the monosaccharide-H+ symporters Sugar\nTransport Protein 1 and 4 (STP1 and STP4) is essential for (white)\nlight-induced stomatal opening and plant growth",
+      "text_hash": "sha256:17df9b60cf717c69c753c8471f99a970848e54adcf732cba7f6a97edb946c430",
+      "claim_statement": "Glucose import into guard cells at dawn via the monosaccharide-H+ symporters STP1 and STP4 is essential for white-light-induced stomatal opening and plant growth.",
+      "claim_type": "mechanism",
+      "author_stance": "supported",
+      "subject": "dawn glucose import into guard cells via STP1/STP4",
+      "relation": "is essential for",
+      "object": "light-induced stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "guard-cell plasma membrane, apoplast-to-symplast hexose transport",
+        "conditions": "dawn, white light",
+        "timescale": "minutes to hours"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Hexose delivery to guard cells at dawn is a necessary condition for morning opening, so residual dawn hexose should promote rather than suppress it."
+    },
+    {
+      "claim_ref": "A3-006",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "discussion",
+      "section": "IV. Mesophyll-derived glucose and sucrose have distinct functions during stomatal opening at dawn",
+      "char_start": 24818,
+      "char_end": 25046,
+      "verbatim_text": "A working hypothesis\ncombining the ﬁndings that mesophyll-sugars are required for\nstomatal opening at dawn and that they promote stomatal closure\nwhen plants are carbon-saturated was proposed previouslybyTalbott\n& Zeiger (1996).",
+      "text_hash": "sha256:8d52fd0064d0eb99a96b70b8b39790c1f433a24936c507e8f1caf7f2ca8bf534",
+      "claim_statement": "A working hypothesis holds that mesophyll sugars are required for stomatal opening at dawn but promote stomatal closure when plants are carbon-saturated.",
+      "claim_type": "review_synthesis",
+      "author_stance": "suggested",
+      "subject": "mesophyll-derived sugars",
+      "relation": "switch from promoting opening at dawn to promoting closure under",
+      "object": "carbon-saturated conditions",
+      "direction": "nonmonotonic",
+      "evidence_layer": "review",
+      "hedging_level": 2,
+      "scope": {
+        "species": "Arabidopsis thaliana; Vicia faba",
+        "compartment": "guard cell and apoplast",
+        "conditions": "dawn versus carbon-saturated afternoon states",
+        "timescale": "diel phases"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Phase-restricts the sugar-closure effect to the carbon-saturated afternoon, so a dawn hexose signal is expected to open rather than close stomata."
+    },
+    {
+      "claim_ref": "A3-007",
+      "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+      "semantic_unit": "discussion",
+      "section": "IV. Mesophyll-derived glucose and sucrose have distinct functions during stomatal opening at dawn",
+      "char_start": 24434,
+      "char_end": 24594,
+      "verbatim_text": "In line with this\nﬁnding, several studies reported that exogenously applied sugars fail\nto induce stomatal opening (Lee & Bowling, 1992; Medeiros et al.,\n2018).",
+      "text_hash": "sha256:c763df6af719af80fa7c08ade39be8c1c750d244a8588310f469f16624e9805c",
+      "claim_statement": "Several studies report that exogenously applied sugars fail to induce stomatal opening.",
+      "claim_type": "review_synthesis",
+      "author_stance": "supported",
+      "subject": "exogenously applied sugars",
+      "relation": "fail to induce",
+      "object": "stomatal opening",
+      "direction": "null",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "epidermal peels and detached tissue",
+        "conditions": "exogenous sugar feeding",
+        "timescale": "minutes to hours"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "Null results for exogenous sugar application show the hexose-aperture link is not robustly reproducible by simple sugar addition in either direction."
+    },
+    {
+      "claim_ref": "A3-008",
+      "document_id": "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+      "semantic_unit": "discussion",
+      "section": "Guard cell sugar sensing",
+      "char_start": 47352,
+      "char_end": 47612,
+      "verbatim_text": "While low concentrations had little or no effect, higher\nconcentrations of sucrose and the HXK substrates resulted in stomatal closure, further supporting\nthe idea that sucrose accumulation in the guard cells and hexokinase activity stimulate stomatal\nclosure.",
+      "text_hash": "sha256:0602058f5794415c996af9090bc6fb3e013b1f5d620e6e976f82539ea1440f9c",
+      "claim_statement": "Low concentrations of sucrose and of the hexokinase substrates glucose, fructose and mannose had little or no effect on stomata, whereas higher concentrations caused stomatal closure.",
+      "claim_type": "association",
+      "author_stance": "supported",
+      "subject": "externally applied sucrose and hexokinase substrates (glucose, fructose, mannose)",
+      "relation": "cause stomatal closure only at",
+      "object": "high concentrations",
+      "direction": "nonmonotonic",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "guard cell, exogenous application",
+        "conditions": "dose series of exogenous sugars",
+        "timescale": "minutes to hours"
+      },
+      "quantitative": {
+        "magnitude_text": "low concentrations had little or no effect",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Makes the suppressive hexose effect a high-dose phenomenon, so a modest residual dawn hexose pool sits below the documented effective range."
+    },
+    {
+      "claim_ref": "A3-009",
+      "document_id": "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+      "semantic_unit": "discussion",
+      "section": "Guard cell sugar sensing",
+      "char_start": 46087,
+      "char_end": 46397,
+      "verbatim_text": "It has further been suggested that sugars themselves do not act as\nguard cell osmolytes but are instead degraded by invertase and sucrose synthase producing hexose\nmonomers that are sensed by hexokinase, and result in stomatal closure via a mechanism mediated\nby abscisic acid (ABA) produced in the guard cells",
+      "text_hash": "sha256:5d684a8440a236ce8df77d5fcede5e795198cbaead06dea030bb63099dfa1fab",
+      "claim_statement": "It has been suggested that hexose monomers released from sucrose are sensed by hexokinase and cause stomatal closure through an ABA-mediated mechanism in guard cells.",
+      "claim_type": "mechanism",
+      "author_stance": "suggested",
+      "subject": "hexose sensed by guard-cell hexokinase",
+      "relation": "causes stomatal closure via",
+      "object": "guard-cell ABA production",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 3,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "guard cell",
+        "conditions": "sugar-replete conditions",
+        "timescale": "minutes to hours"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "The only corpus mechanism giving hexose a closing action routes it through ABA, so hexose and cold-induced ABA cannot be separated by a morning gs observation."
+    },
+    {
+      "claim_ref": "A3-010",
+      "document_id": "507_Light-Mediated_Signaling_and_Metabolic_Changes_Coordinate_St",
+      "semantic_unit": "discussion",
+      "section": "Negative regulation of stomatal opening",
+      "char_start": 38046,
+      "char_end": 38192,
+      "verbatim_text": "Interestingly, sucrose \nhas been defined as a negative regulator of stomatal opening \nin periods of high photosynthetic rate (Lima et  al., 2018).",
+      "text_hash": "sha256:29dab81ff8e4740151c4b1930a25be95a48885693deb7fe7cd1642b749839ca1",
+      "claim_statement": "Sucrose has been defined as a negative regulator of stomatal opening specifically in periods of high photosynthetic rate.",
+      "claim_type": "review_synthesis",
+      "author_stance": "qualified",
+      "subject": "sucrose",
+      "relation": "negatively regulates",
+      "object": "stomatal opening during periods of high photosynthetic rate",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 1,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "guard cell and apoplast",
+        "conditions": "periods of high photosynthetic rate (midday to afternoon)",
+        "timescale": "hours within a day"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Scopes sugar-driven closure to high-assimilation daytime periods, not to a dawn pool carried over from the previous night."
+    },
+    {
+      "claim_ref": "A3-011",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "discussion",
+      "section": "Discussion",
+      "char_start": 55169,
+      "char_end": 55449,
+      "verbatim_text": "In summary, we posit that at low apoplastic sucrose concentra-\ntions, sucrose enhancement of stomatal opening reduces CO2 limita-\ntion on photosynthesis, while at high apoplastic sugar concentrations, \nindicative of photosynthetic saturation, further stomatal opening is \nopposed.",
+      "text_hash": "sha256:18e1a90f633053716c649534e3174b987a4130eaaf1cb61ad40e6601a1d1d130",
+      "claim_statement": "At low apoplastic sucrose concentrations sucrose enhances stomatal opening, while at high apoplastic sugar concentrations further stomatal opening is opposed.",
+      "claim_type": "causal",
+      "author_stance": "suggested",
+      "subject": "apoplastic sucrose concentration",
+      "relation": "enhances opening at low levels and opposes further opening at",
+      "object": "high levels",
+      "direction": "nonmonotonic",
+      "evidence_layer": "primary_analysis",
+      "hedging_level": 2,
+      "scope": {
+        "species": "not stated in span (Arabidopsis apoplast metabolomics study)",
+        "compartment": "leaf apoplast",
+        "conditions": "varying apoplastic sugar load, gas-exchange and aperture assays",
+        "timescale": "minutes to hours"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Direct apoplastic evidence that the sugar-aperture relation is biphasic and positive at low load, so residual dawn sugar is in the opening-promoting regime."
+    },
+    {
+      "claim_ref": "A3-012",
+      "document_id": "023_Assessing_the_potential_functions_of_nocturnal_stomatal_cond",
+      "semantic_unit": "abstract",
+      "section": "Abstract",
+      "char_start": 583,
+      "char_end": 836,
+      "verbatim_text": "We found that gn was positively correlated\nwith relative growth rate, which is compatible with the postulate\nthat circadian-driven nocturnal conductance enhances predawn\nstomatal conductance, thereby priming stomata for photosynthesis\nin early daylight.",
+      "text_hash": "sha256:31cc2a07a324f92b66371373397a1bf8c31721469ef8b8ef52b45ec5c0ea7ac0",
+      "claim_statement": "Nocturnal stomatal conductance was positively correlated with relative growth rate, consistent with circadian-driven nocturnal conductance enhancing predawn stomatal conductance and priming stomata for early-morning photosynthesis.",
+      "claim_type": "association",
+      "author_stance": "suggested",
+      "subject": "circadian-driven nocturnal stomatal conductance (gn)",
+      "relation": "enhances predawn conductance and primes",
+      "object": "morning stomatal opening",
+      "direction": "positive",
+      "evidence_layer": "primary_analysis",
+      "hedging_level": 2,
+      "scope": {
+        "species": "cross-species synthesis",
+        "compartment": "leaf and canopy stomata",
+        "conditions": "night to predawn, field and controlled studies",
+        "timescale": "overnight to early daylight"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "A cool night that suppresses growth would lower gn and hence predawn priming, reproducing reduced morning opening with no hexose term at all."
+    },
+    {
+      "claim_ref": "A3-013",
+      "document_id": "023_Assessing_the_potential_functions_of_nocturnal_stomatal_cond",
+      "semantic_unit": "discussion",
+      "section": "Proposed research programme",
+      "char_start": 44624,
+      "char_end": 44872,
+      "verbatim_text": "Second, we need more mechanistic studies conducted in\ncontrolled environments to more accurately determine whether\npredawn stomatal conductance affects the response time of stomata\nto illumination in the morning, for how long, and to what extent it",
+      "text_hash": "sha256:2b7fc0921f97909ccac96099b1ee8be2e465512fd33899f4cda8defa4aa5e940",
+      "claim_statement": "Whether predawn stomatal conductance affects the response time of stomata to morning illumination, for how long and to what extent, still requires mechanistic studies in controlled environments.",
+      "claim_type": "limitation",
+      "author_stance": "qualified",
+      "subject": "effect of predawn stomatal conductance on morning stomatal response time",
+      "relation": "remains",
+      "object": "experimentally undetermined",
+      "direction": "unknown",
+      "evidence_layer": "review",
+      "hedging_level": 3,
+      "scope": {
+        "species": "not applicable",
+        "compartment": "leaf stomata",
+        "conditions": "controlled environment studies proposed",
+        "timescale": "predawn to morning"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C4"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "The corpus explicitly flags morning stomatal response time as mechanistically unresolved, so no morning-gs observation can currently discriminate causes."
+    },
+    {
+      "claim_ref": "A3-014",
+      "document_id": "1187_Processes_driving_nocturnal_transpiration_and_implications_f",
+      "semantic_unit": "results",
+      "section": "Circadian regulation of endogenous canopy conductance",
+      "char_start": 11598,
+      "char_end": 11785,
+      "verbatim_text": "The late night increase in canopy \nconductance was independent of environmental variation (Fig. 2) and driven solely by endogenous cir-\ncadian regulation of stomatal conductance (Fig. 3).",
+      "text_hash": "sha256:3d01407c72ba33b82914bfe22e2a19e0a5370b9ec18dfad04d37f209a6c7832b",
+      "claim_statement": "The late-night increase in canopy conductance was independent of environmental variation and driven solely by endogenous circadian regulation of stomatal conductance.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "endogenous circadian regulation",
+      "relation": "solely drives",
+      "object": "the late-night rise in canopy conductance",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "not stated in span (field canopy experiment)",
+        "compartment": "whole-canopy stomatal conductance",
+        "conditions": "field night-time, environmental variation controlled for",
+        "timescale": "late night into predawn"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Establishes an endogenous clock control of the late-night to predawn conductance trajectory that sets morning starting conductance independently of sugar."
+    },
+    {
+      "claim_ref": "A3-015",
+      "document_id": "1238_The_circadian_clock_ticks_in_plant_stress_responses",
+      "semantic_unit": "discussion",
+      "section": "Circadian clock and stomatal function",
+      "char_start": 61140,
+      "char_end": 61272,
+      "verbatim_text": "This rhythm is maintained even under con-\ntinuous light conditions, indicating that the circadian\nclock regulates stomata functions.",
+      "text_hash": "sha256:913f6f401154a297121608183e9e9dd57637310a53ba5669e202174aab832211",
+      "claim_statement": "The stomatal rhythm is maintained even under continuous light, indicating that the circadian clock regulates stomatal function.",
+      "claim_type": "causal",
+      "author_stance": "asserted",
+      "subject": "circadian clock",
+      "relation": "regulates",
+      "object": "stomatal function",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "leaf stomata",
+        "conditions": "continuous light (free-running)",
+        "timescale": "24 h rhythm"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Clock gating of aperture persists without any environmental or assimilation cue, providing a sugar-free source of day-to-day variation in morning aperture."
+    },
+    {
+      "claim_ref": "A3-016",
+      "document_id": "046_Dynamically_optimizing_stomatal_conductance_for_maximum_turg",
+      "semantic_unit": "methods",
+      "section": "Model description (new processes)",
+      "char_start": 22443,
+      "char_end": 22596,
+      "verbatim_text": "We added \nthree new processes: (1) temperature-dependent hydraulic \nconductances, which limit stomatal opening under cold \nweather (Lintunen et al. 2020)",
+      "text_hash": "sha256:64b06087941182a285c0ce266bc415aaa27d85549bc0b8b17f80a9e0739a8f59",
+      "claim_statement": "Temperature-dependent hydraulic conductances limit stomatal opening under cold weather.",
+      "claim_type": "model",
+      "author_stance": "asserted",
+      "subject": "temperature-dependent plant hydraulic conductance",
+      "relation": "limits",
+      "object": "stomatal opening under cold weather",
+      "direction": "negative",
+      "evidence_layer": "modeling",
+      "hedging_level": 0,
+      "scope": {
+        "species": "boreal tree species (model parameterisation)",
+        "compartment": "whole-plant hydraulic pathway including belowground conductance",
+        "conditions": "cold weather",
+        "timescale": "hours to seasons"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "The classic cold-hydraulic rival is explicitly implemented in-corpus as a process that limits stomatal opening in the cold, needing no hexose."
+    },
+    {
+      "claim_ref": "A3-017",
+      "document_id": "046_Dynamically_optimizing_stomatal_conductance_for_maximum_turg",
+      "semantic_unit": "results",
+      "section": "Diurnal and seasonal patterns",
+      "char_start": 36473,
+      "char_end": 36709,
+      "verbatim_text": "Maximal gw \nat dawn predominantly results from low morning VPD (low \nTa, high RH). During the early growing season, these large \nmorning gw also result from small χw (predominantly due to \ncold temperatures and low NSCs; Figs. 2 and 3).",
+      "text_hash": "sha256:815c5fcb9924825d917caf70b9cb6f93be82313fc80f66dfe570217f8c9a75aa",
+      "claim_statement": "Maximal dawn stomatal conductance results predominantly from low morning VPD, and large early-season morning conductance also results from cold temperatures and low non-structural carbohydrates.",
+      "claim_type": "model",
+      "author_stance": "asserted",
+      "subject": "low morning VPD, and cold temperatures with low NSC",
+      "relation": "produce",
+      "object": "maximal dawn stomatal conductance",
+      "direction": "positive",
+      "evidence_layer": "modeling",
+      "hedging_level": 0,
+      "scope": {
+        "species": "tree (year-long simulation)",
+        "compartment": "leaf, whole-plant carbon and water",
+        "conditions": "dawn, early growing season",
+        "timescale": "diurnal to annual"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C2",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "In the only corpus model coupling temperature, carbohydrate and dawn gs, cold with low NSC raises morning conductance and VPD dominates, contradicting the hypothesis on both counts."
+    },
+    {
+      "claim_ref": "A3-018",
+      "document_id": "046_Dynamically_optimizing_stomatal_conductance_for_maximum_turg",
+      "semantic_unit": "abstract",
+      "section": "Abstract",
+      "char_start": 2534,
+      "char_end": 2804,
+      "verbatim_text": "The growth-optimization hypothesis cannot currently explain \nnocturnal stomatal opening unless employing corrective ‘fitness factors’ or reframing the theory in a probabilistic manner, in which stomata \nadopt an inaccurate statistical ‘memory’ of night-time temperature.",
+      "text_hash": "sha256:d498319e97691505d55a2082753cff300e2014e0837241def8cac721aae93a6e",
+      "claim_statement": "The growth-optimization hypothesis cannot currently explain nocturnal stomatal opening without corrective fitness factors or a probabilistic reframing in which stomata hold an inaccurate statistical memory of night-time temperature.",
+      "claim_type": "model",
+      "author_stance": "negated",
+      "subject": "carbohydrate-and-growth-based stomatal optimization theory",
+      "relation": "fails to explain",
+      "object": "nocturnal stomatal opening",
+      "direction": "null",
+      "evidence_layer": "modeling",
+      "hedging_level": 1,
+      "scope": {
+        "species": "tree (simulation)",
+        "compartment": "leaf stomata, whole-plant carbohydrate pools",
+        "conditions": "night-time, diel temperature and NSC fluctuation",
+        "timescale": "night to annual"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C2",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "A quantitative null result for the whole class of carbohydrate-demand explanations of night and dawn stomatal behaviour, including night-temperature memory."
+    },
+    {
+      "claim_ref": "A3-019",
+      "document_id": "016_An_improved_representative_of_stomatal_models_for_predicting",
+      "semantic_unit": "results",
+      "section": "Model evaluation",
+      "char_start": 38300,
+      "char_end": 38502,
+      "verbatim_text": "In addition to the late afternoon period, the coupled USO and \nBBL models consistently overestimated gsw in the morning under con­\nditions of low VPD (< 0.6 kPa) and low irradiance (< 500 μmol m–2 s–1).",
+      "text_hash": "sha256:2ae7126d9fe345332edc59d62b4358bdf7c478bb9a7965dcf848db8822f9316e",
+      "claim_statement": "Coupled USO and BBL stomatal models consistently overestimated morning stomatal conductance under low VPD (below 0.6 kPa) and low irradiance (below 500 umol m-2 s-1).",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "standard stomatal conductance models",
+      "relation": "systematically overestimate",
+      "object": "observed morning stomatal conductance under low VPD and low irradiance",
+      "direction": "negative",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "orchard tree (Tabehe)",
+        "compartment": "leaf gas exchange, field",
+        "conditions": "morning, VPD below 0.6 kPa, PPFD below 500 umol m-2 s-1",
+        "timescale": "diurnal, morning period"
+      },
+      "quantitative": {
+        "magnitude_text": "low VPD (< 0.6 kPa) and low irradiance (< 500 umol m-2 s-1)",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Morning conductance below expectation is a documented generic low-VPD low-light artefact, so the hypothesis's target observation has a mundane baseline explanation."
+    },
+    {
+      "claim_ref": "A3-020",
+      "document_id": "438_Guard_Cell_Starch_Degradation_Yields_Glucose_for_Rapid_Stoma",
+      "semantic_unit": "introduction",
+      "section": "Introduction",
+      "char_start": 4024,
+      "char_end": 4190,
+      "verbatim_text": "In ﬂuctuating environments,\nhowever, stomatal responses to changing conditions, especially\nlight and temperature, are generally slower than photosyn-\nthetic responses",
+      "text_hash": "sha256:44cd1bf637216b2654ad5b8dac06793ec7d4bf56f2830cb9ae3ceefca16f5c2a",
+      "claim_statement": "In fluctuating environments stomatal responses to changing conditions, especially light and temperature, are generally slower than photosynthetic responses.",
+      "claim_type": "background_assertion",
+      "author_stance": "asserted",
+      "subject": "stomatal responses to changing light and temperature",
+      "relation": "are slower than",
+      "object": "photosynthetic responses",
+      "direction": "negative",
+      "evidence_layer": "background",
+      "hedging_level": 0,
+      "scope": {
+        "species": "general (land plants)",
+        "compartment": "leaf stomata",
+        "conditions": "fluctuating light and temperature",
+        "timescale": "seconds-minutes versus tens of minutes"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Morning gs is an unfinished transient governed by opening kinetics, so any previous-day treatment that shifts kinetics mimics a lower morning steady state."
+    },
+    {
+      "claim_ref": "A3-021",
+      "document_id": "1060_Improving_the_CROPGRO-Tomato_Model_for_Predicting_Growth_and",
+      "semantic_unit": "methods",
+      "section": "Model modification",
+      "char_start": 27895,
+      "char_end": 28141,
+      "verbatim_text": "There is also a minimum night temperature\neffect in the model that reduces the next day’s\nleaf photosynthesis, which concurs with re-\nported reductions in photosynthesis of tomato\nwhen the minimum temperature (Tmin; night\ntemperature) is below 10",
+      "text_hash": "sha256:814654201f4992c43d4a2d9e7a05020b7529b8263f85f1fc1e2c4270c84a5269",
+      "claim_statement": "A minimum night temperature effect reduces the next day's leaf photosynthesis in the model, concurring with reported reductions in tomato photosynthesis when night minimum temperature falls below 10 C.",
+      "claim_type": "model",
+      "author_stance": "asserted",
+      "subject": "low minimum night temperature",
+      "relation": "reduces",
+      "object": "next-day leaf photosynthesis",
+      "direction": "negative",
+      "evidence_layer": "modeling",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Solanum lycopersicum (tomato)",
+        "compartment": "leaf photosynthetic capacity",
+        "conditions": "night minimum temperature below about 10-15 C",
+        "timescale": "overnight carry-over to next day"
+      },
+      "quantitative": {
+        "magnitude_text": "minimum temperature (Tmin; night temperature) is below 10",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C2",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "A cool night depresses next-day assimilation capacity directly, and A-gs coupling then lowers morning conductance without any hexose signal."
+    },
+    {
+      "claim_ref": "A3-022",
+      "document_id": "012_Advances_in_Physiological_and_Molecular_Mechanisms_of_Cucumb",
+      "semantic_unit": "discussion",
+      "section": "Hormone pathways in cold response",
+      "char_start": 21446,
+      "char_end": 21578,
+      "verbatim_text": "studies show low\ntemperature increases ABA content in cucumber roots and leaves, positively correlating\nwith cultivar cold hardiness",
+      "text_hash": "sha256:b39dedcf52c735ce7ed0344445fcc72a921b83730e81daa1a9095234d29b4dcc",
+      "claim_statement": "Low temperature increases ABA content in cucumber roots and leaves, positively correlating with cultivar cold hardiness.",
+      "claim_type": "association",
+      "author_stance": "supported",
+      "subject": "low temperature",
+      "relation": "increases",
+      "object": "ABA content in roots and leaves",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Cucumis sativus (cucumber)",
+        "compartment": "whole root and leaf tissue",
+        "conditions": "low temperature stress",
+        "timescale": "hours to days"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C2",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Cold raises ABA, the canonical stomatal closing signal, giving a complete cold-to-closed-stomata pathway that bypasses hexose entirely."
+    },
+    {
+      "claim_ref": "A3-023",
+      "document_id": "146_Temporal_heterogeneity_of_cold_acclimation_phenotypes_in_Ara",
+      "semantic_unit": "abstract",
+      "section": "Abstract",
+      "char_start": 937,
+      "char_end": 1138,
+      "verbatim_text": "Leaves that were entirely cold-developed\n(CD) were twice as thick (eight cell layers) as their warm-\ndeveloped (WD) counterparts (six layers), and also had\nhigher epidermal and stomatal cell densities.",
+      "text_hash": "sha256:f5b8a8f652f2b738aa02bf555b97055d369433e7eb28265282476f97fbcbf67b",
+      "claim_statement": "Leaves developed entirely in the cold were twice as thick as warm-developed leaves and had higher epidermal and stomatal cell densities.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "cold development",
+      "relation": "increases",
+      "object": "leaf thickness and epidermal and stomatal cell densities",
+      "direction": "positive",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "leaf epidermis and mesophyll anatomy",
+        "conditions": "25/20 C grown then shifted to 5 C for up to 2 months",
+        "timescale": "weeks (developmental)"
+      },
+      "quantitative": {
+        "magnitude_text": "twice as thick (eight cell layers) ... (six layers)",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C2",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Cold alters stomatal density and leaf anatomy, so cold-history effects on conductance can be structural rather than metabolic signalling."
+    },
+    {
+      "claim_ref": "A3-024",
+      "document_id": "146_Temporal_heterogeneity_of_cold_acclimation_phenotypes_in_Ara",
+      "semantic_unit": "introduction",
+      "section": "Introduction",
+      "char_start": 5447,
+      "char_end": 5676,
+      "verbatim_text": "Sugars reach an\nearly peak after a few days of exposure, but remain elevated\nin comparison to warm-grown leaves (Koster & Lynch\n1992; Ristic & Ashworth 1993; Strand et al. 1997) due to\nincreases in the abundance and activity of s",
+      "text_hash": "sha256:cf2ace11c4e2424da54d845f699129a136b27e97ca6a33b6a90d13ea1a19da6d",
+      "claim_statement": "Sugars accumulate in cold-exposed leaves and remain elevated relative to warm-grown leaves because of increases in the abundance and activity of synthetic enzymes.",
+      "claim_type": "review_synthesis",
+      "author_stance": "supported",
+      "subject": "cold exposure",
+      "relation": "raises leaf sugars through",
+      "object": "increased abundance and activity of sugar-synthesising enzymes",
+      "direction": "positive",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana and other cold-acclimating species",
+        "compartment": "whole leaf",
+        "conditions": "cold exposure of days to weeks",
+        "timescale": "days to weeks"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C3"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Cold sugar accumulation is attributed to active up-regulated synthesis, an alternative to the hypothesis's premise that hexose merely fails to be converted."
+    },
+    {
+      "claim_ref": "A3-025",
+      "document_id": "146_Temporal_heterogeneity_of_cold_acclimation_phenotypes_in_Ara",
+      "semantic_unit": "results",
+      "section": "Sugar and starch concentration",
+      "char_start": 26748,
+      "char_end": 26927,
+      "verbatim_text": "Glucose levels declined steadily from 4 d of\nexposure (linear regression F1,12 = 12.6, P < 0.005), whereas\nfructose and sucrose, and the total of all three sugars, did\nnot change.",
+      "text_hash": "sha256:af29c267f6dd18936195cfa300504b44a95ad9f8d6170d4867d77656ca7825c6",
+      "claim_statement": "Glucose declined steadily from 4 d of cold exposure in pre-existing leaves, whereas fructose, sucrose and total sugars did not change.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "continued cold exposure",
+      "relation": "steadily decreases",
+      "object": "leaf glucose concentration (fructose and sucrose unchanged)",
+      "direction": "negative",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "Arabidopsis thaliana",
+        "compartment": "whole leaf (pre-existing leaves)",
+        "conditions": "5 C exposure, 4 d onward",
+        "timescale": "days to weeks"
+      },
+      "quantitative": {
+        "magnitude_text": "linear regression F1,12 = 12.6, P < 0.005",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C3"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Glucose specifically falls with sustained cold while other sugars hold, so elevated dawn hexose is not a durable consequence of cold nights."
+    },
+    {
+      "claim_ref": "A3-026",
+      "document_id": "090_Is_carbon_not_water_the_resource_that_limits_stomatal_openin",
+      "semantic_unit": "discussion",
+      "section": "Commentary on the growth-optimization theory",
+      "char_start": 8290,
+      "char_end": 8404,
+      "verbatim_text": "Conversely, small η implies\ndemand for NSCs is low, so stomata should close to enhance\ngrowth over photosynthesis.",
+      "text_hash": "sha256:0cc2c8a0d04e6c1c230cab16b1f3a8b93a3ac1b789283c1f723d8b4a4e8e20d2",
+      "claim_statement": "When demand for non-structural carbohydrates is low, stomata should close to favour growth over photosynthesis.",
+      "claim_type": "theory",
+      "author_stance": "asserted",
+      "subject": "low marginal demand for non-structural carbohydrates",
+      "relation": "should cause",
+      "object": "stomatal closure",
+      "direction": "negative",
+      "evidence_layer": "modeling",
+      "hedging_level": 1,
+      "scope": {
+        "species": "tree (theory)",
+        "compartment": "whole-plant carbon economy and leaf stomata",
+        "conditions": "low sink demand",
+        "timescale": "hours to days"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "Low overnight sink demand predicts reduced morning opening by whole-plant carbon economics, an observationally identical rival to guard-cell hexose sensing."
+    },
+    {
+      "claim_ref": "A3-027",
+      "document_id": "073_Generalized_Stomatal_Optimization_of_Evolutionary_Fitness_Pr",
+      "semantic_unit": "results",
+      "section": "Model behaviour",
+      "char_start": 63413,
+      "char_end": 63564,
+      "verbatim_text": "Stomatal conductance decreased as leaves accu-\nmulated more soluble carbohydrates and as their osmotic poten-\ntials became more negative (Figure 2e,f).",
+      "text_hash": "sha256:7aca8d8039f12da897206262a6fe3e7fff9d937754e2050b799487a107f3ccdb",
+      "claim_statement": "Simulated stomatal conductance decreased as leaves accumulated more soluble carbohydrates and their osmotic potentials became more negative.",
+      "claim_type": "model",
+      "author_stance": "asserted",
+      "subject": "leaf soluble carbohydrate accumulation and more negative osmotic potential",
+      "relation": "decreases",
+      "object": "stomatal conductance",
+      "direction": "negative",
+      "evidence_layer": "modeling",
+      "hedging_level": 0,
+      "scope": {
+        "species": "generic C3 leaf (model)",
+        "compartment": "leaf mesophyll osmotic potential and stomata",
+        "conditions": "varying hydration and carbohydrate load",
+        "timescale": "hours to days"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "Reproduces the hypothesised sign but through leaf osmotic potential rather than hexose signalling, so the observation cannot identify the mechanism."
+    },
+    {
+      "claim_ref": "A3-028",
+      "document_id": "1209_Root_hydraulic_phenotypes_impacting_water_uptake_in_drying_s",
+      "semantic_unit": "introduction",
+      "section": "Introduction",
+      "char_start": 5792,
+      "char_end": 6029,
+      "verbatim_text": "In wet conditions, the water potential gradient at the\nsoil–root interface is minimum, and root hydraulic conductance (Kroot,\ncm3 kPa−1 s−1) at a given transpiration rate determines the difference\nin water potential between soil and leaf",
+      "text_hash": "sha256:2a72cf53c3ccf1db8fdc9c003b4ccac741330cd4a01b5e2104a33e8cb84bbed5",
+      "claim_statement": "In wet soil, root hydraulic conductance at a given transpiration rate determines the water potential difference between soil and leaf.",
+      "claim_type": "background_assertion",
+      "author_stance": "asserted",
+      "subject": "root hydraulic conductance (Kroot)",
+      "relation": "determines",
+      "object": "the soil-to-leaf water potential difference at a given transpiration rate",
+      "direction": "negative",
+      "evidence_layer": "review",
+      "hedging_level": 0,
+      "scope": {
+        "species": "wheat, maize, barley (review scope)",
+        "compartment": "root-to-leaf hydraulic pathway",
+        "conditions": "wet soil",
+        "timescale": "minutes to hours"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C4"
+      ],
+      "bearing_on_hypothesis": "conditions",
+      "why": "Supplies the hydraulic half of the cold-root rival, but this review never states a temperature dependence, so the rival is only partly evidenced here."
+    },
+    {
+      "claim_ref": "A3-029",
+      "document_id": "090_Is_carbon_not_water_the_resource_that_limits_stomatal_openin",
+      "semantic_unit": "discussion",
+      "section": "Commentary on the growth-optimization theory",
+      "char_start": 10853,
+      "char_end": 11059,
+      "verbatim_text": "Furthermore, progressive stomatal opening as NSC stores are\ndepleted by nocturnal growth could help explain nocturnal\nstomatal opening, which is otherwise seemingly maladaptive\n(Resco de Dios et al., 2019).",
+      "text_hash": "sha256:eda37dfdb223a4963e2c795c394401b934c94a50703a33fac58e9b7f68d8c4a7",
+      "claim_statement": "Progressive stomatal opening as non-structural carbohydrate stores are depleted by nocturnal growth could help explain nocturnal stomatal opening.",
+      "claim_type": "theory",
+      "author_stance": "speculative",
+      "subject": "depletion of non-structural carbohydrate stores by nocturnal growth",
+      "relation": "progressively increases",
+      "object": "stomatal opening at night",
+      "direction": "positive",
+      "evidence_layer": "modeling",
+      "hedging_level": 3,
+      "scope": {
+        "species": "tree (theory)",
+        "compartment": "whole-plant carbohydrate stores and leaf stomata",
+        "conditions": "night-time growth",
+        "timescale": "overnight"
+      },
+      "quantitative": {
+        "magnitude_text": null,
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "supports",
+      "why": "This is the strongest corpus statement matching the hypothesis's logic, but it is speculative theory at the whole-plant NSC level, not measured guard-cell hexose."
+    },
+    {
+      "claim_ref": "A3-030",
+      "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+      "semantic_unit": "discussion",
+      "section": "Discussion",
+      "char_start": 54938,
+      "char_end": 55168,
+      "verbatim_text": "an osmotic feedback mechanism limiting \ntranspirational water loss, for example, under high vapour pressure \ndifference38,39, and we did observe such inhibition by 100 mM sucrose \nor mannitol in gas exchange experiments (Fig. 3f).",
+      "text_hash": "sha256:da00bac42375d3c1218e24348b5951fbf55b04af0c5baab3a4f03471126756cb",
+      "claim_statement": "Stomatal inhibition was observed with 100 mM sucrose or with mannitol in gas exchange experiments, consistent with an osmotic feedback mechanism.",
+      "claim_type": "observation",
+      "author_stance": "asserted",
+      "subject": "100 mM sucrose or mannitol applied to leaves",
+      "relation": "produces equivalent inhibition of",
+      "object": "stomatal conductance",
+      "direction": "negative",
+      "evidence_layer": "direct_measurement",
+      "hedging_level": 0,
+      "scope": {
+        "species": "not stated in span",
+        "compartment": "leaf apoplast, gas exchange",
+        "conditions": "100 mM osmoticum feeding",
+        "timescale": "minutes to hours"
+      },
+      "quantitative": {
+        "magnitude_text": "100 mM sucrose or mannitol",
+        "effect_size": null,
+        "sample_size": null,
+        "p_value": null
+      },
+      "relevance_to": [
+        "C1",
+        "C4"
+      ],
+      "bearing_on_hypothesis": "contradicts",
+      "why": "A non-metabolisable osmoticum reproduces the sugar-induced closure, so high-sugar closure is an osmotic artefact rather than hexose-specific signalling."
+    }
+  ],
+  "rival_mechanisms": [
+    {
+      "name": "Guard-cell starch/hexose DEPLETION at dawn (opposite sign to the hypothesis)",
+      "strength": "strong",
+      "evidence_refs": [
+        "A3-001",
+        "A3-002",
+        "A3-003",
+        "A3-004",
+        "A3-005"
+      ],
+      "why_it_could_produce_the_same_observation": "Blocking dawn starch-to-glucose conversion in Arabidopsis leaves guard cells with almost no glucose and adds 40 min to the stomatal opening time constant. Any previous-day treatment that lowers dawn guard-cell glucose therefore produces reduced morning opening. This is the same observation as the hypothesis predicts but with the hexose term reversed in sign."
+    },
+    {
+      "name": "Osmotic (non-signalling) inhibition by high solute load",
+      "strength": "strong",
+      "evidence_refs": [
+        "A3-030",
+        "A3-011",
+        "A3-027"
+      ],
+      "why_it_could_produce_the_same_observation": "Mannitol, a non-metabolisable osmoticum, reproduces the stomatal inhibition seen with 100 mM sucrose, and a model reduces gs simply as leaf osmotic potential becomes more negative with carbohydrate accumulation. Elevated leaf solutes after a cool night could therefore lower morning gs osmotically, with no hexose sensing involved."
+    },
+    {
+      "name": "Circadian gating and predawn conductance priming",
+      "strength": "strong",
+      "evidence_refs": [
+        "A3-012",
+        "A3-014",
+        "A3-015",
+        "A3-013"
+      ],
+      "why_it_could_produce_the_same_observation": "Nocturnal conductance is clock-driven, persists under constant conditions, correlates positively with relative growth rate, and is proposed to prime stomata for early daylight. A cool night that suppresses growth would lower nocturnal and predawn conductance, so stomata start the morning from a lower aperture regardless of leaf sugar status."
+    },
+    {
+      "name": "Morning transient: stomatal opening kinetics rather than steady state",
+      "strength": "strong",
+      "evidence_refs": [
+        "A3-020",
+        "A3-001",
+        "A3-013"
+      ],
+      "why_it_could_produce_the_same_observation": "Stomatal responses to light and temperature are slower than photosynthetic responses, and measured opening time constants shift by tens of minutes. Morning gs sampled at a fixed clock time is an unfinished transient, so any previous-day effect on opening kinetics reads as reduced morning conductance without changing the eventual steady state."
+    },
+    {
+      "name": "Direct depression of next-day photosynthetic capacity by low night temperature",
+      "strength": "moderate",
+      "evidence_refs": [
+        "A3-021"
+      ],
+      "why_it_could_produce_the_same_observation": "A validated crop model reduces next-day leaf photosynthesis when night minimum temperature falls below about 10-15 C, citing measured tomato reductions. Lower next-day assimilation raises intercellular CO2 and, through A-gs coupling, lowers morning conductance. The cause is photosynthetic carry-over, not a hexose signal."
+    },
+    {
+      "name": "Morning VPD / leaf-to-air gradient and low-irradiance conditions",
+      "strength": "moderate",
+      "evidence_refs": [
+        "A3-017",
+        "A3-019"
+      ],
+      "why_it_could_produce_the_same_observation": "Dawn conductance maxima are attributed predominantly to low morning VPD, and standard stomatal models systematically overestimate morning gs below 0.6 kPa VPD and below 500 umol m-2 s-1 irradiance. A cool night changes dawn air temperature, humidity and dew, so 'otherwise-equivalent clear days' are not equivalent in the morning boundary layer, and reduced morning gs versus expectation is already a documented artefact."
+    },
+    {
+      "name": "ABA and cold-stress signalling carried over from the cool night",
+      "strength": "moderate",
+      "evidence_refs": [
+        "A3-022",
+        "A3-009"
+      ],
+      "why_it_could_produce_the_same_observation": "Low temperature increases ABA in cucumber roots and leaves. ABA is the canonical closing signal, and the corpus's own hexose-closure mechanism is itself described as ABA-mediated, so cold-induced ABA and hexose signalling converge on the same effector and are not separable from a morning gs measurement."
+    },
+    {
+      "name": "Whole-plant carbon economics / low sink demand (not guard-cell sensing)",
+      "strength": "moderate",
+      "evidence_refs": [
+        "A3-026",
+        "A3-018",
+        "A3-029"
+      ],
+      "why_it_could_produce_the_same_observation": "Optimization theory predicts that when marginal demand for non-structural carbohydrate is low, stomata should close to favour growth over photosynthesis. A cool night suppresses sink demand, so this predicts reduced morning opening from whole-plant economics rather than guard-cell hexose. Note the same paper reports that this theory class fails to explain nocturnal stomatal opening."
+    },
+    {
+      "name": "Cold-induced anatomical and developmental change (stomatal density, leaf thickness)",
+      "strength": "moderate",
+      "evidence_refs": [
+        "A3-023"
+      ],
+      "why_it_could_produce_the_same_observation": "Cold-developed Arabidopsis leaves were twice as thick and had higher epidermal and stomatal cell densities. Repeated cool nights change the stomatal population and diffusion path, altering conductance structurally, on a developmental rather than an overnight timescale."
+    },
+    {
+      "name": "Low root-zone temperature reducing root hydraulic conductivity / aquaporin gating",
+      "strength": "weak",
+      "evidence_refs": [
+        "A3-016",
+        "A3-028"
+      ],
+      "why_it_could_produce_the_same_observation": "Cold roots would limit morning water supply and force stomatal closure. One corpus model implements temperature-dependent hydraulic conductances that limit stomatal opening under cold weather, and a root-hydraulics review supplies the conductance-to-water-potential link. However the assigned root-hydraulics paper 1209 contains no occurrence of 'temperature' at all, and the primary aquaporin/low-root-temperature studies appear in this corpus only as reference-list citations, so the classic rival is under-evidenced here despite being physiologically plausible."
+    },
+    {
+      "name": "Incomplete overnight rehydration / predawn leaf water potential recovery",
+      "strength": "unsupported-in-corpus",
+      "evidence_refs": [],
+      "why_it_could_produce_the_same_observation": "A cool night could slow rehydration and leave a lower predawn leaf water potential, limiting morning opening. Searches for overnight rehydration and predawn recovery returned only drought-context and methodological statements (predawn disequilibrium with soil water potential, nocturnal transpiration delaying rehydration under warm nights), none linking cool nights to next-morning conductance. No claim is emitted."
+    },
+    {
+      "name": "Photosynthetic induction state as the limiting step in the morning",
+      "strength": "weak",
+      "evidence_refs": [
+        "A3-020"
+      ],
+      "why_it_could_produce_the_same_observation": "Morning assimilation is induction-limited and stomatal limitation during induction is explicitly quantified in the corpus, so morning gs tracks induction state. Corpus material on induction is measured against CO2, leaf temperature and VPD treatments, not against previous-night temperature, so the specific carry-over link is not evidenced."
+    }
+  ],
+  "notes": "PROSECUTION SUMMARY. Every span was pinned with a whitespace-mapping matcher and re-read from\ndisk; char_start/char_end/verbatim_text are byte-identical to text.md and text_hash is sha256 of\nthe raw slice. 30 claims from 15 documents. No quote, offset, hash, number, species or citation\nwas invented; two candidate spans initially failed to pin (1060 because the raw text contains a\ncontrol character in \"10 \\u0002C\", 146 because of sentence-initial capitalisation) and were\nre-pinned with corrected phrases rather than guessed.\n\nDECISIVE COUNTER TO C1/C4. 438 (Arabidopsis, direct measurement): blocking guard-cell starch\ndegradation leaves guard cells with almost undetectable glucose and INCREASES the opening time\nconstant by 40 min; the authors conclude dawn starch degradation is \"required to maintain the\ncytoplasmic sugar pool, clearly needed for fast stomatal opening\". Dawn guard-cell hexose is a\npositive requirement for rapid morning opening, so the hypothesis assigns the wrong sign to C1\nin exactly the compartment and timescale it needs.\n\nDOSE AND PHASE BOUNDARY ON THE SUGAR-CLOSURE EFFECT. Where sugars do close stomata, the corpus\nscopes it to (a) high concentrations (432: low concentrations had little or no effect), (b)\nperiods of high photosynthetic rate / carbon saturation (507, 1106, 236), and (c) apoplastic\nsucrose sensed by hexokinase with ABA as the effector (432, 507). 236 further shows 100 mM\nMANNITOL reproduces the inhibition, so the high-sugar effect is at least partly osmotic rather\nthan hexose-specific. A residual dawn hexose pool is in the low-concentration, carbon-depleted\nregime where the corpus reports promotion or no effect.\n\nIDENTIFIABILITY. At least four rivals predict an observationally IDENTICAL morning-gs pattern\nafter a cool night: reduced circadian/predawn priming (023, 1187), low sink demand under carbon\neconomics (090), cold-depressed next-day photosynthetic capacity with A-gs coupling (1060), and\ncold-induced ABA (012, 432). 046 makes this worse: in the only corpus model coupling temperature,\ncarbohydrate and dawn gs, cold temperatures with LOW NSC produce LARGER morning conductance and\ndawn gs is attributed predominantly to low morning VPD. The hypothesis is therefore not\nidentifiable from morning gs on \"otherwise-equivalent clear days\" alone; discrimination requires\npaired dawn guard-cell (not whole-leaf) hexose assay, ABA measurement, predawn water potential,\ngn/predawn gs, and full opening-kinetics time courses rather than a single morning reading.\n\nCOUNTER TO C3's MECHANISM. 146 (Arabidopsis, direct measurement) attributes cold sugar\naccumulation to increased abundance and activity of SYNTHETIC enzymes, not to failed conversion\ninto structural carbohydrate, and reports that glucose specifically DECLINES steadily from 4 d of\ncold while fructose, sucrose and total sugars do not change. Elevated hexose is therefore neither\nmechanistically as assumed nor durable.\n\nHONEST SUPPORT FOUND. 090 states that progressive stomatal opening as NSC stores are depleted by\nnocturnal growth could explain nocturnal opening, which matches the hypothesis's logic; it is\nspeculative theory at the whole-plant NSC level, and 046 reports that this theory class cannot\ncurrently explain nocturnal stomatal opening without corrective fitness factors. 073 reproduces\nthe hypothesised sign but via leaf osmotic potential, not hexose signalling.\n\nSEARCHED FOR AND NOT FOUND IN CORPUS. (1) Any direct measurement linking previous-night\ntemperature to next-morning stomatal conductance. (2) Any measurement of dawn guard-cell or leaf\nhexose paired with morning gs on clear days. (3) Any in-body statement that low root-zone\ntemperature reduces root hydraulic conductivity: 1209 contains no occurrence of \"temperature\",\nand Murai-Hatano 2008, Lee 2012 (PIP2;5), Wan 2001 and Kuwagata 2012 appear only in reference\nlists of 031, 046, 012, 457 and 783. (4) Any cool-night to incomplete-overnight-rehydration to\nmorning-gs chain. (5) Starting paper 012 (cucumber cold tolerance) contains ZERO in-body\noccurrences of \"stomatal\", so it cannot support any stomatal link. Absence in this corpus is\nabsence of evidence, not proof of absence.\n\nSCOPE AND WRITE-SCOPE NOTE. The role_registry write_scope for prosecutor is\nartifacts/parliament/prosecutor/**; the delegating agent directed this single output file to\nruns/forge-hexose-gs-20260802/claims_A3_rivals.json. Nothing else was modified."
+}

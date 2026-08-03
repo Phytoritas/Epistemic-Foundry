@@ -1,0 +1,1013 @@
+{
+  "schema_version": 2,
+  "skill": "recursive-architecture-refactoring-auto",
+  "goal_id": "ralph-continue-epistemic-foundry-v4-0-0-under-product-owner-decision-hd-ef4-b04-sg002-20260730-001-preserve-b04-0006-projection-pass-and-package-spec-gap-plus-every-prior-attempt-report-review-command-receipt-rah-evidence-and-generation-and-the-dirty-worktree-in-the-primary-session-without-fleet-or-subagents-execute-serially-c03-0003-f04-0002-j02-0003-s04-0003-b04-0007-projection-and-regression-revalidation-c04-0002-full-conformance-b04-0008-final-packaging-then-recompute-the-156-package-dag-and-continue-dependency-ready-packages-until-the-verified-external-goal-is-terminal-keep-completion-ready-false-until-all-objective-gates-pass",
+  "required": true,
+  "status": "pending",
+  "reviewer": "reviewer",
+  "attempts": [
+    {
+      "request_id": "c4d533a2ffa737ca",
+      "requested_at_utc": "2026-08-02T10:16:37+00:00",
+      "reviewer": "reviewer",
+      "scope": "completion",
+      "objective": "Implement the complete Epistemic Foundry v4.0.0 specification under product-owner decisions including HD-EF4-S04-SG001-20260731-001. Preserve S04-0004 as immutable SPEC_GAP history and preserve every prior attempt, HumanDecision, RAH evidence and generation, report, review, receipt, command record, and the dirty worktree. In the primary session without Fleet or subagents, seal S04-0005 PASS, then execute serially C01-0009, C02-0004, B04-0009, O02-0002, C04-0004, and the next-unused final B04 packaging attempt; recompute the 156-package DAG and continue the next dependency-ready package. Keep completion_ready false until every objective, source-coverage, PRD, review, validation, and closeout gate actually passes.",
+      "acceptance_matrix": [
+        {
+          "id": "A1",
+          "criterion": "The requested goal is implemented or the remaining blocker is explicit.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "A2",
+          "criterion": "Repo-local validation commands have been run or their absence is documented.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "A3",
+          "criterion": "The diff has been reviewed for correctness, regression risk, and missing tests.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "validation_matrix": [
+        {
+          "id": "V1",
+          "check": "typecheck if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V2",
+          "check": "lint if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V3",
+          "check": "tests relevant to the changed surface",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V4",
+          "check": "build or smoke check if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "closeout_matrix": [
+        {
+          "id": "C1",
+          "requirement": "fresh status and resume packet after final edits",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C2",
+          "requirement": "durable .rah JSON state parses",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C3",
+          "requirement": "stale objective, branch, and obsolete status wording negative-scan is clean or documented",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C4",
+          "requirement": "generated-output tracking decision is recorded",
+          "status": "documented_gap",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C5",
+          "requirement": "final validation result is recorded",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "note": "Independent completion review across 4 adversarial rounds; final verdict APPROVE.",
+      "wait_policy": {
+        "pending_is_wait_state": true,
+        "preferred_tool": "wait_agent",
+        "wait_timeout_ms": 3600000,
+        "retry_until_terminal": true,
+        "pending_no_response_is_terminal": false,
+        "pending_no_response_allows_fallback": false,
+        "fallback_requires_explicit_tool_or_runtime_failure": true
+      }
+    },
+    {
+      "request_id": "7c9420f5a8915184",
+      "requested_at_utc": "2026-08-02T10:41:25+00:00",
+      "reviewer": "reviewer",
+      "scope": "completion",
+      "objective": "Implement the complete Epistemic Foundry v4.0.0 specification under product-owner decisions including HD-EF4-S04-SG001-20260731-001. Preserve S04-0004 as immutable SPEC_GAP history and preserve every prior attempt, HumanDecision, RAH evidence and generation, report, review, receipt, command record, and the dirty worktree. In the primary session without Fleet or subagents, seal S04-0005 PASS, then execute serially C01-0009, C02-0004, B04-0009, O02-0002, C04-0004, and the next-unused final B04 packaging attempt; recompute the 156-package DAG and continue the next dependency-ready package. Keep completion_ready false until every objective, source-coverage, PRD, review, validation, and closeout gate actually passes.",
+      "acceptance_matrix": [
+        {
+          "id": "A1",
+          "criterion": "The requested goal is implemented or the remaining blocker is explicit.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "A2",
+          "criterion": "Repo-local validation commands have been run or their absence is documented.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "A3",
+          "criterion": "The diff has been reviewed for correctness, regression risk, and missing tests.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "validation_matrix": [
+        {
+          "id": "V1",
+          "check": "typecheck if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V2",
+          "check": "lint if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V3",
+          "check": "tests relevant to the changed surface",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V4",
+          "check": "build or smoke check if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "closeout_matrix": [
+        {
+          "id": "C1",
+          "requirement": "fresh status and resume packet after final edits",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C2",
+          "requirement": "durable .rah JSON state parses",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C3",
+          "requirement": "stale objective, branch, and obsolete status wording negative-scan is clean or documented",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C4",
+          "requirement": "generated-output tracking decision is recorded",
+          "status": "documented_gap",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C5",
+          "requirement": "final validation result is recorded",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "note": "Re-anchor after authorized deliverable commit f265e9b (pure git-packaging, zero content delta; independent reviewer confirmed APPROVE stands for the committed state).",
+      "wait_policy": {
+        "pending_is_wait_state": true,
+        "preferred_tool": "wait_agent",
+        "wait_timeout_ms": 3600000,
+        "retry_until_terminal": true,
+        "pending_no_response_is_terminal": false,
+        "pending_no_response_allows_fallback": false,
+        "fallback_requires_explicit_tool_or_runtime_failure": true
+      }
+    },
+    {
+      "request_id": "b4f004586f0c45eb",
+      "requested_at_utc": "2026-08-02T13:43:22+00:00",
+      "reviewer": "reviewer",
+      "scope": "completion",
+      "objective": "Implement the complete Epistemic Foundry v4.0.0 specification under product-owner decisions including HD-EF4-S04-SG001-20260731-001. Preserve S04-0004 as immutable SPEC_GAP history and preserve every prior attempt, HumanDecision, RAH evidence and generation, report, review, receipt, command record, and the dirty worktree. In the primary session without Fleet or subagents, seal S04-0005 PASS, then execute serially C01-0009, C02-0004, B04-0009, O02-0002, C04-0004, and the next-unused final B04 packaging attempt; recompute the 156-package DAG and continue the next dependency-ready package. Keep completion_ready false until every objective, source-coverage, PRD, review, validation, and closeout gate actually passes.",
+      "acceptance_matrix": [
+        {
+          "id": "A1",
+          "criterion": "The requested goal is implemented or the remaining blocker is explicit.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "A2",
+          "criterion": "Repo-local validation commands have been run or their absence is documented.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "A3",
+          "criterion": "The diff has been reviewed for correctness, regression risk, and missing tests.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "validation_matrix": [
+        {
+          "id": "V1",
+          "check": "typecheck if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V2",
+          "check": "lint if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V3",
+          "check": "tests relevant to the changed surface",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V4",
+          "check": "build or smoke check if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "closeout_matrix": [
+        {
+          "id": "C1",
+          "requirement": "fresh status and resume packet after final edits",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C2",
+          "requirement": "durable .rah JSON state parses",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C3",
+          "requirement": "stale objective, branch, and obsolete status wording negative-scan is clean or documented",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C4",
+          "requirement": "generated-output tracking decision is recorded",
+          "status": "documented_gap",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C5",
+          "requirement": "final validation result is recorded",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "note": "Re-review after the integrity-hardening wave. Prior approval (2026-08-02T10:41:46Z, git_head f265e9b) is stale: ledger head, coverage, git head, tracked diff and untracked manifest all moved. Subject: E0385-E0388 plus the working tree. Verify (a) the two new gates actually fail when their invariant is violated rather than passing vacuously, (b) the pin-supersession registry does not function as a blanket waiver, (c) the document-registration field_sources amendment changed no hash value, (d) no sealed generation was mutated.",
+      "wait_policy": {
+        "pending_is_wait_state": true,
+        "preferred_tool": "wait_agent",
+        "wait_timeout_ms": 3600000,
+        "retry_until_terminal": true,
+        "pending_no_response_is_terminal": false,
+        "pending_no_response_allows_fallback": false,
+        "fallback_requires_explicit_tool_or_runtime_failure": true
+      }
+    },
+    {
+      "request_id": "0a145d983d6068fb",
+      "requested_at_utc": "2026-08-02T20:09:31+00:00",
+      "reviewer": "reviewer",
+      "scope": "completion",
+      "objective": "Implement the complete Epistemic Foundry v4.0.0 specification under product-owner decisions including HD-EF4-S04-SG001-20260731-001. Preserve S04-0004 as immutable SPEC_GAP history and preserve every prior attempt, HumanDecision, RAH evidence and generation, report, review, receipt, command record, and the dirty worktree. In the primary session without Fleet or subagents, seal S04-0005 PASS, then execute serially C01-0009, C02-0004, B04-0009, O02-0002, C04-0004, and the next-unused final B04 packaging attempt; recompute the 156-package DAG and continue the next dependency-ready package. Keep completion_ready false until every objective, source-coverage, PRD, review, validation, and closeout gate actually passes.",
+      "acceptance_matrix": [
+        {
+          "id": "A1",
+          "criterion": "The requested goal is implemented or the remaining blocker is explicit.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "A2",
+          "criterion": "Repo-local validation commands have been run or their absence is documented.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "A3",
+          "criterion": "The diff has been reviewed for correctness, regression risk, and missing tests.",
+          "status": "met",
+          "evidence": [
+            "E0369",
+            "E0370",
+            "E0371",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "validation_matrix": [
+        {
+          "id": "V1",
+          "check": "typecheck if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V2",
+          "check": "lint if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V3",
+          "check": "tests relevant to the changed surface",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "V4",
+          "check": "build or smoke check if the repo defines one",
+          "status": "passed",
+          "evidence": [
+            "E0372",
+            "E0373",
+            "E0374",
+            "E0375",
+            "E0383",
+            "E0384"
+          ],
+          "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "closeout_matrix": [
+        {
+          "id": "C1",
+          "requirement": "fresh status and resume packet after final edits",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C2",
+          "requirement": "durable .rah JSON state parses",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C3",
+          "requirement": "stale objective, branch, and obsolete status wording negative-scan is clean or documented",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C4",
+          "requirement": "generated-output tracking decision is recorded",
+          "status": "documented_gap",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        },
+        {
+          "id": "C5",
+          "requirement": "final validation result is recorded",
+          "status": "met",
+          "evidence": [
+            "E0376",
+            "E0377",
+            "E0378",
+            "E0379",
+            "E0380"
+          ],
+          "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+          "blocking_reason": null
+        }
+      ],
+      "note": "Third-round review after two REJECT/APPROVE splits. All four blocking attestation findings and all three carried-forward items are addressed. Subject: E0388-E0392 and the working tree. Key claims to attack: (a) .gitattributes moves fresh-checkout pin reproduction from 10/821 to 813/821, with 3 declared residuals; (b) the invalidation value list is now derived, not hand-listed, and the cross-language scan gap is closed with codegen --check at 0 stale; (c) generation loss is now detected by a gate including manifest verification, not just presence; (d) the census self-certification limit and the self-authored-decision limit are declared as limits rather than claimed closed.",
+      "wait_policy": {
+        "pending_is_wait_state": true,
+        "preferred_tool": "wait_agent",
+        "wait_timeout_ms": 3600000,
+        "retry_until_terminal": true,
+        "pending_no_response_is_terminal": false,
+        "pending_no_response_allows_fallback": false,
+        "fallback_requires_explicit_tool_or_runtime_failure": true
+      }
+    }
+  ],
+  "wait_policy": {
+    "pending_is_wait_state": true,
+    "preferred_tool": "wait_agent",
+    "wait_timeout_ms": 3600000,
+    "retry_until_terminal": true,
+    "pending_no_response_is_terminal": false,
+    "pending_no_response_allows_fallback": false,
+    "fallback_requires_explicit_tool_or_runtime_failure": true
+  },
+  "updated_at_utc": "2026-08-02T20:09:31+00:00",
+  "requested_at_utc": "2026-08-02T20:09:31+00:00",
+  "current_attempt": {
+    "request_id": "0a145d983d6068fb",
+    "requested_at_utc": "2026-08-02T20:09:31+00:00",
+    "reviewer": "reviewer",
+    "scope": "completion",
+    "objective": "Implement the complete Epistemic Foundry v4.0.0 specification under product-owner decisions including HD-EF4-S04-SG001-20260731-001. Preserve S04-0004 as immutable SPEC_GAP history and preserve every prior attempt, HumanDecision, RAH evidence and generation, report, review, receipt, command record, and the dirty worktree. In the primary session without Fleet or subagents, seal S04-0005 PASS, then execute serially C01-0009, C02-0004, B04-0009, O02-0002, C04-0004, and the next-unused final B04 packaging attempt; recompute the 156-package DAG and continue the next dependency-ready package. Keep completion_ready false until every objective, source-coverage, PRD, review, validation, and closeout gate actually passes.",
+    "acceptance_matrix": [
+      {
+        "id": "A1",
+        "criterion": "The requested goal is implemented or the remaining blocker is explicit.",
+        "status": "met",
+        "evidence": [
+          "E0369",
+          "E0370",
+          "E0371",
+          "E0383",
+          "E0384"
+        ],
+        "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+        "blocking_reason": null
+      },
+      {
+        "id": "A2",
+        "criterion": "Repo-local validation commands have been run or their absence is documented.",
+        "status": "met",
+        "evidence": [
+          "E0369",
+          "E0370",
+          "E0371",
+          "E0383",
+          "E0384"
+        ],
+        "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+        "blocking_reason": null
+      },
+      {
+        "id": "A3",
+        "criterion": "The diff has been reviewed for correctness, regression risk, and missing tests.",
+        "status": "met",
+        "evidence": [
+          "E0369",
+          "E0370",
+          "E0371",
+          "E0383",
+          "E0384"
+        ],
+        "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+        "blocking_reason": null
+      }
+    ],
+    "validation_matrix": [
+      {
+        "id": "V1",
+        "check": "typecheck if the repo defines one",
+        "status": "passed",
+        "evidence": [
+          "E0372",
+          "E0373",
+          "E0374",
+          "E0375",
+          "E0383",
+          "E0384"
+        ],
+        "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+        "blocking_reason": null
+      },
+      {
+        "id": "V2",
+        "check": "lint if the repo defines one",
+        "status": "passed",
+        "evidence": [
+          "E0372",
+          "E0373",
+          "E0374",
+          "E0375",
+          "E0383",
+          "E0384"
+        ],
+        "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+        "blocking_reason": null
+      },
+      {
+        "id": "V3",
+        "check": "tests relevant to the changed surface",
+        "status": "passed",
+        "evidence": [
+          "E0372",
+          "E0373",
+          "E0374",
+          "E0375",
+          "E0383",
+          "E0384"
+        ],
+        "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+        "blocking_reason": null
+      },
+      {
+        "id": "V4",
+        "check": "build or smoke check if the repo defines one",
+        "status": "passed",
+        "evidence": [
+          "E0372",
+          "E0373",
+          "E0374",
+          "E0375",
+          "E0383",
+          "E0384"
+        ],
+        "last_checked_at_utc": "2026-08-02T10:11:05+00:00",
+        "blocking_reason": null
+      }
+    ],
+    "closeout_matrix": [
+      {
+        "id": "C1",
+        "requirement": "fresh status and resume packet after final edits",
+        "status": "met",
+        "evidence": [
+          "E0376",
+          "E0377",
+          "E0378",
+          "E0379",
+          "E0380"
+        ],
+        "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+        "blocking_reason": null
+      },
+      {
+        "id": "C2",
+        "requirement": "durable .rah JSON state parses",
+        "status": "met",
+        "evidence": [
+          "E0376",
+          "E0377",
+          "E0378",
+          "E0379",
+          "E0380"
+        ],
+        "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+        "blocking_reason": null
+      },
+      {
+        "id": "C3",
+        "requirement": "stale objective, branch, and obsolete status wording negative-scan is clean or documented",
+        "status": "met",
+        "evidence": [
+          "E0376",
+          "E0377",
+          "E0378",
+          "E0379",
+          "E0380"
+        ],
+        "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+        "blocking_reason": null
+      },
+      {
+        "id": "C4",
+        "requirement": "generated-output tracking decision is recorded",
+        "status": "documented_gap",
+        "evidence": [
+          "E0376",
+          "E0377",
+          "E0378",
+          "E0379",
+          "E0380"
+        ],
+        "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+        "blocking_reason": null
+      },
+      {
+        "id": "C5",
+        "requirement": "final validation result is recorded",
+        "status": "met",
+        "evidence": [
+          "E0376",
+          "E0377",
+          "E0378",
+          "E0379",
+          "E0380"
+        ],
+        "last_checked_at_utc": "2026-08-02T09:07:42+00:00",
+        "blocking_reason": null
+      }
+    ],
+    "note": "Third-round review after two REJECT/APPROVE splits. All four blocking attestation findings and all three carried-forward items are addressed. Subject: E0388-E0392 and the working tree. Key claims to attack: (a) .gitattributes moves fresh-checkout pin reproduction from 10/821 to 813/821, with 3 declared residuals; (b) the invalidation value list is now derived, not hand-listed, and the cross-language scan gap is closed with codegen --check at 0 stale; (c) generation loss is now detected by a gate including manifest verification, not just presence; (d) the census self-certification limit and the self-authored-decision limit are declared as limits rather than claimed closed.",
+    "wait_policy": {
+      "pending_is_wait_state": true,
+      "preferred_tool": "wait_agent",
+      "wait_timeout_ms": 3600000,
+      "retry_until_terminal": true,
+      "pending_no_response_is_terminal": false,
+      "pending_no_response_allows_fallback": false,
+      "fallback_requires_explicit_tool_or_runtime_failure": true
+    }
+  },
+  "review_snapshot": {
+    "schema": 2,
+    "goal_id": "ralph-continue-epistemic-foundry-v4-0-0-under-product-owner-decision-hd-ef4-b04-sg002-20260730-001-preserve-b04-0006-projection-pass-and-package-spec-gap-plus-every-prior-attempt-report-review-command-receipt-rah-evidence-and-generation-and-the-dirty-worktree-in-the-primary-session-without-fleet-or-subagents-execute-serially-c03-0003-f04-0002-j02-0003-s04-0003-b04-0007-projection-and-regression-revalidation-c04-0002-full-conformance-b04-0008-final-packaging-then-recompute-the-156-package-dag-and-continue-dependency-ready-packages-until-the-verified-external-goal-is-terminal-keep-completion-ready-false-until-all-objective-gates-pass",
+    "matrices_sha256": "e04cfda25af2c7817141bd6ea43ce6b8603e3df2d27dafa1b33bb92c1362f1f1",
+    "ledger_head_sha256": "709ab1e9b91c751299409a8b4b745d0dead7e007caf9db2077b432d224090bb4",
+    "coverage_sha256": "4b7a6747c4561e6e531a5bb84c0046f07149b37f120b6531cceb622b8e7aaebf",
+    "git_head": "41f3fd53e8ac05c0a3b1634db37648f60d5e9a5c",
+    "tracked_diff_sha256": "1d17b3424e9baec4a24b20f75188b1a1c7d0a3c7e17ddecfec511446e7732e52",
+    "untracked_manifest_sha256": "d941e5480b60107db43a4e1da24e1e139842ff2da1b2c9ab9f02cfba22d08381"
+  },
+  "approved_at_utc": "2026-08-02T10:41:46+00:00",
+  "approval_summary": "Independent actor-independent completion review (4 adversarial rounds + post-commit confirmation for f265e9b): PASS. 156/156 hash-sealed with report<->ledger and product-pin integrity (D04 restored to 877fd187e1f2); source coverage 509/509 (valid:true, evidence genuine); PRD prd_ready; pytest 1312 passed; git diff --check clean; A/V/C matrices honestly evidenced (V2 passes by documented absence of an enforced lint gate + tracked ruff debt via E0384). Maturity truthful: fail-closed UNVERIFIED SPEC_BUNDLE reference blueprint - completion means the reference-blueprint deliverable is complete per its defined gates, NOT a working/qualified-evaluator/production system. completion_ready may be flipped.",
+  "reviewed_evidence_ids": [
+    "E0384"
+  ],
+  "approval_evidence_id": "E0387",
+  "stale_reason": "review subject changed after approval: ledger_head_sha256, coverage_sha256, git_head, tracked_diff_sha256, untracked_manifest_sha256"
+}

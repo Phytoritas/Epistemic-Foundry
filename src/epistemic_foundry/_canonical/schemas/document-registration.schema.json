@@ -253,6 +253,10 @@
   "x-canonical-hash": {
     "algorithm": "sha256",
     "canonicalization": "RFC 8785 JCS-equivalent UTF-8",
+    "field_sources": {
+      "schema_id": "$id"
+    },
+    "field_sources_description": "A preimage field that is not a declared property of this schema resolves from the named schema keyword instead of from the instance. schema_id binds the digest to the contract that produced it, so the same document body registered under a different schema cannot yield the same registration_id. Without this mapping an implementer reading only the schema would look for a schema_id property, fail to find one, and either error or silently omit the field, and two conformant implementations would then disagree on registration_hash.",
     "preimage_fields": [
       "schema_id",
       "schema_version",

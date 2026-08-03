@@ -1,0 +1,33 @@
+# This repository's guarantees are byte-exact.
+#
+# Sealed RAH attempts pin sha256 digests of product files, generation manifests
+# pin the state snapshots they describe, and canonical bundle hashes are computed
+# over file bytes. None of that survives an end-of-line translation: a review
+# measured that with `core.autocrlf=true` and no attributes file, 811 of 821
+# sealed pins and every generation manifest fail to reproduce after a fresh
+# checkout, because git hands the working tree CRLF while the digests were taken
+# over LF. The integrity apparatus held only in the one working directory it was
+# built in.
+#
+# `-text` tells git to store and check out these bytes unchanged, so a clone
+# reproduces the digests the repository asserts.
+#
+# Known residual, declared rather than silently fixed. A review corrected this
+# count from three to EIGHT: three pinned files fail to reproduce from a clean
+# checkout because they were sealed while their working-tree copy carried CRLF,
+# and five more are pinned but ABSENT from HEAD entirely, which no attributes
+# file can fix -- two because `.gitignore` excluded scripts/build/** (now
+# anchored to /build/) and three build/v4_b05 outputs ignored by design under
+# HD-EF4-B05-SCOPE-20260801-001. Byte translation and file presence are separate
+# failures and only the first is addressed here. The three CRLF-sealed files are
+# (evals/scale/load_shedding_results.json,
+# evals/scale/scale_qualification_results.json,
+# src/epistemic_foundry/retrieval/v4_o06/gate.py). Those three now reproduce in
+# this working tree and will not reproduce from a clean checkout, which is the
+# mirror image of the previous state: 813 of 821 pins now reproduce from a clean
+# checkout where 10 did before, with the 8 residuals enumerated above.
+# Normalising them would break the seals that currently verify, so they are left
+# as they are and recorded here and in the pin-supersession registry's coverage
+# note. Re-sealing them is the correct fix and belongs to the owning packages.
+
+* -text

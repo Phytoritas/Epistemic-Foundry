@@ -579,6 +579,8 @@
   "x-canonical-identity": {
     "algorithm": "sha256",
     "canonicalization": "RFC 8785 JCS-equivalent UTF-8",
+    "exclusion_policy": "all_other_properties",
+    "exclusion_policy_description": "Identity is exactly the listed preimage fields; every other property of this schema is deliberately outside it, including properties added later. This is stated rather than enumerated because the set is open by design: an identity digest that silently widened when a field was added would change the identity of records that did not change, invalidating every candidate id already issued. Contrast x-canonical-hash on this same schema, which enumerates excluded_fields because a content hash is expected to cover the whole record.",
     "preimage_fields": [
       "plan_hash",
       "lane",

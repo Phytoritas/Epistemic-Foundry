@@ -1,0 +1,1572 @@
+{
+  "run_id": "FORGE-HEXOSE-GS-20260802",
+  "recorded_at_utc": "2026-08-02T12:00:00.000Z",
+  "hypothesis": {
+    "hypothesis_id": "HYP-HEXOSE-GS-001",
+    "statement": "Stomatal conductance is modulated by hexose. On otherwise-equivalent clear days, morning stomatal opening is reduced when the preceding day had adequate light but temperature too low for growth, because reduced overnight conversion of hexose into structural carbohydrate leaves residual hexose that suppresses stomatal opening.",
+    "sub_claims": {
+      "C1": "Hexose (glucose/fructose) modulates stomatal aperture/conductance.",
+      "C2": "Low night temperature limits growth and structural-carbohydrate conversion (sink activity).",
+      "C3": "Reduced overnight structural conversion leaves elevated residual leaf hexose at dawn.",
+      "C4": "Elevated dawn leaf hexose causally reduces morning stomatal opening on a clear day."
+    }
+  },
+  "corpus_snapshot": {
+    "snapshot_id": "CSNAP-8e1c4c767aef2c7cac93976da0fd44aa",
+    "root": "C:/dev/insight/paper-curation/docs/papers",
+    "document_count": 1281,
+    "total_chars": 94528374
+  },
+  "lane_receipts": [
+    {
+      "lane_id": "L1_sugar_sensing",
+      "purpose": "hexose and sugar-sensing machinery (C1, C3, C4)",
+      "patterns": [
+        "hexose",
+        "hexokinase",
+        "\\bhxk1?\\b",
+        "glucose sensing",
+        "glucose signal",
+        "sugar sensing",
+        "sugar signal",
+        "sugar-sensing",
+        "trehalose[- ]6[- ]phosphate",
+        "\\bt6p\\b",
+        "fructose",
+        "glucose"
+      ],
+      "documents_matched": 186,
+      "total_term_hits": 1776,
+      "lane_state": "RESULTS_FOUND",
+      "interpretation": "lane returned candidates; relevance is decided downstream, not here"
+    },
+    {
+      "lane_id": "L2_stomata",
+      "purpose": "stomatal response surface (C1, C4)",
+      "patterns": [
+        "stomatal conductance",
+        "stomatal aperture",
+        "guard cell",
+        "stomatal opening",
+        "stomatal closure",
+        "stomatal response",
+        "\\bg\\Ss\\b",
+        "stomata"
+      ],
+      "documents_matched": 1104,
+      "total_term_hits": 112364,
+      "lane_state": "RESULTS_FOUND",
+      "interpretation": "lane returned candidates; relevance is decided downstream, not here"
+    },
+    {
+      "lane_id": "L3_diurnal",
+      "purpose": "time-of-day structure of the observation (C4)",
+      "patterns": [
+        "diurnal",
+        "\\bdawn\\b",
+        "\\bmorning\\b",
+        "midday",
+        "afternoon",
+        "time of day",
+        "circadian",
+        "hysteresis",
+        "\\bpredawn\\b",
+        "pre-dawn"
+      ],
+      "documents_matched": 609,
+      "total_term_hits": 7677,
+      "lane_state": "RESULTS_FOUND",
+      "interpretation": "lane returned candidates; relevance is decided downstream, not here"
+    },
+    {
+      "lane_id": "L4_night_temperature",
+      "purpose": "night temperature as the upstream driver (C2)",
+      "patterns": [
+        "night temperature",
+        "nocturnal temperature",
+        "night-time temperature",
+        "nighttime temperature",
+        "day/night temperature",
+        "day-night temperature",
+        "\\bchilling\\b",
+        "cool night",
+        "cold night",
+        "low night",
+        "\\bdif\\b",
+        "suboptimal temperature",
+        "temperature sum"
+      ],
+      "documents_matched": 511,
+      "total_term_hits": 1883,
+      "lane_state": "RESULTS_FOUND",
+      "interpretation": "lane returned candidates; relevance is decided downstream, not here"
+    },
+    {
+      "lane_id": "L5_carbon_partitioning",
+      "purpose": "starch/sugar turnover and structural conversion (C2, C3)",
+      "patterns": [
+        "starch degradation",
+        "starch mobili[sz]ation",
+        "starch turnover",
+        "structural carbohydrate",
+        "non-?structural carbohydrate",
+        "\\bnsc\\b",
+        "cell wall synthesis",
+        "sink strength",
+        "sink limitation",
+        "sink activity",
+        "sucrose export",
+        "carbohydrate accumulation",
+        "carbon starvation",
+        "source-sink",
+        "source/sink"
+      ],
+      "documents_matched": 189,
+      "total_term_hits": 2993,
+      "lane_state": "RESULTS_FOUND",
+      "interpretation": "lane returned candidates; relevance is decided downstream, not here"
+    },
+    {
+      "lane_id": "L6_competing_mechanism",
+      "purpose": "rival explanations for reduced morning gs (adversarial lane)",
+      "patterns": [
+        "root hydraulic conductivit",
+        "aquaporin",
+        "abscisic acid",
+        "\\baba\\b",
+        "photosynthetic induction",
+        "vapou?r pressure deficit",
+        "\\bvpd\\b",
+        "hydraulic conductance",
+        "leaf water potential",
+        "stomatal patchiness",
+        "mesophyll conductance"
+      ],
+      "documents_matched": 838,
+      "total_term_hits": 28858,
+      "lane_state": "RESULTS_FOUND",
+      "interpretation": "lane returned candidates; relevance is decided downstream, not here"
+    }
+  ],
+  "candidate_counts": {
+    "C1_hexose_x_stomata": 40,
+    "C2_night_temp_x_growth": 44,
+    "C3_overnight_carbon_turnover": 53,
+    "C4_morning_gs": 289,
+    "RIVALS_competing_mechanisms": 293
+  },
+  "top_by_set": {
+    "C1_hexose_x_stomata": [
+      {
+        "document_id": "1246_The_physiology_of_vegetable_crops",
+        "lanes": {
+          "L1_sugar_sensing": 103,
+          "L2_stomata": 190,
+          "L3_diurnal": 44,
+          "L4_night_temperature": 219,
+          "L5_carbon_partitioning": 73,
+          "L6_competing_mechanism": 211
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+        "lanes": {
+          "L1_sugar_sensing": 25,
+          "L2_stomata": 313,
+          "L3_diurnal": 15,
+          "L5_carbon_partitioning": 10,
+          "L6_competing_mechanism": 1
+        },
+        "cooc": 5
+      },
+      {
+        "document_id": "806_TOR_promotes_guard_cell_starch_degradation_by_regulating_the",
+        "lanes": {
+          "L1_sugar_sensing": 33,
+          "L2_stomata": 380,
+          "L3_diurnal": 6,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 51
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "1027_Fruit_growth_and_dry_matter_partitioning_in_cucumber",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 32,
+          "L3_diurnal": 20,
+          "L4_night_temperature": 69,
+          "L5_carbon_partitioning": 164,
+          "L6_competing_mechanism": 4
+        },
+        "cooc": 3
+      },
+      {
+        "document_id": "236_Apoplastic_metabolomics_reveals_sugars_as_mesophyll_messenge",
+        "lanes": {
+          "L1_sugar_sensing": 47,
+          "L2_stomata": 441,
+          "L4_night_temperature": 2,
+          "L6_competing_mechanism": 14
+        },
+        "cooc": 4
+      },
+      {
+        "document_id": "537_Mesophyll_photosynthesis_and_guard_cell_metabolism_impacts_o",
+        "lanes": {
+          "L1_sugar_sensing": 82,
+          "L2_stomata": 667,
+          "L3_diurnal": 12,
+          "L5_carbon_partitioning": 6,
+          "L6_competing_mechanism": 44
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "925_Changes_in_Abscisic_Acid_Carbohydrate_and_Glucosinolate_Meta",
+        "lanes": {
+          "L1_sugar_sensing": 45,
+          "L2_stomata": 38,
+          "L4_night_temperature": 3,
+          "L6_competing_mechanism": 86
+        },
+        "cooc": 6
+      },
+      {
+        "document_id": "146_Temporal_heterogeneity_of_cold_acclimation_phenotypes_in_Ara",
+        "lanes": {
+          "L1_sugar_sensing": 27,
+          "L2_stomata": 44,
+          "L3_diurnal": 1,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 5,
+          "L6_competing_mechanism": 1
+        },
+        "cooc": 6
+      },
+      {
+        "document_id": "270_Calvin_cycle_and_guard_cell_metabolism_impact_stomatal_funct",
+        "lanes": {
+          "L1_sugar_sensing": 43,
+          "L2_stomata": 548,
+          "L3_diurnal": 16,
+          "L5_carbon_partitioning": 7,
+          "L6_competing_mechanism": 3
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "874_Abscisic_acid_carbohydrate_and_Glucosinolate_metabolite_prof",
+        "lanes": {
+          "L1_sugar_sensing": 39,
+          "L2_stomata": 30,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 2,
+          "L6_competing_mechanism": 99
+        },
+        "cooc": 6
+      },
+      {
+        "document_id": "663_Resolving_the_central_metabolism_of_Arabidopsis_guard_cells",
+        "lanes": {
+          "L1_sugar_sensing": 27,
+          "L2_stomata": 127,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 3,
+          "L6_competing_mechanism": 5
+        },
+        "cooc": 3
+      },
+      {
+        "document_id": "438_Guard_Cell_Starch_Degradation_Yields_Glucose_for_Rapid_Stoma",
+        "lanes": {
+          "L1_sugar_sensing": 2,
+          "L2_stomata": 539,
+          "L3_diurnal": 15,
+          "L5_carbon_partitioning": 38,
+          "L6_competing_mechanism": 2
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "437_Guard_cell_starch_and_malate_metabolism_facilitate_stomatal",
+        "lanes": {
+          "L1_sugar_sensing": 12,
+          "L2_stomata": 199,
+          "L3_diurnal": 8,
+          "L5_carbon_partitioning": 17,
+          "L6_competing_mechanism": 4
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "263_Blue_Light_Induces_a_Distinct_Starch_Degradation_Pathway_in",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 281,
+          "L3_diurnal": 9,
+          "L5_carbon_partitioning": 46
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "927_Changes_in_metabolite_contents_of_garlic_treated_with_foliar",
+        "lanes": {
+          "L1_sugar_sensing": 40,
+          "L2_stomata": 22,
+          "L4_night_temperature": 3,
+          "L6_competing_mechanism": 107
+        },
+        "cooc": 5
+      },
+      {
+        "document_id": "1270_Unraveling_light_spectrum_effects_on_fruit_set_in_sweet_pepp",
+        "lanes": {
+          "L1_sugar_sensing": 42,
+          "L2_stomata": 13,
+          "L3_diurnal": 5,
+          "L4_night_temperature": 4,
+          "L5_carbon_partitioning": 43,
+          "L6_competing_mechanism": 54
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "450_Hydrogen_peroxide_is_required_for_light-induced_stomatal_ope",
+        "lanes": {
+          "L1_sugar_sensing": 3,
+          "L2_stomata": 434,
+          "L3_diurnal": 1,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 43,
+          "L6_competing_mechanism": 3
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "550_Modelling_the_coordination_of_the_controls_of_stomatal_apert",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 96,
+          "L3_diurnal": 36,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 1,
+          "L6_competing_mechanism": 169
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "878_Altitudinal_increase_of_mobile_carbon_pools_in_Pinus_cembra",
+        "lanes": {
+          "L1_sugar_sensing": 26,
+          "L2_stomata": 7,
+          "L5_carbon_partitioning": 73
+        },
+        "cooc": 4
+      },
+      {
+        "document_id": "352_Leaf_Soluble_Sugars_and_Free_Amino_Acids_as_Important_Compon",
+        "lanes": {
+          "L1_sugar_sensing": 32,
+          "L2_stomata": 33,
+          "L5_carbon_partitioning": 5,
+          "L6_competing_mechanism": 98
+        },
+        "cooc": 3
+      },
+      {
+        "document_id": "1198_Regulation_of_Leaf_Starch_Degradation_by_Abscisic_Acid_Is_Im",
+        "lanes": {
+          "L1_sugar_sensing": 32,
+          "L2_stomata": 33,
+          "L5_carbon_partitioning": 5,
+          "L6_competing_mechanism": 98
+        },
+        "cooc": 3
+      },
+      {
+        "document_id": "1108_Metabolic_modelling_identifies_mitochondrial_Pi_uptake_and_p",
+        "lanes": {
+          "L1_sugar_sensing": 14,
+          "L2_stomata": 8,
+          "L3_diurnal": 37,
+          "L4_night_temperature": 1
+        },
+        "cooc": 4
+      },
+      {
+        "document_id": "426_Greater_mesophyll_conductance_and_leaf_photosynthesis_in_the",
+        "lanes": {
+          "L1_sugar_sensing": 6,
+          "L2_stomata": 67,
+          "L6_competing_mechanism": 58
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "441_High_light_decreases_xylem_contribution_to_fruit_growth_in_t",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 3,
+          "L3_diurnal": 12,
+          "L4_night_temperature": 1,
+          "L6_competing_mechanism": 20
+        },
+        "cooc": 6
+      },
+      {
+        "document_id": "836_Seasonal_dynamics_and_punctuated_carbon_sink_reduction_sugge",
+        "lanes": {
+          "L1_sugar_sensing": 23,
+          "L2_stomata": 14,
+          "L5_carbon_partitioning": 14,
+          "L6_competing_mechanism": 9
+        },
+        "cooc": 3
+      }
+    ],
+    "C2_night_temp_x_growth": [
+      {
+        "document_id": "1246_The_physiology_of_vegetable_crops",
+        "lanes": {
+          "L1_sugar_sensing": 103,
+          "L2_stomata": 190,
+          "L3_diurnal": 44,
+          "L4_night_temperature": 219,
+          "L5_carbon_partitioning": 73,
+          "L6_competing_mechanism": 211
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "031_Canopy_Photosynthesis_From_Basics_to_Applications",
+        "lanes": {
+          "L1_sugar_sensing": 16,
+          "L2_stomata": 553,
+          "L3_diurnal": 64,
+          "L4_night_temperature": 38,
+          "L5_carbon_partitioning": 14,
+          "L6_competing_mechanism": 113
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1027_Fruit_growth_and_dry_matter_partitioning_in_cucumber",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 32,
+          "L3_diurnal": 20,
+          "L4_night_temperature": 69,
+          "L5_carbon_partitioning": 164,
+          "L6_competing_mechanism": 4
+        },
+        "cooc": 3
+      },
+      {
+        "document_id": "146_Temporal_heterogeneity_of_cold_acclimation_phenotypes_in_Ara",
+        "lanes": {
+          "L1_sugar_sensing": 27,
+          "L2_stomata": 44,
+          "L3_diurnal": 1,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 5,
+          "L6_competing_mechanism": 1
+        },
+        "cooc": 6
+      },
+      {
+        "document_id": "874_Abscisic_acid_carbohydrate_and_Glucosinolate_metabolite_prof",
+        "lanes": {
+          "L1_sugar_sensing": 39,
+          "L2_stomata": 30,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 2,
+          "L6_competing_mechanism": 99
+        },
+        "cooc": 6
+      },
+      {
+        "document_id": "046_Dynamically_optimizing_stomatal_conductance_for_maximum_turg",
+        "lanes": {
+          "L2_stomata": 219,
+          "L3_diurnal": 29,
+          "L4_night_temperature": 5,
+          "L5_carbon_partitioning": 78,
+          "L6_competing_mechanism": 31
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1270_Unraveling_light_spectrum_effects_on_fruit_set_in_sweet_pepp",
+        "lanes": {
+          "L1_sugar_sensing": 42,
+          "L2_stomata": 13,
+          "L3_diurnal": 5,
+          "L4_night_temperature": 4,
+          "L5_carbon_partitioning": 43,
+          "L6_competing_mechanism": 54
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "450_Hydrogen_peroxide_is_required_for_light-induced_stomatal_ope",
+        "lanes": {
+          "L1_sugar_sensing": 3,
+          "L2_stomata": 434,
+          "L3_diurnal": 1,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 43,
+          "L6_competing_mechanism": 3
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "206_A_steady-state_stomatal_model_of_balanced_leaf_gas_exchange",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 240,
+          "L3_diurnal": 6,
+          "L4_night_temperature": 3,
+          "L5_carbon_partitioning": 29,
+          "L6_competing_mechanism": 84
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1256_Tomato_growth_and_yield_quantitative_analysis_and_synthesis",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 34,
+          "L3_diurnal": 76,
+          "L4_night_temperature": 9,
+          "L5_carbon_partitioning": 294,
+          "L6_competing_mechanism": 13
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1247_The_Quantitative_Analysis_of_Plant_Growth",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 34,
+          "L3_diurnal": 76,
+          "L4_night_temperature": 9,
+          "L5_carbon_partitioning": 294,
+          "L6_competing_mechanism": 13
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "670_Role_of_blue_and_red_light_in_stomatal_dynamic_behaviour",
+        "lanes": {
+          "L1_sugar_sensing": 4,
+          "L2_stomata": 529,
+          "L3_diurnal": 20,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 5,
+          "L6_competing_mechanism": 13
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "946_Coordinated_regulation_of_tomato_sugar_accumulation_by_relat",
+        "lanes": {
+          "L1_sugar_sensing": 17,
+          "L2_stomata": 35,
+          "L3_diurnal": 1,
+          "L4_night_temperature": 3,
+          "L5_carbon_partitioning": 3,
+          "L6_competing_mechanism": 4
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "248_Assimilate_transport_in_phloem_sets_conditions_for_leaf_gas",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 160,
+          "L3_diurnal": 11,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 4,
+          "L6_competing_mechanism": 34
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "473_Integration_of_tree_hydraulic_processes_and_functional_impai",
+        "lanes": {
+          "L2_stomata": 119,
+          "L3_diurnal": 9,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 5,
+          "L6_competing_mechanism": 25
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "410_Form_development_and_function_of_grass_stomata",
+        "lanes": {
+          "L1_sugar_sensing": 8,
+          "L2_stomata": 616,
+          "L4_night_temperature": 5,
+          "L5_carbon_partitioning": 3,
+          "L6_competing_mechanism": 59
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "660_Relationships_of_Leaf_Net_Photosynthesis_Stomatal_Conductanc",
+        "lanes": {
+          "L1_sugar_sensing": 6,
+          "L2_stomata": 161,
+          "L3_diurnal": 3,
+          "L4_night_temperature": 3,
+          "L5_carbon_partitioning": 2,
+          "L6_competing_mechanism": 24
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "739_Non-structural_carbohydrates_in_woody_plants_compared_among",
+        "lanes": {
+          "L1_sugar_sensing": 36,
+          "L2_stomata": 6,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 156,
+          "L6_competing_mechanism": 1
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "750_The_apoplastic_antioxidant_system_and_altered_cell_wall_dyna",
+        "lanes": {
+          "L1_sugar_sensing": 5,
+          "L2_stomata": 40,
+          "L3_diurnal": 4,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 2,
+          "L6_competing_mechanism": 21
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "161_Tomato_in_the_spotlight_light_regulation_of_whole-plant_phys",
+        "lanes": {
+          "L1_sugar_sensing": 4,
+          "L2_stomata": 25,
+          "L3_diurnal": 15,
+          "L4_night_temperature": 3,
+          "L5_carbon_partitioning": 25,
+          "L6_competing_mechanism": 12
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "933_Circadian_regulation_of_metabolism_across_photosynthetic_org",
+        "lanes": {
+          "L1_sugar_sensing": 18,
+          "L2_stomata": 11,
+          "L3_diurnal": 383,
+          "L4_night_temperature": 3,
+          "L5_carbon_partitioning": 9,
+          "L6_competing_mechanism": 1
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "961_Development_and_dry_matter_distribution_in_glasshouse_tomato",
+        "lanes": {
+          "L1_sugar_sensing": 4,
+          "L2_stomata": 2,
+          "L3_diurnal": 5,
+          "L4_night_temperature": 27,
+          "L5_carbon_partitioning": 67,
+          "L6_competing_mechanism": 5
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1227_Stomatal_opening_ratio_mediates_trait_coordinating_network_a",
+        "lanes": {
+          "L2_stomata": 231,
+          "L3_diurnal": 1,
+          "L4_night_temperature": 3,
+          "L5_carbon_partitioning": 2,
+          "L6_competing_mechanism": 14
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1203_Response_of_rices_hydraulic_transport_and_photosynthetic_cap",
+        "lanes": {
+          "L2_stomata": 156,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 2,
+          "L6_competing_mechanism": 46
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "173_A_carbohydrate_supply_and_demand_model_of_vegetative_growth",
+        "lanes": {
+          "L1_sugar_sensing": 5,
+          "L2_stomata": 1,
+          "L3_diurnal": 20,
+          "L4_night_temperature": 5,
+          "L5_carbon_partitioning": 80
+        },
+        "cooc": 0
+      }
+    ],
+    "C3_overnight_carbon_turnover": [
+      {
+        "document_id": "1246_The_physiology_of_vegetable_crops",
+        "lanes": {
+          "L1_sugar_sensing": 103,
+          "L2_stomata": 190,
+          "L3_diurnal": 44,
+          "L4_night_temperature": 219,
+          "L5_carbon_partitioning": 73,
+          "L6_competing_mechanism": 211
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+        "lanes": {
+          "L1_sugar_sensing": 25,
+          "L2_stomata": 313,
+          "L3_diurnal": 15,
+          "L5_carbon_partitioning": 10,
+          "L6_competing_mechanism": 1
+        },
+        "cooc": 5
+      },
+      {
+        "document_id": "031_Canopy_Photosynthesis_From_Basics_to_Applications",
+        "lanes": {
+          "L1_sugar_sensing": 16,
+          "L2_stomata": 553,
+          "L3_diurnal": 64,
+          "L4_night_temperature": 38,
+          "L5_carbon_partitioning": 14,
+          "L6_competing_mechanism": 113
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "806_TOR_promotes_guard_cell_starch_degradation_by_regulating_the",
+        "lanes": {
+          "L1_sugar_sensing": 33,
+          "L2_stomata": 380,
+          "L3_diurnal": 6,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 51
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "1027_Fruit_growth_and_dry_matter_partitioning_in_cucumber",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 32,
+          "L3_diurnal": 20,
+          "L4_night_temperature": 69,
+          "L5_carbon_partitioning": 164,
+          "L6_competing_mechanism": 4
+        },
+        "cooc": 3
+      },
+      {
+        "document_id": "537_Mesophyll_photosynthesis_and_guard_cell_metabolism_impacts_o",
+        "lanes": {
+          "L1_sugar_sensing": 82,
+          "L2_stomata": 667,
+          "L3_diurnal": 12,
+          "L5_carbon_partitioning": 6,
+          "L6_competing_mechanism": 44
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "270_Calvin_cycle_and_guard_cell_metabolism_impact_stomatal_funct",
+        "lanes": {
+          "L1_sugar_sensing": 43,
+          "L2_stomata": 548,
+          "L3_diurnal": 16,
+          "L5_carbon_partitioning": 7,
+          "L6_competing_mechanism": 3
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "046_Dynamically_optimizing_stomatal_conductance_for_maximum_turg",
+        "lanes": {
+          "L2_stomata": 219,
+          "L3_diurnal": 29,
+          "L4_night_temperature": 5,
+          "L5_carbon_partitioning": 78,
+          "L6_competing_mechanism": 31
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+        "lanes": {
+          "L1_sugar_sensing": 37,
+          "L2_stomata": 831,
+          "L3_diurnal": 13,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 8,
+          "L6_competing_mechanism": 17
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "438_Guard_Cell_Starch_Degradation_Yields_Glucose_for_Rapid_Stoma",
+        "lanes": {
+          "L1_sugar_sensing": 2,
+          "L2_stomata": 539,
+          "L3_diurnal": 15,
+          "L5_carbon_partitioning": 38,
+          "L6_competing_mechanism": 2
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "437_Guard_cell_starch_and_malate_metabolism_facilitate_stomatal",
+        "lanes": {
+          "L1_sugar_sensing": 12,
+          "L2_stomata": 199,
+          "L3_diurnal": 8,
+          "L5_carbon_partitioning": 17,
+          "L6_competing_mechanism": 4
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "263_Blue_Light_Induces_a_Distinct_Starch_Degradation_Pathway_in",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 281,
+          "L3_diurnal": 9,
+          "L5_carbon_partitioning": 46
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "1270_Unraveling_light_spectrum_effects_on_fruit_set_in_sweet_pepp",
+        "lanes": {
+          "L1_sugar_sensing": 42,
+          "L2_stomata": 13,
+          "L3_diurnal": 5,
+          "L4_night_temperature": 4,
+          "L5_carbon_partitioning": 43,
+          "L6_competing_mechanism": 54
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "665_Rethinking_Guard_Cell_Metabolism",
+        "lanes": {
+          "L1_sugar_sensing": 29,
+          "L2_stomata": 763,
+          "L3_diurnal": 10,
+          "L5_carbon_partitioning": 11,
+          "L6_competing_mechanism": 48
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "320_Coupled_wholetree_optimality_and_xylem_hydraulics_explain_dy",
+        "lanes": {
+          "L2_stomata": 61,
+          "L3_diurnal": 19,
+          "L5_carbon_partitioning": 32,
+          "L6_competing_mechanism": 26
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "206_A_steady-state_stomatal_model_of_balanced_leaf_gas_exchange",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 240,
+          "L3_diurnal": 6,
+          "L4_night_temperature": 3,
+          "L5_carbon_partitioning": 29,
+          "L6_competing_mechanism": 84
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "538_Metabolism_within_the_specialized_guard_cells_of_plants",
+        "lanes": {
+          "L1_sugar_sensing": 37,
+          "L2_stomata": 616,
+          "L3_diurnal": 4,
+          "L5_carbon_partitioning": 4,
+          "L6_competing_mechanism": 22
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1256_Tomato_growth_and_yield_quantitative_analysis_and_synthesis",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 34,
+          "L3_diurnal": 76,
+          "L4_night_temperature": 9,
+          "L5_carbon_partitioning": 294,
+          "L6_competing_mechanism": 13
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1247_The_Quantitative_Analysis_of_Plant_Growth",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 34,
+          "L3_diurnal": 76,
+          "L4_night_temperature": 9,
+          "L5_carbon_partitioning": 294,
+          "L6_competing_mechanism": 13
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "404_Exploring_optimal_stomatal_control_under_alternative_hypothe",
+        "lanes": {
+          "L1_sugar_sensing": 4,
+          "L2_stomata": 238,
+          "L3_diurnal": 6,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 32,
+          "L6_competing_mechanism": 66
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "043_Do_stomata_optimize_turgordriven_growth_A_new_framework_for",
+        "lanes": {
+          "L2_stomata": 163,
+          "L3_diurnal": 9,
+          "L5_carbon_partitioning": 94,
+          "L6_competing_mechanism": 30
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "507_Light-Mediated_Signaling_and_Metabolic_Changes_Coordinate_St",
+        "lanes": {
+          "L1_sugar_sensing": 24,
+          "L2_stomata": 548,
+          "L3_diurnal": 4,
+          "L5_carbon_partitioning": 7,
+          "L6_competing_mechanism": 22
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "640_Radiation_and_Drought_Impact_Residual_Leaf_Conductance_in_Tw",
+        "lanes": {
+          "L2_stomata": 67,
+          "L3_diurnal": 5,
+          "L5_carbon_partitioning": 32
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "832_What_plant_hydraulics_can_tell_us_about_responses_to_climate",
+        "lanes": {
+          "L2_stomata": 87,
+          "L3_diurnal": 35,
+          "L5_carbon_partitioning": 4,
+          "L6_competing_mechanism": 21
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "670_Role_of_blue_and_red_light_in_stomatal_dynamic_behaviour",
+        "lanes": {
+          "L1_sugar_sensing": 4,
+          "L2_stomata": 529,
+          "L3_diurnal": 20,
+          "L4_night_temperature": 2,
+          "L5_carbon_partitioning": 5,
+          "L6_competing_mechanism": 13
+        },
+        "cooc": 0
+      }
+    ],
+    "C4_morning_gs": [
+      {
+        "document_id": "1246_The_physiology_of_vegetable_crops",
+        "lanes": {
+          "L1_sugar_sensing": 103,
+          "L2_stomata": 190,
+          "L3_diurnal": 44,
+          "L4_night_temperature": 219,
+          "L5_carbon_partitioning": 73,
+          "L6_competing_mechanism": 211
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "1106_Mesophyllderived_sugars_are_positive_regulators_of_lightdriv",
+        "lanes": {
+          "L1_sugar_sensing": 25,
+          "L2_stomata": 313,
+          "L3_diurnal": 15,
+          "L5_carbon_partitioning": 10,
+          "L6_competing_mechanism": 1
+        },
+        "cooc": 5
+      },
+      {
+        "document_id": "031_Canopy_Photosynthesis_From_Basics_to_Applications",
+        "lanes": {
+          "L1_sugar_sensing": 16,
+          "L2_stomata": 553,
+          "L3_diurnal": 64,
+          "L4_night_temperature": 38,
+          "L5_carbon_partitioning": 14,
+          "L6_competing_mechanism": 113
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "806_TOR_promotes_guard_cell_starch_degradation_by_regulating_the",
+        "lanes": {
+          "L1_sugar_sensing": 33,
+          "L2_stomata": 380,
+          "L3_diurnal": 6,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 51
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "1027_Fruit_growth_and_dry_matter_partitioning_in_cucumber",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 32,
+          "L3_diurnal": 20,
+          "L4_night_temperature": 69,
+          "L5_carbon_partitioning": 164,
+          "L6_competing_mechanism": 4
+        },
+        "cooc": 3
+      },
+      {
+        "document_id": "537_Mesophyll_photosynthesis_and_guard_cell_metabolism_impacts_o",
+        "lanes": {
+          "L1_sugar_sensing": 82,
+          "L2_stomata": 667,
+          "L3_diurnal": 12,
+          "L5_carbon_partitioning": 6,
+          "L6_competing_mechanism": 44
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "270_Calvin_cycle_and_guard_cell_metabolism_impact_stomatal_funct",
+        "lanes": {
+          "L1_sugar_sensing": 43,
+          "L2_stomata": 548,
+          "L3_diurnal": 16,
+          "L5_carbon_partitioning": 7,
+          "L6_competing_mechanism": 3
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "046_Dynamically_optimizing_stomatal_conductance_for_maximum_turg",
+        "lanes": {
+          "L2_stomata": 219,
+          "L3_diurnal": 29,
+          "L4_night_temperature": 5,
+          "L5_carbon_partitioning": 78,
+          "L6_competing_mechanism": 31
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1153_Photobiology_The_Science_of_Light_and_Life",
+        "lanes": {
+          "L1_sugar_sensing": 2,
+          "L2_stomata": 125,
+          "L3_diurnal": 900,
+          "L4_night_temperature": 28,
+          "L6_competing_mechanism": 5
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+        "lanes": {
+          "L1_sugar_sensing": 37,
+          "L2_stomata": 831,
+          "L3_diurnal": 13,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 8,
+          "L6_competing_mechanism": 17
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "438_Guard_Cell_Starch_Degradation_Yields_Glucose_for_Rapid_Stoma",
+        "lanes": {
+          "L1_sugar_sensing": 2,
+          "L2_stomata": 539,
+          "L3_diurnal": 15,
+          "L5_carbon_partitioning": 38,
+          "L6_competing_mechanism": 2
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "437_Guard_cell_starch_and_malate_metabolism_facilitate_stomatal",
+        "lanes": {
+          "L1_sugar_sensing": 12,
+          "L2_stomata": 199,
+          "L3_diurnal": 8,
+          "L5_carbon_partitioning": 17,
+          "L6_competing_mechanism": 4
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "263_Blue_Light_Induces_a_Distinct_Starch_Degradation_Pathway_in",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 281,
+          "L3_diurnal": 9,
+          "L5_carbon_partitioning": 46
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "1270_Unraveling_light_spectrum_effects_on_fruit_set_in_sweet_pepp",
+        "lanes": {
+          "L1_sugar_sensing": 42,
+          "L2_stomata": 13,
+          "L3_diurnal": 5,
+          "L4_night_temperature": 4,
+          "L5_carbon_partitioning": 43,
+          "L6_competing_mechanism": 54
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "1086_Light_Emitting_Diodes_for_Agriculture",
+        "lanes": {
+          "L1_sugar_sensing": 19,
+          "L2_stomata": 72,
+          "L3_diurnal": 26,
+          "L4_night_temperature": 7,
+          "L6_competing_mechanism": 20
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "665_Rethinking_Guard_Cell_Metabolism",
+        "lanes": {
+          "L1_sugar_sensing": 29,
+          "L2_stomata": 763,
+          "L3_diurnal": 10,
+          "L5_carbon_partitioning": 11,
+          "L6_competing_mechanism": 48
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "320_Coupled_wholetree_optimality_and_xylem_hydraulics_explain_dy",
+        "lanes": {
+          "L2_stomata": 61,
+          "L3_diurnal": 19,
+          "L5_carbon_partitioning": 32,
+          "L6_competing_mechanism": 26
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "206_A_steady-state_stomatal_model_of_balanced_leaf_gas_exchange",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 240,
+          "L3_diurnal": 6,
+          "L4_night_temperature": 3,
+          "L5_carbon_partitioning": 29,
+          "L6_competing_mechanism": 84
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "538_Metabolism_within_the_specialized_guard_cells_of_plants",
+        "lanes": {
+          "L1_sugar_sensing": 37,
+          "L2_stomata": 616,
+          "L3_diurnal": 4,
+          "L5_carbon_partitioning": 4,
+          "L6_competing_mechanism": 22
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1256_Tomato_growth_and_yield_quantitative_analysis_and_synthesis",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 34,
+          "L3_diurnal": 76,
+          "L4_night_temperature": 9,
+          "L5_carbon_partitioning": 294,
+          "L6_competing_mechanism": 13
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1247_The_Quantitative_Analysis_of_Plant_Growth",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 34,
+          "L3_diurnal": 76,
+          "L4_night_temperature": 9,
+          "L5_carbon_partitioning": 294,
+          "L6_competing_mechanism": 13
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "550_Modelling_the_coordination_of_the_controls_of_stomatal_apert",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 96,
+          "L3_diurnal": 36,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 1,
+          "L6_competing_mechanism": 169
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "404_Exploring_optimal_stomatal_control_under_alternative_hypothe",
+        "lanes": {
+          "L1_sugar_sensing": 4,
+          "L2_stomata": 238,
+          "L3_diurnal": 6,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 32,
+          "L6_competing_mechanism": 66
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "043_Do_stomata_optimize_turgordriven_growth_A_new_framework_for",
+        "lanes": {
+          "L2_stomata": 163,
+          "L3_diurnal": 9,
+          "L5_carbon_partitioning": 94,
+          "L6_competing_mechanism": 30
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "507_Light-Mediated_Signaling_and_Metabolic_Changes_Coordinate_St",
+        "lanes": {
+          "L1_sugar_sensing": 24,
+          "L2_stomata": 548,
+          "L3_diurnal": 4,
+          "L5_carbon_partitioning": 7,
+          "L6_competing_mechanism": 22
+        },
+        "cooc": 0
+      }
+    ],
+    "RIVALS_competing_mechanisms": [
+      {
+        "document_id": "1246_The_physiology_of_vegetable_crops",
+        "lanes": {
+          "L1_sugar_sensing": 103,
+          "L2_stomata": 190,
+          "L3_diurnal": 44,
+          "L4_night_temperature": 219,
+          "L5_carbon_partitioning": 73,
+          "L6_competing_mechanism": 211
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "031_Canopy_Photosynthesis_From_Basics_to_Applications",
+        "lanes": {
+          "L1_sugar_sensing": 16,
+          "L2_stomata": 553,
+          "L3_diurnal": 64,
+          "L4_night_temperature": 38,
+          "L5_carbon_partitioning": 14,
+          "L6_competing_mechanism": 113
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1027_Fruit_growth_and_dry_matter_partitioning_in_cucumber",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 32,
+          "L3_diurnal": 20,
+          "L4_night_temperature": 69,
+          "L5_carbon_partitioning": 164,
+          "L6_competing_mechanism": 4
+        },
+        "cooc": 3
+      },
+      {
+        "document_id": "537_Mesophyll_photosynthesis_and_guard_cell_metabolism_impacts_o",
+        "lanes": {
+          "L1_sugar_sensing": 82,
+          "L2_stomata": 667,
+          "L3_diurnal": 12,
+          "L5_carbon_partitioning": 6,
+          "L6_competing_mechanism": 44
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "270_Calvin_cycle_and_guard_cell_metabolism_impact_stomatal_funct",
+        "lanes": {
+          "L1_sugar_sensing": 43,
+          "L2_stomata": 548,
+          "L3_diurnal": 16,
+          "L5_carbon_partitioning": 7,
+          "L6_competing_mechanism": 3
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "046_Dynamically_optimizing_stomatal_conductance_for_maximum_turg",
+        "lanes": {
+          "L2_stomata": 219,
+          "L3_diurnal": 29,
+          "L4_night_temperature": 5,
+          "L5_carbon_partitioning": 78,
+          "L6_competing_mechanism": 31
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1153_Photobiology_The_Science_of_Light_and_Life",
+        "lanes": {
+          "L1_sugar_sensing": 2,
+          "L2_stomata": 125,
+          "L3_diurnal": 900,
+          "L4_night_temperature": 28,
+          "L6_competing_mechanism": 5
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "432_Guard_Cell_Metabolism_and_Stomatal_Function",
+        "lanes": {
+          "L1_sugar_sensing": 37,
+          "L2_stomata": 831,
+          "L3_diurnal": 13,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 8,
+          "L6_competing_mechanism": 17
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "437_Guard_cell_starch_and_malate_metabolism_facilitate_stomatal",
+        "lanes": {
+          "L1_sugar_sensing": 12,
+          "L2_stomata": 199,
+          "L3_diurnal": 8,
+          "L5_carbon_partitioning": 17,
+          "L6_competing_mechanism": 4
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "1270_Unraveling_light_spectrum_effects_on_fruit_set_in_sweet_pepp",
+        "lanes": {
+          "L1_sugar_sensing": 42,
+          "L2_stomata": 13,
+          "L3_diurnal": 5,
+          "L4_night_temperature": 4,
+          "L5_carbon_partitioning": 43,
+          "L6_competing_mechanism": 54
+        },
+        "cooc": 2
+      },
+      {
+        "document_id": "1086_Light_Emitting_Diodes_for_Agriculture",
+        "lanes": {
+          "L1_sugar_sensing": 19,
+          "L2_stomata": 72,
+          "L3_diurnal": 26,
+          "L4_night_temperature": 7,
+          "L6_competing_mechanism": 20
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "665_Rethinking_Guard_Cell_Metabolism",
+        "lanes": {
+          "L1_sugar_sensing": 29,
+          "L2_stomata": 763,
+          "L3_diurnal": 10,
+          "L5_carbon_partitioning": 11,
+          "L6_competing_mechanism": 48
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "320_Coupled_wholetree_optimality_and_xylem_hydraulics_explain_dy",
+        "lanes": {
+          "L2_stomata": 61,
+          "L3_diurnal": 19,
+          "L5_carbon_partitioning": 32,
+          "L6_competing_mechanism": 26
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "206_A_steady-state_stomatal_model_of_balanced_leaf_gas_exchange",
+        "lanes": {
+          "L1_sugar_sensing": 7,
+          "L2_stomata": 240,
+          "L3_diurnal": 6,
+          "L4_night_temperature": 3,
+          "L5_carbon_partitioning": 29,
+          "L6_competing_mechanism": 84
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "538_Metabolism_within_the_specialized_guard_cells_of_plants",
+        "lanes": {
+          "L1_sugar_sensing": 37,
+          "L2_stomata": 616,
+          "L3_diurnal": 4,
+          "L5_carbon_partitioning": 4,
+          "L6_competing_mechanism": 22
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1256_Tomato_growth_and_yield_quantitative_analysis_and_synthesis",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 34,
+          "L3_diurnal": 76,
+          "L4_night_temperature": 9,
+          "L5_carbon_partitioning": 294,
+          "L6_competing_mechanism": 13
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "1247_The_Quantitative_Analysis_of_Plant_Growth",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 34,
+          "L3_diurnal": 76,
+          "L4_night_temperature": 9,
+          "L5_carbon_partitioning": 294,
+          "L6_competing_mechanism": 13
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "550_Modelling_the_coordination_of_the_controls_of_stomatal_apert",
+        "lanes": {
+          "L1_sugar_sensing": 1,
+          "L2_stomata": 96,
+          "L3_diurnal": 36,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 1,
+          "L6_competing_mechanism": 169
+        },
+        "cooc": 1
+      },
+      {
+        "document_id": "404_Exploring_optimal_stomatal_control_under_alternative_hypothe",
+        "lanes": {
+          "L1_sugar_sensing": 4,
+          "L2_stomata": 238,
+          "L3_diurnal": 6,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 32,
+          "L6_competing_mechanism": 66
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "043_Do_stomata_optimize_turgordriven_growth_A_new_framework_for",
+        "lanes": {
+          "L2_stomata": 163,
+          "L3_diurnal": 9,
+          "L5_carbon_partitioning": 94,
+          "L6_competing_mechanism": 30
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "507_Light-Mediated_Signaling_and_Metabolic_Changes_Coordinate_St",
+        "lanes": {
+          "L1_sugar_sensing": 24,
+          "L2_stomata": 548,
+          "L3_diurnal": 4,
+          "L5_carbon_partitioning": 7,
+          "L6_competing_mechanism": 22
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "224_Acclimation_to_Fluctuating_Light_Impacts_the_Rapidity_of_Res",
+        "lanes": {
+          "L1_sugar_sensing": 2,
+          "L2_stomata": 176,
+          "L3_diurnal": 137,
+          "L4_night_temperature": 2,
+          "L6_competing_mechanism": 10
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "832_What_plant_hydraulics_can_tell_us_about_responses_to_climate",
+        "lanes": {
+          "L2_stomata": 87,
+          "L3_diurnal": 35,
+          "L5_carbon_partitioning": 4,
+          "L6_competing_mechanism": 21
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "177_A_coupled_model_of_stomatal_conductance_photosynthesis_and_t",
+        "lanes": {
+          "L2_stomata": 234,
+          "L3_diurnal": 82,
+          "L4_night_temperature": 1,
+          "L5_carbon_partitioning": 2,
+          "L6_competing_mechanism": 42
+        },
+        "cooc": 0
+      },
+      {
+        "document_id": "367_Effects_of_drought_on_mesophyll_conductance_and_photosynthet",
+        "lanes": {
+          "L2_stomata": 104,
+          "L3_diurnal": 31,
+          "L4_night_temperature": 3,
+          "L6_competing_mechanism": 42
+        },
+        "cooc": 0
+      }
+    ]
+  }
+}

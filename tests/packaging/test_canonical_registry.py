@@ -31,11 +31,28 @@ from scripts.build.canonical_registry.materialize import (
 )
 from scripts.build.canonical_registry import materialize as materializer
 
+#: Moved 2026-08-02 by the authorized amendment closing
+#: SPEC_GAP-SOURCE-LOCATOR-PAGE, and the node-contract `executor_status`
+#: addition that makes an unbuilt workflow executor declarable instead of
+#: silent. `source_locator.page` became
+#: ["integer", "null"] across the six schemas that declare it, so a page-less
+#: text corpus can emit canonical claim-card and evidence-node artifacts without
+#: fabricating a page number. The pin moves with the content it attests; the
+#: previous values are retained here as history, and B04-0009's sealed
+#: attestation of them remains true as of its seal time.
+#: Re-pin history, kept so a bundle move stays auditable instead of being erased.
+#: [1] pre-amendment:               sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5
+#:     snapshot:                    sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229
+#: [2] source_locator nullable page: sha256:7a1b48ec233349d1387ec9d9b16b0cd8454e1cb5a5c9f5d21db14ca2c771fe87
+#:     snapshot:                    sha256:b662a542b2afe9d8310f3bd9edd895bd1e0eddb6e39c72e43b650a0cc22a6484
+#: [3] document-registration field_sources: sha256:296b248948480b1ff248243cd4265b40b98a12968770a2903c43649f6b3dbe20
+#:     snapshot:                    sha256:2e5b0ff2081eba59b3a7b9dd655ca491c1f3660817ccb62079cf93bac46eed57
+#: [4] retrieval-candidate identity exclusion_policy — current, below.
 EXPECTED_SOURCE_BUNDLE_HASH = (
-    "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5"
+    "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
 )
 EXPECTED_SNAPSHOT_BUNDLE_HASH = (
-    "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229"
+    "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
 )
 
 
@@ -105,19 +122,14 @@ def test_registry_v2_binds_source_snapshot_paths_and_projection_tool() -> None:
     assert manifest["schema_version"] == REGISTRY_SCHEMA_VERSION == 2
     assert manifest["registry_format_version"] == REGISTRY_FORMAT_VERSION
     assert manifest["source_bundle_hash"] == EXPECTED_SOURCE_BUNDLE_HASH
-    assert (
-        manifest["projected_snapshot_bundle_hash"]
-        == EXPECTED_SNAPSHOT_BUNDLE_HASH
-    )
+    assert manifest["projected_snapshot_bundle_hash"] == EXPECTED_SNAPSHOT_BUNDLE_HASH
     assert manifest["build_source_revision"] == EXPECTED_SOURCE_BUNDLE_HASH
     assert manifest["source_revision"] == EXPECTED_SOURCE_BUNDLE_HASH
     assert manifest["projection_tool_identity"] == PROJECTION_TOOL_IDENTITY
     assert manifest["projection_tool_version"] == PROJECTION_TOOL_VERSION
     assert manifest["file_count"] == manifest["resource_count"] == 128
     assert all(
-        entry["source_path"]
-        == entry["package_path"]
-        == entry["relative_path"]
+        entry["source_path"] == entry["package_path"] == entry["relative_path"]
         for entry in manifest["resources"]
     )
 
@@ -194,9 +206,10 @@ def test_materialize_atomically_replaces_complete_existing_projection(
     assert second["atomic_replacement"] == "PASS"
     assert second["changed_file_count"] == 2
     assert _tree_bytes(destination) != prior
-    assert SchemaRegistry(destination).manifest["source_bundle_hash"] == second[
-        "source_bundle_hash"
-    ]
+    assert (
+        SchemaRegistry(destination).manifest["source_bundle_hash"]
+        == second["source_bundle_hash"]
+    )
 
 
 def test_second_rename_failure_restores_old_tree(
@@ -322,9 +335,9 @@ def test_build_backend_is_exactly_pinned() -> None:
         "requires": ["setuptools==82.0.1"],
         "build-backend": "setuptools.build_meta",
     }
-    constraints = (
-        repo_root() / "toolchains/python-build-constraints.txt"
-    ).read_text(encoding="utf-8")
+    constraints = (repo_root() / "toolchains/python-build-constraints.txt").read_text(
+        encoding="utf-8"
+    )
     assert "setuptools==82.0.1 \\\n" in constraints
 
 
@@ -351,9 +364,7 @@ def test_duplicate_document_id_fails_closed(tmp_path: Path) -> None:
     projection = _copy_projection(tmp_path)
     registry_path = projection / "canonical-registry.json"
     manifest = json.loads(registry_path.read_text(encoding="utf-8"))
-    manifest["resources"][1]["document_id"] = manifest["resources"][0][
-        "document_id"
-    ]
+    manifest["resources"][1]["document_id"] = manifest["resources"][0]["document_id"]
     registry_path.write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

@@ -1,0 +1,955 @@
+{
+  "schema": "receipt-invalidation-registry/v1",
+  "purpose": "EF4-I38 requires that corrections invalidate dependent projections. The canonical registry, its source and snapshot bundles, and one projected schema file were amended under HD-EF4-INTEGRITY-SCOPE-20260802-001. Every sealed receipt below asserts a value from before that amendment. The receipts themselves are immutable RAH evidence and are NOT edited: their assertions remain true as of their seal time. What changes is that their dependent status is now declared here instead of being inferable only by hand, so a reader cannot mistake a sealed PASS for a statement about the current tree.",
+  "status": "INVALIDATED",
+  "status_meaning": "docs/status_taxonomy.md: previously accepted output is void because a dependency changed. It does not mean the receipt was wrong when written, and it does not mean the underlying work must be redone; it means the receipt may not be cited as evidence about the current projection.",
+  "invalidated_by": "HD-EF4-INTEGRITY-SCOPE-20260802-001",
+  "invalidated_at": "2026-08-02T14:30:00.000Z",
+  "revalidation_requirement": "A future B04 attempt that re-runs the packaging and projection gates against the current bundle supersedes this registry for the receipts it replaces.",
+  "derivation": "superseded_values is derived, not hand-listed: every canonical value recorded under a bundle/registry key by a standing receipt (the latest attempt of each package) that the freshly recomputed projection no longer produces. A review showed that a hand-maintained list could be edited to hide every dependent asserting a value.",
+  "superseded_values": [
+    {
+      "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+      "what": "retrieval-candidate projection file hash",
+      "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+    },
+    {
+      "value": "sha256:296b248948480b1ff248243cd4265b40b98a12968770a2903c43649f6b3dbe20",
+      "what": "canonical source bundle hash",
+      "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+    },
+    {
+      "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+      "what": "canonical source bundle hash",
+      "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+    },
+    {
+      "value": "sha256:2e5b0ff2081eba59b3a7b9dd655ca491c1f3660817ccb62079cf93bac46eed57",
+      "what": "projected snapshot bundle hash",
+      "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+    },
+    {
+      "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+      "what": "canonical registry document hash",
+      "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+    },
+    {
+      "value": "sha256:6ce191a4d8a86ce488a16c9bf3773d08d5d464066669c5148a2de929269bd794",
+      "what": "canonical registry document hash",
+      "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+    },
+    {
+      "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+      "what": "projected snapshot bundle hash",
+      "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+    },
+    {
+      "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+      "what": "canonical registry document hash",
+      "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+    },
+    {
+      "value": "sha256:dde5466f33e4cdd5864fa925fe224d903c774d1b23e279c22831a930aa22bd35",
+      "what": "projected snapshot bundle hash",
+      "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+    },
+    {
+      "value": "sha256:fc1859f132256c6448ff764c1c66c3a9d03068371209f883b2bdefc2f4158374",
+      "what": "canonical source bundle hash",
+      "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+    }
+  ],
+  "receipt_count": 64,
+  "receipts": [
+    {
+      "receipt": "artifacts/integrity-hardening-20260802/materialize.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:296b248948480b1ff248243cd4265b40b98a12968770a2903c43649f6b3dbe20",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:2e5b0ff2081eba59b3a7b9dd655ca491c1f3660817ccb62079cf93bac46eed57",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/integrity-hardening-20260802/verification-receipt.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:296b248948480b1ff248243cd4265b40b98a12968770a2903c43649f6b3dbe20",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:2e5b0ff2081eba59b3a7b9dd655ca491c1f3660817ccb62079cf93bac46eed57",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0004/build_b04_0004_evidence.py",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0004/canonical-projection-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0004/installed-wheel-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0004/packaging-verification-run.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0004/phase-artifact-reconciliation.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0004/projection.artifact-receipt.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0004/report.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0004/snapshot-inventory.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/build_b04_0005_evidence.py",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/canonical-projection-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/dependency-revalidation.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/installed-wheel-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/packaging-verification-run.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/phase-artifact-reconciliation.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/projection.artifact-receipt.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/report.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/review.md",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/snapshot-inventory.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0005/verify_dependency_revalidation.py",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0006/build_b04_0006_evidence.py",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0006/canonical-projection-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0006/snapshot-inventory-preprojection.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/build_b04_0009_evidence.py",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        },
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/canonical-projection-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/installed-wheel-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/packaging-summary.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/packaging-verification-run.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/phase-artifact-reconciliation.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/projection.artifact-receipt.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/report.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        },
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/review.md",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/snapshot-inventory.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/source-inventory.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        },
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0009/write-scope-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/build_b04_0010_evidence.py",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/canonical-projection-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/installed-wheel-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/packaging-summary.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/packaging-verification-run.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/packaging-verification.stdout.log",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/phase-artifact-reconciliation.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/projection.artifact-receipt.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/report.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/snapshot-inventory.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/source-inventory.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        },
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/B04/attempts/0010/write-scope-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/C01/attempts/0005/c01-shared-contract-gap-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/C01/attempts/0008/build_c01_0008_evidence.py",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/C01/attempts/0008/canonical-contract-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/C01/attempts/0008/retrieval-candidate-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/C01/attempts/0009/canonical-contract-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/C01/attempts/0009/retrieval-candidate-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/C04/attempts/0004/build_c04_0004_evidence.py",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/C04/attempts/0004/c04-conformance-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        },
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/C04/attempts/0004/canonical-projection-freshness.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/C04/attempts/0004/report.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:19e12fe0affbdaaad59bd1bb4bd43e863d177413769a9bf06b80a8577f888f8e",
+          "what": "retrieval-candidate projection file hash",
+          "current_value": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00"
+        },
+        {
+          "value": "sha256:2cb8b87793eabf4d6cd209044b6c28bf14f003b15fb85a81cf70db77ce92e2b5",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        },
+        {
+          "value": "sha256:9dfd37885743ad02dd680e36882fbf88249a89dcc4ec1b7ac5266a94ca7a2229",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/F01/attempts/0003/build_f01_0003_evidence.py",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/F01/attempts/0003/projection-receipt-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:5f3c4514b3801cc66cc0a403d49c1dc380f7665ddc570d4987072a6f77fde1dd",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/O01/attempts/0002/b04-projection-verification.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:6ce191a4d8a86ce488a16c9bf3773d08d5d464066669c5148a2de929269bd794",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        },
+        {
+          "value": "sha256:dde5466f33e4cdd5864fa925fe224d903c774d1b23e279c22831a930aa22bd35",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:fc1859f132256c6448ff764c1c66c3a9d03068371209f883b2bdefc2f4158374",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        }
+      ]
+    },
+    {
+      "receipt": "artifacts/work_packages/O01/attempts/0002/build_o01_0002_evidence.py",
+      "asserts_superseded": [
+        {
+          "value": "sha256:dde5466f33e4cdd5864fa925fe224d903c774d1b23e279c22831a930aa22bd35",
+          "what": "projected snapshot bundle hash",
+          "current_value": "sha256:a3075d0adab4e0b9cf485728a9064051879d1a5eb6df6ab759a5e24976a87cdd"
+        },
+        {
+          "value": "sha256:fc1859f132256c6448ff764c1c66c3a9d03068371209f883b2bdefc2f4158374",
+          "what": "canonical source bundle hash",
+          "current_value": "sha256:7cf181912ceed6fdc0df0895b9eb5968f2ce6089577fc0069042229e28d9c7ff"
+        }
+      ]
+    },
+    {
+      "receipt": "build/v4_b05/build-manifest.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    },
+    {
+      "receipt": "build/v4_b05/build-profile.json",
+      "asserts_superseded": [
+        {
+          "value": "sha256:d08d78c19d39e08ec98df3ac4da8014f61fcc19fe0f833f9e5273059c5cda27c",
+          "what": "canonical registry document hash",
+          "current_value": "sha256:bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0"
+        }
+      ]
+    }
+  ]
+}

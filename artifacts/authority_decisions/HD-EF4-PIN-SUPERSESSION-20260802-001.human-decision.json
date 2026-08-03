@@ -1,0 +1,28 @@
+{
+  "affected_artifact_ids": [
+    "src/epistemic_foundry/_canonical/canonical-registry.json",
+    "src/epistemic_foundry/_canonical/schemas/retrieval-candidate.schema.json",
+    "tests/packaging/test_canonical_registry.py",
+    "tests/test_cli.py",
+    "B04-0009"
+  ],
+  "authority_id": "HUMAN-product-owner",
+  "authority_role": "product_owner",
+  "created_at": "2026-08-02T14:30:00Z",
+  "decision": "Authorize the four pin supersessions recorded in artifacts/work_packages/pin-supersessions.json against B04-0009's product-file attestation: src/epistemic_foundry/_canonical/canonical-registry.json, src/epistemic_foundry/_canonical/schemas/retrieval-candidate.schema.json, tests/packaging/test_canonical_registry.py and tests/test_cli.py. B04-0009 remains sealed and unmodified; its attestation stays true as of its seal time. Each supersession waives exactly one hash transition and expires the moment the file changes again. Every future supersession must cite a decision_id resolvable under artifacts/authority_decisions/; a free-text justification is no longer sufficient.",
+  "decision_hash": "sha256:6d4b9875fbe5f22b1d2c0cc43c966dee8b52b1b2b80b9d465af1eba6823e7a9e",
+  "decision_id": "HD-EF4-PIN-SUPERSESSION-20260802-001",
+  "decision_type": "correct",
+  "evidence_artifact_ids": [
+    "artifacts/work_packages/B04/attempts/0009/report.json",
+    "artifacts/work_packages/pin-supersessions.json",
+    "artifacts/work_packages/receipt-invalidations.json",
+    "manifests/role_registry.yaml",
+    "artifacts/integrity-hardening-20260802/verification-receipt.json"
+  ],
+  "non_mutation_acknowledgement": true,
+  "rationale": "An independent review (finding F3) established that authorized_by was an unchecked free-text field, and that its value 'SPEC_GAP-SOURCE-LOCATOR-PAGE closure' named a record existing nowhere in the repository except the waiver it was supposed to justify — a circular authorization. A second value, 'primary-session integrity correction', was the author authorizing its own work, which manifests/role_registry.yaml forbids. Waiving a hash attestation over sealed evidence is a stronger act than the package-marker exception that already required HD-EF4-W05-SCOPE-20260802-001, so it must carry at least equivalent evidence. The underlying changes are individually justified: the projection files are build outputs that necessarily move when their authoring schemas are amended, the bundle pins are re-anchored with full history retained in comments, and tests/test_cli.py removed two assertions that pinned world-claims rather than invariants and thereby forced the maturity report to overclaim.",
+  "run_id": null,
+  "subject_id": "B04-0009",
+  "supersedes_decision_id": null
+}

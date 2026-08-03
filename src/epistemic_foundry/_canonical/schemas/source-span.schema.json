@@ -18,8 +18,12 @@
       "minLength": 1
     },
     "page": {
-      "type": "integer",
-      "minimum": 1
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "description": "Page number in the source document, or null when the extraction carries no page geometry. A null page requires coordinate_system 'not_available' and a null bbox; it is never a substitute for an unextracted page."
     },
     "section": {
       "type": [
@@ -118,5 +122,32 @@
     "coordinate_system",
     "reconciliation_status",
     "provenance_manifest_id"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "page": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "page"
+        ]
+      },
+      "then": {
+        "properties": {
+          "coordinate_system": {
+            "const": "not_available"
+          },
+          "bbox": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "coordinate_system"
+        ]
+      }
+    }
   ]
 }

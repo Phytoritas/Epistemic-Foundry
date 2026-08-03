@@ -272,16 +272,16 @@
 | SRC002-S0121 | MASTER_SPEC.md | Part XI — Plugin and user experience | .rah/ralph/source_units/SRC002-S0121.txt | covered | 3 | 3 | 1 | 1 | 1 | 1 |
 | SRC002-S0122 | MASTER_SPEC.md | 34. Reference skills | .rah/ralph/source_units/SRC002-S0122.txt | covered | 3 | 3 | 2 | 1 | 1 | 1 |
 | SRC002-S0123 | MASTER_SPEC.md | 35. Proposed CLI | .rah/ralph/source_units/SRC002-S0123.txt | covered | 3 | 3 | 2 | 1 | 1 | 1 |
-| SRC002-S0124-R001 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 3 | 3 | 1 | 1 | 1 | 1 |
+| SRC002-S0124-R001 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 4 | 4 | 2 | 1 | 1 | 1 |
 | SRC002-S0124-R002 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 3 | 3 | 1 | 1 | 1 | 1 |
 | SRC002-S0124-R003 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 3 | 3 | 1 | 1 | 1 | 1 |
 | SRC002-S0124-R004 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 3 | 3 | 1 | 1 | 1 | 1 |
 | SRC002-S0124-R005 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 3 | 3 | 1 | 1 | 1 | 1 |
-| SRC002-S0124-R006 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 3 | 3 | 1 | 1 | 1 | 1 |
-| SRC002-S0124-R007 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 3 | 3 | 1 | 1 | 1 | 1 |
-| SRC002-S0124-R008 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 3 | 3 | 1 | 1 | 1 | 1 |
-| SRC002-S0124-R009 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 3 | 3 | 1 | 1 | 1 | 1 |
-| SRC002-S0124-R010 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 3 | 3 | 2 | 1 | 1 | 1 |
+| SRC002-S0124-R006 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 4 | 4 | 2 | 1 | 1 | 1 |
+| SRC002-S0124-R007 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 4 | 4 | 2 | 1 | 1 | 1 |
+| SRC002-S0124-R008 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 4 | 4 | 2 | 1 | 1 | 1 |
+| SRC002-S0124-R009 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 4 | 4 | 2 | 1 | 1 | 1 |
+| SRC002-S0124-R010 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | covered | 4 | 4 | 3 | 1 | 1 | 1 |
 | SRC002-S0124-R011 | MASTER_SPEC.md | 36. Console / - | .rah/ralph/source_units/SRC002-S0124.txt | intentionally_excluded | 1 | 1 | 0 | 0 | 0 | 0 |
 | SRC002-S0125 | MASTER_SPEC.md | Part XII — Canonical workflows | .rah/ralph/source_units/SRC002-S0125.txt | covered | 3 | 3 | 2 | 1 | 1 | 1 |
 | SRC002-S0126 | MASTER_SPEC.md | Part XIII — A–Z implementation graph | .rah/ralph/source_units/SRC002-S0126.txt | covered | 2 | 2 | 2 | 1 | 1 | 1 |

@@ -32340,7 +32340,8 @@
       "evidence": [
         "docs/evolution_ui_ux_contract.md line 5: '1. **Run Charter** - objective, scope, evaluator hash, holdout status, budgets, statistical family and stop rules.'",
         "backing domain package(s): A05 scientific promotion charter (E0118) + Q05 statistical family/multi-objective fitness (E0236) + F05 EVOLVE typed stop certificates (E0168)",
-        "surfaced via the U-series console layer: U05 (Evolution Chamber console) sealed ledger E0268 (src/epistemic_foundry/console/v4_u05/projection.py); U06 (Honest degraded UI gate) sealed E0272"
+        "surfaced via the U-series console layer: U05 (Evolution Chamber console) sealed ledger E0268 (src/epistemic_foundry/console/v4_u05/projection.py); U06 (Honest degraded UI gate) sealed E0272",
+        "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface."
       ],
       "source_evidence_required": true,
       "source_evidence": [
@@ -32400,13 +32401,34 @@
             "excerpt_hash": "99110d4c20f7a33b"
           },
           "source_excerpt_hash": "99110d4c20f7a33b"
+        },
+        {
+          "id": "SE0004",
+          "created_at_utc": "2026-08-02T12:56:08+00:00",
+          "row_id": "SRC002-S0124-R001",
+          "summary": "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface.",
+          "summary_sha256": "5793407dc8c18d0f4b1cc2292f123b36ead90e889d58804b7056824d43009198",
+          "source_document": "MASTER_SPEC.md",
+          "source_label": "MASTER_SPEC.md",
+          "locator": "36. Console / -",
+          "source_unit_id": "SRC002-S0124",
+          "source_unit_text_path": ".rah/ralph/source_units/SRC002-S0124.txt",
+          "source_span": {
+            "source_id": "SRC002",
+            "unit_id": "SRC002-S0124",
+            "locator": "36. Console / -",
+            "excerpt_hash": "99110d4c20f7a33b"
+          },
+          "source_excerpt_hash": "99110d4c20f7a33b"
         }
       ],
       "validation": [
-        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)"
+        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "source_validation": [
-        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)"
+        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "semantic_contract_required": true,
       "semantic_validation": [
@@ -32422,7 +32444,7 @@
       "notes": "",
       "char_count": 15,
       "line_count": 1,
-      "updated_at_utc": "2026-08-02T08:57:09+00:00"
+      "updated_at_utc": "2026-08-02T12:56:08+00:00"
     },
     {
       "requirement_id": "SRC002-S0124-R002",
@@ -32920,7 +32942,8 @@
       "evidence": [
         "docs/evolution_ui_ux_contract.md line 10: '6. **Verifier Firewall** - evaluator qualification, leakage, calibration, exposure budget and version.'",
         "backing domain package(s): S05 Verifier Firewall package (E0176) + docs/verifier_firewall.md + workflows/verifier_firewall_qualification.workflow.yaml (14 nodes)",
-        "surfaced via the U-series console layer: U05 (Evolution Chamber console) sealed ledger E0268 (src/epistemic_foundry/console/v4_u05/projection.py); U06 (Honest degraded UI gate) sealed E0272"
+        "surfaced via the U-series console layer: U05 (Evolution Chamber console) sealed ledger E0268 (src/epistemic_foundry/console/v4_u05/projection.py); U06 (Honest degraded UI gate) sealed E0272",
+        "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface."
       ],
       "source_evidence_required": true,
       "source_evidence": [
@@ -32980,13 +33003,34 @@
             "excerpt_hash": "99110d4c20f7a33b"
           },
           "source_excerpt_hash": "99110d4c20f7a33b"
+        },
+        {
+          "id": "SE0004",
+          "created_at_utc": "2026-08-02T12:56:09+00:00",
+          "row_id": "SRC002-S0124-R006",
+          "summary": "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface.",
+          "summary_sha256": "5793407dc8c18d0f4b1cc2292f123b36ead90e889d58804b7056824d43009198",
+          "source_document": "MASTER_SPEC.md",
+          "source_label": "MASTER_SPEC.md",
+          "locator": "36. Console / -",
+          "source_unit_id": "SRC002-S0124",
+          "source_unit_text_path": ".rah/ralph/source_units/SRC002-S0124.txt",
+          "source_span": {
+            "source_id": "SRC002",
+            "unit_id": "SRC002-S0124",
+            "locator": "36. Console / -",
+            "excerpt_hash": "99110d4c20f7a33b"
+          },
+          "source_excerpt_hash": "99110d4c20f7a33b"
         }
       ],
       "validation": [
-        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)"
+        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "source_validation": [
-        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)"
+        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "semantic_contract_required": true,
       "semantic_validation": [
@@ -33002,7 +33046,7 @@
       "notes": "",
       "char_count": 21,
       "line_count": 1,
-      "updated_at_utc": "2026-08-02T08:57:09+00:00"
+      "updated_at_utc": "2026-08-02T12:56:09+00:00"
     },
     {
       "requirement_id": "SRC002-S0124-R007",
@@ -33036,7 +33080,8 @@
       "evidence": [
         "docs/evolution_ui_ux_contract.md line 11: '7. **Replication Board** - plans, independence, deviations, heterogeneity and promotion effects.'",
         "backing domain package(s): V05 independent replication / promotion ceiling (E0264) + workflows/hypothesis_replication.workflow.yaml (12 nodes)",
-        "surfaced via the U-series console layer: U05 (Evolution Chamber console) sealed ledger E0268 (src/epistemic_foundry/console/v4_u05/projection.py); U06 (Honest degraded UI gate) sealed E0272"
+        "surfaced via the U-series console layer: U05 (Evolution Chamber console) sealed ledger E0268 (src/epistemic_foundry/console/v4_u05/projection.py); U06 (Honest degraded UI gate) sealed E0272",
+        "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface."
       ],
       "source_evidence_required": true,
       "source_evidence": [
@@ -33096,13 +33141,34 @@
             "excerpt_hash": "99110d4c20f7a33b"
           },
           "source_excerpt_hash": "99110d4c20f7a33b"
+        },
+        {
+          "id": "SE0004",
+          "created_at_utc": "2026-08-02T12:56:10+00:00",
+          "row_id": "SRC002-S0124-R007",
+          "summary": "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface.",
+          "summary_sha256": "5793407dc8c18d0f4b1cc2292f123b36ead90e889d58804b7056824d43009198",
+          "source_document": "MASTER_SPEC.md",
+          "source_label": "MASTER_SPEC.md",
+          "locator": "36. Console / -",
+          "source_unit_id": "SRC002-S0124",
+          "source_unit_text_path": ".rah/ralph/source_units/SRC002-S0124.txt",
+          "source_span": {
+            "source_id": "SRC002",
+            "unit_id": "SRC002-S0124",
+            "locator": "36. Console / -",
+            "excerpt_hash": "99110d4c20f7a33b"
+          },
+          "source_excerpt_hash": "99110d4c20f7a33b"
         }
       ],
       "validation": [
-        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)"
+        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "source_validation": [
-        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)"
+        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "semantic_contract_required": true,
       "semantic_validation": [
@@ -33118,7 +33184,7 @@
       "notes": "",
       "char_count": 21,
       "line_count": 1,
-      "updated_at_utc": "2026-08-02T08:57:09+00:00"
+      "updated_at_utc": "2026-08-02T12:56:10+00:00"
     },
     {
       "requirement_id": "SRC002-S0124-R008",
@@ -33152,7 +33218,8 @@
       "evidence": [
         "docs/evolution_ui_ux_contract.md line 12: '8. **Archive Vault** - elites, nulls, counterexamples, failed replications, unsafe and minority entries.'",
         "backing domain package(s): D05 quality-diversity archive store (E0164) + agent ef-archive-curator (preserves negative/null/unsafe/minority memory)",
-        "surfaced via the U-series console layer: U05 (Evolution Chamber console) sealed ledger E0268 (src/epistemic_foundry/console/v4_u05/projection.py); U06 (Honest degraded UI gate) sealed E0272"
+        "surfaced via the U-series console layer: U05 (Evolution Chamber console) sealed ledger E0268 (src/epistemic_foundry/console/v4_u05/projection.py); U06 (Honest degraded UI gate) sealed E0272",
+        "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface."
       ],
       "source_evidence_required": true,
       "source_evidence": [
@@ -33212,13 +33279,34 @@
             "excerpt_hash": "99110d4c20f7a33b"
           },
           "source_excerpt_hash": "99110d4c20f7a33b"
+        },
+        {
+          "id": "SE0004",
+          "created_at_utc": "2026-08-02T12:56:12+00:00",
+          "row_id": "SRC002-S0124-R008",
+          "summary": "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface.",
+          "summary_sha256": "5793407dc8c18d0f4b1cc2292f123b36ead90e889d58804b7056824d43009198",
+          "source_document": "MASTER_SPEC.md",
+          "source_label": "MASTER_SPEC.md",
+          "locator": "36. Console / -",
+          "source_unit_id": "SRC002-S0124",
+          "source_unit_text_path": ".rah/ralph/source_units/SRC002-S0124.txt",
+          "source_span": {
+            "source_id": "SRC002",
+            "unit_id": "SRC002-S0124",
+            "locator": "36. Console / -",
+            "excerpt_hash": "99110d4c20f7a33b"
+          },
+          "source_excerpt_hash": "99110d4c20f7a33b"
         }
       ],
       "validation": [
-        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)"
+        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "source_validation": [
-        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)"
+        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "semantic_contract_required": true,
       "semantic_validation": [
@@ -33234,7 +33322,7 @@
       "notes": "",
       "char_count": 17,
       "line_count": 1,
-      "updated_at_utc": "2026-08-02T08:57:09+00:00"
+      "updated_at_utc": "2026-08-02T12:56:12+00:00"
     },
     {
       "requirement_id": "SRC002-S0124-R009",
@@ -33268,7 +33356,8 @@
       "evidence": [
         "docs/evolution_ui_ux_contract.md line 13: '9. **Operator Console** - pause/resume/stop, budget, concurrency and approvals.'",
         "backing domain package(s): W02 checkpoint/pause/resume/cancellation (E0124) + U05 projection.py (operator controls)",
-        "surfaced via the U-series console layer: U05 (Evolution Chamber console) sealed ledger E0268 (src/epistemic_foundry/console/v4_u05/projection.py); U06 (Honest degraded UI gate) sealed E0272"
+        "surfaced via the U-series console layer: U05 (Evolution Chamber console) sealed ledger E0268 (src/epistemic_foundry/console/v4_u05/projection.py); U06 (Honest degraded UI gate) sealed E0272",
+        "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface."
       ],
       "source_evidence_required": true,
       "source_evidence": [
@@ -33328,13 +33417,34 @@
             "excerpt_hash": "99110d4c20f7a33b"
           },
           "source_excerpt_hash": "99110d4c20f7a33b"
+        },
+        {
+          "id": "SE0004",
+          "created_at_utc": "2026-08-02T12:56:13+00:00",
+          "row_id": "SRC002-S0124-R009",
+          "summary": "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface.",
+          "summary_sha256": "5793407dc8c18d0f4b1cc2292f123b36ead90e889d58804b7056824d43009198",
+          "source_document": "MASTER_SPEC.md",
+          "source_label": "MASTER_SPEC.md",
+          "locator": "36. Console / -",
+          "source_unit_id": "SRC002-S0124",
+          "source_unit_text_path": ".rah/ralph/source_units/SRC002-S0124.txt",
+          "source_span": {
+            "source_id": "SRC002",
+            "unit_id": "SRC002-S0124",
+            "locator": "36. Console / -",
+            "excerpt_hash": "99110d4c20f7a33b"
+          },
+          "source_excerpt_hash": "99110d4c20f7a33b"
         }
       ],
       "validation": [
-        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)"
+        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "source_validation": [
-        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)"
+        "backing package sealed (hash-sealed) on the ledger with its own suite; U05-0001 unit-and-contract-tests.junit.xml + negative-and-adversarial-tests.junit.xml PASS (E0267/E0268); U06-0001 honest-degraded-UI gate sealed (E0271/E0272)",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "semantic_contract_required": true,
       "semantic_validation": [
@@ -33350,7 +33460,7 @@
       "notes": "",
       "char_count": 20,
       "line_count": 1,
-      "updated_at_utc": "2026-08-02T08:57:09+00:00"
+      "updated_at_utc": "2026-08-02T12:56:13+00:00"
     },
     {
       "requirement_id": "SRC002-S0124-R010",
@@ -33384,7 +33494,8 @@
       "evidence": [
         "docs/evolution_ui_ux_contract.md line 14: '10. **Promotion Docket** - sealed pack, Parliament, statistics, replication and Passport decision.'",
         "invariant EF4-I45 'No scalar promotion authority' + EF4-I09 'No majority authority' (manifests/product_invariants.yaml) enforce 'No default single-score leaderboard is permitted'",
-        "U05 sealed E0268; U06 sealed E0272; P05 (Evolution promotion Parliament) / P06 (No-majority promotion, sealed-candidate attestation)"
+        "U05 sealed E0268; U06 sealed E0272; P05 (Evolution promotion Parliament) / P06 (No-majority promotion, sealed-candidate attestation)",
+        "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface."
       ],
       "source_evidence_required": true,
       "source_evidence": [
@@ -33444,15 +33555,36 @@
             "excerpt_hash": "99110d4c20f7a33b"
           },
           "source_excerpt_hash": "99110d4c20f7a33b"
+        },
+        {
+          "id": "SE0004",
+          "created_at_utc": "2026-08-02T12:56:14+00:00",
+          "row_id": "SRC002-S0124-R010",
+          "summary": "CORRECTION 2026-08-02 (supersedes the 'surfaced via the U-series console layer ... projection.py' clause on this row): src/epistemic_foundry/console/v4_u05/projection.py declares exactly four surfaces (SURFACE_PARETO_FRONT, SURFACE_NICHE_MAP, SURFACE_LINEAGES, SURFACE_CHALLENGE_BOARD) with four matching projectors. This view has NO projector and NO renderer; web/ contains only generated client stubs. The requirement is SPECIFIED and owned by a sealed backing package, not implemented as a console surface.",
+          "summary_sha256": "5793407dc8c18d0f4b1cc2292f123b36ead90e889d58804b7056824d43009198",
+          "source_document": "MASTER_SPEC.md",
+          "source_label": "MASTER_SPEC.md",
+          "locator": "36. Console / -",
+          "source_unit_id": "SRC002-S0124",
+          "source_unit_text_path": ".rah/ralph/source_units/SRC002-S0124.txt",
+          "source_span": {
+            "source_id": "SRC002",
+            "unit_id": "SRC002-S0124",
+            "locator": "36. Console / -",
+            "excerpt_hash": "99110d4c20f7a33b"
+          },
+          "source_excerpt_hash": "99110d4c20f7a33b"
         }
       ],
       "validation": [
         "U05-0001 + U06-0001 suites PASS (E0268/E0272); product_invariants.yaml EF4-I45/EF4-I09 present and enforced by A02 invariant-schema-check",
-        "manifest execution_policy.evolution_fitness_rule: 'Scalar scores may guide search only. Promotion requires hard gates, FitnessVector receipts, statistics, replication and Parliament.'"
+        "manifest execution_policy.evolution_fitness_rule: 'Scalar scores may guide search only. Promotion requires hard gates, FitnessVector receipts, statistics, replication and Parliament.'",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "source_validation": [
         "U05-0001 + U06-0001 suites PASS (E0268/E0272); product_invariants.yaml EF4-I45/EF4-I09 present and enforced by A02 invariant-schema-check",
-        "manifest execution_policy.evolution_fitness_rule: 'Scalar scores may guide search only. Promotion requires hard gates, FitnessVector receipts, statistics, replication and Parliament.'"
+        "manifest execution_policy.evolution_fitness_rule: 'Scalar scores may guide search only. Promotion requires hard gates, FitnessVector receipts, statistics, replication and Parliament.'",
+        "Verified by reading projection.py lines 118-121 and 325-537 and by listing web/src; MASTER_SPEC section 36 requires ten views and four exist."
       ],
       "semantic_contract_required": true,
       "semantic_validation": [
@@ -33468,7 +33600,7 @@
       "notes": "",
       "char_count": 71,
       "line_count": 4,
-      "updated_at_utc": "2026-08-02T08:57:09+00:00"
+      "updated_at_utc": "2026-08-02T12:56:14+00:00"
     },
     {
       "requirement_id": "SRC002-S0124-R011",
@@ -60319,5 +60451,5 @@
       "updated_at_utc": "2026-08-02T08:57:09+00:00"
     }
   ],
-  "updated_at_utc": "2026-08-02T08:57:09+00:00"
+  "updated_at_utc": "2026-08-02T12:56:14+00:00"
 }
