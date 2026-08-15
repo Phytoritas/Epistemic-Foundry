@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/artifact-receipt.schema.json",
+  "title": "ArtifactReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "action_intent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "media_type": {
+      "type": "string"
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "byte_size": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "created_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "actor_type": {
+          "enum": [
+            "human",
+            "agent",
+            "service",
+            "tool"
+          ]
+        }
+      },
+      "required": [
+        "actor_id",
+        "actor_type"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "validation_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "check": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "NOT_RUN"
+            ]
+          },
+          "details": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "check",
+          "status",
+          "details"
+        ]
+      },
+      "minItems": 1
+    },
+    "receipt_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "artifact_id",
+    "action_intent_id",
+    "media_type",
+    "content_hash",
+    "byte_size",
+    "created_by",
+    "created_at",
+    "locator",
+    "schema_ref",
+    "validation_results",
+    "receipt_hash"
+  ]
+}

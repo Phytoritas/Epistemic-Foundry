@@ -77,7 +77,7 @@ const DECISION_SET = new Set(HOOK_DECISIONS);
 const COVERAGE_SET = new Set(HOOK_COVERAGE);
 const SHA256_PATTERN = /^sha256:[0-9a-f]{64}$/u;
 const RFC3339_PATTERN =
-  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(?:Z|([+-])(\d{2}):(\d{2}))$/u;
+  /^(\d{4})-(\d{2})-(\d{2})[Tt](\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(?:[Zz]|([+-])(\d{2}):(\d{2}))$/u;
 const MAX_PLATFORM_TIMEOUT_MS = 2_147_483_647;
 
 export class HookGatewayError extends Error {
@@ -278,7 +278,9 @@ const isLeapYear = (year) => year % 4 === 0 && (year % 100 !== 0 || year % 400 =
 const requireRfc3339 = (value, label, code) => {
   const candidate = requireString(value, label, { allowEmpty: false, code });
   const match = RFC3339_PATTERN.exec(candidate);
-  if (match === null) fail(code, `${label} must be an RFC 3339 date-time`);
+  if (match === null || match[0].length !== candidate.length) {
+    fail(code, `${label} must be an RFC 3339 date-time`);
+  }
   const year = Number(match[1]);
   const month = Number(match[2]);
   const day = Number(match[3]);
@@ -295,11 +297,70 @@ const requireRfc3339 = (value, label, code) => {
     day > days[month - 1] ||
     hour > 23 ||
     minute > 59 ||
-    second > 59 ||
+    second > 60 ||
     offsetHour > 23 ||
     offsetMinute > 59
   ) {
     fail(code, `${label} must be an RFC 3339 date-time`);
+  }
+  if (second === 60) {
+    const offsetSign = match[8] === "-" ? -1 : 1;
+    const offsetMinutes = offsetSign * (offsetHour * 60 + offsetMinute);
+    const utcMinutes = hour * 60 + minute - offsetMinutes;
+    const utcDayDelta = Math.floor(utcMinutes / (24 * 60));
+    const utcMinuteOfDay = ((utcMinutes % (24 * 60)) + 24 * 60) % (24 * 60);
+    let utcYear = year;
+    let utcMonth = month;
+    let utcDay = day + utcDayDelta;
+    if (utcDay < 1) {
+      utcMonth -= 1;
+      if (utcMonth < 1) {
+        utcYear -= 1;
+        utcMonth = 12;
+      }
+      const previousMonthDays = [
+        31,
+        isLeapYear(utcYear) ? 29 : 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+      ];
+      utcDay = previousMonthDays[utcMonth - 1];
+    } else if (utcDay > days[month - 1]) {
+      utcDay = 1;
+      utcMonth += 1;
+      if (utcMonth > 12) {
+        utcYear += 1;
+        utcMonth = 1;
+      }
+    }
+    const utcMonthDays = [
+      31,
+      isLeapYear(utcYear) ? 29 : 28,
+      31,
+      30,
+      31,
+      30,
+      31,
+      31,
+      30,
+      31,
+      30,
+      31,
+    ];
+    if (
+      utcMinuteOfDay !== 23 * 60 + 59 ||
+      utcDay !== utcMonthDays[utcMonth - 1]
+    ) {
+      fail(code, `${label} must be an RFC 3339 date-time`);
+    }
   }
   return candidate;
 };

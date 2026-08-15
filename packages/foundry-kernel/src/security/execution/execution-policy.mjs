@@ -648,7 +648,6 @@ const assertExistingPathSegmentsNoFollow = (root, segments) => {
     if (index < segments.length - 1 && !stats.isDirectory()) {
       fail("PATH_NOT_TRAVERSABLE", "resource path crosses a non-directory component");
     }
-
     let canonical;
     try {
       canonical = fs.realpathSync.native(current);
@@ -657,6 +656,9 @@ const assertExistingPathSegmentsNoFollow = (root, segments) => {
     }
     if (normalizePathForComparison(current) !== normalizePathForComparison(canonical)) {
       fail("PATH_LINK_DENIED", "resource path crosses a link or path alias");
+    }
+    if (index === segments.length - 1 && !stats.isDirectory() && stats.nlink > 1) {
+      fail("PATH_LINK_DENIED", "resource path targets a multiply-linked non-directory");
     }
   }
   return true;

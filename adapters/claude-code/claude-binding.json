@@ -2,6 +2,7 @@
   "adapter_id": "EFX02-CLAUDE-ADAPTER",
   "adapter_version": "4.0.0",
   "agent_file_suffix": ".md",
+  "agent_root": ".claude/agents",
   "base_tools": [
     "Read",
     "Grep",
@@ -15,5 +16,9 @@
     "tools"
   ],
   "model": "inherit",
+  "optional_frontmatter": {
+    "maxTurns": "40",
+    "permissionMode": "plan"
+  },
   "write_tool": "Bash"
 }

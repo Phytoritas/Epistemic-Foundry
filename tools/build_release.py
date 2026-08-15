@@ -18,39 +18,14 @@ import zipfile
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+# Bundle membership is decided in one place; the builder and validator both
+# import it so they cannot drift apart.
+from release_inventory import iter_bundle_files  # noqa: E402
+
 EXCLUDED = {"PACKAGE_MANIFEST.json", "MANIFEST.sha256"}
 
-#: Working-tree infrastructure that is never shipped bundle content. Kept in
-#: sync with `validate_spec_bundle.NON_BUNDLE_PREFIXES`: if the builder and the
-#: validator disagree about what belongs in the bundle, every local checkout
-#: reports a spurious manifest mismatch.
-NON_BUNDLE_PREFIXES = (
-    ".git/",
-    ".rah/",
-    ".venv/",
-    "__pycache__/",
-    ".pytest_cache/",
-    "build/",
-    "dist/",
-    "docs/architecture/",
-    "src/",
-    "tests/",
-)
-
-NON_BUNDLE_FILES = {".gitignore", "pyproject.toml"}
-
-NON_BUNDLE_SUFFIXES = (".pyc", ".pyo", ".egg-info")
-
-
-def is_non_bundle_path(rel: str) -> bool:
-    """True when `rel` is local infrastructure rather than bundle content."""
-    if rel in NON_BUNDLE_FILES:
-        return True
-    if any(rel == prefix.rstrip("/") or rel.startswith(prefix) for prefix in NON_BUNDLE_PREFIXES):
-        return True
-    if any(f"/{marker}" in f"/{rel}" for marker in ("__pycache__/", ".pytest_cache/")):
-        return True
-    return rel.endswith(NON_BUNDLE_SUFFIXES)
 FIXED_ZIP_TIME = (2026, 7, 26, 0, 0, 0)
 
 
@@ -63,16 +38,8 @@ def sha256_file(path: Path) -> str:
 
 
 def package_files(root: Path) -> list[Path]:
-    return sorted(
-        (
-            p
-            for p in root.rglob("*")
-            if p.is_file()
-            and p.relative_to(root).as_posix() not in EXCLUDED
-            and not is_non_bundle_path(p.relative_to(root).as_posix())
-        ),
-        key=lambda p: p.relative_to(root).as_posix(),
-    )
+    """Bundle members, chosen by the shared release-inventory authority."""
+    return list(iter_bundle_files(root))
 
 
 def read_json(path: Path) -> dict[str, Any]:

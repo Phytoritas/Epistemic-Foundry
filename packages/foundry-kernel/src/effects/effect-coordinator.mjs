@@ -25,7 +25,7 @@ const PLAIN_OBJECT_PROTOTYPE = Object.prototype;
 
 const SHA256_PATTERN = /^sha256:[0-9a-f]{64}$/u;
 const RFC3339_PATTERN =
-  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|([+-])(\d{2}):(\d{2}))$/u;
+  /^(\d{4})-(\d{2})-(\d{2})[Tt](\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(?:[Zz]|([+-])(\d{2}):(\d{2}))$/u;
 const OPERATION_SCHEMA_VERSION = "1.0.0";
 const EVENT_SCHEMA_VERSION = "4.0.0";
 const EVENT_ACTOR_ID = "ACT-E02-effect-coordinator";
@@ -288,36 +288,109 @@ const requireStringArray = (
 
 const isLeapYear = (year) => year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 
-const isRfc3339 = (value) => {
-  if (typeof value !== "string" || !hasOnlyUnicodeScalars(value)) return false;
+const daysInMonth = (year, month) => {
+  if (month === 2) return isLeapYear(year) ? 29 : 28;
+  return month === 4 || month === 6 || month === 9 || month === 11 ? 30 : 31;
+};
+
+const parseRfc3339 = (value) => {
+  if (typeof value !== "string" || !hasOnlyUnicodeScalars(value)) return null;
   const match = RFC3339_PATTERN.exec(value);
-  if (match === null) return false;
-  const year = Number(match[1]);
+  if (match === null) return null;
+  let year = Number(match[1]);
   const month = Number(match[2]);
-  const day = Number(match[3]);
+  let day = Number(match[3]);
   const hour = Number(match[4]);
   const minute = Number(match[5]);
   const second = Number(match[6]);
-  const offsetHour = match[8] === undefined ? 0 : Number(match[8]);
-  const offsetMinute = match[9] === undefined ? 0 : Number(match[9]);
-  const monthLengths = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  return (
-    year >= 1 &&
-    month >= 1 &&
-    month <= 12 &&
-    day >= 1 &&
-    day <= monthLengths[month - 1] &&
-    hour <= 23 &&
-    minute <= 59 &&
-    second <= 59 &&
-    offsetHour <= 23 &&
-    offsetMinute <= 59 &&
-    NUMBER_IS_FINITE(Date.parse(value))
-  );
+  const fraction = match[7] ?? "";
+  const offsetHour = match[9] === undefined ? 0 : Number(match[9]);
+  const offsetMinute = match[10] === undefined ? 0 : Number(match[10]);
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > daysInMonth(year, month) ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 60 ||
+    offsetHour > 23 ||
+    offsetMinute > 59
+  ) {
+    return null;
+  }
+
+  let utcMonth = month;
+  let utcMinuteOfDay = hour * 60 + minute;
+  if (match[8] === "+") {
+    utcMinuteOfDay -= offsetHour * 60 + offsetMinute;
+  } else if (match[8] === "-") {
+    utcMinuteOfDay += offsetHour * 60 + offsetMinute;
+  }
+  if (utcMinuteOfDay < 0) {
+    utcMinuteOfDay += 24 * 60;
+    day -= 1;
+    if (day === 0) {
+      utcMonth -= 1;
+      if (utcMonth === 0) {
+        year -= 1;
+        utcMonth = 12;
+      }
+      day = daysInMonth(year, utcMonth);
+    }
+  } else if (utcMinuteOfDay >= 24 * 60) {
+    utcMinuteOfDay -= 24 * 60;
+    day += 1;
+    if (day > daysInMonth(year, utcMonth)) {
+      day = 1;
+      utcMonth += 1;
+      if (utcMonth === 13) {
+        year += 1;
+        utcMonth = 1;
+      }
+    }
+  }
+  const utcMinute = utcMinuteOfDay % 60;
+  const utcHour = (utcMinuteOfDay - utcMinute) / 60;
+  if (
+    second === 60 &&
+    (utcHour !== 23 ||
+      utcMinute !== 59 ||
+      day !== daysInMonth(year, utcMonth))
+  ) {
+    return null;
+  }
+  return OBJECT_FREEZE([year, utcMonth, day, utcHour, utcMinute, second, fraction]);
+};
+
+const compareRfc3339 = (left, right) => {
+  const leftTuple = parseRfc3339(left);
+  const rightTuple = parseRfc3339(right);
+  if (leftTuple === null || rightTuple === null) {
+    fail("INVALID_INPUT", "RFC 3339 chronology comparison requires valid timestamps");
+  }
+  for (let index = 0; index < 6; index += 1) {
+    if (leftTuple[index] < rightTuple[index]) return -1;
+    if (leftTuple[index] > rightTuple[index]) return 1;
+  }
+  const leftFraction = leftTuple[6];
+  const rightFraction = rightTuple[6];
+  const length = leftFraction.length > rightFraction.length
+    ? leftFraction.length
+    : rightFraction.length;
+  for (let index = 0; index < length; index += 1) {
+    const leftDigit = index < leftFraction.length ? leftFraction.charCodeAt(index) : 48;
+    const rightDigit = index < rightFraction.length ? rightFraction.charCodeAt(index) : 48;
+    if (leftDigit < rightDigit) return -1;
+    if (leftDigit > rightDigit) return 1;
+  }
+  return 0;
 };
 
 const requireTimestamp = (value, label, code = "INVALID_INPUT") => {
-  if (!isRfc3339(value)) fail(code, `${label} must be a real RFC 3339 date-time`);
+  if (parseRfc3339(value) === null) {
+    fail(code, `${label} must be a real RFC 3339 date-time`);
+  }
   return value;
 };
 
@@ -589,7 +662,7 @@ const normalizeEffectReceipt = (candidate, { sealed = true } = {}) => {
     "EffectReceipt.finished_at",
     "EFFECT_RECEIPT_INVALID",
   );
-  if (Date.parse(finishedAt) < Date.parse(startedAt)) {
+  if (compareRfc3339(finishedAt, startedAt) < 0) {
     fail("EFFECT_RECEIPT_INVALID", "EffectReceipt.finished_at precedes started_at");
   }
   const normalized = {
@@ -1066,7 +1139,7 @@ const loadSnapshot = (store, intentId) => {
         currentAttempt === null
           ? intent.created_at
           : currentReceipts[currentReceipts.length - 1].finished_at;
-      if (Date.parse(attempt.started_at) < Date.parse(earliestStart)) {
+      if (compareRfc3339(attempt.started_at, earliestStart) < 0) {
         fail(
           "EFFECT_RECORD_INTEGRITY_FAILED",
           "Attempt chronology precedes its intent or the prior resolved receipt",
@@ -1115,7 +1188,7 @@ const loadSnapshot = (store, intentId) => {
     if (receipt.started_at !== currentAttempt.started_at) {
       fail("EFFECT_RECORD_INTEGRITY_FAILED", "EffectReceipt.started_at differs from Attempt");
     }
-    if (lastFinishedAt !== null && Date.parse(receipt.finished_at) < Date.parse(lastFinishedAt)) {
+    if (lastFinishedAt !== null && compareRfc3339(receipt.finished_at, lastFinishedAt) < 0) {
       fail("EFFECT_RECORD_INTEGRITY_FAILED", "receipt chronology moves backwards");
     }
     const priorReceipt = currentReceipts[currentReceipts.length - 1];
@@ -1805,7 +1878,7 @@ export class EffectCoordinator {
         return OBJECT_FREEZE({ attempt: tail.attempt, created: false, snapshot });
       }
       const earliestStart = tail.receipt?.finished_at ?? snapshot.intent.created_at;
-      if (Date.parse(input.started_at) < Date.parse(earliestStart)) {
+      if (compareRfc3339(input.started_at, earliestStart) < 0) {
         fail(
           "ATTEMPT_CHRONOLOGY_INVALID",
           "Attempt.started_at must not precede the intent or prior resolved receipt",
@@ -1921,7 +1994,10 @@ export class EffectCoordinator {
       } else if (tail.receipt !== null && tail.receipt.status !== "UNKNOWN") {
         fail("EFFECT_ALREADY_RESOLVED", "a resolved effect cannot be reconciled again");
       }
-      if (tail.receipt !== null && Date.parse(receipt.finished_at) < Date.parse(tail.receipt.finished_at)) {
+      if (
+        tail.receipt !== null &&
+        compareRfc3339(receipt.finished_at, tail.receipt.finished_at) < 0
+      ) {
         fail("EFFECT_RECEIPT_INVALID", "reconciliation receipt chronology moves backwards");
       }
       if (

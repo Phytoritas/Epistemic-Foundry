@@ -27,19 +27,21 @@
  * The module reads no clock, no random source, no environment and no file.
  */
 
+import { createHash } from "node:crypto";
 import { types as utilTypes } from "node:util";
 
+import { canonicalJsonSha256, SHA256_PATTERN } from "../../app/record-hash.mjs";
 import { OPERATIONS, getArtifact, getRun } from "../../generated/ui-client/index.mjs";
 
 const ARRAY_IS_ARRAY = Array.isArray;
 const IS_PROXY = utilTypes.isProxy;
+const OBJECT_DEFINE_PROPERTY = Object.defineProperty;
 const OBJECT_FREEZE = Object.freeze;
 const OBJECT_GET_OWN_PROPERTY_DESCRIPTOR = Object.getOwnPropertyDescriptor;
 const OBJECT_GET_PROTOTYPE_OF = Object.getPrototypeOf;
 const OBJECT_HAS_OWN = Object.hasOwn;
 const REFLECT_OWN_KEYS = Reflect.ownKeys;
 const PLAIN_OBJECT_PROTOTYPE = Object.prototype;
-const SHA256_PATTERN = /^sha256:[0-9a-f]{64}$/u;
 
 export const APORIA_VIEW_VERSION = "4.0.0-u03.1";
 
@@ -108,6 +110,10 @@ export const APORIA_OPERATION_IDS = OBJECT_FREEZE(["getArtifact", "getRun"]);
 export const APORIA_FINDING_CODES = OBJECT_FREEZE({
   APORIA_INPUT_INVALID:
     "The argument graph handed to the Aporia view is not a plain data object carrying exactly the field set the argument-graph schema declares, so no node or edge could be read without guessing what the caller meant.",
+  ARGUMENT_GRAPH_HASH_MISMATCH:
+    "The argument graph digest does not bind its current nodes, edges, and open-question ledger, so the view cannot trust that it is rendering the graph the Aporia engine sealed.",
+  ARGUMENT_GRAPH_CANONICALIZATION_DIALECT_UNRATIFIED:
+    "The graph digest is consistent with the Python producer's number-rendering dialect but not this JavaScript verifier's canonical form, so the unratified Foundry cross-language canonical JSON number-rendering contract leaves the graph unverifiable; this diagnostic is not by itself evidence of tampering and cannot authorize rendering.",
   UNKNOWN_CONTRADICTION_CLASS:
     "An edge declares a type outside the vocabulary the aporia engine partitions, and bucketing an unrecognised conflict into a generic class would present an unknown attack as an understood one.",
   UNKNOWN_NODE_TYPE:
@@ -195,6 +201,13 @@ const requireArray = (value, label, code = CODE) => {
   ) {
     fail(code, `${label} must be a plain dense array`);
   }
+  const allowedKeys = new Set(["length"]);
+  for (let index = 0; index < value.length; index += 1) allowedKeys.add(String(index));
+  for (const key of REFLECT_OWN_KEYS(value)) {
+    if (typeof key !== "string" || !allowedKeys.has(key)) {
+      fail(code, `${label} carries the unsupported array field ${String(key)}`);
+    }
+  }
   const result = [];
   for (let index = 0; index < value.length; index += 1) {
     const descriptor = OBJECT_GET_OWN_PROPERTY_DESCRIPTOR(value, String(index));
@@ -254,6 +267,63 @@ const EDGE_FIELDS = OBJECT_FREEZE([
   "rule_ref",
   "confidence",
 ]);
+const SCOPE_FIELDS = OBJECT_FREEZE([
+  "domain",
+  "population",
+  "entity_type",
+  "entity_subtype",
+  "unit_of_analysis",
+  "setting",
+  "geography",
+  "jurisdiction",
+  "language",
+  "lifecycle_stage",
+  "spatial_scale",
+  "temporal_scale",
+  "time_period",
+  "measurement_time",
+  "intervention_or_exposure",
+  "comparator",
+  "inclusion_criteria",
+  "exclusion_criteria",
+  "conditions",
+  "domain_extensions",
+]);
+const SCOPE_NULLABLE_STRING_FIELDS = OBJECT_FREEZE([
+  "domain",
+  "population",
+  "entity_type",
+  "entity_subtype",
+  "unit_of_analysis",
+  "setting",
+  "geography",
+  "jurisdiction",
+  "language",
+  "lifecycle_stage",
+  "spatial_scale",
+  "temporal_scale",
+  "time_period",
+  "measurement_time",
+  "comparator",
+]);
+const INTERVENTION_FIELDS = OBJECT_FREEZE([
+  "name",
+  "category",
+  "min_value",
+  "max_value",
+  "unit",
+  "duration",
+  "frequency",
+  "rate",
+  "route_or_delivery",
+]);
+const INTERVENTION_NULLABLE_STRING_FIELDS = OBJECT_FREEZE([
+  "category",
+  "unit",
+  "duration",
+  "frequency",
+  "route_or_delivery",
+]);
 const PRESENTATION_FIELDS = OBJECT_FREEZE([
   "resolution_claim",
   "open_question_ids",
@@ -276,6 +346,177 @@ const edgeClassOf = (edgeType) => {
   return "CONTRADICTION";
 };
 
+const requireNullableString = (value, label) => {
+  if (value !== null && typeof value !== "string") {
+    fail(CODE, `${label} must be a string or null`);
+  }
+  return value;
+};
+
+const normalizeScopeScalar = (value, label) => {
+  if (
+    value === null ||
+    typeof value === "string" ||
+    typeof value === "boolean" ||
+    (typeof value === "number" && Number.isFinite(value))
+  ) {
+    return value;
+  }
+  fail(CODE, `${label} must be a string, finite number, boolean, or null`);
+};
+
+const normalizeScopeScalarOrList = (value, label) => {
+  if (!ARRAY_IS_ARRAY(value)) return normalizeScopeScalar(value, label);
+  return requireArray(value, label).map((entry, index) =>
+    normalizeScopeScalar(entry, `${label}[${index}]`),
+  );
+};
+
+const normalizeScopeMap = (candidate, label) => {
+  if (!isPlainDataObject(candidate)) fail(CODE, `${label} must be a plain data object`);
+  const result = {};
+  for (const key of REFLECT_OWN_KEYS(candidate)) {
+    if (typeof key !== "string") fail(CODE, `${label} carries a non-string field`);
+    const descriptor = OBJECT_GET_OWN_PROPERTY_DESCRIPTOR(candidate, key);
+    if (descriptor === undefined || !descriptor.enumerable || !OBJECT_HAS_OWN(descriptor, "value")) {
+      fail(CODE, `${label}.${key} must be an enumerable data property`);
+    }
+    OBJECT_DEFINE_PROPERTY(result, key, {
+      configurable: true,
+      enumerable: true,
+      value: normalizeScopeScalarOrList(descriptor.value, `${label}.${key}`),
+      writable: true,
+    });
+  }
+  return result;
+};
+
+const normalizeScopeStringArray = (candidate, label) =>
+  requireArray(candidate, label).map((entry, index) => {
+    if (typeof entry !== "string") fail(CODE, `${label}[${index}] must be a string`);
+    return entry;
+  });
+
+const normalizeIntervention = (candidate, label) => {
+  if (candidate === null) return null;
+  const intervention = requireFields(candidate, label, INTERVENTION_FIELDS);
+  const name = readValue(intervention, "name");
+  if (typeof name !== "string" || name.length === 0) {
+    fail(CODE, `${label}.name must be a non-empty string`);
+  }
+  const normalized = { name };
+  for (const field of INTERVENTION_NULLABLE_STRING_FIELDS) {
+    normalized[field] = requireNullableString(
+      readValue(intervention, field),
+      `${label}.${field}`,
+    );
+  }
+  for (const field of ["min_value", "max_value"]) {
+    const value = readValue(intervention, field);
+    if (value !== null && (typeof value !== "number" || !Number.isFinite(value))) {
+      fail(CODE, `${label}.${field} must be a finite number or null`);
+    }
+    normalized[field] = value;
+  }
+  const rate = readValue(intervention, "rate");
+  if (
+    rate !== null &&
+    typeof rate !== "string" &&
+    (typeof rate !== "number" || !Number.isFinite(rate))
+  ) {
+    fail(CODE, `${label}.rate must be a string, finite number, or null`);
+  }
+  normalized.rate = rate;
+  return normalized;
+};
+
+const normalizeScope = (candidate, label) => {
+  const scope = requireFields(candidate, label, SCOPE_FIELDS);
+  const normalized = {};
+  for (const field of SCOPE_NULLABLE_STRING_FIELDS) {
+    normalized[field] = requireNullableString(readValue(scope, field), `${label}.${field}`);
+  }
+  normalized.intervention_or_exposure = normalizeIntervention(
+    readValue(scope, "intervention_or_exposure"),
+    `${label}.intervention_or_exposure`,
+  );
+  normalized.inclusion_criteria = normalizeScopeStringArray(
+    readValue(scope, "inclusion_criteria"),
+    `${label}.inclusion_criteria`,
+  );
+  normalized.exclusion_criteria = normalizeScopeStringArray(
+    readValue(scope, "exclusion_criteria"),
+    `${label}.exclusion_criteria`,
+  );
+  normalized.conditions = normalizeScopeMap(
+    readValue(scope, "conditions"),
+    `${label}.conditions`,
+  );
+  normalized.domain_extensions = normalizeScopeMap(
+    readValue(scope, "domain_extensions"),
+    `${label}.domain_extensions`,
+  );
+  return normalized;
+};
+
+const UNRATIFIED_NUMBER_CANONICALIZATION_CONTRACT =
+  "Foundry cross-language canonical JSON number-rendering contract";
+
+const compareCodePoints = (left, right) => {
+  const leftPoints = [...left];
+  const rightPoints = [...right];
+  const shared = Math.min(leftPoints.length, rightPoints.length);
+  for (let index = 0; index < shared; index += 1) {
+    const difference = leftPoints[index].codePointAt(0) - rightPoints[index].codePointAt(0);
+    if (difference !== 0) return difference < 0 ? -1 : 1;
+  }
+  if (leftPoints.length === rightPoints.length) return 0;
+  return leftPoints.length < rightPoints.length ? -1 : 1;
+};
+
+const pythonReprNumber = (value) => {
+  if (!Number.isFinite(value)) {
+    throw new TypeError("Python-dialect JSON cannot encode a non-finite number");
+  }
+  if (Object.is(value, -0)) return "-0.0";
+  const magnitude = Math.abs(value);
+  if (magnitude !== 0 && (magnitude < 1e-4 || magnitude >= 1e16)) {
+    const [mantissa, exponent] = value.toExponential().split("e");
+    const sign = exponent.startsWith("-") ? "-" : "+";
+    const digits = exponent.replace(/^[+-]/u, "").padStart(2, "0");
+    return `${mantissa}e${sign}${digits}`;
+  }
+  const rendered = String(value);
+  return Number.isInteger(value) ? `${rendered}.0` : rendered;
+};
+
+/**
+ * Diagnostic only: parsed Numbers no longer retain Python int/float identity.
+ * Integral Numbers are therefore treated as floats, which can misclassify a
+ * mismatch and must never turn a refused graph into an accepted one.
+ */
+const pythonNumberDialectJson = (value) => {
+  if (value === null) return "null";
+  const kind = typeof value;
+  if (kind === "string" || kind === "boolean") return JSON.stringify(value);
+  if (kind === "number") return pythonReprNumber(value);
+  if (ARRAY_IS_ARRAY(value)) {
+    return `[${value.map((entry) => pythonNumberDialectJson(entry)).join(",")}]`;
+  }
+  if (kind !== "object") {
+    throw new TypeError(`Python-dialect JSON cannot encode a ${kind} value`);
+  }
+  return `{${Object.keys(value)
+    .sort(compareCodePoints)
+    .map((key) => `${JSON.stringify(key)}:${pythonNumberDialectJson(value[key])}`)
+    .join(",")}}`;
+};
+
+const pythonNumberDialectSha256 = (value) =>
+  `sha256:${createHash("sha256")
+    .update(pythonNumberDialectJson(value), "utf8")
+    .digest("hex")}`;
+
 const normalizeNode = (candidate, index) => {
   const label = `nodes[${index}]`;
   const node = requireFields(candidate, label, NODE_FIELDS);
@@ -289,8 +530,6 @@ const normalizeNode = (candidate, index) => {
   if (!ARGUMENT_NODE_STATUSES.includes(status)) {
     fail("UNKNOWN_NODE_STATUS", `${label}.status is outside the declared vocabulary`, { status });
   }
-  const scope = readValue(node, "scope");
-  if (!isPlainDataObject(scope)) fail(CODE, `${label}.scope must be a plain data object`);
   return {
     argument_node_id: requireString(
       readValue(node, "argument_node_id"),
@@ -299,7 +538,7 @@ const normalizeNode = (candidate, index) => {
     node_type: nodeType,
     statement: requireString(readValue(node, "statement"), `${label}.statement`),
     evidence_ids: requireStringArray(readValue(node, "evidence_ids"), `${label}.evidence_ids`),
-    scope: { ...scope },
+    scope: normalizeScope(readValue(node, "scope"), `${label}.scope`),
     status,
   };
 };
@@ -401,21 +640,51 @@ export function validateArgumentGraph(candidate) {
   if (typeof graphHash !== "string" || !SHA256_PATTERN.test(graphHash)) {
     fail(CODE, "graph_hash must match sha256:<64 lowercase hex characters>");
   }
-  return deepFreeze({
-    argument_graph_id: requireString(
-      readValue(graph, "argument_graph_id"),
-      "argument_graph_id",
-    ),
-    run_id: requireString(readValue(graph, "run_id"), "run_id"),
-    hypothesis_id: requireString(readValue(graph, "hypothesis_id"), "hypothesis_id"),
+  const argumentGraphId = requireString(
+    readValue(graph, "argument_graph_id"),
+    "argument_graph_id",
+  );
+  const runId = requireString(readValue(graph, "run_id"), "run_id");
+  const hypothesisId = requireString(readValue(graph, "hypothesis_id"), "hypothesis_id");
+  const createdAt = requireString(readValue(graph, "created_at"), "created_at");
+  const normalizedGraph = {
+    argument_graph_id: argumentGraphId,
+    run_id: runId,
+    hypothesis_id: hypothesisId,
     nodes,
     edges,
     hidden_assumption_ids: hidden,
     unresolved_objection_ids: unresolved,
     proof_trace_artifact_id: proofTrace,
     graph_hash: graphHash,
-    created_at: requireString(readValue(graph, "created_at"), "created_at"),
-  });
+    created_at: createdAt,
+  };
+  const hashPreimage = {};
+  for (const field of GRAPH_FIELDS) {
+    if (field !== "graph_hash") hashPreimage[field] = readValue(graph, field);
+  }
+  const derivedGraphHash = canonicalJsonSha256(hashPreimage);
+  if (graphHash !== derivedGraphHash) {
+    const pythonDialectDigest = pythonNumberDialectSha256(hashPreimage);
+    if (graphHash === pythonDialectDigest) {
+      fail(
+        "ARGUMENT_GRAPH_CANONICALIZATION_DIALECT_UNRATIFIED",
+        `graph_hash is consistent with a Python/JavaScript canonicalization-dialect divergence; the ${UNRATIFIED_NUMBER_CANONICALIZATION_CONTRACT} is unratified, so the graph remains refused and the mismatch is not by itself evidence of tampering`,
+        {
+          claimed_digest: graphHash,
+          derived_digest: derivedGraphHash,
+          python_dialect_digest: pythonDialectDigest,
+          unratified_contract: UNRATIFIED_NUMBER_CANONICALIZATION_CONTRACT,
+        },
+      );
+    }
+    fail(
+      "ARGUMENT_GRAPH_HASH_MISMATCH",
+      "graph_hash does not match the canonical argument graph content",
+      { claimed_digest: graphHash, derived_digest: derivedGraphHash },
+    );
+  }
+  return deepFreeze(normalizedGraph);
 }
 
 /** Every open item, so a panel cannot show only one kind. */

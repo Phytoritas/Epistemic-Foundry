@@ -735,7 +735,7 @@ nodes:
   purpose: Record ActionIntent(commit_promotion) and acquire the short-lived promotion commit
     lease
   executor_type: deterministic
-  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:acquire_promotion_commit_lease
+  executor_ref: epistemic_foundry.governance.evolution_authority.promotion:acquire_promotion_commit_lease
   input_schema_ref: schemas/node-invocation.schema.json
   output_schema_ref: schemas/capability-lease.schema.json
   depends_on:
@@ -769,7 +769,7 @@ nodes:
   purpose: Compare-and-swap expected revisions and record the immutable PromotionDecision
     and Passport revision
   executor_type: deterministic
-  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:commit_promotion_atomically
+  executor_ref: epistemic_foundry.governance.evolution_authority.promotion:commit_promotion_atomically
   input_schema_ref: schemas/node-invocation.schema.json
   output_schema_ref: schemas/promotion-decision.schema.json
   depends_on:
@@ -808,7 +808,7 @@ nodes:
   purpose: Append the ledger event and reconcile EffectReceipt and ArtifactReceipt before
     completion
   executor_type: deterministic
-  executor_ref: epistemic_foundry.governance.evolution_authority.nodes:reconcile_commit_receipts
+  executor_ref: epistemic_foundry.governance.evolution_authority.reconciliation:reconcile_commit_receipts
   input_schema_ref: schemas/node-invocation.schema.json
   output_schema_ref: schemas/effect-receipt.schema.json
   depends_on:

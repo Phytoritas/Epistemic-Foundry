@@ -157,6 +157,24 @@ def _digest(value: object) -> str:
     return "sha256:" + _hex_digest(value)
 
 
+def _derive_audit_id(
+    combined_ceiling: str,
+    created_at: str,
+    run_id: str,
+    subject_id: str,
+    verdicts: Sequence[Mapping[str, Any]],
+) -> str:
+    return "PA-" + _hex_digest(
+        {
+            "combined_ceiling": combined_ceiling,
+            "created_at": created_at,
+            "run_id": run_id,
+            "subject_id": subject_id,
+            "verdicts": verdicts,
+        }
+    )
+
+
 def _hash_excluding(payload: Mapping[str, Any], field: str) -> str:
     return _digest({key: value for key, value in payload.items() if key != field})
 
@@ -448,14 +466,8 @@ def evaluate_audit(
         "verdicts": validated,
         "veto": veto,
     }
-    payload["audit_id"] = "PA-" + _hex_digest(
-        {
-            "combined_ceiling": ceiling,
-            "created_at": created_at,
-            "run_id": run_id,
-            "subject_id": subject_id,
-            "verdicts": validated,
-        }
+    payload["audit_id"] = _derive_audit_id(
+        ceiling, created_at, run_id, subject_id, validated
     )
     payload["audit_hash"] = _hash_excluding(payload, "audit_hash")
     return validate_audit(repository_root, payload)
@@ -467,9 +479,9 @@ def validate_audit(repository_root: Path, payload: Mapping[str, Any]) -> SealedA
     value = _mapping(payload, "ParliamentAudit")
     _exact_fields(value, AUDIT_FIELDS, "ParliamentAudit")
     _text(value["audit_id"], "audit_id")
-    _text(value["subject_id"], "subject_id")
-    _text(value["run_id"], "run_id")
-    _timestamp(value["created_at"], "created_at")
+    subject_id = _text(value["subject_id"], "subject_id")
+    run_id = _text(value["run_id"], "run_id")
+    created_at = _timestamp(value["created_at"], "created_at")
     verdicts = [
         validate_verdict(repository_root, entry, index)
         for index, entry in enumerate(_sequence(value["verdicts"], "verdicts"))
@@ -524,4 +536,13 @@ def validate_audit(repository_root: Path, payload: Mapping[str, Any]) -> SealedA
         )
     if _hash_excluding(value, "audit_hash") != value["audit_hash"]:
         _fail("AUDIT_HASH_MISMATCH", "audit_hash does not match its content")
+    derived_audit_id = _derive_audit_id(
+        derived, created_at, run_id, subject_id, verdicts
+    )
+    if value["audit_id"] != derived_audit_id:
+        _fail(
+            "INPUT_INVALID",
+            "audit_id does not match the audit's derived identity",
+            {"derived": derived_audit_id, "recorded": value["audit_id"]},
+        )
     return SealedArtifact("ParliamentAudit", _canonical_json(value))

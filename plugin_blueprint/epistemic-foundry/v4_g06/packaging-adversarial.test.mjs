@@ -194,6 +194,14 @@ test("g06_lockfile: a tampered lockfile whose hash no longer matches is refused"
   assert.equal(refusal(() => discoverLockfileSkills(loaded, lockfile)).code, "LOCKFILE_HASH_MISMATCH");
 });
 
+test("g06_lockfile: a rehashed row with a noncanonical content hash is refused", () => {
+  const lockfile = sealLockfile({
+    skills: [lockfileSkill({ content_hash: "not-a-content-digest" })],
+  });
+
+  assert.equal(refusal(() => discoverLockfileSkills(loaded, lockfile)).code, "LOCKFILE_UNREADABLE");
+});
+
 test("g06_lockfile: a third-party skill impersonating a bundled one is refused", () => {
   const result = discoverLockfileSkills(
     loaded,

@@ -8,6 +8,8 @@
 // BOUND, so DEGRADED is a derived status rather than a constant.
 
 import assert from "node:assert/strict";
+import { symlinkSync } from "node:fs";
+import { join } from "node:path";
 import test from "node:test";
 
 import {
@@ -18,6 +20,7 @@ import {
   BINDING_DECLARATION_PATH,
   BINDING_STATUS,
   CodexAdapterError,
+  codexBindingReceipt,
   dispatchRawCodexEvent,
   loadCodexBinding,
   PAYLOAD_ROOT,
@@ -134,12 +137,46 @@ test("x01_adversarial: a declared entrypoint the payload does not ship is refuse
   assert.equal(error.context.path, "bin/efoundry.mjs");
 });
 
+test("x01_adversarial: a declared entrypoint cannot escape the payload", (t) => {
+  const root = stageDeclaration(t, (declaration, stagedRoot) => {
+    addStaged(stagedRoot, "outside.mjs", "export default null;\n");
+    declaration.entrypoints = ["../../outside.mjs", ...declaration.entrypoints];
+  });
+
+  const error = loadFrom(root);
+  assert.equal(error.code, "DECLARATION_NONCANONICAL");
+});
+
 test("x01_adversarial: a hook command the adapter cannot resolve is refused", (t) => {
   const root = stageHookFile(t, "hooks/prompt.json", (document) => {
     document.hooks.UserPromptSubmit[0].hooks[0].command = "bash -c 'run the hook'";
   });
 
   assert.equal(loadFrom(root).code, "HOOK_COMMAND_UNPARSEABLE");
+});
+
+test("x01_adversarial: a hook command target cannot escape the payload", (t) => {
+  const root = stageHookFile(t, "hooks/prompt.json", (document, stagedRoot) => {
+    addStaged(stagedRoot, "outside-hook.mjs", "export default null;\n");
+    document.hooks.UserPromptSubmit[0].hooks[0].command =
+      'node "${PLUGIN_ROOT}/../../outside-hook.mjs" user-prompt-submit';
+  });
+
+  assert.equal(loadFrom(root).code, "HOOK_COMMAND_UNPARSEABLE");
+});
+
+test("x01_adversarial: a receipt rechecks a late dispatcher target inside the payload", (t) => {
+  const root = stageRoot(t);
+  const loaded = loadCodexBinding({ root });
+  addStaged(root, "outside-runtime/cli.mjs", "export default null;\n");
+  symlinkSync(
+    join(root, "outside-runtime"),
+    join(root, PAYLOAD_ROOT, "dist"),
+    "junction",
+  );
+
+  const error = refusal(() => codexBindingReceipt(loaded));
+  assert.equal(error.code, "DISPATCHER_UNREADABLE");
 });
 
 test("x01_adversarial: a registration carrying an unsupported field is refused", (t) => {

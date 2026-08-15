@@ -27,6 +27,7 @@ from epistemic_foundry.governance.promotion import (
     CANONICAL_GATE_IDS,
     _NOT_REQUIRED_MAX_LEVEL,
 )
+from tests.test_integration_forge_cycle import _promotion_gate_decisions
 
 ROOT = Path(__file__).resolve().parents[3]
 
@@ -146,20 +147,47 @@ def test_a05_registry_workflow_tampering_fails_closed() -> None:
 
 def test_a05_registry_every_bound_runtime_node_resolves() -> None:
     document = load_workflow("evolution_promotion")
-    module_prefix = "epistemic_foundry.governance.evolution_authority.nodes:"
+    # Every executable node resolves inside the A05 package.  Gate execution
+    # lives in `nodes`, while the three commit-phase nodes live in `promotion`
+    # and `reconciliation`; all of them stay reachable through one entrypoint
+    # table so no canonical node has a second implementation.
+    package_prefix = "epistemic_foundry.governance.evolution_authority."
     bound = [
         node
         for node in document["nodes"]
-        if str(node["executor_ref"]).startswith(module_prefix)
+        if str(node["executor_ref"]).startswith(package_prefix)
     ]
 
     assert len(bound) == 21
     for node in bound:
         executor = resolve_node_executor(node["node_id"])
         assert callable(executor)
-        assert (
-            node["executor_ref"] == f"{module_prefix}{node['node_id']}"
-            or node["node_id"] in NODE_ENTRYPOINTS
-        )
+        assert node["executor_ref"].endswith(f":{node['node_id']}")
+        assert node["node_id"] in NODE_ENTRYPOINTS
     with pytest.raises(EvolutionAuthorityError):
         resolve_node_executor("ghost_node")
+
+
+def test_a05_sensitive_gate_nodes_resolve_to_context_validating_wrappers() -> None:
+    assert (
+        resolve_node_executor("gate_g12_independent_attestation").__name__
+        == "gate_g12_independent_attestation"
+    )
+    assert (
+        resolve_node_executor("resolve_human_policy_approval").__name__
+        == "resolve_human_policy_approval"
+    )
+
+
+def test_a05_g12_missing_unratified_context_is_a_spec_gap() -> None:
+    gate = next(
+        decision
+        for decision in _promotion_gate_decisions()
+        if decision["name"] == "G12_INDEPENDENT_ATTESTATION"
+    )
+    with pytest.raises(EvolutionAuthorityError) as raised:
+        resolve_node_executor("gate_g12_independent_attestation")(
+            {"gate_decision": gate}
+        )
+    assert raised.value.code == "SPEC_GAP"
+    assert "attestation" in str(raised.value)

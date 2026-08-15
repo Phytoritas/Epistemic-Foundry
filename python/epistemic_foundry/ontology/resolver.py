@@ -438,10 +438,6 @@ def resolve_construct(
         _fail("ONTOLOGY_INPUT_INVALID", "context and policy must use exact I03 types")
     if type(catalog) is not tuple or any(type(entry) is not OntologyEntry for entry in catalog):
         _fail("ONTOLOGY_INPUT_INVALID", "catalog must be an immutable tuple of OntologyEntry")
-    identifiers = [entry.construct_id for entry in catalog]
-    if len(set(identifiers)) != len(identifiers):
-        _fail("ONTOLOGY_CATALOG_DUPLICATE_ID", "catalog contains duplicate construct IDs")
-
     authority_entries = tuple(
         entry
         for entry in catalog
@@ -458,6 +454,12 @@ def resolve_construct(
                 "domain_pack_id": context.domain_pack_id,
                 "domain_pack_version": context.domain_pack_version,
             },
+        )
+    identifiers = [entry.construct_id for entry in authority_entries]
+    if len(set(identifiers)) != len(identifiers):
+        _fail(
+            "ONTOLOGY_CATALOG_DUPLICATE_ID",
+            "the pinned ontology and DomainPack contain duplicate construct IDs",
         )
 
     raw_key = _label_key(context.raw_term, "raw_term")

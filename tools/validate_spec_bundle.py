@@ -20,24 +20,76 @@ from pathlib import Path
 from typing import Any
 
 import jsonschema
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+# One authority decides bundle membership for both the builder and this
+# read-only validator.
+from release_inventory import iter_bundle_files  # noqa: E402
 import yaml
 from referencing import Registry, Resource
 
 VERSION = "4.0.0"
-EXPECTED = {
-    "schemas": 127,
-    "examples": 127,
-    "workflows": 23,
-    "workflow_nodes": 350,
-    "prompts": 65,
-    "work_packages": 156,
-    "invariants": 64,
-    "audit_families": 24,
-    "audit_lenses": 288,
-    "plugin_skills": 29,
-    "plugin_hooks": 7,
-    "roles": 28,
+#: Inventory counts the acceptance matrix declares as SPEC_BUNDLE gates, mapped
+#: to the key this validator uses.  These are reviewed pins, not derived facts:
+#: the matrix is the authority and this validator only compares it against what
+#: the repository actually contains.  Holding a second copy here is how the
+#: matrix silently drifted to 22 workflows while the bundle had 23.
+GATE_BACKED_COUNTS = {
+    "schemas": "canonical_schema_count",
+    "examples": "matching_example_count",
+    "workflows": "canonical_workflow_count",
+    "workflow_nodes": "workflow_node_count",
+    "work_packages": "work_package_count",
+    "invariants": "traceable_invariant_count",
+    "prompts": "prompt_count",
+    "roles": "role_count",
+    "audit_lenses": "audit_lens_count",
+    "plugin_skills": "blueprint_skill_count",
+    "plugin_hooks": "blueprint_hook_bundle_count",
 }
+
+#: Structural expectations the acceptance matrix does not declare.
+STRUCTURAL_EXPECTED = {"audit_families": 24}
+
+#: Populated from the acceptance matrix at startup.  Declared here so the
+#: existing count checks keep their shape; the values are never literals.
+EXPECTED: dict[str, int] = dict(STRUCTURAL_EXPECTED)
+
+
+def load_expected_counts(root: Path, errors: list[str]) -> dict[str, int]:
+    """Read the SPEC_BUNDLE inventory pins the acceptance matrix declares."""
+    matrix_path = root / "manifests/acceptance_matrix.yaml"
+    try:
+        document = yaml.safe_load(matrix_path.read_text(encoding="utf-8"))
+        gates = document["release_levels"]["SPEC_BUNDLE"]["gates"]
+    except (OSError, KeyError, TypeError, yaml.YAMLError) as cause:
+        errors.append(f"acceptance matrix SPEC_BUNDLE gates unreadable: {cause}")
+        # -1 can never equal an observed count, so an unreadable matrix fails
+        # every inventory check rather than skipping it.
+        unreadable = dict(STRUCTURAL_EXPECTED)
+        unreadable.update({key: -1 for key in GATE_BACKED_COUNTS})
+        return unreadable
+
+    expected = dict(STRUCTURAL_EXPECTED)
+    for key, gate in GATE_BACKED_COUNTS.items():
+        raw = gates.get(gate)
+        if isinstance(raw, bool) or raw is None:
+            errors.append(f"acceptance matrix gate {gate} is missing or not a count")
+            expected[key] = -1
+            continue
+        try:
+            value = int(str(raw))
+        except ValueError:
+            errors.append(f"acceptance matrix gate {gate} is not an integer: {raw!r}")
+            expected[key] = -1
+            continue
+        if value < 0:
+            errors.append(f"acceptance matrix gate {gate} is negative: {value}")
+            expected[key] = -1
+            continue
+        expected[key] = value
+    return expected
 REQUIRED_FILES = {
     "VERSION", "README.md", "MASTER_SPEC.md", "MASTER_EXECUTION_PROMPT.md",
     "AGENTS.md", "CLAUDE.md", "docs/product_constitution.md",
@@ -541,31 +593,6 @@ def validate_roles_prompts_and_text(root: Path, errors: list[str], report: dict[
     report["text_and_adapters"] = {"prompts": len(prompts), "roles": len(role_items), "codex_agents": len(codex_agents), "claude_role_profiles": len(claude_profiles), "text_files_scanned": len(set(paths)), "forbidden_domain_hits": len(forbidden_hits), "placeholder_hits": len(placeholder_hits), "secret_hits": len(secret_hits), "markdown_fence_errors": len(fence_errors)}
 
 
-#: Directory prefixes that are working-tree infrastructure, not shipped bundle
-#: content. Version control, harness runtime state, virtualenvs, and build or
-#: test caches exist only in a developer checkout, so counting them as manifest
-#: inventory turns any local implementation work into a spurious FAIL.
-NON_BUNDLE_PREFIXES = (
-    ".git/",
-    ".rah/",
-    ".venv/",
-    "__pycache__/",
-    ".pytest_cache/",
-    "build/",
-    "dist/",
-    # Implementation tree and harness design docs: real project content, but
-    # not part of the released specification bundle inventory.
-    "docs/architecture/",
-    "src/",
-    "tests/",
-)
-
-#: Filename suffixes that are never bundle content.
-NON_BUNDLE_SUFFIXES = (".pyc", ".pyo", ".egg-info")
-
-#: Root-level files that belong to the checkout rather than the bundle.
-NON_BUNDLE_FILES = {".gitignore", "pyproject.toml"}
-
 #: Reports this validator rewrites on every run. Their bytes change as a result
 #: of validating, so hashing them against a manifest recorded before the run
 #: makes a second consecutive run fail by construction. They stay in the
@@ -576,17 +603,6 @@ SELF_WRITTEN_REPORTS = {
     "reports/216_lens_plugin_audit_results.json",
     "reports/144_lens_audit_results.json",
 }
-
-
-def _is_non_bundle_path(rel: str) -> bool:
-    """True when `rel` is local working-tree infrastructure."""
-    if rel in NON_BUNDLE_FILES:
-        return True
-    if any(rel == prefix.rstrip("/") or rel.startswith(prefix) for prefix in NON_BUNDLE_PREFIXES):
-        return True
-    if any(f"/{prefix}" in f"/{rel}" for prefix in ("__pycache__/", ".pytest_cache/")):
-        return True
-    return rel.endswith(NON_BUNDLE_SUFFIXES)
 
 
 def validate_package_manifest(root: Path, errors: list[str], report: dict[str, Any]) -> None:
@@ -619,12 +635,12 @@ def validate_package_manifest(root: Path, errors: list[str], report: dict[str, A
             continue
         elif sha256_file(path) != entry.get("sha256") or path.stat().st_size != entry.get("bytes"):
             mismatches.append(f"hash/size mismatch {rel}")
+    # Membership comes from the shared release-inventory authority, so the
+    # validator and the builder cannot disagree about what the bundle is.
     actual = {
-        rel
-        for rel in (
-            p.relative_to(root).as_posix() for p in root.rglob("*") if p.is_file()
-        )
-        if rel not in excluded and not _is_non_bundle_path(rel)
+        path.relative_to(root).as_posix()
+        for path in iter_bundle_files(root)
+        if path.relative_to(root).as_posix() not in excluded
     }
     if listed != actual:
         mismatches.append(f"inventory mismatch missing={sorted(actual-listed)[:10]} extra={sorted(listed-actual)[:10]}")
@@ -642,6 +658,10 @@ def main() -> int:
     args = parser.parse_args()
     root = args.root.resolve()
     errors: list[str] = []
+    # The acceptance matrix is the inventory authority; this validator only
+    # compares its declarations against what the repository actually holds.
+    EXPECTED.clear()
+    EXPECTED.update(load_expected_counts(root, errors))
     report: dict[str, Any] = {"architecture_name": "Epistemic Foundry", "version": VERSION, "scope": "specification_bundle_and_reference_blueprint_only"}
     for rel in sorted(REQUIRED_FILES):
         if not (root / rel).exists():

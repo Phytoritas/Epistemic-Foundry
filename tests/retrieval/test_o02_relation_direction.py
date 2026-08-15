@@ -63,3 +63,35 @@ def test_unknown_relation_shapes_fail_closed() -> None:
         CONTRACTS.classify_relation_direction(["A", "parent_of"], [])
 
     assert raised.value.code == "RELATION_SHAPE_INVALID"
+
+
+@pytest.mark.parametrize(
+    ("canonical_relation", "observed_relations"),
+    [
+        ("ABC", []),
+        (["A", "parent_of", "B"], "ABC"),
+        (["A", "parent_of", "B"], ["ABC"]),
+    ],
+)
+def test_scalar_relation_containers_are_never_split_into_characters(
+    canonical_relation: object,
+    observed_relations: object,
+) -> None:
+    with pytest.raises(CONTRACTS.RetrievalContractError) as raised:
+        CONTRACTS.classify_relation_direction(
+            canonical_relation,
+            observed_relations,
+        )
+
+    assert raised.value.code == "RELATION_SHAPE_INVALID"
+
+
+def test_trusted_grounding_requires_an_actual_boolean() -> None:
+    with pytest.raises(CONTRACTS.RetrievalContractError) as raised:
+        CONTRACTS.classify_relation_direction(
+            ["A", "parent_of", "B"],
+            [],
+            trusted_grounding=0,
+        )
+
+    assert raised.value.code == "FIELD_INVALID"

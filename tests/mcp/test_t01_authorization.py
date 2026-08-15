@@ -82,7 +82,12 @@ def test_t01_authorization_workspace_isolation_precedes_capability() -> None:
 
 def test_t01_authorization_capability_denial_precedes_existence() -> None:
     service, read_port, _compiler, _store = build_service()
-    read_port.records["read_claim"] = {"found": False, "state": "READY", "data": None}
+    read_port.records["read_claim"] = {
+        "found": False,
+        "state": "EMPTY_CONFIRMED",
+        "data": None,
+        "reason": None,
+    }
     envelope, is_error = service.call(
         "foundry.claim.get",
         call_arguments("foundry.claim.get"),
@@ -97,7 +102,12 @@ def test_t01_authorization_capability_denial_precedes_existence() -> None:
 
 def test_t01_authorization_concealment_answers_not_found() -> None:
     service, read_port, _compiler, _store = build_service()
-    read_port.records["read_claim"] = {"found": False, "state": "READY", "data": None}
+    read_port.records["read_claim"] = {
+        "found": False,
+        "state": "EMPTY_CONFIRMED",
+        "data": None,
+        "reason": None,
+    }
 
     envelope, is_error = service.call(
         "foundry.claim.get",
@@ -111,17 +121,39 @@ def test_t01_authorization_concealment_answers_not_found() -> None:
     assert "authorized scope" in envelope["message"]
 
 
+def test_t01_authorization_malformed_ready_is_validated_before_concealment() -> None:
+    service, read_port, _compiler, _store = build_service()
+    read_port.records["read_claim"] = {
+        "found": False,
+        "state": "READY",
+        "data": {"claim_id": "CLM-0001"},
+        "reason": None,
+    }
+
+    envelope, is_error = service.call(
+        "foundry.claim.get",
+        call_arguments("foundry.claim.get"),
+        fixture_auth(),
+        request_id="R1",
+    )
+
+    assert is_error
+    assert envelope["error_code"] == "INTERNAL"
+    assert "READY requires found=True" in envelope["message"]
+
+
 def test_t01_authorization_concealment_is_indistinguishable_from_absence() -> None:
     absent_service, absent_port, _compiler, _store = build_service()
     absent_port.records["read_passport"] = {
         "found": False,
-        "state": "READY",
+        "state": "EMPTY_CONFIRMED",
         "data": None,
+        "reason": None,
     }
     concealed_service, concealed_port, _c2, _s2 = build_service()
     concealed_port.records["read_passport"] = {
         "found": False,
-        "state": "READY",
+        "state": "EMPTY_CONFIRMED",
         "data": None,
         "reason": None,
     }
@@ -140,6 +172,38 @@ def test_t01_authorization_concealment_is_indistinguishable_from_absence() -> No
     )
 
     assert absent == concealed
+
+
+@pytest.mark.parametrize(
+    ("state", "reason"),
+    [
+        ("DEGRADED", "read replica lagging"),
+        ("UNAVAILABLE", "read model offline"),
+    ],
+)
+def test_t01_authorization_concealing_tools_report_nonabsence_states_honestly(
+    state: str, reason: str
+) -> None:
+    service, read_port, _compiler, _store = build_service()
+    read_port.records["read_claim"] = {
+        "found": False,
+        "state": state,
+        "data": None,
+        "reason": reason,
+    }
+
+    envelope, is_error = service.call(
+        "foundry.claim.get",
+        call_arguments("foundry.claim.get"),
+        fixture_auth(),
+        request_id="R1",
+    )
+
+    assert not is_error
+    assert "error_code" not in envelope
+    assert envelope["read_model_state"] == state
+    assert envelope["data"] is None
+    assert envelope["degradation_reason"] == reason
 
 
 @pytest.mark.parametrize("tool", ["foundry.status", "foundry.health"])

@@ -4,15 +4,17 @@ status_of_this_bundle: SPEC_BUNDLE
 release_levels:
   SPEC_BUNDLE:
     scope: Architecture, contracts, Shinka source audit, reference plugin blueprint,
-      A-Z implementation graph, and structural validation evidence. No working-runtime
-      claim.
+      A-Z implementation graph, and structural validation evidence. No PLUGIN_ALPHA
+      release claim. An executable PLUGIN_ALPHA candidate is authorized, but the
+      qualified status remains SPEC_BUNDLE until all fifteen PLUGIN_ALPHA gates have
+      accepted executable evidence.
     gates:
       canonical_schema_count: '127'
       matching_example_count: '127'
       schema_meta_validation_errors: '0'
       schema_example_validation_errors: '0'
-      canonical_workflow_count: '22'
-      workflow_node_count: '327'
+      canonical_workflow_count: '23'
+      workflow_node_count: '350'
       workflow_contract_errors: '0'
       workflow_cycle_or_missing_dependency_errors: '0'
       work_package_count: '156'
@@ -37,6 +39,7 @@ release_levels:
       fresh_install_matrix: PASS
       pathless_cli: PASS
       manifest_and_skill_validation: PASS
+      installed_dist_execution_automation: PASS
       hook_disabled_degraded_mode: PASS
       mcp_unavailable_cli_fallback: PASS
       sqlite_wal_crash_recovery: PASS

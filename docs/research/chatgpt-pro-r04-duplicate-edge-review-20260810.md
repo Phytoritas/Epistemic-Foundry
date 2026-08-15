@@ -1,0 +1,1 @@
+NO_BLOCKER — `edge_id` uniqueness must be enforced before any edge-keyed time-order reduction; otherwise a later duplicate can overwrite an earlier unestablished causal edge. The guard preserves valid unique-ID graphs and `DUPLICATE_EDGE` is an appropriate R04-local fail-closed refusal within its causal-assessment scope. 

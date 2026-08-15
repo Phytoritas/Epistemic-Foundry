@@ -1,23 +1,74 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import fs from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+const nativeRealpathSync = fs.realpathSync.native ?? fs.realpathSync;
+const canonicalRepositoryRoot = nativeRealpathSync(repositoryRoot);
 const traceabilityPath = path.join(
   repositoryRoot,
   "artifacts/work_packages/S04/threat_model_traceability.json",
 );
 
+const isContainedRelativePath = (relativePath) => (
+  relativePath === ""
+  || (
+    path.isAbsolute(relativePath) === false
+    && relativePath !== ".."
+    && relativePath.startsWith(`..${path.sep}`) === false
+  )
+);
+
+const resolveReferencePath = (
+  relativePath,
+  {
+    root = canonicalRepositoryRoot,
+    lstatSync = fs.lstatSync,
+    realpathSync = nativeRealpathSync,
+  } = {},
+) => {
+  assert.equal(typeof relativePath, "string");
+  assert.equal(path.isAbsolute(relativePath), false, relativePath);
+  assert.equal(relativePath.split(/[\\/]/u).includes(".."), false, relativePath);
+
+  const canonicalRoot = realpathSync(root);
+  const unresolvedPath = path.resolve(canonicalRoot, relativePath);
+  const lexicalRelativePath = path.relative(canonicalRoot, unresolvedPath);
+  assert.equal(isContainedRelativePath(lexicalRelativePath), true, relativePath);
+
+  let currentPath = canonicalRoot;
+  if (lexicalRelativePath !== "") {
+    for (const component of lexicalRelativePath.split(path.sep)) {
+      currentPath = path.join(currentPath, component);
+      const status = lstatSync(currentPath);
+      assert.equal(
+        status.isSymbolicLink(),
+        false,
+        `reference path crosses a symbolic link or junction: ${relativePath}`,
+      );
+    }
+  }
+
+  const resolvedPath = realpathSync(unresolvedPath);
+  assert.equal(
+    isContainedRelativePath(path.relative(canonicalRoot, resolvedPath)),
+    true,
+    `reference resolves outside repository root: ${relativePath}`,
+  );
+  return resolvedPath;
+};
+
 const readText = (relativePath) =>
-  fs.readFileSync(path.join(repositoryRoot, relativePath), "utf8");
+  fs.readFileSync(resolveReferencePath(relativePath), "utf8");
 
 const readJson = (relativePath) => JSON.parse(readText(relativePath));
 
 const sha256 = (relativePath) =>
-  createHash("sha256").update(fs.readFileSync(path.join(repositoryRoot, relativePath))).digest("hex");
+  createHash("sha256").update(fs.readFileSync(resolveReferencePath(relativePath))).digest("hex");
 
 const canonicalJson = (value) => {
   if (value === null) return "null";
@@ -350,8 +401,7 @@ const assertReference = (reference) => {
   const anchor = separator === -1 ? null : reference.slice(separator + 1);
   assert.equal(path.isAbsolute(relativePath), false, reference);
   assert.equal(relativePath.split(/[\\/]/u).includes(".."), false, reference);
-  const absolutePath = path.join(repositoryRoot, relativePath);
-  assert.equal(fs.existsSync(absolutePath), true, reference);
+  const absolutePath = resolveReferencePath(relativePath);
   if (anchor !== null) {
     assert.notEqual(anchor.length, 0, reference);
     assert.equal(fs.readFileSync(absolutePath, "utf8").includes(anchor), true, reference);
@@ -359,6 +409,55 @@ const assertReference = (reference) => {
 };
 
 const traceability = readJson("artifacts/work_packages/S04/threat_model_traceability.json");
+
+test("S04 reference resolver rejects an internal link to an outside sibling", () => {
+  const fixtureParent = fs.mkdtempSync(path.join(tmpdir(), "ef-s04-reference-"));
+  const fixtureRoot = path.join(fixtureParent, "repository");
+  const outsideRoot = path.join(fixtureParent, "outside");
+  const linkPath = path.join(fixtureRoot, "outside-link");
+  try {
+    fs.mkdirSync(fixtureRoot);
+    fs.mkdirSync(outsideRoot);
+    fs.writeFileSync(path.join(outsideRoot, "authority.json"), "{}", "utf8");
+
+    let linkCreated = true;
+    try {
+      fs.symlinkSync(
+        outsideRoot,
+        linkPath,
+        process.platform === "win32" ? "junction" : "dir",
+      );
+    } catch (error) {
+      const portableLinkErrors = new Set([
+        "EACCES",
+        "EINVAL",
+        "ENOSYS",
+        "ENOTSUP",
+        "EPERM",
+        "UNKNOWN",
+      ]);
+      if (portableLinkErrors.has(error?.code) === false) throw error;
+      linkCreated = false;
+    }
+
+    const rejectLinkedEscape = () => resolveReferencePath(
+      "outside-link/authority.json",
+      linkCreated
+        ? { root: fixtureRoot }
+        : {
+            root: fixtureRoot,
+            lstatSync: (componentPath) => (
+              path.resolve(componentPath) === path.resolve(linkPath)
+                ? { isSymbolicLink: () => true }
+                : fs.lstatSync(componentPath)
+            ),
+          },
+    );
+    assert.throws(rejectLinkedEscape, /symbolic link|junction/u);
+  } finally {
+    fs.rmSync(fixtureParent, { recursive: true, force: true });
+  }
+});
 
 // S04-TM001
 test("S04-TM001 traceability matrix covers every S04-owned audit lens without inflating deferred controls", () => {

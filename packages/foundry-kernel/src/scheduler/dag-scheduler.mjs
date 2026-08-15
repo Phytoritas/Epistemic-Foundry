@@ -11,6 +11,7 @@ import { createHash } from "node:crypto";
 import { types as utilTypes } from "node:util";
 
 const ARRAY_IS_ARRAY = Array.isArray;
+const ARRAY_PROTOTYPE = Array.prototype;
 const IS_PROXY = utilTypes.isProxy;
 const NUMBER_IS_FINITE = Number.isFinite;
 const NUMBER_IS_SAFE_INTEGER = Number.isSafeInteger;
@@ -25,7 +26,7 @@ const SHA256_PATTERN = /^sha256:[0-9a-f]{64}$/u;
 const NODE_ID_PATTERN = /^[a-z][a-z0-9_]*$/u;
 const RESOURCE_PATTERN = /^(?:exclusive|quota):[a-zA-Z0-9][a-zA-Z0-9_.:-]*$/u;
 const RFC3339_PATTERN =
-  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|([+-])(\d{2}):(\d{2}))$/u;
+  /^(\d{4})-(\d{2})-(\d{2})[Tt](\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(?:[Zz]|([+-])(\d{2}):(\d{2}))$/u;
 
 const NODE_KEYS = OBJECT_FREEZE([
   "node_id",
@@ -219,8 +220,12 @@ const hasOnlyUnicodeScalars = (value) => {
 
 const readDataProperty = (value, key, label = "object", code = "INVALID_INPUT") => {
   const descriptor = OBJECT_GET_OWN_PROPERTY_DESCRIPTOR(value, key);
-  if (descriptor === undefined || !OBJECT_HAS_OWN(descriptor, "value")) {
-    fail(code, `${label}.${key} must be an own data property`);
+  if (
+    descriptor === undefined ||
+    !descriptor.enumerable ||
+    !OBJECT_HAS_OWN(descriptor, "value")
+  ) {
+    fail(code, `${label}.${key} must be an enumerable own data property`);
   }
   return descriptor.value;
 };
@@ -259,7 +264,13 @@ const requirePlainRecord = (
 };
 
 const requireDenseArray = (value, label, code = "INVALID_INPUT") => {
-  if (!ARRAY_IS_ARRAY(value) || IS_PROXY(value)) fail(code, `${label} must be an array`);
+  if (
+    !ARRAY_IS_ARRAY(value) ||
+    IS_PROXY(value) ||
+    OBJECT_GET_PROTOTYPE_OF(value) !== ARRAY_PROTOTYPE
+  ) {
+    fail(code, `${label} must be a plain array`);
+  }
   const keys = REFLECT_OWN_KEYS(value);
   for (let index = 0; index < value.length; index += 1) {
     if (!OBJECT_HAS_OWN(value, index)) fail(code, `${label} cannot be sparse`);
@@ -298,16 +309,151 @@ const requireNullableString = (value, label, code = "INVALID_INPUT") =>
 const requireHash = (value, label, code = "INVALID_INPUT") =>
   requireString(value, label, { pattern: SHA256_PATTERN, code });
 
+const isLeapYear = (year) => year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+
+const daysInMonth = (year, month) => {
+  if (month === 2) return isLeapYear(year) ? 29 : 28;
+  return month === 4 || month === 6 || month === 9 || month === 11 ? 30 : 31;
+};
+
+const daysBeforeYear = (year) =>
+  365 * year +
+  Math.floor((year + 3) / 4) -
+  Math.floor((year + 99) / 100) +
+  Math.floor((year + 399) / 400);
+
+const daysBeforeMonth = (year, month) => {
+  const cumulative = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+  return cumulative[month - 1] + (month > 2 && isLeapYear(year) ? 1 : 0);
+};
+
+const parseRfc3339 = (value) => {
+  if (typeof value !== "string") return null;
+  const match = RFC3339_PATTERN.exec(value);
+  if (match === null || match[0].length !== value.length) return null;
+
+  let year = Number(match[1]);
+  let month = Number(match[2]);
+  let day = Number(match[3]);
+  const hour = Number(match[4]);
+  const minute = Number(match[5]);
+  const second = Number(match[6]);
+  const fraction = match[7] ?? "";
+  const offsetHour = match[9] === undefined ? 0 : Number(match[9]);
+  const offsetMinute = match[10] === undefined ? 0 : Number(match[10]);
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > daysInMonth(year, month) ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 60 ||
+    offsetHour > 23 ||
+    offsetMinute > 59
+  ) {
+    return null;
+  }
+
+  let utcMinuteOfDay = hour * 60 + minute;
+  if (match[8] === "+") {
+    utcMinuteOfDay -= offsetHour * 60 + offsetMinute;
+  } else if (match[8] === "-") {
+    utcMinuteOfDay += offsetHour * 60 + offsetMinute;
+  }
+  if (utcMinuteOfDay < 0) {
+    utcMinuteOfDay += 1_440;
+    day -= 1;
+    if (day === 0) {
+      month -= 1;
+      if (month === 0) {
+        year -= 1;
+        month = 12;
+      }
+      day = daysInMonth(year, month);
+    }
+  } else if (utcMinuteOfDay >= 1_440) {
+    utcMinuteOfDay -= 1_440;
+    day += 1;
+    if (day > daysInMonth(year, month)) {
+      day = 1;
+      month += 1;
+      if (month === 13) {
+        year += 1;
+        month = 1;
+      }
+    }
+  }
+
+  const utcMinute = utcMinuteOfDay % 60;
+  const utcHour = (utcMinuteOfDay - utcMinute) / 60;
+  if (
+    second === 60 &&
+    (utcHour !== 23 || utcMinute !== 59 || day !== daysInMonth(year, month))
+  ) {
+    return null;
+  }
+  const ordinalDay = daysBeforeYear(year) + daysBeforeMonth(year, month) + day - 1;
+  const wholeSecond =
+    BigInt(ordinalDay) * 86_400n + BigInt(utcHour * 3_600 + utcMinute * 60 + second);
+  return OBJECT_FREEZE({
+    tuple: OBJECT_FREEZE([year, month, day, utcHour, utcMinute, second]),
+    wholeSecond,
+    fraction,
+  });
+};
+
+const compareFractions = (left, right) => {
+  const length = Math.max(left.length, right.length);
+  for (let index = 0; index < length; index += 1) {
+    const leftDigit = index < left.length ? left.charCodeAt(index) : 48;
+    const rightDigit = index < right.length ? right.charCodeAt(index) : 48;
+    if (leftDigit < rightDigit) return -1;
+    if (leftDigit > rightDigit) return 1;
+  }
+  return 0;
+};
+
+const compareParsedTimestamps = (left, right) => {
+  for (let index = 0; index < left.tuple.length; index += 1) {
+    if (left.tuple[index] < right.tuple[index]) return -1;
+    if (left.tuple[index] > right.tuple[index]) return 1;
+  }
+  return compareFractions(left.fraction, right.fraction);
+};
+
+const parsedTimestamp = (value, label, code = "INVALID_INPUT") => {
+  const candidate = requireString(value, label, { code });
+  const parsed = parseRfc3339(candidate);
+  if (parsed === null) fail(code, `${label} must be an RFC 3339 timestamp`);
+  return parsed;
+};
+
 const requireTimestamp = (value, label, code = "INVALID_INPUT") => {
   const candidate = requireString(value, label, { code });
-  if (!RFC3339_PATTERN.test(candidate) || !NUMBER_IS_FINITE(Date.parse(candidate))) {
-    fail(code, `${label} must be an RFC 3339 timestamp`);
-  }
+  if (parseRfc3339(candidate) === null) fail(code, `${label} must be an RFC 3339 timestamp`);
   return candidate;
 };
 
-const timestampMillis = (value, label, code = "INVALID_INPUT") =>
-  Date.parse(requireTimestamp(value, label, code));
+const compareTimestamps = (left, right, code = "INVALID_INPUT") =>
+  compareParsedTimestamps(
+    parsedTimestamp(left, "left timestamp", code),
+    parsedTimestamp(right, "right timestamp", code),
+  );
+
+const timestampSpanExceedsSeconds = (later, earlier, maximumSeconds, code) => {
+  const parsedLater = parsedTimestamp(later, "later timestamp", code);
+  const parsedEarlier = parsedTimestamp(earlier, "earlier timestamp", code);
+  const sameWholeTuple = parsedLater.tuple.every(
+    (entry, index) => entry === parsedEarlier.tuple[index],
+  );
+  let wholeDifference = parsedLater.wholeSecond - parsedEarlier.wholeSecond;
+  if (parsedEarlier.tuple[5] === 60 && !sameWholeTuple) wholeDifference += 1n;
+  const maximum = BigInt(maximumSeconds);
+  if (wholeDifference > maximum) return true;
+  if (wholeDifference < maximum) return false;
+  return compareFractions(parsedLater.fraction, parsedEarlier.fraction) > 0;
+};
 
 const requireBoolean = (value, label, code = "INVALID_INPUT") => {
   if (typeof value !== "boolean") fail(code, `${label} must be boolean`);
@@ -319,7 +465,12 @@ const requireSafeInteger = (
   label,
   { minimum = 0, maximum = Number.MAX_SAFE_INTEGER, code = "INVALID_INPUT" } = {},
 ) => {
-  if (!NUMBER_IS_SAFE_INTEGER(value) || value < minimum || value > maximum) {
+  if (
+    !NUMBER_IS_SAFE_INTEGER(value) ||
+    Object.is(value, -0) ||
+    value < minimum ||
+    value > maximum
+  ) {
     fail(code, `${label} must be a safe integer in range`);
   }
   return value;
@@ -330,7 +481,13 @@ const requireFiniteNumber = (
   label,
   { minimum = 0, maximum = Number.MAX_VALUE, code = "INVALID_INPUT" } = {},
 ) => {
-  if (typeof value !== "number" || !NUMBER_IS_FINITE(value) || value < minimum || value > maximum) {
+  if (
+    typeof value !== "number" ||
+    !NUMBER_IS_FINITE(value) ||
+    Object.is(value, -0) ||
+    value < minimum ||
+    value > maximum
+  ) {
     fail(code, `${label} must be a finite number in range`);
   }
   return value;
@@ -361,7 +518,9 @@ const requireStringArray = (
 const assertCanonicalJsonValue = (value, label = "value", ancestors = new Set()) => {
   if (value === null || typeof value === "string" || typeof value === "boolean") return;
   if (typeof value === "number") {
-    if (!NUMBER_IS_FINITE(value)) fail("NON_CANONICAL_JSON", `${label} must be finite`);
+    if (!NUMBER_IS_FINITE(value) || Object.is(value, -0)) {
+      fail("NON_CANONICAL_JSON", `${label} must be finite and must not be negative zero`);
+    }
     return;
   }
   if (typeof value !== "object" || IS_PROXY(value)) {
@@ -1182,7 +1341,7 @@ const normalizeLease = (candidate) => {
     ),
     input_hash: requireHash(readDataProperty(lease, "input_hash"), "input_hash", code),
   };
-  if (timestampMillis(normalized.expires_at, "expires_at", code) <= timestampMillis(normalized.issued_at, "issued_at", code)) {
+  if (compareTimestamps(normalized.expires_at, normalized.issued_at, code) <= 0) {
     fail(code, "scheduler lease must expire after issuance");
   }
   const actual = requireHash(readDataProperty(lease, "lease_hash"), "lease_hash", code);
@@ -1275,12 +1434,11 @@ class DagScheduler {
       attempt.last_heartbeat_at,
     ].filter((candidate) => candidate !== null && candidate !== undefined);
     const prior = priorCandidates.reduce((latest, candidate) =>
-      timestampMillis(candidate, "prior_activity_at", code) >
-      timestampMillis(latest, "prior_activity_at", code)
+      compareTimestamps(candidate, latest, code) > 0
         ? candidate
         : latest,
     );
-    if (timestampMillis(at, "at", code) < timestampMillis(prior, "prior_activity_at", code)) {
+    if (compareTimestamps(at, prior, code) < 0) {
       fail(code, "attempt transition time cannot move backwards", {
         at,
         prior_activity_at: prior,
@@ -1465,11 +1623,10 @@ class DagScheduler {
     const ownerId = requireString(readDataProperty(command, "owner_id"), "owner_id", { code });
     const at = requireTimestamp(readDataProperty(command, "at"), "at", code);
     const expiresAt = requireTimestamp(readDataProperty(command, "expires_at"), "expires_at", code);
-    const issuedMillis = timestampMillis(at, "at", code);
-    if (timestampMillis(expiresAt, "expires_at", code) <= issuedMillis) {
+    if (compareTimestamps(expiresAt, at, code) <= 0) {
       fail(code, "scheduler lease must expire after issuance");
     }
-    if (timestampMillis(expiresAt, "expires_at", code) - issuedMillis > node.timeout_seconds * 1000) {
+    if (timestampSpanExceedsSeconds(expiresAt, at, node.timeout_seconds, code)) {
       fail("LEASE_EXCEEDS_NODE_TIMEOUT", "scheduler lease exceeds NodeContract timeout", {
         node_id: node.node_id,
       });
@@ -1545,7 +1702,7 @@ class DagScheduler {
     }
     if (last !== null) {
       const priorAt = last.transition_history.at(-1)?.at ?? last.leased_at;
-      if (issuedMillis < timestampMillis(priorAt, "prior_attempt_at", code)) {
+      if (compareTimestamps(at, priorAt, code) < 0) {
         fail("ATTEMPT_CLOCK_REGRESSION", "retry lease predates the prior attempt transition", {
           node_id: node.node_id,
           at,
@@ -1665,11 +1822,10 @@ class DagScheduler {
         });
       }
     }
-    const atMillis = timestampMillis(at, "at", "LEASE_OPERATION_INVALID");
-    if (atMillis < timestampMillis(lease.issued_at, "issued_at")) {
+    if (compareTimestamps(at, lease.issued_at, "LEASE_OPERATION_INVALID") < 0) {
       fail("LEASE_NOT_YET_VALID", "scheduler operation predates lease issuance");
     }
-    if (atMillis >= timestampMillis(lease.expires_at, "expires_at")) {
+    if (compareTimestamps(at, lease.expires_at, "LEASE_OPERATION_INVALID") >= 0) {
       fail("LEASE_EXPIRED", "scheduler lease has expired");
     }
     return { lease, node, attempt: last };
@@ -1823,13 +1979,12 @@ class DagScheduler {
       code,
     });
     const at = requireTimestamp(readDataProperty(command, "at"), "at", code);
-    const atMillis = timestampMillis(at, "at", code);
     const orphaned = [];
     for (const nodeId of this.#plan.topological_order) {
       const attempt = this.#lastAttempt(nodeId);
       if (attempt === null || !ACTIVE_ATTEMPT_STATES.has(attempt.status)) continue;
       const lease = this.#activeLeases.get(attempt.lease_id);
-      if (lease === undefined || atMillis < timestampMillis(lease.expires_at, "expires_at")) continue;
+      if (lease === undefined || compareTimestamps(at, lease.expires_at, code) < 0) continue;
       const next = this.#replaceAttempt(nodeId, {
         ...attempt,
         status: "RECONCILING",
@@ -1961,7 +2116,7 @@ class DagScheduler {
     }
     if (
       current.last_round_at !== null &&
-      timestampMillis(at, "at", code) < timestampMillis(current.last_round_at, "last_round_at", code)
+      compareTimestamps(at, current.last_round_at, code) < 0
     ) {
       fail("LOOP_CLOCK_REGRESSION", "loop round time cannot move backwards");
     }
@@ -1972,9 +2127,10 @@ class DagScheduler {
       fail("LOOP_COST_LIMIT_EXCEEDED", "bounded loop cost admission would exceed its contract");
     }
     const startedAt = current.started_at ?? at;
-    const elapsedSeconds = (timestampMillis(at, "at", code) - timestampMillis(startedAt, "started_at", code)) / 1000;
-    if (elapsedSeconds < 0) fail("LOOP_CLOCK_REGRESSION", "loop round predates its first round");
-    if (elapsedSeconds > contract.max_wall_seconds) {
+    if (compareTimestamps(at, startedAt, code) < 0) {
+      fail("LOOP_CLOCK_REGRESSION", "loop round predates its first round");
+    }
+    if (timestampSpanExceedsSeconds(at, startedAt, contract.max_wall_seconds, code)) {
       fail("LOOP_WALL_LIMIT_EXCEEDED", "bounded loop wall-time admission exceeds its contract");
     }
     const seen = new Set(current.seen_item_keys);
@@ -2068,9 +2224,31 @@ export const createDagScheduler = (candidate) => {
   });
 };
 
-export const replaySchedulerCommands = ({ run_id, plan, budget_envelope, commands }) => {
-  const entries = requireDenseArray(commands, "commands", "SCHEDULER_REPLAY_INVALID");
-  const scheduler = createDagScheduler({ run_id, plan, budget_envelope });
+export const replaySchedulerCommands = (candidate) => {
+  const code = "SCHEDULER_REPLAY_INVALID";
+  const input = requirePlainRecord(candidate, "scheduler replay", {
+    allowedKeys: ["run_id", "plan", "budget_envelope", "commands"],
+    requiredKeys: ["run_id", "plan", "budget_envelope", "commands"],
+    code,
+  });
+  const runId = readDataProperty(input, "run_id", "scheduler replay", code);
+  const plan = readDataProperty(input, "plan", "scheduler replay", code);
+  const budgetEnvelope = readDataProperty(
+    input,
+    "budget_envelope",
+    "scheduler replay",
+    code,
+  );
+  const entries = requireDenseArray(
+    readDataProperty(input, "commands", "scheduler replay", code),
+    "commands",
+    code,
+  );
+  const scheduler = createDagScheduler({
+    run_id: runId,
+    plan,
+    budget_envelope: budgetEnvelope,
+  });
   const operations = new Set([
     "acquireLease",
     "startAttempt",

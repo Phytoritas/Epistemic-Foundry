@@ -1,86 +1,31 @@
 {
-  "work_package_id": "A05",
-  "base_checkpoint": "A04:PASS",
-  "status": "SPEC_GAP",
-  "changed_files": [
-    "docs/v4_a05/authority_contract_gap.md",
-    "artifacts/work_packages/A05/authority_contract_probe.py",
-    "artifacts/work_packages/A05/authority-contract-probe.json",
-    "artifacts/work_packages/A05/commands.jsonl",
-    "artifacts/work_packages/A05/review.md",
-    "artifacts/work_packages/A05/report.json"
+  "attempt_history": [
+    "0001",
+    "0002",
+    "0003"
   ],
-  "checks": [
-    {
-      "command": "authority_contract_probe_and_schema_meta_validation",
-      "exit_code": 0,
-      "artifact": "artifacts/work_packages/A05/authority-contract-probe.json"
-    },
-    {
-      "command": "targeted_governance_and_evolution_tests",
-      "exit_code": 0,
-      "artifact": "artifacts/work_packages/A05/commands.jsonl#A05-C003"
-    },
-    {
-      "command": "full_python_regression",
-      "exit_code": 0,
-      "artifact": "artifacts/work_packages/A05/commands.jsonl#A05-C004"
-    },
-    {
-      "command": "evidence_integrity_and_write_scope_audit",
-      "exit_code": 0,
-      "artifact": "artifacts/work_packages/A05/commands.jsonl#A05-C007"
-    },
-    {
-      "command": "independent_review (user-authorized direct-review deviation)",
-      "exit_code": 1,
-      "artifact": "artifacts/work_packages/A05/review.md"
-    }
+  "attempt_id": "A05-0003",
+  "completion_ready": false,
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "completion_ready=true",
+    "release or production readiness",
+    "terminal completion of the 156-package DAG"
   ],
-  "review": {
-    "agent": "primary_author",
-    "status": "SPEC_GAP_WITH_RECORDED_PROCEDURE_DEVIATION",
-    "findings_resolved": [],
-    "blocking_findings": [
-      "EvolutionRunSpec cannot bind eleven of thirteen mandatory per-run authority requirement groups completely and has no canonical RunSpec resolution contract.",
-      "The canonical promotion schema accepts unsafe PROMOTE combinations, while the provider-nondeterministic workflow promotion node directly unlocks Passport issuance without distinct deterministic, Parliament, attestation, or human-approval enforcement."
+  "package_status": "PASS",
+  "standing_evidence": {
+    "attempts/0003/report.json": "sha256:8b7a8719c4a9ccbfba366fb9144a8c69893a59a7f45ecd09c0d6d654eeb3187c",
+    "attempts/0003/review.md": "sha256:c9cc0555abb1661491858687c0c0a3b636fdb6ddacdd59b85a1ee7117a262914"
+  },
+  "status": "PASS",
+  "supersedes": {
+    "authorizing_decision": "HD-EF4-A06-RM001-20260730-001",
+    "prior_root_status": "SPEC_GAP",
+    "rationale": "A05-0001/0002 recorded SPEC_GAP because the EvolutionRunSpec pin contract and the promotion-validity constraint were undefined. The product-owner shared-contract decision resolved both, and A05-0003 implemented the G00-G14 registry and the exact 23-node workflow.",
+    "resolved_spec_gaps": [
+      "A05-SG001",
+      "A05-SG002"
     ]
   },
-  "output_artifacts": [
-    "docs/v4_a05/authority_contract_gap.md",
-    "artifacts/work_packages/A05/authority_contract_probe.py",
-    "artifacts/work_packages/A05/authority-contract-probe.json",
-    "artifacts/work_packages/A05/commands.jsonl",
-    "artifacts/work_packages/A05/review.md",
-    "artifacts/work_packages/A05/report.json"
-  ],
-  "open_risks": [
-    "Review was performed by the primary author under explicit user instruction and is not independent assurance.",
-    "Evolution runs cannot canonically pin all mandatory search, evaluator, validation, statistical, archive, and authority semantics.",
-    "Schema-valid promotion decisions can contradict hard gates or omit replication and approval records, and the canonical workflow has no bound deterministic enforcement step.",
-    "The safe Python governance helper is not referenced by the canonical workflow and therefore cannot establish workflow-level enforcement.",
-    "The bundle-wide PACKAGE_MANIFEST is stale relative to pre-existing dirty-worktree changes, preventing a clean whole-bundle validation pass."
-  ],
-  "spec_gaps": [
-    {
-      "id": "A05-SG001",
-      "summary": "The closed EvolutionRunSpec does not bind eleven of thirteen higher-authority per-run requirement groups completely, and its base RunSpec relationship has no canonical resolution rule.",
-      "required_decision": "Define canonical fields or immutable references, resolution and hash semantics, compatibility behavior, and the EvolutionRunSpec-to-RunSpec relationship for every mandatory evolution pin."
-    },
-    {
-      "id": "A05-SG002",
-      "summary": "Unsafe PROMOTE combinations are canonical-schema valid and the canonical workflow lacks separately bound deterministic promotion, Parliament, independent-attestation, replication-ceiling, and explicit approval enforcement.",
-      "required_decision": "Define conditional promotion validity and assign final promotion authority to a receipt-bound canonical workflow with deterministic gates and distinct independent authority artifacts."
-    }
-  ],
-  "not_verified": [
-    "happy-path evolution execution because no complete canonical EvolutionRunSpec can be expressed",
-    "crash/resume and replay of a canonical promotion path",
-    "hidden/OOD isolation, evaluator immutability, multiplicity accounting, replication independence, or human approval enforcement in a production workflow",
-    "independent contract review"
-  ],
-  "next_ready": [],
-  "blocked_dependents": [
-    "A06"
-  ]
+  "work_package_id": "A05"
 }

@@ -25,7 +25,7 @@ from typing import Any
 from epistemic_foundry.validation import execution
 from epistemic_foundry.validation.execution import fixtures as v03
 from epistemic_foundry.validation.planning import fixtures as v02
-from epistemic_foundry.validation.targets import empty_scope_vector
+from epistemic_foundry.validation.targets import empty_scope_vector, hash_excluding
 
 from .contracts import reconcile_evidence
 
@@ -40,7 +40,6 @@ DENIED_RECORD_ID = "VXR-V04-DENIED"
 CREATED_AT = "2026-08-01T01:00:00Z"
 SEALED_AT = "2026-08-01T00:45:00Z"
 ENVIRONMENT_DIGEST = "sha256:" + "e" * 64
-RESULT_HASH = "sha256:" + "f" * 64
 
 
 def execution_record(**overrides: Any) -> dict[str, Any]:
@@ -100,9 +99,9 @@ def experiment_result(**overrides: Any) -> dict[str, Any]:
         "environment_digest": ENVIRONMENT_DIGEST,
         "started_at": "2026-08-01T00:05:00Z",
         "finished_at": "2026-08-01T00:35:00Z",
-        "result_hash": RESULT_HASH,
     }
     value.update(overrides)
+    value["result_hash"] = hash_excluding(value, "result_hash")
     return value
 
 

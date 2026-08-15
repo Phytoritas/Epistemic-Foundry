@@ -253,6 +253,91 @@ def _canonical_json(value: object) -> bytes:
         ) from error
 
 
+def _json_snapshot(
+    value: object,
+    label: str,
+    memo: dict[int, object],
+    active: set[int],
+) -> object:
+    """Detach one composite caller input through base JSON primitives."""
+
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return str.__str__(value)
+    if isinstance(value, int):
+        if type(value) is not int:
+            _fail("INPUT_INVALID", f"{label} contains a numeric subclass")
+        return value
+    if isinstance(value, float):
+        if type(value) is not float:
+            _fail("INPUT_INVALID", f"{label} contains a numeric subclass")
+        number = value
+        if not (number == number and abs(number) != float("inf")):
+            _fail("INPUT_INVALID", f"{label} contains a non-finite number")
+        return number
+    if isinstance(value, (bytes, bytearray, memoryview)):
+        _fail("INPUT_INVALID", f"{label} contains a byte-like value")
+    identity = id(value)
+    if identity in active:
+        _fail("INPUT_INVALID", f"{label} contains a cycle")
+    if identity in memo:
+        return memo[identity]
+    if isinstance(value, (SealedArtifact, PlanningSealedArtifact)):
+        active.add(identity)
+        try:
+            detached = _json_snapshot(value.payload, label, memo, active)
+        finally:
+            active.remove(identity)
+        memo[identity] = detached
+        return detached
+    if isinstance(value, Mapping):
+        detached_mapping: dict[str, object] = {}
+        memo[identity] = detached_mapping
+        active.add(identity)
+        try:
+            for key, entry in value.items():
+                if not isinstance(key, str):
+                    _fail("INPUT_INVALID", f"{label} keys must be strings")
+                plain_key = str.__str__(key)
+                if plain_key in detached_mapping:
+                    _fail("INPUT_INVALID", f"{label} keys must be unique")
+                detached_mapping[plain_key] = _json_snapshot(
+                    entry,
+                    f"{label}.{plain_key}",
+                    memo,
+                    active,
+                )
+        finally:
+            active.remove(identity)
+        return detached_mapping
+    if isinstance(value, Sequence):
+        detached_sequence: list[object] = []
+        memo[identity] = detached_sequence
+        active.add(identity)
+        try:
+            for index, entry in enumerate(value):
+                detached_sequence.append(
+                    _json_snapshot(entry, f"{label}[{index}]", memo, active)
+                )
+        finally:
+            active.remove(identity)
+        return detached_sequence
+    _fail("INPUT_INVALID", f"{label} contains a non-JSON value")
+
+
+def _snapshot_composite(
+    values: Mapping[str, object], label: str
+) -> dict[str, object]:
+    detached = _json_snapshot(values, label, {}, set())
+    if type(detached) is not dict:  # pragma: no cover - internal root invariant
+        raise AssertionError("composite snapshot root is not an object")
+    _canonical_json(detached)
+    return detached
+
+
 def _digest_bytes(value: bytes) -> str:
     return "sha256:" + hashlib.sha256(value).hexdigest()
 
@@ -297,7 +382,7 @@ def _exact_fields(
 def _text(value: object, label: str) -> str:
     if type(value) is not str or not value.strip() or "\x00" in value:
         _fail("INPUT_INVALID", f"{label} must be a non-empty NUL-free string")
-    return value.strip()
+    return value
 
 
 def _nullable_text(value: object, label: str) -> str | None:
@@ -556,6 +641,32 @@ def build_dependency_clusters(
 ) -> tuple[SealedArtifact, ...]:
     """Deterministically cluster dependent evidence units (EF4-I08)."""
 
+    snapshot = _snapshot_composite(
+        {
+            "created_at": created_at,
+            "declared_links": declared_links,
+            "run_id": run_id,
+            "units": units,
+        },
+        "build_dependency_clusters",
+    )
+    return _build_dependency_clusters_from_snapshot(
+        snapshot["units"],
+        run_id=snapshot["run_id"],
+        created_at=snapshot["created_at"],
+        declared_links=snapshot["declared_links"],
+    )
+
+
+def _build_dependency_clusters_from_snapshot(
+    units: object,
+    *,
+    run_id: object,
+    created_at: object,
+    declared_links: object,
+) -> tuple[SealedArtifact, ...]:
+    """Build clusters from an already detached composite snapshot."""
+
     run_id = _text(run_id, "run_id")
     created_at = _timestamp(created_at, "created_at")
     by_id = _validate_units(units)
@@ -622,10 +733,36 @@ def build_dependency_clusters(
     return tuple(clusters)
 
 
+def validate_evidence_dependency_cluster_shape(
+    payload: Mapping[str, object],
+) -> SealedArtifact:
+    """Validate structure and self-hash, not source-graph authority."""
+
+    snapshot = _snapshot_composite(
+        {"payload": payload}, "validate_evidence_dependency_cluster_shape"
+    )
+    return _validate_evidence_dependency_cluster_shape_from_snapshot(
+        snapshot["payload"]
+    )
+
+
 def validate_evidence_dependency_cluster(
     payload: Mapping[str, object],
 ) -> SealedArtifact:
-    """Validate one cluster record shape, vocabulary, and self-hash."""
+    """Compatibility shape check; it grants no independence authority."""
+
+    snapshot = _snapshot_composite(
+        {"payload": payload}, "validate_evidence_dependency_cluster"
+    )
+    return _validate_evidence_dependency_cluster_shape_from_snapshot(
+        snapshot["payload"]
+    )
+
+
+def _validate_evidence_dependency_cluster_shape_from_snapshot(
+    payload: object,
+) -> SealedArtifact:
+    """Validate one cluster already detached from caller-owned state."""
 
     value = _mapping(payload, "EvidenceDependencyCluster")
     _exact_fields(value, CLUSTER_FIELDS, "EvidenceDependencyCluster")
@@ -684,6 +821,51 @@ def validate_evidence_dependency_cluster(
     if asserted != _hash_excluding(value, "cluster_hash"):
         _fail("CLUSTER_HASH_MISMATCH", "cluster_hash does not match canonical content")
     return _sealed("EvidenceDependencyCluster", value)
+
+
+def validate_evidence_dependency_clusters_from_sources(
+    clusters: Sequence[Mapping[str, object]],
+    *,
+    units: Sequence[Mapping[str, object]],
+    run_id: str,
+    created_at: str,
+    declared_links: Sequence[Mapping[str, object]] = (),
+) -> tuple[SealedArtifact, ...]:
+    """Rebuild the complete cluster set from sources and require exact identity."""
+
+    snapshot = _snapshot_composite(
+        {
+            "clusters": clusters,
+            "created_at": created_at,
+            "declared_links": declared_links,
+            "run_id": run_id,
+            "units": units,
+        },
+        "validate_evidence_dependency_clusters_from_sources",
+    )
+    supplied = snapshot["clusters"]
+    if not isinstance(supplied, Sequence) or isinstance(
+        supplied, (str, bytes, bytearray)
+    ):
+        _fail("INPUT_INVALID", "clusters must be an array")
+    asserted = tuple(
+        _validate_evidence_dependency_cluster_shape_from_snapshot(entry)
+        for entry in supplied
+    )
+    rebuilt = _build_dependency_clusters_from_snapshot(
+        snapshot["units"],
+        run_id=snapshot["run_id"],
+        created_at=snapshot["created_at"],
+        declared_links=snapshot["declared_links"],
+    )
+    if [entry.canonical_bytes for entry in asserted] != [
+        entry.canonical_bytes for entry in rebuilt
+    ]:
+        _fail(
+            "CLUSTER_RECONSTRUCTION_MISMATCH",
+            "cluster records are not the deterministic assembly of their source inputs",
+        )
+    return rebuilt
 
 
 # ---------------------------------------------------------------------------
@@ -796,11 +978,45 @@ def assemble_evidence_pack(
 ) -> tuple[SealedArtifact, tuple[SealedArtifact, ...]]:
     """Assemble a schema-exact EvidencePack bound to its completeness certificate."""
 
-    insight_id = _text(insight_id, "insight_id")
-    corpus_snapshot_hash = _hash(corpus_snapshot_hash, "corpus_snapshot_hash")
-    retrieval_manifest_id = _text(retrieval_manifest_id, "retrieval_manifest_id")
-    bias_risk_register_id = _text(bias_risk_register_id, "bias_risk_register_id")
-    stale = _bool(stale, "stale")
+    snapshot = _snapshot_composite(
+        {
+            "bias_risk_register_id": bias_risk_register_id,
+            "certificate": certificate,
+            "corpus_snapshot_hash": corpus_snapshot_hash,
+            "created_at": created_at,
+            "declared_links": declared_links,
+            "insight_id": insight_id,
+            "lane_assignments": lane_assignments,
+            "query_plan": query_plan,
+            "receipts": receipts,
+            "retrieval_manifest_id": retrieval_manifest_id,
+            "role_quotas": role_quotas,
+            "stale": stale,
+            "units": units,
+            "unresolved_results": unresolved_results,
+        },
+        "assemble_evidence_pack",
+    )
+    units = snapshot["units"]  # type: ignore[assignment]
+    insight_id = _text(snapshot["insight_id"], "insight_id")
+    corpus_snapshot_hash = _hash(
+        snapshot["corpus_snapshot_hash"], "corpus_snapshot_hash"
+    )
+    retrieval_manifest_id = _text(
+        snapshot["retrieval_manifest_id"], "retrieval_manifest_id"
+    )
+    bias_risk_register_id = _text(
+        snapshot["bias_risk_register_id"], "bias_risk_register_id"
+    )
+    lane_assignments = snapshot["lane_assignments"]  # type: ignore[assignment]
+    query_plan = snapshot["query_plan"]  # type: ignore[assignment]
+    receipts = snapshot["receipts"]  # type: ignore[assignment]
+    certificate = snapshot["certificate"]  # type: ignore[assignment]
+    created_at = snapshot["created_at"]  # type: ignore[assignment]
+    declared_links = snapshot["declared_links"]  # type: ignore[assignment]
+    unresolved_results = snapshot["unresolved_results"]  # type: ignore[assignment]
+    role_quotas = snapshot["role_quotas"]  # type: ignore[assignment]
+    stale = _bool(snapshot["stale"], "stale")
 
     certificate_value = _artifact_payload(certificate, "certificate")
     sealed_certificate = validate_search_completeness_certificate(
@@ -849,15 +1065,32 @@ def assemble_evidence_pack(
         ):
             all_result_ids.update(str(entry) for entry in result_ids)
 
-    resolved_result_ids: set[str] = set()
+    result_owners: dict[str, str] = {}
     for evidence_id in sorted(by_id):
-        for result_id in by_id[evidence_id]["origin_result_ids"]:  # type: ignore[union-attr]
-            if str(result_id) not in all_result_ids:
+        origin_result_ids = sorted(
+            str(result_id)
+            for result_id in by_id[evidence_id]["origin_result_ids"]  # type: ignore[union-attr]
+        )
+        for result_id in origin_result_ids:
+            if result_id not in all_result_ids:
                 _fail(
                     "EVIDENCE_NOT_RETRIEVED",
                     f"evidence {evidence_id} claims origin {result_id} outside the sealed run",
                 )
-            resolved_result_ids.add(str(result_id))
+        for result_id in origin_result_ids:
+            existing_owner = result_owners.get(result_id)
+            if existing_owner is not None and existing_owner != evidence_id:
+                _fail(
+                    "DUPLICATE_VALUE",
+                    f"retrieval result {result_id} is claimed by multiple evidence units",
+                    {
+                        "result_id": result_id,
+                        "evidence_ids": [existing_owner, evidence_id],
+                    },
+                )
+            result_owners[result_id] = evidence_id
+
+    resolved_result_ids = set(result_owners)
 
     conflicting = sorted(resolved_result_ids & set(unresolved))
     if conflicting:
@@ -904,7 +1137,12 @@ def assemble_evidence_pack(
         1.0 for evidence_id in sorted(evidence_bearing) if evidence_id not in clustered
     )
 
-    quotas = dict(role_quotas or {})
+    if role_quotas is None:
+        quotas: dict[str, object] = {}
+    elif type(role_quotas) is dict:
+        quotas = _mapping(role_quotas, "role_quotas")
+    else:
+        _fail("INPUT_INVALID", "role_quotas must be null or an object")
     unknown_quota_roles = sorted(set(quotas) - set(PACK_ROLES))
     if unknown_quota_roles:
         _fail(
@@ -1045,9 +1283,37 @@ def validate_evidence_pack(
 ) -> tuple[SealedArtifact, tuple[SealedArtifact, ...]]:
     """Recompute the pack from its bound inputs and require exact identity."""
 
+    snapshot = _snapshot_composite(
+        {
+            "certificate": certificate,
+            "clusters": clusters,
+            "created_at": created_at,
+            "declared_links": declared_links,
+            "lane_assignments": lane_assignments,
+            "pack": pack,
+            "query_plan": query_plan,
+            "receipts": receipts,
+            "role_quotas": role_quotas,
+            "units": units,
+            "unresolved_results": unresolved_results,
+        },
+        "validate_evidence_pack",
+    )
+    pack = snapshot["pack"]  # type: ignore[assignment]
+    clusters = snapshot["clusters"]  # type: ignore[assignment]
+    units = snapshot["units"]  # type: ignore[assignment]
+    lane_assignments = snapshot["lane_assignments"]  # type: ignore[assignment]
+    query_plan = snapshot["query_plan"]  # type: ignore[assignment]
+    receipts = snapshot["receipts"]  # type: ignore[assignment]
+    certificate = snapshot["certificate"]  # type: ignore[assignment]
+    created_at = snapshot["created_at"]  # type: ignore[assignment]
+    declared_links = snapshot["declared_links"]  # type: ignore[assignment]
+    unresolved_results = snapshot["unresolved_results"]  # type: ignore[assignment]
+    role_quotas = snapshot["role_quotas"]  # type: ignore[assignment]
     asserted_pack = _validate_pack_shape(_mapping(pack, "EvidencePack"))
     asserted_clusters = [
-        validate_evidence_dependency_cluster(entry) for entry in clusters
+        _validate_evidence_dependency_cluster_shape_from_snapshot(entry)
+        for entry in clusters
     ]
     rebuilt_pack, rebuilt_clusters = assemble_evidence_pack(
         units,

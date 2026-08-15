@@ -1,14 +1,15 @@
 // cli_contract_test — commands round-trip contracts and error codes are stable.
 //
 // Exit criteria under test: "commands round-trip contracts" and "stable error
-// codes".  The command table is projected from the sealed catalogs rather than
-// declared, every envelope survives render → parse → render byte-identically,
-// and the exit-code table must cover the sealed error vocabulary exactly.
+// codes".  The command table is projected from the sealed T01 read/planning
+// catalog rather than declared, every envelope survives render → parse → render
+// byte-identically, and the exit-code table must cover the sealed error
+// vocabulary exactly.
 
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { mergedToolDescriptors } from "../mcp/write/catalog-set.mjs";
+import { toolDescriptors } from "../mcp/read/mcp-server.mjs";
 import {
   commandForTool,
   commandSurface,
@@ -66,9 +67,9 @@ function port(envelope, isError = false) {
   };
 }
 
-test("cli_contract_test: every composed tool projects exactly one command", () => {
+test("cli_contract_test: every T01 read/planning tool projects exactly one command", () => {
   const surface = commandSurface();
-  const descriptors = mergedToolDescriptors();
+  const descriptors = toolDescriptors();
 
   assert.equal(surface.length, descriptors.length);
   assert.equal(new Set(surface.map((entry) => entry.command)).size, surface.length);
@@ -78,22 +79,29 @@ test("cli_contract_test: every composed tool projects exactly one command", () =
 });
 
 test("cli_contract_test: the command name is the tool name without its namespace", () => {
-  assert.equal(commandForTool("foundry.claim.promote").command, "claim promote");
-  assert.deepEqual(commandForTool("foundry.claim.promote").segments, [
-    "claim",
-    "promote",
-  ]);
-  assert.equal(resolveCommand(["claim", "promote"]).tool, "foundry.claim.promote");
+  assert.equal(commandForTool("foundry.search.plan").command, "search plan");
+  assert.deepEqual(commandForTool("foundry.search.plan").segments, ["search", "plan"]);
+  assert.equal(resolveCommand(["search", "plan"]).tool, "foundry.search.plan");
 });
 
-test("cli_contract_test: mutating commands are marked as such", () => {
+test("cli_contract_test: the T01 command surface contains no mutating commands", () => {
   const surface = commandSurface();
   const mutating = surface.filter((entry) => entry.mutating).map((entry) => entry.tool);
 
-  assert.equal(mutating.length, 9);
-  assert.equal(surface.length - mutating.length, 13);
-  assert.equal(commandForTool("foundry.claim.promote").mutating, true);
+  assert.equal(surface.length, 13);
+  assert.equal(mutating.length, 0);
   assert.equal(commandForTool("foundry.status").mutating, false);
+});
+
+test("cli_contract_test: T02 promotion remains unavailable", () => {
+  assert.throws(
+    () => commandForTool("foundry.claim.promote"),
+    (error) => error instanceof CliContractError && error.code === "UNKNOWN_TOOL_NAME",
+  );
+  assert.throws(
+    () => resolveCommand(["claim", "promote"]),
+    (error) => error instanceof CliContractError && error.code === "UNKNOWN_COMMAND",
+  );
 });
 
 test("cli_contract_test: an unknown command is refused, not guessed", () => {
@@ -144,6 +152,25 @@ test("cli_contract_test: an undefined field is refused rather than silently drop
     (error) =>
       error instanceof CliContractError && error.code === "ENVELOPE_NOT_CANONICAL",
   );
+});
+
+test("cli_contract_test: non-JSON objects and sparse arrays are refused rather than rewritten", () => {
+  const sparse = [];
+  sparse.length = 1;
+
+  for (const candidate of [new Date("2026-08-01T00:00:00Z"), new Map(), sparse]) {
+    assert.throws(
+      () => renderJson({ value: candidate }),
+      (error) =>
+        error instanceof CliContractError && error.code === "ENVELOPE_NOT_CANONICAL",
+    );
+  }
+});
+
+test("cli_contract_test: reserved-looking JSON keys remain ordinary data", () => {
+  const envelope = JSON.parse('{"__proto__":{"polluted":true},"constructor":"data"}');
+
+  assert.deepEqual(parseJson(renderJson(envelope)), envelope);
 });
 
 test("cli_contract_test: non-finite numbers and cycles cannot be emitted", () => {
@@ -272,6 +299,34 @@ test("cli_contract_test: malformed --input is refused before the handler runs", 
   );
   assert.deepEqual(handler.calls, []);
 });
+
+test("cli_contract_test: duplicate --input is refused instead of silently overriding", async () => {
+  const handler = port(resultEnvelope());
+
+  await assert.rejects(
+    runCommand(
+      ["status", "--input", '{"workspace_id":"first"}', "--input", '{"workspace_id":"second"}'],
+      handler,
+      { requestId: "req-1" },
+    ),
+    (error) => error instanceof CliContractError && error.code === "ARGUMENTS_INVALID",
+  );
+  assert.deepEqual(handler.calls, []);
+});
+
+for (const unsupportedFlag of ["--request-id", "--workspace"]) {
+  test(`cli_contract_test: unsupported ${unsupportedFlag} is refused before the handler runs`, async () => {
+    const handler = port(resultEnvelope());
+
+    await assert.rejects(
+      runCommand(["status", JSON_FLAG, unsupportedFlag, "value"], handler, {
+        requestId: "req-1",
+      }),
+      (error) => error instanceof CliContractError && error.code === "ARGUMENTS_INVALID",
+    );
+    assert.deepEqual(handler.calls, []);
+  });
+}
 
 test("cli_contract_test: without --json the machine surface is withheld, not approximated", async () => {
   const handler = port(resultEnvelope());

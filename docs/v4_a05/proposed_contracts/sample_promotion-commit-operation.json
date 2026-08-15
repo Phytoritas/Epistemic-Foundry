@@ -1,0 +1,53 @@
+{
+  "invocation": {
+    "operation_id": "OP-PROMOTION-COMMIT-001",
+    "operation": "commit_promotion",
+    "run_id": "RUN-EVOLUTION-001",
+    "node_id": "commit_promotion_atomically",
+    "attempt": 1,
+    "action_intent_id": "AI-COMMIT-PROMOTION-001",
+    "action_intent_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "attempt_id": "ATT-COMMIT-PROMOTION-001",
+    "capability_lease_id": "CL-PROMOTION-COMMIT-001",
+    "capability_lease_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "fencing_token": 42,
+    "principal_id": "AG-PromotionCommitter",
+    "capability": "promotion:commit",
+    "resource_scopes": [
+      "db.hypothesis_passports/HP-001",
+      "db.promotion_decisions/CAND-001"
+    ],
+    "promotion_pack_artifact_set_id": "PAS-PHASE-E-001",
+    "promotion_pack_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "candidate_id": "CAND-001",
+    "expected_candidate_revision": 4,
+    "passport_id": "HP-001",
+    "expected_passport_revision": 2,
+    "idempotency_key": "RUN-EVOLUTION-001:CAND-001:4:VALIDATION_SCREENED",
+    "port_binding_id": "PB-E05-PROMOTION-COMMIT-001",
+    "port_binding_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+    "request_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+  },
+  "result": {
+    "disposition": "COMMITTED",
+    "operation_id": "OP-PROMOTION-COMMIT-001",
+    "request_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+    "port_binding_id": "PB-E05-PROMOTION-COMMIT-001",
+    "port_binding_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+    "capability_lease_id": "CL-PROMOTION-COMMIT-001",
+    "fencing_token": 42,
+    "lease_use_id": "LU-PROMOTION-COMMIT-001",
+    "lease_use_hash": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+    "promotion_decision_id": "PD-001",
+    "promotion_decision_hash": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+    "passport_revision_id": "HP-001:3",
+    "passport_revision_hash": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+    "event_record_id": "EV-PROMOTION-COMMIT-001",
+    "event_record_hash": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+    "observed_candidate_revision": 4,
+    "committed_candidate_revision": 5,
+    "observed_passport_revision": 2,
+    "committed_passport_revision": 3,
+    "result_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  }
+}

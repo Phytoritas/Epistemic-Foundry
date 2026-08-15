@@ -1,194 +1,31 @@
 {
-  "work_package_id": "F01",
-  "attempt_id": "F01-0001",
-  "title": "E0-E5 epistemic work classifier",
-  "base_checkpoint": "C04-0001:PASS,E04-0001:PASS",
-  "status": "SPEC_GAP",
-  "package_status": "SPEC_GAP",
+  "attempt_history": [
+    "0001",
+    "0002",
+    "0003"
+  ],
+  "attempt_id": "F01-0003",
   "completion_ready": false,
-  "dependencies": {
-    "C04": {
-      "status": "PASS",
-      "attempt_id": "C04-0001",
-      "report": "artifacts/work_packages/C04/report.json",
-      "report_sha256": "eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f"
-    },
-    "E04": {
-      "status": "PASS",
-      "attempt_id": "E04-0001",
-      "report": "artifacts/work_packages/E04/report.json",
-      "report_sha256": "841dcf60989cfc7ab0eff7be95e1ae721ae18ac513cae653ab6ac8a44942f6c1",
-      "core_evidence_id": "E0030",
-      "closeout_evidence_id": "E0031"
-    }
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "completion_ready=true",
+    "release or production readiness",
+    "terminal completion of the 156-package DAG"
+  ],
+  "package_status": "PASS",
+  "standing_evidence": {
+    "attempts/0003/report.json": "sha256:cf3c909d7adb256403fe4e2d051b2e591b3c002531ab19085334d085d06236c4",
+    "attempts/0003/review.md": "sha256:d3c3f8a9589de901751115194b1b4fb9adf0f888843e94987ca203bf9434f47f"
   },
-  "authority_bindings": {
-    "MASTER_SPEC.md": "43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3",
-    "MASTER_EXECUTION_PROMPT.md": "9b6cff656c62383229c5836c260b48a6f3fd024db7dc71ff04521ab7b539b855",
-    "AGENTS.md": "858e537ed3e49754b8e60d31c985467ee1246ed258c7763d6de4ef0767e381ea",
-    "manifests/development_manifest.yaml": "a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345",
-    "docs/forge_protocol.md": "c6aef0825e6c4ea5415cda92f69964833711ac36eff6fb70294842ff0957cae7",
-    "schemas/epistemic-work-classification.schema.json": "5c0c574605f4d1d2e8ea42385d6bc40ac273d1cbf1319169f6e26db6656d6049",
-    "examples/sample_epistemic-work-classification.json": "51084b66591673efb22249f30de88d01e797ec2c3f4361ab8d1197d0bcf9ffb2",
-    "workflows/forge_research_cycle.workflow.yaml": "280cdf43d3c9024f181cc9de612ce795f106395fce601e18092f5d90ad231aa3",
-    "prompts/plugin/classify_epistemic_work.md": "aae5659f4fb396a0dc1e03ad84df9f26b8e9724c1e9fbb566d18c8511241a9f5",
-    "prompts/plugin/detect_interview_need.md": "49dffde4a3b46fac94b7da2e30154264c594d397cea55e6d572db4ea546a2c0a"
-  },
-  "authorized_surface": {
-    "implementation_write_scope": [
-      "packages/foundry-kernel/src/forge/classifier/**"
-    ],
-    "evidence_artifacts": [
-      "artifacts/work_packages/F01/report.json",
-      "artifacts/work_packages/F01/commands.jsonl",
-      "artifacts/work_packages/F01/review.md"
-    ],
-    "required_checks": [
-      "classifier_gold_test",
-      "underprocessing_guard"
-    ],
-    "implementation_directory_existed_before_attempt": false,
-    "implementation_files_modified": 0
-  },
-  "spec_gap": {
-    "id": "F01-SG001",
-    "classification": "SPEC_GAP",
-    "summary": "F01 has no authoritative classifier input and risk contract, mixed-signal precedence, exact class projection and optional-Interview routing semantics, hash and override contract, or executable gold/underprocessing acceptance oracle.",
-    "not_fail_reason": "No in-scope implementation was attempted because an implementation would have to invent the scientific process-depth policy and its own acceptance oracle.",
-    "not_blocked_reason": "No external tool, credential, licensed source, host capability, or backend is missing; the missing authority is a shared product contract.",
-    "sub_contract_gaps": [
-      {
-        "id": "F01-SG001-A",
-        "subject": "classifier input and authority",
-        "missing_contract": "A typed request-feature and risk vocabulary, the authority relationship between the provider-nondeterministic LLM proposal and a deterministic Kernel guard, and an exact mapping from request and policy artifacts to those inputs."
-      },
-      {
-        "id": "F01-SG001-B",
-        "subject": "mixed-signal precedence and underprocessing floor",
-        "missing_contract": "Deterministic precedence and tie-break rules for causal, high-stakes, expensive, ambiguous, open-novelty, mechanism, synthesis, lookup, and transform signals, including monotonic no-downgrade rules."
-      },
-      {
-        "id": "F01-SG001-C",
-        "subject": "class projection, routing, identity, and override",
-        "missing_contract": "Exact E0-E5 required_phases, default_role_count, human_gate_required, conditional Interview routing, ID and timestamp generation, canonical classification_hash preimage, retry semantics, and the immutable override artifact boundary."
-      },
-      {
-        "id": "F01-SG001-D",
-        "subject": "acceptance oracle and authorized test surface",
-        "missing_contract": "Canonical gold fixtures, expected labels and projections, metric and PASS threshold, fail-closed adversarial cases, and exact write authority for the required tests or fixtures."
-      }
-    ],
-    "required_product_owner_decision": [
-      "Define a closed typed classifier input and risk vocabulary and identify the authority of LLM proposals versus deterministic enforcement.",
-      "Define mixed-signal precedence, tie-breaks, and a monotonic underprocessing floor.",
-      "Define exact E0-E5 phase, role-count, human-gate, conditional-Interview, ID, clock, hash, retry, and override semantics.",
-      "Authorize exact test and fixture paths and freeze the gold labels, projections, adversarial matrix, metric, and PASS threshold.",
-      "Normalize the artifact capability vocabulary and bind workflow artifact output to the EpistemicWorkClassification artifact contract."
+  "status": "PASS",
+  "supersedes": {
+    "authorizing_decision": "HD-EF4-F01-SG002-20260729-001",
+    "prior_root_status": "SPEC_GAP",
+    "rationale": "F01-0001 recorded SPEC_GAP because the classifier input, risk contract, precedence, and acceptance oracle were undefined. Two product-owner decisions supplied them, and F01-0003 implements the classifier against that contract.",
+    "resolved_spec_gaps": [
+      "F01-SG001",
+      "F01-SG002"
     ]
   },
-  "contract_evidence": {
-    "class_table_is_descriptive_not_executable": true,
-    "node_invocation_contains_request_semantics": false,
-    "class_schema_enforces_cross_field_invariants": false,
-    "conditional_interview_edge_exists": false,
-    "gold_or_guard_definition_count_outside_manifest_and_artifacts": 0,
-    "override_record_schema_exists": false,
-    "sample_classification_hash_is_placeholder": true,
-    "capability_vocabulary_consistent_across_workflow_role_and_runtime": false
-  },
-  "checks": [
-    {
-      "command_id": "F01-0001-C001",
-      "name": "dependency and authority inspection",
-      "status": "PASS",
-      "artifact": "artifacts/work_packages/F01/commands.jsonl#F01-0001-C001"
-    },
-    {
-      "command_id": "F01-0001-C002",
-      "name": "classifier contract and acceptance-oracle scan",
-      "status": "SPEC_GAP_CONFIRMED",
-      "artifact": "artifacts/work_packages/F01/commands.jsonl#F01-0001-C002"
-    },
-    {
-      "command_id": "F01-0001-C007",
-      "name": "independent read-only contract review",
-      "status": "SPEC_GAP_CONFIRMED",
-      "artifact": "artifacts/work_packages/F01/review.md"
-    },
-    {
-      "command_id": "F01-0001-C013",
-      "name": "RAH blocker generation and integrity verification",
-      "status": "PASS",
-      "artifact": ".rah/ralph/generations/000031-f6c54f66/generation-manifest.json"
-    }
-  ],
-  "review": {
-    "reviewer": "/root/f01_independent_review",
-    "role": "reviewer acting as independent contract reviewer",
-    "mode": "READ_ONLY_INDEPENDENT_CONTRACT_REVIEW",
-    "status": "SPEC_GAP",
-    "blocking_finding_count": 8,
-    "artifact": "artifacts/work_packages/F01/review.md",
-    "authoring_or_state_mutation_by_reviewer": false
-  },
-  "changed_files": [
-    "artifacts/work_packages/F01/report.json",
-    "artifacts/work_packages/F01/commands.jsonl",
-    "artifacts/work_packages/F01/review.md"
-  ],
-  "implementation": {
-    "classifier_code_created": false,
-    "tests_or_gold_fixtures_created": false,
-    "schema_workflow_manifest_or_prompt_modified": false,
-    "runtime_or_generated_contract_modified": false
-  },
-  "not_verified": [
-    "classifier_gold_test because no canonical gold oracle or authorized fixture path exists",
-    "underprocessing_guard because no authoritative input taxonomy, precedence, or fail threshold exists",
-    "E0-E5 runtime classification",
-    "conditional Interview routing",
-    "classification replay and hash integrity"
-  ],
-  "dependency_effect": {
-    "F01": "SPEC_GAP",
-    "F02": "WAITING_ON_F01",
-    "F03": "WAITING_ON_F01",
-    "F04": "WAITING_ON_F02_AND_F03",
-    "later_ready_packages_started": false,
-    "reason": "The work-package protocol requires the earliest dependency-ready package and prohibits skipping an unresolved shared contract."
-  },
-  "historical_and_worktree_preservation": {
-    "prior_reports_and_rah_generations_preserved": true,
-    "dirty_worktree_preserved": true,
-    "reset_clean_stash_commit_push_performed": false,
-    "out_of_scope_files_modified": 0,
-    "classifier_implementation_files_modified": 0,
-    "failed_shell_and_review_orchestration_observations_preserved_in_commands": true,
-    "review_orchestration_observations": [
-      "an unsupported contract-reviewer spawn shape was rejected before execution and made no repository or RAH mutation",
-      "the successful independent reviewer used the prescribed reviewer role in read-only mode",
-      "the reviewer's child cross-check was interrupted after the independent verdict was complete; it made no repository or RAH mutation"
-    ]
-  },
-  "rah_state": {
-    "core_parent_generation": "000030-9f972c35",
-    "core_generation": "000031-f6c54f66",
-    "core_generation_manifest_sha256": "4639f8e8c0112915331e50b2a913a4fd56cfa3a8bfbd48b786409d9fbd255620",
-    "core_evidence_id": "E0032",
-    "core_evidence_kind": "documented_gap",
-    "final_closeout_evidence_id": "E0033",
-    "retained_generation_manifest_count_after_core": 31,
-    "generation_file_hashes_verified_after_core": 186,
-    "flat_snapshot_stamps_verified_after_core": 6,
-    "flat_snapshot_content_matches_after_core": 6,
-    "parse_errors": {},
-    "status": "blocked",
-    "completion_ready": false
-  },
-  "output_artifacts": [
-    "artifacts/work_packages/F01/report.json",
-    "artifacts/work_packages/F01/commands.jsonl",
-    "artifacts/work_packages/F01/review.md"
-  ],
-  "resume_condition": "Record a product-owner HumanDecision that resolves F01-SG001, authorize any exact manifest/schema/workflow/test changes it requires, preserve F01-0001 as immutable SPEC_GAP history, and rerun F01 as a new attempt."
+  "work_package_id": "F01"
 }

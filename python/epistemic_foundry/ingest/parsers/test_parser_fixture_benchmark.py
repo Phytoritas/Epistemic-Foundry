@@ -273,6 +273,19 @@ def test_parser_fixture_benchmark_disagreement_retains_both_observations() -> No
     assert not hasattr(comparison, "selected_text")
 
 
+def test_parser_fixture_benchmark_confidence_disagreement_remains_visible() -> None:
+    grobid, docling = successful_streams()
+    comparison = compare_parser_streams((grobid, docling))
+
+    title = next(
+        item
+        for item in comparison.disagreements
+        if item.logical_address == "header/title"
+    )
+    assert title.differing_fields == ("confidence",)
+    assert [item.confidence for item in title.observations] == [None, 0.98]
+
+
 def test_parser_fixture_benchmark_missing_observations_remain_visible() -> None:
     grobid, docling = successful_streams()
     comparison = compare_parser_streams((grobid, docling))
@@ -370,6 +383,18 @@ def test_parser_fixture_benchmark_dtd_is_rejected_before_xml_parse() -> None:
     assert attempt.error_code == "GROBID_UNSAFE_XML"
 
 
+def test_parser_fixture_benchmark_utf16_dtd_cannot_bypass_declaration_scan() -> None:
+    parser_pin = pin(ParserRole.GROBID_STRUCTURE)
+    payload = '<!DOCTYPE TEI [<!ENTITY x "bad">]><TEI>&x;</TEI>'.encode("utf-16")
+    attempt = adapt_grobid_artifact(
+        parser_pin,
+        artifact(payload, artifact_id="ART-G", media_type="application/tei+xml"),
+    )
+
+    assert attempt.status is ParserStatus.FAIL
+    assert attempt.error_code == "GROBID_UNSAFE_XML"
+
+
 def test_parser_fixture_benchmark_mutable_payload_is_snapshotted() -> None:
     parser_pin = pin(ParserRole.GROBID_STRUCTURE)
     mutable = bytearray(grobid_payload(parser_pin))
@@ -384,6 +409,29 @@ def test_parser_fixture_benchmark_mutable_payload_is_snapshotted() -> None:
     attempt = adapt_grobid_artifact(parser_pin, envelope)
 
     assert envelope.payload == before
+    assert attempt.status is ParserStatus.PASS
+
+
+def test_parser_fixture_benchmark_bytes_subclass_is_detached_before_validation() -> None:
+    class HostileBytes(bytes):
+        def lower(self) -> bytes:
+            return b"caller-defined lower projection"
+
+        def decode(self, *args: object, **kwargs: object) -> str:
+            return "caller-defined decode projection"
+
+    parser_pin = pin(ParserRole.GROBID_STRUCTURE)
+    source = grobid_payload(parser_pin)
+    envelope = artifact(
+        HostileBytes(source),
+        artifact_id="ART-GROBID-0001",
+        media_type="application/tei+xml",
+    )
+
+    attempt = adapt_grobid_artifact(parser_pin, envelope)
+
+    assert type(envelope.payload) is bytes
+    assert envelope.payload == source
     assert attempt.status is ParserStatus.PASS
 
 
@@ -414,6 +462,19 @@ def test_parser_fixture_benchmark_unknown_docling_field_is_typed_failure() -> No
     assert attempt.error_code == "PARSER_OUTPUT_MALFORMED"
 
 
+def test_parser_fixture_benchmark_duplicate_json_keys_are_not_collapsed() -> None:
+    parser_pin = pin(ParserRole.DOCLING_LAYOUT)
+    valid = docling_payload(parser_pin)
+    payload = b'{"parser_version":"shadow",' + valid[1:]
+    attempt = adapt_docling_artifact(
+        parser_pin,
+        artifact(payload, artifact_id="ART-D", media_type="application/json"),
+    )
+
+    assert attempt.status is ParserStatus.FAIL
+    assert attempt.error_code == "PARSER_OUTPUT_MALFORMED"
+
+
 def test_parser_fixture_benchmark_docling_bbox_is_required() -> None:
     parser_pin = pin(ParserRole.DOCLING_LAYOUT)
     value = docling_value(parser_pin)
@@ -426,6 +487,20 @@ def test_parser_fixture_benchmark_docling_bbox_is_required() -> None:
 
     assert attempt.status is ParserStatus.FAIL
     assert attempt.error_code == "PARSER_PROVENANCE_MISSING"
+
+
+def test_parser_fixture_benchmark_oversized_number_is_a_typed_failure() -> None:
+    parser_pin = pin(ParserRole.DOCLING_LAYOUT)
+    value = docling_value(parser_pin)
+    value["elements"][0]["confidence"] = 10**400  # type: ignore[index]
+    payload = json.dumps(value, sort_keys=True).encode()
+    attempt = adapt_docling_artifact(
+        parser_pin,
+        artifact(payload, artifact_id="ART-D", media_type="application/json"),
+    )
+
+    assert attempt.status is ParserStatus.FAIL
+    assert attempt.error_code == "PARSER_OUTPUT_INVALID"
 
 
 def test_parser_fixture_benchmark_caption_link_is_required() -> None:

@@ -17,7 +17,10 @@ from collections import defaultdict
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from enum import Enum
+from types import MappingProxyType
 from typing import Any, Final
+
+from ..planning import contracts as planning
 
 
 SHA256_PATTERN: Final = re.compile(r"^sha256:[0-9a-f]{64}$")
@@ -55,19 +58,21 @@ CHANNEL_ORDER: Final = tuple(value.value for value in RetrievalChannel)
 _FAMILY_RANK: Final = {value: index for index, value in enumerate(QUERY_FAMILY_ORDER)}
 _CHANNEL_RANK: Final = {value: index for index, value in enumerate(CHANNEL_ORDER)}
 
-LANE_QUERY_FAMILIES: Final[dict[str, tuple[str, ...]]] = {
-    "lexical": (QueryFamily.FORWARD.value,),
-    "semantic": (QueryFamily.FORWARD.value,),
-    "citation": (QueryFamily.FORWARD.value,),
-    "entity_variable": (QueryFamily.FORWARD.value,),
-    "mechanism": (QueryFamily.FORWARD.value,),
-    "counterevidence": (QueryFamily.FORWARD.value, QueryFamily.REVERSE.value),
-    "null": (QueryFamily.NULL.value,),
-    "boundary": (QueryFamily.BOUNDARY.value,),
-    "method": (QueryFamily.METHOD.value,),
-    "temporal": (QueryFamily.FORWARD.value,),
-    "external_novelty": (QueryFamily.NOVELTY.value,),
-}
+LANE_QUERY_FAMILIES: Final[Mapping[str, tuple[str, ...]]] = MappingProxyType(
+    {
+        "lexical": (QueryFamily.FORWARD.value,),
+        "semantic": (QueryFamily.FORWARD.value,),
+        "citation": (QueryFamily.FORWARD.value,),
+        "entity_variable": (QueryFamily.FORWARD.value,),
+        "mechanism": (QueryFamily.FORWARD.value,),
+        "counterevidence": (QueryFamily.FORWARD.value, QueryFamily.REVERSE.value),
+        "null": (QueryFamily.NULL.value,),
+        "boundary": (QueryFamily.BOUNDARY.value,),
+        "method": (QueryFamily.METHOD.value,),
+        "temporal": (QueryFamily.FORWARD.value,),
+        "external_novelty": (QueryFamily.NOVELTY.value,),
+    }
+)
 
 NON_VECTOR_CHANNELS: Final = frozenset(
     {
@@ -211,26 +216,37 @@ class RetrievalContractError(ValueError):
         *,
         terminal_state: str = "FAILED",
         stop_reason: str = "invalid_response",
+        details: Mapping[str, object] | None = None,
     ) -> None:
         super().__init__(f"{code}: {detail}")
         self.code = code
         self.detail = detail
+        self.message = detail
+        self.details = (
+            MappingProxyType(dict(details)) if details is not None else None
+        )
         self.terminal_state = terminal_state
         self.stop_reason = stop_reason
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class SealedBackendRequest:
-    """Immutable-by-copy request projection plus its content hash."""
+    """Canonical request bytes plus independently re-derivable bindings."""
 
-    _payload: dict[str, Any]
-    canonical_bytes: bytes
+    _canonical_bytes: bytes
     request_hash: str
     query_text: str
 
     @property
+    def canonical_bytes(self) -> bytes:
+        return self._canonical_bytes
+
+    @property
     def payload(self) -> dict[str, Any]:
-        return copy.deepcopy(self._payload)
+        value = _load_request_payload(self._canonical_bytes)
+        if type(value) is not dict:  # pragma: no cover - validated construction invariant
+            raise AssertionError("sealed backend request is not an object")
+        return value
 
 
 @dataclass(frozen=True)
@@ -240,20 +256,23 @@ class TerminalOutcome:
     error_code: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class ValidatedBackendResponse:
-    _payload: dict[str, Any]
+    _canonical_bytes: bytes
     response_hash: str
     outcome: TerminalOutcome
 
     @property
     def payload(self) -> dict[str, Any]:
-        return copy.deepcopy(self._payload)
+        value = _load_canonical_json(self._canonical_bytes)
+        if type(value) is not dict:  # pragma: no cover - construction invariant
+            raise AssertionError("validated backend response is not an object")
+        return value
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True, init=False)
 class CandidateSetResult:
-    candidates: tuple[dict[str, Any], ...]
+    _candidate_bytes: tuple[bytes, ...]
     outcome: TerminalOutcome
     raw_hit_count: int
     duplicate_count: int
@@ -261,14 +280,70 @@ class CandidateSetResult:
     excluded_count: int
     run_ceiling: str
 
+    def __init__(
+        self,
+        candidates: Sequence[Mapping[str, Any]],
+        outcome: TerminalOutcome,
+        raw_hit_count: int,
+        duplicate_count: int,
+        cutoff_count: int,
+        excluded_count: int,
+        run_ceiling: str,
+    ) -> None:
+        if (
+            isinstance(candidates, (str, bytes, bytearray, memoryview, Mapping))
+            or not isinstance(candidates, Sequence)
+        ):
+            raise RetrievalContractError("TYPE_MISMATCH", "candidates must be an array")
+        detached = _json_snapshot(candidates, "candidate set", {}, set())
+        if type(detached) is not list:  # pragma: no cover - root check above
+            raise AssertionError("candidate set snapshot root is not an array")
+        candidate_bytes: list[bytes] = []
+        for index, candidate in enumerate(detached):
+            if type(candidate) is not dict:
+                raise RetrievalContractError(
+                    "TYPE_MISMATCH", f"candidates[{index}] must be an object"
+                )
+            candidate_bytes.append(canonical_json(candidate))
+        object.__setattr__(self, "_candidate_bytes", tuple(candidate_bytes))
+        object.__setattr__(self, "outcome", outcome)
+        object.__setattr__(self, "raw_hit_count", raw_hit_count)
+        object.__setattr__(self, "duplicate_count", duplicate_count)
+        object.__setattr__(self, "cutoff_count", cutoff_count)
+        object.__setattr__(self, "excluded_count", excluded_count)
+        object.__setattr__(self, "run_ceiling", run_ceiling)
+
+    @property
+    def candidates(self) -> tuple[dict[str, Any], ...]:
+        payloads: list[dict[str, Any]] = []
+        for value in self._candidate_bytes:
+            candidate = _load_canonical_json(value)
+            if type(candidate) is not dict:  # pragma: no cover - construction invariant
+                raise AssertionError("candidate set item is not an object")
+            for field in ("raw_rank", "channel_ranks"):
+                if field not in candidate:
+                    raise RetrievalContractError(
+                        "FIELD_SET_MISMATCH", f"RetrievalCandidate missing {field}"
+                    )
+            candidate["raw_rank"] = _integer(candidate["raw_rank"], "raw_rank")
+            channel_ranks = _mapping(candidate["channel_ranks"], "channel_ranks")
+            for channel, rank in channel_ranks.items():
+                if rank is not None:
+                    channel_ranks[channel] = _integer(rank, f"channel_ranks.{channel}")
+            candidate["channel_ranks"] = channel_ranks
+            payloads.append(candidate)
+        return tuple(payloads)
+
     def candidate_payloads(self) -> list[dict[str, Any]]:
-        return copy.deepcopy(list(self.candidates))
+        return list(self.candidates)
 
 
 @dataclass(frozen=True)
-class ReleaseGuardResult:
-    allowed: bool
-    run_ceiling: str
+class NonVectorAssessmentResult:
+    """Non-authoritative projection; never a release authorization."""
+
+    satisfies_non_vector_policy: bool
+    assessed_ceiling: str
     reason: str
     vector_only_candidate_ids: tuple[str, ...]
     metadata_only_candidate_ids: tuple[str, ...]
@@ -276,18 +351,136 @@ class ReleaseGuardResult:
     silent_fallback_count: int
 
 
+def _binary64(value: int | float, label: str) -> float:
+    if type(value) is int:
+        try:
+            number = float(value)
+        except OverflowError as exc:
+            raise RetrievalContractError(
+                "CANONICAL_JSON_INVALID", f"{label} is outside finite binary64"
+            ) from exc
+        if not math.isfinite(number) or int(number) != value:
+            raise RetrievalContractError(
+                "CANONICAL_JSON_INVALID",
+                f"{label} is not losslessly representable as binary64",
+            )
+        return number
+    if type(value) is float:
+        if not math.isfinite(value):
+            raise RetrievalContractError(
+                "CANONICAL_JSON_INVALID", f"{label} contains a non-finite number"
+            )
+        return value
+    raise RetrievalContractError(
+        "CANONICAL_JSON_INVALID", f"{label} contains a numeric subclass"
+    )
+
+
+def _ecmascript_number(value: int | float, label: str) -> str:
+    """Serialize one finite binary64 value using ECMAScript/JCS notation."""
+
+    number = _binary64(value, label)
+    if number == 0:
+        return "0"
+    negative = number < 0
+    token = repr(-number if negative else number).lower()
+    mantissa, separator, exponent_text = token.partition("e")
+    exponent = int(exponent_text) if separator else 0
+    integer_part, point, fractional_part = mantissa.partition(".")
+    digits = integer_part + (fractional_part if point else "")
+    decimal_position = len(integer_part) + exponent
+    while len(digits) > 1 and digits.startswith("0"):
+        digits = digits[1:]
+        decimal_position -= 1
+    while len(digits) > 1 and digits.endswith("0"):
+        digits = digits[:-1]
+
+    if 1e-6 <= abs(number) < 1e21:
+        if decimal_position <= 0:
+            rendered = "0." + ("0" * -decimal_position) + digits
+        elif decimal_position >= len(digits):
+            rendered = digits + ("0" * (decimal_position - len(digits)))
+        else:
+            rendered = digits[:decimal_position] + "." + digits[decimal_position:]
+    else:
+        coefficient = digits[0]
+        if len(digits) > 1:
+            coefficient += "." + digits[1:]
+        scientific_exponent = decimal_position - 1
+        exponent_sign = "+" if scientific_exponent >= 0 else "-"
+        rendered = f"{coefficient}e{exponent_sign}{abs(scientific_exponent)}"
+    return ("-" if negative else "") + rendered
+
+
+def _ijson_string(value: str, label: str) -> str:
+    for character in value:
+        codepoint = ord(character)
+        if (
+            0xD800 <= codepoint <= 0xDFFF
+            or 0xFDD0 <= codepoint <= 0xFDEF
+            or (codepoint & 0xFFFF) in {0xFFFE, 0xFFFF}
+        ):
+            raise RetrievalContractError(
+                "CANONICAL_JSON_INVALID",
+                f"{label} contains an I-JSON-forbidden code point",
+            )
+    try:
+        value.encode("utf-8")
+    except UnicodeEncodeError as exc:
+        raise RetrievalContractError(
+            "CANONICAL_JSON_INVALID", f"{label} contains invalid Unicode"
+        ) from exc
+    return value
+
+
+def _jcs_string(value: str, label: str) -> str:
+    return json.dumps(_ijson_string(value, label), ensure_ascii=False)
+
+
+def _utf16_sort_key(value: str) -> bytes:
+    try:
+        return _ijson_string(value, "object key").encode("utf-16-be")
+    except UnicodeEncodeError as exc:
+        raise RetrievalContractError(
+            "CANONICAL_JSON_INVALID", "object key contains invalid Unicode"
+        ) from exc
+
+
+def _jcs_text(value: object, label: str) -> str:
+    if value is None:
+        return "null"
+    if type(value) is bool:
+        return "true" if value else "false"
+    if type(value) is str:
+        return _jcs_string(value, label)
+    if type(value) in {int, float}:
+        return _ecmascript_number(value, label)
+    if type(value) is list:
+        return "[" + ",".join(
+            _jcs_text(item, f"{label}[{index}]")
+            for index, item in enumerate(value)
+        ) + "]"
+    if type(value) is dict:
+        parts: list[str] = []
+        for key in sorted(value, key=_utf16_sort_key):
+            parts.append(
+                _jcs_string(key, f"{label} key")
+                + ":"
+                + _jcs_text(value[key], f"{label}.{key}")
+            )
+        return "{" + ",".join(parts) + "}"
+    raise AssertionError("JSON snapshot contains a non-JSON value")
+
+
 def canonical_json(value: Any) -> bytes:
-    """Return the repository's RFC-8785-equivalent deterministic UTF-8 form."""
+    """Return strict RFC 8785 JCS UTF-8 bytes for one JSON value."""
 
     try:
-        return json.dumps(
-            value,
-            ensure_ascii=False,
-            sort_keys=True,
-            separators=(",", ":"),
-            allow_nan=False,
-        ).encode("utf-8")
-    except (TypeError, ValueError) as exc:
+        detached = _json_snapshot(value, "canonical JSON value", {}, set())
+        return _jcs_text(detached, "canonical JSON value").encode("utf-8")
+    except RetrievalContractError:
+        raise
+    except (TypeError, ValueError, UnicodeEncodeError, RecursionError) as exc:
         raise RetrievalContractError("CANONICAL_JSON_INVALID", str(exc)) from exc
 
 
@@ -299,10 +492,177 @@ def _sha256_object(value: Any) -> str:
     return sha256_bytes(canonical_json(value))
 
 
+def _json_snapshot(
+    value: object,
+    label: str,
+    memo: dict[int, object],
+    active: set[int],
+) -> object:
+    """Detach one caller-owned composite through base JSON primitives."""
+
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return _ijson_string(str.__str__(value), label)
+    if isinstance(value, int):
+        if type(value) is not int:
+            raise RetrievalContractError(
+                "CANONICAL_JSON_INVALID", f"{label} contains a numeric subclass"
+            )
+        _binary64(value, label)
+        return value
+    if isinstance(value, float):
+        if type(value) is not float:
+            raise RetrievalContractError(
+                "CANONICAL_JSON_INVALID", f"{label} contains a numeric subclass"
+            )
+        _binary64(value, label)
+        return value
+    if isinstance(value, (bytes, bytearray, memoryview)):
+        raise RetrievalContractError(
+            "CANONICAL_JSON_INVALID", f"{label} contains a byte-like value"
+        )
+
+    identity = id(value)
+    if identity in active:
+        raise RetrievalContractError(
+            "CANONICAL_JSON_INVALID", f"{label} contains a cycle"
+        )
+    if identity in memo:
+        return memo[identity]
+
+    if isinstance(value, Mapping):
+        detached_mapping: dict[str, object] = {}
+        memo[identity] = detached_mapping
+        active.add(identity)
+        try:
+            try:
+                entries = value.items()
+                for key, entry in entries:
+                    if not isinstance(key, str):
+                        raise RetrievalContractError(
+                            "CANONICAL_JSON_INVALID", f"{label} keys must be strings"
+                        )
+                    plain_key = str.__str__(key)
+                    _ijson_string(plain_key, f"{label} key")
+                    if plain_key in detached_mapping:
+                        raise RetrievalContractError(
+                            "CANONICAL_JSON_INVALID", f"{label} keys must be unique"
+                        )
+                    detached_mapping[plain_key] = _json_snapshot(
+                        entry,
+                        f"{label}.{plain_key}",
+                        memo,
+                        active,
+                    )
+            except RetrievalContractError:
+                raise
+            except Exception as exc:
+                raise RetrievalContractError(
+                    "CANONICAL_JSON_INVALID", f"{label} could not be read as an object"
+                ) from exc
+        finally:
+            active.remove(identity)
+        return detached_mapping
+
+    if isinstance(value, Sequence):
+        detached_sequence: list[object] = []
+        memo[identity] = detached_sequence
+        active.add(identity)
+        try:
+            try:
+                for index, entry in enumerate(value):
+                    detached_sequence.append(
+                        _json_snapshot(entry, f"{label}[{index}]", memo, active)
+                    )
+            except RetrievalContractError:
+                raise
+            except Exception as exc:
+                raise RetrievalContractError(
+                    "CANONICAL_JSON_INVALID", f"{label} could not be read as an array"
+                ) from exc
+        finally:
+            active.remove(identity)
+        return detached_sequence
+
+    raise RetrievalContractError(
+        "CANONICAL_JSON_INVALID", f"{label} contains a non-JSON value"
+    )
+
+
 def _mapping(value: Any, label: str) -> dict[str, Any]:
     if not isinstance(value, Mapping):
         raise RetrievalContractError("TYPE_MISMATCH", f"{label} must be an object")
-    return copy.deepcopy(dict(value))
+    detached = _json_snapshot(value, label, {}, set())
+    if type(detached) is not dict:  # pragma: no cover - root check above
+        raise AssertionError("mapping snapshot root is not an object")
+    return detached
+
+
+def _decode_binary64(token: str) -> float:
+    try:
+        value = float(token)
+    except (OverflowError, ValueError) as exc:
+        raise ValueError("JSON number is not binary64") from exc
+    if not math.isfinite(value):
+        raise ValueError("JSON number is not finite binary64")
+    return value
+
+
+def _reject_json_constant(token: str) -> None:
+    raise ValueError(f"JSON constant {token!r} is not permitted")
+
+
+def _unique_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("JSON object contains duplicate keys")
+        result[key] = value
+    return result
+
+
+def _load_canonical_json(value: bytes) -> object:
+    if type(value) is not bytes:
+        raise RetrievalContractError(
+            "CANONICAL_JSON_INVALID", "canonical JSON input must be bytes"
+        )
+    try:
+        parsed = json.loads(
+            value.decode("utf-8"),
+            parse_int=_decode_binary64,
+            parse_float=_decode_binary64,
+            parse_constant=_reject_json_constant,
+            object_pairs_hook=_unique_object,
+        )
+        return _json_snapshot(parsed, "decoded canonical JSON", {}, set())
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError, RecursionError) as exc:
+        raise RetrievalContractError(
+            "CANONICAL_JSON_INVALID", "bytes are not finite I-JSON"
+        ) from exc
+
+
+def _integer(value: object, field: str) -> int:
+    if type(value) is int:
+        _binary64(value, field)
+        return value
+    if type(value) is float and math.isfinite(value) and value.is_integer():
+        return int(value)
+    raise RetrievalContractError("FIELD_INVALID", f"{field} must be an integer")
+
+
+def _load_request_payload(value: bytes) -> dict[str, Any]:
+    payload = _load_canonical_json(value)
+    if type(payload) is not dict:
+        raise RetrievalContractError(
+            "CANONICAL_JSON_INVALID", "sealed backend request must be an object"
+        )
+    for field in ("max_candidates", "deterministic_seed"):
+        if field in payload:
+            payload[field] = _integer(payload[field], field)
+    return payload
 
 
 def _exact_fields(value: Mapping[str, Any], fields: Sequence[str], label: str) -> None:
@@ -318,9 +678,9 @@ def _exact_fields(value: Mapping[str, Any], fields: Sequence[str], label: str) -
 
 
 def _nonempty_string(value: Any, field: str) -> str:
-    if not isinstance(value, str) or not value.strip():
+    if not isinstance(value, str) or not str.strip(value):
         raise RetrievalContractError("FIELD_INVALID", f"{field} must be a non-empty string")
-    return value
+    return str.__str__(value)
 
 
 def _sha256(value: Any, field: str) -> str:
@@ -396,7 +756,11 @@ def _validate_query_batch(
 
 def _validate_lane_specific_scope(lane: str, scope_filter: Mapping[str, Any]) -> None:
     extensions_value = scope_filter.get("domain_extensions")
-    extensions = dict(extensions_value) if isinstance(extensions_value, Mapping) else {}
+    extensions = (
+        {}
+        if extensions_value is None
+        else _mapping(extensions_value, "scope_filter.domain_extensions")
+    )
     if lane == "temporal":
         time_period = scope_filter.get("time_period")
         version = extensions.get("date_filter_version")
@@ -424,11 +788,63 @@ def _validate_lane_specific_scope(lane: str, scope_filter: Mapping[str, Any]) ->
             )
 
 
-def seal_backend_request(value: Mapping[str, Any]) -> SealedBackendRequest:
+def _project_bound_lane_query(
+    query_plan: Mapping[str, object] | planning.SealedArtifact,
+    lane: object,
+) -> planning.LaneQueryProjection:
+    """Translate an O01 plan/lane refusal without weakening its semantics."""
+
+    if isinstance(query_plan, planning.SealedArtifact):
+        if (
+            type(query_plan) is not planning.SealedArtifact
+            or type(query_plan.artifact_type) is not str
+            or query_plan.artifact_type != "QueryPlan"
+            or type(query_plan.canonical_bytes) is not bytes
+        ):
+            raise RetrievalContractError(
+                "REQUEST_INTEGRITY_INVALID",
+                "query_plan is not a valid canonical QueryPlan artifact",
+                terminal_state="FAILED",
+                stop_reason="integrity_failure",
+            )
+    try:
+        return planning.project_lane_query(query_plan, lane)  # type: ignore[arg-type]
+    except planning.PlanningContractError as exc:
+        raise RetrievalContractError(
+            exc.code,
+            str(exc),
+            terminal_state="FAILED",
+            stop_reason="invalid_response",
+            details=exc.details,
+        ) from exc
+    except (UnicodeDecodeError, json.JSONDecodeError, RecursionError) as exc:
+        raise RetrievalContractError(
+            "REQUEST_INTEGRITY_INVALID",
+            "query_plan is not a valid canonical QueryPlan artifact",
+            terminal_state="FAILED",
+            stop_reason="integrity_failure",
+        ) from exc
+    except AssertionError as exc:
+        if type(query_plan) is not planning.SealedArtifact:
+            raise
+        raise RetrievalContractError(
+            "REQUEST_INTEGRITY_INVALID",
+            "query_plan is not a valid canonical QueryPlan artifact",
+            terminal_state="FAILED",
+            stop_reason="integrity_failure",
+        ) from exc
+
+
+def seal_backend_request(
+    value: Mapping[str, Any],
+    *,
+    query_plan: Mapping[str, object] | planning.SealedArtifact,
+) -> SealedBackendRequest:
     """Validate and seal the exact provider-neutral O02 backend request."""
 
     payload = _mapping(value, "backend request")
     _exact_fields(payload, PROVIDER_REQUEST_FIELDS, "backend request")
+    projection = _project_bound_lane_query(query_plan, payload["lane"])
     for field in (
         "run_id",
         "query_plan_id",
@@ -445,6 +861,16 @@ def seal_backend_request(value: Mapping[str, Any]) -> SealedBackendRequest:
     lane = _nonempty_string(payload["lane"], "lane")
     if lane not in LANE_QUERY_FAMILIES:
         raise RetrievalContractError("LANE_UNKNOWN", lane)
+    if payload["query_plan_id"] != projection.query_plan_id:
+        raise RetrievalContractError(
+            "PLAN_HASH_MISMATCH",
+            "query_plan_id does not match the projected QueryPlan",
+        )
+    if payload["plan_hash"] != projection.plan_hash:
+        raise RetrievalContractError(
+            "PLAN_HASH_MISMATCH",
+            "plan_hash does not match the projected QueryPlan",
+        )
     families = _ordered_unique_strings(payload["query_families"], "query_families", allow_empty=False)
     for family in families:
         if family not in QUERY_FAMILY_ORDER:
@@ -457,35 +883,111 @@ def seal_backend_request(value: Mapping[str, Any]) -> SealedBackendRequest:
             f"lane {lane!r} requires {required!r}, received {families!r}",
         )
     payload["query_families"] = families
-    payload["query_batch"] = _validate_query_batch(payload["query_batch"], lane, families)
+    normalized_query_batch = _validate_query_batch(
+        payload["query_batch"], lane, families
+    )
+    projected_query_batch = projection.query_batch
+    if normalized_query_batch != projected_query_batch:
+        raise RetrievalContractError(
+            "INVALID_QUERY_FAMILY_BINDING",
+            "query_batch does not match the projected QueryPlan lane query",
+        )
+    payload["query_batch"] = normalized_query_batch
     query_text = canonical_json(payload["query_batch"]).decode("utf-8")
-    expected_query_hash = sha256_bytes(query_text.encode("utf-8"))
-    if payload["query_hash"] != expected_query_hash:
+    batch_query_hash = sha256_bytes(query_text.encode("utf-8"))
+    projected_query_hash = sha256_bytes(projection.query_batch_bytes)
+    if payload["query_hash"] != batch_query_hash:
         raise RetrievalContractError("QUERY_HASH_MISMATCH", "query_hash does not bind canonical query_batch")
+    if payload["query_hash"] != projected_query_hash:
+        raise RetrievalContractError(
+            "QUERY_HASH_MISMATCH",
+            "query_hash does not bind the projected QueryPlan lane query",
+        )
     scope_filter = _mapping(payload["scope_filter"], "scope_filter")
     _validate_lane_specific_scope(lane, scope_filter)
     payload["scope_filter"] = scope_filter
     payload["index_versions"] = _string_map(payload["index_versions"], "index_versions")
-    if not isinstance(payload["max_candidates"], int) or isinstance(payload["max_candidates"], bool) or payload["max_candidates"] < 1:
+    payload["max_candidates"] = _integer(payload["max_candidates"], "max_candidates")
+    if payload["max_candidates"] < 1:
         raise RetrievalContractError("FIELD_INVALID", "max_candidates must be a positive integer")
-    if not isinstance(payload["deterministic_seed"], int) or isinstance(payload["deterministic_seed"], bool):
-        raise RetrievalContractError("FIELD_INVALID", "deterministic_seed must be an integer")
+    payload["deterministic_seed"] = _integer(
+        payload["deterministic_seed"], "deterministic_seed"
+    )
     canonical_bytes = canonical_json(payload)
     return SealedBackendRequest(
-        _payload=payload,
-        canonical_bytes=canonical_bytes,
+        _canonical_bytes=canonical_bytes,
         request_hash=sha256_bytes(canonical_bytes),
         query_text=query_text,
     )
 
 
+def validate_sealed_backend_request(
+    value: object,
+    *,
+    query_plan: Mapping[str, object] | planning.SealedArtifact,
+) -> SealedBackendRequest:
+    """Re-derive a sealed request from canonical bytes before authority use."""
+
+    if type(value) is not SealedBackendRequest:
+        raise RetrievalContractError(
+            "REQUEST_INTEGRITY_INVALID",
+            "request must be an exact SealedBackendRequest",
+            terminal_state="FAILED",
+            stop_reason="integrity_failure",
+        )
+    if (
+        type(value.canonical_bytes) is not bytes
+        or type(value.request_hash) is not str
+        or type(value.query_text) is not str
+    ):
+        raise RetrievalContractError(
+            "REQUEST_INTEGRITY_INVALID",
+            "sealed request fields must use canonical primitive types",
+            terminal_state="FAILED",
+            stop_reason="integrity_failure",
+        )
+    try:
+        payload = _load_request_payload(value.canonical_bytes)
+    except RetrievalContractError as exc:
+        raise RetrievalContractError(
+            "REQUEST_INTEGRITY_INVALID",
+            "sealed request bytes are not canonical UTF-8 JSON",
+            terminal_state="FAILED",
+            stop_reason="integrity_failure",
+        ) from exc
+    try:
+        rebuilt = seal_backend_request(payload, query_plan=query_plan)
+    except RetrievalContractError as exc:
+        raise RetrievalContractError(
+            "REQUEST_INTEGRITY_INVALID",
+            "sealed request bytes do not satisfy the request contract",
+            terminal_state="FAILED",
+            stop_reason="integrity_failure",
+        ) from exc
+    if (
+        rebuilt.canonical_bytes != value.canonical_bytes
+        or rebuilt.request_hash != value.request_hash
+        or rebuilt.query_text != value.query_text
+    ):
+        raise RetrievalContractError(
+            "REQUEST_INTEGRITY_INVALID",
+            "sealed request bytes, hash, and query text do not agree",
+            terminal_state="FAILED",
+            stop_reason="integrity_failure",
+        )
+    return rebuilt
+
+
 def _response_preimage(payload: Mapping[str, Any]) -> dict[str, Any]:
-    return {key: copy.deepcopy(value) for key, value in payload.items() if key != "response_hash"}
+    detached = _mapping(payload, "backend response")
+    return {key: value for key, value in detached.items() if key != "response_hash"}
 
 
 def seal_backend_response(
     request: SealedBackendRequest,
     response_values: Mapping[str, Any],
+    *,
+    query_plan: Mapping[str, object] | planning.SealedArtifact,
 ) -> dict[str, Any]:
     """Bind adapter observations to a sealed request and add the response hash.
 
@@ -493,6 +995,7 @@ def seal_backend_response(
     through :func:`validate_backend_response` before using any hit.
     """
 
+    request = validate_sealed_backend_request(request, query_plan=query_plan)
     values = _mapping(response_values, "backend response values")
     expected_values = {
         "backend_receipt_id",
@@ -578,9 +1081,13 @@ def _validate_hit(value: Any, request: SealedBackendRequest) -> dict[str, Any]:
     channel = _nonempty_string(hit["retrieval_channel"], "retrieval_channel")
     if channel not in CHANNEL_ORDER:
         raise RetrievalContractError("RETRIEVAL_CHANNEL_UNKNOWN", channel)
-    rank = hit["raw_rank"]
-    if not isinstance(rank, int) or isinstance(rank, bool) or rank < 1:
+    try:
+        rank = _integer(hit["raw_rank"], "raw_rank")
+    except RetrievalContractError as exc:
+        raise RetrievalContractError("RAW_RANK_INVALID", repr(hit["raw_rank"])) from exc
+    if rank < 1:
         raise RetrievalContractError("RAW_RANK_INVALID", repr(rank))
+    hit["raw_rank"] = rank
     score = hit["raw_score"]
     if isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(float(score)):
         raise RetrievalContractError("RAW_SCORE_INVALID", repr(score))
@@ -610,9 +1117,12 @@ def _integrity_failure(code: str, detail: str) -> RetrievalContractError:
 def validate_backend_response(
     request: SealedBackendRequest,
     response_value: Mapping[str, Any],
+    *,
+    query_plan: Mapping[str, object] | planning.SealedArtifact,
 ) -> ValidatedBackendResponse:
     """Validate all bindings of an untrusted backend response."""
 
+    request = validate_sealed_backend_request(request, query_plan=query_plan)
     payload = _mapping(response_value, "backend response")
     _exact_fields(payload, BACKEND_RESPONSE_FIELDS, "backend response")
     expected_hash = _sha256_object(_response_preimage(payload))
@@ -668,17 +1178,41 @@ def validate_backend_response(
     if not isinstance(payload["hits"], list):
         raise RetrievalContractError("INVALID_RESPONSE", "hits must be an array")
     payload["hits"] = [_validate_hit(hit, request) for hit in payload["hits"]]
+    for hit in payload["hits"]:
+        if hit["query_family"] not in executed_families:
+            raise _integrity_failure(
+                "RESPONSE_BINDING_MISMATCH",
+                f"hit query_family {hit['query_family']!r} was not executed",
+            )
     outcome = _terminal_outcome(payload)
-    return ValidatedBackendResponse(_payload=payload, response_hash=expected_hash, outcome=outcome)
+    return ValidatedBackendResponse(
+        _canonical_bytes=canonical_json(payload),
+        response_hash=expected_hash,
+        outcome=outcome,
+    )
 
 
 def compute_candidate_id(candidate: Mapping[str, Any]) -> str:
-    preimage = {field: copy.deepcopy(candidate[field]) for field in CANDIDATE_IDENTITY_FIELDS}
+    payload = _mapping(candidate, "RetrievalCandidate identity input")
+    missing = [field for field in CANDIDATE_IDENTITY_FIELDS if field not in payload]
+    if missing:
+        raise RetrievalContractError(
+            "FIELD_SET_MISMATCH",
+            f"RetrievalCandidate identity input missing={missing}",
+        )
+    preimage = {field: payload[field] for field in CANDIDATE_IDENTITY_FIELDS}
     return "RC-" + hashlib.sha256(canonical_json(preimage)).hexdigest()
 
 
 def compute_candidate_hash(candidate: Mapping[str, Any]) -> str:
-    preimage = {field: copy.deepcopy(candidate[field]) for field in CANDIDATE_HASH_FIELDS}
+    payload = _mapping(candidate, "RetrievalCandidate hash input")
+    missing = [field for field in CANDIDATE_HASH_FIELDS if field not in payload]
+    if missing:
+        raise RetrievalContractError(
+            "FIELD_SET_MISMATCH",
+            f"RetrievalCandidate hash input missing={missing}",
+        )
+    preimage = {field: payload[field] for field in CANDIDATE_HASH_FIELDS}
     return _sha256_object(preimage)
 
 
@@ -711,7 +1245,7 @@ def _validate_group_provenance(observations: Sequence[dict[str, Any]]) -> None:
         "source_span_id",
     )
     for field in fields:
-        if len({json.dumps(item[field], sort_keys=True) for item in observations}) != 1:
+        if len({canonical_json(item[field]) for item in observations}) != 1:
             raise _integrity_failure(
                 "DUPLICATE_PROVENANCE_CONFLICT", f"duplicate observations disagree on {field}"
             )
@@ -805,24 +1339,49 @@ def validate_retrieval_candidate(candidate_value: Mapping[str, Any]) -> None:
         raise _integrity_failure("CANDIDATE_HASH_MISMATCH", "candidate content changed after sealing")
     if sha256_bytes(str(candidate["query_text"]).encode("utf-8")) != candidate["query_hash"]:
         raise _integrity_failure("QUERY_HASH_MISMATCH", "candidate query_text is not query_hash-bound")
+    for field in (
+        "plan_hash",
+        "corpus_snapshot_hash",
+        "backend_request_hash",
+        "backend_response_hash",
+        "source_snapshot_hash",
+    ):
+        _sha256(candidate[field], field)
+    if type(candidate["raw_rank"]) is not int or candidate["raw_rank"] < 1:
+        raise RetrievalContractError("RAW_RANK_INVALID", repr(candidate["raw_rank"]))
+    if candidate["source_span_id"] is not None:
+        _nonempty_string(candidate["source_span_id"], "source_span_id")
     lane = candidate["lane"]
     family = candidate["query_family"]
     if lane not in LANE_QUERY_FAMILIES or family not in LANE_QUERY_FAMILIES[lane]:
         raise RetrievalContractError("INVALID_QUERY_FAMILY_BINDING", f"{lane}/{family}")
     channels = candidate["retrieval_channels"]
-    if not isinstance(channels, list) or not channels or channels != sorted(set(channels), key=_CHANNEL_RANK.__getitem__):
+    if not isinstance(channels, list) or not channels:
         raise RetrievalContractError("CHANNEL_ORDER_INVALID", repr(channels))
+    for channel in channels:
+        if channel not in CHANNEL_ORDER:
+            raise RetrievalContractError("RETRIEVAL_CHANNEL_UNKNOWN", repr(channel))
+    if channels != sorted(set(channels), key=_CHANNEL_RANK.__getitem__):
+        raise RetrievalContractError("CHANNEL_ORDER_INVALID", repr(channels))
+    raw_scores = _mapping(candidate["raw_scores"], "raw_scores")
+    channel_ranks = _mapping(candidate["channel_ranks"], "channel_ranks")
+    _exact_fields(raw_scores, CHANNEL_ORDER, "raw_scores")
+    _exact_fields(channel_ranks, CHANNEL_ORDER, "channel_ranks")
     for channel in CHANNEL_ORDER:
         observed = channel in channels
-        score = candidate["raw_scores"].get(channel)
-        rank = candidate["channel_ranks"].get(channel)
-        if observed != (score is not None and rank is not None):
+        score = raw_scores[channel]
+        rank = channel_ranks[channel]
+        if score is not None and type(score) not in {int, float}:
+            raise RetrievalContractError("RAW_SCORE_INVALID", repr(score))
+        if rank is not None and (type(rank) is not int or rank < 1):
+            raise RetrievalContractError("RAW_RANK_INVALID", repr(rank))
+        if observed != (score is not None) or observed != (rank is not None):
             raise RetrievalContractError("CHANNEL_OBSERVATION_MISMATCH", channel)
     if len(channels) == 1:
         if candidate["fusion_method"] != "SINGLE_CHANNEL" or candidate["fusion_score"] is not None or candidate["multi_channel_verified"] is not False:
             raise RetrievalContractError("FUSION_CONTRACT_VIOLATION", "single-channel candidate has fused fields")
     else:
-        expected = sum(1.0 / (60 + candidate["channel_ranks"][channel]) for channel in channels)
+        expected = sum(1.0 / (60 + channel_ranks[channel]) for channel in channels)
         if candidate["fusion_method"] != "RRF_K60" or candidate["multi_channel_verified"] is not True:
             raise RetrievalContractError("FUSION_CONTRACT_VIOLATION", "multi-channel candidate is not RRF_K60")
         score = candidate["fusion_score"]
@@ -881,10 +1440,17 @@ def _deduplicate_and_rank_hits(
 def build_candidate_set(
     request: SealedBackendRequest,
     response_value: Mapping[str, Any],
+    *,
+    query_plan: Mapping[str, object] | planning.SealedArtifact,
 ) -> CandidateSetResult:
     """Validate, deduplicate, fuse, cut off, and seal one lane candidate set."""
 
-    response = validate_backend_response(request, response_value)
+    request = validate_sealed_backend_request(request, query_plan=query_plan)
+    response = validate_backend_response(
+        request,
+        response_value,
+        query_plan=query_plan,
+    )
     if response.outcome.search_state in {"BLOCKED", "FAILED"}:
         return CandidateSetResult((), response.outcome, 0, 0, 0, 0, "PARTIAL")
     hits = response.payload["hits"]
@@ -932,7 +1498,7 @@ def build_candidate_set(
         else "PARTIAL"
     )
     return CandidateSetResult(
-        candidates=tuple(copy.deepcopy(candidates)),
+        candidates=tuple(candidates),
         outcome=response.outcome,
         raw_hit_count=len(hits),
         duplicate_count=duplicate_count,
@@ -940,6 +1506,25 @@ def build_candidate_set(
         excluded_count=duplicate_count + cutoff_count,
         run_ceiling=run_ceiling,
     )
+
+
+def _relation_triplet(value: object, label: str) -> tuple[str, str, str]:
+    if (
+        isinstance(value, (str, bytes, bytearray, memoryview, Mapping))
+        or not isinstance(value, Sequence)
+    ):
+        raise RetrievalContractError(
+            "RELATION_SHAPE_INVALID", f"{label} must be [subject,predicate,object]"
+        )
+    detached = _json_snapshot(value, label, {}, set())
+    if type(detached) is not list or len(detached) != 3:
+        raise RetrievalContractError(
+            "RELATION_SHAPE_INVALID", f"{label} must be [subject,predicate,object]"
+        )
+    subject, predicate, object_ = (
+        _nonempty_string(item, f"{label} item") for item in detached
+    )
+    return subject, predicate, object_
 
 
 def classify_relation_direction(
@@ -953,19 +1538,51 @@ def classify_relation_direction(
 ) -> RelationDirection:
     """Classify relation orientation using only versioned, explicit mappings."""
 
+    if type(trusted_grounding) is not bool:
+        raise RetrievalContractError(
+            "FIELD_INVALID", "trusted_grounding must be a boolean"
+        )
     if not trusted_grounding:
         return RelationDirection.UNRESOLVED
-    if len(canonical_relation) != 3:
-        raise RetrievalContractError("RELATION_SHAPE_INVALID", "canonical relation must be [subject,predicate,object]")
-    subject, predicate, object_ = (_nonempty_string(item, "relation item") for item in canonical_relation)
-    symmetric = set(symmetric_predicates)
+
+    subject, predicate, object_ = _relation_triplet(
+        canonical_relation, "canonical relation"
+    )
+    if (
+        isinstance(symmetric_predicates, (str, bytes, bytearray, memoryview, Mapping))
+        or not isinstance(symmetric_predicates, Iterable)
+    ):
+        raise RetrievalContractError(
+            "FIELD_INVALID", "symmetric_predicates must be an iterable of strings"
+        )
+    symmetric: set[str] = set()
+    try:
+        for index, item in enumerate(symmetric_predicates):
+            symmetric.add(_nonempty_string(item, f"symmetric_predicates[{index}]"))
+    except RetrievalContractError:
+        raise
+    except Exception as exc:
+        raise RetrievalContractError(
+            "FIELD_INVALID", "symmetric_predicates could not be read"
+        ) from exc
     if predicate in symmetric:
         return RelationDirection.NO_DIRECTION
+
+    if (
+        isinstance(observed_relations, (str, bytes, bytearray, memoryview, Mapping))
+        or not isinstance(observed_relations, Sequence)
+    ):
+        raise RetrievalContractError(
+            "RELATION_SHAPE_INVALID", "observed relations must be an array"
+        )
+    detached_observed = _json_snapshot(
+        observed_relations, "observed relations", {}, set()
+    )
+    if type(detached_observed) is not list:  # pragma: no cover - root check above
+        raise AssertionError("observed relation snapshot root is not an array")
     observed: set[tuple[str, str, str]] = set()
-    for relation in observed_relations:
-        if len(relation) != 3:
-            raise RetrievalContractError("RELATION_SHAPE_INVALID", "observed relation must be [subject,predicate,object]")
-        observed.add(tuple(_nonempty_string(item, "relation item") for item in relation))
+    for index, relation in enumerate(detached_observed):
+        observed.add(_relation_triplet(relation, f"observed relation[{index}]"))
     same = (subject, predicate, object_) in observed
     reverse = (object_, predicate, subject) in observed
     if same and reverse:
@@ -974,30 +1591,62 @@ def classify_relation_direction(
         return RelationDirection.SAME_DIRECTION
     if reverse:
         return RelationDirection.REVERSE_DIRECTION
-    inverse_map = dict(inverse_predicates or {})
+    inverse_map = (
+        {}
+        if inverse_predicates is None
+        else _mapping(inverse_predicates, "inverse_predicates")
+    )
     if inverse_map:
         if not isinstance(ontology_version, str) or not ontology_version.strip():
             raise RetrievalContractError("ONTOLOGY_VERSION_REQUIRED", "inverse predicates require a versioned ontology")
-        inverse = inverse_map.get(predicate)
+        normalized_inverse_map = {
+            _nonempty_string(key, "inverse_predicates key"): _nonempty_string(
+                value, f"inverse_predicates.{key}"
+            )
+            for key, value in inverse_map.items()
+        }
+        inverse = normalized_inverse_map.get(predicate)
         if inverse and (object_, inverse, subject) in observed:
             return RelationDirection.INVERSE_PREDICATE
     return RelationDirection.UNRESOLVED
 
 
-def evaluate_non_vector_release(
+def assess_non_vector_origin(
     candidates: Sequence[Mapping[str, Any]],
     *,
     required_lane_states: Mapping[str, str],
     work_class: str = "E1",
     silent_fallback_count: int = 0,
-) -> ReleaseGuardResult:
-    """Enforce non-vector release and metadata-only evidence boundaries."""
+) -> NonVectorAssessmentResult:
+    """Assess non-vector and metadata boundaries without authorizing release.
 
-    if silent_fallback_count < 0:
-        raise RetrievalContractError("FIELD_INVALID", "silent_fallback_count cannot be negative")
-    payloads = [copy.deepcopy(dict(candidate)) for candidate in candidates]
+    Candidate self-hashes and caller-supplied lane states cannot resolve the
+    missing O01 SearchLaneReceipt-to-RetrievalCandidate result binding.
+    """
+
+    if type(silent_fallback_count) is not int or silent_fallback_count < 0:
+        raise RetrievalContractError(
+            "FIELD_INVALID", "silent_fallback_count must be a non-negative integer"
+        )
+    _nonempty_string(work_class, "work_class")
+    if (
+        isinstance(candidates, (str, bytes, bytearray, memoryview, Mapping))
+        or not isinstance(candidates, Sequence)
+    ):
+        raise RetrievalContractError("TYPE_MISMATCH", "candidates must be an array")
+    detached_candidates = _json_snapshot(candidates, "candidates", {}, set())
+    if type(detached_candidates) is not list:  # pragma: no cover - root check above
+        raise AssertionError("candidate snapshot root is not an array")
+    payloads = [
+        _mapping(candidate, f"candidates[{index}]")
+        for index, candidate in enumerate(detached_candidates)
+    ]
     for candidate in payloads:
         validate_retrieval_candidate(candidate)
+    lane_states = _mapping(required_lane_states, "required_lane_states")
+    for lane, state in lane_states.items():
+        _nonempty_string(lane, "required_lane_states key")
+        _nonempty_string(state, f"required_lane_states.{lane}")
     vector_only = tuple(
         sorted(
             candidate["candidate_id"]
@@ -1012,21 +1661,21 @@ def evaluate_non_vector_release(
         sorted(candidate["candidate_id"] for candidate in payloads if candidate["source_span_id"] is not None)
     )
     if silent_fallback_count:
-        return ReleaseGuardResult(False, "FAIL", "silent_fallback_detected", vector_only, metadata_only, direct, silent_fallback_count)
+        return NonVectorAssessmentResult(False, "FAIL", "silent_fallback_detected", vector_only, metadata_only, direct, silent_fallback_count)
     required_e1 = ("lexical", "semantic", "citation", "temporal")
     if work_class != "E0":
         missing = [
             lane
             for lane in required_e1
-            if required_lane_states.get(lane) not in {"SEARCHED_NONE", "SEARCHED_WITH_RESULTS"}
+            if lane_states.get(lane) not in {"SEARCHED_NONE", "SEARCHED_WITH_RESULTS"}
         ]
         if missing:
-            return ReleaseGuardResult(False, "PARTIAL", "required_lane_incomplete", vector_only, metadata_only, direct, 0)
+            return NonVectorAssessmentResult(False, "PARTIAL", "required_lane_incomplete", vector_only, metadata_only, direct, 0)
     if not payloads:
-        all_complete_none = bool(required_lane_states) and all(
-            state == "SEARCHED_NONE" for state in required_lane_states.values()
+        all_complete_none = bool(lane_states) and all(
+            state == "SEARCHED_NONE" for state in lane_states.values()
         )
-        return ReleaseGuardResult(
+        return NonVectorAssessmentResult(
             all_complete_none,
             "PASS" if all_complete_none else "PARTIAL",
             "complete_zero_results" if all_complete_none else "incomplete_empty_release",
@@ -1036,7 +1685,7 @@ def evaluate_non_vector_release(
             0,
         )
     has_non_vector = any(set(candidate["retrieval_channels"]) & NON_VECTOR_CHANNELS for candidate in payloads)
-    return ReleaseGuardResult(
+    return NonVectorAssessmentResult(
         has_non_vector,
         "PASS" if has_non_vector else "PARTIAL",
         "non_vector_origin_present" if has_non_vector else "vector_only_release",

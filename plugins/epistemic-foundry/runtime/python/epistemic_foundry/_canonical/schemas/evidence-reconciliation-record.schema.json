@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evidence-reconciliation-record.schema.json",
+  "title": "EvidenceReconciliationRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "reconciliation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_result_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_evidence_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_evidence_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_evidence_role": {
+      "enum": [
+        "support",
+        "counter",
+        "null",
+        "boundary",
+        "mechanism",
+        "method",
+        "replication",
+        "limitation"
+      ]
+    },
+    "promotion_decision": {
+      "enum": [
+        "PROMOTE",
+        "QUARANTINE",
+        "REJECT",
+        "REQUIRE_HUMAN_REVIEW"
+      ]
+    },
+    "non_empirical_guard_passed": {
+      "type": "boolean"
+    },
+    "scope_mapping": {
+      "$ref": "scope-vector.schema.json"
+    },
+    "quality_adjustments": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "number",
+          "string",
+          "null"
+        ]
+      }
+    },
+    "reasons": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "reconciliation_id",
+    "run_id",
+    "source_result_id",
+    "candidate_evidence_id",
+    "source_evidence_class",
+    "target_evidence_role",
+    "promotion_decision",
+    "non_empirical_guard_passed",
+    "scope_mapping",
+    "quality_adjustments",
+    "reasons",
+    "created_at",
+    "record_hash"
+  ]
+}

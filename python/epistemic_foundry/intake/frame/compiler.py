@@ -234,6 +234,19 @@ def _require_text(
     return normalized
 
 
+def _require_exact_text(
+    value: object,
+    label: str,
+    *,
+    minimum: int = 1,
+    code: str = "FRAME_INPUT_INVALID",
+) -> str:
+    normalized = _require_text(value, label, minimum=minimum, code=code)
+    if normalized != value:
+        _fail(code, f"{label} must not contain surrounding whitespace")
+    return normalized
+
+
 def _required(payload: Mapping[str, object], field: str) -> object:
     if field not in payload:
         _fail("FRAME_FIELD_REQUIRED", f"{field} is required by the canonical InsightCard")
@@ -460,7 +473,7 @@ def _normalize_scope(raw: object) -> tuple[dict[str, object], tuple[ScopeUnknown
 
 
 def _validate_timestamp(value: object) -> str:
-    timestamp = _require_text(value, "created_at")
+    timestamp = _require_exact_text(value, "created_at")
     match = _RFC3339_PATTERN.fullmatch(timestamp)
     if match is None:
         _fail("FRAME_INPUT_INVALID", "created_at must be an RFC 3339 date-time")
@@ -529,13 +542,13 @@ def compile_frame(proposal: Mapping[str, object]) -> FrameCompilation:
     )
 
     scope, unknown_scope = _normalize_scope(_required(payload, "scope"))
-    insight_id = _require_text(_required(payload, "insight_id"), "insight_id")
+    insight_id = _require_exact_text(_required(payload, "insight_id"), "insight_id")
     if _ID_PATTERN.fullmatch(insight_id) is None:
         _fail("FRAME_INPUT_INVALID", "insight_id does not match the canonical ID pattern")
     revision = _required(payload, "revision")
     if type(revision) is not int or revision < 1:
         _fail("FRAME_INPUT_INVALID", "revision must be an integer greater than or equal to 1")
-    registration_hash = _require_text(
+    registration_hash = _require_exact_text(
         _required(payload, "registration_hash"), "registration_hash"
     )
     if _SHA256_PATTERN.fullmatch(registration_hash) is None:
@@ -543,7 +556,7 @@ def compile_frame(proposal: Mapping[str, object]) -> FrameCompilation:
             "FRAME_INPUT_INVALID",
             "registration_hash must be sha256 followed by 64 lowercase hex characters",
         )
-    schema_version = _require_text(
+    schema_version = _require_exact_text(
         _required(payload, "schema_version"), "schema_version"
     )
     if _SEMVER_PATTERN.fullmatch(schema_version) is None:

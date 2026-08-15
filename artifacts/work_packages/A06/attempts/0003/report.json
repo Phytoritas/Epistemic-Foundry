@@ -1,0 +1,62 @@
+{
+  "adversarial_checks": [
+    {
+      "mutation": "commit node retargeted outside the A05 package",
+      "result": "FAIL"
+    },
+    {
+      "mutation": "commit node aliased to a foreign callable inside the package",
+      "result": "FAIL"
+    },
+    {
+      "mutation": "one gate node removed",
+      "result": "FAIL"
+    },
+    {
+      "mutation": "unmodified current source",
+      "result": "PASS"
+    }
+  ],
+  "attempt_id": "A06-0003",
+  "completion_ready": false,
+  "evidence_artifacts": {
+    "constitutional-audit-verification.json": "sha256:8f94d8b67cae5c47ca26b5f185d57dd9369897f023da79caf5f04c11eac75ee9",
+    "constitutional_audit_verifier_0003.py": "sha256:7ca25605c84a29321e8152be44494f48b54ae0205d0daffa74645b9a9939eac4",
+    "review.md": "sha256:d6938c609dc2aed4a8f173a22694ab0a6b18ab5b1c91a5c4e339ffcbcb3a3716",
+    "targeted-a05-python.junit.xml": "sha256:463ce240c5eb2f0f8f4c0b85c0cfbe32a9c3a75f1e2c497d0f2c6bdb6960c2ae"
+  },
+  "findings": {
+    "A06-F001": {
+      "source": "A06-0002 verifier re-executed against current source",
+      "status": "PASS"
+    },
+    "A06-F002": {
+      "source": "A06-0002 verifier re-executed against current source",
+      "status": "PASS"
+    },
+    "A06-F003": {
+      "source": "A06-0002 verifier re-executed against current source",
+      "status": "PASS"
+    },
+    "A06-F004": {
+      "source": "A06-0002 verifier re-executed against current source",
+      "status": "PASS"
+    },
+    "A06-F005": {
+      "source": "A06-0003 verifier, re-derived from the package boundary",
+      "status": "PASS"
+    }
+  },
+  "implementation_status": "PASS",
+  "package_id": "A06",
+  "package_status": "PASS",
+  "residual": [
+    "A06-0002 artifacts are preserved as immutable history and are not edited.",
+    "The A05 promotion chain is not yet executable end to end: node-invocation.schema.json cannot carry the commit payload, and the C01 transport schema remains unregistered pending a product-owner inventory decision."
+  ],
+  "scope": "A06-F005 runtime-binding re-audit only",
+  "status": "PASS",
+  "supersedes": "A06-0002",
+  "supersession_reason": "A06-0002 asserted an implementation shape (single nodes: module prefix, literal PromotionCommitter and decide_promotion(request) in nodes.py) as a proxy for A06-F005. The A05 promotion-runtime change split the three commit-phase nodes into promotion.py and reconciliation.py, making the proxy false while the underlying finding stayed closed.",
+  "write_scope_respected": "artifacts/work_packages/A06/**"
+}

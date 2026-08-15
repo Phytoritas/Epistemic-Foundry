@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/node-invocation.schema.json",
+  "title": "NodeInvocation",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "node_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "run_spec_artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "context_manifest_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "input_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "deadline_at": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/timestamp"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "lease_token": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "policy_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_output_schema_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "capability_grant_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "run_id",
+    "node_id",
+    "attempt",
+    "run_spec_artifact_id",
+    "input_artifact_ids",
+    "context_manifest_id",
+    "input_hash",
+    "deadline_at",
+    "lease_token",
+    "policy_bundle_id",
+    "expected_output_schema_hash",
+    "capability_grant_ids"
+  ]
+}

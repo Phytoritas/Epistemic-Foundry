@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/surrogate-triage-report.schema.json",
+  "title": "SurrogateTriageReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surrogate_model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "predicted_utility": {
+      "type": "number"
+    },
+    "predictive_uncertainty": {
+      "type": "number",
+      "minimum": 0
+    },
+    "ood_score": {
+      "type": "number",
+      "minimum": 0
+    },
+    "triage_decision": {
+      "enum": [
+        "EVALUATE_NOW",
+        "DEFER",
+        "SAMPLE_FOR_CALIBRATION",
+        "REJECT_ONLY_ON_HARD_GATE"
+      ]
+    },
+    "direct_evaluation_required": {
+      "type": "boolean"
+    },
+    "calibration_window_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "report_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "report_id",
+    "candidate_id",
+    "surrogate_model_id",
+    "predicted_utility",
+    "predictive_uncertainty",
+    "ood_score",
+    "triage_decision",
+    "direct_evaluation_required",
+    "calibration_window_id",
+    "report_hash"
+  ],
+  "description": "대리모델은 평가 우선순위만 정하고 직접 검증을 대체하지 못하도록 기록한다."
+}

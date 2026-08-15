@@ -1,0 +1,670 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/promotion-decision.schema.json",
+  "title": "PromotionDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "promotion_level": {
+      "enum": [
+        "INBOX",
+        "CANDIDATE",
+        "LITERATURE_GROUNDED",
+        "VALIDATION_SCREENED",
+        "EMPIRICALLY_TESTED",
+        "REPLICATED"
+      ]
+    }
+  },
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "requested_level": {
+      "$ref": "#/$defs/promotion_level"
+    },
+    "granted_level": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/promotion_level"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The level newly granted by this decision. PROMOTE and CONDITIONAL require a canonical level; REJECT, UNDERDETERMINED, and BLOCKED require null and do not change the candidate's prior level."
+    },
+    "promotion_ceiling": {
+      "$ref": "#/$defs/promotion_level"
+    },
+    "hard_gate_status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "PARTIAL"
+      ]
+    },
+    "fitness_vector_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phase_e_artifact_set_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "promotion_pack_artifact_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "promotion_pack_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "gate_decision_ids": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "uniqueItems": true,
+      "prefixItems": [
+        {"const": "G00_PIN_RESOLUTION"},
+        {"const": "G01_POLICY_AUTHORITY"},
+        {"const": "G02_EVALUATOR_HOLDOUT_FIREWALL"},
+        {"const": "G03_SCHEMA_LINEAGE_COUNT"},
+        {"const": "G04_SOURCE_PROVENANCE"},
+        {"const": "G05_SEARCH_COVERAGE"},
+        {"const": "G06_METHOD_SCOPE_DEPENDENCY"},
+        {"const": "G07_VALIDATION_LEAKAGE"},
+        {"const": "G08_ADAPTIVE_STATISTICS"},
+        {"const": "G09_RED_QUEEN"},
+        {"const": "G10_REPLICATION_CEILING"},
+        {"const": "G11_PARLIAMENT"},
+        {"const": "G12_INDEPENDENT_ATTESTATION"},
+        {"const": "G13_HUMAN_POLICY_APPROVAL"},
+        {"const": "G14_ATOMIC_PROMOTION_COMMIT"}
+      ]
+    },
+    "artifact_receipt_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "effect_receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_action_intent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "commit_action_intent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy_bundle_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Contains at least candidate_id, candidate_revision, requested_level, promotion_pack_hash, and policy_bundle_hash."
+    },
+    "parliament_adjudication_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attestation_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "replication_status": {
+      "enum": [
+        "NOT_RUN",
+        "REPLICATED",
+        "PARTIAL",
+        "FAILED",
+        "INCONCLUSIVE",
+        "BLOCKED",
+        "FORMAL_EQUIVALENT"
+      ]
+    },
+    "replication_result_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "selective_inference_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "minority_report_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "decision": {
+      "enum": [
+        "PROMOTE",
+        "CONDITIONAL",
+        "REJECT",
+        "UNDERDETERMINED",
+        "BLOCKED"
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unresolved_limitations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "approval_record_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "decision_hash": {
+      "$ref": "#/$defs/sha256",
+      "description": "RFC 8785 JCS-equivalent UTF-8 SHA-256 over the complete decision with decision_hash itself excluded."
+    }
+  },
+  "required": [
+    "decision_id",
+    "candidate_id",
+    "candidate_revision",
+    "requested_level",
+    "granted_level",
+    "promotion_ceiling",
+    "hard_gate_status",
+    "fitness_vector_id",
+    "phase_e_artifact_set_id",
+    "promotion_pack_artifact_ids",
+    "promotion_pack_hash",
+    "gate_decision_ids",
+    "artifact_receipt_ids",
+    "effect_receipt_id",
+    "request_action_intent_id",
+    "commit_action_intent_id",
+    "policy_bundle_hash",
+    "idempotency_key",
+    "parliament_adjudication_id",
+    "attestation_id",
+    "replication_status",
+    "replication_result_ids",
+    "selective_inference_report_id",
+    "minority_report_ids",
+    "decision",
+    "rationale",
+    "unresolved_limitations",
+    "approval_record_ids",
+    "decision_hash"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "hard_gate_status": {
+            "enum": [
+              "FAIL",
+              "PARTIAL"
+            ]
+          }
+        },
+        "required": [
+          "hard_gate_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "CONDITIONAL",
+              "REJECT",
+              "UNDERDETERMINED",
+              "BLOCKED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "const": "PROMOTE"
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "granted_level": {
+            "$ref": "#/$defs/promotion_level"
+          }
+        },
+        "oneOf": [
+          {
+            "properties": {
+              "requested_level": {"const": "INBOX"},
+              "granted_level": {"const": "INBOX"}
+            }
+          },
+          {
+            "properties": {
+              "requested_level": {"const": "CANDIDATE"},
+              "granted_level": {"const": "CANDIDATE"}
+            }
+          },
+          {
+            "properties": {
+              "requested_level": {"const": "LITERATURE_GROUNDED"},
+              "granted_level": {"const": "LITERATURE_GROUNDED"}
+            }
+          },
+          {
+            "properties": {
+              "requested_level": {"const": "VALIDATION_SCREENED"},
+              "granted_level": {"const": "VALIDATION_SCREENED"}
+            }
+          },
+          {
+            "properties": {
+              "requested_level": {"const": "EMPIRICALLY_TESTED"},
+              "granted_level": {"const": "EMPIRICALLY_TESTED"}
+            }
+          },
+          {
+            "properties": {
+              "requested_level": {"const": "REPLICATED"},
+              "granted_level": {"const": "REPLICATED"}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "const": "CONDITIONAL"
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "granted_level": {
+            "$ref": "#/$defs/promotion_level"
+          }
+        },
+        "oneOf": [
+          {
+            "properties": {
+              "requested_level": {"const": "CANDIDATE"},
+              "granted_level": {"const": "INBOX"}
+            }
+          },
+          {
+            "properties": {
+              "requested_level": {"const": "LITERATURE_GROUNDED"},
+              "granted_level": {
+                "enum": ["INBOX", "CANDIDATE"]
+              }
+            }
+          },
+          {
+            "properties": {
+              "requested_level": {"const": "VALIDATION_SCREENED"},
+              "granted_level": {
+                "enum": ["INBOX", "CANDIDATE", "LITERATURE_GROUNDED"]
+              }
+            }
+          },
+          {
+            "properties": {
+              "requested_level": {"const": "EMPIRICALLY_TESTED"},
+              "granted_level": {
+                "enum": [
+                  "INBOX",
+                  "CANDIDATE",
+                  "LITERATURE_GROUNDED",
+                  "VALIDATION_SCREENED"
+                ]
+              }
+            }
+          },
+          {
+            "properties": {
+              "requested_level": {"const": "REPLICATED"},
+              "granted_level": {
+                "enum": [
+                  "INBOX",
+                  "CANDIDATE",
+                  "LITERATURE_GROUNDED",
+                  "VALIDATION_SCREENED",
+                  "EMPIRICALLY_TESTED"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "REJECT",
+              "UNDERDETERMINED",
+              "BLOCKED"
+            ]
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "granted_level": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "PROMOTE",
+              "CONDITIONAL"
+            ]
+          },
+          "promotion_ceiling": {
+            "const": "INBOX"
+          }
+        },
+        "required": [
+          "decision",
+          "promotion_ceiling"
+        ]
+      },
+      "then": {
+        "properties": {
+          "granted_level": {
+            "const": "INBOX"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "PROMOTE",
+              "CONDITIONAL"
+            ]
+          },
+          "promotion_ceiling": {
+            "const": "CANDIDATE"
+          }
+        },
+        "required": [
+          "decision",
+          "promotion_ceiling"
+        ]
+      },
+      "then": {
+        "properties": {
+          "granted_level": {
+            "enum": [
+              "INBOX",
+              "CANDIDATE"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "PROMOTE",
+              "CONDITIONAL"
+            ]
+          },
+          "promotion_ceiling": {
+            "const": "LITERATURE_GROUNDED"
+          }
+        },
+        "required": [
+          "decision",
+          "promotion_ceiling"
+        ]
+      },
+      "then": {
+        "properties": {
+          "granted_level": {
+            "enum": [
+              "INBOX",
+              "CANDIDATE",
+              "LITERATURE_GROUNDED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "PROMOTE",
+              "CONDITIONAL"
+            ]
+          },
+          "promotion_ceiling": {
+            "const": "VALIDATION_SCREENED"
+          }
+        },
+        "required": [
+          "decision",
+          "promotion_ceiling"
+        ]
+      },
+      "then": {
+        "properties": {
+          "granted_level": {
+            "enum": [
+              "INBOX",
+              "CANDIDATE",
+              "LITERATURE_GROUNDED",
+              "VALIDATION_SCREENED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "PROMOTE",
+              "CONDITIONAL"
+            ]
+          },
+          "promotion_ceiling": {
+            "const": "EMPIRICALLY_TESTED"
+          }
+        },
+        "required": [
+          "decision",
+          "promotion_ceiling"
+        ]
+      },
+      "then": {
+        "properties": {
+          "granted_level": {
+            "enum": [
+              "INBOX",
+              "CANDIDATE",
+              "LITERATURE_GROUNDED",
+              "VALIDATION_SCREENED",
+              "EMPIRICALLY_TESTED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "replication_status": {
+            "enum": [
+              "NOT_RUN",
+              "PARTIAL",
+              "INCONCLUSIVE",
+              "BLOCKED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "promotion_ceiling": {
+            "enum": [
+              "INBOX",
+              "CANDIDATE",
+              "LITERATURE_GROUNDED",
+              "VALIDATION_SCREENED",
+              "EMPIRICALLY_TESTED"
+            ]
+          },
+          "decision": {
+            "enum": [
+              "CONDITIONAL",
+              "UNDERDETERMINED"
+            ]
+          },
+          "unresolved_limitations": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "replication_status": {
+            "const": "NOT_RUN"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "replication_result_ids": {
+            "maxItems": 0
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "replication_result_ids": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "requested_level": {
+            "enum": [
+              "VALIDATION_SCREENED",
+              "EMPIRICALLY_TESTED",
+              "REPLICATED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "attestation_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "granted_level": {
+            "const": "REPLICATED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "replication_status": {
+            "enum": [
+              "REPLICATED",
+              "FORMAL_EQUIVALENT"
+            ]
+          },
+          "hard_gate_status": {
+            "const": "PASS"
+          },
+          "decision": {
+            "const": "PROMOTE"
+          }
+        }
+      }
+    }
+  ],
+  "description": "Binds scientific promotion to the sealed phase-E pack, G00-G14 decisions, replication ceiling, Parliament, independent attestation, approval policy, immutable revision, and resolving receipts."
+}

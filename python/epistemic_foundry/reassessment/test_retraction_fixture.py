@@ -16,19 +16,23 @@ RUN_ID = "RUN-W03-1"
 
 
 def graph() -> list[dict[str, object]]:
-    """DOC-1 -> EV-1 -> CLM-1 -> PACK-1 -> HP-1, plus an unrelated branch."""
+    """Canonical seven-class dependency chain plus one unrelated branch."""
 
     return [
         {"artifact_class": "document", "artifact_id": "DOC-1", "depends_on": []},
         {"artifact_class": "document", "artifact_id": "DOC-2", "depends_on": []},
-        {"artifact_class": "evidence", "artifact_id": "EV-1", "depends_on": ["DOC-1"]},
-        {"artifact_class": "evidence", "artifact_id": "EV-2", "depends_on": ["DOC-2"]},
-        {"artifact_class": "claim", "artifact_id": "CLM-1", "depends_on": ["EV-1"]},
-        {"artifact_class": "claim", "artifact_id": "CLM-2", "depends_on": ["EV-2"]},
-        {"artifact_class": "pack", "artifact_id": "PACK-1", "depends_on": ["CLM-1"]},
-        {"artifact_class": "pack", "artifact_id": "PACK-2", "depends_on": ["CLM-2"]},
-        {"artifact_class": "passport", "artifact_id": "HP-1", "depends_on": ["PACK-1"]},
-        {"artifact_class": "passport", "artifact_id": "HP-2", "depends_on": ["PACK-2"]},
+        {"artifact_class": "span", "artifact_id": "SPAN-1", "depends_on": ["DOC-1"]},
+        {"artifact_class": "span", "artifact_id": "SPAN-2", "depends_on": ["DOC-2"]},
+        {"artifact_class": "claim", "artifact_id": "CLM-1", "depends_on": ["SPAN-1"]},
+        {"artifact_class": "claim", "artifact_id": "CLM-2", "depends_on": ["SPAN-2"]},
+        {"artifact_class": "evidence", "artifact_id": "EV-1", "depends_on": ["CLM-1"]},
+        {"artifact_class": "evidence", "artifact_id": "EV-2", "depends_on": ["CLM-2"]},
+        {"artifact_class": "pack", "artifact_id": "PACK-1", "depends_on": ["EV-1"]},
+        {"artifact_class": "pack", "artifact_id": "PACK-2", "depends_on": ["EV-2"]},
+        {"artifact_class": "decision", "artifact_id": "DEC-1", "depends_on": ["PACK-1"]},
+        {"artifact_class": "decision", "artifact_id": "DEC-2", "depends_on": ["PACK-2"]},
+        {"artifact_class": "passport", "artifact_id": "HP-1", "depends_on": ["DEC-1"]},
+        {"artifact_class": "passport", "artifact_id": "HP-2", "depends_on": ["DEC-2"]},
     ]
 
 
@@ -52,7 +56,14 @@ def test_retraction_fixture_test_retraction_reaches_the_whole_chain() -> None:
     assert plan["affected_claim_ids"] == ["CLM-1"]
     assert plan["affected_pack_ids"] == ["PACK-1"]
     assert plan["affected_passport_ids"] == ["HP-1"]
-    assert plan["invalidated_artifact_ids"] == ["CLM-1", "EV-1", "HP-1", "PACK-1"]
+    assert plan["invalidated_artifact_ids"] == [
+        "CLM-1",
+        "DEC-1",
+        "EV-1",
+        "HP-1",
+        "PACK-1",
+        "SPAN-1",
+    ]
     assert plan["passport_states"] == {"HP-1": "INVALIDATED"}
     assert plan["priority"] == "P0"
     assert "human_review" in plan["required_actions"]
@@ -61,7 +72,15 @@ def test_retraction_fixture_test_retraction_reaches_the_whole_chain() -> None:
 def test_retraction_fixture_test_the_unrelated_branch_is_untouched() -> None:
     plan = assess().payload
 
-    for artifact_id in ("DOC-2", "EV-2", "CLM-2", "PACK-2", "HP-2"):
+    for artifact_id in (
+        "DOC-2",
+        "SPAN-2",
+        "CLM-2",
+        "EV-2",
+        "PACK-2",
+        "DEC-2",
+        "HP-2",
+    ):
         assert artifact_id not in plan["invalidated_artifact_ids"]
     assert "HP-2" not in plan["passport_states"]
 
@@ -112,7 +131,7 @@ def test_retraction_fixture_test_graph_and_trigger_contracts_fail_closed() -> No
     assert raised.value.code == "GRAPH_DEPENDENCY_UNKNOWN"
 
     self_dep = graph()
-    self_dep[2]["depends_on"] = ["EV-1"]
+    self_dep[2]["depends_on"] = ["SPAN-1"]
     with pytest.raises(ReassessmentError) as raised:
         assess(graph=self_dep)
     assert raised.value.code == "GRAPH_SELF_DEPENDENCY"

@@ -274,6 +274,29 @@ def test_the_record_is_deterministic_and_content_addressed() -> None:
     )
 
 
+def test_the_aporia_id_binds_the_examined_observation_set() -> None:
+    first = build_aporia_record(
+        [
+            observation("OBS-a", Direction.POSITIVE.value),
+            observation("OBS-b", Direction.POSITIVE.value),
+        ],
+        [],
+        subject_id=SUBJECT,
+        created_at=CREATED_AT,
+    ).payload
+    second = build_aporia_record(
+        [
+            observation("OBS-a", Direction.POSITIVE.value),
+            observation("OBS-c", Direction.POSITIVE.value),
+        ],
+        [],
+        subject_id=SUBJECT,
+        created_at=CREATED_AT,
+    ).payload
+
+    assert first["aporia_id"] != second["aporia_id"]
+
+
 def test_a_tampered_record_is_rejected() -> None:
     observations = contradiction_pair()
     conflict_id = classify_conflicts(observations)[0]["conflict_id"]
@@ -286,6 +309,93 @@ def test_a_tampered_record_is_rejected() -> None:
         validate_aporia_record(payload)
 
     assert caught.value.code == "APORIA_HASH_MISMATCH"
+
+
+@pytest.mark.parametrize(
+    ("has_conflict", "forged_status"),
+    [(True, "NO_CONFLICT"), (False, "OPEN")],
+)
+def test_a_rehashed_status_must_match_the_conflict_set(
+    has_conflict: bool, forged_status: str
+) -> None:
+    from .contracts import _hash_excluding
+
+    observations = (
+        contradiction_pair()
+        if has_conflict
+        else [
+            observation("OBS-a", Direction.POSITIVE.value),
+            observation("OBS-b", Direction.POSITIVE.value),
+        ]
+    )
+    conflicts = classify_conflicts(observations)
+    explanations = two_kinds(conflicts[0]["conflict_id"]) if conflicts else []
+    payload = build_aporia_record(
+        observations, explanations, subject_id=SUBJECT, created_at=CREATED_AT
+    ).payload
+    payload["status"] = forged_status
+    payload["aporia_hash"] = _hash_excluding(payload, "aporia_hash")
+
+    with pytest.raises(AporiaContractError) as caught:
+        validate_aporia_record(payload)
+
+    assert caught.value.code == "STATUS_MISMATCH"
+
+
+def test_rehashing_cannot_drop_a_conflict_observation() -> None:
+    from .contracts import _hash_excluding
+
+    observations = contradiction_pair()
+    conflict_id = classify_conflicts(observations)[0]["conflict_id"]
+    payload = build_aporia_record(
+        observations, two_kinds(conflict_id), subject_id=SUBJECT, created_at=CREATED_AT
+    ).payload
+    payload["observation_ids"] = ["OBS-a"]
+    payload["aporia_hash"] = _hash_excluding(payload, "aporia_hash")
+
+    with pytest.raises(AporiaContractError) as caught:
+        validate_aporia_record(payload)
+
+    assert caught.value.code == "OBSERVATION_UNRESOLVED"
+
+
+def test_rehashing_cannot_replace_a_conflict_content_id() -> None:
+    from .contracts import _hash_excluding
+
+    observations = contradiction_pair()
+    conflict_id = classify_conflicts(observations)[0]["conflict_id"]
+    payload = build_aporia_record(
+        observations, two_kinds(conflict_id), subject_id=SUBJECT, created_at=CREATED_AT
+    ).payload
+    payload["conflicts"][0]["conflict_id"] = "CF-forged"
+    payload["explanation_kind_counts"]["CF-forged"] = payload[
+        "explanation_kind_counts"
+    ].pop(conflict_id)
+    for explanation_value in payload["explanations"]:
+        explanation_value["covers"] = ["CF-forged"]
+    payload["aporia_hash"] = _hash_excluding(payload, "aporia_hash")
+
+    with pytest.raises(AporiaContractError) as caught:
+        validate_aporia_record(payload)
+
+    assert caught.value.code == "CONFLICT_ID_MISMATCH"
+
+
+def test_rehashing_cannot_replace_the_aporia_content_id() -> None:
+    from .contracts import _hash_excluding
+
+    observations = contradiction_pair()
+    conflict_id = classify_conflicts(observations)[0]["conflict_id"]
+    payload = build_aporia_record(
+        observations, two_kinds(conflict_id), subject_id=SUBJECT, created_at=CREATED_AT
+    ).payload
+    payload["aporia_id"] = "AP-forged"
+    payload["aporia_hash"] = _hash_excluding(payload, "aporia_hash")
+
+    with pytest.raises(AporiaContractError) as caught:
+        validate_aporia_record(payload)
+
+    assert caught.value.code == "APORIA_ID_MISMATCH"
 
 
 def test_downgrading_a_conflict_to_unclassified_is_refused_even_when_rehashed() -> None:

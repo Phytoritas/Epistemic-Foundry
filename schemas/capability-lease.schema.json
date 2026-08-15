@@ -92,5 +92,34 @@
     "revoked",
     "revocation_reason",
     "lease_hash"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "revoked": {
+            "const": true
+          }
+        },
+        "required": [
+          "revoked"
+        ]
+      },
+      "then": {
+        "properties": {
+          "revocation_reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "revocation_reason": {
+            "type": "null"
+          }
+        }
+      }
+    }
   ]
 }

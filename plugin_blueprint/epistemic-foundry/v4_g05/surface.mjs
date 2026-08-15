@@ -37,6 +37,16 @@ export const SPEC_PATH = "MASTER_SPEC.md";
 export const FAMILY_INDEX_PATH = "schemas/v4_c05/family-index.json";
 export const ROUTING_DECISION_SCHEMA_PATH = "schemas/skill-routing-decision.schema.json";
 
+const RECEIPT_SOURCE_PATHS = Object.freeze(
+  [
+    SURFACE_PATH,
+    INVENTORY_PATH,
+    FAMILY_INDEX_PATH,
+    SPEC_PATH,
+    ROUTING_DECISION_SCHEMA_PATH,
+  ].sort(),
+);
+
 /** Every way this surface refuses, and why that refusal exists. */
 export const FINDING_CODES = Object.freeze({
   AUTHORITY_CLAIMED:
@@ -115,10 +125,7 @@ const readBytes = (root, relative) => {
   }
 };
 
-const readText = (root, relative) => readBytes(root, relative).toString("utf8");
-
-const readJson = (root, relative) => {
-  const text = readText(root, relative);
+const parseJson = (text, relative) => {
   try {
     return JSON.parse(text);
   } catch (error) {
@@ -159,6 +166,42 @@ const requireCanonicalStrings = (value, label) => {
     fail("DECLARATION_NONCANONICAL", `${label} must not repeat an entry`, { label, value });
   }
   return Object.freeze([...value]);
+};
+
+const deepFreeze = (value, seen = new WeakSet()) => {
+  if (value === null || typeof value !== "object" || seen.has(value)) return value;
+  seen.add(value);
+  for (const key of Reflect.ownKeys(value)) {
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    if (descriptor !== undefined && Object.hasOwn(descriptor, "value")) {
+      deepFreeze(descriptor.value, seen);
+    }
+  }
+  return Object.freeze(value);
+};
+
+const readonlyMap = (entries) => {
+  const backing = new Map(
+    [...entries].map(([key, value]) => [key, deepFreeze(value)]),
+  );
+  let facade;
+  facade = Object.create(null);
+  Object.defineProperties(facade, {
+    size: { get: () => backing.size },
+    get: { value: (key) => backing.get(key) },
+    has: { value: (key) => backing.has(key) },
+    keys: { value: () => backing.keys() },
+    values: { value: () => backing.values() },
+    entries: { value: () => backing.entries() },
+    forEach: {
+      value: (callback, thisArg) => {
+        if (typeof callback !== "function") throw new TypeError("callback must be a function");
+        for (const [key, value] of backing) callback.call(thisArg, value, key, facade);
+      },
+    },
+  });
+  Object.defineProperty(facade, Symbol.iterator, { value: () => backing.entries() });
+  return Object.freeze(facade);
 };
 
 /**
@@ -251,9 +294,12 @@ export const parseAgentCard = (yamlText, label) => {
   });
 };
 
-const agentCard = (root, skillId) =>
+const agentCardPath = (skillId) =>
+  `${PAYLOAD_ROOT}/skills/${skillId}/agents/openai.yaml`;
+
+const agentCard = (yamlText, skillId) =>
   parseAgentCard(
-    readText(root, `${PAYLOAD_ROOT}/skills/${skillId}/agents/openai.yaml`),
+    yamlText,
     `${skillId}/agents/openai.yaml`,
   );
 
@@ -319,6 +365,11 @@ const predicateHolds = (predicate, context) => {
  * Only declared sizes are read; no reference body is opened.
  */
 export const resolveDisclosure = (loaded, skillId, context = {}) => {
+  if (!loaded.surface.skills.some((row) => row.skill_id === skillId)) {
+    fail("SKILL_OUT_OF_SURFACE", `${skillId} is not an evolution skill`, {
+      skill_id: skillId,
+    });
+  }
   const skill = loaded.inventory.skills.find((row) => row.skill_id === skillId);
   if (skill === undefined) {
     fail("SKILL_OUT_OF_SURFACE", `${skillId} is not declared by the payload inventory`, {
@@ -473,7 +524,13 @@ const verifyCommands = (loaded) => {
 
 /** Read, cross-check and freeze the whole evolution surface. */
 export const loadSurface = ({ root = REPOSITORY_ROOT } = {}) => {
-  const surface = requireFields(readJson(root, SURFACE_PATH), SURFACE_FIELDS, "surface");
+  const sourceBytes = new Map(
+    RECEIPT_SOURCE_PATHS.map((path) => [path, readBytes(root, path)]),
+  );
+  const sourceText = (path) => sourceBytes.get(path).toString("utf8");
+  const sourceJson = (path) => parseJson(sourceText(path), path);
+
+  const surface = requireFields(sourceJson(SURFACE_PATH), SURFACE_FIELDS, "surface");
   requireFields(surface.membership, MEMBERSHIP_FIELDS, "surface.membership");
   requireCanonicalStrings(surface.membership.reference_ids, "membership.reference_ids");
   requireCanonicalStrings(
@@ -489,7 +546,7 @@ export const loadSurface = ({ root = REPOSITORY_ROOT } = {}) => {
   }
   const authorityObjects = requireCanonicalStrings(surface.authority_objects, "authority_objects");
 
-  const inventory = readJson(root, INVENTORY_PATH);
+  const inventory = sourceJson(INVENTORY_PATH);
   verifyInventoryIntegrity(root, inventory);
   if (surface.parent_skill_id !== inventory.parent_skill_id) {
     fail("PARENT_UNDECLARED", "the surface parent is not the inventory parent", {
@@ -510,7 +567,7 @@ export const loadSurface = ({ root = REPOSITORY_ROOT } = {}) => {
     });
   }
 
-  const mutableSearchSpace = readJson(root, FAMILY_INDEX_PATH).mutable_search_space;
+  const mutableSearchSpace = sourceJson(FAMILY_INDEX_PATH).mutable_search_space;
   for (const skill of surface.skills) {
     requireFields(skill, SKILL_FIELDS, `skills[${skill.skill_id}]`);
     requireCanonicalStrings(skill.proposed_commands, `${skill.skill_id}.proposed_commands`);
@@ -527,6 +584,11 @@ export const loadSurface = ({ root = REPOSITORY_ROOT } = {}) => {
     }
   }
 
+  const agentCardPaths = new Map(
+    surface.skills.map((skill) => [skill.skill_id, agentCardPath(skill.skill_id)]),
+  );
+  for (const path of agentCardPaths.values()) sourceBytes.set(path, readBytes(root, path));
+
   const projectedCommands = commandSurface();
   const authorityBearingCommands = deriveAuthorityBearingCommands(
     projectedCommands,
@@ -542,15 +604,21 @@ export const loadSurface = ({ root = REPOSITORY_ROOT } = {}) => {
 
   const loaded = {
     agentCards: new Map(
-      surface.skills.map((skill) => [skill.skill_id, agentCard(root, skill.skill_id)]),
+      surface.skills.map((skill) => [
+        skill.skill_id,
+        agentCard(sourceText(agentCardPaths.get(skill.skill_id)), skill.skill_id),
+      ]),
     ),
     authorityBearingCommands,
     inventory,
     mutableSearchSpace: Object.freeze([...mutableSearchSpace]),
     projectedCommands: Object.freeze(projectedCommands),
-    proposedCommands: parseProposedCommands(readText(root, SPEC_PATH)),
+    proposedCommands: parseProposedCommands(sourceText(SPEC_PATH)),
     referencesById: new Map(inventory.references.map((row) => [row.reference_id, row])),
     root,
+    sourceDigests: [...sourceBytes.entries()]
+      .sort(([left], [right]) => (left < right ? -1 : left > right ? 1 : 0))
+      .map(([path, bytes]) => ({ path, sha256: sha256(bytes) })),
     surface,
   };
 
@@ -575,7 +643,11 @@ export const loadSurface = ({ root = REPOSITORY_ROOT } = {}) => {
     );
   }
   verifyCommands(loaded);
-  return Object.freeze(loaded);
+  return deepFreeze({
+    ...loaded,
+    agentCards: readonlyMap(loaded.agentCards),
+    referencesById: readonlyMap(loaded.referencesById),
+  });
 };
 
 const skillCandidate = (loaded, skillId) => {
@@ -601,15 +673,7 @@ const skillCandidate = (loaded, skillId) => {
  * shipped.
  */
 export const surfaceReceipt = (loaded) => {
-  const sources = [
-    SURFACE_PATH,
-    INVENTORY_PATH,
-    FAMILY_INDEX_PATH,
-    SPEC_PATH,
-    ROUTING_DECISION_SCHEMA_PATH,
-  ]
-    .sort()
-    .map((path) => ({ path, sha256: sha256(readBytes(loaded.root, path)) }));
+  const sources = loaded.sourceDigests.map((row) => ({ ...row }));
   const byCommand = new Map(loaded.projectedCommands.map((row) => [row.command, row]));
   const availableCommands = [
     ...new Set(loaded.surface.skills.flatMap((row) => row.available_commands)),
@@ -634,6 +698,13 @@ export const surfaceReceipt = (loaded) => {
       .sort(),
     parent_skill_id: loaded.surface.parent_skill_id,
     projected_command_count: loaded.projectedCommands.length,
+    projected_commands: loaded.projectedCommands.map((row) => ({
+      command: row.command,
+      mutating: row.mutating,
+      segments: [...row.segments],
+      title: row.title,
+      tool: row.tool,
+    })),
     proposed_command_count: loaded.proposedCommands.length,
     proposed_commands_projected: loaded.proposedCommands.filter((command) =>
       byCommand.has(command),
@@ -644,7 +715,7 @@ export const surfaceReceipt = (loaded) => {
     surface_version: loaded.surface.surface_version,
   };
   const receiptHash = computeSkillRoutingDecisionHash(preimage);
-  return Object.freeze({
+  return deepFreeze({
     receipt_id: `EFG05-SURFACE-${receiptHash.slice("sha256:".length, "sha256:".length + 16)}`,
     ...preimage,
     receipt_hash: receiptHash,

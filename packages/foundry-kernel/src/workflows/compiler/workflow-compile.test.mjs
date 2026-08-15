@@ -53,6 +53,29 @@ test("workflow_compile_test: compilation does not mutate the input document", ()
   assert.equal(JSON.stringify(document), before);
 });
 
+test("workflow_compile_test: per-node executor status cannot collapse to a census", () => {
+  const first = validDocument();
+  first.nodes[0].executor_status = "executor_bound";
+  const second = validDocument();
+  second.nodes[1].executor_status = "executor_bound";
+
+  const firstCompiled = compiler().compile(first);
+  const secondCompiled = compiler().compile(second);
+
+  assert.deepEqual(firstCompiled.executor_status_census, {
+    executor_bound: 1,
+    executor_unbound: 0,
+    unverified: 1,
+  });
+  assert.deepEqual(secondCompiled.executor_status_census, firstCompiled.executor_status_census);
+  assert.notDeepEqual(
+    secondCompiled.executor_status_by_node,
+    firstCompiled.executor_status_by_node,
+  );
+  assert.notEqual(secondCompiled.compiled_sha256, firstCompiled.compiled_sha256);
+  assert.equal(secondCompiled.scheduler_plan_sha256, firstCompiled.scheduler_plan_sha256);
+});
+
 test("workflow_compile_test: ordered write-scope sharing yields an ordered resource edge", () => {
   const document = validDocument();
   document.nodes[1].write_scope = ["artifacts/node_a/inner/**"];
@@ -85,6 +108,26 @@ test("workflow_compile_test: unordered write-scope sharing needs a declared reso
   assert.equal(
     compiled.scheduler_plan.resource_capacities["exclusive:node_a_artifacts"],
     1,
+  );
+});
+
+test("workflow_compile_test: a shared quota does not protect unordered writers", () => {
+  const document = validDocument();
+  document.nodes[1].depends_on = [];
+  document.nodes[1].write_scope = ["artifacts/node_a/**"];
+  document.nodes[0].resource_dependencies = ["quota:grobid"];
+  document.nodes[1].resource_dependencies = ["quota:grobid"];
+
+  const error = assertCode(
+    () =>
+      compiler().compile(document, {
+        resourceCapacities: { "quota:grobid": 2 },
+      }),
+    "WRITE_SCOPE_CONFLICT_UNDECLARED",
+  );
+  assert.equal(
+    error.message,
+    "nodes share a write scope without a dependency ordering or a shared exclusive resource",
   );
 });
 
@@ -146,6 +189,20 @@ test("workflow_compile_test: document contract violations fail closed", () => {
   const document = validDocument();
   delete document.invariants;
   assertCode(() => compiler().compile(document), "WORKFLOW_DOCUMENT_INVALID");
+});
+
+test("workflow_compile_test: unregistered top-level contracts are not ignored", () => {
+  const document = validDocument();
+  document.retrieval_candidate_contract = {
+    business_output_schema_ref: "schemas/retrieval-candidate.schema.json",
+  };
+
+  const error = assertCode(
+    () => compiler().compile(document),
+    "WORKFLOW_EXTENSION_UNREGISTERED",
+  );
+
+  assert.deepEqual(error.details.fields, ["retrieval_candidate_contract"]);
 });
 
 test("workflow_compile_test: capacity overrides are bounded and validated", () => {

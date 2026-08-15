@@ -1,73 +1,37 @@
 {
-  "work_package_id": "B04",
-  "base_checkpoint": "B02-B03:PASS",
-  "status": "SPEC_GAP",
-  "changed_files": [
-    "artifacts/work_packages/B04/build-smoke.json",
-    "artifacts/work_packages/B04/reconciliation.json",
-    "artifacts/work_packages/B04/commands.jsonl",
-    "artifacts/work_packages/B04/review.md",
-    "artifacts/work_packages/B04/report.json"
+  "attempt_history": [
+    "0002",
+    "0003",
+    "0004",
+    "0005",
+    "0006",
+    "0007",
+    "0008",
+    "0009",
+    "0010"
   ],
-  "checks": [
-    {
-      "command": "build_smoke",
-      "exit_code": 1,
-      "artifact": "artifacts/work_packages/B04/build-smoke.json"
-    },
-    {
-      "command": "phase_artifact_reconciliation",
-      "exit_code": 1,
-      "artifact": "artifacts/work_packages/B04/reconciliation.json"
-    },
-    {
-      "command": "write_scope_ownership_audit",
-      "exit_code": 1,
-      "artifact": "artifacts/work_packages/B04/commands.jsonl#B04-C003"
-    }
+  "attempt_id": "B04-0010",
+  "completion_ready": false,
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "completion_ready=true",
+    "release or production readiness",
+    "terminal completion of the 156-package DAG"
   ],
-  "review": {
-    "agent": "primary_author",
-    "status": "SPEC_GAP_WITH_RECORDED_PROCEDURE_DEVIATION",
-    "findings_resolved": [],
-    "blocking_findings": [
-      "The deterministic Python wheel omits all canonical schemas and cannot execute the runtime status command outside the source checkout."
+  "package_status": "PASS",
+  "standing_evidence": {
+    "attempts/0010/report.json": "sha256:40c89af4ce4d8eed6a9a6f7b9f90895bf157e6d894020d185174558ce845be54",
+    "attempts/0010/review.md": "sha256:ddb6bd2827705604d652b3951adabe2715c3eb58833a06b1e47dc1395bc71b3e"
+  },
+  "status": "PASS",
+  "supersedes": {
+    "authorizing_decision": "HD-EF4-B04-SG002-20260730-001",
+    "prior_root_status": "SPEC_GAP",
+    "rationale": "B04-0001 recorded SPEC_GAP because no package owned the coordinated packaging and installed schema-resource changes. The product-owner decision assigned that scope, and B04-0010 is the final post-C04 packaging gate at 127 schemas.",
+    "resolved_spec_gaps": [
+      "B04-SG001",
+      "B04-SG002"
     ]
   },
-  "output_artifacts": [
-    "artifacts/work_packages/B04/build-smoke.json",
-    "artifacts/work_packages/B04/reconciliation.json",
-    "artifacts/work_packages/B04/commands.jsonl",
-    "artifacts/work_packages/B04/review.md",
-    "artifacts/work_packages/B04/report.json"
-  ],
-  "open_risks": [
-    "Review was performed by the author under explicit user instruction and is not independent assurance.",
-    "The built Python distribution is not independently runnable because canonical schema resources are absent.",
-    "GitHub-hosted execution of the three B03 lanes remains unverified.",
-    "SBOM, signing, and release-provenance qualification remain Z-phase scope."
-  ],
-  "spec_gaps": [
-    {
-      "id": "B04-SG001",
-      "summary": "No dependency-ready work package owns the coordinated Python packaging and installed schema-resource changes required to satisfy source/dist convergence.",
-      "required_decision": "Assign one authorized work package a write scope covering pyproject.toml and src/epistemic_foundry/contracts/registry.py, without duplicating schemas/** authority."
-    }
-  ],
-  "not_verified": [
-    "Installed wheel CLI beyond the failing status smoke",
-    "GitHub-hosted ubuntu-24.04, macos-15, and windows-2025 execution",
-    "SBOM and signing provenance"
-  ],
-  "next_ready": [
-    "S01"
-  ],
-  "blocked_dependents": [
-    "B05",
-    "D01",
-    "G01",
-    "K01",
-    "M01",
-    "Y01"
-  ]
+  "work_package_id": "B04"
 }

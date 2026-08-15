@@ -94,15 +94,19 @@ cases in corpus v1.0.
 The general rule above — two independent annotators, a third adjudicator, a
 written rationale — is enforced here as a record shape:
 
-1. The adjudicator must be neither annotator; the validator refuses an
+1. Every case has exactly two unique annotators. To assign the resolution names
+   A and B, the validator sorts annotations by the exact, case-sensitive
+   Unicode code-point order of `annotator_id`: the first is A and the second is
+   B. The input array order has no semantic meaning.
+2. The adjudicator must be neither annotator; the validator refuses an
    adjudication signed by an annotator on the same case.
-2. The `resolution` is one canonical value: `ANNOTATOR_A_CORRECT`,
-   `ANNOTATOR_B_CORRECT`, `NEITHER_CORRECT`, or `GUIDANCE_AMBIGUOUS`. The last
-   means this manual does not decide the case: the case is still resolved, but
-   the resolution is a signal that the manual needs a rule, not that the
-   annotators were careless.
-3. The `reason` cites the rule applied.
-4. The `gold_label` is the label that survived adjudication.
+3. The `resolution` is one canonical value and binds `gold_label` as follows:
+   `ANNOTATOR_A_CORRECT` requires `gold_label` to equal A's submitted label;
+   `ANNOTATOR_B_CORRECT` requires it to equal B's submitted label; and
+   `NEITHER_CORRECT` requires it to differ from both submitted labels.
+   `GUIDANCE_AMBIGUOUS` records unresolved manual guidance and imposes no
+   additional relation between `gold_label` and either submitted label.
+4. The `reason` cites the rule applied.
 
 A unanimous case must carry no adjudication record. An adjudication with nothing
 to adjudicate makes the corpus look more scrutinised than it is.

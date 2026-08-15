@@ -44,7 +44,8 @@ def sealed_run(overrides: dict[str, str] | None = None, *, extra_lexical: bool =
     if extra_lexical:
         receipts.append(
             seal_search_lane_receipt(
-                receipt_proposal(plan, "lexical", "SEARCHED_WITH_RESULTS", suffix="2")
+                receipt_proposal(plan, "lexical", "SEARCHED_WITH_RESULTS", suffix="2"),
+                query_plan=plan,
             )
         )
     certificate = reconcile_search_run(
@@ -176,9 +177,7 @@ def test_pack_diversity_test_silent_counterevidence_drop_fails_closed() -> None:
     assert "EV-counterevidence-1" in raised.value.details["result_ids"]
 
 
-def test_pack_diversity_test_typed_unresolved_counter_result_is_visible_not_silent() -> (
-    None
-):
+def test_pack_diversity_test_typed_unresolved_counter_result_is_visible_not_silent() -> None:
     units = [entry for entry in default_units() if entry["evidence_id"] != "EVN-0101"]
     assignments = default_assignments()
     assignments["counter"] = []
@@ -320,6 +319,30 @@ def test_pack_diversity_test_role_quotas_are_targets_not_invention() -> None:
         assemble_evidence_pack(
             default_units(), **pack_inputs(role_quotas={"counter": -1})
         )
+    assert raised.value.code == "INPUT_INVALID"
+
+
+@pytest.mark.parametrize("role_quotas", ["", [], 0, False])
+def test_pack_diversity_test_falsey_non_mapping_quota_is_not_omission(
+    role_quotas: object,
+) -> None:
+    with pytest.raises(EvidencePackContractError) as raised:
+        assemble_evidence_pack(
+            default_units(), **pack_inputs(role_quotas=role_quotas)
+        )
+
+    assert raised.value.code == "INPUT_INVALID"
+
+
+def test_pack_diversity_test_numeric_subclass_is_not_a_quota() -> None:
+    class QuotaInt(int):
+        pass
+
+    with pytest.raises(EvidencePackContractError) as raised:
+        assemble_evidence_pack(
+            default_units(), **pack_inputs(role_quotas={"counter": QuotaInt(1)})
+        )
+
     assert raised.value.code == "INPUT_INVALID"
 
 

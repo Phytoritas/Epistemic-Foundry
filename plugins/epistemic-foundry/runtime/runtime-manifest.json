@@ -1,0 +1,1845 @@
+{
+  "canonicality_claim": "NONE",
+  "closure_sha256": "a2d6b10a0ffdaf3ce7de303189f79be84a21786e4236a7ff411aeefac468eb18",
+  "dirty_inputs": [
+    "src/epistemic_foundry/adapters/v4_t05/backend_adapter.py",
+    "src/epistemic_foundry/adapters/v4_t06/__init__.py",
+    "src/epistemic_foundry/adapters/v4_t06/fallback.py",
+    "src/epistemic_foundry/adapters/v4_t06/qualification_lifecycle.py",
+    "src/epistemic_foundry/application/mcp_common/contracts.py",
+    "src/epistemic_foundry/application/mcp_common/transport.py",
+    "src/epistemic_foundry/application/mcp_mutating/__init__.py",
+    "src/epistemic_foundry/application/mcp_mutating/handler_factory.py",
+    "src/epistemic_foundry/application/mcp_mutating/ports.py",
+    "src/epistemic_foundry/application/mcp_mutating/reconciliation.py",
+    "src/epistemic_foundry/application/mcp_mutating/service.py",
+    "src/epistemic_foundry/application/mcp_read/handlers.py",
+    "src/epistemic_foundry/cartography/v4_m05/mapper.py",
+    "src/epistemic_foundry/cartography/v4_m06/__init__.py",
+    "src/epistemic_foundry/cartography/v4_m06/gate.py",
+    "src/epistemic_foundry/cli/main.py",
+    "src/epistemic_foundry/console/v4_u05/projection.py",
+    "src/epistemic_foundry/console/v4_u06/__init__.py",
+    "src/epistemic_foundry/console/v4_u06/usability_gate.py",
+    "src/epistemic_foundry/effects/v4_e05/engine.py",
+    "src/epistemic_foundry/effects/v4_e06/gate.py",
+    "src/epistemic_foundry/evaluation/v4_q05/gate.py",
+    "src/epistemic_foundry/evaluation/v4_q06/gate.py",
+    "src/epistemic_foundry/evidence/v4_k05/boundaries.py",
+    "src/epistemic_foundry/evidence/v4_k06/gate.py",
+    "src/epistemic_foundry/evolution/v4_f05/machine.py",
+    "src/epistemic_foundry/evolution/v4_f06/gate.py",
+    "src/epistemic_foundry/evolution_chamber/run_spec.py",
+    "src/epistemic_foundry/foundry_kernel/gates.py",
+    "src/epistemic_foundry/governance/evolution_authority/__init__.py",
+    "src/epistemic_foundry/governance/evolution_authority/nodes.py",
+    "src/epistemic_foundry/governance/evolution_authority/registry.py",
+    "src/epistemic_foundry/governance/promotion.py",
+    "src/epistemic_foundry/ingest/registry/hash.py",
+    "src/epistemic_foundry/ingest/registry/service.py",
+    "src/epistemic_foundry/intake/v4_i05/screening.py",
+    "src/epistemic_foundry/intake/v4_i06/gate.py",
+    "src/epistemic_foundry/memory/v4_l05/retention.py",
+    "src/epistemic_foundry/memory/v4_l06/__init__.py",
+    "src/epistemic_foundry/memory/v4_l06/gate.py",
+    "src/epistemic_foundry/operations/v4_y06/qualification.py",
+    "src/epistemic_foundry/operators/v4_j05/declarations.py",
+    "src/epistemic_foundry/operators/v4_j05/prompt_workflow.py",
+    "src/epistemic_foundry/operators/v4_j05/registry.py",
+    "src/epistemic_foundry/operators/v4_j06/gate.py",
+    "src/epistemic_foundry/parliament/v4_p05/gate.py",
+    "src/epistemic_foundry/parliament/v4_p06/gate.py",
+    "src/epistemic_foundry/reasoning/v4_r05/operators.py",
+    "src/epistemic_foundry/reasoning/v4_r06/__init__.py",
+    "src/epistemic_foundry/reasoning/v4_r06/gate.py",
+    "src/epistemic_foundry/retrieval/lanes.py",
+    "src/epistemic_foundry/retrieval/search_state.py",
+    "src/epistemic_foundry/retrieval/v4_o05/__init__.py",
+    "src/epistemic_foundry/retrieval/v4_o05/acquisition.py",
+    "src/epistemic_foundry/retrieval/v4_o06/gate.py",
+    "src/epistemic_foundry/scheduler/v4_n05/__init__.py",
+    "src/epistemic_foundry/scheduler/v4_n06/__init__.py",
+    "src/epistemic_foundry/security/v4_s05/threat_controls.py",
+    "src/epistemic_foundry/security/v4_s06/__init__.py",
+    "src/epistemic_foundry/security/v4_s06/governance_gate.py",
+    "src/epistemic_foundry/validation/v4_v05/cascade_gate.py",
+    "src/epistemic_foundry/validation/v4_v06/__init__.py"
+  ],
+  "file_count": 352,
+  "files": [
+    {
+      "path": "python/epistemic_foundry/__init__.py",
+      "sha256": "898639d968ea770a2871fbdb48c522409ba721d516e2687054e2ac94850ac337",
+      "source": "src/epistemic_foundry/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/canonical-registry.json",
+      "sha256": "bf544654c47ad4bf9a8486ef423124ea372b12a1c811b23cb5a80ef0d5e38ff0",
+      "source": "src/epistemic_foundry/_canonical/canonical-registry.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/openapi/epistemic-foundry-v1.openapi.yaml",
+      "sha256": "43429ad9c583b1026bd2445fb77d38b12410d2f6db065cffad45c64297db2cd7",
+      "source": "src/epistemic_foundry/_canonical/openapi/epistemic-foundry-v1.openapi.yaml"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/action-intent.schema.json",
+      "sha256": "acaf9861436d3217c579f7eed518f2f138261a4a8cc1cb750c97a52ad908b0b1",
+      "source": "src/epistemic_foundry/_canonical/schemas/action-intent.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/adjudication.schema.json",
+      "sha256": "d4f0816f7b1268a00c7a1f16c2a6dcde317092b107f2e472159d88fc6569ad80",
+      "source": "src/epistemic_foundry/_canonical/schemas/adjudication.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/approval-record.schema.json",
+      "sha256": "0b0554c764c185f75a568dbf308a17bab291896b6a28bd7633c0b2f7aedaa7eb",
+      "source": "src/epistemic_foundry/_canonical/schemas/approval-record.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/archive-rebalance-plan.schema.json",
+      "sha256": "a5654739b393133c15a1a8df0a341e69ccd197bcbd253949d21a4e2345e7fc96",
+      "source": "src/epistemic_foundry/_canonical/schemas/archive-rebalance-plan.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/argument-graph.schema.json",
+      "sha256": "698775bf82ac805be92dc6e5f179c9b2286156cbcd7538826edaef5d8b15c3e7",
+      "source": "src/epistemic_foundry/_canonical/schemas/argument-graph.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/artifact-manifest.schema.json",
+      "sha256": "e8ed5196ead20bd321bfc9939dd0a85ef5d41dc1cae30460af28b05e7e570586",
+      "source": "src/epistemic_foundry/_canonical/schemas/artifact-manifest.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/artifact-receipt.schema.json",
+      "sha256": "9de81c722fbe36038993437403e265d96b6e9d05d432b89aaab4abc89d996c34",
+      "source": "src/epistemic_foundry/_canonical/schemas/artifact-receipt.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/attestation.schema.json",
+      "sha256": "33c6934638e5997652db9ba030f89aa827efc95743e1f2131426ac0d8c298cd5",
+      "source": "src/epistemic_foundry/_canonical/schemas/attestation.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/backend-adapter-qualification.schema.json",
+      "sha256": "cf04c51e2fcdfa5cb053c74a68b0aac32ed8027f901ecb8d9f10ec7be198f997",
+      "source": "src/epistemic_foundry/_canonical/schemas/backend-adapter-qualification.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/bias-risk-register.schema.json",
+      "sha256": "d3d44dd270a2d23b106e9aefb889a5e6cfa81b127f8c8c46f05c1678641d9ac7",
+      "source": "src/epistemic_foundry/_canonical/schemas/bias-risk-register.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/budget-envelope.schema.json",
+      "sha256": "2bb663a1398e232131e4dce3d86b6892616d169bf5a43c572639f5da9437c066",
+      "source": "src/epistemic_foundry/_canonical/schemas/budget-envelope.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/calibration-report.schema.json",
+      "sha256": "7800f3c79c4e12a5bfcd3ef74599f4fd4307ffddeca47b9fc7ce286ada141064",
+      "source": "src/epistemic_foundry/_canonical/schemas/calibration-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/candidate-generation-record.schema.json",
+      "sha256": "482f446a720a6ba9903877ade925b8ee1dd41c6d808f0074f92617191731a3ba",
+      "source": "src/epistemic_foundry/_canonical/schemas/candidate-generation-record.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/candidate-lineage.schema.json",
+      "sha256": "6f7c804954295d3aca5770e34fcb95dc8fa489c4b757fc75a1bfb9146a9e71b8",
+      "source": "src/epistemic_foundry/_canonical/schemas/candidate-lineage.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/capability-lease.schema.json",
+      "sha256": "c5eb61b41328b055f75466fd4d1d29ed93a535a2d2375a7596fd8a77ba51946c",
+      "source": "src/epistemic_foundry/_canonical/schemas/capability-lease.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/challenge-genome.schema.json",
+      "sha256": "118072f71fec0919e5802c81d02eb84005e8b404cbade1709b06504b30c4e46b",
+      "source": "src/epistemic_foundry/_canonical/schemas/challenge-genome.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/challenge-result.schema.json",
+      "sha256": "3e96fd1f8899328d1b43c7efd9f159fadfde6cc38d107805da50f010676fcd06",
+      "source": "src/epistemic_foundry/_canonical/schemas/challenge-result.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/checkpoint-manifest.schema.json",
+      "sha256": "e0c73a7adefa1c969c7f67eea1f33db56b539b3c83a5f99f26450ce37898a017",
+      "source": "src/epistemic_foundry/_canonical/schemas/checkpoint-manifest.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/claim-card.schema.json",
+      "sha256": "648af8a21455bf4004b0b1c21b8bae00aedab3907e9ae3670bc8e50ea95d6bdf",
+      "source": "src/epistemic_foundry/_canonical/schemas/claim-card.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/claim-lifecycle-event.schema.json",
+      "sha256": "d693bb8fc27b4e963cf2307b1af86284ba8a65e6557f6968f37e9abac30663b3",
+      "source": "src/epistemic_foundry/_canonical/schemas/claim-lifecycle-event.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/compatibility-matrix.schema.json",
+      "sha256": "94e45bf619fb589e160e078a0b38f600619c394f5308e661f758f71396982367",
+      "source": "src/epistemic_foundry/_canonical/schemas/compatibility-matrix.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/consent-record.schema.json",
+      "sha256": "24915579cd23a358cc24f7e68664f655a3a3717578e0208fe2971e54e19487f1",
+      "source": "src/epistemic_foundry/_canonical/schemas/consent-record.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/context-assembly-manifest.schema.json",
+      "sha256": "8ca9b5e948f58d5e2fb9592c6d0e002619877e0c9dee0b4c561395a5e271e7ab",
+      "source": "src/epistemic_foundry/_canonical/schemas/context-assembly-manifest.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/context-capsule.schema.json",
+      "sha256": "635facd9479a229823eee68b00778dbdad3e24d93c0af355072b897be75db7b6",
+      "source": "src/epistemic_foundry/_canonical/schemas/context-capsule.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/council-brief.schema.json",
+      "sha256": "7f9931f77ab37ae6393e3ae1b84d62ffc6eab8f00074b9acf42867f5fe70a5ab",
+      "source": "src/epistemic_foundry/_canonical/schemas/council-brief.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/coverage-snapshot.schema.json",
+      "sha256": "f668b69820909fafcac09938403c78af57596595388e014e6dfd446ce6527a57",
+      "source": "src/epistemic_foundry/_canonical/schemas/coverage-snapshot.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/cross-examination.schema.json",
+      "sha256": "7e0da672da60330f5877facc785e1c543587f7743e22b52bc76155539600a8ae",
+      "source": "src/epistemic_foundry/_canonical/schemas/cross-examination.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/crossover-compatibility-report.schema.json",
+      "sha256": "81fcf7544104882bc5cfa4780c4060bf998dddcfd179af8693a0a37383682078",
+      "source": "src/epistemic_foundry/_canonical/schemas/crossover-compatibility-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/decision-stability-report.schema.json",
+      "sha256": "abcf80682841a7e013dbd29625c550025800536ee63e766554c7660d88908724",
+      "source": "src/epistemic_foundry/_canonical/schemas/decision-stability-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/document-manifest.schema.json",
+      "sha256": "a0c53d432e1462b39083752e8fb3bcb6d6b5f0094f043c3bf89d8bdfef55b865",
+      "source": "src/epistemic_foundry/_canonical/schemas/document-manifest.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/document-registration-request.schema.json",
+      "sha256": "33133fa284c28c4d35121a67f2aef840d1fe697a35e619ced12a5abf4d63f20b",
+      "source": "src/epistemic_foundry/_canonical/schemas/document-registration-request.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/document-registration.schema.json",
+      "sha256": "a09a5e9e23501bd8bc15e2061867fdea155654ae4b524740e966c8a733f8730c",
+      "source": "src/epistemic_foundry/_canonical/schemas/document-registration.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/domain-pack.schema.json",
+      "sha256": "ac7da8d860eff71c8f80d394757f76ac308bad801c5b6260e395f7f9d8ea1a09",
+      "source": "src/epistemic_foundry/_canonical/schemas/domain-pack.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/effect-receipt.schema.json",
+      "sha256": "2fc5f33eaea8dd86ebbdb59c2c9d6075d4b2d7c9f03bab304c550dfd80d1a4cc",
+      "source": "src/epistemic_foundry/_canonical/schemas/effect-receipt.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/epistemic-archive-entry.schema.json",
+      "sha256": "71c74f1c9f38258d060ef9528868020d35125253cf263301796629729b9f1b3b",
+      "source": "src/epistemic_foundry/_canonical/schemas/epistemic-archive-entry.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/epistemic-niche.schema.json",
+      "sha256": "6b78e9bc81a681d97dcde1215f012c7aafba841ad84d66b845050d3321cfbbe1",
+      "source": "src/epistemic_foundry/_canonical/schemas/epistemic-niche.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/epistemic-utility-report.schema.json",
+      "sha256": "0b435302e6aa204d5c7f5661b1cf1adbb05dcd20b76d2beccc41cc7a12a79718",
+      "source": "src/epistemic_foundry/_canonical/schemas/epistemic-utility-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/epistemic-work-classification.schema.json",
+      "sha256": "dbe8437eae1ec8c956b1290556efa7f2bb89c862134870d80f15e6e49679efa9",
+      "source": "src/epistemic_foundry/_canonical/schemas/epistemic-work-classification.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evaluation-run.schema.json",
+      "sha256": "322fd3bcf75afc4871e96eb5a100482a910a4be22b6cc2abda5ad55f98b32602",
+      "source": "src/epistemic_foundry/_canonical/schemas/evaluation-run.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evaluator-bundle.schema.json",
+      "sha256": "27e69c2c8075f42876c85eaed9be72a6e68997c3b22ff1c33a509a44261288c6",
+      "source": "src/epistemic_foundry/_canonical/schemas/evaluator-bundle.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evaluator-mutation-proposal.schema.json",
+      "sha256": "715804b0eff73610f8f0fed3bd62cbf0dd88b3490c7e2e2c001c7b9000366e62",
+      "source": "src/epistemic_foundry/_canonical/schemas/evaluator-mutation-proposal.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evaluator-qualification-report.schema.json",
+      "sha256": "4f50a5bc6b76231fad1e34648cdcf8fee1912b3bb6dd59d00593b99a0b09f530",
+      "source": "src/epistemic_foundry/_canonical/schemas/evaluator-qualification-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/event-record.schema.json",
+      "sha256": "538cf66a8d006aa6895dc52fc0761747c9b18bba7ea857eda4f8385364880588",
+      "source": "src/epistemic_foundry/_canonical/schemas/event-record.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evidence-dependency-cluster.schema.json",
+      "sha256": "69c847e8372bcd3f5b8580e39c438a3d241c5b77fae466a83d86bb6f099985e2",
+      "source": "src/epistemic_foundry/_canonical/schemas/evidence-dependency-cluster.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evidence-node.schema.json",
+      "sha256": "219a2d2a21588917af2d3ea4543a47ccd63c591c995b332c144ae002638575c8",
+      "source": "src/epistemic_foundry/_canonical/schemas/evidence-node.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evidence-pack.schema.json",
+      "sha256": "d12628f1b0abf49608cd7743091fcc77d4e0883d0bec7972559f1d30f5483c84",
+      "source": "src/epistemic_foundry/_canonical/schemas/evidence-pack.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evidence-reconciliation-record.schema.json",
+      "sha256": "e2f1f075b81668a62dcbb9a9c119a5cef79c3094f160bf9b9d866a822a72712b",
+      "source": "src/epistemic_foundry/_canonical/schemas/evidence-reconciliation-record.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evolution-checkpoint.schema.json",
+      "sha256": "e5ade7617bb46cc399f2c0b3b1d1f3b46f0ae9cb77c4a0de98c624b76471faec",
+      "source": "src/epistemic_foundry/_canonical/schemas/evolution-checkpoint.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evolution-run-spec.schema.json",
+      "sha256": "54f6934f33426c8706640038c25f63687097fad36f21c84d46fdf5b0d9b9291a",
+      "source": "src/epistemic_foundry/_canonical/schemas/evolution-run-spec.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/evolution-stop-certificate.schema.json",
+      "sha256": "7258e7754f000e3eea4f7f4158b9c0bddf62f1dc5924ca5ccd7b84c91b25211a",
+      "source": "src/epistemic_foundry/_canonical/schemas/evolution-stop-certificate.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/experiment-genome.schema.json",
+      "sha256": "d6fc86c9103229f0b27093a1cb05d1f664c454ae3742afa08f53669408c8c055",
+      "source": "src/epistemic_foundry/_canonical/schemas/experiment-genome.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/experiment-result.schema.json",
+      "sha256": "af3daca54fc3f51de91fdda7a6789b43f25bcfe9dffbbb57b6b0dedb2851e2fe",
+      "source": "src/epistemic_foundry/_canonical/schemas/experiment-result.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/experiment-ticket.schema.json",
+      "sha256": "4a89455bc6505e619c00219811f59299b82b63327f18213b5f12efc91814a89a",
+      "source": "src/epistemic_foundry/_canonical/schemas/experiment-ticket.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/falsifier-gene.schema.json",
+      "sha256": "6b54fb2562c564ee0ab913039dca6d9bd7ee0d48005ec75dc2e6b298d204e6d7",
+      "source": "src/epistemic_foundry/_canonical/schemas/falsifier-gene.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/fitness-evidence-receipt.schema.json",
+      "sha256": "e63051793b8e4504f977a074067d2cefe7fbcdc3e91a3888dcd0ea19b60e1f9a",
+      "source": "src/epistemic_foundry/_canonical/schemas/fitness-evidence-receipt.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/fitness-vector.schema.json",
+      "sha256": "bbc0755e35631bce3c21546f21dbca5d594b414050c7569e862b7f72afe112e3",
+      "source": "src/epistemic_foundry/_canonical/schemas/fitness-vector.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/forge-session-state.schema.json",
+      "sha256": "a0f0613332c2e36e1bf1036ebae4e496cd82fa876ccf00154f569b09bd697d40",
+      "source": "src/epistemic_foundry/_canonical/schemas/forge-session-state.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/forge-transition-request.schema.json",
+      "sha256": "1b64e6b520985f2b0bf29ec314e782412f9eff7f3df25c1dae8abef7a2d7e68e",
+      "source": "src/epistemic_foundry/_canonical/schemas/forge-transition-request.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/gate-decision.schema.json",
+      "sha256": "ee341a7adab98d1814906c2f37b36cdbb03842b77ea8b52e94a164d061b7379c",
+      "source": "src/epistemic_foundry/_canonical/schemas/gate-decision.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/holdout-manifest.schema.json",
+      "sha256": "f4ab2daa1ade997fb01787e30ef96acc329b0194b3a6b2453b8248302d645fb6",
+      "source": "src/epistemic_foundry/_canonical/schemas/holdout-manifest.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/hook-event-envelope.schema.json",
+      "sha256": "9ee336477d887e258f89bb744e064c2d847a39ec49e7442bcb551f7c65080968",
+      "source": "src/epistemic_foundry/_canonical/schemas/hook-event-envelope.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/host-capability-report.schema.json",
+      "sha256": "316fdb2650f87d67ea357e4baa90e757252a16e893a9b7f1bbb2fb048ef9083b",
+      "source": "src/epistemic_foundry/_canonical/schemas/host-capability-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/human-decision.schema.json",
+      "sha256": "ea28a1e379e16085fbf120a225ffdfaa5ab265c535cdbfd9c9ff853bca0c2057",
+      "source": "src/epistemic_foundry/_canonical/schemas/human-decision.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/hypothesis-genome.schema.json",
+      "sha256": "be182d259f09ebf935be3f61a0ab7c75bf069b957e5035e791676ecd1664c4ad",
+      "source": "src/epistemic_foundry/_canonical/schemas/hypothesis-genome.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/hypothesis-passport.schema.json",
+      "sha256": "6b96f00d6724703a07b1e3c2b3bcdf648bf12d8605d0c3fb70399ef67b8a8b5c",
+      "source": "src/epistemic_foundry/_canonical/schemas/hypothesis-passport.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/imported-run-record.schema.json",
+      "sha256": "ebc4e9e5b8167ccb325c35bad1cee1ffb29cdee1b1a720430edd1054b31b375e",
+      "source": "src/epistemic_foundry/_canonical/schemas/imported-run-record.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/insight-card.schema.json",
+      "sha256": "28f7037effcf9d6f87eba86d410919ba30fee6ac8bd57eb332a485e9b58471fd",
+      "source": "src/epistemic_foundry/_canonical/schemas/insight-card.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/island-state.schema.json",
+      "sha256": "bfc4d5febe6da89413e5a25103c674a6d5f9a73ae17101684bf39baca25f153a",
+      "source": "src/epistemic_foundry/_canonical/schemas/island-state.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/leakage-audit.schema.json",
+      "sha256": "bf7fef71038895a88615991719d5bb3366fc74bad08b2f5cb293ffc5307cad20",
+      "source": "src/epistemic_foundry/_canonical/schemas/leakage-audit.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/lineage-diversity-report.schema.json",
+      "sha256": "4ffcbbf4d8780fa637429ae97f711d07d80569129dc2019b973ad9f58aeb60b9",
+      "source": "src/epistemic_foundry/_canonical/schemas/lineage-diversity-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/loop-contract.schema.json",
+      "sha256": "58586560d555c8d6e19adc54f76e1f2d8cc484a7e20901d6347328d11e872a86",
+      "source": "src/epistemic_foundry/_canonical/schemas/loop-contract.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/measurement-compatibility-report.schema.json",
+      "sha256": "edde1db43f4e6833fb3531c69ca8fdeb6eed731dc6eeeab6b2c8d93a2c3c3e63",
+      "source": "src/epistemic_foundry/_canonical/schemas/measurement-compatibility-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/mechanism-graph.schema.json",
+      "sha256": "287d00585c8c23a173be0a041455ee5f40e99056c15289190582b25970a27bbb",
+      "source": "src/epistemic_foundry/_canonical/schemas/mechanism-graph.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/memory-policy.schema.json",
+      "sha256": "762990add5e09fe4216341be35c535dcd5afbb61c8c0da48407736e59cd874c3",
+      "source": "src/epistemic_foundry/_canonical/schemas/memory-policy.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/memory-retrieval-receipt.schema.json",
+      "sha256": "23a2a0bb402f75f94739304aee4fc77506a5b70563f08b5f988edca3c73ef7db",
+      "source": "src/epistemic_foundry/_canonical/schemas/memory-retrieval-receipt.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/minority-report.schema.json",
+      "sha256": "5ac8d7a1a212a417dad594d6d406bfd603fa3fed079092dc6bff631d7e2d136f",
+      "source": "src/epistemic_foundry/_canonical/schemas/minority-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/model-routing-receipt.schema.json",
+      "sha256": "df86feb5c3c2309c7cee0bd4578f986ffe75afea3cd701267880e5b58b0f838a",
+      "source": "src/epistemic_foundry/_canonical/schemas/model-routing-receipt.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/multiple-testing-adjustment.schema.json",
+      "sha256": "d7d39530e0d3a28da67c3969c65c6df39aef6f263dd93b06c98992d8fac8c9b3",
+      "source": "src/epistemic_foundry/_canonical/schemas/multiple-testing-adjustment.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/mutation-operator-spec.schema.json",
+      "sha256": "95a9fd1b0486c8ad24912933a7db59a4aa0f271e85e9e485ede4ebea9092225f",
+      "source": "src/epistemic_foundry/_canonical/schemas/mutation-operator-spec.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/mutation-receipt.schema.json",
+      "sha256": "801c936fb961bf4a8489cf8beb0846ab8b606cf29d809e57c2bc2f8c20b577d8",
+      "source": "src/epistemic_foundry/_canonical/schemas/mutation-receipt.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/node-contract.schema.json",
+      "sha256": "18964904a992dd90a8eaff7ff541dc862141a801c84dc1278f53bb9f4b1ad657",
+      "source": "src/epistemic_foundry/_canonical/schemas/node-contract.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/node-invocation.schema.json",
+      "sha256": "bf9c016c12cf44c0fa90555ea887e5d2e7aabca48366fc9994e4ac05e624cd63",
+      "source": "src/epistemic_foundry/_canonical/schemas/node-invocation.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/novelty-assessment.schema.json",
+      "sha256": "e232003af38f54e96b6ad4f2c2f64357ab604c79fbec67bac9c0bff3f8285ad8",
+      "source": "src/epistemic_foundry/_canonical/schemas/novelty-assessment.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/novelty-vector.schema.json",
+      "sha256": "66d160bb8f18b27c97e5e160d3a57f50f9148ba793a7d1499d5b0924ffeb4466",
+      "source": "src/epistemic_foundry/_canonical/schemas/novelty-vector.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/operator-bandit-state.schema.json",
+      "sha256": "4fb7c0e704fb8c8b0d0f1afc3fff6fa8243c37d391e4ecd5d15f41825281a598",
+      "source": "src/epistemic_foundry/_canonical/schemas/operator-bandit-state.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/parent-selection-receipt.schema.json",
+      "sha256": "b4a94e343b680d1c6adbdfa4f16e8347da7bd48bff69a8d1003a0c36465d847a",
+      "source": "src/epistemic_foundry/_canonical/schemas/parent-selection-receipt.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/pareto-front-snapshot.schema.json",
+      "sha256": "8070f0f9bf541673b48c6daa34aa357ea467a82d49b21ac7a6e5e1f8bf63e446",
+      "source": "src/epistemic_foundry/_canonical/schemas/pareto-front-snapshot.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/phase-artifact-set.schema.json",
+      "sha256": "4db66de7a172062d9742736681641a0d312fac2fe2a798606757996b53cb3fb6",
+      "source": "src/epistemic_foundry/_canonical/schemas/phase-artifact-set.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/plugin-capability-manifest.schema.json",
+      "sha256": "289504e5c770746a8bd382f25692f83827a718a7f53215747e64cf11a581d34d",
+      "source": "src/epistemic_foundry/_canonical/schemas/plugin-capability-manifest.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/plugin-health-report.schema.json",
+      "sha256": "4de33bc48aa117d756f38ffb8b0a893a3f4613b3700fb5f7d409793d9bc2d3d8",
+      "source": "src/epistemic_foundry/_canonical/schemas/plugin-health-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/plugin-install-state.schema.json",
+      "sha256": "c895114b564ea2a0e2eadd5ccae64db013af079f5b8f2cdb65600596f9498e8f",
+      "source": "src/epistemic_foundry/_canonical/schemas/plugin-install-state.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/plugin-policy-pack.schema.json",
+      "sha256": "dd89e4ba89cf3805b32a905b3d37e2c0ad799e204fb67e87b8ea8d53f563c4dc",
+      "source": "src/epistemic_foundry/_canonical/schemas/plugin-policy-pack.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/plugin-release-provenance.schema.json",
+      "sha256": "7dc2e338a913f7893f2a67a291b19d595e5d0e9f17acce34f91df4269258df70",
+      "source": "src/epistemic_foundry/_canonical/schemas/plugin-release-provenance.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/policy-bundle.schema.json",
+      "sha256": "8bbed049d4b99b355415e94245ce0c606cb8017cf53ad9d8545a27ecb5db2850",
+      "source": "src/epistemic_foundry/_canonical/schemas/policy-bundle.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/prediction-gene.schema.json",
+      "sha256": "a79cfb79b133fa7e22f13c90bad0924316420e1a562cec9f203160930801226d",
+      "source": "src/epistemic_foundry/_canonical/schemas/prediction-gene.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/promotion-decision.schema.json",
+      "sha256": "5a33e660aebed94c7a74de1fa8c8767f189b4367b70a830733fdda3c7d1caea7",
+      "source": "src/epistemic_foundry/_canonical/schemas/promotion-decision.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/prompt-genome.schema.json",
+      "sha256": "e780e190c6685fe6b4a31b5909360e4aade556e321f005077af1837fac47f33a",
+      "source": "src/epistemic_foundry/_canonical/schemas/prompt-genome.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/prompt-mutation-proposal.schema.json",
+      "sha256": "d49a77301101a2ba86b7c3e37b62b85219132320bba30f6f60fd6de61e66427e",
+      "source": "src/epistemic_foundry/_canonical/schemas/prompt-mutation-proposal.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/quality-diversity-map.schema.json",
+      "sha256": "cf33758d2b9af3ea6a8ecfd93194829c8b7df2f25c0042f66cb483f2739a38d8",
+      "source": "src/epistemic_foundry/_canonical/schemas/quality-diversity-map.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/query-plan.schema.json",
+      "sha256": "6f9fe754cce171efbf9bfa738646046ae5232224b84d8a96e1f72dc14e5f0c4e",
+      "source": "src/epistemic_foundry/_canonical/schemas/query-plan.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/red-queen-round.schema.json",
+      "sha256": "017e43de168dae85e0f8cf972386c50904514b17a25aa5f7f6020c686ec3810a",
+      "source": "src/epistemic_foundry/_canonical/schemas/red-queen-round.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/replay-report.schema.json",
+      "sha256": "6828658341f34f5ebf7dee947b3483f79440d68c48b91aa1cae689cbcbd7b798",
+      "source": "src/epistemic_foundry/_canonical/schemas/replay-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/replication-plan.schema.json",
+      "sha256": "6e17721fd9cd0aeea0e076e0da3b8e5ff1fbeb5cb99036e1cb9afa6d3299b765",
+      "source": "src/epistemic_foundry/_canonical/schemas/replication-plan.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/replication-result.schema.json",
+      "sha256": "d9336a4c6ac8cb702609dc36c775d605e42850765960898f8847206c2bcd5c4e",
+      "source": "src/epistemic_foundry/_canonical/schemas/replication-result.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/result-envelope.schema.json",
+      "sha256": "b52eb6471dbfa9b7b35aef15f7e56ff7a19182c92a5bbda55426f2206718f553",
+      "source": "src/epistemic_foundry/_canonical/schemas/result-envelope.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/retrieval-candidate.schema.json",
+      "sha256": "1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00",
+      "source": "src/epistemic_foundry/_canonical/schemas/retrieval-candidate.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/retrieval-run.schema.json",
+      "sha256": "1c87d83a98f45527cc32df35437fceff41b1561c28357fe33e390bec1b83b4c4",
+      "source": "src/epistemic_foundry/_canonical/schemas/retrieval-run.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/role-dispatch-plan.schema.json",
+      "sha256": "2c79047141fce325b827364da3cc398179200f8871bddbb277721f3b6f871423",
+      "source": "src/epistemic_foundry/_canonical/schemas/role-dispatch-plan.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/run-spec.schema.json",
+      "sha256": "1a8eacb804d39354fa5a8066c1d6f10e9786365e5b3b185bc805cf512dbd5dc2",
+      "source": "src/epistemic_foundry/_canonical/schemas/run-spec.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/schema-migration.schema.json",
+      "sha256": "f52ac3eaa849f9e41b83c84f853a50bdd5c83a7a2b7a878968e95d4314a83f67",
+      "source": "src/epistemic_foundry/_canonical/schemas/schema-migration.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/scope-vector.schema.json",
+      "sha256": "5f6c99c098a76cee1af133f0e1b47253cc73c49975356bfe78a3ea26260f8a98",
+      "source": "src/epistemic_foundry/_canonical/schemas/scope-vector.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/search-completeness-certificate.schema.json",
+      "sha256": "2c2c7543b94fcdad8ff9cb4072b2e47bd6b5df9b4715ab5a1218b7f5a1a7d9c1",
+      "source": "src/epistemic_foundry/_canonical/schemas/search-completeness-certificate.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/search-lane-receipt.schema.json",
+      "sha256": "3c5bfbd600535e061b1d783a5f0df146f2896e980e438b58721c139c3b4305ac",
+      "source": "src/epistemic_foundry/_canonical/schemas/search-lane-receipt.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/selective-inference-report.schema.json",
+      "sha256": "b4328c3440fc911b94c5780bf95a611fc944d9c12d7cf973d7eb0b8b1fa2771d",
+      "source": "src/epistemic_foundry/_canonical/schemas/selective-inference-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/sequential-testing-ledger.schema.json",
+      "sha256": "6495b20df72f6a603892cb3ce472cdd5d4d01d65ec0157eceeb4335d9bedc389",
+      "source": "src/epistemic_foundry/_canonical/schemas/sequential-testing-ledger.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/shinka-backend-manifest.schema.json",
+      "sha256": "b1d9bf7243817d890a6ca2e146d9e0abb3917a3e386d444adb8c61f94c45e61c",
+      "source": "src/epistemic_foundry/_canonical/schemas/shinka-backend-manifest.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/skill-lockfile.schema.json",
+      "sha256": "ee70e66325c61f4f6e58f5a9c75bd875c4a75e9a57e615e253d780a75430012c",
+      "source": "src/epistemic_foundry/_canonical/schemas/skill-lockfile.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/skill-routing-decision.schema.json",
+      "sha256": "31bb0c22e5070ae2647322c19f1a7c02281e7f57cca1bea35664be691a485af7",
+      "source": "src/epistemic_foundry/_canonical/schemas/skill-routing-decision.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/source-integrity-report.schema.json",
+      "sha256": "dc0826ea30a8e0526857299586283793d1fdc533894553d76b6caa0bab748982",
+      "source": "src/epistemic_foundry/_canonical/schemas/source-integrity-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/source-span.schema.json",
+      "sha256": "a9f795f807d87af8769a7d1daaa76b2345af3fb21224fe9c99b238ac0f988ad0",
+      "source": "src/epistemic_foundry/_canonical/schemas/source-span.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/stage-evaluation-result.schema.json",
+      "sha256": "c7777dd0ee2a58de8f59f495311e4a71dc307c5df638267bf4ce41d216d3886f",
+      "source": "src/epistemic_foundry/_canonical/schemas/stage-evaluation-result.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/surrogate-triage-report.schema.json",
+      "sha256": "dbe61a13af4e48579d420a74014bf0f2d436d8de0d8c6dde0a302b8031a3daff",
+      "source": "src/epistemic_foundry/_canonical/schemas/surrogate-triage-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/update-impact-report.schema.json",
+      "sha256": "c4e387d2f8b4be60970a890cb9ad6bd3b22387312f9a6d40709293aade736bed",
+      "source": "src/epistemic_foundry/_canonical/schemas/update-impact-report.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/validation-cascade-plan.schema.json",
+      "sha256": "6ca4cf6f2e4c4074289bdd98fe2dc76c3e4a89a8194b69015e6d41e7425a5174",
+      "source": "src/epistemic_foundry/_canonical/schemas/validation-cascade-plan.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/validation-plan.schema.json",
+      "sha256": "e8e2d6dfdbe608083c6c7cee332657d13f9cb6d70054758d7965409835700a1f",
+      "source": "src/epistemic_foundry/_canonical/schemas/validation-plan.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/validation-target-manifest.schema.json",
+      "sha256": "33ca04ce4aefcebce4e395338e09038e0a78bac063250b58d65d8d6d54275ebe",
+      "source": "src/epistemic_foundry/_canonical/schemas/validation-target-manifest.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/_canonical/schemas/workspace-map-snapshot.schema.json",
+      "sha256": "846e57a59eeee9e65624061e99b89f5ea9ccad3dae639e06b98ca96e184cf6ab",
+      "source": "src/epistemic_foundry/_canonical/schemas/workspace-map-snapshot.schema.json"
+    },
+    {
+      "path": "python/epistemic_foundry/adapters/__init__.py",
+      "sha256": "ff605d61d0b4c5a9968a1bb3d9249102fcf2d7a56368716bc1c1d53424900214",
+      "source": "src/epistemic_foundry/adapters/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/adapters/v4_t05/__init__.py",
+      "sha256": "aeca7e07f9a0a46d6abd406d0fa1572daa3a51bf4a3ab0748541f92273fbe343",
+      "source": "src/epistemic_foundry/adapters/v4_t05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/adapters/v4_t05/backend_adapter.py",
+      "sha256": "17c097bd6693b52cabfba863739fe7270ea2a1e7e33df54b32236e2ee5004522",
+      "source": "src/epistemic_foundry/adapters/v4_t05/backend_adapter.py"
+    },
+    {
+      "path": "python/epistemic_foundry/adapters/v4_t05/findings.py",
+      "sha256": "a3963edcbb60577f7bbfcf76b593abd8da72363023531cb7006aa7ffd7c31df6",
+      "source": "src/epistemic_foundry/adapters/v4_t05/findings.py"
+    },
+    {
+      "path": "python/epistemic_foundry/adapters/v4_t05/tool_surface.py",
+      "sha256": "504364a58f8c8a98bcc4be19c1204b60dd026fe41a42fa55c9dafc9dd979f255",
+      "source": "src/epistemic_foundry/adapters/v4_t05/tool_surface.py"
+    },
+    {
+      "path": "python/epistemic_foundry/adapters/v4_t06/__init__.py",
+      "sha256": "f45fc332809527c2c4d80d3bd3f6dc5a73205d512ea39d0dc27c40ba569973f5",
+      "source": "src/epistemic_foundry/adapters/v4_t06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/adapters/v4_t06/disable.py",
+      "sha256": "9778522c51e3c91b720e5701b11d702dc443d72f6751b0139f5715fc4ca531de",
+      "source": "src/epistemic_foundry/adapters/v4_t06/disable.py"
+    },
+    {
+      "path": "python/epistemic_foundry/adapters/v4_t06/fallback.py",
+      "sha256": "6408632e66964d8d42be9c0a155e5d1b72395c934bc967fbdffb436b4813588a",
+      "source": "src/epistemic_foundry/adapters/v4_t06/fallback.py"
+    },
+    {
+      "path": "python/epistemic_foundry/adapters/v4_t06/findings.py",
+      "sha256": "5a356d7ec6747d627ea122c2fd48269ba2210d59347b3cd87d7d588924128411",
+      "source": "src/epistemic_foundry/adapters/v4_t06/findings.py"
+    },
+    {
+      "path": "python/epistemic_foundry/adapters/v4_t06/qualification_lifecycle.py",
+      "sha256": "373c065c61cb208382d94a65fc599ff7c13a0077985302994ea3f3e6de0b127f",
+      "source": "src/epistemic_foundry/adapters/v4_t06/qualification_lifecycle.py"
+    },
+    {
+      "path": "python/epistemic_foundry/aporia_engine/__init__.py",
+      "sha256": "bda54fbc53a80c8e7b3db10f5a742c1fcc1e4495d7b90d92765de889144fb9fd",
+      "source": "src/epistemic_foundry/aporia_engine/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/aporia_engine/argument.py",
+      "sha256": "2fe55f49cfd855a8c570697197d12af41c0201a83144fc09e831d9e65de8c738",
+      "source": "src/epistemic_foundry/aporia_engine/argument.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/__init__.py",
+      "sha256": "f1ea8e1d8baa70543765812e81bd46f2af5e1155c05b6ae32e92f033156f256f",
+      "source": "src/epistemic_foundry/application/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_common/__init__.py",
+      "sha256": "aa746af3a19f1576f0bdf42ad9f5240792fa7ea793c4243dae6b3ad07349fc63",
+      "source": "src/epistemic_foundry/application/mcp_common/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_common/contracts.py",
+      "sha256": "b3c90a0d59b0885b4c40dcce970787ffc6714c2afadf303592b91d1586e52271",
+      "source": "src/epistemic_foundry/application/mcp_common/contracts.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_common/transport.py",
+      "sha256": "8c8c264b09558de77956f87b1daa7046829e88c3873161ef9c0252bc81ec6ac5",
+      "source": "src/epistemic_foundry/application/mcp_common/transport.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_mutating/__init__.py",
+      "sha256": "a8ab925e8b93e5a401b077857bba9a23cca20c47b5ecc5dc1a543ba33598f1cc",
+      "source": "src/epistemic_foundry/application/mcp_mutating/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_mutating/handler_factory.py",
+      "sha256": "d402eae0b55aff28e59d35f74b1b3ab8cb87d3e24d1267e55f0a3169d5c640ed",
+      "source": "src/epistemic_foundry/application/mcp_mutating/handler_factory.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_mutating/ports.py",
+      "sha256": "84ba635f4b0db047c1c315ad5ee0afebc18eba7649c3c9dc4eec066c6f97dba5",
+      "source": "src/epistemic_foundry/application/mcp_mutating/ports.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_mutating/reconciliation.py",
+      "sha256": "3fb35579b79e56fb223fa4765c50e0a772804aa24b8931b50b98626d5585d735",
+      "source": "src/epistemic_foundry/application/mcp_mutating/reconciliation.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_mutating/service.py",
+      "sha256": "8f9d74529161aa9b5ec0307d8d67f0ce88d10b4effdcf3ab6023fdd26b769a0b",
+      "source": "src/epistemic_foundry/application/mcp_mutating/service.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_planning/__init__.py",
+      "sha256": "82bab53a717c39752b0701980df0a42acba66a1a0b5c1cc7dd1e9380308ec49a",
+      "source": "src/epistemic_foundry/application/mcp_planning/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_planning/handlers.py",
+      "sha256": "7c4e9a06abd8efb8db5caca3d3a9e31f0ccf0f1cd3029d3d0998d0b71a760a2d",
+      "source": "src/epistemic_foundry/application/mcp_planning/handlers.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_read/__init__.py",
+      "sha256": "fddf122b23fcaaa97dcaa8ff871506ff6fbd3d5522e798aa12561eb6e61fae2c",
+      "source": "src/epistemic_foundry/application/mcp_read/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/application/mcp_read/handlers.py",
+      "sha256": "61e048e7c582f94906aea144ba7e05ccb64b5cbc3098bf5c91beb04f1436c4f7",
+      "source": "src/epistemic_foundry/application/mcp_read/handlers.py"
+    },
+    {
+      "path": "python/epistemic_foundry/budgets/__init__.py",
+      "sha256": "5a179c138740bdd0d21ad807c6e35d34e4f02f0d6c6f048a8d89162748c52b4e",
+      "source": "src/epistemic_foundry/budgets/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/budgets/envelope.py",
+      "sha256": "dc76097ae288b91ca3e7d25df25fe98d9f75f41e8caa60e6e5f670cf0bac05a6",
+      "source": "src/epistemic_foundry/budgets/envelope.py"
+    },
+    {
+      "path": "python/epistemic_foundry/budgets/loops.py",
+      "sha256": "825e8f7f2ef6318d0100b0a3568f7295bc294d9ed264ad23c4417f0451dccbd6",
+      "source": "src/epistemic_foundry/budgets/loops.py"
+    },
+    {
+      "path": "python/epistemic_foundry/budgets/secrets.py",
+      "sha256": "708a4d580cb5bdcd429a6c9831fb0294126ed23f1b47e877a2a08889a215f9d6",
+      "source": "src/epistemic_foundry/budgets/secrets.py"
+    },
+    {
+      "path": "python/epistemic_foundry/cartography/__init__.py",
+      "sha256": "b45ee3bb510a8c55df0bc4358cbec8084b2ac55cba7db4f5661e5768f2f873f8",
+      "source": "src/epistemic_foundry/cartography/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/cartography/v4_m05/__init__.py",
+      "sha256": "7a6cc3b20d638d0d7149816fb971e80ca7a73efa66c42f1aeea34e4b3a27e317",
+      "source": "src/epistemic_foundry/cartography/v4_m05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/cartography/v4_m05/mapper.py",
+      "sha256": "173541b774ac9f8e1e6138c797c9970080dc5eae197b2bfc60aa12bcd2580a46",
+      "source": "src/epistemic_foundry/cartography/v4_m05/mapper.py"
+    },
+    {
+      "path": "python/epistemic_foundry/cartography/v4_m06/__init__.py",
+      "sha256": "ac5219867dfa5b8c8ef96789f9b0f2c569978ef01eed600d884464021544770f",
+      "source": "src/epistemic_foundry/cartography/v4_m06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/cartography/v4_m06/gate.py",
+      "sha256": "695ecf2dc8d1f0079b273d8948c6658e0ac1089331d0f85d136cef00faa8c63a",
+      "source": "src/epistemic_foundry/cartography/v4_m06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/claim_forge/__init__.py",
+      "sha256": "5173945cc4a555287e575c41a175863cb5a38f62c2498a31f20ca3aec4b92e8f",
+      "source": "src/epistemic_foundry/claim_forge/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/claim_forge/evidence.py",
+      "sha256": "72c75bd71e6f35a5d1eb87aba37c2b7896059e1946b913ef9e32e632b9abdb30",
+      "source": "src/epistemic_foundry/claim_forge/evidence.py"
+    },
+    {
+      "path": "python/epistemic_foundry/claim_forge/grounding.py",
+      "sha256": "99b63042131d4f538d35457efca6d4c37804cd980546df70f138e7de9ddfdd07",
+      "source": "src/epistemic_foundry/claim_forge/grounding.py"
+    },
+    {
+      "path": "python/epistemic_foundry/cli/__init__.py",
+      "sha256": "53f8002da9c9cd2c0a2317039306f33307833125d4b88d7f9f86e8eac1f97845",
+      "source": "src/epistemic_foundry/cli/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/cli/main.py",
+      "sha256": "f3d7356a503db6c3237e3befcf096119173dec82d66ec1512afc60d4e7e034a3",
+      "source": "src/epistemic_foundry/cli/main.py"
+    },
+    {
+      "path": "python/epistemic_foundry/console/__init__.py",
+      "sha256": "ae6ba98918d5a2e96c556180556fc17ed436eeb7044337864832d9fddba375f3",
+      "source": "src/epistemic_foundry/console/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/console/v4_u05/__init__.py",
+      "sha256": "08289dbc6089618457caab8f050816dd43936b7c2822b3d0a687bb687aa92a87",
+      "source": "src/epistemic_foundry/console/v4_u05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/console/v4_u05/projection.py",
+      "sha256": "6d325214c7c2e492f3ce6113ddd0d8d0f07679d3c8a2486404d857df5dbc82ac",
+      "source": "src/epistemic_foundry/console/v4_u05/projection.py"
+    },
+    {
+      "path": "python/epistemic_foundry/console/v4_u06/__init__.py",
+      "sha256": "f44d39c9465d05fdcaba8d85a1a2a2c2e0b6adba6ebfa17a69cd1533726c1de1",
+      "source": "src/epistemic_foundry/console/v4_u06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/console/v4_u06/usability_gate.py",
+      "sha256": "c7a4397c90332965ef8c8c8434b06459d60dc0654c1b4e4c5b9d6350310eccc4",
+      "source": "src/epistemic_foundry/console/v4_u06/usability_gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/contracts/__init__.py",
+      "sha256": "fc7d2a9688ba521999655765575b1a5a8759a8c5eeccffcb197f5aae76df2cbf",
+      "source": "src/epistemic_foundry/contracts/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/contracts/registry.py",
+      "sha256": "da04887973d4152865c161b0fd012aee202cc67ee5ee7b4da03507d289b5e7ac",
+      "source": "src/epistemic_foundry/contracts/registry.py"
+    },
+    {
+      "path": "python/epistemic_foundry/contracts/validation.py",
+      "sha256": "c82580e048803f0c22149c2e8f1def5b0c0ed46dddd8ef6fac6a46c33f713feb",
+      "source": "src/epistemic_foundry/contracts/validation.py"
+    },
+    {
+      "path": "python/epistemic_foundry/domain/__init__.py",
+      "sha256": "6c0cf613524cb78817f0145fa91426eba51486c7b17fa3026cdbefce580006f8",
+      "source": "src/epistemic_foundry/domain/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/domain/hashing.py",
+      "sha256": "da79e31693224e08b6505ea6f068ba2f3f06a405d7146768f7d4002dc17f166d",
+      "source": "src/epistemic_foundry/domain/hashing.py"
+    },
+    {
+      "path": "python/epistemic_foundry/domain/ids.py",
+      "sha256": "0ce05df17f6a3ec3ec6c29270a13b276c46eb8cfd4533a4ddd12c6d594a22de8",
+      "source": "src/epistemic_foundry/domain/ids.py"
+    },
+    {
+      "path": "python/epistemic_foundry/domain/status.py",
+      "sha256": "c8865e981be8fa4c093174f0d2181991b790df2da3e0fc4ec61da614a68bee82",
+      "source": "src/epistemic_foundry/domain/status.py"
+    },
+    {
+      "path": "python/epistemic_foundry/domain/time.py",
+      "sha256": "247b657430d8494744490f5f6bb2bec5f4f5aede9d92ac09aa265b0119e9e30b",
+      "source": "src/epistemic_foundry/domain/time.py"
+    },
+    {
+      "path": "python/epistemic_foundry/domain/vocabularies.py",
+      "sha256": "5cdecc3c454df2c9bd3d88e010173afccaae3b5109d3009f2bea9fdb4f85fef1",
+      "source": "src/epistemic_foundry/domain/vocabularies.py"
+    },
+    {
+      "path": "python/epistemic_foundry/effects/__init__.py",
+      "sha256": "51142a348aa172c00c763719e48d964fd8b7f15e56ce1810ab18c11b14b84395",
+      "source": "src/epistemic_foundry/effects/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/effects/v4_e05/__init__.py",
+      "sha256": "83fbdb3bb6db0b66929b58e36ce5bcb1a37e2ec18839e3ae5c7f53dc504a6888",
+      "source": "src/epistemic_foundry/effects/v4_e05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/effects/v4_e05/effect-disposition.json",
+      "sha256": "d92488d1cdf09cf7514b60ad5fca5d5a4042bfc59db20f351429dd45a41e7cb9",
+      "source": "src/epistemic_foundry/effects/v4_e05/effect-disposition.json"
+    },
+    {
+      "path": "python/epistemic_foundry/effects/v4_e05/engine.py",
+      "sha256": "e2257fc0039e7d308114016cc4439a4ab0862e29a6dd68d7780f12d37988ac11",
+      "source": "src/epistemic_foundry/effects/v4_e05/engine.py"
+    },
+    {
+      "path": "python/epistemic_foundry/effects/v4_e06/__init__.py",
+      "sha256": "7a5bab2935adb136070efdf8b47f19f7b78ef16fd060177bf954a9c3e9cd3c94",
+      "source": "src/epistemic_foundry/effects/v4_e06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/effects/v4_e06/gate.py",
+      "sha256": "bb5a79404204df20bafa9334a20f33de483f96e9b65133cc2cea81ec108d8023",
+      "source": "src/epistemic_foundry/effects/v4_e06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/epistemic_atlas/__init__.py",
+      "sha256": "f273915e96fc304eeb430552d6437b0c71cc67e0f7f39f360acfb7c4e6117a8c",
+      "source": "src/epistemic_foundry/epistemic_atlas/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/epistemic_atlas/lifecycle.py",
+      "sha256": "6a4b3a7b1c4fc885b6dc30f24e32aaab509ad8257a1c77dae9e83e8d9a6f0f4f",
+      "source": "src/epistemic_foundry/epistemic_atlas/lifecycle.py"
+    },
+    {
+      "path": "python/epistemic_foundry/epistemic_species_archive/__init__.py",
+      "sha256": "ab12b77b435f4b8a0da8431e895f1e7eab5319dafeb45be295f3b0811bc96cd5",
+      "source": "src/epistemic_foundry/epistemic_species_archive/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/epistemic_species_archive/archive.py",
+      "sha256": "428825988b252e446421665b6547ffb9aa6a3204d1a1cf043d0c62dedcef7d19",
+      "source": "src/epistemic_foundry/epistemic_species_archive/archive.py"
+    },
+    {
+      "path": "python/epistemic_foundry/epistemic_species_archive/islands.py",
+      "sha256": "bf80ce08b87559fb376c6aadebe2176cad6baae7a65152bde15a0d44ccda4eb4",
+      "source": "src/epistemic_foundry/epistemic_species_archive/islands.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evaluation/__init__.py",
+      "sha256": "642d7a618bc8234be9f251b8a07276bf3fdf32ff6cd05601fd3625273df894ac",
+      "source": "src/epistemic_foundry/evaluation/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evaluation/bandits.py",
+      "sha256": "d1e72fed5cddc4b2c54957ab09c81d67ef42b3095cd0de037b978f2d0f7d7857",
+      "source": "src/epistemic_foundry/evaluation/bandits.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evaluation/fitness.py",
+      "sha256": "2457d58cbed621fe3acc9772449b60569e6b2d60c8354dc8982e0b79eef9b22f",
+      "source": "src/epistemic_foundry/evaluation/fitness.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evaluation/novelty.py",
+      "sha256": "4245bcbb6a0cd12c17840be698531d538eeaa8a317f19bc4c8307a262c3b15c7",
+      "source": "src/epistemic_foundry/evaluation/novelty.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evaluation/novelty_layers.py",
+      "sha256": "866bd5f2599932a00ae212c83fdcd6b7d3f3f0459bacb2868b20ab5702cdba81",
+      "source": "src/epistemic_foundry/evaluation/novelty_layers.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evaluation/surrogate.py",
+      "sha256": "070aeb0c4104b0b1711d22d0360150d03f9b211ab2222b82448627d936b77fd3",
+      "source": "src/epistemic_foundry/evaluation/surrogate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evaluation/v4_q05/__init__.py",
+      "sha256": "abc7220c89090ccf045de2e6f7c7cb20c9636c2e8c992771cdd69a499c2299a3",
+      "source": "src/epistemic_foundry/evaluation/v4_q05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evaluation/v4_q05/gate.py",
+      "sha256": "4d0108b666f8cd8ed275b0d0c818158831a89ee88e9747dc259b50e48c26bad3",
+      "source": "src/epistemic_foundry/evaluation/v4_q05/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evaluation/v4_q06/__init__.py",
+      "sha256": "d9eb7cee8c2b758f3a55801e3aeb00b26595d5cb243f00bb79d3046acc53978c",
+      "source": "src/epistemic_foundry/evaluation/v4_q06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evaluation/v4_q06/gate.py",
+      "sha256": "b9cc43a9a545dc277e69575fda1bf6dbd378edbe6ad2ac87b715c2b9b2ac94dc",
+      "source": "src/epistemic_foundry/evaluation/v4_q06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evidence/__init__.py",
+      "sha256": "86830dc982df014fef3a418578c8fb16900d675c42c2551e181fc14297a89518",
+      "source": "src/epistemic_foundry/evidence/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evidence/v4_k05/__init__.py",
+      "sha256": "1f507c09e5d85301fe626eb1c25c27a721fdce12e1bc1f0a3ba64ae6bdae4804",
+      "source": "src/epistemic_foundry/evidence/v4_k05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evidence/v4_k05/boundaries.py",
+      "sha256": "b8ab0a8a1228d31c9f18e117f16f5199fc7c6929bd8b44ba0150db3fa69172be",
+      "source": "src/epistemic_foundry/evidence/v4_k05/boundaries.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evidence/v4_k06/__init__.py",
+      "sha256": "15dd047c8b226219f3a0a4d55e52ab1278d435eb8e15469dba65b06ef72998d6",
+      "source": "src/epistemic_foundry/evidence/v4_k06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evidence/v4_k06/gate.py",
+      "sha256": "95e378ca187f07cc580d7dc274999d33a5422cddfd0e3a90860e4dc17c8810ca",
+      "source": "src/epistemic_foundry/evidence/v4_k06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evidence_parliament/__init__.py",
+      "sha256": "1d81ee96edad7ad8d7a56c90a90308941b5f21ed5bb6a3f8770fd6aead78a1e8",
+      "source": "src/epistemic_foundry/evidence_parliament/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evidence_parliament/adjudication.py",
+      "sha256": "53f5f4d48396debbf60bd2408920b4d158bfccf248b26efae6e847d21acd01a5",
+      "source": "src/epistemic_foundry/evidence_parliament/adjudication.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution/__init__.py",
+      "sha256": "5e78003441fe841a387fec000a4d4e53dc35316ed923e46e042a2a4cf47e6f2c",
+      "source": "src/epistemic_foundry/evolution/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution/v4_f05/__init__.py",
+      "sha256": "99113b057119160f287d67673f64e82eab0f8bd349b1385e6be69909c43fce46",
+      "source": "src/epistemic_foundry/evolution/v4_f05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution/v4_f05/machine.py",
+      "sha256": "18bfc0b57c2a9935a62dc92e7dbceea246e93150340090c4bbbcfd91133e9ce8",
+      "source": "src/epistemic_foundry/evolution/v4_f05/machine.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution/v4_f06/__init__.py",
+      "sha256": "e6877bbc6f8cc28d8a794ce776a8ddcb1155bdf9db54393ab2cc393133b4a053",
+      "source": "src/epistemic_foundry/evolution/v4_f06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution/v4_f06/gate.py",
+      "sha256": "d2a9ba5ba9feba4c14ca586790ae1ba26b2939b7ff56b24de6ac9e9041738fc3",
+      "source": "src/epistemic_foundry/evolution/v4_f06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution_chamber/__init__.py",
+      "sha256": "88c15409ac27a590700070fc2d99067b14155cb72b0295d75521e47e39100612",
+      "source": "src/epistemic_foundry/evolution_chamber/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution_chamber/checkpoint.py",
+      "sha256": "fa19a52b2274d060632381b061ecef3a1b79f43b37fe8157bed6b7d6a5437617",
+      "source": "src/epistemic_foundry/evolution_chamber/checkpoint.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution_chamber/crossover.py",
+      "sha256": "c9727ea20c7cff877384a0ce3fbe0246fcbba3f278cc70e3f12812f130c796c6",
+      "source": "src/epistemic_foundry/evolution_chamber/crossover.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution_chamber/genome.py",
+      "sha256": "4b91c724cbb20e519546f9d8529c68adbb3842de09c06a39c178d62ae3831d9d",
+      "source": "src/epistemic_foundry/evolution_chamber/genome.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution_chamber/mutation.py",
+      "sha256": "b013feb55b292347cedce20db741a17d91a0657f4f0c634a48397b849c517d01",
+      "source": "src/epistemic_foundry/evolution_chamber/mutation.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution_chamber/reconciliation.py",
+      "sha256": "e5b9a062e1cd77c4cd063dbabb6c6754abe1d7b69f56e27a3b9dc88ba037230e",
+      "source": "src/epistemic_foundry/evolution_chamber/reconciliation.py"
+    },
+    {
+      "path": "python/epistemic_foundry/evolution_chamber/run_spec.py",
+      "sha256": "e71182a4222d6683d32965e7e3c82bd19d204728d6af98dda31d4b8ae030780c",
+      "source": "src/epistemic_foundry/evolution_chamber/run_spec.py"
+    },
+    {
+      "path": "python/epistemic_foundry/foundry_kernel/__init__.py",
+      "sha256": "732e8ef4dc1427cea2b9e9cae2d73eb648e46eb6476415a1e7f9f9ccd2f343a2",
+      "source": "src/epistemic_foundry/foundry_kernel/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/foundry_kernel/gates.py",
+      "sha256": "609dd3db72e90e82abbb0edaf32e8774a63e0512a0398cc38088da8292faaf26",
+      "source": "src/epistemic_foundry/foundry_kernel/gates.py"
+    },
+    {
+      "path": "python/epistemic_foundry/foundry_kernel/session.py",
+      "sha256": "2a86431831eeeb6b5b5275ce9d6a66dc5b5339698315568d5546dba9fd2db32b",
+      "source": "src/epistemic_foundry/foundry_kernel/session.py"
+    },
+    {
+      "path": "python/epistemic_foundry/foundry_kernel/transitions.py",
+      "sha256": "a524a616b2c7d76dfb740e1998857934c43160644060cd04da972500450bdd10",
+      "source": "src/epistemic_foundry/foundry_kernel/transitions.py"
+    },
+    {
+      "path": "python/epistemic_foundry/governance/__init__.py",
+      "sha256": "314133864c77fac3a3eb9420bf70d11ea4a6b3f907a0a0f37f367add9021bb76",
+      "source": "src/epistemic_foundry/governance/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/governance/approvals.py",
+      "sha256": "bd3ebd837d2a9d217e53d50a2177b4bf27e94064bb4a35dd3f6cfe64749fe5f6",
+      "source": "src/epistemic_foundry/governance/approvals.py"
+    },
+    {
+      "path": "python/epistemic_foundry/governance/dependency.py",
+      "sha256": "2b1396a4252cfa41d24e8ffa59ec9aaa3b97dd8bcf2481557a88bba9f444dda4",
+      "source": "src/epistemic_foundry/governance/dependency.py"
+    },
+    {
+      "path": "python/epistemic_foundry/governance/evolution_authority/__init__.py",
+      "sha256": "52b0abadc028b27200a37399e614a061112dbe40bf87a059e6185924ea91c7e1",
+      "source": "src/epistemic_foundry/governance/evolution_authority/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/governance/evolution_authority/nodes.py",
+      "sha256": "a6a9aa98208681358214a9d1f73247e4c48d1e4b18d527f61bf8539c8a1a601e",
+      "source": "src/epistemic_foundry/governance/evolution_authority/nodes.py"
+    },
+    {
+      "path": "python/epistemic_foundry/governance/evolution_authority/registry.py",
+      "sha256": "3cfcd95640813323344e15688186dac228537321762b384ffd526417421f608d",
+      "source": "src/epistemic_foundry/governance/evolution_authority/registry.py"
+    },
+    {
+      "path": "python/epistemic_foundry/governance/promotion.py",
+      "sha256": "f3e64beac137e0675c98e0d4b3ef884b795194c2ee1482f5fb5f07a03a69d792",
+      "source": "src/epistemic_foundry/governance/promotion.py"
+    },
+    {
+      "path": "python/epistemic_foundry/governance/quarantine.py",
+      "sha256": "a11511547926e22f35b46daed7eb54aefe579aa86d01041f79876921ec840e31",
+      "source": "src/epistemic_foundry/governance/quarantine.py"
+    },
+    {
+      "path": "python/epistemic_foundry/governance/separation.py",
+      "sha256": "21d06f5b8ad71f94d62d5e83ab218da5982f054247df4f1f8f32bc234e804a26",
+      "source": "src/epistemic_foundry/governance/separation.py"
+    },
+    {
+      "path": "python/epistemic_foundry/hypothesis_passport/__init__.py",
+      "sha256": "d10bd7a678aa564c3e0192049f0b2a329348c915439f514db376198cbd960dde",
+      "source": "src/epistemic_foundry/hypothesis_passport/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/hypothesis_passport/passport.py",
+      "sha256": "96f5853d7932e874b8594384b27a34e5a35de147ef26725f196b12ffa8735888",
+      "source": "src/epistemic_foundry/hypothesis_passport/passport.py"
+    },
+    {
+      "path": "python/epistemic_foundry/ingest/__init__.py",
+      "sha256": "9a725d3fa8f064b30cabd055c6085d1d329328d8408f3bb671c2b125c39686ce",
+      "source": "src/epistemic_foundry/ingest/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/ingest/comparability.py",
+      "sha256": "c0d61e7e1ed77b5fc2d32c849b074ae981fac02e815bccd8771996df6e49315f",
+      "source": "src/epistemic_foundry/ingest/comparability.py"
+    },
+    {
+      "path": "python/epistemic_foundry/ingest/intake.py",
+      "sha256": "c42ebcc5dd73961369592effa15120e5cdeffdd401f85eb10170e06d5fbad60a",
+      "source": "src/epistemic_foundry/ingest/intake.py"
+    },
+    {
+      "path": "python/epistemic_foundry/ingest/registry/__init__.py",
+      "sha256": "4af1c5ddb0abdda441de4a9df603ca4676e2c59b8156137302b4cac141ce0be9",
+      "source": "src/epistemic_foundry/ingest/registry/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/ingest/registry/errors.py",
+      "sha256": "2553dfe6f34b710ad396128131166b776569d613138470b966e4c50cd973485b",
+      "source": "src/epistemic_foundry/ingest/registry/errors.py"
+    },
+    {
+      "path": "python/epistemic_foundry/ingest/registry/hash.py",
+      "sha256": "0350190e16ed3bbbf19f4bd2e3dc793b4e3d58b5eeb5bff8d59aa21b8120e1ef",
+      "source": "src/epistemic_foundry/ingest/registry/hash.py"
+    },
+    {
+      "path": "python/epistemic_foundry/ingest/registry/lineage.py",
+      "sha256": "b51ec00945a88cf7c112fbeb85754e7d427af55ece0675a15bd7bd64ec084a1a",
+      "source": "src/epistemic_foundry/ingest/registry/lineage.py"
+    },
+    {
+      "path": "python/epistemic_foundry/ingest/registry/models.py",
+      "sha256": "5db2acd0154b509ba7f29fc349b356cb7700034686e49cc48a6347dbe411ad5b",
+      "source": "src/epistemic_foundry/ingest/registry/models.py"
+    },
+    {
+      "path": "python/epistemic_foundry/ingest/registry/repository.py",
+      "sha256": "a0fba443b9ee50f04816e72e0c035ce03bea478fb8f4b088424183d64f042284",
+      "source": "src/epistemic_foundry/ingest/registry/repository.py"
+    },
+    {
+      "path": "python/epistemic_foundry/ingest/registry/service.py",
+      "sha256": "c20be36a4bb1e5cd016c132353398c097cb482436505fc50dc5d46a97f4c46d2",
+      "source": "src/epistemic_foundry/ingest/registry/service.py"
+    },
+    {
+      "path": "python/epistemic_foundry/intake/__init__.py",
+      "sha256": "70e3ade54d619254f7f513e5a951cf91889b7164a93d1f4310b9f39246dac6f1",
+      "source": "src/epistemic_foundry/intake/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/intake/v4_i05/__init__.py",
+      "sha256": "bd1c599154a2200f9b65550ee61c1b475fc07ebcf9f588ebec8474c39de8c111",
+      "source": "src/epistemic_foundry/intake/v4_i05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/intake/v4_i05/screening.py",
+      "sha256": "1b529895684de1f73d7f8792d02b56f737f26f12dbcca391913359e50a8d3579",
+      "source": "src/epistemic_foundry/intake/v4_i05/screening.py"
+    },
+    {
+      "path": "python/epistemic_foundry/intake/v4_i06/__init__.py",
+      "sha256": "d5ca672ed0c66d32890889d5eb9cf506b33f7b1f8aa6582b3250d0dc78e4750f",
+      "source": "src/epistemic_foundry/intake/v4_i06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/intake/v4_i06/gate.py",
+      "sha256": "2a891ffa54d0c43acdf1f06153356f5127f84cd261d190395fb8e71c3cb86c50",
+      "source": "src/epistemic_foundry/intake/v4_i06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/memory/__init__.py",
+      "sha256": "e7e1b4f8a428eb8d946ad833d345d924ef0a2fec72ae556320cc7f07017769b7",
+      "source": "src/epistemic_foundry/memory/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/memory/capsule.py",
+      "sha256": "f3d4ffe83a3b0ea7d741aaaaf1db200f4007b64034513fc03d0f5cf428204647",
+      "source": "src/epistemic_foundry/memory/capsule.py"
+    },
+    {
+      "path": "python/epistemic_foundry/memory/policy.py",
+      "sha256": "327398c0cddfa2c07cfd895574e4b3e1c93185c0605f8e7147d32571a56b8199",
+      "source": "src/epistemic_foundry/memory/policy.py"
+    },
+    {
+      "path": "python/epistemic_foundry/memory/v4_l05/__init__.py",
+      "sha256": "7ea1ce12b7a31516eae1b260c1702e583eaa42985dbdbf26218153e9e3d57fe6",
+      "source": "src/epistemic_foundry/memory/v4_l05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/memory/v4_l05/retention.py",
+      "sha256": "03427daa5dac6d2d9971ff7e6fe915aeb029904fcd27f8a1f1db483a5e7e2b0c",
+      "source": "src/epistemic_foundry/memory/v4_l05/retention.py"
+    },
+    {
+      "path": "python/epistemic_foundry/memory/v4_l06/__init__.py",
+      "sha256": "b3bdee3f27ff6ed3dcf4fbeb8a6a0968b2cd73a9d84df5eef39fabb4771e379d",
+      "source": "src/epistemic_foundry/memory/v4_l06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/memory/v4_l06/gate.py",
+      "sha256": "518e591dc3a7f7a7fd59b7e765a7251ccfb677146b9a5744708b36186d36123e",
+      "source": "src/epistemic_foundry/memory/v4_l06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/noetic_ledger/__init__.py",
+      "sha256": "a38bc1c4c19dd590ec03f444c871ba552f8962f317988336d087a5d3bc5917cd",
+      "source": "src/epistemic_foundry/noetic_ledger/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/noetic_ledger/ledger.py",
+      "sha256": "d52eaa605d8698b37ba3682f26bd689a5b9a5619cca0b3ab1c0e42421226f9f7",
+      "source": "src/epistemic_foundry/noetic_ledger/ledger.py"
+    },
+    {
+      "path": "python/epistemic_foundry/noetic_ledger/receipts.py",
+      "sha256": "3ae3da8248fd1d75660a231f03db7e4c64a0246521b527a5c801e83ffaa50947",
+      "source": "src/epistemic_foundry/noetic_ledger/receipts.py"
+    },
+    {
+      "path": "python/epistemic_foundry/observability/__init__.py",
+      "sha256": "14d00d277bb148f78d319b3b5985890e9cafa37082fbecfefde3b0e36e567fe1",
+      "source": "src/epistemic_foundry/observability/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/observability/ranking.py",
+      "sha256": "4ca2a097a6a64e5f11caacc4835390b3a10c1ddc6a0cfea71f448ebba02db98d",
+      "source": "src/epistemic_foundry/observability/ranking.py"
+    },
+    {
+      "path": "python/epistemic_foundry/observability/result_state.py",
+      "sha256": "4f7ff41e115eac562278f6e886227dfce92c181244a5965bd387dfb1c7e7baf9",
+      "source": "src/epistemic_foundry/observability/result_state.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operations/__init__.py",
+      "sha256": "2ffba2b7d0209480bbf7f4b98644fc6b4e09192f11cc8aa271b1dbd5a7379cf4",
+      "source": "src/epistemic_foundry/operations/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operations/v4_y05/__init__.py",
+      "sha256": "3a40355a7d6d29d652dc8b4a2d5dceff064b3fd7c95f131a3809a11d43718671",
+      "source": "src/epistemic_foundry/operations/v4_y05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operations/v4_y05/scaling.py",
+      "sha256": "9944d3b0a1b908c7caa9c1dfe793613dd03e2453c4d9fdf529ec6e348f577ea3",
+      "source": "src/epistemic_foundry/operations/v4_y05/scaling.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operations/v4_y06/__init__.py",
+      "sha256": "7388faf4e6b4183a4641091e71ba3a13b7f0f46da24215d3571c4f0587b995ad",
+      "source": "src/epistemic_foundry/operations/v4_y06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operations/v4_y06/qualification.py",
+      "sha256": "3e16c0ff0fd2c2f919944af927dacc337d8014af6915133f8046d30969f30a9d",
+      "source": "src/epistemic_foundry/operations/v4_y06/qualification.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operators/__init__.py",
+      "sha256": "40b34a146f25107234c9147b544ac2ed40ab909db931976bf9a5dd8b96e20555",
+      "source": "src/epistemic_foundry/operators/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operators/v4_j05/__init__.py",
+      "sha256": "69bc10137adc456887e0f71a9765f7e3315a0c2d8422467bf3d6c27b77fffd96",
+      "source": "src/epistemic_foundry/operators/v4_j05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operators/v4_j05/declarations.py",
+      "sha256": "3a9e167c7fa4ca268e91936c44018f73c9b1c7f628cda65c5088fcacfcddea11",
+      "source": "src/epistemic_foundry/operators/v4_j05/declarations.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operators/v4_j05/prompt_workflow.py",
+      "sha256": "bfe4037c8006ec0aec459e7e3929cf944e4b0efcbddf99505b94a08e541000c3",
+      "source": "src/epistemic_foundry/operators/v4_j05/prompt_workflow.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operators/v4_j05/registry.py",
+      "sha256": "f23874f62b22042b8eed04a827b12fe704324eac4e40185e523c49ec9f5c4446",
+      "source": "src/epistemic_foundry/operators/v4_j05/registry.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operators/v4_j06/__init__.py",
+      "sha256": "47013bf3f549cc12e56b34945ea48e6ee8dcb4bb07152d7c868cc2e7648ea36a",
+      "source": "src/epistemic_foundry/operators/v4_j06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operators/v4_j06/declarations.py",
+      "sha256": "f30c9587bee3eb0b879b4ade897f76473b278fb1b830905526a848b8357bdcff",
+      "source": "src/epistemic_foundry/operators/v4_j06/declarations.py"
+    },
+    {
+      "path": "python/epistemic_foundry/operators/v4_j06/gate.py",
+      "sha256": "9ccf17599a3f990dd7e486650d941458b20cc98d2d207d264a3efa3aed3b6bfb",
+      "source": "src/epistemic_foundry/operators/v4_j06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/parliament/__init__.py",
+      "sha256": "4733924624c3e685777c6e4f2c332e34729a4c2dff62bfa5ec66410c5ac2e0ee",
+      "source": "src/epistemic_foundry/parliament/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/parliament/v4_p05/__init__.py",
+      "sha256": "26fa6b7fe72f8f52cae0f3d847da0eccd802833baf93cfc0a9518a631503c7a8",
+      "source": "src/epistemic_foundry/parliament/v4_p05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/parliament/v4_p05/gate.py",
+      "sha256": "0414fa930eefce7c6a52c2fb78670d025be40a9de3a0601e3845071c565f554d",
+      "source": "src/epistemic_foundry/parliament/v4_p05/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/parliament/v4_p06/__init__.py",
+      "sha256": "62d32efe110b2c676a1a6b7fdb83379c6989cee49ec166cff6eb9af13cf2eb9c",
+      "source": "src/epistemic_foundry/parliament/v4_p06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/parliament/v4_p06/gate.py",
+      "sha256": "5c29ec4d303ab7378053e110d0ab4ebc18f2c040a17380e2dd9d8616bdfa57ef",
+      "source": "src/epistemic_foundry/parliament/v4_p06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/plugin_shell/__init__.py",
+      "sha256": "ff81b9a1bf0bc7e0b81780341230b90faa68108c6cfaf8845062a83bb1e59069",
+      "source": "src/epistemic_foundry/plugin_shell/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/plugin_shell/capabilities.py",
+      "sha256": "42a685ac2ddec572e47b3a410dd1ccf76a94f098b09891804f5d585c5ba8cc4b",
+      "source": "src/epistemic_foundry/plugin_shell/capabilities.py"
+    },
+    {
+      "path": "python/epistemic_foundry/providers/__init__.py",
+      "sha256": "6c6f5a3b99dc84383a9cc87f4ffe4aef0f474ad85d690c0aded723ccf159c064",
+      "source": "src/epistemic_foundry/providers/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/providers/neutrality.py",
+      "sha256": "c5514bb53fcbb53bb43d8f3ac0ff932bf1d0e8f42ef1bc43bb8a01bf0a5137cc",
+      "source": "src/epistemic_foundry/providers/neutrality.py"
+    },
+    {
+      "path": "python/epistemic_foundry/providers/untrusted.py",
+      "sha256": "384a814699bd9ed6be1d443b7de4491a5d74b8812ead2d6304ed93f563feec2d",
+      "source": "src/epistemic_foundry/providers/untrusted.py"
+    },
+    {
+      "path": "python/epistemic_foundry/providers/v4_x05/__init__.py",
+      "sha256": "c10f202cc39c8d718dfb73757fdd62d2cc8150675206b7aa98f5f13c238bc33b",
+      "source": "src/epistemic_foundry/providers/v4_x05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/providers/v4_x05/routing.py",
+      "sha256": "8e35ce9a40073b49eb38c23c5efd5ffcc438067e1ff1a18115b8b585aa17a7b6",
+      "source": "src/epistemic_foundry/providers/v4_x05/routing.py"
+    },
+    {
+      "path": "python/epistemic_foundry/providers/v4_x06/__init__.py",
+      "sha256": "cde11aed520ab792e79863ced72ecd9cfe3c98621813bdc8b7bf92e9a0604d58",
+      "source": "src/epistemic_foundry/providers/v4_x06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/providers/v4_x06/gate.py",
+      "sha256": "c71aeecd32f87f8640a5e76ac9b806f4af440814eb2b7beafc2a2005407e9cf1",
+      "source": "src/epistemic_foundry/providers/v4_x06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/reasoning/__init__.py",
+      "sha256": "a6646fa8f52fe0ccadebfcb1e29dcda62678cb1d89e2043c9c8e8b0e9d2a3ebb",
+      "source": "src/epistemic_foundry/reasoning/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/reasoning/v4_r05/__init__.py",
+      "sha256": "b3dcd2480b88b699ec5170b82810eab0ad58fbe078e8c92e8a038da4e94034d5",
+      "source": "src/epistemic_foundry/reasoning/v4_r05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/reasoning/v4_r05/operators.py",
+      "sha256": "1bb650776cae62cfb5290c92620724b1683f14512a9193217d2b60865bda0e18",
+      "source": "src/epistemic_foundry/reasoning/v4_r05/operators.py"
+    },
+    {
+      "path": "python/epistemic_foundry/reasoning/v4_r06/__init__.py",
+      "sha256": "adaa444ef45523a7a32f7f2c43039958873b5888a99d64cc275036a71146f946",
+      "source": "src/epistemic_foundry/reasoning/v4_r06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/reasoning/v4_r06/gate.py",
+      "sha256": "a06fcd0e617e2638d2bc248835282f6158b5ebd7767113f63939775d1b2e9b0e",
+      "source": "src/epistemic_foundry/reasoning/v4_r06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/recovery/__init__.py",
+      "sha256": "e6b6f74ac9f52bff94548a18bbda6f3ed630a9cd943c08493e2f43ded6c00c6c",
+      "source": "src/epistemic_foundry/recovery/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/recovery/v4_w05/__init__.py",
+      "sha256": "e991383eb08d0156c3e43c3798119471666ceb8f7f6d837e4fe4947b38080ee2",
+      "source": "src/epistemic_foundry/recovery/v4_w05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/recovery/v4_w05/workflow.py",
+      "sha256": "e0f509999e3ac14f7bdfbb84553b5b39b96112bd593bc7bbb7e6551490ca6537",
+      "source": "src/epistemic_foundry/recovery/v4_w05/workflow.py"
+    },
+    {
+      "path": "python/epistemic_foundry/recovery/v4_w06/__init__.py",
+      "sha256": "cb8d56e9c683a55279da3e807177cf8246f376c9742b10aa01060ec56be632f7",
+      "source": "src/epistemic_foundry/recovery/v4_w06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/recovery/v4_w06/gate.py",
+      "sha256": "52ceb023324f1be97e333093df2cb49a285337b33b18e6d4df529e6cffadfc0e",
+      "source": "src/epistemic_foundry/recovery/v4_w06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/red_queen_lab/__init__.py",
+      "sha256": "755dfbbd4967d7be6154e77c3aea323ade0258ba178f4d02452172c31c15fb1c",
+      "source": "src/epistemic_foundry/red_queen_lab/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/red_queen_lab/challenges.py",
+      "sha256": "5620569290f89fcb49ead23fe990d0550df7f98bcb9283992f2c404ab7673539",
+      "source": "src/epistemic_foundry/red_queen_lab/challenges.py"
+    },
+    {
+      "path": "python/epistemic_foundry/release/__init__.py",
+      "sha256": "6c2d42edda6654a44e6f6d86e96e58d6e51f2293e80a8100d03a30c0ab3b1f67",
+      "source": "src/epistemic_foundry/release/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/release/integrity.py",
+      "sha256": "ff7152d6ee314352f1fa4a130c2d411ed01413d7ac3fb02abb87d18ab55b8601",
+      "source": "src/epistemic_foundry/release/integrity.py"
+    },
+    {
+      "path": "python/epistemic_foundry/release/provenance.py",
+      "sha256": "5a6a57b3c2a30d86421c3f9e954401a355dff353ab90eaa8411afef4ddc7ed0e",
+      "source": "src/epistemic_foundry/release/provenance.py"
+    },
+    {
+      "path": "python/epistemic_foundry/release/replay.py",
+      "sha256": "4624435973e13f4231e8d89eea22b0387555ee62d7a4d9b018c4d6007449f92a",
+      "source": "src/epistemic_foundry/release/replay.py"
+    },
+    {
+      "path": "python/epistemic_foundry/retrieval/__init__.py",
+      "sha256": "db0cc7e4e9b2693e1f42f8ab1dcdb4c35c0c88417a6de58ede89b8494b2b4de9",
+      "source": "src/epistemic_foundry/retrieval/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/retrieval/lanes.py",
+      "sha256": "c677dddb37ae5f4a73b735c2fd0c5191b0a8a5816cd5eba604ff7a77c558d8e8",
+      "source": "src/epistemic_foundry/retrieval/lanes.py"
+    },
+    {
+      "path": "python/epistemic_foundry/retrieval/lexical_index.py",
+      "sha256": "8237a88ceda8d3c0610b8ddb4906c741e849477754970af7ff9721f6f7a15126",
+      "source": "src/epistemic_foundry/retrieval/lexical_index.py"
+    },
+    {
+      "path": "python/epistemic_foundry/retrieval/search_state.py",
+      "sha256": "a2f1d86d8f128193b917f40d174b497054238e3af15be0df2cc21ac316403bf9",
+      "source": "src/epistemic_foundry/retrieval/search_state.py"
+    },
+    {
+      "path": "python/epistemic_foundry/retrieval/v4_o05/__init__.py",
+      "sha256": "7b7e9958bf2eea1cac7c8286caadfe7c5d38ec5010bdb383d7953fc7ad4dc1a4",
+      "source": "src/epistemic_foundry/retrieval/v4_o05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/retrieval/v4_o05/acquisition.py",
+      "sha256": "62c8036afcc8f7e51f2bc26f7e1cc791092151cd34dbf6e8e6d032184bbae0e0",
+      "source": "src/epistemic_foundry/retrieval/v4_o05/acquisition.py"
+    },
+    {
+      "path": "python/epistemic_foundry/retrieval/v4_o06/__init__.py",
+      "sha256": "51aa81abaaaf043cce4dd9e04b6e9063f6472a8935316d692d7ef96c85fb6be0",
+      "source": "src/epistemic_foundry/retrieval/v4_o06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/retrieval/v4_o06/gate.py",
+      "sha256": "40a476e39119e165d4061e2dbf89eaae4199fbb1cfffe70b17c92c129d8fece1",
+      "source": "src/epistemic_foundry/retrieval/v4_o06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/scheduler/__init__.py",
+      "sha256": "95e404120ad33d86e0188487463997d1c61445cf6a9cd31536ae4cf11b096961",
+      "source": "src/epistemic_foundry/scheduler/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/scheduler/v4_n05/__init__.py",
+      "sha256": "4fc522d191e75a2f2a892fe5290d5fababccaed002ffb0c258060827a4aed009",
+      "source": "src/epistemic_foundry/scheduler/v4_n05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/scheduler/v4_n05/lane-phase-binding.json",
+      "sha256": "f8f6f7e4f59334bdda29bae17e2e763d1f1b977ddb90daa58d29884f08eca813",
+      "source": "src/epistemic_foundry/scheduler/v4_n05/lane-phase-binding.json"
+    },
+    {
+      "path": "python/epistemic_foundry/scheduler/v4_n05/lanes.py",
+      "sha256": "99250ca72c516ef6b8f8b1454d298bafb73809b4d93bc934da8ba6e031962997",
+      "source": "src/epistemic_foundry/scheduler/v4_n05/lanes.py"
+    },
+    {
+      "path": "python/epistemic_foundry/scheduler/v4_n06/__init__.py",
+      "sha256": "56f8503ef9179ef4e6fd292dd9f0277bf558f13b6ff917833733efade93f1a28",
+      "source": "src/epistemic_foundry/scheduler/v4_n06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/scheduler/v4_n06/integration.py",
+      "sha256": "88ff63d93321012518bd4e831f7e92c1b58006d3ab9d4c397d95119670d8bac7",
+      "source": "src/epistemic_foundry/scheduler/v4_n06/integration.py"
+    },
+    {
+      "path": "python/epistemic_foundry/security/__init__.py",
+      "sha256": "5520997bb03888fc57a56ffd68c9de77e252a458fd8ed83823c1bd7cc8afcb73",
+      "source": "src/epistemic_foundry/security/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/security/dispatch.py",
+      "sha256": "dfca2b5fcc3aeff60cfaa93a13cbce0783615ea155bbf229489af548ec43a161",
+      "source": "src/epistemic_foundry/security/dispatch.py"
+    },
+    {
+      "path": "python/epistemic_foundry/security/sandbox.py",
+      "sha256": "15cc6a074d83432269e534d91287ec7971400a806dd93effa5d5f8ae45aba5a2",
+      "source": "src/epistemic_foundry/security/sandbox.py"
+    },
+    {
+      "path": "python/epistemic_foundry/security/skills.py",
+      "sha256": "9e7865df26b01d2627a8a275f033db01eac87877661f91ca6d3fd4febd41283d",
+      "source": "src/epistemic_foundry/security/skills.py"
+    },
+    {
+      "path": "python/epistemic_foundry/security/v4_s05/__init__.py",
+      "sha256": "c311d1132ae385cfea553d7b45f2c6268aa028f4a6ac8ad610e1ebbd2a0e3771",
+      "source": "src/epistemic_foundry/security/v4_s05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/security/v4_s05/threat_controls.py",
+      "sha256": "b3ee6047df8572bc2836ca822c9506a425a835c2ad2d07343281716b5fc95787",
+      "source": "src/epistemic_foundry/security/v4_s05/threat_controls.py"
+    },
+    {
+      "path": "python/epistemic_foundry/security/v4_s06/__init__.py",
+      "sha256": "4b2c00ca5a4620394855b121b4edbaaaab0cf22be8a6419119a3800e13e2aa48",
+      "source": "src/epistemic_foundry/security/v4_s06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/security/v4_s06/governance_gate.py",
+      "sha256": "7e1a37fddc37936a6f77eaba1c62fe6101ce66cadeafce9ad9f4160337476bf8",
+      "source": "src/epistemic_foundry/security/v4_s06/governance_gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/shinka_adapter/__init__.py",
+      "sha256": "32867cea2373e3fb13528327ed3907803e525924924c6ffb4a3fdd3c28213fe4",
+      "source": "src/epistemic_foundry/shinka_adapter/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/shinka_adapter/backend.py",
+      "sha256": "6760a8abd5a91549efd2c9cc8e231e7d07bb8e3b6bb112feced57d001b9decd0",
+      "source": "src/epistemic_foundry/shinka_adapter/backend.py"
+    },
+    {
+      "path": "python/epistemic_foundry/shinka_adapter/isolation.py",
+      "sha256": "3d55baf8059e27cb143f36952cd009c5f3329b2add882027cdb91da0402b579e",
+      "source": "src/epistemic_foundry/shinka_adapter/isolation.py"
+    },
+    {
+      "path": "python/epistemic_foundry/statistics/__init__.py",
+      "sha256": "89628bc0d9a951a51a1e01d2a94a08ab041cecea734eb93889f93580080a4cc7",
+      "source": "src/epistemic_foundry/statistics/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/statistics/multiplicity.py",
+      "sha256": "0ecb85d4f73f36c5aaefc714cb17bb0f4176f7eb0db5ba664ff551518cd6845d",
+      "source": "src/epistemic_foundry/statistics/multiplicity.py"
+    },
+    {
+      "path": "python/epistemic_foundry/statistics/search_record.py",
+      "sha256": "8c6f60305125dc82cf6db001bc899d6fdc6fec21af8e716e35410c058044257f",
+      "source": "src/epistemic_foundry/statistics/search_record.py"
+    },
+    {
+      "path": "python/epistemic_foundry/statistics/selective.py",
+      "sha256": "6dd92e658d2a39f52093c71f1fae6822c2ad72cea78f0b42071bc42ddea0172f",
+      "source": "src/epistemic_foundry/statistics/selective.py"
+    },
+    {
+      "path": "python/epistemic_foundry/statistics/sequential.py",
+      "sha256": "1ab038ddaed75976617544cc095be74b487ada4765002495da37bafdbc34c889",
+      "source": "src/epistemic_foundry/statistics/sequential.py"
+    },
+    {
+      "path": "python/epistemic_foundry/updates/__init__.py",
+      "sha256": "2065df20f17395317d70bc625316bcda2e8dd028d249f7644239b0967353fb0e",
+      "source": "src/epistemic_foundry/updates/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/updates/impact.py",
+      "sha256": "eb44707b68d6c8d3579189ac4bf6e7c6449bb6271319e31dd0010c29b441391e",
+      "source": "src/epistemic_foundry/updates/impact.py"
+    },
+    {
+      "path": "python/epistemic_foundry/updates/migration.py",
+      "sha256": "9a294211bf2adb20ac02b54a8d3ea47afceaed55d5aa8bde029f84081d220519",
+      "source": "src/epistemic_foundry/updates/migration.py"
+    },
+    {
+      "path": "python/epistemic_foundry/validation/__init__.py",
+      "sha256": "ce14cb9e263d5e0b283f11c2548c1901af67b9652d6a420af0502f8b4729bbd6",
+      "source": "src/epistemic_foundry/validation/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/validation/v4_v05/__init__.py",
+      "sha256": "64336f75bde4968278501327619f0cc9898ea62be080abf88ad2f66dfe38761a",
+      "source": "src/epistemic_foundry/validation/v4_v05/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/validation/v4_v05/cascade_gate.py",
+      "sha256": "3dd7074874e7871dac767df60d110ef83b51513f3f3e6002090ce479beaa4896",
+      "source": "src/epistemic_foundry/validation/v4_v05/cascade_gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/validation/v4_v06/__init__.py",
+      "sha256": "cd0ab1ec7b0b41a6a3c1172d9d19b1851a7df58b1044f5b1a69180dba09adeb5",
+      "source": "src/epistemic_foundry/validation/v4_v06/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/validation/v4_v06/gate.py",
+      "sha256": "597487ce7c44076dd19a27ed00d3039a6df799a75667781bdaa4dc1d52594ec4",
+      "source": "src/epistemic_foundry/validation/v4_v06/gate.py"
+    },
+    {
+      "path": "python/epistemic_foundry/validation_bay/__init__.py",
+      "sha256": "a5c226bcf80dfc4cc9f51cbfaecd26db379ddef52c4cf3406de6336e6182eb56",
+      "source": "src/epistemic_foundry/validation_bay/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/validation_bay/cascade.py",
+      "sha256": "3b81ac6d34f2f2959a69667fb80157595afb52f285d7127eb11733818d5a0a3f",
+      "source": "src/epistemic_foundry/validation_bay/cascade.py"
+    },
+    {
+      "path": "python/epistemic_foundry/validation_bay/replication.py",
+      "sha256": "3cd42a7b0386fb4ed317f4408fb632df68937b23a08c3c1fc072840fcaea9848",
+      "source": "src/epistemic_foundry/validation_bay/replication.py"
+    },
+    {
+      "path": "python/epistemic_foundry/verifier_firewall/__init__.py",
+      "sha256": "c2e56054521b7659b181f7e9e2555b46f19a1a4cdc7ee1518b0a9be2f3af6a62",
+      "source": "src/epistemic_foundry/verifier_firewall/__init__.py"
+    },
+    {
+      "path": "python/epistemic_foundry/verifier_firewall/firewall.py",
+      "sha256": "fe0669976a536d1e9174473a38479d487820157f883bfc4eca2aaa1b84b43761",
+      "source": "src/epistemic_foundry/verifier_firewall/firewall.py"
+    }
+  ],
+  "python_requirement": ">=3.11",
+  "required_third_party": [
+    "jsonschema",
+    "yaml"
+  ],
+  "schema": "epistemic-foundry/mvp-runtime-manifest/v1",
+  "scope": "MVP_RELEASE_ONLY",
+  "served_retrieval_lanes": [
+    "lexical",
+    "citation",
+    "entity_variable"
+  ],
+  "source_commit": "1d3ec8a51e4e05fd11849a3ec1f00d9de8f5912b",
+  "source_root": "src/epistemic_foundry"
+}

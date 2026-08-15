@@ -34,12 +34,47 @@ export const epistemicAssessment = (overrides = {}) => ({
   ...overrides,
 });
 
+/** One complete ScopeVector for the greenhouse tomato and elevated-CO2 story. */
+export const scopeVector = (overrides = {}) => ({
+  domain: "plant science",
+  population: "greenhouse-grown tomato plants",
+  entity_type: "plant",
+  entity_subtype: "tomato",
+  unit_of_analysis: "individual tomato plant",
+  setting: "greenhouse",
+  geography: null,
+  jurisdiction: null,
+  language: "English",
+  lifecycle_stage: "fruiting",
+  spatial_scale: "individual plant",
+  temporal_scale: "greenhouse crop cycle",
+  time_period: null,
+  measurement_time: "harvest",
+  intervention_or_exposure: {
+    name: "elevated CO2",
+    category: "atmospheric exposure",
+    min_value: null,
+    max_value: null,
+    unit: null,
+    duration: null,
+    frequency: null,
+    rate: null,
+    route_or_delivery: "greenhouse atmosphere",
+  },
+  comparator: "ambient CO2 under the same greenhouse regime",
+  inclusion_criteria: ["tomato plants grown under the stated greenhouse regime"],
+  exclusion_criteria: [],
+  conditions: { greenhouse_regime: "stated" },
+  domain_extensions: { crop: "tomato" },
+  ...overrides,
+});
+
 /** One immutable hypothesis passport revision, overridable field by field. */
 export const passport = (overrides = {}) => ({
   hypothesis_id: "HYP-0001",
   revision: REVISION,
   canonical_statement: "Elevated CO2 raises tomato yield under the stated greenhouse regime.",
-  scope: { setting: "greenhouse", crop: "tomato" },
+  scope: scopeVector(),
   reasoning_modes: ["deductive", "causal"],
   mechanism_chain: ["MC-0001"],
   prediction_ids: ["PR-0001"],

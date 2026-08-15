@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evidence-pack.schema.json",
+  "title": "EvidencePack",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "pack_id": {
+      "type": "string"
+    },
+    "insight_id": {
+      "type": "string"
+    },
+    "corpus_snapshot_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "supporting_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "counter_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "null_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "boundary_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "method_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "alternative_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependency_clusters": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "unsearched_scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "retrieval_manifest_id": {
+      "type": "string"
+    },
+    "completeness": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "support_lane_complete": {
+          "type": "boolean"
+        },
+        "counter_lane_complete": {
+          "type": "boolean"
+        },
+        "null_lane_complete": {
+          "type": "boolean"
+        },
+        "boundary_lane_complete": {
+          "type": "boolean"
+        },
+        "method_lane_complete": {
+          "type": "boolean"
+        },
+        "novelty_lane_complete": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "support_lane_complete",
+        "counter_lane_complete",
+        "null_lane_complete",
+        "boundary_lane_complete",
+        "method_lane_complete",
+        "novelty_lane_complete"
+      ]
+    },
+    "retrieval_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "search_lane_receipt_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "effective_independent_count": {
+      "type": "number",
+      "minimum": 0
+    },
+    "bias_risk_register_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role_quota_report": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "completeness_certificate_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "stale": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "pack_id",
+    "insight_id",
+    "corpus_snapshot_hash",
+    "supporting_ids",
+    "counter_ids",
+    "null_ids",
+    "boundary_ids",
+    "method_ids",
+    "alternative_ids",
+    "dependency_clusters",
+    "unsearched_scopes",
+    "retrieval_manifest_id",
+    "completeness",
+    "retrieval_run_id",
+    "search_lane_receipt_ids",
+    "effective_independent_count",
+    "bias_risk_register_id",
+    "role_quota_report",
+    "completeness_certificate_hash",
+    "stale"
+  ]
+}

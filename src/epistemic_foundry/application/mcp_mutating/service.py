@@ -1,13 +1,10 @@
-"""T02 mutating tool catalog and the receipt-bound mutation service.
+"""T02 mutating tool catalog and result-contract validation.
 
 The canonical wire literals live in ``contracts/mcp/t02/tool-catalog.yaml``
 (HD-EF4-T02-SCOPE-20260801-001); the sealed T01 catalog is untouched.  This
-module loads and verifies that catalog and executes the frozen authorization
-order with approval verification inside CAPABILITY_AUTHORIZATION, before lease
-issuance.  No mutation is representable without a persisted ActionIntent, a
-valid exact-scope CapabilityLease, and a resolving EffectReceipt; an
-unresolved effect surfaces as UNKNOWN with reconciliation required, never as
-success and never as a claim that nothing happened.
+module loads and verifies the T02 catalog, its existing mutation-result
+payload, and the shared T01 envelopes.  Mutation lifecycle authority belongs
+behind the compound runtime port; this module does not reproduce it.
 """
 
 from __future__ import annotations
@@ -48,6 +45,7 @@ MUTATION_ERROR_CODES: Final = (
     "LEASE_DENIED",
     "LEASE_INVALID",
     "REVISION_CONFLICT",
+    "EFFECT_RECONCILING",
     "RECONCILIATION_FAILED",
 )
 #: Mapping onto the sealed top-level error_code enum.
@@ -59,6 +57,7 @@ MUTATION_ERROR_MAPPING: Final = {
     "LEASE_DENIED": "UNAUTHORIZED",
     "LEASE_INVALID": "UNAUTHORIZED",
     "REVISION_CONFLICT": "INVALID_REQUEST",
+    "EFFECT_RECONCILING": "INTERNAL",
     "RECONCILIATION_FAILED": "INTERNAL",
 }
 APPROVAL_CLASSES: Final = ("POLICY_CONDITIONAL", "CONSENT_REQUIRED", "HUMAN_REQUIRED")
@@ -304,7 +303,7 @@ class MutatingToolCatalog:
             raise CatalogIntegrityError(f"mutation error details invalid: {errors}")
 
     def validate_result_envelope(self, envelope: Mapping[str, Any]) -> None:
-        """Shared-envelope check plus the required T02 mutation payload."""
+        """Validate a mutation payload or the sole pre-effect outage form."""
 
         errors = sorted(
             error.message
@@ -313,6 +312,19 @@ class MutatingToolCatalog:
         if errors:
             raise CatalogIntegrityError(f"result envelope invalid: {errors}")
         data = envelope.get("data")
+        if data is None:
+            reason = envelope.get("degradation_reason")
+            if (
+                envelope.get("read_model_state") != "UNAVAILABLE"
+                or not isinstance(reason, str)
+                or not reason.strip()
+                or envelope.get("receipts") != []
+            ):
+                raise CatalogIntegrityError(
+                    "a data-less mutating result must be UNAVAILABLE with a "
+                    "nonempty degradation reason and no receipts"
+                )
+            return
         if not isinstance(data, Mapping):
             raise CatalogIntegrityError(
                 "a mutating result must carry a mutation payload"

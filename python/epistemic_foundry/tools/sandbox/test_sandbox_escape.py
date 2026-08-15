@@ -11,6 +11,8 @@ degrade into a permissive default.
 
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 from typing import Any
 
@@ -41,6 +43,7 @@ from .contracts import (
 
 ROOT = Path(__file__).resolve().parents[4]
 NOW = "2026-08-01T12:00:00Z"
+POLICY_HASH = "sha256:" + "b" * 64
 EVALUATOR = "EVAL-1"
 HIDDEN = "holdout-hidden-1"
 
@@ -102,16 +105,34 @@ def envelope(**overrides: Any) -> dict[str, Any]:
 def holdout(**overrides: Any) -> dict[str, Any]:
     payload: dict[str, Any] = {
         "adversarial_partition_handles": ["holdout-adv-1"],
+        "acl_policy_hash": "sha256:" + "c" * 64,
         "backend_access": False,
+        "cache_isolation_policy": "per-run sealed cache",
         "candidate_access": False,
+        "content_hashes": ["sha256:" + "d" * 64],
         "evaluator_id": EVALUATOR,
         "hidden_partition_handles": [HIDDEN],
         "holdout_id": "HOLD-1",
+        "log_redaction_policy": "opaque handles only",
         "mutation_model_access": False,
         "ood_partition_handles": ["holdout-ood-1"],
         "prompt_access": False,
+        "public_partition_refs": ["ART-PUBLIC-1"],
+        "sealed_at": NOW,
+        "split_strategy": "sealed-evaluator-split-v1",
+        "unblinding_approval_required": True,
     }
     payload.update(overrides)
+    if "manifest_hash" not in overrides:
+        payload["manifest_hash"] = "sha256:" + hashlib.sha256(
+            json.dumps(
+                payload,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+                allow_nan=False,
+            ).encode("utf-8")
+        ).hexdigest()
     return payload
 
 
@@ -120,13 +141,30 @@ def lease(**overrides: Any) -> dict[str, Any]:
         "approval_ids": ["APR-1"],
         "capabilities": ["fs.read", "net.fetch"],
         "expires_at": "2026-08-01T18:00:00Z",
+        "fencing_token": 7,
+        "issued_at": "2026-08-01T06:00:00Z",
         "lease_id": "LEASE-1",
+        "policy_hash": POLICY_HASH,
         "principal_id": "tool-runner",
         "principal_type": "tool",
         "resource_scopes": ["workspace"],
+        "revocation_reason": None,
         "revoked": False,
     }
     payload.update(overrides)
+    semantic = {key: value for key, value in payload.items() if key != "lease_hash"}
+    for field in ("approval_ids", "capabilities", "resource_scopes"):
+        semantic[field] = sorted(
+            semantic[field], key=lambda value: value.encode("utf-16-be")
+        )
+    canonical = json.dumps(
+        semantic,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode("utf-8")
+    payload["lease_hash"] = "sha256:" + hashlib.sha256(canonical).hexdigest()
     return payload
 
 
@@ -151,13 +189,21 @@ def request(**overrides: Any) -> dict[str, Any]:
 
 
 def authorize(**overrides: Any):
+    granted_lease = overrides.pop("lease", None) or lease()
+    invocation_request = overrides.pop("request", None) or request()
+    default_heads = {
+        entry["root_id"]: granted_lease["fencing_token"]
+        for entry in invocation_request["paths"]
+    }
     return authorize_invocation(
         ROOT,
         adapter=overrides.pop("adapter", None) or seal_adapter(ROOT, manifest()),
-        lease=overrides.pop("lease", None) or lease(),
+        lease=granted_lease,
         holdout=overrides.pop("holdout", None) or holdout(),
-        request=overrides.pop("request", None) or request(),
+        request=invocation_request,
         now=overrides.pop("now", NOW),
+        policy_hash=overrides.pop("policy_hash", granted_lease["policy_hash"]),
+        scope_fencing_heads=overrides.pop("scope_fencing_heads", default_heads),
     )
 
 
@@ -175,6 +221,10 @@ def test_a_declared_invocation_is_admitted_and_names_what_it_allowed() -> None:
     assert decision.granted_capabilities == ("fs.read",)
     assert decision.granted_roots == ("workspace",)
     assert decision.egress_origin is None
+    assert decision.lease_id == "LEASE-1"
+    assert decision.lease_policy_hash == POLICY_HASH
+    assert decision.lease_fencing_token == 7
+    assert decision.scope_fencing_heads == (("workspace", 7),)
 
 
 def test_the_decision_reports_the_boundaries_the_holdout_schema_pins() -> None:
@@ -200,6 +250,13 @@ def test_a_holdout_that_grants_candidate_access_contradicts_its_own_schema() -> 
 
     assert caught.value.code == Denial.ISOLATION_BREACH.value
     assert caught.value.context["boundary"] == "candidate_access"
+
+
+def test_a_rehashed_holdout_manifest_is_required_for_isolation_authority() -> None:
+    with pytest.raises(SandboxGateError) as caught:
+        verify_isolation(ROOT, holdout(manifest_hash="sha256:" + "0" * 64))
+
+    assert caught.value.code == "HOLDOUT_UNSEALED"
 
 
 def test_a_sandboxed_principal_cannot_reach_a_hidden_partition() -> None:
@@ -345,7 +402,41 @@ def test_a_lease_that_does_not_cover_the_adapter_is_refused() -> None:
 
 
 def test_a_revoked_lease_is_refused() -> None:
-    assert denied(lease=lease(revoked=True)).code == Denial.LEASE_REVOKED.value
+    assert (
+        denied(lease=lease(revoked=True, revocation_reason="operator revoked")).code
+        == Denial.LEASE_REVOKED.value
+    )
+
+
+def test_revocation_precedes_expiry_like_the_e03_authority() -> None:
+    assert (
+        denied(
+            lease=lease(
+                expires_at="2026-08-01T11:59:59Z",
+                revoked=True,
+                revocation_reason="operator revoked",
+            )
+        ).code
+        == Denial.LEASE_REVOKED.value
+    )
+
+
+def test_revocation_reason_is_present_exactly_for_a_revoked_lease() -> None:
+    assert (
+        denied(lease=lease(revoked=False, revocation_reason="stale reason")).code
+        == Denial.LEASE_INVALID.value
+    )
+    assert (
+        denied(lease=lease(revoked=True, revocation_reason=None)).code
+        == Denial.LEASE_INVALID.value
+    )
+
+
+def test_lease_array_order_normalizes_to_the_e03_hash_projection() -> None:
+    reordered = lease(capabilities=["\ue000", "😀", "net.fetch", "fs.read"])
+    decision = authorize(lease=reordered)
+
+    assert decision.lease_hash == reordered["lease_hash"]
 
 
 def test_an_expired_lease_is_refused() -> None:
@@ -356,6 +447,41 @@ def test_an_expired_lease_is_refused() -> None:
 
 def test_a_lease_that_expires_exactly_now_is_already_gone() -> None:
     assert denied(lease=lease(expires_at=NOW)).code == Denial.LEASE_EXPIRED.value
+
+
+def test_a_lease_that_is_not_yet_valid_is_refused() -> None:
+    assert (
+        denied(lease=lease(issued_at="2026-08-01T12:00:01Z")).code
+        == Denial.LEASE_NOT_YET_VALID.value
+    )
+
+
+def test_a_tampered_lease_is_refused_before_authorization() -> None:
+    tampered = lease()
+    tampered["fencing_token"] = 8
+
+    assert denied(lease=tampered).code == Denial.LEASE_UNSEALED.value
+
+
+def test_non_scalar_lease_strings_are_typed_invalid() -> None:
+    bad_id = lease()
+    bad_id["lease_id"] = "ab\ud800"
+    bad_reason = lease()
+    bad_reason["revocation_reason"] = "\ud800"
+
+    assert denied(lease=bad_id).code == Denial.LEASE_INVALID.value
+    assert denied(lease=bad_reason).code == Denial.LEASE_INVALID.value
+
+
+def test_policy_and_scope_fences_must_match_current_authority_state() -> None:
+    assert (
+        denied(policy_hash="sha256:" + "c" * 64).code
+        == Denial.POLICY_UNPINNED.value
+    )
+    assert (
+        denied(scope_fencing_heads={"workspace": 8}).code
+        == Denial.STALE_FENCING_TOKEN.value
+    )
 
 
 def test_a_principal_that_is_not_the_lease_holder_is_refused() -> None:
@@ -478,6 +604,8 @@ def test_an_unsealed_adapter_cannot_authorize_anything() -> None:
             holdout=holdout(),
             request=request(),
             now=NOW,
+            policy_hash=POLICY_HASH,
+            scope_fencing_heads={"workspace": 7},
         )
 
     assert caught.value.code == Denial.ADAPTER_UNSEALED.value

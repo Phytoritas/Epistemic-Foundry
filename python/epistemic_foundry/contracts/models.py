@@ -8,7 +8,7 @@ JsonScalar: TypeAlias = Union[None, bool, int, float, str]
 JsonValue: TypeAlias = Union[JsonScalar, list[object], dict[str, object]]
 
 CONTRACT_BUNDLE_SHA256 = 'sha256:ca2cae307a1d19f37504c27fc0e143fd22d0b94a7f1f93626c7c9a4dc74955cd'
-EXAMPLE_BUNDLE_SHA256 = 'sha256:6a3847eb8b95e23c8166a8889b1723c260c0fe9c63cc17c06bf010c1c6c538c2'
+EXAMPLE_BUNDLE_SHA256 = 'sha256:1014c532c1d5d8251f9848e2cbdb953480518477c312ef8f250c652701a6479d'
 
 ActionIntent = TypedDict(
     'ActionIntent',
@@ -2121,7 +2121,7 @@ PromotionDecision = TypedDict(
         'decision_id': Required[str],
         'effect_receipt_id': Required[str],
         'fitness_vector_id': Required[str],
-        'gate_decision_ids': Required[tuple[Literal['G00_PIN_RESOLUTION'], Literal['G01_POLICY_AUTHORITY'], Literal['G02_EVALUATOR_HOLDOUT_FIREWALL'], Literal['G03_SCHEMA_LINEAGE_COUNT'], Literal['G04_SOURCE_PROVENANCE'], Literal['G05_SEARCH_COVERAGE'], Literal['G06_METHOD_SCOPE_DEPENDENCY'], Literal['G07_VALIDATION_LEAKAGE'], Literal['G08_ADAPTIVE_STATISTICS'], Literal['G09_RED_QUEEN'], Literal['G10_REPLICATION_CEILING'], Literal['G11_PARLIAMENT'], Literal['G12_INDEPENDENT_ATTESTATION'], Literal['G13_HUMAN_POLICY_APPROVAL'], Literal['G14_ATOMIC_PROMOTION_COMMIT']]],
+        'gate_decision_ids': Required[list[Union[Literal['G00_PIN_RESOLUTION'], Literal['G01_POLICY_AUTHORITY'], Literal['G02_EVALUATOR_HOLDOUT_FIREWALL'], Literal['G03_SCHEMA_LINEAGE_COUNT'], Literal['G04_SOURCE_PROVENANCE'], Literal['G05_SEARCH_COVERAGE'], Literal['G06_METHOD_SCOPE_DEPENDENCY'], Literal['G07_VALIDATION_LEAKAGE'], Literal['G08_ADAPTIVE_STATISTICS'], Literal['G09_RED_QUEEN'], Literal['G10_REPLICATION_CEILING'], Literal['G11_PARLIAMENT'], Literal['G12_INDEPENDENT_ATTESTATION'], Literal['G13_HUMAN_POLICY_APPROVAL'], Literal['G14_ATOMIC_PROMOTION_COMMIT']]]],
         'granted_level': Required[Union[Literal['INBOX', 'CANDIDATE', 'LITERATURE_GROUNDED', 'VALIDATION_SCREENED', 'EMPIRICALLY_TESTED', 'REPLICATED'], None]],
         'hard_gate_status': Required[Literal['PASS', 'FAIL', 'PARTIAL']],
         'idempotency_key': Required[str],
@@ -2236,7 +2236,7 @@ QueryPlan = TypedDict(
         'forward_queries': Required[list[str]],
         'insight_id': Required[str],
         'insight_revision': Required[int],
-        'lane_decisions': Required[tuple[JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue]],
+        'lane_decisions': Required[list[JsonValue]],
         'method_queries': Required[list[str]],
         'novelty_queries': Required[list[str]],
         'null_queries': Required[list[str]],
@@ -2655,7 +2655,7 @@ SearchCompletenessCertificate = TypedDict(
         'generated_at': Required[str],
         'known_failures': Required[list[str]],
         'lane_receipt_ids': Required[list[str]],
-        'lane_reconciliations': Required[tuple[JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue, JsonValue]],
+        'lane_reconciliations': Required[list[JsonValue]],
         'novelty_claim_ceiling': Required[Literal['NOT_ASSESSED', 'CORPUS_NOVEL_ONLY', 'SEARCH_CONDITIONAL', 'PRIOR_ART_FOUND']],
         'partial_lanes': Required[list[Literal['lexical', 'semantic', 'citation', 'entity_variable', 'mechanism', 'counterevidence', 'null', 'boundary', 'method', 'temporal', 'external_novelty']]],
         'plan_hash': Required[str],

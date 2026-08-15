@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "attempt_id": "O02-0003",
+  "finding": "O02_BENCHMARK_CHANNEL_SUBSTITUTION_NOT_REJECTED",
+  "check": "retrieval_benchmark",
+  "result": "FAIL",
+  "summary": "One SQLite FTS5 lexical index meets both per-lane thresholds for ten of the eleven declared lanes. The benchmark therefore cannot distinguish eleven retrieval capabilities from one, and its per-lane scores do not establish per-lane capability.",
+  "method": {
+    "backend": "epistemic_foundry.retrieval.lexical_index",
+    "lane_executor": "epistemic_foundry.retrieval.lanes:lexical",
+    "channel": "LEXICAL",
+    "corpus": "tests/fixtures/retrieval/o02/corpus.jsonl",
+    "queries": "tests/fixtures/retrieval/o02/queries.json",
+    "labels": "tests/fixtures/retrieval/o02/relevance-labels.json",
+    "expression_rule": "first six alphabetic query terms joined by OR, FTS5 operators excluded",
+    "metrics": "Recall@20 and nDCG@20 over the same labels and thresholds the benchmark asserts",
+    "live_network_calls": 0,
+    "live_llm_calls": 0
+  },
+  "provenance": {
+    "corpus_snapshot_hash": "sha256:aa5be049f7384cfe436c517b055849eda3e8683c9d8ae357087759b19ce767f1",
+    "index_versions": {
+      "lexical_fts5": "1+unicode61 remove_diacritics 2",
+      "citation_keys": "author-year-1",
+      "sqlite": "3.45.1"
+    },
+    "backend_id": "epistemic_foundry.retrieval.lexical_index",
+    "adapter_id": "epistemic_foundry.retrieval.lanes",
+    "adapter_version": "1",
+    "run_id": "RUN-O02-SUBSTITUTION",
+    "query_plan_id": "QP-O02-SUBSTITUTION",
+    "candidate_channels_observed": ["LEXICAL"],
+    "expression_rule_sensitivity": "the finding is not an artifact of the six-term rule; using every alphabetic term with OR, and with AND, also yields 11/11 at 1.00/1.00"
+  },
+  "gate_result_on_substituted_ranking": {
+    "gate": "python/epistemic_foundry/retrieval/lanes/contracts.py:assert_benchmark_thresholds",
+    "outcome": "ACCEPTED",
+    "fused_recall_at_20": 1.0,
+    "critical_must_find": {"Q-BOUND": true, "Q-COUNTER": true, "Q-METHOD": true, "Q-NULL": true},
+    "per_lane_all_at": {"recall_at_20": 1.0, "ndcg_at_20": 1.0},
+    "interpretation": "the acceptance oracle itself, not merely the raw scores, admits a single-channel run as an eleven-lane pass"
+  },
+  "root_cause": {
+    "signature": "evaluate_retrieval_benchmark(rankings, queries, relevance, *, must_find_query_ids, k=20)",
+    "observation": "the gate receives document rankings only. It has no candidate provenance, no retrieval channel, no backend or adapter identity, and therefore no information with which to reject a lane whose result came from a different channel than the lane names.",
+    "consequence": "no fixture, however discriminating, can make this gate reject channel substitution while its inputs remain provenance-free"
+  },
+  "secondary_finding": {
+    "finding": "O02_BENCHMARK_EXTERNAL_DEPENDENCY_CHECK_IS_VACUOUS",
+    "locators": [
+      "python/epistemic_foundry/retrieval/lanes/contracts.py:1790",
+      "python/epistemic_foundry/retrieval/lanes/contracts.py:1791",
+      "python/epistemic_foundry/retrieval/lanes/contracts.py:1805"
+    ],
+    "observation": "evaluate_retrieval_benchmark writes live_network_calls: 0 and live_llm_calls: 0 as literals into the report it returns, and assert_benchmark_thresholds then reads those same literals to decide whether the run was local and deterministic. Neither value is an argument, a measurement, or an observation of the run.",
+    "consequence": "BENCHMARK_EXTERNAL_DEPENDENCY can never fire. A benchmark that made live network or model calls would report zero of each and pass this check, so the recorded local-and-deterministic property is asserted rather than demonstrated.",
+    "not_claimed": "no evidence that the current O02 benchmark actually makes network or model calls; the point is that this check could not detect it if one did"
+  },
+  "pattern_scope": {
+    "note": "see also required_check_callsite_drift below, found while attempting the two audits Pro named for the sibling checks",
+    "question": "whether this vacuous-check shape occurs elsewhere in the production trees",
+    "method": "AST census over src/** and python/**, excluding tests: functions that write a literal into a returned dict, for a key the caller cannot supply and the function never otherwise touches, where a sibling function reads that key to raise",
+    "result": "exactly one match, the O02 benchmark pair recorded above",
+    "false_positives_excluded": "python/epistemic_foundry/storage/postgres/store.py produced eight apparent matches; each was inspected and rejected, because those reporters query the database and raise on a bad observation before returning, so their ok and code fields are earned rather than asserted",
+    "second_census": {
+      "question": "whether any canonical schema field that asserts a property is only ever written as a constant",
+      "method": "collect schema properties whose names assert verification, counting, independence, leakage, determinism, reproducibility, attestation, or audit; compare literal against computed writes across src/** and python/**",
+      "fields_examined": 35,
+      "written_only_as_literals": 0,
+      "interpretation": "the asserted-rather-than-observed shape is not widespread in the Python trees. The benchmark's live-call counters are the exception found, not an instance of a general habit."
+    },
+    "third_census": {
+      "question": "whether the same shape occurs in the JavaScript packages",
+      "method": "text triage over packages/** excluding tests, generated code, and dist: object fields named for verification, counting, independence, leakage, determinism, or reproducibility that are written as 0, false, true, or [] and never assigned a computed value anywhere in the same file",
+      "result": 0,
+      "caveat": "text triage rather than AST parsing; suitable for finding candidates to read by hand, not authoritative on absence"
+    },
+    "not_covered": "none of the three censuses detects a field that is computed but only from an input the caller controls, nor one whose observation is real but wrong"
+  },
+  "lexical_only_credit": [
+    {"query_id": "Q-SEM", "lane": "semantic", "recall_at_20": 1.0, "ndcg_at_20": 1.0, "channels": ["LEXICAL"]},
+    {"query_id": "Q-CIT", "lane": "citation", "recall_at_20": 1.0, "ndcg_at_20": 1.0, "channels": ["LEXICAL"]},
+    {"query_id": "Q-ENTITY", "lane": "entity_variable", "recall_at_20": 1.0, "ndcg_at_20": 1.0, "channels": ["LEXICAL"]},
+    {"query_id": "Q-MECH", "lane": "mechanism", "recall_at_20": 1.0, "ndcg_at_20": 1.0, "channels": ["LEXICAL"]},
+    {"query_id": "Q-COUNTER", "lane": "counterevidence", "recall_at_20": 1.0, "ndcg_at_20": 1.0, "channels": ["LEXICAL"]},
+    {"query_id": "Q-NULL", "lane": "null", "recall_at_20": 1.0, "ndcg_at_20": 1.0, "channels": ["LEXICAL"]},
+    {"query_id": "Q-BOUND", "lane": "boundary", "recall_at_20": 1.0, "ndcg_at_20": 1.0, "channels": ["LEXICAL"]},
+    {"query_id": "Q-METHOD", "lane": "method", "recall_at_20": 1.0, "ndcg_at_20": 1.0, "channels": ["LEXICAL"]},
+    {"query_id": "Q-TEMP", "lane": "temporal", "recall_at_20": 1.0, "ndcg_at_20": 1.0, "channels": ["LEXICAL"]},
+    {"query_id": "Q-NOV", "lane": "external_novelty", "recall_at_20": 1.0, "ndcg_at_20": 1.0, "channels": ["LEXICAL"]}
+  ],
+  "contributing_fixture_properties": {
+    "query_target_term_overlap": {
+      "Q-LEX": 1.0, "Q-SEM": 1.0, "Q-CIT": 1.0, "Q-ENTITY": 1.0,
+      "Q-MECH": 1.0, "Q-COUNTER": 1.0, "Q-NULL": 1.0, "Q-BOUND": 1.0,
+      "Q-METHOD": 1.0, "Q-TEMP": 1.0, "Q-NOV": 1.0
+    },
+    "overlap_definition": "share of query terms longer than two characters that also occur in the query's one labelled relevant document",
+    "distinctive_terms_note": "each query carries terms occurring in exactly one corpus document, so the query contains a unique key to its own answer",
+    "corpus_size": 12,
+    "cutoff_k": 20,
+    "structural_note": "with a corpus smaller than the cutoff and one relevant document per query, Recall@20 reaches 1.0 for any backend returning the whole corpus; the nDCG@20 threshold of 0.85 reduces to requiring rank 1"
+  },
+  "not_claimed": [
+    "that the eight unserved lanes were implemented",
+    "that the fixture was corrected",
+    "that a discriminating corpus exists",
+    "that O02-0002 was fraudulent",
+    "that any persisted or evidentiary receipt was synthesised; the lexical executions seal ordinary transient EXECUTION receipts for the lexical lane only, and none is stored or offered as evidence for an unserved lane"
+  ],
+  "preserved": {
+    "O02_0001_preserved": true,
+    "O02_0002_preserved": true,
+    "fixture_bytes_unchanged": true
+  }
+}

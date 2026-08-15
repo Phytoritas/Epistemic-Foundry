@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/artifact-manifest.schema.json",
+  "title": "ArtifactManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "media_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "byte_size": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "storage_uri": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lineage_event_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "license": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "retention_class": {
+      "enum": [
+        "ephemeral",
+        "project",
+        "regulated",
+        "permanent"
+      ]
+    },
+    "confidentiality": {
+      "enum": [
+        "public",
+        "internal",
+        "restricted",
+        "secret"
+      ]
+    },
+    "encryption": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "at_rest": {
+          "type": "boolean"
+        },
+        "in_transit": {
+          "type": "boolean"
+        },
+        "key_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "at_rest",
+        "in_transit",
+        "key_ref"
+      ]
+    },
+    "integrity_status": {
+      "enum": [
+        "unverified",
+        "verified",
+        "quarantined",
+        "corrupt"
+      ]
+    },
+    "provenance_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "artifact_id",
+    "artifact_type",
+    "content_hash",
+    "media_type",
+    "byte_size",
+    "storage_uri",
+    "created_at",
+    "created_by",
+    "input_artifact_ids",
+    "lineage_event_ids",
+    "license",
+    "retention_class",
+    "confidentiality",
+    "encryption",
+    "integrity_status",
+    "provenance_manifest_id"
+  ]
+}

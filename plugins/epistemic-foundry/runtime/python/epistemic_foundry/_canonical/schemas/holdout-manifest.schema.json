@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/holdout-manifest.schema.json",
+  "title": "HoldoutManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "holdout_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "split_strategy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "public_partition_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "hidden_partition_handles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Opaque handles only; hidden content must not appear in ordinary artifacts, results, or logs."
+    },
+    "ood_partition_handles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "adversarial_partition_handles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "content_hashes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "uniqueItems": true
+    },
+    "acl_policy_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "candidate_access": {
+      "const": false
+    },
+    "mutation_model_access": {
+      "const": false
+    },
+    "prompt_access": {
+      "const": false
+    },
+    "backend_access": {
+      "const": false
+    },
+    "log_redaction_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cache_isolation_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unblinding_approval_required": {
+      "const": true
+    },
+    "sealed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "manifest_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "holdout_id",
+    "evaluator_id",
+    "split_strategy",
+    "public_partition_refs",
+    "hidden_partition_handles",
+    "ood_partition_handles",
+    "adversarial_partition_handles",
+    "content_hashes",
+    "acl_policy_hash",
+    "candidate_access",
+    "mutation_model_access",
+    "prompt_access",
+    "backend_access",
+    "log_redaction_policy",
+    "cache_isolation_policy",
+    "unblinding_approval_required",
+    "sealed_at",
+    "manifest_hash"
+  ],
+  "description": "Sealed public, hidden, OOD, and adversarial partitions with a fail-closed evaluator firewall."
+}

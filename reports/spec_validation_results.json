@@ -3,14 +3,14 @@
   "version": "4.0.0",
   "scope": "specification_bundle_and_reference_blueprint_only",
   "schemas": {
-    "count": 126,
-    "examples": 126,
-    "valid_examples": 126,
-    "unique_ids": 126
+    "count": 127,
+    "examples": 127,
+    "valid_examples": 127,
+    "unique_ids": 127
   },
   "workflows": {
-    "count": 22,
-    "total_nodes": 327,
+    "count": 23,
+    "total_nodes": 350,
     "details": {
       "archive_rebalancing.workflow.yaml": {
         "workflow_id": "archive_rebalancing",
@@ -59,6 +59,12 @@
         "nodes": 26,
         "layers": 18,
         "max_width": 3
+      },
+      "evolution_promotion.workflow.yaml": {
+        "workflow_id": "evolution_promotion",
+        "nodes": 23,
+        "layers": 23,
+        "max_width": 1
       },
       "evolution_release.workflow.yaml": {
         "workflow_id": "evolution_release",
@@ -176,7 +182,7 @@
     "roles": 28,
     "codex_agents": 10,
     "claude_role_profiles": 28,
-    "text_files_scanned": 351,
+    "text_files_scanned": 546,
     "forbidden_domain_hits": 0,
     "placeholder_hits": 0,
     "secret_hits": 0,
@@ -185,23 +191,25 @@
   "package_manifest": {
     "status": "invalid",
     "files": 543,
-    "mismatches": 31
+    "mismatches": 56
   },
   "summary": {
     "status": "FAIL",
-    "error_count": 34
+    "error_count": 56
   },
   "errors": [
-    "schema count 126 != 124",
-    "example count 126 != 124",
-    "C:\\dev\\insight\\Epistemic-Foundry\\prompts\\plugin\\classify_epistemic_work.md: prompt lacks evidence grounding language",
     "package manifest hash/size mismatch CLAUDE.md",
     "package manifest hash/size mismatch MASTER_SPEC.md",
+    "package manifest hash/size mismatch adapters/claude-code/README.md",
+    "package manifest hash/size mismatch config/retrieval_policy.example.yaml",
+    "package manifest hash/size mismatch docs/annotation_manual.md",
     "package manifest hash/size mismatch docs/api_contract.md",
     "package manifest hash/size mismatch docs/cache_contract.md",
     "package manifest hash/size mismatch docs/forge_protocol.md",
     "package manifest hash/size mismatch docs/product_constitution.md",
+    "package manifest hash/size mismatch docs/retrieval_contract.md",
     "package manifest hash/size mismatch docs/schema_evolution.md",
+    "package manifest hash/size mismatch docs/search_completeness.md",
     "package manifest hash/size mismatch docs/status_taxonomy.md",
     "package manifest hash/size mismatch examples/sample_document-manifest.json",
     "package manifest hash/size mismatch examples/sample_epistemic-work-classification.json",
@@ -210,21 +218,41 @@
     "package manifest hash/size mismatch examples/sample_gate_decision.json",
     "package manifest hash/size mismatch examples/sample_holdout-manifest.json",
     "package manifest hash/size mismatch examples/sample_promotion-decision.json",
+    "package manifest hash/size mismatch examples/sample_query-plan.json",
+    "package manifest hash/size mismatch examples/sample_search-completeness-certificate.json",
+    "package manifest hash/size mismatch examples/sample_search-lane-receipt.json",
     "package manifest hash/size mismatch manifests/acceptance_matrix.yaml",
+    "package manifest hash/size mismatch manifests/compatibility_matrix.yaml",
     "package manifest hash/size mismatch manifests/development_manifest.yaml",
     "package manifest hash/size mismatch manifests/product_invariants.yaml",
     "package manifest hash/size mismatch manifests/requirements_traceability.yaml",
     "package manifest hash/size mismatch prompts/plugin/classify_epistemic_work.md",
+    "package manifest hash/size mismatch schemas/capability-lease.schema.json",
+    "package manifest hash/size mismatch schemas/claim-card.schema.json",
     "package manifest hash/size mismatch schemas/document-manifest.schema.json",
     "package manifest hash/size mismatch schemas/epistemic-work-classification.schema.json",
     "package manifest hash/size mismatch schemas/evaluator-bundle.schema.json",
+    "package manifest hash/size mismatch schemas/evidence-node.schema.json",
     "package manifest hash/size mismatch schemas/evolution-run-spec.schema.json",
     "package manifest hash/size mismatch schemas/gate-decision.schema.json",
     "package manifest hash/size mismatch schemas/holdout-manifest.schema.json",
+    "package manifest hash/size mismatch schemas/insight-card.schema.json",
+    "package manifest hash/size mismatch schemas/node-contract.schema.json",
     "package manifest hash/size mismatch schemas/phase-artifact-set.schema.json",
     "package manifest hash/size mismatch schemas/promotion-decision.schema.json",
+    "package manifest hash/size mismatch schemas/query-plan.schema.json",
+    "package manifest hash/size mismatch schemas/result-envelope.schema.json",
+    "package manifest hash/size mismatch schemas/run-spec.schema.json",
+    "package manifest hash/size mismatch schemas/search-completeness-certificate.schema.json",
+    "package manifest hash/size mismatch schemas/search-lane-receipt.schema.json",
+    "package manifest hash/size mismatch schemas/source-span.schema.json",
+    "package manifest hash/size mismatch tools/build_release.py",
+    "package manifest hash/size mismatch tools/validate_spec_bundle.py",
     "package manifest hash/size mismatch workflows/corpus_ingest.workflow.yaml",
+    "package manifest hash/size mismatch workflows/evidence_retrieval.workflow.yaml",
+    "package manifest hash/size mismatch workflows/evolution_chamber_cycle.workflow.yaml",
     "package manifest hash/size mismatch workflows/forge_research_cycle.workflow.yaml",
-    "package manifest inventory mismatch missing=['.github/workflows/ci.yml', '.ruff_cache/.gitignore', '.ruff_cache/0.15.17/13028231126801474968', '.ruff_cache/CACHEDIR.TAG', 'B04-SG002_무엇을_승인해야_하는가.md', 'C01-SG004_무엇을_승인해야_하는가.md', 'artifacts/authority_decisions/EF4-A05-C01-B04-SHARED-CONTRACT.human-decision.json', 'artifacts/authority_decisions/EF4-A05-C01-B04-SHARED-CONTRACT.md', 'artifacts/authority_decisions/HD-EF4-A06-RM001-20260730-001.human-decision.json', 'artifacts/authority_decisions/HD-EF4-B04-MECH-CORRECTION-20260729-001.human-decision.json'] extra=[]"
+    "package manifest inventory mismatch missing=['.gitattributes', '.github/workflows/ci.yml', 'B04-SG002_무엇을_승인해야_하는가.md', 'C01-SG004_무엇을_승인해야_하는가.md', 'C01-SG005_무엇을_승인해야_하는가.md', 'O02-SG001_무엇을_승인해야_하는가.md', 'S04-SG001_무엇을_승인해야_하는가.md', 'adapters/claude-code/agent-binding.mjs', 'adapters/claude-code/claude-adversarial.test.mjs', 'adapters/claude-code/claude-binding.json'] extra=['.codex/config.toml', '.codex/skills/epistemic-foundry/SKILL.md']",
+    "package manifest MANIFEST.sha256 mismatch"
   ]
 }

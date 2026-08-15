@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evaluator-bundle.schema.json",
+  "title": "EvaluatorBundle",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "evaluator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluator_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "code_artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "code_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "metric_contract_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "environment_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "dependency_lock_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "data_contract_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "policy_bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "qualification_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "holdout_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sealed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "immutable": {
+      "const": true
+    },
+    "candidate_access": {
+      "const": false
+    },
+    "mutation_allowed_for_current_run": {
+      "const": false
+    },
+    "bundle_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "evaluator_id",
+    "evaluator_version",
+    "code_artifact_id",
+    "code_hash",
+    "metric_contract_hash",
+    "environment_digest",
+    "dependency_lock_hash",
+    "data_contract_hash",
+    "policy_bundle_hash",
+    "qualification_report_id",
+    "holdout_manifest_id",
+    "sealed_at",
+    "immutable",
+    "candidate_access",
+    "mutation_allowed_for_current_run",
+    "bundle_hash"
+  ],
+  "description": "Evaluation code, metrics, data contract, environment, policy, qualification, and holdout are sealed as an immutable content-addressed bundle. A change requires a new evaluator ID/version and a future run."
+}

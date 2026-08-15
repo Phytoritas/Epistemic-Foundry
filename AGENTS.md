@@ -1,5 +1,39 @@
 # AGENTS.md — Epistemic Foundry v4
 
+## 0) 최우선 — 실제 모델 구현 우선, 통제 계층 최소화
+
+이 저장소의 최우선 산출물은 **과학적으로 타당하고 실제 runtime이 소비할 수
+있는 모델 코드와 데이터 계약**이다. 문서, schema, registry, manifest, index,
+receipt, gate, provenance, audit 또는 proof artifact의 양을 늘리는 것 자체는
+진척이 아니다. 이 절은 아래의 repository 운영 절보다 우선하며 `tomics/`를
+포함한 전체 작업에 적용한다.
+
+- 과학적 무결성, 원본 데이터 불변성, 비가역 작업의 안전성,
+  권위·단위·상태·flux 경계는 유지한다. 그 밖의 통제 구조는 구현에 필요한
+  최소치만 둔다.
+- 현재 실행 코드가 실제로 소비하는 interface와 serialization을 기본 정본으로
+  삼는다. 과학적 결함이 없는 runtime 계약을 새 control-plane 형식에 맞추려고
+  우회하거나 복제하지 않는다.
+- 기존 interface 하나로 표현 가능한 정보를 위해 평행 schema, 중복 manifest,
+  index, adapter, receipt, gate, acceptance table 또는 증명 산출물을 새로 만들지
+  않는다. 필요한 경우 기존 계약 하나를 좁고 명시적으로 확장한다.
+- Pro의 제안이 현재 코드와 맞지 않으면 Pro 문구에 맞추려고 계층을 추가하지
+  않는다. 실제 byte와 data flow를 기준으로 가장 단순한 실행 가능 계약으로
+  교정하고, 비동등한 과학적 선택만 다시 자문한다.
+- 실행·test·promotion 권한이 닫혀 있다는 사실은 코드, fixture 또는 unexecuted
+  binding의 **작성 자체**를 막지 않는다. 실행 권한과 구현 권한을 혼동하지
+  않는다.
+- 다음 항목만 해당 구현 경계를 fail-closed로 막을 수 있다: 원문에 없는
+  과학식·값·단위·초기조건의 발명, 원본/권위 데이터 훼손, 상태·flux 소유권
+  위반, 비가역 작업, 또는 명시적으로 필요한 실행 권한의 부재. 통제 산출물의
+  부재만으로 구현을 장기간 정지시키지 않는다.
+- 순서는 **모델 코드와 runtime-native 계약 → 필요한 최소 control-plane 연결 →
+  사용자가 요청한 실행·검증**이다. 사용자가 명시적으로 요구하지 않은 receipt,
+  evidence packet, validation artifact는 만들거나 개발 선행조건으로 삼지 않는다.
+
+모든 에이전트는 새 통제 표면을 발명하기 전에 기존 runtime 계약으로 문제를 풀
+수 있는지 먼저 확인하고, 가능한 경우 더 작은 구조를 선택한다.
+
 ## Authority
 
 Read and obey in order:

@@ -9,6 +9,7 @@ load-bearing assumptions itself so an undeclared one is a failure.
 from __future__ import annotations
 
 import json
+from collections.abc import Iterator, Mapping
 from pathlib import Path
 
 import pytest
@@ -16,6 +17,7 @@ from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 from referencing.jsonschema import DRAFT202012
 
+from . import contracts as deduction_contracts
 from .contracts import (
     EdgeType,
     Grounding,
@@ -30,6 +32,74 @@ from .contracts import (
 
 ROOT = Path(__file__).resolve().parents[4]
 CREATED_AT = "2026-08-01T10:00:00Z"
+
+
+class LaunderingString(str):
+    def __new__(cls, underlying: str, projected: str) -> LaunderingString:
+        instance = super().__new__(cls, underlying)
+        instance.projected = projected
+        return instance
+
+    def __str__(self) -> str:
+        return self.projected
+
+
+class LaunderingInt(int):
+    def __new__(cls, underlying: int, projected: int) -> LaunderingInt:
+        instance = super().__new__(cls, underlying)
+        instance.projected = projected
+        return instance
+
+    def __int__(self) -> int:
+        return self.projected
+
+
+class LaunderingFloat(float):
+    def __new__(cls, underlying: float, projected: float) -> LaunderingFloat:
+        instance = super().__new__(cls, underlying)
+        instance.projected = projected
+        return instance
+
+    def __float__(self) -> float:
+        return self.projected
+
+
+class LaunderingStringMapping(str, Mapping[str, object]):
+    def __new__(
+        cls, underlying: str, projected: Mapping[str, object]
+    ) -> LaunderingStringMapping:
+        instance = super().__new__(cls, underlying)
+        instance.projected = dict(projected)
+        return instance
+
+    def __getitem__(self, key: str) -> object:
+        return self.projected[key]
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self.projected)
+
+    def __len__(self) -> int:
+        return len(self.projected)
+
+
+class DuplicateItemsMapping(Mapping[str, object]):
+    """Mapping whose items projection contains duplicate JSON object names."""
+
+    def __init__(self, pairs: list[tuple[str, object]]) -> None:
+        self.pairs = list(pairs)
+        self.projected = dict(pairs)
+
+    def __getitem__(self, key: str) -> object:
+        return self.projected[key]
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self.projected)
+
+    def __len__(self) -> int:
+        return len(self.projected)
+
+    def items(self) -> Iterator[tuple[str, object]]:
+        return iter(self.pairs)
 
 
 def graph_schema_validator() -> Draft202012Validator:
@@ -181,7 +251,8 @@ def test_the_fixture_graphs_satisfy_the_canonical_schema() -> None:
 
 
 def test_a_fully_grounded_trace_is_valid_and_carries_no_assumptions() -> None:
-    trace = build_proof_trace(grounded_graph()).payload
+    source = grounded_graph()
+    trace = build_proof_trace(source).payload
 
     assert trace["status"] == TraceStatus.VALID.value
     assert trace["assumption_ledger"] == []
@@ -189,6 +260,7 @@ def test_a_fully_grounded_trace_is_valid_and_carries_no_assumptions() -> None:
     assert trace["conclusions"][0]["assumption_ids"] == []
     assert trace["conclusions"][0]["support_is_complete"] is True
     assert trace["proof_trace_id"].startswith("PT-")
+    assert trace["argument_graph_hash"] == source["graph_hash"]
 
 
 def test_a_premise_without_evidence_is_refused() -> None:
@@ -505,6 +577,210 @@ def test_the_trace_is_deterministic_and_content_addressed() -> None:
     assert validate_proof_trace(first.payload).canonical_bytes == first.canonical_bytes
 
 
+def test_build_uses_one_detached_argument_graph_snapshot(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    source = grounded_graph()
+    source_nodes = source["nodes"]
+    assert isinstance(source_nodes, list)
+    original_hash_excluding = deduction_contracts._hash_excluding
+
+    def mutate_source_after_graph_hash(
+        payload: dict[str, object], field: str
+    ) -> str:
+        digest = original_hash_excluding(payload, field)
+        if field == "graph_hash":
+            source_nodes.append(dict(source_nodes[0]))
+        return digest
+
+    monkeypatch.setattr(
+        deduction_contracts, "_hash_excluding", mutate_source_after_graph_hash
+    )
+
+    trace = build_proof_trace(source).payload
+
+    assert len(source_nodes) == 4
+    assert trace["status"] == TraceStatus.VALID.value
+    assert trace["conclusions"][0]["premise_ids"] == [
+        "N-premise-a",
+        "N-premise-b",
+    ]
+
+
+def test_build_rejects_duplicate_top_level_mapping_items_before_projection() -> None:
+    source = grounded_graph()
+    duplicate = DuplicateItemsMapping(
+        [("argument_graph_id", "AG-shadow"), *source.items()]
+    )
+
+    with pytest.raises(ProofTraceError) as caught:
+        build_proof_trace(duplicate)
+
+    assert caught.value.code == "INPUT_INVALID"
+
+
+def test_sealer_rejects_duplicate_top_level_mapping_items_before_projection() -> None:
+    source = grounded_graph()
+    duplicate = DuplicateItemsMapping(
+        [("argument_graph_id", "AG-shadow"), *source.items()]
+    )
+
+    with pytest.raises(ProofTraceError) as caught:
+        seal_argument_graph(duplicate)
+
+    assert caught.value.code == "INPUT_INVALID"
+
+
+def test_validation_seals_one_detached_proof_trace_snapshot(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    payload = build_proof_trace(assumed_graph()).payload
+    source_ledger = payload["assumption_ledger"]
+    assert isinstance(source_ledger, list)
+    original_hash_excluding = deduction_contracts._hash_excluding
+
+    def mutate_source_after_trace_hash(
+        candidate: dict[str, object], field: str
+    ) -> str:
+        digest = original_hash_excluding(candidate, field)
+        if field == "trace_hash":
+            source_ledger.clear()
+        return digest
+
+    monkeypatch.setattr(
+        deduction_contracts, "_hash_excluding", mutate_source_after_trace_hash
+    )
+
+    sealed = validate_proof_trace(payload).payload
+
+    assert source_ledger == []
+    assert sealed["status"] == TraceStatus.CONDITIONAL.value
+    assert [entry["assumption_id"] for entry in sealed["assumption_ledger"]] == [
+        "N-assume"
+    ]
+
+
+def test_validation_rejects_duplicate_top_level_mapping_items_before_projection() -> None:
+    payload = build_proof_trace(grounded_graph()).payload
+    duplicate = DuplicateItemsMapping([("status", "BROKEN"), *payload.items()])
+
+    with pytest.raises(ProofTraceError) as caught:
+        validate_proof_trace(duplicate)
+
+    assert caught.value.code == "INPUT_INVALID"
+
+
+def test_nested_non_string_mapping_keys_are_not_json_coerced() -> None:
+    source = grounded_graph()
+    nodes = source["nodes"]
+    assert isinstance(nodes, list)
+    for entry in nodes:
+        assert isinstance(entry, dict)
+        entry_scope = entry["scope"]
+        assert isinstance(entry_scope, dict)
+        entry_scope["conditions"] = {1: "same-condition"}
+    source = seal_argument_graph(source)
+
+    with pytest.raises(ProofTraceError) as caught:
+        build_proof_trace(source)
+
+    assert caught.value.code == "INPUT_INVALID"
+
+
+def test_string_subclasses_cannot_launder_scalar_values() -> None:
+    source = grounded_graph()
+    nodes = source["nodes"]
+    assert isinstance(nodes, list)
+    first_node = nodes[0]
+    assert isinstance(first_node, dict)
+    first_node["node_type"] = LaunderingString(
+        "not-a-node-type", NodeType.PREMISE.value
+    )
+
+    with pytest.raises(ProofTraceError) as caught:
+        build_proof_trace(source)
+
+    assert caught.value.code == "GRAPH_HASH_MISMATCH"
+
+
+def test_string_subclasses_cannot_launder_nested_mapping_keys() -> None:
+    source = grounded_graph()
+    nodes = source["nodes"]
+    assert isinstance(nodes, list)
+    for entry in nodes:
+        assert isinstance(entry, dict)
+        entry_scope = entry["scope"]
+        assert isinstance(entry_scope, dict)
+        entry_scope["conditions"] = {"condition": "same-condition"}
+    source = seal_argument_graph(source)
+    for entry in nodes:
+        entry_scope = entry["scope"]
+        assert isinstance(entry_scope, dict)
+        entry_scope["conditions"] = {
+            LaunderingString("invalid-key", "condition"): "same-condition"
+        }
+
+    with pytest.raises(ProofTraceError) as caught:
+        build_proof_trace(source)
+
+    assert caught.value.code == "GRAPH_HASH_MISMATCH"
+
+
+def test_primitive_mapping_hybrids_remain_primitive_values() -> None:
+    source = grounded_graph()
+    nodes = source["nodes"]
+    assert isinstance(nodes, list)
+    for entry in nodes:
+        assert isinstance(entry, dict)
+        entry_scope = entry["scope"]
+        assert isinstance(entry_scope, dict)
+        entry_scope["conditions"] = {"condition": "same-condition"}
+    source = seal_argument_graph(source)
+    for entry in nodes:
+        entry_scope = entry["scope"]
+        assert isinstance(entry_scope, dict)
+        entry_scope["conditions"] = LaunderingStringMapping(
+            "not-a-mapping", {"condition": "same-condition"}
+        )
+
+    with pytest.raises(ProofTraceError) as caught:
+        build_proof_trace(source)
+
+    assert caught.value.code == "GRAPH_HASH_MISMATCH"
+
+
+def test_integer_subclasses_cannot_launder_scalar_values() -> None:
+    source = grounded_graph()
+    edges = source["edges"]
+    assert isinstance(edges, list)
+    first_edge = edges[0]
+    assert isinstance(first_edge, dict)
+    first_edge["confidence"] = 1
+    source = seal_argument_graph(source)
+    first_edge["confidence"] = LaunderingInt(2, 1)
+
+    with pytest.raises(ProofTraceError) as caught:
+        build_proof_trace(source)
+
+    assert caught.value.code == "GRAPH_HASH_MISMATCH"
+
+
+def test_float_subclasses_cannot_launder_scalar_values() -> None:
+    source = grounded_graph()
+    edges = source["edges"]
+    assert isinstance(edges, list)
+    first_edge = edges[0]
+    assert isinstance(first_edge, dict)
+    first_edge["confidence"] = 0.5
+    source = seal_argument_graph(source)
+    first_edge["confidence"] = LaunderingFloat(2.0, 0.5)
+
+    with pytest.raises(ProofTraceError) as caught:
+        build_proof_trace(source)
+
+    assert caught.value.code == "GRAPH_HASH_MISMATCH"
+
+
 def test_a_tampered_trace_is_rejected() -> None:
     payload = build_proof_trace(assumed_graph()).payload
     payload["status"] = TraceStatus.VALID.value
@@ -527,6 +803,45 @@ def test_stripping_an_assumption_from_a_rehashed_ledger_fails_closed() -> None:
 
     assert caught.value.code == "ASSUMPTION_UNLEDGERED"
     assert caught.value.context["assumption_ids"] == ["N-assume"]
+
+
+def test_rehashing_cannot_replace_the_proof_trace_content_id() -> None:
+    from .contracts import _hash_excluding
+
+    payload = build_proof_trace(grounded_graph()).payload
+    payload["proof_trace_id"] = "PT-forged"
+    payload["trace_hash"] = _hash_excluding(payload, "trace_hash")
+
+    with pytest.raises(ProofTraceError) as caught:
+        validate_proof_trace(payload)
+
+    assert caught.value.code == "PROOF_TRACE_ID_MISMATCH"
+
+
+def test_rehashing_cannot_replace_the_bound_argument_graph_hash() -> None:
+    from .contracts import _hash_excluding
+
+    payload = build_proof_trace(grounded_graph()).payload
+    payload["argument_graph_hash"] = "sha256:" + "0" * 64
+    payload["trace_hash"] = _hash_excluding(payload, "trace_hash")
+
+    with pytest.raises(ProofTraceError) as caught:
+        validate_proof_trace(payload)
+
+    assert caught.value.code == "PROOF_TRACE_ID_MISMATCH"
+
+
+def test_rehashing_cannot_launder_a_conditional_trace_as_valid() -> None:
+    from .contracts import _hash_excluding
+
+    payload = build_proof_trace(assumed_graph()).payload
+    payload["status"] = TraceStatus.VALID.value
+    payload["trace_hash"] = _hash_excluding(payload, "trace_hash")
+
+    with pytest.raises(ProofTraceError) as caught:
+        validate_proof_trace(payload)
+
+    assert caught.value.code == "STATUS_MISMATCH"
 
 
 def test_a_duplicate_node_id_is_refused() -> None:

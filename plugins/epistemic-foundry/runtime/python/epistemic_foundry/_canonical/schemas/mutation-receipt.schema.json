@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/mutation-receipt.schema.json",
+  "title": "MutationReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "mutation_receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "output_candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "changed_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "preserved_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "validation_status": {
+      "enum": [
+        "PASS",
+        "PARTIAL",
+        "FAIL",
+        "BLOCKED"
+      ]
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "effect_receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "receipt_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "mutation_receipt_id",
+    "evolution_run_id",
+    "operator_id",
+    "input_candidate_ids",
+    "output_candidate_id",
+    "changed_paths",
+    "preserved_paths",
+    "validation_status",
+    "warnings",
+    "effect_receipt_id",
+    "receipt_hash"
+  ],
+  "description": "실행된 변이와 보존·변경 필드, 실패 및 효과를 영수증으로 남긴다."
+}

@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/claim-lifecycle-event.schema.json",
+  "title": "ClaimLifecycleEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "from_status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "candidate",
+        "verified",
+        "promoted",
+        "superseded",
+        "retracted",
+        "rejected"
+      ]
+    },
+    "to_status": {
+      "enum": [
+        "candidate",
+        "verified",
+        "promoted",
+        "superseded",
+        "retracted",
+        "rejected"
+      ]
+    },
+    "reason_code": {
+      "enum": [
+        "created",
+        "grounding_verified",
+        "human_accepted",
+        "human_corrected",
+        "human_rejected",
+        "source_corrected",
+        "source_retracted",
+        "schema_migration",
+        "new_evidence",
+        "duplicate_merge",
+        "policy_failure"
+      ]
+    },
+    "reason_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "superseding_claim_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "affected_evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "actor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "event_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "event_id",
+    "claim_id",
+    "claim_version",
+    "from_status",
+    "to_status",
+    "reason_code",
+    "reason_text",
+    "superseding_claim_id",
+    "affected_evidence_ids",
+    "actor_id",
+    "occurred_at",
+    "event_hash"
+  ]
+}

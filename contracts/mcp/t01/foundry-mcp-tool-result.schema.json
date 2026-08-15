@@ -80,6 +80,28 @@
       "format": "date-time"
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "read_model_state": {
+            "const": "DEGRADED"
+          }
+        },
+        "required": [
+          "read_model_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "degradation_reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ],
   "required": [
     "protocol_version",
     "tool",

@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { runLocalMarketplaceLifecycle } from "./lifecycle-harness.mjs";
 
-test("fresh_install_test and clean_uninstall_test: isolated local marketplace lifecycle", () => {
+test("fresh_install_test, PATH-less installed status, and clean_uninstall_test", () => {
   const result = runLocalMarketplaceLifecycle();
 
   assert.equal(result.final_status, "PASS");
@@ -23,14 +23,19 @@ test("fresh_install_test and clean_uninstall_test: isolated local marketplace li
 
   assert.equal(result.path_less_boundary.invocation_used_absolute_installed_dispatcher, true);
   assert.equal(result.path_less_boundary.path_environment_empty, true);
+  assert.equal(result.path_less_boundary.dispatcher_target_root, "INSTALLED_PLUGIN_ROOT");
+  assert.equal(result.path_less_boundary.dispatcher_target_identity, "dist/cli.mjs");
   assert.equal(result.path_less_boundary.repository_checkout_fallback_count, 0);
-  assert.equal(result.path_less_boundary.command_success_claimed, false);
+  assert.equal(result.path_less_boundary.installed_status_execution, "PASS");
+  assert.equal(result.path_less_boundary.observed_exit_code, 0);
+  assert.equal(result.path_less_boundary.observed_signal, null);
 
   assert.equal(result.clean_uninstall_test.plugin_remove, "PASS");
   assert.equal(result.clean_uninstall_test.installed_cache_residue_count, 0);
   assert.equal(result.clean_uninstall_test.installed_config_residue_count, 0);
   assert.equal(result.clean_uninstall_test.marketplace_remove, "PASS");
   assert.equal(result.clean_uninstall_test.marketplace_config_residue_count, 0);
+  assert.equal(result.clean_uninstall_test.plugin_data_sentinel, "PRESERVED");
   assert.equal(result.commands.every((command) => command.semantic_result === "PASS"), true);
   assert.equal(result.commands.some((command) => "stdout" in command), false);
   assert.equal(result.commands.some((command) => "stderr" in command), false);

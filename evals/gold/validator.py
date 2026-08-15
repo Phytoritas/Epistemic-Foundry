@@ -7,11 +7,11 @@ boundary case must state the condition that makes it a boundary rather than
 merely being hard.
 
 Agreement is measured, not asserted.  Every case is annotated independently by
-at least two annotators; where they disagree, an adjudicator who is neither of
-them must resolve it with a typed reason, and the gold label must be the one
-that survived adjudication.  Fleiss' kappa is computed over the raw annotations
-and compared against a declared floor, so "the annotators agreed" is a number a
-reader can check rather than a claim.
+exactly two unique annotators; where they disagree, an adjudicator who is
+neither of them must resolve it with a typed reason, and the gold label must be
+consistent with that resolution.  Fleiss' kappa is computed over the raw
+annotations and compared against a declared floor, so "the annotators agreed"
+is a number a reader can check rather than a claim.
 """
 
 from __future__ import annotations
@@ -19,6 +19,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import stat
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from enum import Enum
@@ -26,8 +27,8 @@ from pathlib import Path
 from typing import Any, Final
 
 RFC3339_PATTERN: Final = re.compile(
-    r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"
-    r"(?:\.[0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    r"^[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt][0-9]{2}:[0-9]{2}:[0-9]{2}"
+    r"(?:\.[0-9]+)?(?:[Zz]|[+-][0-9]{2}:[0-9]{2})$"
 )
 #: The corpus file this validator governs.
 CORPUS_RELATIVE_PATH: Final = "evals/gold/insight_gold_cases.json"
@@ -170,10 +171,93 @@ def _text(value: object, label: str) -> str:
     return str(value)
 
 
+def _month_length(year: int, month: int) -> int:
+    leap_year = year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    return (
+        31,
+        29 if leap_year else 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    )[month - 1]
+
+
+def _shift_calendar_day(
+    year: int, month: int, day: int, day_delta: int
+) -> tuple[int, int, int]:
+    while day_delta > 0:
+        day += 1
+        if day > _month_length(year, month):
+            day = 1
+            month += 1
+            if month > 12:
+                month = 1
+                year += 1
+        day_delta -= 1
+    while day_delta < 0:
+        day -= 1
+        if day < 1:
+            month -= 1
+            if month < 1:
+                month = 12
+                year -= 1
+            day = _month_length(year, month)
+        day_delta += 1
+    return year, month, day
+
+
 def _timestamp(value: object, label: str) -> str:
     text = _text(value, label)
     if RFC3339_PATTERN.fullmatch(text) is None:
         _fail("INPUT_INVALID", f"{label} must be an RFC3339 timestamp")
+    year = int(text[0:4])
+    month = int(text[5:7])
+    day = int(text[8:10])
+    hour = int(text[11:13])
+    minute = int(text[14:16])
+    second = int(text[17:19])
+    if (
+        month < 1
+        or month > 12
+        or day < 1
+        or day > _month_length(year, month)
+        or hour > 23
+        or minute > 59
+        or second > 60
+    ):
+        _fail("INPUT_INVALID", f"{label} must be a real RFC3339 timestamp")
+    offset_minutes = 0
+    if not text.endswith(("Z", "z")):
+        offset_hour = int(text[-5:-3])
+        offset_minute = int(text[-2:])
+        if offset_hour > 23 or offset_minute > 59:
+            _fail("INPUT_INVALID", f"{label} must be a real RFC3339 timestamp")
+        offset_minutes = offset_hour * 60 + offset_minute
+        if text[-6] == "-":
+            offset_minutes = -offset_minutes
+    if second == 60:
+        utc_day_delta, utc_minute = divmod(
+            hour * 60 + minute - offset_minutes,
+            1440,
+        )
+        utc_year, utc_month, utc_day = _shift_calendar_day(
+            year,
+            month,
+            day,
+            utc_day_delta,
+        )
+        if utc_minute != 1439 or utc_day != _month_length(utc_year, utc_month):
+            _fail(
+                "INPUT_INVALID",
+                f"{label} leap second must be at a UTC month end",
+            )
     return text
 
 
@@ -247,10 +331,22 @@ def _validate_case(value: object, index: int) -> dict[str, Any]:
             "a gold case needs at least two independent annotations",
             {"annotator_count": len(annotations), "case_id": case_id},
         )
+    if len(annotations) > MINIMUM_ANNOTATORS:
+        _fail(
+            "EXCESS_ANNOTATORS",
+            "a gold case must have exactly two independent annotations",
+            {
+                "annotator_count": len(annotations),
+                "annotator_ids": sorted(seen),
+                "case_id": case_id,
+            },
+        )
+    # Python string ordering is exact, case-sensitive Unicode code-point order.
     annotations.sort(key=lambda entry: entry["annotator_id"])
 
     labels = {entry["label"] for entry in annotations}
     adjudication = case["adjudication"]
+    adjudication_resolution: str | None = None
     if len(labels) > 1:
         if adjudication is None:
             _fail(
@@ -274,6 +370,7 @@ def _validate_case(value: object, index: int) -> dict[str, Any]:
                 "an adjudication must use a canonical resolution",
                 {"case_id": case_id, "value": resolution},
             )
+        adjudication_resolution = resolution
         adjudication = {
             "adjudicator_id": adjudicator,
             "decided_at": _timestamp(record["decided_at"], "decided_at"),
@@ -300,12 +397,43 @@ def _validate_case(value: object, index: int) -> dict[str, Any]:
             "the gold label must equal the class the case is filed under",
             {"case_class": case_class, "case_id": case_id, "gold_label": gold},
         )
-    if len(labels) == 1 and gold not in labels:
-        _fail(
-            "GOLD_LABEL_UNSUPPORTED",
-            "a unanimous case must take the label its annotators gave",
-            {"case_id": case_id, "gold_label": gold},
+    if len(labels) == 1:
+        if gold not in labels:
+            _fail(
+                "GOLD_LABEL_UNSUPPORTED",
+                "a unanimous case must take the label its annotators gave",
+                {"case_id": case_id, "gold_label": gold},
+            )
+    elif adjudication_resolution != Resolution.GUIDANCE_AMBIGUOUS.value:
+        annotator_a, annotator_b = annotations
+        gold_matches_resolution = (
+            adjudication_resolution == Resolution.ANNOTATOR_A_CORRECT.value
+            and gold == annotator_a["label"]
+        ) or (
+            adjudication_resolution == Resolution.ANNOTATOR_B_CORRECT.value
+            and gold == annotator_b["label"]
+        ) or (
+            adjudication_resolution == Resolution.NEITHER_CORRECT.value
+            and gold not in {annotator_a["label"], annotator_b["label"]}
         )
+        if not gold_matches_resolution:
+            _fail(
+                "ADJUDICATION_GOLD_MISMATCH",
+                "the gold label does not match the adjudication resolution",
+                {
+                    "annotator_a": {
+                        "annotator_id": annotator_a["annotator_id"],
+                        "label": annotator_a["label"],
+                    },
+                    "annotator_b": {
+                        "annotator_id": annotator_b["annotator_id"],
+                        "label": annotator_b["label"],
+                    },
+                    "case_id": case_id,
+                    "gold_label": gold,
+                    "resolution": adjudication_resolution,
+                },
+            )
     return {
         "adjudication": adjudication,
         "annotations": annotations,
@@ -481,4 +609,38 @@ def validate_corpus(payload: Mapping[str, Any]) -> SealedArtifact:
 def validate_repository_corpus(repository_root: Path) -> SealedArtifact:
     """Validate the corpus as it is committed."""
 
-    return validate_corpus(load_corpus(repository_root))
+    payload = load_corpus(repository_root)
+    manual_error = (
+        f"annotation manual must be a readable UTF-8 file at {MANUAL_RELATIVE_PATH}"
+    )
+    try:
+        root = Path(repository_root).absolute()
+        manual_path = root / MANUAL_RELATIVE_PATH
+        current = root
+        path_chain = [root]
+        for part in Path(MANUAL_RELATIVE_PATH).parts:
+            current /= part
+            path_chain.append(current)
+        reparse_flag = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0)
+        for position, path in enumerate(path_chain):
+            metadata = path.lstat()
+            is_reparse = stat.S_ISLNK(metadata.st_mode) or bool(
+                getattr(metadata, "st_file_attributes", 0) & reparse_flag
+            )
+            expected_type = (
+                stat.S_ISREG(metadata.st_mode)
+                if position == len(path_chain) - 1
+                else stat.S_ISDIR(metadata.st_mode)
+            )
+            if is_reparse or not expected_type:
+                _fail("MANUAL_UNBOUND", manual_error)
+        resolved_root = root.resolve(strict=True)
+        resolved_manual = manual_path.resolve(strict=True)
+        try:
+            resolved_manual.relative_to(resolved_root)
+        except ValueError:
+            _fail("MANUAL_UNBOUND", manual_error)
+        manual_path.read_text(encoding="utf-8")
+    except (OSError, RuntimeError, UnicodeError):
+        _fail("MANUAL_UNBOUND", manual_error)
+    return validate_corpus(payload)

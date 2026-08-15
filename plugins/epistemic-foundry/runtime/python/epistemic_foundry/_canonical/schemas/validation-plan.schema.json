@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/validation-plan.schema.json",
+  "title": "ValidationPlan",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "properties": {
+    "plan_id": {
+      "type": "string",
+      "pattern": "^VPLAN-[A-Za-z0-9._:-]+$"
+    },
+    "hypothesis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "variable_mapping": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "mechanism_mapping": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "baseline": {
+      "type": "object"
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "action",
+          "arguments"
+        ]
+      }
+    },
+    "scenario_matrix": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "controlled_conditions": {
+      "type": "object"
+    },
+    "observables": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "falsification_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "identifiability_warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "random_seed": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "environment_digest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resource_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "cpu_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "memory_mb": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      },
+      "required": [
+        "timeout_seconds",
+        "cpu_count",
+        "memory_mb"
+      ]
+    },
+    "approval_required": {
+      "type": "boolean"
+    },
+    "provenance_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "preregistration_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "analysis_plan_artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stopping_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "data_leakage_guards": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "approval_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "plan_id",
+    "hypothesis_id",
+    "target_id",
+    "target_version",
+    "objective",
+    "variable_mapping",
+    "mechanism_mapping",
+    "baseline",
+    "actions",
+    "scenario_matrix",
+    "inputs",
+    "controlled_conditions",
+    "observables",
+    "metrics",
+    "falsification_rule",
+    "assumptions",
+    "identifiability_warnings",
+    "random_seed",
+    "environment_digest",
+    "resource_limits",
+    "approval_required",
+    "provenance_manifest_id",
+    "preregistration_hash",
+    "analysis_plan_artifact_id",
+    "stopping_rules",
+    "data_leakage_guards",
+    "approval_record_ids"
+  ]
+}

@@ -12,12 +12,14 @@ from __future__ import annotations
 
 import pytest
 
+from epistemic_foundry.domain.hashing import hash_excluding
 from epistemic_foundry.evolution.v4_f05 import Transition
 from epistemic_foundry.evolution.v4_f06 import (
     ADMIT,
     FINDING_CODES,
     LifecycleReplayRefused,
     derive_lifecycle_replay,
+    evaluate_lifecycle_replay,
 )
 from fixtures import (
     EVALUATOR_HASH,
@@ -35,9 +37,19 @@ def _refusal_code(case: dict) -> str:
     return str(receipt["finding_code"])
 
 
+def _seal_stop_certificate(case: dict) -> None:
+    certificate = case["run"]["stop_certificate"]
+    if certificate is None:
+        return
+    certificate["certificate_hash"] = hash_excluding(
+        certificate, "certificate_hash"
+    )
+
+
 def _perturb(mutate) -> dict:
     case = deep_copy_case(happy_case())
     mutate(case)
+    _seal_stop_certificate(case)
     return case
 
 
@@ -175,6 +187,70 @@ def test_a_run_that_swaps_its_evaluator_mid_search_is_refused() -> None:
     assert _refusal_code(_perturb(mutate)) == "EVALUATOR_BUNDLE_MUTATED"
 
 
+def test_a_committed_return_checkpoint_without_an_evaluator_binding_is_refused() -> (
+    None
+):
+    def mutate(c: dict) -> None:
+        moves = list(c["run"]["transitions"])
+        for position, move in enumerate(moves):
+            if move.checkpoint_id != "CP-2":
+                continue
+            moves[position] = Transition(
+                source=move.source,
+                target=move.target,
+                checkpoint_id=move.checkpoint_id,
+            )
+            break
+        else:  # pragma: no cover - a fixture contract failure, not a gate branch
+            raise AssertionError("the happy case declares no CP-2 return checkpoint")
+        c["run"]["transitions"] = moves
+
+    case = _perturb(mutate)
+    with pytest.raises(LifecycleReplayRefused) as caught:
+        evaluate_lifecycle_replay(**case)
+    assert caught.value.code == "EVALUATOR_BUNDLE_UNBOUND"
+    receipt = caught.value.context["receipt"]
+    assert receipt["decision"] != ADMIT
+    [finding] = receipt["decision_context"]["unbound_checkpoints"]
+    assert finding["checkpoint_id"] == "CP-2"
+    assert finding["reason"] == "checkpoint_payload_missing"
+
+
+def test_a_confirmed_evaluator_swap_precedes_an_unbound_checkpoint() -> None:
+    def mutate(c: dict) -> None:
+        moves = transitions(
+            3,
+            evaluator_hashes=[
+                EVALUATOR_HASH,
+                OTHER_EVALUATOR_HASH,
+                EVALUATOR_HASH,
+            ],
+        )
+        for position, move in enumerate(moves):
+            if move.checkpoint_id != "CP-3":
+                continue
+            moves[position] = Transition(
+                source=move.source,
+                target=move.target,
+                checkpoint_id=move.checkpoint_id,
+            )
+            break
+        else:  # pragma: no cover - a fixture contract failure, not a gate branch
+            raise AssertionError("the constructed run declares no CP-3 return checkpoint")
+        c["run"]["transitions"] = moves
+
+    receipt = derive_lifecycle_replay(**_perturb(mutate))
+    assert receipt["decision"] != ADMIT
+    assert receipt["finding_code"] == "EVALUATOR_BUNDLE_MUTATED"
+    assert receipt["decision_context"]["evaluator_bundle_hashes"] == [
+        EVALUATOR_HASH,
+        OTHER_EVALUATOR_HASH,
+    ]
+    [finding] = receipt["decision_context"]["unbound_checkpoints"]
+    assert finding["checkpoint_id"] == "CP-3"
+    assert finding["reason"] == "checkpoint_payload_missing"
+
+
 # --------------------------------------------------------------------------- #
 # Seed intake (composed I05).
 # --------------------------------------------------------------------------- #
@@ -309,6 +385,7 @@ def test_every_declared_finding_code_is_reachable() -> None:
         "LIFECYCLE_TRANSITIONS_INCONSISTENT",
         "STOP_CERTIFICATE_INCONSISTENT",
         "EVALUATOR_BUNDLE_MUTATED",
+        "EVALUATOR_BUNDLE_UNBOUND",
         "SEED_INTAKE_REFUSED",
         "SEED_POPULATION_UNRECONCILED",
         "OPERATOR_UNDECLARED",

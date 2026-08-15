@@ -15,14 +15,22 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
+from functools import lru_cache
+from pathlib import Path
 from types import MappingProxyType
 from typing import Final
+
+from jsonschema import Draft202012Validator
+from jsonschema.exceptions import SchemaError
 
 
 SHA256_PATTERN: Final = re.compile(r"^sha256:[0-9a-f]{64}$")
 RFC3339_PATTERN: Final = re.compile(
     r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"
     r"(?:\.[0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+)
+_SCOPE_VECTOR_SCHEMA_PATH: Final = (
+    Path(__file__).resolve().parents[4] / "schemas/scope-vector.schema.json"
 )
 
 
@@ -84,6 +92,27 @@ CLASS_LANE_FLOORS: Final = MappingProxyType(
         WorkClass.E3.value: CANONICAL_LANES[:-1],
         WorkClass.E4.value: CANONICAL_LANES[:-1],
         WorkClass.E5.value: CANONICAL_LANES,
+    }
+)
+
+_LANE_QUERY_FAMILY_FIELDS: Final[
+    Mapping[str, tuple[tuple[str, str], ...]]
+] = MappingProxyType(
+    {
+        Lane.LEXICAL.value: (("FORWARD", "forward_queries"),),
+        Lane.SEMANTIC.value: (("FORWARD", "forward_queries"),),
+        Lane.CITATION.value: (("FORWARD", "forward_queries"),),
+        Lane.ENTITY_VARIABLE.value: (("FORWARD", "forward_queries"),),
+        Lane.MECHANISM.value: (("FORWARD", "forward_queries"),),
+        Lane.COUNTEREVIDENCE.value: (
+            ("FORWARD", "forward_queries"),
+            ("REVERSE", "reverse_queries"),
+        ),
+        Lane.NULL.value: (("NULL", "null_queries"),),
+        Lane.BOUNDARY.value: (("BOUNDARY", "boundary_queries"),),
+        Lane.METHOD.value: (("METHOD", "method_queries"),),
+        Lane.TEMPORAL.value: (("FORWARD", "forward_queries"),),
+        Lane.EXTERNAL_NOVELTY.value: (("NOVELTY", "novelty_queries"),),
     }
 )
 
@@ -219,6 +248,38 @@ class SealedArtifact:
         return value
 
 
+@dataclass(frozen=True, slots=True)
+class LaneQueryProjection:
+    """Immutable exact QueryPlan projection for one selected retrieval lane."""
+
+    query_plan_id: str
+    plan_hash: str
+    lane: str
+    query_families: tuple[str, ...]
+    _query_batch_bytes: bytes
+
+    @property
+    def query_batch(self) -> dict[str, object]:
+        """Return a fresh mutable projection of the canonical query batch."""
+
+        value = json.loads(self._query_batch_bytes.decode("utf-8"))
+        if type(value) is not dict:  # pragma: no cover - construction invariant
+            raise AssertionError("lane query batch is not an object")
+        return value
+
+    @property
+    def query_batch_bytes(self) -> bytes:
+        return self._query_batch_bytes
+
+    @property
+    def query_text(self) -> str:
+        return self._query_batch_bytes.decode("utf-8")
+
+    @property
+    def query_hash(self) -> str:
+        return _digest_bytes(self._query_batch_bytes)
+
+
 def _canonical_json(value: object) -> bytes:
     try:
         return json.dumps(
@@ -257,6 +318,35 @@ def _mapping(value: object, label: str) -> dict[str, object]:
         result[key] = entry
     _canonical_json(result)
     return result
+
+
+@lru_cache(maxsize=1)
+def _scope_vector_validator() -> Draft202012Validator:
+    try:
+        schema = json.loads(_SCOPE_VECTOR_SCHEMA_PATH.read_text(encoding="utf-8"))
+        if type(schema) is not dict:
+            raise ValueError("ScopeVector schema must be an object")
+        Draft202012Validator.check_schema(schema)
+    except (OSError, UnicodeError, ValueError, SchemaError) as error:
+        raise PlanningContractError(
+            "SCHEMA_UNREADABLE", "canonical ScopeVector schema is unavailable"
+        ) from error
+    return Draft202012Validator(schema)
+
+
+def _scope_vector(value: object, label: str) -> dict[str, object]:
+    scope = _mapping(value, label)
+    errors = sorted(
+        "/".join(str(part) for part in error.absolute_path) + ": " + error.message
+        for error in _scope_vector_validator().iter_errors(scope)
+    )
+    if errors:
+        _fail(
+            "INPUT_INVALID",
+            f"{label} must be a canonical ScopeVector",
+            {"errors": errors},
+        )
+    return scope
 
 
 def _exact_fields(payload: Mapping[str, object], expected: frozenset[str], label: str) -> None:
@@ -487,7 +577,7 @@ def _validate_query_plan_shape(payload: Mapping[str, object], *, check_hash: boo
     if not isinstance(scopes, Sequence) or isinstance(scopes, (str, bytes, bytearray)):
         _fail("INPUT_INVALID", "scope_partitions must be an array")
     for index, scope in enumerate(scopes):
-        _mapping(scope, f"scope_partitions[{index}]")
+        _scope_vector(scope, f"scope_partitions[{index}]")
 
     budget = _mapping(payload["budget"], "budget")
     _exact_fields(budget, frozenset({"max_queries", "max_documents", "max_seconds"}), "budget")
@@ -527,7 +617,9 @@ def _validate_query_plan_shape(payload: Mapping[str, object], *, check_hash: boo
                 _fail("QUERY_REQUIRED", f"selected lane {lane} requires {field}")
 
     decisions = payload["lane_decisions"]
-    if not isinstance(decisions, Sequence) or isinstance(decisions, (str, bytes, bytearray)):
+    if not isinstance(decisions, Sequence) or isinstance(
+        decisions, (str, bytes, bytearray)
+    ):
         _fail("INPUT_INVALID", "lane_decisions must be an array")
     if len(decisions) != len(CANONICAL_LANES):
         _fail("LANE_RECONCILIATION_COUNT", "lane_decisions must reconcile all eleven lanes")
@@ -571,7 +663,90 @@ def validate_query_plan(payload: Mapping[str, object]) -> SealedArtifact:
     return _sealed("QueryPlan", value)
 
 
-def seal_search_lane_receipt(proposal: Mapping[str, object]) -> SealedArtifact:
+def project_lane_query(
+    query_plan: Mapping[str, object] | SealedArtifact,
+    lane: str,
+) -> LaneQueryProjection:
+    """Project the exact canonical query batch for one selected lane."""
+
+    plan = validate_query_plan(_artifact_payload(query_plan, "query_plan")).payload
+    canonical_lane = _lane(lane)
+    decisions = plan["lane_decisions"]
+    if not isinstance(decisions, Sequence) or isinstance(
+        decisions, (str, bytes, bytearray)
+    ):
+        raise AssertionError("validated QueryPlan lane decision invariant violated")
+    decision = decisions[_LANE_RANK[canonical_lane]]
+    if not isinstance(decision, Mapping):
+        raise AssertionError("validated QueryPlan lane decision invariant violated")
+    if decision["disposition"] != "SELECTED":
+        _fail(
+            "LANE_SELECTION_MISMATCH",
+            f"lane {canonical_lane} must be SELECTED before query projection",
+        )
+
+    families: list[dict[str, object]] = []
+    query_families: list[str] = []
+    for family, field in _LANE_QUERY_FAMILY_FIELDS[canonical_lane]:
+        queries = plan[field]
+        if not isinstance(queries, Sequence) or isinstance(
+            queries, (str, bytes, bytearray)
+        ):
+            raise AssertionError("validated QueryPlan query array invariant violated")
+        families.append({"family": family, "queries": list(queries)})
+        query_families.append(family)
+    query_batch_bytes = _canonical_json(
+        {"families": families, "lane": canonical_lane}
+    )
+    query_plan_id = plan["query_plan_id"]
+    plan_hash = plan["plan_hash"]
+    if type(query_plan_id) is not str or type(plan_hash) is not str:
+        raise AssertionError("validated QueryPlan identity invariant violated")
+    return LaneQueryProjection(
+        query_plan_id=query_plan_id,
+        plan_hash=plan_hash,
+        lane=canonical_lane,
+        query_families=tuple(query_families),
+        _query_batch_bytes=query_batch_bytes,
+    )
+
+
+def _expected_lane_query_text(plan: Mapping[str, object], lane: str) -> str:
+    return project_lane_query(plan, lane).query_text
+
+
+def _validate_receipt_plan_binding(
+    receipt: Mapping[str, object],
+    plan: Mapping[str, object],
+) -> None:
+    if (
+        receipt["query_plan_id"] != plan["query_plan_id"]
+        or receipt["plan_hash"] != plan["plan_hash"]
+    ):
+        _fail(
+            "RECEIPT_PLAN_MISMATCH",
+            "receipt does not bind the exact QueryPlan revision",
+        )
+    if receipt["receipt_kind"] == "SENTINEL":
+        return
+    lane = str(receipt["lane"])
+    query_text = receipt["query_text"]
+    if not isinstance(query_text, str):  # pragma: no cover - receipt shape invariant
+        raise AssertionError("validated execution receipt query_text invariant violated")
+    projection = project_lane_query(plan, lane)
+    if query_text.encode("utf-8") != projection.query_batch_bytes:
+        _fail(
+            "RECEIPT_QUERY_MISMATCH",
+            "receipt query_text does not match the canonical QueryPlan lane projection",
+        )
+
+
+def seal_search_lane_receipt(
+    proposal: Mapping[str, object],
+    *,
+    query_plan: Mapping[str, object] | SealedArtifact,
+) -> SealedArtifact:
+    plan = validate_query_plan(_artifact_payload(query_plan, "query_plan")).payload
     value = _mapping(proposal, "SearchLaneReceipt proposal")
     allowed = _RECEIPT_FIELDS - {"query_hash", "receipt_hash"}
     _exact_fields(value, allowed, "SearchLaneReceipt proposal")
@@ -586,7 +761,9 @@ def seal_search_lane_receipt(proposal: Mapping[str, object]) -> SealedArtifact:
         value["query_hash"] = _digest_bytes(query_text.encode("utf-8"))
     _validate_receipt_shape(value, check_hash=False)
     value["receipt_hash"] = _hash_excluding(value, "receipt_hash")
-    return validate_search_lane_receipt(value)
+    receipt = validate_search_lane_receipt(value)
+    _validate_receipt_plan_binding(receipt.payload, plan)
+    return receipt
 
 
 def _nullable_hash(value: object, label: str) -> str | None:
@@ -656,7 +833,7 @@ def _validate_receipt_shape(payload: Mapping[str, object], *, check_hash: bool) 
         asserted_query_hash = _hash(payload["query_hash"], "query_hash")
         if asserted_query_hash != _digest_bytes(query_value.encode("utf-8")):
             _fail("QUERY_HASH_MISMATCH", "query_hash does not match UTF-8 query_text")
-        _mapping(payload["scope_filter"], "scope_filter")
+        _scope_vector(payload["scope_filter"], "scope_filter")
 
         if state in {SearchState.SEARCHED_NONE, SearchState.SEARCHED_WITH_RESULTS, SearchState.PARTIAL}:
             _hash(payload["corpus_snapshot_hash"], "corpus_snapshot_hash")
@@ -671,16 +848,33 @@ def _validate_receipt_shape(payload: Mapping[str, object], *, check_hash: bool) 
             _integer(payload["excluded_count"], "excluded_count", 0)
             if result_count != len(result_ids):
                 _fail("RESULT_COUNT_MISMATCH", "result_count must equal the number of result_ids")
-            _timestamp(payload["started_at"], "started_at")
-            _timestamp(payload["finished_at"], "finished_at")
+            started_at = _timestamp(payload["started_at"], "started_at")
+            finished_at = _timestamp(payload["finished_at"], "finished_at")
         else:
             _nullable_hash(payload["corpus_snapshot_hash"], "corpus_snapshot_hash")
             if payload["index_versions"] is not None:
                 _mapping(payload["index_versions"], "index_versions")
             if payload["result_ids"] is not None or payload["result_count"] is not None or payload["excluded_count"] is not None:
                 _fail("FAILED_RESULT_COUNT_FORBIDDEN", "BLOCKED/FAILED cannot assert result counts")
-            _nullable_timestamp(payload["started_at"], "started_at")
-            _nullable_timestamp(payload["finished_at"], "finished_at")
+            started_at = _nullable_timestamp(payload["started_at"], "started_at")
+            finished_at = _nullable_timestamp(payload["finished_at"], "finished_at")
+
+        if started_at is not None and finished_at is not None:
+            started_suffix_length = 1 if started_at.endswith("Z") else 6
+            finished_suffix_length = 1 if finished_at.endswith("Z") else 6
+            started_offset = "+00:00" if started_suffix_length == 1 else started_at[-6:]
+            finished_offset = "+00:00" if finished_suffix_length == 1 else finished_at[-6:]
+            started_whole = datetime.fromisoformat(started_at[:19] + started_offset)
+            finished_whole = datetime.fromisoformat(finished_at[:19] + finished_offset)
+            started_fraction = started_at[20:-started_suffix_length] if started_at[19] == "." else ""
+            finished_fraction = finished_at[20:-finished_suffix_length] if finished_at[19] == "." else ""
+            fraction_width = max(len(started_fraction), len(finished_fraction))
+            if finished_whole < started_whole or (
+                finished_whole == started_whole
+                and finished_fraction.ljust(fraction_width, "0")
+                < started_fraction.ljust(fraction_width, "0")
+            ):
+                _fail("TIMESTAMP_DISORDERED", "finished_at must not precede started_at")
 
         stop = payload["stop_reason"]
         if state is SearchState.SEARCHED_NONE:
@@ -825,8 +1019,7 @@ def reconcile_search_run(
         ids.add(receipt_id)
         if value["run_id"] != run_id:
             _fail("RECEIPT_RUN_MISMATCH", "all receipts must bind the reconciled run_id")
-        if value["query_plan_id"] != plan["query_plan_id"] or value["plan_hash"] != plan["plan_hash"]:
-            _fail("RECEIPT_PLAN_MISMATCH", "receipt does not bind the exact QueryPlan revision")
+        _validate_receipt_plan_binding(value, plan)
         lane = str(value["lane"])
         by_lane[lane].append(value)
         validated.append(value)

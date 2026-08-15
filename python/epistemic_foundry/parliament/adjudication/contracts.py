@@ -235,6 +235,14 @@ def _text(value: object, label: str) -> str:
     return str(value)
 
 
+def _nullable_string(value: object, label: str) -> str | None:
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        _fail("INPUT_INVALID", f"{label} must be a string or null")
+    return value
+
+
 def _timestamp(value: object, label: str) -> str:
     text = _text(value, label)
     if RFC3339_PATTERN.fullmatch(text) is None:
@@ -244,6 +252,13 @@ def _timestamp(value: object, label: str) -> str:
 
 def _ids(value: object, label: str) -> list[str]:
     return sorted({_text(entry, label) for entry in _sequence(value, label)})
+
+
+def _string_array(value: object, label: str) -> list[str]:
+    entries = _sequence(value, label)
+    if any(type(entry) is not str for entry in entries):
+        _fail("INPUT_INVALID", f"{label} members must be strings")
+    return entries
 
 
 @lru_cache(maxsize=8)
@@ -413,11 +428,13 @@ def validate_adjudication(
         "promotion_recommendation": recommendation,
         "rationale": _text(value["rationale"], "rationale"),
         "run_id": _text(value["run_id"], "run_id"),
-        "scope_narrowing": _text(value["scope_narrowing"], "scope_narrowing"),
-        "strongest_counterevidence_id": _text(
+        "scope_narrowing": _string_array(
+            value["scope_narrowing"], "scope_narrowing"
+        ),
+        "strongest_counterevidence_id": _nullable_string(
             value["strongest_counterevidence_id"], "strongest_counterevidence_id"
         ),
-        "strongest_support_id": _text(
+        "strongest_support_id": _nullable_string(
             value["strongest_support_id"], "strongest_support_id"
         ),
         "unresolved_issue_ids": _ids(
@@ -555,7 +572,7 @@ def validate_attestation(
         ),
         "overall_status": status,
         "run_id": _text(value["run_id"], "run_id"),
-        "signature": _text(value["signature"], "signature"),
+        "signature": _nullable_string(value["signature"], "signature"),
         "subject_artifact_id": subject,
     }
 

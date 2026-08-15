@@ -11,10 +11,13 @@
     "provenance",
     "research"
   ],
+  "skills": "./skills/",
+  "hooks": "./hooks/session.json",
+  "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Epistemic Foundry",
     "shortDescription": "Evidence-gated research package shell",
-    "longDescription": "Provides the versioned Epistemic Foundry plugin identity and brand assets. Runtime skills, hooks, MCP services, and scientific capabilities are exposed only after their work-package gates pass.",
+    "longDescription": "Provides the versioned Epistemic Foundry plugin identity, brand assets, bundled skills, a bootstrap SessionStart hook, and the canonical thirteen-tool MCP catalog. Two non-secret Node-local diagnostics are bound: foundry.status and foundry.health. Workspace map, session, artifact, claim, atlas, passport, replay, planning, and execution tools return UNAVAILABLE with an exact reason until their canonical authorization and state producers are connected. Auxiliary schema, ledger, and retrieval CLI commands require an explicitly configured absolute EFOUNDRY_PYTHON path to Python 3.12 or newer; they are not required for the two diagnostics. Durable FORGE sessions, workflow execution, promotion, and evidence recomputation are not yet part of this candidate payload.",
     "developerName": "Epistemic Foundry maintainers",
     "category": "Research",
     "capabilities": [],

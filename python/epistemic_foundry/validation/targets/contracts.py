@@ -564,31 +564,43 @@ def _validate_port(
     return result
 
 
+def _duplicate_port_context(
+    ports: Mapping[str, Sequence[Mapping[str, Any]]],
+) -> dict[str, Any] | None:
+    """The first duplicate port id in canonical declaration order, if any."""
+
+    seen: dict[str, str] = {}
+    for collection in _PORT_COLLECTIONS:
+        for entry in ports.get(collection, ()):
+            identifier = entry["id"]
+            if identifier in seen:
+                return {
+                    "port_id": identifier,
+                    "collections": sorted({seen[identifier], collection}),
+                }
+            seen[identifier] = collection
+    return None
+
+
 def _validate_ports(
     ports: Mapping[str, Any], fields: frozenset[str]
 ) -> dict[str, list[dict[str, Any]]]:
     """Every declared port, with one id naming exactly one port."""
 
     declared: dict[str, list[dict[str, Any]]] = {}
-    seen: dict[str, str] = {}
     for collection in _PORT_COLLECTIONS:
         entries = [
             _validate_port(entry, collection, index, fields)
             for index, entry in enumerate(_sequence(ports[collection], collection))
         ]
-        for entry in entries:
-            identifier = entry["id"]
-            if identifier in seen:
-                _fail(
-                    "PORT_ID_DUPLICATED",
-                    f"port id {identifier} is declared more than once",
-                    {
-                        "port_id": identifier,
-                        "collections": sorted({seen[identifier], collection}),
-                    },
-                )
-            seen[identifier] = collection
         declared[collection] = entries
+        duplicate = _duplicate_port_context(declared)
+        if duplicate is not None:
+            _fail(
+                "PORT_ID_DUPLICATED",
+                f"port id {duplicate['port_id']} is declared more than once",
+                duplicate,
+            )
     return declared
 
 
@@ -911,6 +923,9 @@ def _screen_manifest(screen: _Screen, manifest: object, index: int) -> dict[str,
         detail["schema_errors"] = errors
     else:
         assert document is not None  # narrowed by the empty error list
+        if _duplicate_port_context(document) is not None:
+            codes.append("PORT_ID_DUPLICATED")
+
         gated = screen.approval_coverage[document["approval_policy"]]
         if (
             document["safety_class"] == screen.highest_safety_class

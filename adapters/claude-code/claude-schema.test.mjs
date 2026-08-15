@@ -97,6 +97,11 @@ test("x02_schema: the surface and isolation vocabularies are the ones the mappin
 test("x02_schema: the binding declaration is exactly the fields the loader requires", () => {
   assert.deepEqual(Object.keys(binding.declaration).sort(), [...DECLARATION_FIELDS].sort());
   assert.deepEqual([...binding.declaration.frontmatter_fields], [...binding.declaration.frontmatter_fields].sort());
+  assert.equal(binding.declaration.agent_root, ".claude/agents");
+  assert.deepEqual(binding.declaration.optional_frontmatter, {
+    maxTurns: "40",
+    permissionMode: "plan",
+  });
   assert.equal(new Set(binding.declaration.base_tools).size, binding.declaration.base_tools.length);
   assert.ok(!binding.declaration.base_tools.includes(binding.declaration.write_tool));
 });

@@ -367,14 +367,13 @@ def validate_cross_examination(
             )
     else:
         response = _text(response, "response")
-    return {
+    normalized = {
         "attack_type": attack_type,
         "attacker_role": attacker,
         "challenge": _text(record["challenge"], "challenge"),
         "created_at": _timestamp(record["created_at"], "created_at"),
         "cross_exam_id": exam_id,
         "evidence_ids": evidence,
-        "record_hash": _text(record["record_hash"], "record_hash"),
         "resolution_condition": _text(
             record["resolution_condition"], "resolution_condition"
         ),
@@ -384,6 +383,17 @@ def validate_cross_examination(
         "target_assertion_id": target_assertion,
         "target_brief_id": target_brief,
     }
+    asserted_hash = _text(record["record_hash"], "record_hash")
+    if SHA256_PATTERN.fullmatch(asserted_hash) is None:
+        _fail("RECORD_HASH_INVALID", "record_hash must be sha256:<64 lowercase hex>")
+    if asserted_hash != _hash_excluding(record, "record_hash"):
+        _fail(
+            "RECORD_HASH_MISMATCH",
+            "record_hash does not match the exact cross-examination content",
+            {"cross_exam_id": exam_id},
+        )
+    normalized["record_hash"] = asserted_hash
+    return normalized
 
 
 def validate_minority_report(
@@ -420,7 +430,7 @@ def validate_minority_report(
             "a dissent may only be superseded by cited new evidence",
             {"minority_report_id": report_id},
         )
-    return {
+    normalized = {
         "author_role": _text(record["author_role"], "author_role"),
         "created_at": _timestamp(record["created_at"], "created_at"),
         "evidence_ids": evidence,
@@ -428,13 +438,23 @@ def validate_minority_report(
         "minority_claim": _text(record["minority_claim"], "minority_claim"),
         "minority_report_id": report_id,
         "preservation_status": preservation,
-        "report_hash": _text(record["report_hash"], "report_hash"),
         "run_id": _text(record["run_id"], "run_id"),
         "unresolved_test": _text(record["unresolved_test"], "unresolved_test"),
         "why_majority_may_be_wrong": _text(
             record["why_majority_may_be_wrong"], "why_majority_may_be_wrong"
         ),
     }
+    asserted_hash = _text(record["report_hash"], "report_hash")
+    if SHA256_PATTERN.fullmatch(asserted_hash) is None:
+        _fail("REPORT_HASH_INVALID", "report_hash must be sha256:<64 lowercase hex>")
+    if asserted_hash != _hash_excluding(record, "report_hash"):
+        _fail(
+            "REPORT_HASH_MISMATCH",
+            "report_hash does not match the exact minority-report content",
+            {"minority_report_id": report_id},
+        )
+    normalized["report_hash"] = asserted_hash
+    return normalized
 
 
 def strongest_dissent(reports: Sequence[Mapping[str, Any]]) -> str | None:

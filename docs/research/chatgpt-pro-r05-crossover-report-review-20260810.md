@@ -1,0 +1,1 @@
+NO_BLOCKER — Canonical schema validation, deterministic builder re-derivation, and exact equality close partial or self-rehashed `ALLOW` laundering while preserving the independent parent binding, mechanism-agreement, and unconditional-`ALLOW` checks; this is within R05’s typed-crossover authority and does not grant evolution new approval authority.  

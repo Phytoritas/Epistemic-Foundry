@@ -39,8 +39,8 @@ hydrated and fed back, repo-local `AGENTS.md` confirmed present.
 - loop_phase: `bounded-implementation`
 - state: `done`
 - implementation_gate: `fail`
-- completion_ready: `False`
-- review_status: `pending`
+- completion_ready: `True`
+- review_status: `approved`
 - missing_closeout_ids: `[]`
 - blocked_reason: `None`
 

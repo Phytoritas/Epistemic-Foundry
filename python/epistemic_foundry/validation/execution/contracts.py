@@ -1187,7 +1187,8 @@ def _covers(scope: str, requested: str) -> bool:
     if scope == requested:
         return True
     if scope.endswith(SCOPE_WILDCARD):
-        return requested.startswith(scope[: -len(SCOPE_WILDCARD)])
+        prefix = scope[: -len(SCOPE_WILDCARD)]
+        return requested == prefix or requested.startswith(prefix + "/")
     return False
 
 

@@ -233,7 +233,7 @@ export const validateHealthReport = (candidate) => {
       });
     }
   }
-  return deepFreeze({
+  const normalized = {
     checks,
     generated_at: requireText(
       candidate.generated_at,
@@ -256,8 +256,15 @@ export const validateHealthReport = (candidate) => {
       64,
     ),
     profile,
-    report_hash: reportHash,
-  });
+  };
+  const derivedReportHash = canonicalJsonSha256(normalized);
+  if (reportHash !== derivedReportHash) {
+    fail("HEALTH_REPORT_INVALID", "report_hash does not match the normalized health report", {
+      claimed_report_hash: reportHash,
+      derived_report_hash: derivedReportHash,
+    });
+  }
+  return deepFreeze({ ...normalized, report_hash: reportHash });
 };
 
 const validateReceipt = (candidate, expectedOperationId, label) => {

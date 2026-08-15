@@ -24,6 +24,7 @@ from ..planning.contracts import (
     Lane,
     SearchState,
     validate_search_completeness_certificate,
+    validate_search_lane_receipt,
 )
 from ..planning.contracts import SealedArtifact as PlanningSealedArtifact
 
@@ -200,6 +201,45 @@ def _certificate_payload(
     ).payload
 
 
+def _receipt_snapshots(
+    receipts: Sequence[Mapping[str, Any] | PlanningSealedArtifact],
+) -> tuple[PlanningSealedArtifact, ...]:
+    """Validate receipts once and retain immutable snapshots for claim checks."""
+
+    return tuple(
+        validate_search_lane_receipt(
+            receipt.payload
+            if isinstance(receipt, PlanningSealedArtifact)
+            else receipt
+        )
+        for receipt in receipts
+    )
+
+
+def _has_positive_execution_receipt(
+    receipts: Sequence[PlanningSealedArtifact],
+    *,
+    lane: str,
+    scope_id: str | None,
+) -> bool:
+    """Return whether the claimed lane/scope contains any positive receipt."""
+
+    for sealed in receipts:
+        receipt = sealed.payload
+        if receipt["receipt_kind"] != "EXECUTION" or receipt["lane"] != lane:
+            continue
+        scope_filter = receipt["scope_filter"]
+        if not isinstance(scope_filter, Mapping):  # validated execution invariant
+            continue
+        receipt_scope_id = f"lane:{lane}:scope:{_digest(scope_filter)}"
+        if scope_id is not None and receipt_scope_id != scope_id:
+            continue
+        result_count = receipt["result_count"]
+        if type(result_count) is int and result_count > 0:
+            return True
+    return False
+
+
 def _reconciliation(certificate: Mapping[str, Any], lane: str) -> dict[str, Any]:
     for row in certificate["lane_reconciliations"]:  # type: ignore[union-attr]
         if row.get("lane") == lane:  # type: ignore[union-attr]
@@ -268,7 +308,8 @@ def seal_absence_claim(
     ABSENCE claim under ``absence_claim_ceiling``.
     """
 
-    payload = _certificate_payload(query_plan, receipts, certificate)
+    receipt_snapshots = _receipt_snapshots(receipts)
+    payload = _certificate_payload(query_plan, receipt_snapshots, certificate)
     lane = _lane(lane)
     statement = _text(statement, "statement")
     created_at = _timestamp(created_at, "created_at")
@@ -278,6 +319,22 @@ def seal_absence_claim(
     reconciliation = _reconciliation(payload, lane)
     state = str(reconciliation["reconciled_state"])
     claim_kind = "NOVELTY" if lane == Lane.EXTERNAL_NOVELTY.value else "ABSENCE"
+
+    if _has_positive_execution_receipt(
+        receipt_snapshots,
+        lane=lane,
+        scope_id=scope_id,
+    ):
+        if claim_kind == "NOVELTY":
+            _fail(
+                "NOVELTY_CONTRADICTED",
+                "prior art was found; a novelty claim would contradict the record",
+            )
+        _fail(
+            "ABSENCE_CONTRADICTED",
+            "the lane returned results; an absence claim would contradict the record",
+            {"lane": lane},
+        )
 
     if state in {
         SearchState.UNSEARCHED.value,

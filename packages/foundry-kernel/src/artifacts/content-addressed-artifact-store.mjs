@@ -41,7 +41,7 @@ const SUFFIX_PATTERN = /^[0-9a-f]{62}$/u;
 const ID_KEY_PATTERN = /^[0-9a-f]{64}$/u;
 const RECEIPT_FILE_PATTERN = /^([0-9a-f]{64})\.json$/u;
 const STAGE_PATTERN = /^\.stage-[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u;
-const RFC3339_PATTERN = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|([+-])(\d{2}):(\d{2}))$/u;
+const RFC3339_PATTERN = /^(\d{4})-(\d{2})-(\d{2})[Tt](\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:[Zz]|([+-])(\d{2}):(\d{2}))$/u;
 const HEX_DIRECTORY = "sha256";
 const STAGING_DIRECTORY = ".staging";
 const MUTATION_LOCK = ".mutation-lock";
@@ -217,6 +217,13 @@ const cloneStringArray = (value, label) => {
   return result;
 };
 
+const isLeapYear = (year) => year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+
+const daysInMonth = (year, month) =>
+  [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][
+    month - 1
+  ];
+
 const isValidRfc3339 = (candidate) => {
   if (typeof candidate !== "string" || !hasOnlyCanonicalUnicode(candidate)) return false;
   const match = RFC3339_PATTERN.exec(candidate);
@@ -229,21 +236,47 @@ const isValidRfc3339 = (candidate) => {
   const second = Number(match[6]);
   const offsetHour = match[8] === undefined ? 0 : Number(match[8]);
   const offsetMinute = match[9] === undefined ? 0 : Number(match[9]);
-  const calendar = new Date(Date.UTC(year, month - 1, day));
-  return (
+  if (
     month >= 1 &&
     month <= 12 &&
     day >= 1 &&
-    calendar.getUTCFullYear() === year &&
-    calendar.getUTCMonth() === month - 1 &&
-    calendar.getUTCDate() === day &&
+    day <= daysInMonth(year, month) &&
     hour <= 23 &&
     minute <= 59 &&
-    second <= 59 &&
+    second <= 60 &&
     offsetHour <= 23 &&
-    offsetMinute <= 59 &&
-    NUMBER_IS_FINITE(Date.parse(candidate))
-  );
+    offsetMinute <= 59
+  ) {
+    if (second <= 59) return true;
+
+    const offsetSign = match[7] === "-" ? -1 : 1;
+    const offsetMinutes =
+      match[7] === undefined ? 0 : offsetSign * (offsetHour * 60 + offsetMinute);
+    const utcMinutes = hour * 60 + minute - offsetMinutes;
+    const utcMinuteOfDay = ((utcMinutes % 1_440) + 1_440) % 1_440;
+    if (utcMinuteOfDay !== 23 * 60 + 59) return false;
+
+    let utcYear = year;
+    let utcMonth = month;
+    let utcDay = day + Math.floor(utcMinutes / 1_440);
+    if (utcDay < 1) {
+      utcMonth -= 1;
+      if (utcMonth < 1) {
+        utcYear -= 1;
+        utcMonth = 12;
+      }
+      utcDay = daysInMonth(utcYear, utcMonth);
+    } else if (utcDay > daysInMonth(utcYear, utcMonth)) {
+      utcDay = 1;
+      utcMonth += 1;
+      if (utcMonth > 12) {
+        utcYear += 1;
+        utcMonth = 1;
+      }
+    }
+    return utcDay === daysInMonth(utcYear, utcMonth);
+  }
+  return false;
 };
 
 const validateRfc3339 = (value, label) => {

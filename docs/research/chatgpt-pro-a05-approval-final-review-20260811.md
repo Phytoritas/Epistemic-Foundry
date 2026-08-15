@@ -1,0 +1,3 @@
+BLOCKER: A behavior-bearing `str` subclass can still bypass EF4-I12. The wrapper accepts `approver_id` and maker members with `isinstance(..., str)`, then delegates to the unchanged `approver_id in tuple(maker_ids)` comparison; a text-identical subclass overriding `__eq__` to return `False` can therefore evade self-approval rejection.  
+
+MINIMUM A05-LOCAL CORRECTION: Require exact built-in strings with `type(approver_id) is str` and `type(maker_id) is str` before the existing tuple snapshot and single legacy delegation. Preserve `SELF_APPROVAL_FORBIDDEN`, non-empty-only validation, whitespace-only IDs, order, duplicates, and the current package export.

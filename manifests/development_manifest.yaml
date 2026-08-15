@@ -40,6 +40,7 @@ work_packages:
   - AGENTS.md
   - CLAUDE.md
   - docs/status_taxonomy.md
+  - docs/decisions/**
   model_tier: frontier
   independent_review: required
   exit_criteria:
@@ -134,6 +135,7 @@ work_packages:
   - A03
   write_scope:
   - artifacts/work_packages/A04/**
+  - manifests/acceptance_matrix.yaml
   model_tier: frontier
   independent_review: required
   exit_criteria:
@@ -313,7 +315,14 @@ work_packages:
   - artifacts/work_packages/B04/report.json
   - artifacts/work_packages/B04/commands.jsonl
   - artifacts/work_packages/B04/review.md
-  - artifacts/work_packages/B04/attempts/**/canonical-projection-verification.json
+  - artifacts/work_packages/B04/attempts/0003/canonical-projection-verification.json
+  - artifacts/work_packages/B04/attempts/0004/canonical-projection-verification.json
+  - artifacts/work_packages/B04/attempts/0005/canonical-projection-verification.json
+  - artifacts/work_packages/B04/attempts/0006/canonical-projection-verification.json
+  - artifacts/work_packages/B04/attempts/0007/canonical-projection-verification.json
+  - artifacts/work_packages/B04/attempts/0008/canonical-projection-verification.json
+  - artifacts/work_packages/B04/attempts/0009/canonical-projection-verification.json
+  - artifacts/work_packages/B04/attempts/0010/canonical-projection-verification.json
   rollback_or_recovery: revert only this package from the latest approved integration checkpoint; preserve ledger and effect history
 - id: C01
   phase: P02-C
@@ -918,6 +927,7 @@ work_packages:
   - F02
   - F03
   write_scope:
+  - packages/foundry-kernel/src/forge/session/**
   - tests/golden/forge/**
   - artifacts/work_packages/F04/**
   model_tier: frontier
@@ -925,9 +935,13 @@ work_packages:
   exit_criteria:
   - minimum paths and full paths pass
   - UNDERDETERMINED is accepted outcome
+  - durable OPEN and TRANSITION compose D01 revisioned records, D03 artifacts, E01 conditional ledger append, F01 replay identity, F02 reduction, and F03 admission through one exported Kernel session port
+  - unpublished outbox state is never returned as canonical session state; stale ledger heads preserve the last published projection and require a new intent
+  - restart reconciliation and replay reproduce the exact stored session state hash or fail closed
   required_checks:
   - forge_golden_flows
   - phase_artifact_reconciliation
+  - sqlite_wal_crash_recovery
   initial_status: NOT_STARTED
   risk_class: critical
   owner_role: bounded_maker
@@ -1019,6 +1033,7 @@ work_packages:
   exit_criteria:
   - installed code and writable data separated
   - non-ASCII/spaces paths supported
+  - G03_ROOT_IDENTITY_V1 uses lossless BigInt-derived identity and resolver-gated serialization
   required_checks:
   - path_resolution_test
   - path_traversal_test
@@ -1078,11 +1093,15 @@ work_packages:
   - S02
   write_scope:
   - packages/plugin-host/src/hooks/gateway/**
+  - adapters/codex/hook-runner.mjs
+  - adapters/codex/codex-binding.json
   model_tier: frontier
   independent_review: required
   exit_criteria:
   - host payloads hash and normalize
   - hook decisions schema-valid
+  - only hook events with a real producer are declared; an event with no backing logic is removed rather than answered by a no-op
+  - the SessionStart runner is read-only and makes no session, policy, permission, ledger, or subagent claim
   required_checks:
   - hook_schema_fixture_test
   - hook_timeout_test
@@ -1108,15 +1127,13 @@ work_packages:
   - H01
   write_scope:
   - plugins/epistemic-foundry/hooks/session.json
-  - plugins/epistemic-foundry/hooks/prompt.json
   model_tier: balanced
   independent_review: required
   exit_criteria:
   - bootstrap is bounded
-  - prompt classification cannot change state directly
+  - the UserPromptSubmit declaration stays removed until an intake classifier producer exists; it is not answered by a no-op
   required_checks:
   - session_hook_test
-  - prompt_hook_test
   initial_status: NOT_STARTED
   risk_class: medium
   owner_role: bounded_maker
@@ -1143,8 +1160,8 @@ work_packages:
   model_tier: balanced
   independent_review: required
   exit_criteria:
-  - observed tools use policy/receipts
-  - subagent expected count enforced
+  - the PermissionRequest, PreToolUse, PostToolUse, SubagentStart, and SubagentStop declarations stay removed until a policy engine, effect-receipt path, and subagent dispatch record exist
+  - no tool or delegation hook is registered that would allow, deny, or claim to observe without a real producer behind it
   required_checks:
   - tool_hook_policy_test
   - subagent_result_gate_test
@@ -1358,6 +1375,7 @@ work_packages:
   depends_on:
   - J01
   write_scope:
+  - plugins/epistemic-foundry/.codex-plugin/plugin.json
   - plugins/epistemic-foundry/skills/skill-inventory.json
   - plugins/epistemic-foundry/skills/foundry/SKILL.md
   - plugins/epistemic-foundry/skills/foundry/agents/openai.yaml
@@ -1420,6 +1438,7 @@ work_packages:
   - plugins/epistemic-foundry/skills/foundry/references/**
   - packages/plugin-host/src/skill-context/**
   - tools/skill-context/count_tokens.py
+  - tools/skill-context/reseal_inventory.py
   - docs/skill_context_contract.md
   - tests/fixtures/j02/skill-inventory.expected.json
   - tests/fixtures/j02/tokenizer-vectors.json
@@ -1433,12 +1452,14 @@ work_packages:
   model_tier: balanced
   independent_review: required
   exit_criteria:
+  - the J02 change registers exactly ./skills/ after the 29-skill inventory is validated, and adds no hooks, apps, or runtime capabilities; MCP registration belongs to T03
   - exactly 29 active production skills are represented in bounded initial metadata
   - initial metadata is at most 6400 UTF-8 bytes and 1600 pinned o200k_base tokens
   - exactly 17 declared references are reachable with no orphan, cycle, drift, traversal, or alias
   - only deterministic required, matching conditional, or authorized exact explicit references load
   - all skill, reference, closure, depth, and activation budgets fail closed
   - matching inventory, hash, token, and invocation-policy evidence exists
+  - foundry-observe names the verified efoundry retrieval command, and every skill promising a canonical artifact with no packaged producer states that boundary instead of implying completion
   - J01 routing and metadata behavior remains unchanged
   - J02 causes no new Python or Node regression and no skip or xfail
   - primary-session separate adversarial review records no blocking finding
@@ -1909,6 +1930,7 @@ work_packages:
   - M02
   - M03
   write_scope:
+  - packages/workspace-map/src/snapshot/**
   - web/src/features/map/**
   - artifacts/work_packages/M04/**
   model_tier: frontier
@@ -1916,6 +1938,9 @@ work_packages:
   exit_criteria:
   - labels match algorithms
   - coverage/exclusions visible
+  - snapshot assembly composes the existing M01 inventory, M02 baseline, and M03 query modules without reimplementing them, and states its repository-only coverage boundary in included_scopes and excluded_scopes
+  - the repository profile freezes its input by content hash and fails closed when the workspace changes during assembly, rather than emitting a mixed-generation graph
+  - unresolved import references remain visible as extraction gaps and never become fabricated graph edges
   required_checks:
   - map_ui_test
   - ranking_claim_audit
@@ -2099,6 +2124,8 @@ work_packages:
   - O01
   write_scope:
   - python/epistemic_foundry/retrieval/lanes/**
+  - src/epistemic_foundry/retrieval/lanes.py
+  - src/epistemic_foundry/retrieval/search_state.py
   - config/retrieval_policy.example.yaml
   - workflows/evidence_retrieval.workflow.yaml
   - tests/retrieval/test_o02_retrieval_benchmark.py
@@ -2121,6 +2148,11 @@ work_packages:
   - no silent cross-channel fallback or learned reranker is used
   - every non-empty release set contains a non-vector origin or the run ceiling is PARTIAL
   - all exact direction, provenance, integrity, replay and critical must-find fixtures pass
+  - a lane the plan selected but no backend can serve seals a BLOCKED execution
+    receipt, never the UNSEARCHED sentinel that belongs to a declined lane
+  - each lane binds exactly the query families the canonical plan declares for
+    it; a lane whose families cannot all be formulated is refused, not sealed
+    from a subset
   required_checks:
   - retrieval_benchmark
   - relation_direction_test
@@ -2710,13 +2742,14 @@ work_packages:
   depends_on:
   - E04
   - G04
+  - M04
   - S04
   write_scope:
   - contracts/mcp/t01/tool-catalog.yaml
   - contracts/mcp/t01/inputs/**
   - contracts/mcp/t01/foundry-mcp-tool-result.schema.json
   - contracts/mcp/t01/foundry-mcp-tool-error.schema.json
-  - plugins/epistemic-foundry/.mcp.json
+  - contracts/mcp/t01/local-stdio-binding.schema.json
   - src/epistemic_foundry/application/mcp_read/**
   - src/epistemic_foundry/application/mcp_planning/**
   - src/epistemic_foundry/application/mcp_common/**
@@ -2742,6 +2775,7 @@ work_packages:
   - MCP protocol version 2026-07-28 exposes exactly nine PURE_READ and four DURABLE_PLAN_ARTIFACT tools
   - STDIO and stateless Streamable HTTP POST /mcp share provider-neutral handlers and exact envelopes
   - authorization, workspace isolation, confidentiality, schema resolution, receipts and idempotency fail closed
+  - LOCAL_STDIO_READ_V1 binds map.query through G03 root identities and the canonical T01 framing without a second authority implementation
   required_checks:
   - mcp_schema_test
   - read_side_effect_test
@@ -2750,6 +2784,7 @@ work_packages:
   - mcp_authorization_and_confidentiality_test
   - mcp_planning_artifact_receipt_test
   - mcp_schema_resolution_test
+  - mcp_local_stdio_binding_test
   initial_status: NOT_STARTED
   risk_class: high
   owner_role: bounded_maker
@@ -2800,13 +2835,26 @@ work_packages:
   title: Stable CLI JSON/error and PATH-less surfaces
   depends_on:
   - T01
+  - J02
   write_scope:
   - packages/plugin-host/src/cli/**
+  - .gitignore
+  - plugins/epistemic-foundry/dist/**
+  - plugins/epistemic-foundry/.mcp.json
+  - plugins/epistemic-foundry/.codex-plugin/plugin.json
+  - tests/node/t01-tool-catalog.test.mjs
   model_tier: frontier
   independent_review: required
   exit_criteria:
   - commands round-trip contracts
   - stable error codes
+  - the payload-resident stdio MCP server starts without a repository checkout or secondary runtime copy
+  - the packaged profile advertises the canonical thirteen-tool catalog statically; foundry.status, foundry.health, and foundry.map.query are backed, and every unbound tool returns an explicit UNAVAILABLE result rather than UNKNOWN_TOOL
+  - packaged status and health report observed payload and runtime facts rather than hardcoded constants, and degrade to UNAVAILABLE with an explicit reason when the optional efoundry bridge is absent
+  - foundry.map.query returns a schema-valid WorkspaceMapSnapshot from the bundled workspace-map producer, requires an explicitly configured workspace root, and reports truncation rather than narrowing what the map claims to cover
+  - the bundled workspace-map payload is generated from packages/workspace-map/src with a recorded provenance hash, never hand-edited, and drift is detectable
+  - the packaged hook runner is generated from the H01-owned adapter source with a recorded provenance hash, and registers only the SessionStart event
+  - T03 adds exactly the mcpServers key to the plugin manifest and preserves the J02 skills registration
   required_checks:
   - cli_contract_test
   - pathless_cli_test
@@ -3244,15 +3292,19 @@ work_packages:
   - W04
   write_scope:
   - adapters/codex/**
-  - plugins/epistemic-foundry/**
+  - plugins/epistemic-foundry/src/**
+  - plugins/epistemic-foundry/scripts/**
+  - plugins/epistemic-foundry/runtime/**
   model_tier: frontier
   independent_review: required
   exit_criteria:
   - host capability probe used
   - hosted-tool gap explicit
+  - provider-neutral plugin lifecycle port preserves exact package identity, PLUGIN_DATA, rollback history, and typed host limitations
   required_checks:
   - codex_adapter_test
   - codex_hook_coverage_test
+  - codex_lifecycle_port_test
   initial_status: NOT_STARTED
   risk_class: high
   owner_role: bounded_maker
@@ -3535,13 +3587,22 @@ work_packages:
   title: SBOM, signing, provenance and deterministic bundle
   depends_on:
   - Z01
+  - X01
   write_scope:
   - release/**
   - scripts/release/**
+  - tools/release_inventory.py
+  - tools/build_release.py
+  - tools/validate_spec_bundle.py
+  - PACKAGE_MANIFEST.json
   model_tier: balanced
   independent_review: required
   exit_criteria:
   - bundle clean-extracts
+  - the builder and the validator select bundle members through one shared authority, so a clean checkout cannot fail the gate over installed dependencies or tool caches
+  - artifacts are bundle content only when the development manifest declares their exact path; a wildcard evidence declaration fails closed rather than being expanded by assumption
+  - PACKAGE_MANIFEST.json is replaced only after every delta is classified and none is unexplained
+  - inventory gates are read from the acceptance matrix and compared against observed repository content; the validator holds no second copy of a declared count, and an unreadable or non-integer gate fails closed
   - signatures and provenance verify
   required_checks:
   - sbom_test
@@ -3567,6 +3628,7 @@ work_packages:
   title: Upgrade, downgrade, migration and rollback matrix
   depends_on:
   - Z01
+  - X01
   write_scope:
   - tests/migration/**
   - docs/migration_v2_to_v4.md
@@ -3575,9 +3637,11 @@ work_packages:
   exit_criteria:
   - hook re-trust tested
   - failed migration rolls back
+  - two-version lifecycle executes prepare, activate, forced failure, exact rollback, restored execution and uninstall without cache mutation
   required_checks:
   - upgrade_matrix_test
   - rollback_test
+  - plugin_lifecycle_two_version_test
   initial_status: NOT_STARTED
   risk_class: medium
   owner_role: bounded_maker
@@ -3646,6 +3710,8 @@ work_packages:
   - src/epistemic_foundry/governance/evolution_authority/cas.py
   - src/epistemic_foundry/governance/evolution_authority/reconciliation.py
   - src/epistemic_foundry/governance/evolution_authority/errors.py
+  - src/epistemic_foundry/governance/evolution_authority/nodes.py
+  - src/epistemic_foundry/governance/evolution_authority/registry.py
   - workflows/evolution_promotion.workflow.yaml
   - workflows/verifier_firewall_qualification.workflow.yaml
   - workflows/hypothesis_replication.workflow.yaml
@@ -3663,6 +3729,9 @@ work_packages:
   - all completion and external effects resolve to immutable receipts
   - G00-G14 are exact, ordered, non-waivable where specified and receipt-bound
   - evolution_promotion has the exact 23-node fail-closed sequence
+  - promotion commit orchestration calls an injected provider-neutral commit port and
+    never implements a lease store, fencing head, CAS engine, effect ledger or replay rule
+  - the commit path fails closed when no trusted E05 port binding is present
   - all 24 negative/adversarial and 6 positive constitutional cases pass exactly
   required_checks:
   - schema_and_type_check
@@ -3962,11 +4031,15 @@ work_packages:
   phase_title: Events, effects and capabilities
   title: Candidate action/effect, mutation receipt and count-reconciliation engine
   depends_on:
+  - A05
   - A06
-  - E04
   - C05
+  - E02
+  - E03
+  - E04
   write_scope:
   - src/epistemic_foundry/effects/v4_e05/**
+  - packages/foundry-kernel/src/integrations/evolution-promotion/**
   - artifacts/work_packages/E05/**
   model_tier: balanced
   independent_review: required
@@ -3975,6 +4048,11 @@ work_packages:
   - happy path, negative path, crash/resume and adversarial tests cover the package scope
   - no candidate, model, prompt, backend or hook acquires evaluator, holdout or promotion authority
   - all completion and external effects resolve to immutable receipts
+  - the promotion commit adapter implements the A05 port by composing E02 intents/attempts/receipts,
+    E03 leases and fencing, and the Kernel lease-protected transaction
+  - the Kernel-side handler builds its synchronous transaction callback in-process and never
+    accepts an executable closure from Python or any transport
+  - the adapter implements no second lease store, fencing head, CAS engine, effect ledger or replay rule
   required_checks:
   - schema_and_type_check
   - unit_and_contract_tests

@@ -315,6 +315,15 @@ const encodeJson = (value) => {
   return encodeValidatedJsonValue(value);
 };
 
+const decodeCanonicalJson = (encoded, pathLabel) => {
+  const value = JSON_PARSE(encoded);
+  assertJsonValue(value, pathLabel);
+  if (encoded !== encodeValidatedJsonValue(value)) {
+    fail("INVALID_RECORD_VALUE", `${pathLabel} is not canonically encoded`);
+  }
+  return value;
+};
+
 const isThenable = (value) => {
   if (
     value === null ||
@@ -981,7 +990,7 @@ export class SQLiteStateStore {
     for (let index = 0; index < rows.length; index += 1) {
       const row = readOwnArrayElement(rows, index);
       try {
-        assertJsonValue(JSON_PARSE(row.valueJson), "persisted value");
+        decodeCanonicalJson(row.valueJson, "persisted value");
       } catch {
         return OBJECT_FREEZE({
           ok: false,
@@ -1307,8 +1316,7 @@ export class SQLiteStateStore {
     }
     let value;
     try {
-      value = JSON_PARSE(row.valueJson);
-      assertJsonValue(value, "persisted value");
+      value = decodeCanonicalJson(row.valueJson, "persisted value");
     } catch (error) {
       const details = OBJECT_FREEZE({
         recordType: row.recordType,

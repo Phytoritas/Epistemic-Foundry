@@ -68,6 +68,13 @@ arguments.  Cross-workspace access is denied by default (EF4-I19,
 authorized scope answers the same `NOT_FOUND` as a genuinely absent
 resource; existence is checked only after authorization.
 
+After the provider returns, its read outcome is validated before any
+post-provider confidentiality concealment.  Only a validated `found: false`
+with `EMPTY_CONFIRMED` establishes confirmed absence and may map to
+`NOT_FOUND` for a concealing tool.  A `found: false` outcome in `DEGRADED` or
+`UNAVAILABLE` remains an honest result envelope and is never concealed as
+absence.
+
 ## 5. Idempotency and error codes
 
 Planning requests carry an `idempotency_key`.  Replaying the same key with

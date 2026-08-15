@@ -563,6 +563,10 @@ export const discoverLockfileSkills = (loaded, lockfileCandidate) => {
     const skillId = requireString(row.skill_id, "lockfile skill.skill_id", {
       code: "LOCKFILE_UNREADABLE",
     });
+    const contentHash = requireString(row.content_hash, "lockfile skill.content_hash", {
+      code: "LOCKFILE_UNREADABLE",
+      pattern: SHA256_PATTERN,
+    });
     if (bundled.has(skillId)) {
       refused.push({ code: "SKILL_ID_COLLISION", skill_id: skillId });
       continue;
@@ -583,12 +587,22 @@ export const discoverLockfileSkills = (loaded, lockfileCandidate) => {
       refused.push({ code: "SKILL_QUARANTINED", skill_id: skillId });
       continue;
     }
-    if (!Array.isArray(row.approved_by_ids) || row.approved_by_ids.length === 0) {
+    if (
+      !Array.isArray(row.approved_by_ids) ||
+      row.approved_by_ids.length === 0 ||
+      row.approved_by_ids.some(
+        (approverId) =>
+          typeof approverId !== "string" ||
+          Array.from(approverId).length < 3 ||
+          Array.from(approverId).length > 128,
+      ) ||
+      new Set(row.approved_by_ids).size !== row.approved_by_ids.length
+    ) {
       refused.push({ code: "APPROVAL_UNATTESTED", skill_id: skillId });
       continue;
     }
     discoverable.push({
-      content_hash: row.content_hash,
+      content_hash: contentHash,
       origin: "THIRD_PARTY",
       skill_id: skillId,
     });

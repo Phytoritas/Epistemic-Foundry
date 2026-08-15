@@ -17,6 +17,7 @@ import {
   validateAuditExport,
 } from "./audit-export.mjs";
 import { ReplayDriftError, compareReplay } from "./drift.mjs";
+import { sha256SchedulerJson } from "../scheduler/dag-scheduler.mjs";
 
 const RUN = "RUN-1";
 const PLAN_HASH = `sha256:${"1".repeat(64)}`;
@@ -244,6 +245,23 @@ test("audit_export_test: the drift report must belong to the same run", () => {
 
   assert.throws(
     () => build({ drift_report: foreign }),
+    (error) =>
+      error instanceof AuditExportError && error.code === "EXPORT_RUN_MISMATCH",
+  );
+});
+
+test("audit_export_test: a stored export cannot rehash a foreign drift report", () => {
+  const bundle = structuredClone(build());
+  bundle.drift_report = compareReplay({
+    original: {},
+    replayed: {},
+    run_id: "RUN-other",
+  });
+  const { export_hash: _asserted, ...content } = bundle;
+  bundle.export_hash = sha256SchedulerJson(content);
+
+  assert.throws(
+    () => validateAuditExport(bundle),
     (error) =>
       error instanceof AuditExportError && error.code === "EXPORT_RUN_MISMATCH",
   );

@@ -17,7 +17,7 @@ const PLAIN_OBJECT_PROTOTYPE = Object.prototype;
 const SHA256_PATTERN = /^sha256:[0-9a-f]{64}$/u;
 const CLASSIFICATION_ID_PATTERN = /^EWC-[0-9a-f]{64}$/u;
 const RFC3339_PATTERN =
-  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|([+-])(\d{2}):(\d{2}))$/u;
+  /^(\d{4})-(\d{2})-(\d{2})[Tt](\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(?:[Zz]|([+-])(\d{2}):(\d{2}))$/u;
 
 export const FORGE_PHASES = OBJECT_FREEZE(["IDLE", "I", "F", "O", "R", "G", "E"]);
 export const FORGE_EXECUTION_PHASES = OBJECT_FREEZE(["I", "F", "O", "R", "G", "E"]);
@@ -108,6 +108,48 @@ const PHASE_ARTIFACT_KEYS = OBJECT_FREEZE([
 const PHASE_HISTORY_KEYS = OBJECT_FREEZE(["from", "to", "event_id", "at"]);
 const ACTOR_KEYS = OBJECT_FREEZE(["actor_id", "actor_type", "role"]);
 const EVENT_KEYS = OBJECT_FREEZE(["event_id", "occurred_at"]);
+const DURABLE_TRANSITION_ADMISSION_VERSION = "4.0.0-f03.3";
+const DURABLE_ADMISSION_KEYS = OBJECT_FREEZE([
+  "admission_version",
+  "decision",
+  "session_id",
+  "request_id",
+  "request_hash",
+  "idempotency_key",
+  "expected_revision",
+  "from_phase",
+  "to_phase",
+  "prior_state_hash",
+  "idle_classification_id",
+  "idle_classification_hash",
+  "phase_artifact_set_id",
+  "phase_artifact_set_hash",
+  "receipt_bindings",
+  "gate_decisions",
+  "human_decision_id",
+  "human_decision_hash",
+  "artifact_retention",
+  "admission_id",
+  "admission_hash",
+]);
+const DURABLE_ADMISSION_SEMANTIC_KEYS = OBJECT_FREEZE(
+  DURABLE_ADMISSION_KEYS.filter(
+    (key) => key !== "admission_id" && key !== "admission_hash",
+  ),
+);
+const ADMISSION_RECEIPT_BINDING_KEYS = OBJECT_FREEZE([
+  "receipt_id",
+  "receipt_hash",
+  "artifact_id",
+  "content_hash",
+  "schema_ref",
+]);
+const ADMISSION_GATE_DECISION_KEYS = OBJECT_FREEZE([
+  "gate_id",
+  "decision_hash",
+  "status",
+]);
+const ADMITTED_GATE_STATUSES = new Set(["PASS", "WAIVE"]);
 
 const EXPECTED_PROJECTIONS = OBJECT_FREEZE({
   E0: OBJECT_FREEZE([OBJECT_FREEZE([])]),
@@ -223,9 +265,110 @@ const requireHash = (value, label, code = "INVALID_INPUT") => {
   return candidate;
 };
 
+const isLeapYear = (year) => year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+
+const daysInMonth = (year, month) => {
+  if (month === 2) return isLeapYear(year) ? 29 : 28;
+  return month === 4 || month === 6 || month === 9 || month === 11 ? 30 : 31;
+};
+
+const parseRfc3339 = (value) => {
+  if (typeof value !== "string") return null;
+  const match = RFC3339_PATTERN.exec(value);
+  if (match === null || match[0].length !== value.length) return null;
+
+  let year = Number(match[1]);
+  const month = Number(match[2]);
+  let day = Number(match[3]);
+  const hour = Number(match[4]);
+  const minute = Number(match[5]);
+  const second = Number(match[6]);
+  const fraction = match[7] ?? "";
+  const offsetHour = match[9] === undefined ? 0 : Number(match[9]);
+  const offsetMinute = match[10] === undefined ? 0 : Number(match[10]);
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > daysInMonth(year, month) ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 60 ||
+    offsetHour > 23 ||
+    offsetMinute > 59
+  ) {
+    return null;
+  }
+
+  let utcMonth = month;
+  let utcMinuteOfDay = hour * 60 + minute;
+  if (match[8] === "+") {
+    utcMinuteOfDay -= offsetHour * 60 + offsetMinute;
+  } else if (match[8] === "-") {
+    utcMinuteOfDay += offsetHour * 60 + offsetMinute;
+  }
+  if (utcMinuteOfDay < 0) {
+    utcMinuteOfDay += 24 * 60;
+    day -= 1;
+    if (day === 0) {
+      utcMonth -= 1;
+      if (utcMonth === 0) {
+        year -= 1;
+        utcMonth = 12;
+      }
+      day = daysInMonth(year, utcMonth);
+    }
+  } else if (utcMinuteOfDay >= 24 * 60) {
+    utcMinuteOfDay -= 24 * 60;
+    day += 1;
+    if (day > daysInMonth(year, utcMonth)) {
+      day = 1;
+      utcMonth += 1;
+      if (utcMonth === 13) {
+        year += 1;
+        utcMonth = 1;
+      }
+    }
+  }
+
+  const utcMinute = utcMinuteOfDay % 60;
+  const utcHour = (utcMinuteOfDay - utcMinute) / 60;
+  if (
+    second === 60 &&
+    (utcHour !== 23 || utcMinute !== 59 || day !== daysInMonth(year, utcMonth))
+  ) {
+    return null;
+  }
+  return OBJECT_FREEZE([year, utcMonth, day, utcHour, utcMinute, second, fraction]);
+};
+
+const compareRfc3339 = (left, right, code = "INVALID_INPUT") => {
+  const leftTuple = parseRfc3339(left);
+  const rightTuple = parseRfc3339(right);
+  if (leftTuple === null || rightTuple === null) {
+    fail(code, "RFC 3339 chronology comparison requires valid timestamps");
+  }
+  for (let index = 0; index < 6; index += 1) {
+    if (leftTuple[index] < rightTuple[index]) return -1;
+    if (leftTuple[index] > rightTuple[index]) return 1;
+  }
+  const leftFraction = leftTuple[6];
+  const rightFraction = rightTuple[6];
+  const length = leftFraction.length > rightFraction.length
+    ? leftFraction.length
+    : rightFraction.length;
+  for (let index = 0; index < length; index += 1) {
+    const leftDigit = index < leftFraction.length ? leftFraction.charCodeAt(index) : 48;
+    const rightDigit = index < rightFraction.length ? rightFraction.charCodeAt(index) : 48;
+    if (leftDigit < rightDigit) return -1;
+    if (leftDigit > rightDigit) return 1;
+  }
+  return 0;
+};
+
 const requireTimestamp = (value, label, code = "INVALID_INPUT") => {
   const candidate = requireString(value, label, { code });
-  if (!RFC3339_PATTERN.test(candidate) || !NUMBER_IS_FINITE(Date.parse(candidate))) {
+  if (parseRfc3339(candidate) === null) {
     fail(code, `${label} must be an RFC 3339 timestamp`);
   }
   return candidate;
@@ -631,6 +774,261 @@ const validateEvent = (event) => {
   return value;
 };
 
+const requireNullableAdmissionIdentity = (value, idKey, hashKey, code) => {
+  const id = readDataProperty(value, idKey, "durable transition admission", code);
+  const hash = readDataProperty(value, hashKey, "durable transition admission", code);
+  if (id === null || hash === null) {
+    if (id !== null || hash !== null) {
+      fail(code, `${idKey} and ${hashKey} must both be null or both be populated`);
+    }
+    return;
+  }
+  requireString(id, idKey, { min: 1, code });
+  requireHash(hash, hashKey, code);
+};
+
+const requireCanonicalTextOrder = (values, label, code) => {
+  for (let index = 1; index < values.length; index += 1) {
+    if (compareCanonicalText(values[index - 1], values[index]) >= 0) {
+      fail(code, `${label} must be unique and canonical-text-sorted`);
+    }
+  }
+};
+
+const validateDurableTransitionAdmission = (candidate, state, request) => {
+  const code = "INVALID_TRANSITION_ADMISSION";
+  const admission = requirePlainRecord(candidate, "durable transition admission", {
+    allowedKeys: DURABLE_ADMISSION_KEYS,
+    requiredKeys: DURABLE_ADMISSION_KEYS,
+    code,
+  });
+  if (readDataProperty(admission, "admission_version") !== DURABLE_TRANSITION_ADMISSION_VERSION) {
+    fail(code, "durable transition admission version is not supported");
+  }
+  if (readDataProperty(admission, "decision") !== "ADMIT") {
+    fail(code, "durable transition admission decision must be ADMIT");
+  }
+  requireString(readDataProperty(admission, "session_id"), "admission.session_id", {
+    min: 3,
+    max: 128,
+    code,
+  });
+  requireString(readDataProperty(admission, "request_id"), "admission.request_id", {
+    min: 3,
+    max: 128,
+    code,
+  });
+  requireHash(readDataProperty(admission, "request_hash"), "admission.request_hash", code);
+  requireString(
+    readDataProperty(admission, "idempotency_key"),
+    "admission.idempotency_key",
+    { min: 8, code },
+  );
+  requireSafeRevision(
+    readDataProperty(admission, "expected_revision"),
+    "admission.expected_revision",
+    code,
+  );
+  requirePhase(readDataProperty(admission, "from_phase"), "admission.from_phase", code);
+  requirePhase(readDataProperty(admission, "to_phase"), "admission.to_phase", code);
+  requireHash(
+    readDataProperty(admission, "prior_state_hash"),
+    "admission.prior_state_hash",
+    code,
+  );
+  requireNullableAdmissionIdentity(
+    admission,
+    "idle_classification_id",
+    "idle_classification_hash",
+    code,
+  );
+  requireNullableAdmissionIdentity(
+    admission,
+    "phase_artifact_set_id",
+    "phase_artifact_set_hash",
+    code,
+  );
+  requireNullableAdmissionIdentity(
+    admission,
+    "human_decision_id",
+    "human_decision_hash",
+    code,
+  );
+
+  const idleClassificationId = readDataProperty(admission, "idle_classification_id");
+  const idleClassificationHash = readDataProperty(admission, "idle_classification_hash");
+  if (
+    idleClassificationId !== null &&
+    (!CLASSIFICATION_ID_PATTERN.test(idleClassificationId) ||
+      idleClassificationId !==
+        `EWC-${idleClassificationHash.slice("sha256:".length)}`)
+  ) {
+    fail(code, "idle classification identity is not hash-bound");
+  }
+
+  const receiptBindings = requireDenseArray(
+    readDataProperty(admission, "receipt_bindings"),
+    "admission.receipt_bindings",
+    code,
+  );
+  if (receiptBindings.length === 0) {
+    fail(code, "durable transition admission must contain receipt bindings");
+  }
+  const receiptIds = new Set();
+  const receiptArtifactIds = new Set();
+  const orderedReceiptIds = [];
+  for (let index = 0; index < receiptBindings.length; index += 1) {
+    const binding = requirePlainRecord(
+      receiptBindings[index],
+      `admission.receipt_bindings[${index}]`,
+      {
+        allowedKeys: ADMISSION_RECEIPT_BINDING_KEYS,
+        requiredKeys: ADMISSION_RECEIPT_BINDING_KEYS,
+        code,
+      },
+    );
+    const receiptId = requireString(
+      readDataProperty(binding, "receipt_id"),
+      `admission.receipt_bindings[${index}].receipt_id`,
+      { min: 3, max: 128, code },
+    );
+    const artifactId = requireString(
+      readDataProperty(binding, "artifact_id"),
+      `admission.receipt_bindings[${index}].artifact_id`,
+      { min: 3, max: 128, code },
+    );
+    requireHash(
+      readDataProperty(binding, "receipt_hash"),
+      `admission.receipt_bindings[${index}].receipt_hash`,
+      code,
+    );
+    requireHash(
+      readDataProperty(binding, "content_hash"),
+      `admission.receipt_bindings[${index}].content_hash`,
+      code,
+    );
+    const schemaRef = readDataProperty(binding, "schema_ref");
+    if (!(schemaRef === null || typeof schemaRef === "string")) {
+      fail(code, `admission.receipt_bindings[${index}].schema_ref must be a string or null`);
+    }
+    if (receiptIds.has(receiptId) || receiptArtifactIds.has(artifactId)) {
+      fail(code, "admission receipt and artifact bindings must be unique");
+    }
+    receiptIds.add(receiptId);
+    receiptArtifactIds.add(artifactId);
+    orderedReceiptIds.push(receiptId);
+  }
+  requireCanonicalTextOrder(orderedReceiptIds, "admission.receipt_bindings", code);
+
+  const gateDecisions = requireDenseArray(
+    readDataProperty(admission, "gate_decisions"),
+    "admission.gate_decisions",
+    code,
+  );
+  const gateIds = new Set();
+  const orderedGateIds = [];
+  for (let index = 0; index < gateDecisions.length; index += 1) {
+    const decision = requirePlainRecord(
+      gateDecisions[index],
+      `admission.gate_decisions[${index}]`,
+      {
+        allowedKeys: ADMISSION_GATE_DECISION_KEYS,
+        requiredKeys: ADMISSION_GATE_DECISION_KEYS,
+        code,
+      },
+    );
+    const gateId = requireString(
+      readDataProperty(decision, "gate_id"),
+      `admission.gate_decisions[${index}].gate_id`,
+      { code },
+    );
+    requireHash(
+      readDataProperty(decision, "decision_hash"),
+      `admission.gate_decisions[${index}].decision_hash`,
+      code,
+    );
+    if (!ADMITTED_GATE_STATUSES.has(readDataProperty(decision, "status"))) {
+      fail(code, `admission.gate_decisions[${index}].status is not admitted`);
+    }
+    if (gateIds.has(gateId)) fail(code, "admission gate decision IDs must be unique");
+    gateIds.add(gateId);
+    orderedGateIds.push(gateId);
+  }
+  requireCanonicalTextOrder(orderedGateIds, "admission.gate_decisions", code);
+
+  const artifactRetention = requireStringArray(
+    readDataProperty(admission, "artifact_retention"),
+    "admission.artifact_retention",
+    { min: 1, unique: true, itemMin: 3, itemMax: 128, code },
+  );
+  requireCanonicalTextOrder(artifactRetention, "admission.artifact_retention", code);
+  requireString(readDataProperty(admission, "admission_id"), "admission.admission_id", {
+    min: 1,
+    code,
+  });
+  requireHash(readDataProperty(admission, "admission_hash"), "admission.admission_hash", code);
+
+  const semantic = selectKeys(admission, DURABLE_ADMISSION_SEMANTIC_KEYS);
+  const expectedAdmissionHash = sha256ForgeJson(semantic);
+  if (readDataProperty(admission, "admission_hash") !== expectedAdmissionHash) {
+    fail("TRANSITION_ADMISSION_HASH_MISMATCH", "transition admission hash is invalid");
+  }
+  if (
+    readDataProperty(admission, "admission_id") !==
+    `FTA-${expectedAdmissionHash.slice("sha256:".length)}`
+  ) {
+    fail("TRANSITION_ADMISSION_ID_MISMATCH", "transition admission identity is not hash-bound");
+  }
+
+  const expectedRequestHash = sha256ForgeJson(request);
+  if (
+    readDataProperty(admission, "session_id") !== state.session_id ||
+    readDataProperty(admission, "request_id") !== request.request_id ||
+    readDataProperty(admission, "request_hash") !== expectedRequestHash ||
+    readDataProperty(admission, "idempotency_key") !== request.idempotency_key ||
+    readDataProperty(admission, "expected_revision") !== request.expected_revision ||
+    readDataProperty(admission, "from_phase") !== request.from_phase ||
+    readDataProperty(admission, "to_phase") !== request.to_phase ||
+    readDataProperty(admission, "prior_state_hash") !== state.state_hash
+  ) {
+    fail(
+      "TRANSITION_ADMISSION_BINDING_MISMATCH",
+      "transition admission does not bind the original state and request",
+    );
+  }
+
+  const expectedReceiptIds = [...request.artifact_receipt_ids].sort(compareCanonicalText);
+  const expectedGateIds = [...request.gate_result_ids].sort(compareCanonicalText);
+  const expectedRetention = [...receiptArtifactIds].sort(compareCanonicalText);
+  const phaseArtifactSetId = readDataProperty(admission, "phase_artifact_set_id");
+  const humanDecisionId = readDataProperty(admission, "human_decision_id");
+  if (
+    !sameStringArray(orderedReceiptIds, expectedReceiptIds) ||
+    !sameStringArray(orderedGateIds, expectedGateIds) ||
+    !sameStringArray(artifactRetention, expectedRetention) ||
+    humanDecisionId !== request.human_decision_id ||
+    (request.from_phase === "IDLE" &&
+      (idleClassificationId === null || phaseArtifactSetId !== null)) ||
+    (request.from_phase !== "IDLE" &&
+      (idleClassificationId !== null || phaseArtifactSetId === null))
+  ) {
+    fail(
+      "TRANSITION_ADMISSION_BINDING_MISMATCH",
+      "transition admission closure does not match the original request",
+    );
+  }
+
+  const retainedByState = new Set(state.artifact_ids);
+  const artifactRetentionDelta = artifactRetention
+    .filter((artifactId) => !retainedByState.has(artifactId))
+    .sort(compareCanonicalText);
+  return deepFreeze({
+    admission_id: readDataProperty(admission, "admission_id"),
+    admission_hash: readDataProperty(admission, "admission_hash"),
+    artifact_retention_delta: artifactRetentionDelta,
+  });
+};
+
 const validatePhaseArtifact = (artifact, label, code) => {
   const value = requirePlainRecord(artifact, label, {
     allowedKeys: PHASE_ARTIFACT_KEYS,
@@ -734,11 +1132,16 @@ const assertPhaseReachableForPlan = (phase, plan, subject, details = {}) => {
   }
 };
 
-const validatePhaseArtifactSets = (phaseSets, state, plan) => {
+const validatePhaseArtifactSets = (
+  phaseSets,
+  state,
+  plan,
+  { additionalRetainedArtifactIds = [] } = {},
+) => {
   const code = "INVALID_PHASE_ARTIFACT_SET";
   const values = requireDenseArray(phaseSets, "phase_artifact_sets", code);
   const setIds = new Set();
-  const stateArtifactIds = new Set(state.artifact_ids);
+  const stateArtifactIds = new Set([...state.artifact_ids, ...additionalRetainedArtifactIds]);
   const normalized = values.map((phaseSet) => {
     const value = validatePhaseArtifactSet(phaseSet);
     const expectedSetHash = sha256ForgeJson(selectKeys(value, PHASE_SET_HASH_KEYS));
@@ -860,18 +1263,34 @@ const unchangedStaleness = (phaseSets) => ({
   stale_phases: [],
 });
 
-export const reduceForgeTransition = ({
-  current_state,
-  transition_request,
-  classification,
-  classification_identity_context,
-  phase_artifact_sets = [],
-  event,
-}) => {
+const reduceForgeTransitionInternal = (
+  {
+    current_state,
+    transition_request,
+    classification,
+    classification_identity_context,
+    phase_artifact_sets = [],
+    event,
+  },
+  admission = undefined,
+) => {
   assertForgeSessionStateIntegrity(current_state);
   const state = cloneCanonical(current_state);
   const request = validateTransitionRequest(transition_request);
   const acceptedEvent = validateEvent(event);
+  const admittedTransition =
+    admission === undefined
+      ? null
+      : validateDurableTransitionAdmission(admission, state, request);
+  if (
+    compareRfc3339(acceptedEvent.occurred_at, state.updated_at, "INVALID_TRANSITION_EVENT") <= 0
+  ) {
+    fail(
+      "INVALID_TRANSITION_EVENT",
+      "transition event occurred_at must be strictly later than state.updated_at",
+      { occurredAt: acceptedEvent.occurred_at, updatedAt: state.updated_at },
+    );
+  }
   const plan = compileForgePlan({ classification, classification_identity_context });
 
   if (!TRANSITIONABLE_STATUSES.has(state.status)) {
@@ -916,7 +1335,12 @@ export const reduceForgeTransition = ({
     });
   }
 
-  const phaseSets = validatePhaseArtifactSets(phase_artifact_sets, state, plan);
+  const phaseSets =
+    admittedTransition === null
+      ? validatePhaseArtifactSets(phase_artifact_sets, state, plan)
+      : validatePhaseArtifactSets(phase_artifact_sets, state, plan, {
+          additionalRetainedArtifactIds: admittedTransition.artifact_retention_delta,
+        });
   const staleness =
     transition.kind === "RETURN"
       ? projectReturnStaleness({
@@ -944,6 +1368,12 @@ export const reduceForgeTransition = ({
     ],
     updated_at: acceptedEvent.occurred_at,
   };
+  if (admittedTransition !== null) {
+    nextStateSemantic.artifact_ids = [
+      ...state.artifact_ids,
+      ...admittedTransition.artifact_retention_delta,
+    ];
+  }
   const nextState = {
     ...nextStateSemantic,
     state_hash: sha256ForgeJson(nextStateSemantic),
@@ -969,6 +1399,12 @@ export const reduceForgeTransition = ({
     stale_phases: staleness.stale_phases,
     stale_artifact_ids: staleness.stale_artifact_ids,
   };
+  if (admittedTransition !== null) {
+    transitionSemantic.admission_id = admittedTransition.admission_id;
+    transitionSemantic.admission_hash = admittedTransition.admission_hash;
+    transitionSemantic.artifact_retention_delta =
+      admittedTransition.artifact_retention_delta.map((artifactId) => artifactId);
+  }
   const transitionRecord = {
     ...transitionSemantic,
     transition_hash: sha256ForgeJson(transitionSemantic),
@@ -980,6 +1416,61 @@ export const reduceForgeTransition = ({
     phase_artifact_sets: staleness.phase_artifact_sets,
     superseded_phase_artifact_sets: staleness.superseded_phase_artifact_sets,
   });
+};
+
+export const reduceForgeTransition = (input) => reduceForgeTransitionInternal(input);
+
+export const reduceAdmittedForgeTransition = (candidate) => {
+  const code = "INVALID_ADMITTED_TRANSITION_INPUT";
+  const input = requirePlainRecord(candidate, "admitted transition input", {
+    allowedKeys: [
+      "current_state",
+      "transition_request",
+      "classification",
+      "classification_identity_context",
+      "phase_artifact_sets",
+      "event",
+      "admission",
+    ],
+    requiredKeys: [
+      "current_state",
+      "transition_request",
+      "classification",
+      "event",
+      "admission",
+    ],
+    code,
+  });
+  return reduceForgeTransitionInternal(
+    {
+      current_state: readDataProperty(input, "current_state", "admitted transition input", code),
+      transition_request: readDataProperty(
+        input,
+        "transition_request",
+        "admitted transition input",
+        code,
+      ),
+      classification: readDataProperty(
+        input,
+        "classification",
+        "admitted transition input",
+        code,
+      ),
+      classification_identity_context: OBJECT_HAS_OWN(input, "classification_identity_context")
+        ? readDataProperty(
+            input,
+            "classification_identity_context",
+            "admitted transition input",
+            code,
+          )
+        : undefined,
+      phase_artifact_sets: OBJECT_HAS_OWN(input, "phase_artifact_sets")
+        ? readDataProperty(input, "phase_artifact_sets", "admitted transition input", code)
+        : [],
+      event: readDataProperty(input, "event", "admitted transition input", code),
+    },
+    readDataProperty(input, "admission", "admitted transition input", code),
+  );
 };
 
 export const replayForgeTransitionEvents = ({
@@ -1019,6 +1510,109 @@ export const replayForgeTransitionEvents = ({
       classification_identity_context,
       phase_artifact_sets: phaseSets,
       event: readDataProperty(entry, "event"),
+    });
+    state = result.state;
+    phaseSets = result.phase_artifact_sets;
+    records.push(result.transition);
+    superseded.push(...result.superseded_phase_artifact_sets);
+  }
+  return deepFreeze({
+    state,
+    phase_artifact_sets: phaseSets,
+    transitions: records,
+    superseded_phase_artifact_sets: superseded,
+    replay_hash: sha256ForgeJson({
+      plan_hash: plan.plan_hash,
+      state_hash: state.state_hash,
+      phase_set_hashes: phaseSets.map((phaseSet) => phaseSet.set_hash),
+      transition_hashes: records.map((record) => record.transition_hash),
+    }),
+  });
+};
+
+export const replayAdmittedForgeTransitionEvents = (candidate) => {
+  const input = requirePlainRecord(candidate, "admitted replay input", {
+    allowedKeys: [
+      "initial_state",
+      "transitions",
+      "classification",
+      "classification_identity_context",
+      "phase_artifact_sets",
+    ],
+    requiredKeys: ["initial_state", "transitions", "classification"],
+    code: "INVALID_REPLAY_INPUT",
+  });
+  const initial_state = readDataProperty(
+    input,
+    "initial_state",
+    "admitted replay input",
+    "INVALID_REPLAY_INPUT",
+  );
+  const transitions = readDataProperty(
+    input,
+    "transitions",
+    "admitted replay input",
+    "INVALID_REPLAY_INPUT",
+  );
+  const classification = readDataProperty(
+    input,
+    "classification",
+    "admitted replay input",
+    "INVALID_REPLAY_INPUT",
+  );
+  const classification_identity_context = OBJECT_HAS_OWN(
+    input,
+    "classification_identity_context",
+  )
+    ? readDataProperty(
+        input,
+        "classification_identity_context",
+        "admitted replay input",
+        "INVALID_REPLAY_INPUT",
+      )
+    : undefined;
+  const phase_artifact_sets = OBJECT_HAS_OWN(input, "phase_artifact_sets")
+    ? readDataProperty(
+        input,
+        "phase_artifact_sets",
+        "admitted replay input",
+        "INVALID_REPLAY_INPUT",
+      )
+    : [];
+  assertForgeSessionStateIntegrity(initial_state);
+  const initialState = cloneCanonical(initial_state);
+  const plan = compileForgePlan({ classification, classification_identity_context });
+  if (initialState.work_class !== plan.work_class) {
+    fail("CLASSIFICATION_STATE_MISMATCH", "session work_class does not match classification", {
+      stateWorkClass: initialState.work_class,
+      classificationWorkClass: plan.work_class,
+    });
+  }
+  assertPhaseReachableForPlan(initialState.phase, plan, "ForgeSessionState.phase", {
+    sessionId: initialState.session_id,
+  });
+  const entries = requireDenseArray(transitions, "transitions", "INVALID_REPLAY_INPUT");
+  let state = initialState;
+  let phaseSets =
+    entries.length === 0
+      ? validatePhaseArtifactSets(phase_artifact_sets, initialState, plan)
+      : phase_artifact_sets;
+  const records = [];
+  const superseded = [];
+  for (let index = 0; index < entries.length; index += 1) {
+    const entry = requirePlainRecord(entries[index], `transitions[${index}]`, {
+      allowedKeys: ["transition_request", "admission", "event"],
+      requiredKeys: ["transition_request", "admission", "event"],
+      code: "INVALID_REPLAY_INPUT",
+    });
+    const result = reduceAdmittedForgeTransition({
+      current_state: state,
+      transition_request: readDataProperty(entry, "transition_request"),
+      classification,
+      classification_identity_context,
+      phase_artifact_sets: phaseSets,
+      event: readDataProperty(entry, "event"),
+      admission: readDataProperty(entry, "admission"),
     });
     state = result.state;
     phaseSets = result.phase_artifact_sets;

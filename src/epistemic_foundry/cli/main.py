@@ -12,16 +12,20 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any, NoReturn, Sequence
 
 from .. import __version__
 from ..contracts import ContractViolation, default_registry
 from ..contracts.validation import artifact_errors
+from ..domain.hashing import canonical_json
 from ..domain.status import CapabilityStatus, ExitStatus
 from ..noetic_ledger import NoeticLedger
 from ..noetic_ledger.ledger import LedgerIntegrityError
+from ..plugin_shell import AlphaInvocationError, alpha_check
 from ..retrieval import lanes as retrieval_lanes
 from ..retrieval import lexical_index
 
@@ -36,6 +40,19 @@ EXIT_CODES: dict[ExitStatus, int] = {
     ExitStatus.UNASSESSED: 60,
     ExitStatus.INVALIDATED: 70,
     ExitStatus.REPLICATION_FAILED: 80,
+}
+
+_INTERNAL_JSON_MAX_BYTES = 8 * 1024 * 1024
+_JS_SAFE_INTEGER_MIN = -9_007_199_254_740_991
+_JS_SAFE_INTEGER_MAX = 9_007_199_254_740_991
+_INTERNAL_VALIDATION_MESSAGES: dict[str, str] = {
+    "INPUT_TOO_LARGE": "input exceeds the 8 MiB limit",
+    "INVALID_UTF8": "input is not valid UTF-8",
+    "INVALID_JSON": "input is not valid finite JSON",
+    "ROOT_NOT_OBJECT": "input JSON root must be an object",
+    "SCHEMA_NOT_FOUND": "the requested schema is unavailable",
+    "SCHEMA_VALIDATION_FAILED": "input object does not satisfy the requested schema",
+    "VALIDATION_INTERNAL_ERROR": "validation could not be completed",
 }
 
 #: What this runtime actually implements. Kept explicit so `efoundry status`
@@ -207,7 +224,21 @@ def cmd_validate(args: argparse.Namespace) -> ExitStatus:
 
 def cmd_ledger_verify(args: argparse.Namespace) -> ExitStatus:
     """Replay a ledger's hash chain and report integrity."""
-    ledger = NoeticLedger(Path(args.path))
+    # An absent ledger is not an empty one.  Constructing the store first would
+    # create the parent directory and then verify zero events, reporting PASS
+    # for a file that never existed.
+    path = Path(args.path)
+    if not path.is_file():
+        _emit(
+            {
+                "outcome": str(ExitStatus.FAIL),
+                "path": args.path,
+                "error": "no ledger file exists at this path",
+            },
+            as_json=args.json,
+        )
+        return ExitStatus.FAIL
+    ledger = NoeticLedger(path)
     try:
         ledger.verify()
     except LedgerIntegrityError as exc:
@@ -428,6 +459,158 @@ def cmd_retrieve_query(args: argparse.Namespace) -> ExitStatus:
     return ExitStatus.PASS
 
 
+def _reject_nonfinite_json_constant(value: str) -> NoReturn:
+    raise AlphaInvocationError(
+        f"alpha-check invocation contains non-finite JSON constant {value!r}"
+    )
+
+
+def _parse_finite_json_float(value: str) -> float:
+    parsed = float(value)
+    if not math.isfinite(parsed):
+        raise AlphaInvocationError(
+            f"alpha-check invocation contains non-finite JSON number {value!r}"
+        )
+    return parsed
+
+
+def _parse_js_safe_json_float(value: str) -> float:
+    parsed = _parse_finite_json_float(value)
+    try:
+        exact = Decimal(value)
+    except InvalidOperation as error:
+        raise ValueError("JSON number has an invalid decimal representation") from error
+
+    if exact == exact.to_integral_value():
+        if not _JS_SAFE_INTEGER_MIN <= exact <= _JS_SAFE_INTEGER_MAX:
+            raise ValueError(
+                "JSON number is outside the JavaScript safe integer range"
+            )
+    elif parsed.is_integer():
+        raise ValueError("fractional JSON number rounds to an integer")
+    return parsed
+
+
+def _reject_duplicate_json_members(
+    pairs: list[tuple[str, Any]],
+) -> dict[str, Any]:
+    parsed: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in parsed:
+            raise ValueError("duplicate JSON object member")
+        parsed[key] = value
+    return parsed
+
+
+def _parse_js_safe_json_int(value: str) -> int:
+    parsed = int(value, 10)
+    if not _JS_SAFE_INTEGER_MIN <= parsed <= _JS_SAFE_INTEGER_MAX:
+        raise ValueError("JSON integer is outside the JavaScript safe range")
+    return parsed
+
+
+def _write_internal_json(payload: dict[str, Any]) -> None:
+    sys.stdout.buffer.write(canonical_json(payload))
+    sys.stdout.buffer.flush()
+
+
+def _internal_validation_failure(
+    error_code: str, outcome: ExitStatus
+) -> ExitStatus:
+    _write_internal_json(
+        {
+            "error_code": error_code,
+            "message": _INTERNAL_VALIDATION_MESSAGES[error_code],
+            "ok": False,
+        }
+    )
+    return outcome
+
+
+def cmd_validate_json_stdin(args: argparse.Namespace) -> ExitStatus:
+    """Validate one bounded in-memory object for the bundled Node bridge."""
+    try:
+        raw = sys.stdin.buffer.read(_INTERNAL_JSON_MAX_BYTES)
+        overflow = sys.stdin.buffer.read(1)
+    except OSError:
+        return _internal_validation_failure(
+            "VALIDATION_INTERNAL_ERROR", ExitStatus.FAIL
+        )
+    if overflow:
+        return _internal_validation_failure("INPUT_TOO_LARGE", ExitStatus.FAIL)
+
+    try:
+        text = raw.decode("utf-8", errors="strict")
+    except UnicodeDecodeError:
+        return _internal_validation_failure("INVALID_UTF8", ExitStatus.FAIL)
+
+    try:
+        payload = json.loads(
+            text,
+            object_pairs_hook=_reject_duplicate_json_members,
+            parse_constant=_reject_nonfinite_json_constant,
+            parse_float=_parse_js_safe_json_float,
+            parse_int=_parse_js_safe_json_int,
+        )
+    except (ValueError, RecursionError):
+        return _internal_validation_failure("INVALID_JSON", ExitStatus.FAIL)
+    if not isinstance(payload, dict):
+        return _internal_validation_failure("ROOT_NOT_OBJECT", ExitStatus.FAIL)
+
+    try:
+        errors = artifact_errors(args.schema, payload)
+    except LookupError:
+        return _internal_validation_failure("SCHEMA_NOT_FOUND", ExitStatus.SPEC_GAP)
+    except Exception:  # noqa: BLE001 - private bridge must never expose a traceback
+        return _internal_validation_failure(
+            "VALIDATION_INTERNAL_ERROR", ExitStatus.FAIL
+        )
+    if errors:
+        return _internal_validation_failure(
+            "SCHEMA_VALIDATION_FAILED", ExitStatus.FAIL
+        )
+
+    try:
+        _write_internal_json(payload)
+    except (UnicodeEncodeError, ValueError, RecursionError):
+        return _internal_validation_failure("INVALID_JSON", ExitStatus.FAIL)
+    return ExitStatus.PASS
+
+
+def cmd_evolve_alpha_check(args: argparse.Namespace) -> ExitStatus:
+    """Observe EVOLVE invariants over one ephemeral UTF-8 JSON invocation."""
+    path = Path(args.input_path)
+    try:
+        invocation = json.loads(
+            path.read_text(encoding="utf-8"),
+            parse_constant=_reject_nonfinite_json_constant,
+            parse_float=_parse_finite_json_float,
+        )
+    except (OSError, ValueError) as exc:
+        _emit(
+            {
+                "outcome": str(ExitStatus.FAIL),
+                "error": f"cannot read alpha-check invocation {path}: {exc}",
+            },
+            as_json=True,
+        )
+        return ExitStatus.FAIL
+
+    try:
+        observation = alpha_check(invocation)
+    except AlphaInvocationError as exc:
+        _emit(
+            {"outcome": str(ExitStatus.FAIL), "error": str(exc)},
+            as_json=True,
+        )
+        return ExitStatus.FAIL
+
+    # Producing an observation is the CLI success condition.  Individual checks
+    # truthfully remain BLOCKED or UNASSESSED without changing the process exit.
+    _emit(observation, as_json=True)
+    return ExitStatus.PASS
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="efoundry",
@@ -439,6 +622,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--version", action="version", version=f"efoundry {__version__}")
     parser.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     sub = parser.add_subparsers(dest="command", required=True)
+
+    internal_validate = sub.add_parser(
+        "_validate-json-stdin",
+        help=argparse.SUPPRESS,
+        add_help=False,
+    )
+    internal_validate.add_argument("schema", help=argparse.SUPPRESS)
+    internal_validate.set_defaults(handler=cmd_validate_json_stdin)
 
     status = sub.add_parser("status", help="report version and honest maturity")
     status.set_defaults(handler=cmd_status)
@@ -516,6 +707,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--finished-at", default="", help="caller-supplied RFC 3339 end time"
     )
     query.set_defaults(handler=cmd_retrieve_query)
+
+    evolve = sub.add_parser("evolve", help="EVOLVE runtime observations")
+    evolve_sub = evolve.add_subparsers(dest="evolve_command", required=True)
+    alpha = evolve_sub.add_parser(
+        "alpha-check",
+        help="compose existing EVOLVE invariant checks over an ephemeral JSON input",
+    )
+    alpha.add_argument("input_path", help="UTF-8 JSON invocation file")
+    alpha.set_defaults(handler=cmd_evolve_alpha_check)
 
     return parser
 

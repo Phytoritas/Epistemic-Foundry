@@ -1,0 +1,480 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/claim-card.schema.json",
+  "title": "ClaimCard",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_-]*-[A-Za-z0-9._:-]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "paper_version_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "page": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "description": "Page number in the source document, or null when the extraction carries no page geometry. A null page requires coordinate_system 'not_available' and a null bbox; it is never a substitute for an unextracted page."
+        },
+        "section": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bbox": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "coordinate_system": {
+          "enum": [
+            "pdf_points_bottom_left",
+            "pdf_points_top_left",
+            "normalized_top_left",
+            "not_available"
+          ],
+          "description": "Coordinate frame for bbox. 'not_available' declares an extraction with no page geometry and is mandatory when page is null."
+        },
+        "char_start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "char_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "passage_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "paper_version_id",
+        "page",
+        "char_start",
+        "char_end",
+        "passage_hash"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "page": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "page"
+            ]
+          },
+          "then": {
+            "properties": {
+              "coordinate_system": {
+                "const": "not_available"
+              },
+              "bbox": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "coordinate_system"
+            ]
+          }
+        }
+      ]
+    },
+    "quality_vector": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "directness": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "design_strength": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "measurement_validity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "statistical_precision": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "replication": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "independence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scope_match": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "extraction_confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "directness",
+        "design_strength",
+        "measurement_validity",
+        "statistical_precision",
+        "replication",
+        "independence",
+        "scope_match",
+        "extraction_confidence"
+      ]
+    }
+  },
+  "properties": {
+    "claim_id": {
+      "$ref": "#/$defs/id"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "paper_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paper_version_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_spans": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source_locator"
+      }
+    },
+    "verbatim_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_type": {
+      "enum": [
+        "observation",
+        "association",
+        "causal",
+        "mechanism",
+        "theory",
+        "model",
+        "method",
+        "limitation",
+        "review_synthesis",
+        "background_assertion",
+        "speculation"
+      ]
+    },
+    "author_stance": {
+      "enum": [
+        "asserted",
+        "supported",
+        "suggested",
+        "speculative",
+        "qualified",
+        "negated",
+        "unclear"
+      ]
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "relation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "object": {
+      "type": "string",
+      "minLength": 1
+    },
+    "direction": {
+      "enum": [
+        "positive",
+        "negative",
+        "null",
+        "nonmonotonic",
+        "mixed",
+        "not_applicable",
+        "unknown"
+      ]
+    },
+    "scope": {
+      "$ref": "scope-vector.schema.json"
+    },
+    "method_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dataset_family_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "quantitative": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "effect_size": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "effect_size_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ci_low": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "ci_high": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "p_value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "sample_size": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "magnitude_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "effect_size",
+        "effect_size_type",
+        "ci_low",
+        "ci_high",
+        "p_value",
+        "sample_size",
+        "magnitude_text"
+      ]
+    },
+    "hedging_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4
+    },
+    "evidence_layer": {
+      "enum": [
+        "direct_measurement",
+        "primary_analysis",
+        "modeling",
+        "formal_derivation",
+        "benchmark_execution",
+        "review",
+        "background",
+        "unsupported"
+      ]
+    },
+    "extraction_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "parser_version": {
+          "type": "string"
+        },
+        "extractor_model": {
+          "type": "string"
+        },
+        "prompt_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "created_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "human_review": {
+          "enum": [
+            "unreviewed",
+            "accepted",
+            "corrected",
+            "rejected"
+          ]
+        }
+      },
+      "required": [
+        "parser_version",
+        "extractor_model",
+        "prompt_hash",
+        "created_at",
+        "human_review"
+      ]
+    },
+    "claim_status": {
+      "enum": [
+        "candidate",
+        "verified",
+        "promoted",
+        "superseded",
+        "retracted",
+        "rejected"
+      ]
+    },
+    "source_span_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "construct_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "integrity_flags": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "none",
+          "source_conflict",
+          "parser_conflict",
+          "prompt_injection_suspected",
+          "malformed_statistics",
+          "scope_missing",
+          "method_unresolved",
+          "duplicate_candidate",
+          "source_retracted"
+        ]
+      }
+    },
+    "lifecycle_event_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "supersedes_claim_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "claim_id",
+    "version",
+    "paper_id",
+    "paper_version_id",
+    "source_spans",
+    "verbatim_text",
+    "claim_type",
+    "author_stance",
+    "subject",
+    "relation",
+    "object",
+    "direction",
+    "scope",
+    "method_ids",
+    "dataset_family_id",
+    "quantitative",
+    "hedging_level",
+    "evidence_layer",
+    "extraction_confidence",
+    "provenance",
+    "claim_status",
+    "source_span_ids",
+    "construct_ids",
+    "integrity_flags",
+    "lifecycle_event_ids",
+    "supersedes_claim_id"
+  ]
+}

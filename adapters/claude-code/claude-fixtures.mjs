@@ -18,7 +18,11 @@ import {
 } from "./claude-declarations.mjs";
 
 /** Exactly the inputs `loadClaudeBinding` reads by path or scan. */
-export const STAGED_PATHS = Object.freeze([ADAPTER_ROOT, ROLE_REGISTRY_PATH]);
+export const STAGED_PATHS = Object.freeze([
+  ".claude/agents",
+  ADAPTER_ROOT,
+  ROLE_REGISTRY_PATH,
+]);
 
 export const stageRoot = (t) => {
   const root = mkdtempSync(join(tmpdir(), "ef-x02-"));
@@ -109,7 +113,7 @@ export const generateMissingAgents = (root, binding) => {
   const suffix = binding.declaration.agent_file_suffix;
   for (const roleId of binding.missingRoleIds) {
     const descriptor = binding.agentTable.find((row) => row.role_id === roleId);
-    addStaged(root, `${ADAPTER_ROOT}/${descriptor.name}${suffix}`, agentFileFor(descriptor));
+    addStaged(root, `${binding.agentRoot}/${descriptor.name}${suffix}`, agentFileFor(descriptor));
   }
 };
 

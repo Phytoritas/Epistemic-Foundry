@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/measurement-compatibility-report.schema.json",
+  "title": "MeasurementCompatibilityReport",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "measurement_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "construct_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "method_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protocol_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timing": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "calibration_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "measurement_id",
+        "construct_id",
+        "method_id",
+        "protocol_version",
+        "unit",
+        "timing",
+        "calibration_ref"
+      ]
+    }
+  },
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "left": {
+      "$ref": "#/$defs/measurement"
+    },
+    "right": {
+      "$ref": "#/$defs/measurement"
+    },
+    "compatibility_status": {
+      "enum": [
+        "DIRECTLY_COMPARABLE",
+        "CONVERTIBLE",
+        "WITHIN_METHOD_ONLY",
+        "NOT_COMPARABLE",
+        "UNKNOWN"
+      ]
+    },
+    "construct_equivalence": {
+      "enum": [
+        "SAME",
+        "PARTIAL",
+        "DIFFERENT",
+        "UNKNOWN"
+      ]
+    },
+    "required_transformations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "method_threats": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "promotion_ceiling": {
+      "enum": [
+        "NO_RESTRICTION",
+        "CONDITIONAL_ONLY",
+        "METHOD_BOUNDARY_ONLY",
+        "BLOCK_AGGREGATION"
+      ]
+    },
+    "domain_pack_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "domain_pack_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reviewer_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "report_id",
+    "run_id",
+    "left",
+    "right",
+    "compatibility_status",
+    "construct_equivalence",
+    "required_transformations",
+    "method_threats",
+    "promotion_ceiling",
+    "domain_pack_id",
+    "domain_pack_version",
+    "reviewer_ref",
+    "reviewed_at",
+    "report_hash"
+  ]
+}

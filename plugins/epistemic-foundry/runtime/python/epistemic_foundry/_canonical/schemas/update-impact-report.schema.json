@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/update-impact-report.schema.json",
+  "title": "UpdateImpactReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "impact_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger_event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger_type": {
+      "enum": [
+        "new_document",
+        "document_correction",
+        "document_retraction",
+        "claim_correction",
+        "ontology_update",
+        "domain_pack_update",
+        "policy_update",
+        "model_update",
+        "schema_migration"
+      ]
+    },
+    "affected_claim_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "affected_evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "affected_pack_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "affected_passport_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "invalidated_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_actions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "reparse",
+          "reextract",
+          "reretrieve",
+          "redeliberate",
+          "revalidate",
+          "human_review",
+          "no_action"
+        ]
+      }
+    },
+    "priority": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "impact_report_id",
+    "trigger_event_id",
+    "trigger_type",
+    "affected_claim_ids",
+    "affected_evidence_ids",
+    "affected_pack_ids",
+    "affected_passport_ids",
+    "invalidated_artifact_ids",
+    "required_actions",
+    "priority",
+    "created_at",
+    "report_hash"
+  ]
+}

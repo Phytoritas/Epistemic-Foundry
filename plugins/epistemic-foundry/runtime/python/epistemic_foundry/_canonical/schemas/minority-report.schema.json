@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/minority-report.schema.json",
+  "title": "MinorityReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "minority_report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "author_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "minority_claim": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "why_majority_may_be_wrong": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unresolved_test": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_information_gain": {
+      "type": "number",
+      "minimum": 0
+    },
+    "preservation_status": {
+      "enum": [
+        "required",
+        "preserved",
+        "superseded_by_new_evidence"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "minority_report_id",
+    "run_id",
+    "author_role",
+    "minority_claim",
+    "evidence_ids",
+    "why_majority_may_be_wrong",
+    "unresolved_test",
+    "expected_information_gain",
+    "preservation_status",
+    "created_at",
+    "report_hash"
+  ]
+}

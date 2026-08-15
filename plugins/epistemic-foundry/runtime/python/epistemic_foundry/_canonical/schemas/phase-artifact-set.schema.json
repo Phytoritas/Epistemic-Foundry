@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/phase-artifact-set.schema.json",
+  "title": "PhaseArtifactSet",
+  "type": "object",
+  "additionalProperties": false,
+  "x-phase-e-promotion-pack": {
+    "core_required_kinds": [
+      "EvolutionRunSpec",
+      "ResolvedReferenceInventory",
+      "CandidateGenome",
+      "CandidateLineage",
+      "EvidencePack",
+      "SearchCompletenessCertificate",
+      "FitnessVector",
+      "FitnessEvidenceReceipts",
+      "GateDecisionsG00ThroughG10",
+      "SequentialTestingLedger",
+      "MultipleTestingAdjustment",
+      "SelectiveInferenceReport",
+      "LeakageAudit",
+      "RedQueenResult",
+      "ReplicationResultOrExplicitStatus",
+      "ParliamentBlindBriefs",
+      "Adjudication",
+      "StrongestCounterevidence",
+      "MinorityReports",
+      "UnresolvedLimitations",
+      "ApprovalRecordsOrG13NotRequiredDecision",
+      "RequestPromotionActionIntent",
+      "CommitPromotionActionIntent",
+      "ArtifactReceipts",
+      "EffectReceipt"
+    ],
+    "conditional_required_kinds": {
+      "VALIDATION_SCREENED_OR_HIGHER": [
+        "IndependentAttestation"
+      ],
+      "HUMAN_APPROVAL_REQUIRED": [
+        "ApprovalRecord"
+      ]
+    },
+    "gate_sequence": [
+      "G00_PIN_RESOLUTION",
+      "G01_POLICY_AUTHORITY",
+      "G02_EVALUATOR_HOLDOUT_FIREWALL",
+      "G03_SCHEMA_LINEAGE_COUNT",
+      "G04_SOURCE_PROVENANCE",
+      "G05_SEARCH_COVERAGE",
+      "G06_METHOD_SCOPE_DEPENDENCY",
+      "G07_VALIDATION_LEAKAGE",
+      "G08_ADAPTIVE_STATISTICS",
+      "G09_RED_QUEEN",
+      "G10_REPLICATION_CEILING",
+      "G11_PARLIAMENT",
+      "G12_INDEPENDENT_ATTESTATION",
+      "G13_HUMAN_POLICY_APPROVAL",
+      "G14_ATOMIC_PROMOTION_COMMIT"
+    ]
+  },
+  "properties": {
+    "set_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "phase": {
+      "enum": [
+        "IDLE",
+        "I",
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ],
+      "description": "Phase E is the receipt-bound promotion-pack phase defined by the x-phase-e-promotion-pack annotation."
+    },
+    "required_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "kind": {
+            "type": "string"
+          },
+          "schema_ref": {
+            "type": "string"
+          },
+          "content_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "receipt_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "status": {
+            "enum": [
+              "VALID",
+              "INVALID",
+              "MISSING",
+              "STALE"
+            ]
+          }
+        },
+        "required": [
+          "artifact_id",
+          "kind",
+          "schema_ref",
+          "content_hash",
+          "receipt_id",
+          "status"
+        ]
+      },
+      "minItems": 1,
+      "description": "For phase E, this array materializes every applicable core and conditional promotion-pack kind declared by x-phase-e-promotion-pack; each artifact must have a resolving receipt and VALID status."
+    },
+    "optional_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "kind": {
+            "type": "string"
+          },
+          "schema_ref": {
+            "type": "string"
+          },
+          "content_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "receipt_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "status": {
+            "enum": [
+              "VALID",
+              "INVALID",
+              "MISSING",
+              "STALE"
+            ]
+          }
+        },
+        "required": [
+          "artifact_id",
+          "kind",
+          "schema_ref",
+          "content_hash",
+          "receipt_id",
+          "status"
+        ]
+      }
+    },
+    "complete": {
+      "type": "boolean"
+    },
+    "missing_kinds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "set_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "set_id",
+    "session_id",
+    "phase",
+    "required_artifacts",
+    "optional_artifacts",
+    "complete",
+    "missing_kinds",
+    "validated_at",
+    "set_hash"
+  ]
+}

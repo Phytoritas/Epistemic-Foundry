@@ -133,8 +133,8 @@ def test_unsupported_promotion_names_the_claims_that_promoted() -> None:
 
     assert promotion["claim_ids"] == ["PC-003", "PC-004"]
     assert promotion["count"] == 2
-    assert promotion["denominator"] == 6
-    assert promotion["rate"] == pytest.approx(2 / 6)
+    assert promotion["denominator"] == 2
+    assert promotion["rate"] == pytest.approx(2 / 2)
 
 
 def test_promotion_is_counted_separately_from_precision() -> None:
@@ -147,15 +147,23 @@ def test_promotion_is_counted_separately_from_precision() -> None:
     assert report["unsupported_promotion"]["count"] == 0
 
 
-def test_promotion_is_undefined_rather_than_zero_without_a_matched_pair() -> None:
+def test_promotion_is_undefined_without_a_matched_gold_unsupported_pair() -> None:
     payload = corpus()
-    for claim in payload["predicted_claims"]:
-        claim["subject"] = f"unmatched {claim['claim_id']}"
+    supported_layer = next(
+        claim["evidence_layer"]
+        for claim in payload["gold_claims"]
+        if claim["evidence_layer"] != UNSUPPORTED_LAYER
+    )
+    for claim in payload["gold_claims"]:
+        if claim["evidence_layer"] == UNSUPPORTED_LAYER:
+            claim["evidence_layer"] = supported_layer
     report = evaluate(payload, ROOT).payload
 
-    assert report["metrics"]["true_positive"] == 0
-    assert report["unsupported_promotion"]["rate"] is None
-    assert "undefined" in report["unsupported_promotion"]["reason"]
+    promotion = report["unsupported_promotion"]
+    assert report["metrics"]["true_positive"] > 0
+    assert promotion["denominator"] == 0
+    assert promotion["rate"] is None
+    assert "no matched gold-unsupported pair exists" in promotion["reason"]
 
 
 def test_demoting_a_supported_claim_is_not_counted_as_promotion() -> None:

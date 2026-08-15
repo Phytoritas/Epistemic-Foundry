@@ -14,3 +14,10 @@ export {
   renderAtlasPanel,
   validateCoverageSnapshot,
 } from "./atlas-view.mjs";
+
+export {
+  ATLAS_RUNTIME_FINDING_CODES,
+  ATLAS_RUNTIME_VERSION,
+  AtlasRuntimeError,
+  createAtlasRuntimeAdapter,
+} from "./atlas-runtime-adapter.mjs";

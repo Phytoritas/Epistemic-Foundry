@@ -2,6 +2,7 @@
 // canonical file with a matching $id — no duplicated wire schemas (EF4-I22).
 
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -14,6 +15,30 @@ function readJson(relative) {
 }
 
 const document = readJson("packages/plugin-host/src/mcp/generated/tool-descriptors.json");
+
+function validateResultEnvelope(schemaPath, envelope) {
+  const script = `
+import json
+import pathlib
+import sys
+from jsonschema import Draft202012Validator, FormatChecker
+
+schema = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+instance = json.loads(sys.argv[2])
+Draft202012Validator.check_schema(schema)
+errors = sorted(
+    Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(instance),
+    key=lambda error: list(error.absolute_path),
+)
+if errors:
+    raise SystemExit("; ".join(error.message for error in errors))
+`;
+  return spawnSync(
+    "uv",
+    ["run", "--locked", "python", "-", schemaPath, JSON.stringify(envelope)],
+    { cwd: ROOT, encoding: "utf8", input: script },
+  );
+}
 
 test("t01_schema_resolution: every inputSchema equals its contract input file", () => {
   for (const tool of document.tools) {
@@ -82,4 +107,45 @@ test("t01_schema_resolution: shared envelope schemas resolve with exact ids", ()
     "PLAN_COMPILATION_REJECTED",
     "INTERNAL",
   ]);
+});
+
+test("t01_schema_resolution: DEGRADED requires a non-empty reason", () => {
+  const schemaPath = join(
+    ROOT,
+    "contracts",
+    "mcp",
+    "t01",
+    "foundry-mcp-tool-result.schema.json",
+  );
+  const envelope = {
+    protocol_version: "2026-07-28",
+    tool: "foundry.health",
+    request_id: "R-schema-degraded",
+    workspace_id: "WS-test",
+    read_model_state: "DEGRADED",
+    data: null,
+    data_schema_refs: [],
+    receipts: [],
+    degradation_reason: "read replica lagging",
+    generated_at: "2026-07-31T00:00:00Z",
+  };
+
+  for (const reason of [null, ""]) {
+    const invalid = validateResultEnvelope(schemaPath, {
+      ...envelope,
+      degradation_reason: reason,
+    });
+    assert.equal(
+      invalid.status,
+      1,
+      `DEGRADED reason ${JSON.stringify(reason)} did not fail schema validation as expected\n${invalid.stdout}\n${invalid.stderr}`,
+    );
+  }
+
+  const valid = validateResultEnvelope(schemaPath, envelope);
+  assert.equal(
+    valid.status,
+    0,
+    `non-empty DEGRADED reason failed schema validation\n${valid.stdout}\n${valid.stderr}`,
+  );
 });

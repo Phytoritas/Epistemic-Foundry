@@ -6,7 +6,9 @@
  */
 
 const HASH = `sha256:${"a".repeat(64)}`;
-const REPORT_HASH = `sha256:${"b".repeat(64)}`;
+const REPORT_HASH = "sha256:899e89db12c47e6a27f407aded740416231dcab5a642ef744f98cb2c76ab58bd";
+const DEGRADED_REPORT_HASH =
+  "sha256:06faa2474867c13d3b5073312d98f887c611d1754ebc9a972258f3a72438eba6";
 
 /** One declared check, overridable field by field. */
 export const healthCheck = (overrides = {}) => ({
@@ -43,6 +45,7 @@ export const degradedHealthReport = (overrides = {}) =>
       }),
     ],
     overall: "DEGRADED",
+    report_hash: DEGRADED_REPORT_HASH,
     ...overrides,
   });
 
@@ -86,3 +89,4 @@ export const authenticatedSession = () => ({
 
 export const HEALTH_FIXTURE_BODY_HASH = HASH;
 export const HEALTH_FIXTURE_REPORT_HASH = REPORT_HASH;
+export const HEALTH_FIXTURE_DEGRADED_REPORT_HASH = DEGRADED_REPORT_HASH;

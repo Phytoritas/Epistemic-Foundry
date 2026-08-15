@@ -128,6 +128,16 @@ def test_a_cluster_set_that_disagrees_with_the_pack_fails_closed() -> None:
     assert caught.value.code == "CLUSTER_MISMATCH"
 
 
+def test_a_scalar_dependency_cluster_member_list_is_rejected() -> None:
+    pack, clusters = sealed_pack()
+    pack["dependency_clusters"] = ["EVN-0001"]
+
+    with pytest.raises(InductiveSynthesisError) as caught:
+        synthesize(pack, clusters, default_findings(), created_at=CREATED_AT)
+
+    assert caught.value.code == "PACK_INVALID"
+
+
 def test_dominant_direction_and_agreement_are_adjusted(  # noqa: D103
 ) -> None:
     pack, clusters = sealed_pack()
@@ -269,6 +279,103 @@ def test_incomplete_lanes_and_unsearched_scopes_degrade_the_status() -> None:
     assert "incomplete:novelty_lane_complete" in payload["degradation_reasons"]
     assert "unsearched_scopes_present" in payload["degradation_reasons"]
     assert payload["unsearched_scopes"] == sorted(pack["unsearched_scopes"])
+
+
+def test_an_empty_completeness_projection_cannot_claim_a_complete_synthesis() -> None:
+    pack, clusters = sealed_pack()
+    pack["completeness"] = {}
+    pack["unsearched_scopes"] = []
+
+    with pytest.raises(InductiveSynthesisError) as caught:
+        synthesize(pack, clusters, default_findings(), created_at=CREATED_AT)
+
+    assert caught.value.code == "FIELD_SET_INVALID"
+
+
+def test_completeness_flags_must_be_actual_booleans() -> None:
+    pack, clusters = sealed_pack()
+    pack["completeness"]["support_lane_complete"] = "true"
+
+    with pytest.raises(InductiveSynthesisError) as caught:
+        synthesize(pack, clusters, default_findings(), created_at=CREATED_AT)
+
+    assert caught.value.code == "PACK_INVALID"
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [("stale", "false"), ("unsearched_scopes", "SCOPE-1")],
+)
+def test_status_inputs_do_not_use_truthiness_or_scalar_iteration(
+    field: str, value: object
+) -> None:
+    pack, clusters = sealed_pack()
+    pack[field] = value
+
+    with pytest.raises(InductiveSynthesisError) as caught:
+        synthesize(pack, clusters, default_findings(), created_at=CREATED_AT)
+
+    assert caught.value.code == "PACK_INVALID"
+
+
+def test_schema_valid_duplicate_and_empty_unsearched_scopes_are_projected() -> None:
+    pack, clusters = sealed_pack()
+    pack["unsearched_scopes"] = ["SCOPE-b", "", "SCOPE-b", "SCOPE-a"]
+
+    payload = synthesize(
+        pack, clusters, default_findings(), created_at=CREATED_AT
+    ).payload
+
+    assert payload["unsearched_scopes"] == ["", "SCOPE-a", "SCOPE-b"]
+    assert "unsearched_scopes_present" in payload["degradation_reasons"]
+
+
+def test_a_rehashed_complete_status_cannot_hide_recorded_degradation() -> None:
+    from .contracts import _hash_excluding
+
+    pack, clusters = sealed_pack()
+    payload = synthesize(
+        pack, clusters, default_findings(), created_at=CREATED_AT
+    ).payload
+    payload["status"] = SynthesisStatus.COMPLETE.value
+    payload["synthesis_hash"] = _hash_excluding(payload, "synthesis_hash")
+
+    with pytest.raises(InductiveSynthesisError) as caught:
+        validate_synthesis(payload)
+
+    assert caught.value.code == "STATUS_MISMATCH"
+
+
+def test_rehashing_cannot_replace_completeness_with_an_empty_object() -> None:
+    from .contracts import _hash_excluding
+
+    pack, clusters = sealed_pack()
+    payload = synthesize(
+        pack, clusters, default_findings(), created_at=CREATED_AT
+    ).payload
+    payload["completeness"] = {}
+    payload["synthesis_hash"] = _hash_excluding(payload, "synthesis_hash")
+
+    with pytest.raises(InductiveSynthesisError) as caught:
+        validate_synthesis(payload)
+
+    assert caught.value.code == "FIELD_SET_INVALID"
+
+
+def test_rehashing_cannot_forge_the_raw_finding_count() -> None:
+    from .contracts import _hash_excluding
+
+    pack, clusters = sealed_pack()
+    payload = synthesize(
+        pack, clusters, default_findings(), created_at=CREATED_AT
+    ).payload
+    payload["independence"]["raw_finding_count"] = 1
+    payload["synthesis_hash"] = _hash_excluding(payload, "synthesis_hash")
+
+    with pytest.raises(InductiveSynthesisError) as caught:
+        validate_synthesis(payload)
+
+    assert caught.value.code == "INDEPENDENCE_MISMATCH"
 
 
 def test_a_stale_pack_is_recorded_as_a_degradation() -> None:

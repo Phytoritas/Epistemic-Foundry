@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/validation-target-manifest.schema.json",
+  "title": "ValidationTargetManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "port": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "data_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "schema_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "temporal_support": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "data_type",
+        "unit",
+        "required",
+        "schema_ref",
+        "temporal_support"
+      ]
+    }
+  },
+  "properties": {
+    "target_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_type": {
+      "enum": [
+        "simulation_model",
+        "analysis_pipeline",
+        "formal_solver",
+        "benchmark_harness",
+        "experimental_platform",
+        "external_service",
+        "custom"
+      ]
+    },
+    "interface_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entrypoint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/port"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/port"
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/port"
+      }
+    },
+    "state_variables": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/port"
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "supported_actions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_scope": {
+      "$ref": "scope-vector.schema.json"
+    },
+    "identifiability_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capability_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "safety_class": {
+      "enum": [
+        "read_only",
+        "bounded_compute",
+        "controlled_effect",
+        "high_risk"
+      ]
+    },
+    "approval_policy": {
+      "enum": [
+        "none",
+        "high_risk_only",
+        "all_effects"
+      ]
+    },
+    "artifact_hashes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sha256"
+      }
+    },
+    "provenance_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sandbox_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "network_policy": {
+      "enum": [
+        "disabled",
+        "allowlist",
+        "unrestricted_with_approval"
+      ]
+    },
+    "supply_chain_attestation_artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reproducibility_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "container_digest_required": {
+          "type": "boolean"
+        },
+        "seed_control": {
+          "type": "boolean"
+        },
+        "environment_capture": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "container_digest_required",
+        "seed_control",
+        "environment_capture"
+      ]
+    },
+    "allowed_data_classes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "public",
+          "internal",
+          "restricted",
+          "synthetic"
+        ]
+      }
+    }
+  },
+  "required": [
+    "target_id",
+    "version",
+    "target_type",
+    "interface_version",
+    "entrypoint",
+    "inputs",
+    "outputs",
+    "parameters",
+    "state_variables",
+    "constraints",
+    "supported_actions",
+    "validation_scope",
+    "identifiability_notes",
+    "capability_requirements",
+    "safety_class",
+    "approval_policy",
+    "artifact_hashes",
+    "provenance_manifest_id",
+    "sandbox_profile",
+    "network_policy",
+    "supply_chain_attestation_artifact_id",
+    "reproducibility_contract",
+    "allowed_data_classes"
+  ]
+}

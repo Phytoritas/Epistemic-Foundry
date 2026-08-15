@@ -17,10 +17,27 @@ from .contracts import (
     EdgeType,
     NodeType,
     ProofTraceError,
+    TraceStatus,
     build_proof_trace,
     scope_widening,
 )
 from .test_deduction_trace import edge, graph, node, scope
+
+
+def intervention(name: str, **overrides: object) -> dict[str, object]:
+    value: dict[str, object] = {
+        "category": "treatment",
+        "duration": None,
+        "frequency": None,
+        "max_value": None,
+        "min_value": None,
+        "name": name,
+        "rate": None,
+        "route_or_delivery": None,
+        "unit": None,
+    }
+    value.update(overrides)
+    return value
 
 
 def two_premise_graph(
@@ -151,6 +168,98 @@ def test_a_domain_extension_is_governed_like_a_condition() -> None:
     ]
 
 
+@pytest.mark.parametrize(
+    ("premise_value", "conclusion_value"),
+    [(True, 1), (1, True), ([True], [1]), ([1], [True])],
+)
+def test_json_boolean_and_number_conditions_are_not_equal(
+    premise_value: object, conclusion_value: object
+) -> None:
+    findings = scope_widening(
+        [scope(conditions={"flag": premise_value})],
+        scope(conditions={"flag": conclusion_value}),
+    )
+
+    assert findings == [
+        {"field": "conditions.flag", "kind": "ALTERED_CONDITION"}
+    ]
+
+
+def test_scope_scalar_fields_reject_non_string_values() -> None:
+    malformed = two_premise_graph(
+        [scope(geography="NL")], scope(geography=1)
+    )
+
+    with pytest.raises(ProofTraceError) as caught:
+        build_proof_trace(malformed)
+
+    assert caught.value.code == "INPUT_INVALID"
+
+
+def test_scope_maps_reject_nested_non_scalar_values() -> None:
+    malformed = two_premise_graph(
+        [scope(conditions={"nested": {"value": 1}})],
+        scope(conditions={"nested": {"value": 1}}),
+    )
+
+    with pytest.raises(ProofTraceError) as caught:
+        build_proof_trace(malformed)
+
+    assert caught.value.code == "INPUT_INVALID"
+
+
+def test_schema_legal_empty_criteria_strings_remain_representable() -> None:
+    trace = build_proof_trace(
+        two_premise_graph(
+            [scope(inclusion_criteria=[""])],
+            scope(inclusion_criteria=[""]),
+        )
+    ).payload
+
+    assert trace["status"] == TraceStatus.VALID.value
+
+
+def test_dropping_an_intervention_boundary_is_widening() -> None:
+    findings = scope_widening(
+        [scope(intervention_or_exposure=intervention("nitrogen"))],
+        scope(intervention_or_exposure=None),
+    )
+
+    assert len(findings) == 1
+    assert findings[0]["field"] == "intervention_or_exposure"
+    assert findings[0]["kind"] == "DROPPED_BOUNDARY"
+
+
+def test_changing_an_intervention_is_outside_the_premise_scope() -> None:
+    findings = scope_widening(
+        [scope(intervention_or_exposure=intervention("nitrogen"))],
+        scope(intervention_or_exposure=intervention("phosphorus")),
+    )
+
+    assert len(findings) == 1
+    assert findings[0]["field"] == "intervention_or_exposure"
+    assert findings[0]["kind"] == "UNCOVERED_VALUE"
+
+
+def test_narrowing_an_intervention_range_is_allowed() -> None:
+    findings = scope_widening(
+        [
+            scope(
+                intervention_or_exposure=intervention(
+                    "nitrogen", min_value=0, max_value=100, unit="kg/ha"
+                )
+            )
+        ],
+        scope(
+            intervention_or_exposure=intervention(
+                "nitrogen", min_value=20, max_value=60, unit="kg/ha"
+            )
+        ),
+    )
+
+    assert findings == []
+
+
 def test_no_premises_means_nothing_to_widen_against() -> None:
     assert scope_widening([], scope(geography=None)) == []
 
@@ -199,6 +308,19 @@ def test_a_widened_conclusion_is_refused_by_the_engine() -> None:
     assert caught.value.code == "SCOPE_WIDENED"
     assert caught.value.context["node_id"] == "N-conclusion"
     assert caught.value.context["findings"][0]["kind"] == "DROPPED_BOUNDARY"
+
+
+def test_the_engine_refuses_a_dropped_intervention_boundary() -> None:
+    widened = two_premise_graph(
+        [scope(intervention_or_exposure=intervention("nitrogen"))],
+        scope(intervention_or_exposure=None),
+    )
+
+    with pytest.raises(ProofTraceError) as caught:
+        build_proof_trace(widened)
+
+    assert caught.value.code == "SCOPE_WIDENED"
+    assert caught.value.context["findings"][0]["field"] == "intervention_or_exposure"
 
 
 def test_a_narrowed_conclusion_is_accepted_and_recorded() -> None:

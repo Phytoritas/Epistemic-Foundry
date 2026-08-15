@@ -4,14 +4,21 @@ policy: No row may become SUPPORTED without recorded fresh-install, lifecycle-ho
   evidence.
 model_note: This is a fail-closed reference compatibility and lifecycle matrix. It declares the identity, payload layout, host/platform
   cells, the sealed-package provenance that establishes each host, and the install/uninstall lifecycle policy that a fresh install and
-  uninstall must satisfy. It records NO runtime-executability, validation, or production-readiness claim; every host cell is UNVERIFIED
-  or ADAPTER_REQUIRED and every install decision is REFUSED until the required evidence is recorded (see docs/216_lens_plugin_audit.md
-  F05 and MASTER_SPEC fresh-install/uninstall acceptance). The Z01 install-matrix and uninstall-data harnesses read this file as the
-  single declaring source of the host and platform lists and never restate them.
+  uninstall must satisfy. Candidate runtime_capabilities describe mechanisms already present in the payload; they do not establish a
+  verified host cell, PLUGIN_ALPHA qualification, validation, or production readiness. Every host cell remains UNVERIFIED or
+  ADAPTER_REQUIRED and every install decision is REFUSED until the required evidence is recorded (see docs/216_lens_plugin_audit.md F05
+  and MASTER_SPEC fresh-install/uninstall acceptance). The Z01 install-matrix and uninstall-data harnesses read this file as the single
+  declaring source of the host and platform lists and never restate them.
 plugin:
   name: epistemic-foundry
   version: 4.0.0
-  runtime_capabilities: []
+  runtime_capabilities:
+  - installed_plugin_cli_execution
+  - installed_plugin_mcp_execution
+  - bundled_python_runtime_execution
+  - runtime_payload_integrity_verification
+  - workspace_path_confinement
+  - degraded_runtime_diagnostics
   identity_source: plugins/epistemic-foundry/.codex-plugin/plugin.json
 payload:
   root: plugins/epistemic-foundry
@@ -21,8 +28,12 @@ payload:
   - .mcp.json
   - assets
   - bin
+  - dist
   - hooks
+  - runtime
+  - scripts
   - skills
+  - src
 sealed_dependencies:
 - attempt_id: G04-0001
   package: G04
@@ -65,9 +76,12 @@ sealed_dependencies:
   establishes: yield, operations and scale surface
 citation_policy:
   rule: Every declared host row MUST cite at least one sealed_dependencies attempt through establishing_evidence; an uncited row is
-    refused fail-closed and none of its host/OS cells may install.
+    refused fail-closed and none of its host/OS cells may install. This rule applies to the host capability vocabulary under the
+    top-level capabilities key. Candidate runtime_capabilities are unqualified payload mechanisms and cannot satisfy or bypass a host
+    capability citation.
   every_citation_must_be_a_sealed_dependency: true
   capabilities_without_a_citation_cannot_be_supported: true
+  candidate_runtime_capabilities_are_not_host_capabilities: true
   refusal_codes:
     row_uncited: EF_Z01_ROW_UNCITED
     citation_not_sealed: EF_Z01_CITATION_NOT_SEALED

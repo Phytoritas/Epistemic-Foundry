@@ -9,7 +9,7 @@ export const contractManifest = Object.freeze({
   "schema_count": 127,
   "example_count": 127,
   "schema_bundle_sha256": "sha256:ca2cae307a1d19f37504c27fc0e143fd22d0b94a7f1f93626c7c9a4dc74955cd",
-  "example_bundle_sha256": "sha256:6a3847eb8b95e23c8166a8889b1723c260c0fe9c63cc17c06bf010c1c6c538c2",
+  "example_bundle_sha256": "sha256:1014c532c1d5d8251f9848e2cbdb953480518477c312ef8f250c652701a6479d",
   "contracts": [
     {
       "schema_file": "schemas/action-intent.schema.json",
@@ -3965,7 +3965,7 @@ export const contractManifest = Object.freeze({
       "title": "ConsentRecord",
       "schema_id": "https://epistemic-foundry.local/schemas/consent-record.schema.json",
       "source_sha256": "sha256:24915579cd23a358cc24f7e68664f655a3a3717578e0208fe2971e54e19487f1",
-      "example_sha256": "sha256:433128ce05c8e0b728bb31056c8631d91d62f6b2200078e4e1ae0047ffab5539",
+      "example_sha256": "sha256:82f39821dacba784d542f81d19f65cfeb30e73a7b79ae1052713451caf2017ea",
       "required_fields": [
         "consent_id",
         "subject_id",
@@ -21823,7 +21823,7 @@ export const contractManifest = Object.freeze({
       "title": "RetrievalCandidate",
       "schema_id": "https://epistemic-foundry.local/schemas/retrieval-candidate.schema.json",
       "source_sha256": "sha256:1d2b28bc4bcee4ba8ad76061a15084efc1604d535cb4e6e08f782b20ba515a00",
-      "example_sha256": "sha256:e8cf70b16ec3ca22c7fa5782c7f1a130abafc8b8824dcceedec4fc54540d00c7",
+      "example_sha256": "sha256:ebb358d394a6f63d6fec57a24b3c218ce8039a8cdec612dc640301dc6f2461a8",
       "required_fields": [
         "candidate_id",
         "run_id",

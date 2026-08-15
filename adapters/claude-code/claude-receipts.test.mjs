@@ -61,12 +61,12 @@ test("x02_receipt: every declaring source is bound by its actual digest", () => 
     ...BINDING_SOURCE_PATHS,
     ...binding.presentRoleIds.map((roleId) => {
       const descriptor = binding.agentTable.find((row) => row.role_id === roleId);
-      return `${ADAPTER_ROOT}/${descriptor.name}.md`;
+      return `${binding.agentRoot}/${descriptor.name}.md`;
     }),
   ].sort();
 
   assert.deepEqual(receipt.sources.map((row) => row.path), expected);
-  assert.equal(receipt.sources.length, 19);
+  assert.equal(receipt.sources.length, 31);
   for (const row of receipt.sources) assert.equal(row.sha256, digestOf(row.path));
 });
 
@@ -80,13 +80,13 @@ test("x02_receipt: a changed declaration changes the receipt", (t) => {
   assert.equal(changed.adapter_version, "4.0.0-x02.2");
 });
 
-test("x02_receipt: the roles whose agent file is not generated are named", () => {
-  assert.equal(receipt.binding_status, "DEGRADED");
+test("x02_receipt: every live Claude agent is named", () => {
+  assert.equal(receipt.binding_status, "BOUND");
+  assert.equal(receipt.agent_root, ".claude/agents");
   assert.equal(receipt.agent_count, 28);
-  assert.equal(receipt.missing_agents.length, 12);
-  assert.equal(receipt.present_agents.length, 16);
-  assert.deepEqual([...receipt.missing_agents].sort(), receipt.missing_agents);
-  for (const finding of receipt.findings) assert.equal(finding.code, "AGENT_FILE_MISSING");
+  assert.deepEqual(receipt.missing_agents, []);
+  assert.equal(receipt.present_agents.length, 28);
+  assert.deepEqual(receipt.findings, []);
 });
 
 test("x02_receipt: the receipt binds the adapter identity and the agent table", () => {

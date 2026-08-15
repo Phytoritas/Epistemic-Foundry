@@ -1,55 +1,52 @@
-# B04 integration review record
+# B04 package review record
 
-Status: `SPEC_GAP_WITH_RECORDED_PROCEDURE_DEVIATION`
+Standing verdict: `PASS` (from attempt `0010`).
 
-Review mode: `USER_AUTHORIZED_SELF_REVIEW`
+The earlier package-level review recorded the original `SPEC_GAP` and is
+preserved in the attempt history under `attempts/`. The current review, at
+`attempts/0010/review.md`, is reproduced below as the standing record.
 
-The user prohibited subagents and authorized the independent-review steps to
-be handled directly. The author therefore performed the integration-review
-role. This record does not claim independent assurance, and the procedure
-deviation does not waive a failed build gate.
+---
 
-Reviewed input and failure bindings:
+# B04-0010 final post-C04 packaging review
 
-- B02 report: `98abe689dbfb9399d2f50f87a18376ca9a85ed4a50c938513778e312e3e67dad`
-- B03 report: `baa07e997402a290f2602cea39a78a1acdeeb69dd7ea8c89331c84e78976338f`
-- `pyproject.toml`: `347e1a8a544735cf24b40da807f5f23ef301b8fd5ca5f40a5982be97cd9d4708`
-- `src/epistemic_foundry/contracts/registry.py`: `21e970e7b9db7c98b4bfd7a21cc82a4848f62ab542ca986aed3dbe6ebc1790d4`
-- `toolchains/toolchain-lock.json`: `ee07ad9b59cb2cd03607276f46d863c1a4154e1842a77457d19fea16a9a70ede`
-- deterministic wheel: `fb6f1b7fe5452118108656fc66d05b78db026d1be9735e91c597e1aeec150014`
+Package recommendation: `PASS_FINAL_POST_C04_PACKAGING`
 
-Review confirmed:
+Review mode: `PRIMARY_SESSION_SEPARATE_ADVERSARIAL_INTEGRATION_REVIEW`
 
-1. B02 and B03 remain `PASS`, all of their declared checks resolve to success,
-   and all declared output artifacts exist.
-2. With the B02 `SOURCE_DATE_EPOCH`, the B04 probe rebuilds the exact Python
-   wheel already recorded by B02.
-3. The isolated source path executes `status`, reports version `4.0.0`, retains
-   the honest `SPEC_BUNDLE` / `PARTIAL_IMPLEMENTATION` labels, and loads all
-   124 canonical schemas.
-4. The deterministic wheel contains zero `*.schema.json` files. When extracted
-   outside the repository, its identical command fails with `SchemaNotFound`
-   because the installed registry resolves a nonexistent sibling `schemas/`
-   directory.
-5. Therefore source and distribution exit codes and outputs differ, and B04's
-   non-waivable `build_smoke` and source/dist convergence criterion fail.
-6. The smallest correct repair needs packaging metadata to include one
-   canonical schema resource bundle and runtime registry logic to resolve that
-   installed resource without duplicating schema authority.
-7. The manifest assigns `pyproject.toml` to B01, `schemas/**` to C01, and B04
-   only `artifacts/work_packages/B04/**`; it assigns no dependency-ready work
-   package both `pyproject.toml` and
-   `src/epistemic_foundry/contracts/registry.py`. Expanding scope would invent
-   a shared contract, which the authority rules forbid.
+Assurance limitation: `actor_independence=false`. The product-owner contract
+forbids Fleet and subagents, so this is a procedurally separate primary-session
+review rather than external actor-independent certification.
 
-Finding: one blocking `SPEC_GAP`.
+## Dependency, authority, and projection
 
-Required resolution:
+- Sealed C04-0004 is hash-bound at `sha256:28cded86378c3ad189839296bd00dc5c29395dce3d31a6db590de67a7ac008ab` with core
+  `E0107`, final `E0108`, and an explicit B04-0010-ready verdict.
+- Root `schemas/**` and `openapi/**` remain sole authority. The package snapshot,
+  sdist, wheel, and installed resources are derived projections only.
+- Exactly 127 schemas and one OpenAPI 3.1.1 document
+  with 33 operations produce
+  128 resources. Missing, extra,
+  mismatch, duplicate-ID, root-mutation, reverse-sync, and fallback counts are zero.
 
-- Authorize and record a work-package scope that covers Python packaging
-  metadata plus installed-runtime schema resource resolution, then rerun B02
-  reproducibility evidence and B04 source/dist smoke.
+## Packaging and regression
 
-Decision: B04 is not integrated and downstream packages that require B04 are
-not dependency-ready. This is a truthful typed blocker, not a release or
-runtime-readiness claim.
+- Fresh wheel `067b66d055d7cd2a5e056b85f0d99f3473ef407ca32d9acd57ce72de3ac3e2da`
+  and sdist `fd108ec00395f16248af77b4d30d45459a217cce75cf20dcc6246d4ca4ed4f92` match the
+  sealed reproducible bytes. The sdist-derived wheel is byte-identical.
+- Installed-wheel-only enumeration, representative schema validation, OpenAPI
+  loading, arbitrary empty cwd, missing-resource fail-closed behavior, and
+  one-byte tamper rejection all pass without source-tree fallback.
+- Targeted packaging contracts pass
+  41/41,
+  Python passes 1115/1115,
+  and Node passes 819/819
+  across 79 files. Failure, error, skip, xfail, todo, and
+  cancellation counts are zero.
+- This attempt changes no product file, preserves all prior attempts and the dirty
+  worktree, and emits receipt-bound registry, wheel, and sdist evidence.
+
+Blocking B04-0010 findings: 0. B04-0010 satisfies the final post-C04 packaging
+gate. It does not establish terminal product completion, release readiness, or
+`completion_ready=true`. The next action is live recomputation of the 156-package
+DAG while the global implementation gate remains failed.

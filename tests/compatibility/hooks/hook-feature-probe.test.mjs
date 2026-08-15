@@ -14,17 +14,10 @@ import {
 
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const hookDirectory = path.join(repositoryRoot, "plugins", "epistemic-foundry", "hooks");
-const hookNames = ["delegation.json", "prompt.json", "session.json", "tools.json"];
-const declaredEvents = [
-  "SessionStart",
-  "UserPromptSubmit",
-  "PermissionRequest",
-  "PreToolUse",
-  "PostToolUse",
-  "SubagentStart",
-  "SubagentStop",
-  "PostCompact",
-];
+// Only SessionStart is registered: the other seven events had no producer, so
+// their declarations were removed rather than left pointing at absent logic.
+const hookNames = ["session.json"];
+const declaredEvents = ["SessionStart"];
 
 const definitions = () => hookNames.map((hookId) => ({
   hookId,
@@ -140,7 +133,7 @@ test("hook_feature_probe_test: changed active hook bytes require exact re-trust"
   });
 
   assert.equal(trust.retrustRequired, true);
-  assert.deepEqual(trust.changedHooks, ["delegation.json"]);
+  assert.deepEqual(trust.changedHooks, ["session.json"]);
   assert.equal(trust.state, "UNKNOWN");
   assert.equal(trust.limitations.includes("HOOK_RETRUST_REQUIRED"), true);
 
@@ -239,7 +232,7 @@ test("hook_feature_probe_test: disabled changed hooks retain re-trust debt", () 
   assert.equal(report.capabilities.plugin_hooks.limitations.includes("HOOKS_DISABLED"), true);
   assert.equal(report.capabilities.plugin_hooks.limitations.includes("HOOK_RETRUST_REQUIRED"), true);
   assert.equal(
-    report.capabilities.plugin_hooks.limitations.includes("UNTRUSTED_ACTIVE_HOOK:delegation.json"),
+    report.capabilities.plugin_hooks.limitations.includes("UNTRUSTED_ACTIVE_HOOK:session.json"),
     true,
   );
   assert.equal(report.mode, "DEGRADED");

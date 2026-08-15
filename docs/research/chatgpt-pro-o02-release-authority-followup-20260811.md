@@ -1,0 +1,4 @@
+DECISION: SPEC_GAP
+BINDING: The shared O01↔O02 contract owner must declare that each `SearchLaneReceipt.result_ids` is the duplicate-free ordered sequence of `RetrievalCandidate.candidate_id` values produced by `build_candidate_set` from the corresponding sealed lane request/response, with exact run, plan, lane, query, scope, snapshot, and index agreement and `result_count == len(result_ids)`.
+RAW_API: Rename `evaluate_non_vector_release` to `assess_non_vector_release` and document its result as non-authoritative advisory assessment; it must not emit, represent, or be consumed as release authorization.
+RATIONALE: O02 may rebuild candidates from its sealed observations and consume O01 validation APIs, but it cannot independently assign the cross-package meaning, namespace, ordering, or cardinality of O01 `result_ids`. Until the shared owner establishes that join, candidate self-resealing and caller-supplied lane states cannot provide provenance authority.

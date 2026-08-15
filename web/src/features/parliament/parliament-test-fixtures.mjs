@@ -7,12 +7,14 @@
  * restating the whole record.
  */
 
-const hash = (character) => `sha256:${character.repeat(64)}`;
-
-export const ADJUDICATION_HASH = hash("a");
-export const BRIEF_ONE_HASH = hash("b");
-export const BRIEF_TWO_HASH = hash("c");
-export const MINORITY_HASH = hash("d");
+export const ADJUDICATION_HASH =
+  "sha256:7096b1ae7f753ee108ebef9d9d7a12de307ddc42705aba14b48499d314c774be";
+export const BRIEF_ONE_HASH =
+  "sha256:321c2c43dfd4bbe168196e0869e90ce737ba85707d4d7f1f8c66091e26ac9193";
+export const BRIEF_TWO_HASH =
+  "sha256:53a4d91768c4437c69d01b8981d3c59823940357aeb82a5ea1857754a1287e8d";
+export const MINORITY_HASH =
+  "sha256:ca70ae01ef56f40e4ef19a6ec6a064a0f8ab296a863b4b82d93a8a3a9e70db7c";
 
 export const RUN_ID = "RUN-0001";
 

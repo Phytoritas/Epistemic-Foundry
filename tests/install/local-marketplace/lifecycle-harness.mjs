@@ -247,6 +247,19 @@ function assertPortableEvidence(value) {
   visit(value);
 }
 
+function assertNoRepositoryPath(value, label) {
+  const normalize = (candidate) =>
+    String(candidate).replaceAll("\\", "/").replace(/\/{2,}/gu, "/").toLowerCase();
+  const normalizedValue = normalize(value);
+  for (const candidate of [repositoryRoot, fs.realpathSync.native(repositoryRoot)]) {
+    assert.equal(
+      normalizedValue.includes(normalize(candidate)),
+      false,
+      `${label} referenced the repository checkout`,
+    );
+  }
+}
+
 export function runLocalMarketplaceLifecycle() {
   assert.equal(fs.existsSync(sourcePluginRoot), true, "source plugin package is missing");
   const codexExecutable = resolveCodexExecutable();
@@ -259,6 +272,9 @@ export function runLocalMarketplaceLifecycle() {
   const marketplacePluginRoot = path.join(marketplaceRoot, "plugins", pluginName);
   const detachedPluginRoot = path.join(tempRoot, "detached plugin source", pluginName);
   const emptyCwd = path.join(tempRoot, "empty cwd", "작업 공간");
+  const pluginData = path.join(tempRoot, "persistent plugin data", pluginName);
+  const pluginDataSentinel = path.join(pluginData, "g04-plugin-data-sentinel.txt");
+  const pluginDataSentinelBytes = Buffer.from("G04 PLUGIN_DATA must survive uninstall\n", "utf8");
   const realCodexHome = path.resolve(process.env.CODEX_HOME ?? path.join(os.homedir(), ".codex"));
   const realConfigPath = path.join(realCodexHome, "config.toml");
   const realConfigStateBefore = fileState(realConfigPath);
@@ -281,6 +297,8 @@ export function runLocalMarketplaceLifecycle() {
   fs.mkdirSync(isolatedLocalAppData, { recursive: true });
   fs.mkdirSync(path.dirname(marketplacePluginRoot), { recursive: true });
   fs.mkdirSync(emptyCwd, { recursive: true });
+  fs.mkdirSync(pluginData, { recursive: true });
+  fs.writeFileSync(pluginDataSentinel, pluginDataSentinelBytes);
   fs.cpSync(sourcePluginRoot, marketplacePluginRoot, { recursive: true, errorOnExist: true });
   fs.mkdirSync(path.join(marketplaceRoot, ".agents", "plugins"), { recursive: true });
   fs.writeFileSync(
@@ -318,6 +336,7 @@ export function runLocalMarketplaceLifecycle() {
     CODEX_HOME: codexHome,
     HOME: isolatedUserHome,
     LOCALAPPDATA: isolatedLocalAppData,
+    PLUGIN_DATA: pluginData,
     USERPROFILE: isolatedUserHome,
   };
   if (process.platform === "win32") {
@@ -425,17 +444,49 @@ export function runLocalMarketplaceLifecycle() {
     assert.equal(detachedSourceState.enabled, true);
 
     const dispatcher = path.join(installedRoot, "bin", "efoundry.mjs");
-    const dispatcherResult = spawnSync(process.execPath, [dispatcher, "status"], {
+    const dispatcherSource = fs.readFileSync(dispatcher, "utf8");
+    assert.match(
+      dispatcherSource,
+      /new URL\(["']\.\.\/dist\/cli\.mjs["'], import\.meta\.url\)/u,
+    );
+    assert.match(dispatcherSource, /await import\(payloadCli\.href\)/u);
+    const dispatcherTarget = fileURLToPath(
+      new URL("../dist/cli.mjs", pathToFileURL(dispatcher)),
+    );
+    const installedDistTarget = path.join(installedRoot, "dist", "cli.mjs");
+    assert.equal(path.resolve(dispatcherTarget), path.resolve(installedDistTarget));
+    assert.equal(fs.existsSync(dispatcherTarget), true, "installed dispatcher target is missing");
+    const dispatcherTargetIdentity = path
+      .relative(installedRoot, dispatcherTarget)
+      .split(path.sep)
+      .join("/");
+    assert.equal(dispatcherTargetIdentity, "dist/cli.mjs");
+
+    const dispatcherResult = spawnSync(process.execPath, [dispatcher, "status", "--json"], {
       cwd: emptyCwd,
       encoding: "utf8",
-      env: { ...childEnv, PATH: "" },
+      env: {
+        ...childEnv,
+        CLAUDE_PLUGIN_ROOT: installedRoot,
+        PATH: "",
+        PLUGIN_ROOT: installedRoot,
+      },
       shell: false,
       windowsHide: true,
     });
     assert.equal(dispatcherResult.error, undefined);
-    assert.notEqual(dispatcherResult.status, 0);
-    assert.match(dispatcherResult.stderr, /dist[\\/]cli\.mjs/u);
-    assert.doesNotMatch(dispatcherResult.stderr, new RegExp(repositoryRoot.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"), "u"));
+    assert.equal(
+      dispatcherResult.status,
+      0,
+      `installed status exited ${dispatcherResult.status}\nstdout=${dispatcherResult.stdout}\nstderr=${dispatcherResult.stderr}`,
+    );
+    assert.equal(dispatcherResult.signal, null);
+    assert.equal(dispatcherResult.stderr.trim(), "", "installed status wrote to stderr");
+    const dispatcherStatus = parseJson(dispatcherResult.stdout, "installed dispatcher status --json");
+    assert.equal(dispatcherStatus !== null && typeof dispatcherStatus === "object", true);
+    assertNoRepositoryPath(dispatcherSource, "installed dispatcher source");
+    assertNoRepositoryPath(dispatcherResult.stdout, "installed status stdout");
+    assertNoRepositoryPath(dispatcherResult.stderr, "installed status stderr");
 
     const removeResult = parseJson(
       run(["plugin", "remove", selector, "--json"]).stdout,
@@ -444,6 +495,12 @@ export function runLocalMarketplaceLifecycle() {
     assert.match(JSON.stringify(removeResult), new RegExp(pluginName, "u"));
     assert.equal(fs.existsSync(installedRoot), false);
     assert.doesNotMatch(fs.readFileSync(configPath, "utf8"), new RegExp(selector, "u"));
+    assert.equal(fs.existsSync(pluginDataSentinel), true, "plugin removal deleted PLUGIN_DATA");
+    assert.deepEqual(
+      fs.readFileSync(pluginDataSentinel),
+      pluginDataSentinelBytes,
+      "PLUGIN_DATA sentinel changed",
+    );
 
     const marketplaceRemove = parseJson(
       run(["plugin", "marketplace", "remove", marketplaceName, "--json"]).stdout,
@@ -495,14 +552,12 @@ export function runLocalMarketplaceLifecycle() {
       path_less_boundary: {
         invocation_used_absolute_installed_dispatcher: true,
         path_environment_empty: true,
+        dispatcher_target_root: "INSTALLED_PLUGIN_ROOT",
+        dispatcher_target_identity: dispatcherTargetIdentity,
         repository_checkout_fallback_count: 0,
-        payload_status: "DECLARED_SHELL_PAYLOAD_NOT_YET_PACKAGED",
-        payload_owner: "T03",
+        installed_status_execution: "PASS",
         observed_exit_code: dispatcherResult.status,
-        observed_failure_mentions_installed_dist_target: /dist[\\/]cli\.mjs/u.test(
-          dispatcherResult.stderr,
-        ),
-        command_success_claimed: false,
+        observed_signal: dispatcherResult.signal,
       },
       clean_uninstall_test: {
         plugin_remove: "PASS",
@@ -510,11 +565,11 @@ export function runLocalMarketplaceLifecycle() {
         installed_config_residue_count: 0,
         marketplace_remove: "PASS",
         marketplace_config_residue_count: 0,
+        plugin_data_sentinel: "PRESERVED",
       },
       commands,
       limitations: [
         "The current G01 shell declares no runtime capabilities.",
-        "G04 does not fabricate the downstream dist/cli.mjs payload or claim T03 CLI semantics.",
         "The headless enable/disable check edits only the isolated config state that the supported UI owns.",
       ],
       final_status: "PASS",

@@ -36,9 +36,14 @@ from typing import Any, Final
 import yaml
 
 SHA256_PATTERN: Final = re.compile(r"^sha256:[0-9a-f]{64}$")
+SEMVER_PATTERN: Final = re.compile(
+    r"^[0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$"
+)
 RFC3339_PATTERN: Final = re.compile(
-    r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"
-    r"(?:\.[0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    r"^(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})[Tt]"
+    r"(?P<hour>[0-9]{2}):(?P<minute>[0-9]{2}):(?P<second>[0-9]{2})"
+    r"(?:\.[0-9]+)?(?P<zone>[Zz]|(?P<offset_sign>[+-])"
+    r"(?P<offset_hour>[0-9]{2}):(?P<offset_minute>[0-9]{2}))$"
 )
 #: The registry is the declaring source of every role's Evidence ACL.
 ROLE_REGISTRY_PATH: Final = "manifests/role_registry.yaml"
@@ -213,6 +218,16 @@ def _mapping(value: object, label: str) -> dict[str, Any]:
     return result
 
 
+def _snapshot_brief(value: object, label: str) -> dict[str, Any]:
+    """Read one caller-owned brief once, then use only detached JSON values."""
+
+    canonical_bytes = _canonical_json(_mapping(value, label))
+    snapshot = json.loads(canonical_bytes.decode("utf-8"))
+    if type(snapshot) is not dict:  # pragma: no cover - _mapping is an object
+        _fail("INPUT_INVALID", f"{label} must be an object")
+    return snapshot
+
+
 def _sequence(value: object, label: str) -> list[Any]:
     if not isinstance(value, Sequence) or isinstance(value, (str, bytes)):
         _fail("INPUT_INVALID", f"{label} must be an array")
@@ -238,10 +253,94 @@ def _text(value: object, label: str) -> str:
     return str(value)
 
 
+def _month_length(year: int, month: int) -> int:
+    leap_year = year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    return (
+        31,
+        29 if leap_year else 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    )[month - 1]
+
+
+def _shift_calendar_day(
+    year: int, month: int, day: int, day_delta: int
+) -> tuple[int, int, int]:
+    while day_delta > 0:
+        day += 1
+        if day > _month_length(year, month):
+            day = 1
+            month += 1
+            if month > 12:
+                month = 1
+                year += 1
+        day_delta -= 1
+    while day_delta < 0:
+        day -= 1
+        if day < 1:
+            month -= 1
+            if month < 1:
+                month = 12
+                year -= 1
+            day = _month_length(year, month)
+        day_delta += 1
+    return year, month, day
+
+
 def _timestamp(value: object, label: str) -> str:
     text = _text(value, label)
-    if RFC3339_PATTERN.fullmatch(text) is None:
+    match = RFC3339_PATTERN.fullmatch(text)
+    if match is None:
         _fail("INPUT_INVALID", f"{label} must be an RFC3339 timestamp")
+    year = int(match.group("year"))
+    month = int(match.group("month"))
+    day = int(match.group("day"))
+    hour = int(match.group("hour"))
+    minute = int(match.group("minute"))
+    second = int(match.group("second"))
+    if (
+        month < 1
+        or month > 12
+        or day < 1
+        or day > _month_length(year, month)
+        or hour > 23
+        or minute > 59
+        or second > 60
+    ):
+        _fail("INPUT_INVALID", f"{label} must be a real RFC3339 timestamp")
+    offset_minutes = 0
+    if match.group("zone") not in {"Z", "z"}:
+        offset_hour = int(match.group("offset_hour"))
+        offset_minute = int(match.group("offset_minute"))
+        if offset_hour > 23 or offset_minute > 59:
+            _fail("INPUT_INVALID", f"{label} must be a real RFC3339 timestamp")
+        offset_minutes = offset_hour * 60 + offset_minute
+        if match.group("offset_sign") == "-":
+            offset_minutes = -offset_minutes
+    if second == 60:
+        utc_day_delta, utc_minute = divmod(
+            hour * 60 + minute - offset_minutes,
+            1440,
+        )
+        utc_year, utc_month, utc_day = _shift_calendar_day(
+            year,
+            month,
+            day,
+            utc_day_delta,
+        )
+        if utc_minute != 1439 or utc_day != _month_length(utc_year, utc_month):
+            _fail(
+                "INPUT_INVALID",
+                f"{label} leap second must be at a UTC month end",
+            )
     return text
 
 
@@ -263,14 +362,34 @@ def evidence_acl(repository_root: Path, role: str) -> tuple[str, ...]:
     ACL, and dispatching to it fails closed rather than defaulting to open.
     """
 
+    role = _text(role, "role")
     document = yaml.safe_load(_registry_document(str(repository_root)))
-    roles = document["roles"] if isinstance(document, Mapping) else document
-    for entry in roles:
-        if isinstance(entry, Mapping) and str(entry.get("role_id")) == role:
+    if not isinstance(document, Mapping):
+        _fail("ROLE_REGISTRY_INVALID", "role registry must be an object")
+    roles = document.get("roles")
+    if not isinstance(roles, Sequence) or isinstance(
+        roles, (str, bytes, bytearray)
+    ):
+        _fail("ROLE_REGISTRY_INVALID", "role registry roles must be an array")
+    seen_roles: set[str] = set()
+    matched_acl: tuple[str, ...] | None = None
+    for index, entry in enumerate(roles):
+        if not isinstance(entry, Mapping):
+            _fail("ROLE_REGISTRY_INVALID", f"roles[{index}] must be an object")
+        role_id = entry.get("role_id")
+        if type(role_id) is not str or not role_id.strip():
+            _fail(
+                "ROLE_REGISTRY_INVALID",
+                f"roles[{index}].role_id must be a non-empty string",
+            )
+        if role_id in seen_roles:
+            _fail("ROLE_REGISTRY_INVALID", f"duplicate role_id {role_id}")
+        seen_roles.add(role_id)
+        if role_id == role:
             acl = entry.get("evidence_acl")
             if (
                 not isinstance(acl, Sequence)
-                or isinstance(acl, (str, bytes))
+                or isinstance(acl, (str, bytes, bytearray))
                 or not acl
             ):
                 _fail(
@@ -278,7 +397,22 @@ def evidence_acl(repository_root: Path, role: str) -> tuple[str, ...]:
                     "a dispatched role must declare a non-empty Evidence ACL",
                     {"role": role},
                 )
-            return tuple(sorted({str(item) for item in acl}))  # type: ignore[union-attr]
+            values: list[str] = []
+            for position, item in enumerate(acl):
+                if type(item) is not str or not item.strip():
+                    _fail(
+                        "ROLE_REGISTRY_INVALID",
+                        f"{role}.evidence_acl[{position}] must be a non-empty string",
+                    )
+                values.append(item)
+            if len(values) != len(set(values)):
+                _fail(
+                    "ROLE_REGISTRY_INVALID",
+                    f"{role}.evidence_acl must not contain duplicates",
+                )
+            matched_acl = tuple(sorted(values))
+    if matched_acl is not None:
+        return matched_acl
     _fail(
         "ROLE_UNKNOWN",
         "a dispatched role must exist in the role registry",
@@ -400,8 +534,7 @@ def validate_context_manifest(payload: Mapping[str, Any]) -> SealedArtifact:
     return SealedArtifact("ContextManifest", _canonical_json(value))
 
 
-def _validate_brief(value: object, index: int) -> dict[str, Any]:
-    brief = _mapping(value, f"briefs[{index}]")
+def _validate_brief_snapshot(brief: dict[str, Any], index: int) -> dict[str, Any]:
     _exact_fields(brief, BRIEF_FIELDS, f"briefs[{index}]")
     brief_id = _text(brief["brief_id"], "brief_id")
     if brief["role"] not in BRIEF_ROLES:
@@ -459,20 +592,55 @@ def _validate_brief(value: object, index: int) -> dict[str, Any]:
             "a brief must name at least one condition that would change its verdict",
             {"brief_id": brief_id},
         )
+    for position, condition in enumerate(brief["conditions_that_change_verdict"]):
+        _text(condition, f"conditions_that_change_verdict[{position}]")
+    _text(brief["strongest_counterargument"], "strongest_counterargument")
+    for position, item in enumerate(
+        _sequence(brief["missing_evidence"], "missing_evidence")
+    ):
+        if type(item) is not str:
+            _fail(
+                "INPUT_INVALID",
+                f"missing_evidence[{position}] must be a string",
+            )
+    schema_version = brief["schema_version"]
+    if (
+        type(schema_version) is not str
+        or SEMVER_PATTERN.fullmatch(schema_version) is None
+    ):
+        _fail("SCHEMA_VERSION_INVALID", "schema_version must be canonical SemVer")
+    context_manifest_id = _text(brief["context_manifest_id"], "context_manifest_id")
+    created_at = _timestamp(brief["created_at"], "created_at")
+    round_number = _round(brief["round"], "round")
+    run_id = _text(brief["run_id"], "run_id")
+    asserted_hash = brief["brief_hash"]
+    if (
+        type(asserted_hash) is not str
+        or SHA256_PATTERN.fullmatch(asserted_hash) is None
+    ):
+        _fail("BRIEF_HASH_INVALID", "brief_hash must be sha256:<64 lowercase hex>")
+    if asserted_hash != _hash_excluding(brief, "brief_hash"):
+        _fail(
+            "BRIEF_HASH_MISMATCH",
+            "brief_hash does not match the exact CouncilBrief content",
+            {"brief_id": brief_id},
+        )
     return {
         "assertions": normalized,
         "blind": bool(brief["blind"]),
         "brief_hash": _text(brief["brief_hash"], "brief_hash"),
         "brief_id": brief_id,
-        "context_manifest_id": _text(
-            brief["context_manifest_id"], "context_manifest_id"
-        ),
-        "created_at": _timestamp(brief["created_at"], "created_at"),
+        "context_manifest_id": context_manifest_id,
+        "created_at": created_at,
         "role": str(brief["role"]),
-        "round": _round(brief["round"], "round"),
-        "run_id": _text(brief["run_id"], "run_id"),
+        "round": round_number,
+        "run_id": run_id,
         "verdict_candidate": str(brief["verdict_candidate"]),
     }
+
+
+def _validate_brief(value: object, index: int) -> dict[str, Any]:
+    return _validate_brief_snapshot(_snapshot_brief(value, f"briefs[{index}]"), index)
 
 
 def cited_evidence(brief: Mapping[str, Any]) -> set[str]:
@@ -776,7 +944,8 @@ def validate_dispatch(payload: Mapping[str, Any]) -> SealedArtifact:
 def seal_brief(payload: Mapping[str, Any]) -> dict[str, Any]:
     """Stamp a CouncilBrief with its canonical content hash."""
 
-    value = _mapping(payload, "CouncilBrief")
+    value = _snapshot_brief(payload, "CouncilBrief")
     _exact_fields(value, BRIEF_FIELDS, "CouncilBrief")
     value["brief_hash"] = _hash_excluding(value, "brief_hash")
+    _validate_brief_snapshot(value, 0)
     return value

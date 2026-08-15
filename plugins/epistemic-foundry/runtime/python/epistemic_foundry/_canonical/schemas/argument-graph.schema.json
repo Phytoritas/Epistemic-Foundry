@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/argument-graph.schema.json",
+  "title": "ArgumentGraph",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "argument_graph_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hypothesis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "argument_node_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "node_type": {
+            "enum": [
+              "premise",
+              "assumption",
+              "rule",
+              "claim",
+              "prediction",
+              "falsifier",
+              "alternative",
+              "objection",
+              "response",
+              "conclusion"
+            ]
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "scope": {
+            "$ref": "scope-vector.schema.json"
+          },
+          "status": {
+            "enum": [
+              "asserted",
+              "accepted",
+              "challenged",
+              "rejected",
+              "unresolved"
+            ]
+          }
+        },
+        "required": [
+          "argument_node_id",
+          "node_type",
+          "statement",
+          "evidence_ids",
+          "scope",
+          "status"
+        ]
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "edge_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "from_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "to_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "edge_type": {
+            "enum": [
+              "supports",
+              "deductively_implies",
+              "inductively_supports",
+              "attacks",
+              "rebuts",
+              "undercuts",
+              "explains",
+              "competes_with",
+              "predicts",
+              "falsified_by",
+              "depends_on_assumption"
+            ]
+          },
+          "rule_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "edge_id",
+          "from_id",
+          "to_id",
+          "edge_type",
+          "rule_ref",
+          "confidence"
+        ]
+      }
+    },
+    "hidden_assumption_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unresolved_objection_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proof_trace_artifact_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "graph_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "argument_graph_id",
+    "run_id",
+    "hypothesis_id",
+    "nodes",
+    "edges",
+    "hidden_assumption_ids",
+    "unresolved_objection_ids",
+    "proof_trace_artifact_id",
+    "graph_hash",
+    "created_at"
+  ]
+}

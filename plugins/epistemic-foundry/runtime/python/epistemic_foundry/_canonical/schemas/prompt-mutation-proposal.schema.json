@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/prompt-mutation-proposal.schema.json",
+  "title": "PromptMutationProposal",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_prompt_genome_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proposed_prompt_genome_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "motivation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "changed_sections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "risk_analysis": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "qualification_plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "QUARANTINED",
+        "TESTING",
+        "APPROVED",
+        "REJECTED"
+      ]
+    },
+    "proposal_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "proposal_id",
+    "source_prompt_genome_id",
+    "proposed_prompt_genome_id",
+    "motivation",
+    "changed_sections",
+    "risk_analysis",
+    "qualification_plan_id",
+    "status",
+    "proposal_hash"
+  ],
+  "description": "프롬프트 자기개선 제안을 즉시 적용하지 않고 검증 큐로 격리한다."
+}

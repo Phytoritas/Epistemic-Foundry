@@ -33,7 +33,19 @@ def report(matrix: dict) -> dict:
 def test_matrix_is_fail_closed_reference(matrix: dict) -> None:
     assert matrix["version"] == "4.0.0"
     assert matrix["status"] == "UNVERIFIED_REFERENCE_MATRIX"
-    assert matrix["plugin"]["runtime_capabilities"] == []
+    assert matrix["plugin"]["runtime_capabilities"] == [
+        "installed_plugin_cli_execution",
+        "installed_plugin_mcp_execution",
+        "bundled_python_runtime_execution",
+        "runtime_payload_integrity_verification",
+        "workspace_path_confinement",
+        "degraded_runtime_diagnostics",
+    ]
+    assert (
+        matrix["citation_policy"]
+        ["candidate_runtime_capabilities_are_not_host_capabilities"]
+        is True
+    )
 
 
 def test_matrix_is_the_only_declaring_source_of_hosts_and_platforms(

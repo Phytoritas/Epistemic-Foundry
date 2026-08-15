@@ -36,7 +36,16 @@ from .contracts import (
     seal_tool_output,
     verify_tool_output,
 )
-from .test_sandbox_escape import NOW, ROOT, envelope, holdout, lease, manifest, request
+from .test_sandbox_escape import (
+    NOW,
+    POLICY_HASH,
+    ROOT,
+    envelope,
+    holdout,
+    lease,
+    manifest,
+    request,
+)
 
 PAYLOAD = b'{"result":42}'
 STARTED = "2026-08-01T12:00:00Z"
@@ -492,6 +501,8 @@ def gate(**overrides: Any) -> dict[str, Any]:
             holdout=holdout(),
             request=request(),
             now=NOW,
+            policy_hash=POLICY_HASH,
+            scope_fencing_heads={"workspace": 7},
         ),
         ledger=opened,
         deadline=_pick(overrides, "deadline", None) or evaluate_deadline(opened, 5),

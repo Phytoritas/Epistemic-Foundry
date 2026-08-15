@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/insight-card.schema.json",
+  "title": "InsightCard",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_-]*-[A-Za-z0-9._:-]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "paper_version_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "page": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "description": "Page number in the source document, or null when the extraction carries no page geometry. A null page requires coordinate_system 'not_available' and a null bbox; it is never a substitute for an unextracted page."
+        },
+        "section": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bbox": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "coordinate_system": {
+          "enum": [
+            "pdf_points_bottom_left",
+            "pdf_points_top_left",
+            "normalized_top_left",
+            "not_available"
+          ],
+          "description": "Coordinate frame for bbox. 'not_available' declares an extraction with no page geometry and is mandatory when page is null."
+        },
+        "char_start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "char_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "passage_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "paper_version_id",
+        "page",
+        "char_start",
+        "char_end",
+        "passage_hash"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "page": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "page"
+            ]
+          },
+          "then": {
+            "properties": {
+              "coordinate_system": {
+                "const": "not_available"
+              },
+              "bbox": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "coordinate_system"
+            ]
+          }
+        }
+      ]
+    },
+    "quality_vector": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "directness": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "design_strength": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "measurement_validity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "statistical_precision": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "replication": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "independence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scope_match": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "extraction_confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "directness",
+        "design_strength",
+        "measurement_validity",
+        "statistical_precision",
+        "replication",
+        "independence",
+        "scope_match",
+        "extraction_confidence"
+      ]
+    }
+  },
+  "properties": {
+    "insight_id": {
+      "$ref": "#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 10
+    },
+    "scope": {
+      "$ref": "scope-vector.schema.json"
+    },
+    "mechanism_path": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "predictions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "falsifiers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "alternative_hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "null_model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "registration_status": {
+      "enum": [
+        "inbox",
+        "eligible",
+        "withdrawn"
+      ]
+    },
+    "lens_provenance": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "adapt",
+          "borrow",
+          "modify",
+          "magnify",
+          "minify",
+          "substitute",
+          "rearrange",
+          "reverse",
+          "combine",
+          "human"
+        ]
+      }
+    },
+    "created_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "registration_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "risk_class": {
+      "enum": [
+        "routine",
+        "consequential",
+        "high_stakes"
+      ]
+    },
+    "terms_to_define": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decision_context": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$"
+    }
+  },
+  "required": [
+    "insight_id",
+    "revision",
+    "statement",
+    "scope",
+    "mechanism_path",
+    "predictions",
+    "falsifiers",
+    "alternative_hypotheses",
+    "null_model",
+    "registration_status",
+    "lens_provenance",
+    "created_at",
+    "registration_hash",
+    "risk_class",
+    "terms_to_define",
+    "decision_context",
+    "created_by",
+    "schema_version"
+  ]
+}

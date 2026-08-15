@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/workspace-map-snapshot.schema.json",
+  "title": "WorkspaceMapSnapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "map_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "root_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "query": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "kind": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "baseline_centrality": {
+            "type": "number",
+            "minimum": 0
+          },
+          "query_relevance": {
+            "type": "number",
+            "minimum": 0
+          },
+          "risk_score": {
+            "type": "number",
+            "minimum": 0
+          },
+          "content_hash": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "node_id",
+          "kind",
+          "label",
+          "baseline_centrality",
+          "query_relevance",
+          "risk_score",
+          "content_hash"
+        ]
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "target": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "kind": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "source",
+          "target",
+          "kind",
+          "weight"
+        ]
+      }
+    },
+    "ranking_algorithm": {
+      "type": "string"
+    },
+    "personalization": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "included_scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "excluded_scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tool_versions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "map_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "map_id",
+    "workspace_id",
+    "root_hash",
+    "query",
+    "nodes",
+    "edges",
+    "ranking_algorithm",
+    "personalization",
+    "included_scopes",
+    "excluded_scopes",
+    "tool_versions",
+    "generated_at",
+    "map_hash"
+  ]
+}

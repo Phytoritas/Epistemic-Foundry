@@ -245,10 +245,93 @@ def _text(value: object, label: str) -> str:
     return str(value)
 
 
+def _month_length(year: int, month: int) -> int:
+    leap_year = year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    return (
+        31,
+        29 if leap_year else 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    )[month - 1]
+
+
+def _shift_calendar_day(
+    year: int, month: int, day: int, day_delta: int
+) -> tuple[int, int, int]:
+    while day_delta > 0:
+        day += 1
+        if day > _month_length(year, month):
+            day = 1
+            month += 1
+            if month > 12:
+                month = 1
+                year += 1
+        day_delta -= 1
+    while day_delta < 0:
+        day -= 1
+        if day < 1:
+            month -= 1
+            if month < 1:
+                month = 12
+                year -= 1
+            day = _month_length(year, month)
+        day_delta += 1
+    return year, month, day
+
+
 def _timestamp(value: object, label: str) -> str:
     text = _text(value, label)
     if RFC3339_PATTERN.fullmatch(text) is None:
         _fail("INPUT_INVALID", f"{label} must be an RFC3339 timestamp")
+    year = int(text[0:4])
+    month = int(text[5:7])
+    day = int(text[8:10])
+    hour = int(text[11:13])
+    minute = int(text[14:16])
+    second = int(text[17:19])
+    if (
+        month < 1
+        or month > 12
+        or day < 1
+        or day > _month_length(year, month)
+        or hour > 23
+        or minute > 59
+        or second > 60
+    ):
+        _fail("INPUT_INVALID", f"{label} must be a real RFC3339 timestamp")
+    offset_minutes = 0
+    if not text.endswith("Z"):
+        offset_hour = int(text[-5:-3])
+        offset_minute = int(text[-2:])
+        if offset_hour > 23 or offset_minute > 59:
+            _fail("INPUT_INVALID", f"{label} must be a real RFC3339 timestamp")
+        offset_minutes = offset_hour * 60 + offset_minute
+        if text[-6] == "-":
+            offset_minutes = -offset_minutes
+    if second == 60:
+        utc_day_delta, utc_minute = divmod(
+            hour * 60 + minute - offset_minutes,
+            1440,
+        )
+        utc_year, utc_month, utc_day = _shift_calendar_day(
+            year,
+            month,
+            day,
+            utc_day_delta,
+        )
+        if utc_minute != 1439 or utc_day != _month_length(utc_year, utc_month):
+            _fail(
+                "INPUT_INVALID",
+                f"{label} leap second must be at a UTC month end",
+            )
     return text
 
 
@@ -315,6 +398,11 @@ def _condition_difference(
     return differing, nesting
 
 
+def _conflict_id(left_observation_id: str, right_observation_id: str) -> str:
+    left, right = sorted((left_observation_id, right_observation_id))
+    return "CF-" + _hex_digest({"left": left, "right": right})
+
+
 def classify_conflict(
     left: Mapping[str, Any], right: Mapping[str, Any]
 ) -> dict[str, Any] | None:
@@ -331,12 +419,9 @@ def classify_conflict(
     measurements = {left["measurement_ref"], right["measurement_ref"]}
     ordered = sorted((left, right), key=lambda entry: str(entry["observation_id"]))
     record: dict[str, Any] = {
-        "conflict_id": "CF-"
-        + _hex_digest(
-            {
-                "left": ordered[0]["observation_id"],
-                "right": ordered[1]["observation_id"],
-            }
+        "conflict_id": _conflict_id(
+            str(ordered[0]["observation_id"]),
+            str(ordered[1]["observation_id"]),
         ),
         "differing_conditions": differing,
         "left_direction": str(ordered[0]["direction"]),
@@ -495,6 +580,18 @@ def competing_kinds(
     )
 
 
+def _aporia_id(payload: Mapping[str, Any]) -> str:
+    return "AP-" + _hex_digest(
+        {
+            "conflicts": payload["conflicts"],
+            "created_at": payload["created_at"],
+            "explanations": payload["explanations"],
+            "observation_ids": payload["observation_ids"],
+            "subject_id": payload["subject_id"],
+        }
+    )
+
+
 def build_aporia_record(
     observations: Sequence[Mapping[str, Any]],
     explanations: Sequence[Mapping[str, Any]],
@@ -577,14 +674,7 @@ def build_aporia_record(
         "subject_id": subject_id,
         "unexplained_conflict_ids": [],
     }
-    payload["aporia_id"] = "AP-" + _hex_digest(
-        {
-            "conflicts": conflicts,
-            "created_at": created_at,
-            "explanations": validated_explanations,
-            "subject_id": subject_id,
-        }
-    )
+    payload["aporia_id"] = _aporia_id(payload)
     payload["aporia_hash"] = _hash_excluding(payload, "aporia_hash")
     return validate_aporia_record(payload)
 
@@ -611,11 +701,21 @@ def validate_aporia_record(payload: Mapping[str, Any]) -> SealedArtifact:
             "R03 proposes and preserves explanations but never selects one",
             {"selected_explanation_id": value["selected_explanation_id"]},
         )
+    observation_values = _sequence(value["observation_ids"], "observation_ids")
+    observation_ids = [
+        _text(entry, "observation_id") for entry in observation_values
+    ]
+    if observation_ids != sorted(observation_ids) or len(observation_ids) != len(
+        set(observation_ids)
+    ):
+        _fail("INPUT_INVALID", "observation_ids must be unique and sorted ascending")
+    observation_set = set(observation_ids)
+
     conflicts = _sequence(value["conflicts"], "conflicts")
     conflict_ids: list[str] = []
-    for entry in conflicts:
-        conflict = _mapping(entry, "conflict")
-        _exact_fields(conflict, _CONFLICT_FIELDS, "conflict")
+    for index, entry in enumerate(conflicts):
+        conflict = _mapping(entry, f"conflicts[{index}]")
+        _exact_fields(conflict, _CONFLICT_FIELDS, f"conflicts[{index}]")
         if conflict["conflict_type"] not in CONFLICT_TYPES:
             _fail("INPUT_INVALID", "conflict_type is not canonical")
         if conflict["conflict_type"] == ConflictType.UNCLASSIFIED.value:
@@ -624,17 +724,107 @@ def validate_aporia_record(payload: Mapping[str, Any]) -> SealedArtifact:
                 "a sealed record may not carry an unclassified conflict",
                 {"conflict_id": conflict["conflict_id"]},
             )
-        conflict_ids.append(_text(conflict["conflict_id"], "conflict_id"))
+        conflict_id = _text(conflict["conflict_id"], "conflict_id")
+        left_id = _text(conflict["left_observation_id"], "left_observation_id")
+        right_id = _text(conflict["right_observation_id"], "right_observation_id")
+        if left_id == right_id:
+            _fail(
+                "INPUT_INVALID",
+                "a conflict must reference two distinct observations",
+                {"conflict_id": conflict_id},
+            )
+        if (left_id, right_id) != tuple(sorted((left_id, right_id))):
+            _fail(
+                "INPUT_INVALID",
+                "conflict observation endpoints must be sorted ascending",
+                {"conflict_id": conflict_id},
+            )
+        unknown_observations = sorted({left_id, right_id} - observation_set)
+        if unknown_observations:
+            _fail(
+                "OBSERVATION_UNRESOLVED",
+                "conflict endpoints must resolve to recorded observations",
+                {"conflict_id": conflict_id, "observation_ids": unknown_observations},
+            )
+        expected_conflict_id = _conflict_id(left_id, right_id)
+        if conflict_id != expected_conflict_id:
+            _fail(
+                "CONFLICT_ID_MISMATCH",
+                "conflict_id is not the content address of its observation pair",
+                {"actual": conflict_id, "expected": expected_conflict_id},
+            )
+        left_direction = _text(conflict["left_direction"], "left_direction")
+        right_direction = _text(conflict["right_direction"], "right_direction")
+        if (
+            left_direction not in DIRECTION_ORDER
+            or right_direction not in DIRECTION_ORDER
+        ):
+            _fail("DIRECTION_INVALID", "conflict directions must be canonical")
+        if not directions_conflict(left_direction, right_direction):
+            _fail(
+                "DIRECTION_INVALID",
+                "a recorded conflict must carry genuinely conflicting directions",
+                {"conflict_id": conflict_id},
+            )
+        differing_values = _sequence(
+            conflict["differing_conditions"], "differing_conditions"
+        )
+        differing_conditions = [
+            _text(item, "differing condition") for item in differing_values
+        ]
+        if differing_conditions != sorted(set(differing_conditions)):
+            _fail(
+                "INPUT_INVALID",
+                "differing_conditions must be unique and sorted ascending",
+                {"conflict_id": conflict_id},
+            )
+        if conflict["conflict_type"] in (
+            ConflictType.DIRECT_CONTRADICTION.value,
+            ConflictType.MEASUREMENT_DIFFERENCE.value,
+        ) and differing_conditions:
+            _fail(
+                "INPUT_INVALID",
+                "same-condition conflict types cannot list differing conditions",
+                {"conflict_id": conflict_id},
+            )
+        if conflict["conflict_type"] in (
+            ConflictType.CONDITION_DIFFERENCE.value,
+            ConflictType.SCOPE_NESTED.value,
+        ) and not differing_conditions:
+            _fail(
+                "INPUT_INVALID",
+                "condition-bound conflict types must name a differing condition",
+                {"conflict_id": conflict_id},
+            )
+        _text(conflict["rationale"], "rationale")
+        conflict_ids.append(conflict_id)
     if conflict_ids != sorted(conflict_ids) or len(conflict_ids) != len(
         set(conflict_ids)
     ):
         _fail("INPUT_INVALID", "conflicts must be unique and sorted ascending")
+    expected_status = (
+        AporiaStatus.OPEN.value if conflict_ids else AporiaStatus.NO_CONFLICT.value
+    )
+    if value["status"] != expected_status:
+        _fail(
+            "STATUS_MISMATCH",
+            "aporia status must reflect whether classified conflicts remain",
+            {"actual": value["status"], "expected": expected_status},
+        )
 
-    explanations = _sequence(value["explanations"], "explanations")
-    explanation_ids = [
-        _text(_mapping(entry, "explanation")["explanation_id"], "explanation_id")
-        for entry in explanations
-    ]
+    explanation_values = _sequence(value["explanations"], "explanations")
+    explanations: list[dict[str, Any]] = []
+    for index, entry in enumerate(explanation_values):
+        original = _mapping(entry, f"explanations[{index}]")
+        normalized = _validate_explanation(original, index, frozenset(conflict_ids))
+        if original != normalized:
+            _fail(
+                "INPUT_INVALID",
+                "explanations must use their canonical sorted projection",
+                {"explanation_id": normalized["explanation_id"]},
+            )
+        explanations.append(normalized)
+    explanation_ids = [entry["explanation_id"] for entry in explanations]
     if explanation_ids != sorted(explanation_ids) or len(explanation_ids) != len(
         set(explanation_ids)
     ):
@@ -664,6 +854,13 @@ def validate_aporia_record(payload: Mapping[str, Any]) -> SealedArtifact:
         _fail(
             "CONFLICT_UNEXPLAINED",
             "a sealed record may not carry an unexplained conflict",
+        )
+    expected_aporia_id = _aporia_id(value)
+    if value["aporia_id"] != expected_aporia_id:
+        _fail(
+            "APORIA_ID_MISMATCH",
+            "aporia_id is not the content address of the recorded aporia",
+            {"actual": value["aporia_id"], "expected": expected_aporia_id},
         )
     if _hash_excluding(value, "aporia_hash") != value["aporia_hash"]:
         _fail("APORIA_HASH_MISMATCH", "aporia_hash does not match its content")

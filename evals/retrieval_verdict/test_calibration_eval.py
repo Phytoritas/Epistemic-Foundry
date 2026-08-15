@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import copy
 import json
+import math
 
 import jsonschema
 import pytest
@@ -128,6 +129,43 @@ def test_a_confidence_of_zero_lands_in_the_bottom_bin() -> None:
     bins = reliability_bins([(0.0, False)])
 
     assert bins[0]["count"] == 1
+
+
+@pytest.mark.parametrize(
+    ("confidence", "expected_index"),
+    [
+        (0.1, 1),
+        (0.2, 2),
+        (0.3, 3),
+        (0.4, 4),
+        (0.5, 5),
+        (0.6, 6),
+        (0.7, 7),
+        (0.8, 8),
+        (0.9, 9),
+    ],
+)
+def test_an_internal_boundary_lands_in_the_right_hand_bin(
+    confidence: float, expected_index: int
+) -> None:
+    bins = reliability_bins([(confidence, True)])
+
+    assert bins[expected_index]["count"] == 1
+    assert sum(entry["count"] for entry in bins) == 1
+
+
+@pytest.mark.parametrize("boundary_index", range(1, RELIABILITY_BIN_COUNT))
+def test_the_immediate_predecessor_of_a_boundary_stays_in_the_left_hand_bin(
+    boundary_index: int,
+) -> None:
+    confidence = math.nextafter(
+        boundary_index / RELIABILITY_BIN_COUNT,
+        0.0,
+    )
+    bins = reliability_bins([(confidence, True)])
+
+    assert bins[boundary_index - 1]["count"] == 1
+    assert sum(entry["count"] for entry in bins) == 1
 
 
 def test_an_empty_pair_set_has_no_statistics() -> None:

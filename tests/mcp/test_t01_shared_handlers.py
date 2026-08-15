@@ -58,7 +58,12 @@ class FixtureReadModelPort:
         self.calls.append((operation, workspace_id))
         record = self.records.get(operation)
         if record is None:
-            return ReadOutcome(found=False, state="READY", data=None)
+            return ReadOutcome(
+                found=False,
+                state="EMPTY_CONFIRMED",
+                data=None,
+                reason=None,
+            )
         if record.get("raise"):
             raise RuntimeError(str(record["raise"]))
         return ReadOutcome(
@@ -276,15 +281,27 @@ def test_t01_shared_handlers_provider_failure_is_unavailable_never_empty() -> No
     [
         (
             {"found": True, "state": "READY", "data": None},
-            "READY requires a data payload",
+            "READY requires a mapping data payload",
         ),
         (
             {"found": True, "state": "EMPTY_CONFIRMED", "data": {"x": 1}},
-            "EMPTY_CONFIRMED cannot carry a data payload",
+            "EMPTY_CONFIRMED requires null data and degradation reason",
         ),
         (
             {"found": True, "state": "EMPTY_CONFIRMED", "data": None, "reason": "late"},
-            "EMPTY_CONFIRMED cannot carry a degradation reason",
+            "EMPTY_CONFIRMED requires null data and degradation reason",
+        ),
+        (
+            {"found": False, "state": "DEGRADED", "data": None, "reason": None},
+            "DEGRADED requires a non-empty degradation reason",
+        ),
+        (
+            {"found": False, "state": "DEGRADED", "data": None, "reason": ""},
+            "DEGRADED requires a non-empty degradation reason",
+        ),
+        (
+            {"found": False, "state": "UNKNOWN", "data": None, "reason": None},
+            "read-model provider returned an unknown read-model state",
         ),
     ],
 )

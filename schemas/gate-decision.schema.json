@@ -51,8 +51,13 @@
       "pattern": "^sha256:[0-9a-f]{64}$"
     },
     "decision": {
-      "type": "string",
-      "minLength": 1,
+      "enum": [
+        "PASS",
+        "FAIL",
+        "BLOCK",
+        "WAIVE",
+        "NOT_REQUIRED"
+      ],
       "description": "Stable gate conclusion such as PASS, FAIL, BLOCK, WAIVE, or policy-evidenced NOT_REQUIRED."
     },
     "blocker_ids": {
@@ -185,6 +190,86 @@
           },
           "waiver_reason": {
             "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "BLOCK",
+              "WAIVE"
+            ]
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "oneOf": [
+          {
+            "properties": {
+              "decision": {
+                "const": "PASS"
+              },
+              "status": {
+                "const": "PASS"
+              }
+            }
+          },
+          {
+            "properties": {
+              "decision": {
+                "const": "FAIL"
+              },
+              "status": {
+                "const": "FAIL"
+              }
+            }
+          },
+          {
+            "properties": {
+              "decision": {
+                "const": "BLOCK"
+              },
+              "status": {
+                "const": "BLOCK"
+              }
+            }
+          },
+          {
+            "properties": {
+              "decision": {
+                "const": "WAIVE"
+              },
+              "status": {
+                "const": "WAIVE"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "const": "NOT_REQUIRED"
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "PASS"
           }
         }
       }

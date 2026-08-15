@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/epistemic-work-classification.schema.json",
+  "title": "EpistemicWorkClassification",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "classification_id": {
+      "type": "string",
+      "pattern": "^EWC-[0-9a-f]{64}$"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "work_class": {
+      "enum": [
+        "E0",
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5"
+      ]
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(SIGNAL:(AMBIGUOUS|NOVELTY|HIGH_STAKES|EXPENSIVE|CAUSAL|VALIDATION|MECHANISM|SYNTHESIS|LOOKUP|TRANSFORM)|FLOOR:E[0-5]|INTERVIEW:I0[1-9]_[A-Z_]+|PROPOSAL_(REJECTED|AMBIGUOUS|IGNORED):[0-9]+:[A-Z_]+|OVERRIDE:sha256:[0-9a-f]{64})$"
+      },
+      "minItems": 2,
+      "uniqueItems": true
+    },
+    "risk_factors": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "AMBIGUOUS",
+          "NOVELTY",
+          "HIGH_STAKES",
+          "EXPENSIVE",
+          "CAUSAL",
+          "VALIDATION",
+          "MECHANISM"
+        ]
+      },
+      "maxItems": 7,
+      "uniqueItems": true
+    },
+    "required_phases": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "I",
+          "F",
+          "O",
+          "R",
+          "G",
+          "E"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "default_role_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 12
+    },
+    "human_gate_required": {
+      "type": "boolean"
+    },
+    "classified_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "classifier_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-f[0-9]{2}\\.[0-9]+$"
+    },
+    "classification_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "classification_id",
+    "request_id",
+    "work_class",
+    "reasons",
+    "risk_factors",
+    "required_phases",
+    "default_role_count",
+    "human_gate_required",
+    "classified_at",
+    "classifier_version",
+    "classification_hash"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "work_class": {
+            "const": "E0"
+          }
+        },
+        "required": [
+          "work_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "required_phases": {
+            "maxItems": 0
+          },
+          "default_role_count": {
+            "const": 0
+          },
+          "human_gate_required": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "work_class": {
+            "const": "E1"
+          }
+        },
+        "required": [
+          "work_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "required_phases": {
+            "prefixItems": [
+              {
+                "const": "F"
+              },
+              {
+                "const": "O"
+              },
+              {
+                "const": "E"
+              }
+            ],
+            "items": false,
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "default_role_count": {
+            "const": 1
+          },
+          "human_gate_required": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "work_class": {
+            "const": "E2"
+          }
+        },
+        "required": [
+          "work_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "required_phases": {
+            "prefixItems": [
+              {
+                "const": "F"
+              },
+              {
+                "const": "O"
+              },
+              {
+                "const": "R"
+              },
+              {
+                "const": "G"
+              },
+              {
+                "const": "E"
+              }
+            ],
+            "items": false,
+            "minItems": 5,
+            "maxItems": 5
+          },
+          "default_role_count": {
+            "const": 3
+          },
+          "human_gate_required": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "work_class": {
+            "const": "E3"
+          }
+        },
+        "required": [
+          "work_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "required_phases": {
+            "prefixItems": [
+              {
+                "const": "F"
+              },
+              {
+                "const": "O"
+              },
+              {
+                "const": "R"
+              },
+              {
+                "const": "G"
+              },
+              {
+                "const": "E"
+              }
+            ],
+            "items": false,
+            "minItems": 5,
+            "maxItems": 5
+          },
+          "default_role_count": {
+            "const": 6
+          },
+          "human_gate_required": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "work_class": {
+            "enum": [
+              "E4",
+              "E5"
+            ]
+          }
+        },
+        "required": [
+          "work_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "required_phases": {
+            "oneOf": [
+              {
+                "prefixItems": [
+                  {
+                    "const": "F"
+                  },
+                  {
+                    "const": "O"
+                  },
+                  {
+                    "const": "R"
+                  },
+                  {
+                    "const": "G"
+                  },
+                  {
+                    "const": "E"
+                  }
+                ],
+                "items": false,
+                "minItems": 5,
+                "maxItems": 5
+              },
+              {
+                "prefixItems": [
+                  {
+                    "const": "I"
+                  },
+                  {
+                    "const": "F"
+                  },
+                  {
+                    "const": "O"
+                  },
+                  {
+                    "const": "R"
+                  },
+                  {
+                    "const": "G"
+                  },
+                  {
+                    "const": "E"
+                  }
+                ],
+                "items": false,
+                "minItems": 6,
+                "maxItems": 6
+              }
+            ]
+          },
+          "human_gate_required": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "work_class": {
+            "const": "E4"
+          }
+        },
+        "required": [
+          "work_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "default_role_count": {
+            "const": 10
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "work_class": {
+            "const": "E5"
+          }
+        },
+        "required": [
+          "work_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "default_role_count": {
+            "const": 12
+          }
+        }
+      }
+    }
+  ]
+}

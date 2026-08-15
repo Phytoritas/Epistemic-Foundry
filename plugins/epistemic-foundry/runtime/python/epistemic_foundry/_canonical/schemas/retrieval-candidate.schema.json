@@ -1,0 +1,653 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/retrieval-candidate.schema.json",
+  "title": "RetrievalCandidate",
+  "description": "A provider-neutral, provenance-bound candidate emitted by O02 after raw backend validation and before O03 evidence resolution.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "lane": {
+      "enum": [
+        "lexical",
+        "semantic",
+        "citation",
+        "entity_variable",
+        "mechanism",
+        "counterevidence",
+        "null",
+        "boundary",
+        "method",
+        "temporal",
+        "external_novelty"
+      ]
+    },
+    "query_family": {
+      "enum": [
+        "FORWARD",
+        "REVERSE",
+        "NULL",
+        "BOUNDARY",
+        "METHOD",
+        "NOVELTY"
+      ]
+    },
+    "retrieval_channel": {
+      "enum": [
+        "LEXICAL",
+        "SEMANTIC",
+        "CITATION_GRAPH",
+        "RELATION_GRAPH",
+        "EXTERNAL_INDEX"
+      ]
+    },
+    "nullable_score": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "nullable_rank": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "channel_scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "LEXICAL": {
+          "$ref": "#/$defs/nullable_score"
+        },
+        "SEMANTIC": {
+          "$ref": "#/$defs/nullable_score"
+        },
+        "CITATION_GRAPH": {
+          "$ref": "#/$defs/nullable_score"
+        },
+        "RELATION_GRAPH": {
+          "$ref": "#/$defs/nullable_score"
+        },
+        "EXTERNAL_INDEX": {
+          "$ref": "#/$defs/nullable_score"
+        }
+      },
+      "required": [
+        "LEXICAL",
+        "SEMANTIC",
+        "CITATION_GRAPH",
+        "RELATION_GRAPH",
+        "EXTERNAL_INDEX"
+      ]
+    },
+    "channel_ranks": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "LEXICAL": {
+          "$ref": "#/$defs/nullable_rank"
+        },
+        "SEMANTIC": {
+          "$ref": "#/$defs/nullable_rank"
+        },
+        "CITATION_GRAPH": {
+          "$ref": "#/$defs/nullable_rank"
+        },
+        "RELATION_GRAPH": {
+          "$ref": "#/$defs/nullable_rank"
+        },
+        "EXTERNAL_INDEX": {
+          "$ref": "#/$defs/nullable_rank"
+        }
+      },
+      "required": [
+        "LEXICAL",
+        "SEMANTIC",
+        "CITATION_GRAPH",
+        "RELATION_GRAPH",
+        "EXTERNAL_INDEX"
+      ]
+    },
+    "ranking_features": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scope_overlap": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "relation_direction_match": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "source_directness": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "method_compatibility": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "publication_version_status": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "extraction_grounding_confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "scope_overlap",
+        "relation_direction_match",
+        "source_directness",
+        "method_compatibility",
+        "publication_version_status",
+        "extraction_grounding_confidence"
+      ]
+    }
+  },
+  "properties": {
+    "candidate_id": {
+      "type": "string",
+      "pattern": "^RC-[0-9a-f]{64}$"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "query_plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plan_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "lane": {
+      "$ref": "#/$defs/lane"
+    },
+    "query_family": {
+      "$ref": "#/$defs/query_family"
+    },
+    "query_text": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Exact JCS-equivalent canonical query_batch JSON string bound by query_hash."
+    },
+    "query_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "scope_filter": {
+      "$ref": "scope-vector.schema.json"
+    },
+    "corpus_snapshot_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "index_versions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "backend_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "backend_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "backend_adapter_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "backend_adapter_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "backend_request_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "backend_response_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "backend_receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canonical_source_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_artifact_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "source_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_snapshot_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "source_span_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "raw_rank": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "raw_scores": {
+      "$ref": "#/$defs/channel_scores"
+    },
+    "channel_ranks": {
+      "$ref": "#/$defs/channel_ranks"
+    },
+    "retrieval_channels": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/retrieval_channel"
+      }
+    },
+    "fusion_method": {
+      "enum": [
+        "SINGLE_CHANNEL",
+        "RRF_K60"
+      ]
+    },
+    "fusion_score": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "exclusiveMinimum": 0
+    },
+    "ranking_features": {
+      "$ref": "#/$defs/ranking_features"
+    },
+    "matched_terms": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "matched_edges": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "relation_direction": {
+      "enum": [
+        "SAME_DIRECTION",
+        "REVERSE_DIRECTION",
+        "INVERSE_PREDICATE",
+        "BIDIRECTIONAL",
+        "NO_DIRECTION",
+        "UNRESOLVED"
+      ]
+    },
+    "scope_estimate": {
+      "oneOf": [
+        {
+          "$ref": "scope-vector.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "duplicate_candidate_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^RC-[0-9a-f]{64}$"
+      }
+    },
+    "multi_channel_verified": {
+      "type": "boolean"
+    },
+    "retrieval_explanation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_hash": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "run_id",
+    "query_plan_id",
+    "plan_hash",
+    "lane",
+    "query_family",
+    "query_text",
+    "query_hash",
+    "scope_filter",
+    "corpus_snapshot_hash",
+    "index_versions",
+    "backend_id",
+    "backend_version",
+    "backend_adapter_id",
+    "backend_adapter_version",
+    "backend_request_hash",
+    "backend_response_hash",
+    "backend_receipt_id",
+    "canonical_source_key",
+    "source_record_id",
+    "source_artifact_id",
+    "source_locator",
+    "source_version",
+    "source_snapshot_hash",
+    "source_span_id",
+    "raw_rank",
+    "raw_scores",
+    "channel_ranks",
+    "retrieval_channels",
+    "fusion_method",
+    "fusion_score",
+    "ranking_features",
+    "matched_terms",
+    "matched_edges",
+    "relation_direction",
+    "scope_estimate",
+    "duplicate_candidate_ids",
+    "multi_channel_verified",
+    "retrieval_explanation",
+    "candidate_hash"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lane": {
+            "enum": [
+              "lexical",
+              "semantic",
+              "citation",
+              "entity_variable",
+              "mechanism",
+              "temporal"
+            ]
+          }
+        },
+        "required": [
+          "lane"
+        ]
+      },
+      "then": {
+        "properties": {
+          "query_family": {
+            "const": "FORWARD"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lane": {
+            "const": "counterevidence"
+          }
+        },
+        "required": [
+          "lane"
+        ]
+      },
+      "then": {
+        "properties": {
+          "query_family": {
+            "enum": [
+              "FORWARD",
+              "REVERSE"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lane": {
+            "const": "null"
+          }
+        },
+        "required": [
+          "lane"
+        ]
+      },
+      "then": {
+        "properties": {
+          "query_family": {
+            "const": "NULL"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lane": {
+            "const": "boundary"
+          }
+        },
+        "required": [
+          "lane"
+        ]
+      },
+      "then": {
+        "properties": {
+          "query_family": {
+            "const": "BOUNDARY"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lane": {
+            "const": "method"
+          }
+        },
+        "required": [
+          "lane"
+        ]
+      },
+      "then": {
+        "properties": {
+          "query_family": {
+            "const": "METHOD"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lane": {
+            "const": "external_novelty"
+          }
+        },
+        "required": [
+          "lane"
+        ]
+      },
+      "then": {
+        "properties": {
+          "query_family": {
+            "const": "NOVELTY"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "retrieval_channels": {
+            "minItems": 2
+          }
+        },
+        "required": [
+          "retrieval_channels"
+        ]
+      },
+      "then": {
+        "properties": {
+          "fusion_method": {
+            "const": "RRF_K60"
+          },
+          "fusion_score": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "multi_channel_verified": {
+            "const": true
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "fusion_method": {
+            "const": "SINGLE_CHANNEL"
+          },
+          "fusion_score": {
+            "type": "null"
+          },
+          "multi_channel_verified": {
+            "const": false
+          }
+        }
+      }
+    }
+  ],
+  "x-canonical-identity": {
+    "algorithm": "sha256",
+    "canonicalization": "RFC 8785 JCS-equivalent UTF-8",
+    "exclusion_policy": "all_other_properties",
+    "exclusion_policy_description": "Identity is exactly the listed preimage fields; every other property of this schema is deliberately outside it, including properties added later. This is stated rather than enumerated because the set is open by design: an identity digest that silently widened when a field was added would change the identity of records that did not change, invalidating every candidate id already issued. Contrast x-canonical-hash on this same schema, which enumerates excluded_fields because a content hash is expected to cover the whole record.",
+    "preimage_fields": [
+      "plan_hash",
+      "lane",
+      "query_hash",
+      "canonical_source_key",
+      "source_version",
+      "source_snapshot_hash"
+    ],
+    "id_binding": "candidate_id == 'RC-' + lowercase_hex(sha256(canonical_identity_preimage))"
+  },
+  "x-canonical-hash": {
+    "algorithm": "sha256",
+    "canonicalization": "RFC 8785 JCS-equivalent UTF-8",
+    "preimage_fields": [
+      "run_id",
+      "query_plan_id",
+      "plan_hash",
+      "lane",
+      "query_family",
+      "query_text",
+      "query_hash",
+      "scope_filter",
+      "corpus_snapshot_hash",
+      "index_versions",
+      "backend_id",
+      "backend_version",
+      "backend_adapter_id",
+      "backend_adapter_version",
+      "backend_request_hash",
+      "backend_response_hash",
+      "backend_receipt_id",
+      "canonical_source_key",
+      "source_record_id",
+      "source_artifact_id",
+      "source_locator",
+      "source_version",
+      "source_snapshot_hash",
+      "source_span_id",
+      "raw_rank",
+      "raw_scores",
+      "channel_ranks",
+      "retrieval_channels",
+      "fusion_method",
+      "fusion_score",
+      "ranking_features",
+      "matched_terms",
+      "matched_edges",
+      "relation_direction",
+      "scope_estimate",
+      "duplicate_candidate_ids",
+      "multi_channel_verified",
+      "retrieval_explanation"
+    ],
+    "excluded_fields": [
+      "candidate_id",
+      "candidate_hash",
+      "generated_at",
+      "storage_locator"
+    ]
+  },
+  "x-semantic-invariants": [
+    "query_hash == sha256(UTF-8 query_text)",
+    "raw_scores and channel_ranks are non-null exactly for observed retrieval_channels",
+    "retrieval_channels and duplicate_candidate_ids use canonical order",
+    "RRF_K60 score == sum(1 / (60 + channel_rank))",
+    "source_span_id == null denotes metadata-only and cannot directly become EvidenceNode or promoted evidence",
+    "retrieval rank, fusion score and ranking features are not scientific evidence strength",
+    "NO_DIRECTION and UNRESOLVED are not direction matches"
+  ]
+}

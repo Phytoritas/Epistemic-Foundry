@@ -121,8 +121,8 @@ const SHA256_PATTERN = /^sha256:[0-9a-f]{64}$/u;
 const CLASSIFICATION_ID_PATTERN = /^EWC-[0-9a-f]{64}$/u;
 const CLASSIFIED_AT_PATTERN =
   /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$/u;
-const RFC3339_PATTERN =
-  /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$/u;
+const HUMAN_DECISION_RFC3339_PATTERN =
+  /^(\d{4})-(\d{2})-(\d{2})[Tt](\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:[Zz]|([+-])(\d{2}):(\d{2}))$/u;
 const BASE_PHASES = OBJECT_FREEZE(["F", "O", "R", "G", "E"]);
 const DIRECT_LLM_OUTPUT_FIELDS = new Set([
   "work_class",
@@ -207,6 +207,67 @@ const hasOnlyUnicodeScalars = (value) => {
     }
   }
   return true;
+};
+
+const isLeapYear = (year) => year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+
+const daysInMonth = (year, month) =>
+  [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][
+    month - 1
+  ];
+
+const isHumanDecisionRfc3339 = (value) => {
+  const match = HUMAN_DECISION_RFC3339_PATTERN.exec(value);
+  if (match === null) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const hour = Number(match[4]);
+  const minute = Number(match[5]);
+  const second = Number(match[6]);
+  const offsetHour = match[8] === undefined ? 0 : Number(match[8]);
+  const offsetMinute = match[9] === undefined ? 0 : Number(match[9]);
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > daysInMonth(year, month) ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 60 ||
+    offsetHour > 23 ||
+    offsetMinute > 59
+  ) {
+    return false;
+  }
+  if (second < 60) return true;
+
+  const offsetSign = match[7] === "-" ? -1 : 1;
+  const offsetMinutes =
+    match[7] === undefined ? 0 : offsetSign * (offsetHour * 60 + offsetMinute);
+  const utcMinutes = hour * 60 + minute - offsetMinutes;
+  const utcMinuteOfDay = ((utcMinutes % 1_440) + 1_440) % 1_440;
+  if (utcMinuteOfDay !== 23 * 60 + 59) return false;
+
+  let utcYear = year;
+  let utcMonth = month;
+  let utcDay = day + Math.floor(utcMinutes / 1_440);
+  if (utcDay < 1) {
+    utcMonth -= 1;
+    if (utcMonth < 1) {
+      utcYear -= 1;
+      utcMonth = 12;
+    }
+    utcDay = daysInMonth(utcYear, utcMonth);
+  } else if (utcDay > daysInMonth(utcYear, utcMonth)) {
+    utcDay = 1;
+    utcMonth += 1;
+    if (utcMonth > 12) {
+      utcYear += 1;
+      utcMonth = 1;
+    }
+  }
+  return utcDay === daysInMonth(utcYear, utcMonth);
 };
 
 const requireString = (value, label, { allowEmpty = false, code = "INVALID_INPUT" } = {}) => {
@@ -413,7 +474,7 @@ export const validateHumanDecisionArtifact = (candidate, baseDecision = undefine
     "HumanDecision.created_at",
     { code },
   );
-  if (!RFC3339_PATTERN.test(createdAt) || !NUMBER_IS_FINITE(Date.parse(createdAt))) {
+  if (!isHumanDecisionRfc3339(createdAt)) {
     fail(code, "HumanDecision.created_at must be an RFC 3339 date-time");
   }
   if (readDataProperty(value, "non_mutation_acknowledgement") !== true) {

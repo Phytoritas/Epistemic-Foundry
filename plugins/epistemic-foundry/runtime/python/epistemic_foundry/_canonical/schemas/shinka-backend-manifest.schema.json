@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/shinka-backend-manifest.schema.json",
+  "title": "ShinkaBackendManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "backend_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "backend_name": {
+      "const": "ShinkaEvolve"
+    },
+    "source_repository": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "package_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "license": {
+      "const": "Apache-2.0"
+    },
+    "supported_candidate_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "enabled_features": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "disabled_features": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "sandbox_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adapter_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "backend_manifest_id",
+    "backend_name",
+    "source_repository",
+    "source_revision",
+    "package_version",
+    "license",
+    "supported_candidate_types",
+    "enabled_features",
+    "disabled_features",
+    "sandbox_profile_id",
+    "adapter_version",
+    "manifest_hash"
+  ],
+  "description": "선택적 ShinkaEvolve 실행 백엔드의 정확한 버전·해시·기능·권한을 고정한다."
+}

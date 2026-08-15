@@ -47,6 +47,48 @@ const TRACE_FLAG_NOT_SAMPLED = "00";
 const TRACEPARENT_VERSION = "00";
 const EXCEPTION_EVENT_NAME = "exception";
 
+// `emitSpan` always materializes this exact field set before sealing it. Keep
+// the hash preimage explicit so readers cannot accidentally trust fields that
+// no longer match the emitted record's digest.
+const EMITTED_SPAN_HASH_FIELDS = [
+  "trace_id",
+  "span_id",
+  "parent_span_id",
+  "name",
+  "kind",
+  "start_unix_nano",
+  "end_unix_nano",
+  "duration_unix_nano",
+  "sampled",
+  "status",
+  "attributes",
+  "events",
+  "receipt_ref",
+  "redaction_count",
+  "traceparent",
+];
+const EMITTED_SPAN_FIELDS = [...EMITTED_SPAN_HASH_FIELDS, "span_hash"];
+
+const requireIntactEmittedSpan = (value, label) => {
+  const span = requirePlainRecord(value, label, {
+    allowedKeys: EMITTED_SPAN_FIELDS,
+    requiredKeys: EMITTED_SPAN_FIELDS,
+    code: "SPAN_INVALID",
+  });
+  const claimedHash = requireHash(span.span_hash, `${label}.span_hash`, "SPAN_INVALID");
+  const hashPreimage = Object.fromEntries(
+    EMITTED_SPAN_HASH_FIELDS.map((field) => [field, span[field]]),
+  );
+  const derivedHash = sha256ObservabilityJson(hashPreimage);
+  if (claimedHash !== derivedHash) {
+    fail("SPAN_INVALID", "span_hash does not match the emitted span record", {
+      claimed_span_hash: claimedHash,
+      derived_span_hash: derivedHash,
+    });
+  }
+  return span;
+};
+
 const requireStatus = (value) => {
   const status = requirePlainRecord(value, "status", {
     allowedKeys: ["code", "message"],
@@ -208,7 +250,7 @@ export const emitSpan = (input) => {
  * (`span_id`, `name`, timing, ...).
  */
 export const startChildSpan = (parent, overrides) => {
-  const parentSpan = requirePlainRecord(parent, "parent span", { code: "SPAN_INVALID" });
+  const parentSpan = requireIntactEmittedSpan(parent, "parent span");
   const child = requirePlainRecord(overrides, "child overrides", { code: "SPAN_INVALID" });
   if (Object.hasOwn(child, "trace_id") && child.trace_id !== parentSpan.trace_id) {
     fail("SPAN_INVALID", "a child span cannot change the trace id", {
@@ -230,7 +272,7 @@ export const startChildSpan = (parent, overrides) => {
  * closed. Returns a frozen correlation record.
  */
 export const correlateReceipt = (span, receipt) => {
-  const spanRecord = requirePlainRecord(span, "span", { code: "RECEIPT_CORRELATION_INVALID" });
+  const spanRecord = requireIntactEmittedSpan(span, "span");
   const ref = spanRecord.receipt_ref;
   if (ref === null || ref === undefined) {
     fail("RECEIPT_CORRELATION_MISSING", "span does not reference an effect receipt", {

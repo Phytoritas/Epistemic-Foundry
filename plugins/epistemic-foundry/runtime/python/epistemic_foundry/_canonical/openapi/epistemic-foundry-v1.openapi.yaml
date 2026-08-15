@@ -1,0 +1,1190 @@
+openapi: 3.1.1
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+info:
+  title: Epistemic Foundry REST API
+  version: 1.0.0
+  description: >-
+    Canonical REST v1 transport contract. Scientific artifacts remain governed
+    by the external Draft 2020-12 schemas under ../schemas; this document only
+    defines transport envelopes, HTTP semantics, and capability requirements.
+servers:
+  - url: /api/v1
+    description: Canonical v1 base path
+tags:
+  - name: System
+  - name: Runs
+  - name: Documents and evidence
+  - name: Deliberation
+  - name: Evolution
+  - name: Validation and replication
+  - name: Approvals
+  - name: Artifacts
+x-canonical-pagination-order:
+  - created_at DESC
+  - immutable_resource_id DESC
+x-forbidden-candidate-capabilities:
+  - holdout:read
+  - evaluator:write
+  - policy:write
+  - promotion:approve
+  - promotion:commit
+  - approval:issue
+  - ledger:rewrite
+x-promotion-commit-lease: >-
+  promotion:commit is issued only as a short CapabilityLease after G00-G13
+  pass and cannot be held by a candidate, model, prompt, or backend identity.
+paths:
+  /health/live:
+    get:
+      tags: [System]
+      operationId: getLiveness
+      summary: Minimal unauthenticated process liveness
+      security: []
+      x-required-capabilities: []
+      responses:
+        '200':
+          description: The process is live; no version, path, or credential detail is exposed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Liveness'
+              example:
+                status: live
+        default:
+          $ref: '#/components/responses/Problem'
+  /health/ready:
+    get:
+      tags: [System]
+      operationId: getReadiness
+      summary: Readiness and dependency health
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['system:read']
+      responses:
+        '200':
+          description: Canonical plugin health report
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/plugin-health-report.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /capabilities:
+    get:
+      tags: [System]
+      operationId: getCapabilities
+      summary: Read qualified host capabilities
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['system:read']
+      responses:
+        '200':
+          description: Canonical host capability report
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/host-capability-report.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /runs:
+    post:
+      tags: [Runs]
+      operationId: createRun
+      summary: Accept a new asynchronous run
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['run:create']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/run-spec.schema.json
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+    get:
+      tags: [Runs]
+      operationId: listRuns
+      summary: List runs using snapshot-bound cursor pagination
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['run:read']
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/SnapshotId'
+      responses:
+        '200':
+          description: Cursor page of runs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunViewPage'
+        default:
+          $ref: '#/components/responses/Problem'
+  /runs/{run_id}:
+    parameters:
+      - $ref: '#/components/parameters/RunId'
+    get:
+      tags: [Runs]
+      operationId: getRun
+      summary: Read a run and its terminal scientific result, when present
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['run:read']
+      responses:
+        '200':
+          description: Run view
+          headers:
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunView'
+        default:
+          $ref: '#/components/responses/Problem'
+  /runs/{run_id}/events:
+    parameters:
+      - $ref: '#/components/parameters/RunId'
+    get:
+      tags: [Runs]
+      operationId: getRunEvents
+      summary: Read ordered run events; JSON polling is canonical and SSE is a projection
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['run:read']
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/SnapshotId'
+      responses:
+        '200':
+          description: Canonical JSON page or ordered SSE projection of EventRecord
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventRecordPage'
+            text/event-stream:
+              schema:
+                $ref: ../schemas/event-record.schema.json
+              x-delivery-projection-of: application/json
+        default:
+          $ref: '#/components/responses/Problem'
+  /runs/{run_id}/actions/pause:
+    parameters:
+      - $ref: '#/components/parameters/RunId'
+    post:
+      tags: [Runs]
+      operationId: pauseRun
+      summary: Request an expected-revision pause transition
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['run:control']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        $ref: '#/components/requestBodies/Command'
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+  /runs/{run_id}/actions/resume:
+    parameters:
+      - $ref: '#/components/parameters/RunId'
+    post:
+      tags: [Runs]
+      operationId: resumeRun
+      summary: Request an expected-revision resume transition
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['run:control']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        $ref: '#/components/requestBodies/Command'
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+  /runs/{run_id}/actions/cancel:
+    parameters:
+      - $ref: '#/components/parameters/RunId'
+    post:
+      tags: [Runs]
+      operationId: cancelRun
+      summary: Request an expected-revision cancellation transition
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['run:control']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        $ref: '#/components/requestBodies/Command'
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+  /documents:
+    post:
+      tags: [Documents and evidence]
+      operationId: registerDocument
+      summary: Register one already-staged source artifact
+      description: >-
+        The canonical request binds an immutable staged-source artifact. A remote URI is
+        acquisition provenance only and never instructs this operation to fetch content.
+        Accepted work asynchronously emits an immutable DocumentRegistration artifact.
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['document:ingest']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/document-registration-request.schema.json
+      x-async-result-artifact:
+        $ref: ../schemas/document-registration.schema.json
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+  /documents/{document_id}:
+    parameters:
+      - $ref: '#/components/parameters/DocumentId'
+    get:
+      tags: [Documents and evidence]
+      operationId: getDocument
+      summary: Read a canonical document manifest
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['document:read']
+      responses:
+        '200':
+          description: Document manifest
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/document-manifest.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /claims/{claim_id}:
+    parameters:
+      - $ref: '#/components/parameters/ClaimId'
+    get:
+      tags: [Documents and evidence]
+      operationId: getClaim
+      summary: Read a canonical claim card
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['evidence:read']
+      responses:
+        '200':
+          description: Claim card
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/claim-card.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /evidence/{evidence_id}:
+    parameters:
+      - $ref: '#/components/parameters/EvidenceId'
+    get:
+      tags: [Documents and evidence]
+      operationId: getEvidence
+      summary: Read a canonical evidence node
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['evidence:read']
+      responses:
+        '200':
+          description: Evidence node
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/evidence-node.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /retrieval-runs:
+    post:
+      tags: [Documents and evidence]
+      operationId: createRetrievalRun
+      summary: Accept an asynchronous retrieval run
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['retrieval:execute']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/query-plan.schema.json
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+  /evidence-packs/{evidence_pack_id}:
+    parameters:
+      - $ref: '#/components/parameters/EvidencePackId'
+    get:
+      tags: [Documents and evidence]
+      operationId: getEvidencePack
+      summary: Read a canonical evidence pack
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['evidence:read']
+      responses:
+        '200':
+          description: Evidence pack
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/evidence-pack.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /coverage-snapshots/{coverage_snapshot_id}:
+    parameters:
+      - $ref: '#/components/parameters/CoverageSnapshotId'
+    get:
+      tags: [Documents and evidence]
+      operationId: getCoverageSnapshot
+      summary: Read searched-scope coverage without inventing completeness
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['evidence:read']
+      responses:
+        '200':
+          description: Coverage snapshot
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/coverage-snapshot.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /deliberation-runs:
+    post:
+      tags: [Deliberation]
+      operationId: createDeliberationRun
+      summary: Accept a RunSpec whose workflow_id is insight_deliberation
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['deliberation:execute']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../schemas/run-spec.schema.json
+                - type: object
+                  properties:
+                    workflow_id:
+                      const: insight_deliberation
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+  /adjudications/{adjudication_id}:
+    parameters:
+      - $ref: '#/components/parameters/AdjudicationId'
+    get:
+      tags: [Deliberation]
+      operationId: getAdjudication
+      summary: Read a canonical Evidence Parliament adjudication
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['deliberation:read']
+      responses:
+        '200':
+          description: Adjudication
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/adjudication.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /evolution-runs:
+    post:
+      tags: [Evolution]
+      operationId: createEvolutionRun
+      summary: Accept a sealed asynchronous evolution run
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['evolution:execute']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/evolution-run-spec.schema.json
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+  /evolution-runs/{evolution_run_id}:
+    parameters:
+      - $ref: '#/components/parameters/EvolutionRunId'
+    get:
+      tags: [Evolution]
+      operationId: getEvolutionRun
+      summary: Read a run view carrying its EvolutionRunSpec artifact reference
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['evolution:read']
+      responses:
+        '200':
+          description: Evolution run view
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/RunView'
+                  - type: object
+                    required: [evolution_run_spec_artifact_id]
+                    properties:
+                      evolution_run_spec_artifact_id:
+                        type: string
+        default:
+          $ref: '#/components/responses/Problem'
+  /evolution-runs/{evolution_run_id}/candidates:
+    parameters:
+      - $ref: '#/components/parameters/EvolutionRunId'
+    get:
+      tags: [Evolution]
+      operationId: listEvolutionCandidates
+      summary: List candidates using snapshot-bound cursor pagination
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['candidate:read']
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/SnapshotId'
+      responses:
+        '200':
+          description: Cursor page of candidate envelopes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidatePage'
+        default:
+          $ref: '#/components/responses/Problem'
+  /candidates/{candidate_id}:
+    parameters:
+      - $ref: '#/components/parameters/CandidateId'
+    get:
+      tags: [Evolution]
+      operationId: getCandidate
+      summary: Read a candidate envelope
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['candidate:read']
+      responses:
+        '200':
+          description: Candidate envelope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateEnvelope'
+        default:
+          $ref: '#/components/responses/Problem'
+  /candidates/{candidate_id}/promotion-requests:
+    parameters:
+      - $ref: '#/components/parameters/CandidateId'
+    post:
+      tags: [Evolution]
+      operationId: requestCandidatePromotion
+      summary: Map a sealed promotion request to ActionIntent(request_promotion)
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['promotion:request']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionRequest'
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+  /promotion-decisions/{decision_id}:
+    parameters:
+      - $ref: '#/components/parameters/DecisionId'
+    get:
+      tags: [Evolution]
+      operationId: getPromotionDecision
+      summary: Read an immutable promotion decision revision
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['promotion:read']
+      responses:
+        '200':
+          description: Promotion decision
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/promotion-decision.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /passports/{passport_id}:
+    parameters:
+      - $ref: '#/components/parameters/PassportId'
+    get:
+      tags: [Evolution]
+      operationId: getPassport
+      summary: Read an immutable hypothesis passport revision
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['passport:read']
+      responses:
+        '200':
+          description: Hypothesis passport
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/hypothesis-passport.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /validation-runs:
+    post:
+      tags: [Validation and replication]
+      operationId: createValidationRun
+      summary: Accept an asynchronous preregistered validation run
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['validation:execute']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/validation-plan.schema.json
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+  /replication-runs:
+    post:
+      tags: [Validation and replication]
+      operationId: createReplicationRun
+      summary: Accept an asynchronous preregistered replication run
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['replication:execute']
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/replication-plan.schema.json
+      responses:
+        '202':
+          $ref: '#/components/responses/AsyncAccepted'
+        default:
+          $ref: '#/components/responses/Problem'
+  /replication-results/{replication_result_id}:
+    parameters:
+      - $ref: '#/components/parameters/ReplicationResultId'
+    get:
+      tags: [Validation and replication]
+      operationId: getReplicationResult
+      summary: Read a canonical replication result
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['replication:read']
+      responses:
+        '200':
+          description: Replication result
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/replication-result.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /approvals:
+    post:
+      tags: [Approvals]
+      operationId: createApproval
+      summary: Create an approval after server-side authority and policy verification
+      description: The caller cannot assert authority_role; the server derives and verifies authority.
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities:
+        anyOf:
+          - promotion:approve
+          - action:approve
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalCommand'
+      responses:
+        '201':
+          description: Server-issued approval record
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/approval-record.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /approvals/{approval_id}:
+    parameters:
+      - $ref: '#/components/parameters/ApprovalId'
+    get:
+      tags: [Approvals]
+      operationId: getApproval
+      summary: Read a server-issued approval record
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['approval:read']
+      responses:
+        '200':
+          description: Approval record
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/approval-record.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /artifacts/{artifact_id}:
+    parameters:
+      - $ref: '#/components/parameters/ArtifactId'
+    get:
+      tags: [Artifacts]
+      operationId: getArtifact
+      summary: Read artifact metadata without implicitly granting content access
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['artifact:read']
+      responses:
+        '200':
+          description: Artifact manifest
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/artifact-manifest.schema.json
+        default:
+          $ref: '#/components/responses/Problem'
+  /artifacts/{artifact_id}/content:
+    parameters:
+      - $ref: '#/components/parameters/ArtifactId'
+    get:
+      tags: [Artifacts]
+      operationId: getArtifactContent
+      summary: Stream authorized content or return a bounded redirect
+      description: >-
+        License, confidentiality, retention, and source-access policy apply.
+        Manifest or locator access never grants raw content access.
+      security:
+        - LocalSession: []
+        - BearerAuth: []
+      x-required-capabilities: ['artifact:content']
+      responses:
+        '200':
+          description: Authorized binary artifact content
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '307':
+          description: Policy-bounded temporary redirect
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+        default:
+          $ref: '#/components/responses/Problem'
+components:
+  securitySchemes:
+    LocalSession:
+      type: apiKey
+      in: header
+      name: X-Local-Session
+      description: Local plugin session credential; capabilities remain policy-derived.
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OIDC-or-service-token
+      description: Team OIDC bearer or service automation credential.
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: >-
+        Same key plus same canonical request hash returns the same logical
+        result; the same key with a different hash returns 409
+        IDEMPOTENCY_KEY_REUSED.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+    IfMatch:
+      name: If-Match
+      in: header
+      required: false
+      description: Expected entity tag; CommandRequest.expected_revision is the required alternative.
+      schema:
+        type: string
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      description: >-
+        Opaque cursor bound to principal, authorization scope, filter/query
+        hash, snapshot_id, ordering, and expiry.
+      schema:
+        type: string
+        minLength: 1
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 50
+    SnapshotId:
+      name: snapshot_id
+      in: query
+      required: false
+      schema:
+        type: string
+        minLength: 1
+    RunId:
+      name: run_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    DocumentId:
+      name: document_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    ClaimId:
+      name: claim_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    EvidenceId:
+      name: evidence_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    EvidencePackId:
+      name: evidence_pack_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    CoverageSnapshotId:
+      name: coverage_snapshot_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    AdjudicationId:
+      name: adjudication_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    EvolutionRunId:
+      name: evolution_run_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    CandidateId:
+      name: candidate_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    DecisionId:
+      name: decision_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    PassportId:
+      name: passport_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    ReplicationResultId:
+      name: replication_result_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    ApprovalId:
+      name: approval_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    ArtifactId:
+      name: artifact_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+  headers:
+    Location:
+      description: Canonical URL for the accepted run or newly created resource.
+      schema:
+        type: string
+    RetryAfter:
+      description: Suggested polling delay in seconds.
+      schema:
+        type: integer
+        minimum: 1
+    ETag:
+      description: Revision-bound entity tag for optimistic concurrency.
+      schema:
+        type: string
+  requestBodies:
+    Command:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandRequest'
+          example:
+            expected_revision: 7
+            reason: Operator requested a bounded transition.
+  responses:
+    AsyncAccepted:
+      description: >-
+        Request passed synchronous schema, authorization, and admission checks
+        and was accepted for asynchronous execution. Later BLOCKED, SPEC_GAP,
+        or FAIL is recorded in RunView and ResultEnvelope, not hidden as this
+        HTTP request's failure.
+      headers:
+        Location:
+          $ref: '#/components/headers/Location'
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RunHandle'
+          example:
+            run_id: RUN-FIXTURE-0001
+            status: QUEUED
+            status_url: /api/v1/runs/RUN-FIXTURE-0001
+            events_url: /api/v1/runs/RUN-FIXTURE-0001/events
+            submitted_at: '2026-07-28T00:00:00Z'
+            request_id: REQ-FIXTURE-0001
+            idempotency_key: IDEM-FIXTURE-0001
+            input_hash: sha256:1111111111111111111111111111111111111111111111111111111111111111
+    Problem:
+      description: Canonical RFC 9457-compatible problem response
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ApiProblem'
+          example:
+            type: https://epistemic-foundry.local/problems/precondition-failed
+            title: Precondition failed
+            status: 412
+            detail: The expected revision does not match current state.
+            instance: /api/v1/runs/RUN-FIXTURE-0001
+            code: PRECONDITION_FAILED
+            request_id: REQ-FIXTURE-0001
+            retryable: false
+            details:
+              expected_revision: 6
+              current_revision: 7
+            evidence_artifact_ids: []
+  schemas:
+    Liveness:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          const: live
+      required: [status]
+    RunHandle:
+      type: object
+      additionalProperties: false
+      properties:
+        run_id: {type: string, minLength: 1}
+        status:
+          enum: [QUEUED, ACCEPTED]
+        status_url: {type: string, pattern: ^/api/v1/runs/}
+        events_url: {type: string, pattern: ^/api/v1/runs/.+/events$}
+        submitted_at: {type: string, format: date-time}
+        request_id: {type: string, minLength: 1}
+        idempotency_key: {type: string, minLength: 1}
+        input_hash: {type: string, pattern: '^sha256:[0-9a-f]{64}$'}
+      required:
+        - run_id
+        - status
+        - status_url
+        - events_url
+        - submitted_at
+        - request_id
+        - idempotency_key
+        - input_hash
+    RunView:
+      type: object
+      additionalProperties: false
+      properties:
+        run_id: {type: string, minLength: 1}
+        revision: {type: integer, minimum: 1}
+        status:
+          enum:
+            - QUEUED
+            - RUNNING
+            - PAUSED
+            - SUCCEEDED
+            - PARTIAL
+            - BLOCKED
+            - SPEC_GAP
+            - FAIL
+            - CANCELLED
+        submitted_at: {type: string, format: date-time}
+        started_at: {type: [string, 'null'], format: date-time}
+        finished_at: {type: [string, 'null'], format: date-time}
+        input_artifact_id: {type: string, minLength: 1}
+        result_envelope:
+          oneOf:
+            - $ref: ../schemas/result-envelope.schema.json
+            - type: 'null'
+      required:
+        - run_id
+        - revision
+        - status
+        - submitted_at
+        - started_at
+        - finished_at
+        - input_artifact_id
+        - result_envelope
+    CommandRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        expected_revision: {type: integer, minimum: 1}
+        reason: {type: string, minLength: 1}
+      required: [expected_revision, reason]
+    ApiProblem:
+      type: object
+      additionalProperties: false
+      properties:
+        type: {type: string, format: uri}
+        title: {type: string, minLength: 1}
+        status: {type: integer, minimum: 400, maximum: 599}
+        detail: {type: string, minLength: 1}
+        instance: {type: string}
+        code:
+          enum:
+            - MALFORMED_REQUEST
+            - AUTHENTICATION_REQUIRED
+            - POLICY_DENIED
+            - NOT_FOUND
+            - IDEMPOTENCY_KEY_REUSED
+            - ILLEGAL_STATE_TRANSITION
+            - SPEC_GAP
+            - CURSOR_SNAPSHOT_MISMATCH
+            - CURSOR_EXPIRED
+            - PRECONDITION_FAILED
+            - PAYLOAD_TOO_LARGE
+            - UNSUPPORTED_MEDIA_TYPE
+            - SCHEMA_VALIDATION_FAILED
+            - SEMANTIC_VALIDATION_FAILED
+            - INVALID_PIN_OR_HASH
+            - BUDGET_ADMISSION_DENIED
+            - INTEGRITY_RECONCILIATION_FAILED
+            - EXTERNAL_BACKEND_INVALID_RESPONSE
+            - REQUIRED_DEPENDENCY_UNAVAILABLE
+            - OPERATION_TIMEOUT
+        request_id: {type: string, minLength: 1}
+        retryable: {type: boolean}
+        details: {type: object, additionalProperties: true}
+        evidence_artifact_ids:
+          type: array
+          items: {type: string}
+      required:
+        - type
+        - title
+        - status
+        - detail
+        - instance
+        - code
+        - request_id
+        - retryable
+        - details
+        - evidence_artifact_ids
+    CursorPageMetadata:
+      type: object
+      properties:
+        next_cursor:
+          type: [string, 'null']
+        snapshot_id:
+          type: string
+          minLength: 1
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          minimum: 0
+          description: Present only when actually calculated.
+      required: [next_cursor, snapshot_id, has_more]
+    RunViewPage:
+      allOf:
+        - $ref: '#/components/schemas/CursorPageMetadata'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/RunView'
+          required: [items]
+      unevaluatedProperties: false
+    EventRecordPage:
+      allOf:
+        - $ref: '#/components/schemas/CursorPageMetadata'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: ../schemas/event-record.schema.json
+          required: [items]
+      unevaluatedProperties: false
+    CandidatePage:
+      allOf:
+        - $ref: '#/components/schemas/CursorPageMetadata'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/CandidateEnvelope'
+          required: [items]
+      unevaluatedProperties: false
+    CandidateEnvelope:
+      type: object
+      additionalProperties: false
+      properties:
+        candidate_id: {type: string, minLength: 1}
+        candidate_revision: {type: integer, minimum: 1}
+        evolution_run_id: {type: string, minLength: 1}
+        genome:
+          $ref: ../schemas/hypothesis-genome.schema.json
+        lineage:
+          $ref: ../schemas/candidate-lineage.schema.json
+        passport_artifact_id:
+          type: [string, 'null']
+      required:
+        - candidate_id
+        - candidate_revision
+        - evolution_run_id
+        - genome
+        - lineage
+        - passport_artifact_id
+    ApprovalCommand:
+      type: object
+      additionalProperties: false
+      description: Authority identity and authority_role are derived by the server, never asserted by the client.
+      properties:
+        subject_id: {type: string, minLength: 1}
+        approval_type:
+          enum: [capability, external_effect, high_risk_validation, release, data_access]
+        decision:
+          enum: [APPROVE, DENY]
+        reason: {type: string, minLength: 1}
+        evidence_artifact_ids:
+          type: array
+          items: {type: string, minLength: 1}
+        conditions:
+          type: array
+          items: {type: string, minLength: 1}
+        expected_revision: {type: integer, minimum: 1}
+      required:
+        - subject_id
+        - approval_type
+        - decision
+        - reason
+        - evidence_artifact_ids
+        - conditions
+        - expected_revision
+    PromotionRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        requested_level:
+          $ref: ../schemas/promotion-decision.schema.json#/$defs/promotion_level
+        expected_candidate_revision: {type: integer, minimum: 1}
+        phase_e_artifact_set_id: {type: string, minLength: 1}
+        reason: {type: string, minLength: 1}
+      required:
+        - requested_level
+        - expected_candidate_revision
+        - phase_e_artifact_set_id
+        - reason

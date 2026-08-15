@@ -1,126 +1,63 @@
-# F01 independent contract review
+# F01 package review record
 
-Status: `SPEC_GAP`
+Standing verdict: `PASS` (from attempt `0003`).
 
-Verdict: F01 cannot be implemented or objectively pass its two required checks
-without a higher-authority shared-contract decision.
+The earlier package-level review recorded the original `SPEC_GAP` and is
+preserved in the attempt history under `attempts/`. The current review, at
+`attempts/0003/review.md`, is reproduced below as the standing record.
 
-Reviewer: `/root/f01_independent_review`
+---
 
-Review mode: `READ_ONLY_INDEPENDENT_CONTRACT_REVIEW`
+# F01-0003 independent implementation review
 
-The reviewer did not author F01 evidence, modify repository files, mutate RAH or
-Git state, or waive any gate. C04 and E04 are verified PASS dependencies, but
-dependency readiness does not supply the missing classifier semantics.
+Overall package recommendation: `PASS`
 
-## Reviewed authority
+Review mode: `INDEPENDENT_IMPLEMENTATION_REVIEW`
 
-- `MASTER_SPEC.md` —
-  `sha256:43fbb63f2b4cf697d10be15521a4d8ddaf123fb822b4d563ba4e026ed82cf3f3`;
-- `MASTER_EXECUTION_PROMPT.md` —
-  `sha256:9b6cff656c62383229c5836c260b48a6f3fd024db7dc71ff04521ab7b539b855`;
-- `AGENTS.md` —
-  `sha256:858e537ed3e49754b8e60d31c985467ee1246ed258c7763d6de4ef0767e381ea`;
-- `manifests/development_manifest.yaml` —
-  `sha256:a0a0db29da459d29c655827eaa0f7253d1becc3e75106f369850335ac7b88345`;
-- `docs/forge_protocol.md` —
-  `sha256:c6aef0825e6c4ea5415cda92f69964833711ac36eff6fb70294842ff0957cae7`;
-- `schemas/epistemic-work-classification.schema.json` —
-  `sha256:5c0c574605f4d1d2e8ea42385d6bc40ac273d1cbf1319169f6e26db6656d6049`;
-- `examples/sample_epistemic-work-classification.json` —
-  `sha256:51084b66591673efb22249f30de88d01e797ec2c3f4361ab8d1197d0bcf9ffb2`;
-- `workflows/forge_research_cycle.workflow.yaml` —
-  `sha256:280cdf43d3c9024f181cc9de612ce795f106395fce601e18092f5d90ad231aa3`;
-- classifier and Interview prompts bound in `report.json`;
-- C04 report —
-  `sha256:eca4fdd3f10537a2fb5c39643f4dee52bab9bcf5b95f9468ddcd470ffd98592f`;
-- E04 report —
-  `sha256:841dcf60989cfc7ab0eff7be95e1ae721ae18ac513cae653ab6ac8a44942f6c1`.
+Non-waivable findings: 0
 
-## Findings
+The review followed implementation and verification. It examined the current
+classifier and committer paths, targeted and full regression receipts, the
+B04-0004 canonical projection receipt, and the F01 write boundary.
 
-1. **Classifier input and authority are undefined.** The workflow gives the
-   provider-nondeterministic classification node `request` and `policy/**`,
-   while `NodeInvocation` contains artifact identities rather than a typed
-   request-feature or risk contract. No authority rule says whether the LLM
-   decides the class, proposes signals for a deterministic guard, or supplies
-   an already-classified value. A Kernel implementation would have to invent
-   this boundary.
-2. **Mixed-signal precedence and an underprocessing floor are absent.** The
-   E0-E5 table describes typical requests but has no deterministic rules for a
-   high-stakes translation, an ambiguous causal request, a novelty-plus-
-   expensive-validation request, or overlapping lookup, synthesis and
-   mechanism work. `risk_factors` is a free string array. A locally chosen
-   ordering would become unauthorized scientific process-depth policy.
-3. **The required exact output cannot be derived.** The schema requires one
-   `default_role_count`, an exact `required_phases` array and a boolean
-   `human_gate_required`; authority supplies ranges and phrases such as
-   `no FORGE`, `full FORGE`, and `full FORGE + human gates`. It does not decide
-   E0 `[]` versus `["IDLE"]`, exact role counts, or every class/ambiguity human
-   gate. The schema does not enforce any cross-field class invariant.
-4. **Optional Interview is not executable in the current DAG contract.** The
-   workflow says E5 ambiguity triggers Interview, but
-   `conduct_bounded_interview` depends unconditionally on
-   `detect_interview_need`, and `compile_frame` depends unconditionally on both.
-   `NodeContract` provides no conditional dependency expression and
-   `ResultEnvelope` has no typed Interview route. F01 cannot repair workflow or
-   node contracts from its classifier-only write scope.
-5. **Identity, hashing and override are incomplete.** The classification
-   schema constrains only ID length, timestamp format and digest syntax. It
-   does not define the ID/clock authority, canonical hash preimage, self-field
-   exclusion, retry identity or replay behavior. The sample digest is a
-   placeholder. `OverrideRecord` is named in prose but has no canonical schema
-   or bound application workflow.
-6. **There is no objective acceptance oracle.** `classifier_gold_test` and
-   `underprocessing_guard` exist only as manifest names. No canonical fixture
-   set, expected labels/projections, metric, threshold, adversarial minimum or
-   fail-closed rule exists. Writing tests under the classifier glob would make
-   the implementation author the judge of the policy it implements.
-7. **The execution and capability boundary is inconsistent.** The workflow
-   emits a general `ResultEnvelope` rather than binding an
-   `EpistemicWorkClassification` artifact. It uses `artifact_write`, the role
-   registry uses `artifact.write`, and the implemented capability authority
-   uses `artifact:write`; no normalization contract connects them. The prompt
-   requires evidence IDs while the node read scope exposes no evidence
-   artifact. These are shared workflow/authority issues outside F01 scope.
-8. **Evidence paths do not authorize an invented test oracle.** The manifest
-   directly declares the three F01 report artifacts and those exact files are
-   valid package evidence outputs. It authorizes classifier implementation
-   files but names no canonical gold fixture location outside that glob and
-   grants no schema, workflow, prompt or manifest correction scope.
+## Resolved authority defects
 
-## Classification
+1. `request_text` is cryptographically bound to `request_input_hash`.
+2. `classifier_version` is frozen at `4.0.1-f01.1`.
+3. An override resolves and validates a canonical HumanDecision rather than
+   trusting a caller-supplied decision hash.
+4. Only a `correct` HumanDecision can authorize an override.
+5. Exactly one human-authored, authority-bound ArtifactReceipt is required.
 
-The correct typed outcome is `SPEC_GAP`, not `FAIL`: no implementation was
-attempted and the missing semantics cannot be derived from the current
-authority chain. It is not `BLOCKED`: no credential, licensed source, host
-capability, external service or backend is unavailable.
+All five defects are resolved. Gold cases are 14/14, adversarial cases 16/16,
+hash vectors 4/4, override fixtures 6/6, targeted Node 33/33, targeted Python
+24/24, and the exhaustive underprocessing contract covers 1,023 non-empty
+subsets and 58,025 subset-to-superset comparisons with zero violations.
 
-The F01 stop condition explicitly requires `SPEC_GAP` when a shared contract,
-authority boundary or acceptance threshold is ambiguous. Implementing a
-keyword heuristic, selecting arbitrary role counts, treating an LLM label as
-authority, or constructing a local gold set would violate that condition.
+Full Python is 947/947. Full Node is 270/271 with only the exact pre-existing
+S04-TM004 stale-hash debt. That debt has no F01 causal impact and remains owned
+by S04; it is not hidden by skip or xfail.
 
-## Minimum resolving decision
+## Low limitations retained
 
-A product-owner HumanDecision must freeze one coherent contract that:
+- Tests instantiate `reject` and `service` directly, while the generic
+  implementation rejects all non-`correct` decisions and all non-`human`
+  actors. `hold`, `agent`, and `tool` are not each separately instantiated.
+- The canonical HumanDecision schema does not structurally encode exact
+  `target_work_class`, `add_interview`, or `interview_rule` intent. The current
+  assurance is therefore limited to canonical human provenance, integrity,
+  scope, `correct`-only authority, and upward-only protection. No stronger
+  shared contract is claimed.
+- Node's JUnit reporter accounts one top-level parent as a suite container,
+  leaving one fewer `<testcase>` element than its authoritative footer in both
+  targeted and full receipts. The footer counts, failure inventory, and
+  skip/todo counts are preserved and independently checked.
 
-1. defines a closed typed classifier input and risk vocabulary, including the
-   authority relationship between model proposals and deterministic guards;
-2. defines mixed-signal precedence, tie-breaks and monotonic underprocessing
-   floors;
-3. fixes class-by-class phase arrays, exact role-count rules, human gates and a
-   typed conditional Interview route;
-4. fixes classification ID, timestamp, canonical hash, retry/replay and
-   immutable override semantics;
-5. normalizes capability names and binds the workflow result to a canonical
-   classification artifact; and
-6. authorizes exact test/fixture paths and freezes gold labels, projections,
-   adversarial cases, metrics and PASS thresholds.
-
-## Decision
-
-F01-0001 is not integrated and must remain immutable `SPEC_GAP` history. F02
-and F03 remain waiting on F01. Resume only with a new F01 attempt after a
-durable higher-authority decision resolves `F01-SG001`; do not weaken the
-schema, silently infer missing policy, or skip to a later work package.
+The product-owner HumanDecision validates against its canonical schema and
+self-hash. The live OpenAPI document is version 3.1.1 with 33 unique
+operations. The B04-0004 source, snapshot, registry, projection receipt,
+packaging evidence, retained wheel receipt, and registry bytes inside the
+wheel all match live bytes.
+No F01 write-scope violation, test weakening, or new regression was found.
+F01-0001 and F01-0002 remain immutable history. `completion_ready` remains
+false because the wider product objective is not complete.

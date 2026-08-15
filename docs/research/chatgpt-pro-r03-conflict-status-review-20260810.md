@@ -1,0 +1,1 @@
+NO_BLOCKER — `status` is already a deterministic projection of the validated conflict set, so enforcing `OPEN` iff `conflict_ids` is nonempty and `NO_CONFLICT` otherwise restores builder–validator parity; the placement is fail-closed, and `STATUS_MISMATCH` is an appropriate R03-local typed refusal within its owned Aporia boundary. 

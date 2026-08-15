@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/memory-policy.schema.json",
+  "title": "MemoryPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "policy_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "allowed_classes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "EPHEMERAL",
+          "SESSION",
+          "WORKSPACE",
+          "USER",
+          "EVIDENCE",
+          "REGULATED"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "default_retention_days": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "class_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "class": {
+            "enum": [
+              "EPHEMERAL",
+              "SESSION",
+              "WORKSPACE",
+              "USER",
+              "EVIDENCE",
+              "REGULATED"
+            ]
+          },
+          "retention_days": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "requires_consent": {
+            "type": "boolean"
+          },
+          "external_sync": {
+            "enum": [
+              "DENY",
+              "ALLOW_REDACTED",
+              "ALLOW"
+            ]
+          },
+          "redaction_profile": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "class",
+          "retention_days",
+          "requires_consent",
+          "external_sync",
+          "redaction_profile"
+        ]
+      },
+      "minItems": 1
+    },
+    "cross_workspace_retrieval": {
+      "enum": [
+        "DENY",
+        "EXPLICIT_ONLY",
+        "ALLOW_BY_POLICY"
+      ]
+    },
+    "policy_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "effective_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "policy_id",
+    "workspace_id",
+    "allowed_classes",
+    "default_retention_days",
+    "class_rules",
+    "cross_workspace_retrieval",
+    "policy_hash",
+    "effective_at"
+  ]
+}

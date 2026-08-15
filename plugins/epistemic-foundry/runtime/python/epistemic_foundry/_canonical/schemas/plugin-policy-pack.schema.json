@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/plugin-policy-pack.schema.json",
+  "title": "PluginPolicyPack",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "policy_pack_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "version": {
+      "type": "string"
+    },
+    "profile": {
+      "enum": [
+        "LITE",
+        "RESEARCH",
+        "TEAM",
+        "REGULATED"
+      ]
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "type": "string"
+          },
+          "event_or_action": {
+            "type": "string"
+          },
+          "condition": {
+            "type": "string"
+          },
+          "decision": {
+            "enum": [
+              "ALLOW",
+              "DENY",
+              "REQUIRE_APPROVAL",
+              "DEGRADE",
+              "SAFE_MODE"
+            ]
+          },
+          "fail_behavior": {
+            "enum": [
+              "OPEN",
+              "CLOSED",
+              "PARTIAL"
+            ]
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "rule_id",
+          "event_or_action",
+          "condition",
+          "decision",
+          "fail_behavior",
+          "priority"
+        ]
+      },
+      "minItems": 1
+    },
+    "default_decision": {
+      "enum": [
+        "ALLOW",
+        "DENY",
+        "REQUIRE_APPROVAL"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "policy_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "policy_pack_id",
+    "version",
+    "profile",
+    "rules",
+    "default_decision",
+    "created_at",
+    "policy_hash"
+  ]
+}

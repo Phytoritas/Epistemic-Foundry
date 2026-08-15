@@ -983,6 +983,27 @@ const validateConsentRecord = (raw, label) => {
       fail("INTAKE_INPUT_INVALID", `${label}.${field} must be canonical SHA-256`);
     }
   }
+  const hashPreimage = {
+    consent_id: record.consent_id,
+    subject_id: record.subject_id,
+    workspace_id: record.workspace_id,
+    purposes: [...record.purposes].sort(),
+    data_classes: [...record.data_classes].sort(),
+    scopes: [...record.scopes].sort(),
+    decision: record.decision,
+    granted_at: record.granted_at,
+    expires_at: record.expires_at,
+    revoked_at: record.revoked_at,
+    recorded_by: record.recorded_by,
+    policy_hash: record.policy_hash,
+  };
+  const expectedRecordHash = sha256(encodeUtf8(canonicalJson(hashPreimage)));
+  if (record.record_hash !== expectedRecordHash) {
+    fail("INTAKE_INPUT_INVALID", `${label}.record_hash does not match the normalized consent`, {
+      actual: record.record_hash,
+      expected: expectedRecordHash,
+    });
+  }
   return record;
 };
 

@@ -4,6 +4,8 @@
 
 - **Document status:** `SPEC_BUNDLE / IMPLEMENTATION CONTRACT`
 - **Implementation status:** `NOT CLAIMED`
+- **Implementation target:** `PLUGIN_ALPHA` — authorized; incomplete
+- **Current qualified bundle status:** `SPEC_BUNDLE`
 - **Architecture freeze:** `CONDITIONAL PASS`
 - **Reference date:** 2026-07-26
 - **Product:** Epistemic Foundry
@@ -38,9 +40,35 @@ Lower authority cannot override higher authority. Missing or inconsistent shared
 
 ## 2. Maturity statement
 
-This bundle specifies v4 target architecture, canonical contracts, workflows, plugin blueprint, migration, acceptance gates and A–Z implementation graph. It does not claim that a working v4 runtime, qualified evaluator, hidden holdout, Shinka adapter, production database, sandbox, UI, security review or 2,000-document deployment exists.
+This bundle specifies v4 target architecture, canonical contracts, workflows, plugin blueprint, migration, acceptance gates and A–Z implementation graph. It does not claim that a working v4 runtime has qualified for release. It does not claim `PLUGIN_ALPHA` completion, a qualified evaluator, hidden holdout, Shinka adapter, production database, production UI, independent security review or 2,000-document deployment.
 
-Reference plugin executables remain fail-closed stubs. A specification file is not execution evidence.
+### Plugin implementation authority and release qualification
+
+The authorized implementation target for this repository is `PLUGIN_ALPHA`.
+An executable installed-plugin candidate may be built, packaged, installed and
+exercised while the qualified status of this bundle remains `SPEC_BUNDLE`.
+
+The fail-closed-stub requirement applies only when the authorized implementation
+target is `SPEC_BUNDLE`. It does not prohibit the executable candidate authorized
+by `docs/decisions/20260815-plugin-alpha-goal.md`.
+
+`status_of_this_bundle` records the highest release level for which every
+required acceptance gate has executable and accepted evidence. It does not
+assert that no unqualified implementation artifacts exist.
+
+The existence of an executable candidate, successful manual exercise or partial
+satisfaction of the `PLUGIN_ALPHA` gate set must not be represented as a
+`PLUGIN_ALPHA` release. `PLUGIN_ALPHA` may be claimed only after all fifteen
+gates named under `PLUGIN_ALPHA` in `manifests/acceptance_matrix.yaml` have
+executable, reviewable evidence bound to the candidate source revision and
+installed payload, and the authorized acceptance owner changes
+`status_of_this_bundle` to `PLUGIN_ALPHA`.
+
+Entries in `runtime_capabilities` describe mechanisms present in the candidate
+payload. They do not establish host-cell verification or release qualification.
+A capability whose corresponding acceptance evidence is incomplete remains
+unqualified. A specification file is not execution evidence. An executable
+candidate is not execution evidence for an acceptance gate either.
 
 ## 3. ShinkaEvolve source study
 
@@ -865,7 +893,7 @@ Every fan-in validates expected count and identity. Every cycle has a LoopContra
 ## C — Canonical contracts and code generation
 
 - **C01 — v4 JSON Schema and OpenAPI authority**  
-  Dependencies: `A04` · Risk: `critical` · Review: `required`
+  Dependencies: `A04, A05` · Risk: `critical` · Review: `required`
 - **C02 — TypeScript, Python and UI model generation**  
   Dependencies: `C01` · Risk: `medium` · Review: `required`
 - **C03 — Compatibility windows and schema migration contracts**  
@@ -903,7 +931,7 @@ Every fan-in validates expected count and identity. Every cycle has a LoopContra
 - **E04 — E-phase strict and semantic replay gate**  
   Dependencies: `E02, E03` · Risk: `critical` · Review: `required`
 - **E05 — Candidate action/effect, mutation receipt and count-reconciliation engine**  
-  Dependencies: `A06, E04, C05` · Risk: `high` · Review: `required`
+  Dependencies: `A05, A06, C05, E02, E03, E04` · Risk: `high` · Review: `required`
 - **E06 — Concurrent candidate effect and idempotency integration gate**  
   Dependencies: `E05` · Risk: `critical` · Review: `required`
 
@@ -1124,7 +1152,7 @@ Every fan-in validates expected count and identity. Every cycle has a LoopContra
 - **T02 — MCP mutating tools with intents and receipts**  
   Dependencies: `T01` · Risk: `high` · Review: `required`
 - **T03 — Stable CLI JSON/error and PATH-less surfaces**  
-  Dependencies: `T01` · Risk: `high` · Review: `required`
+  Dependencies: `T01, J02` · Risk: `high` · Review: `required`
 - **T04 — T-phase sandbox and external tool adapter gate**  
   Dependencies: `T02, T03` · Risk: `high` · Review: `required`
 - **T05 — Evolution CLI/MCP tools, sandbox executors and Shinka backend adapter**  
@@ -1361,11 +1389,11 @@ EVOLUTION AUTHORITY SEPARATION: DEFINED
 VERIFIER FIREWALL: DEFINED
 QUALITY-DIVERSITY / RED QUEEN / STATISTICAL GOVERNANCE: DEFINED
 A–Z IMPLEMENTATION GRAPH: DEFINED
-IMPLEMENTATION: NOT CLAIMED
-PRODUCTION READINESS: NOT CLAIMED
+PRODUCTION READINESS (NOT CLAIMED): NONE
+IMPLEMENTATION TARGET: PLUGIN_ALPHA — AUTHORIZED, NOT COMPLETE
 
 ARCHITECTURE FREEZE: CONDITIONAL PASS
-CURRENT RELEASE LEVEL: SPEC_BUNDLE
+CURRENT QUALIFIED BUNDLE STATUS: SPEC_BUNDLE
 ```
 
 Conditional items are external implementation and deployment evidence: licensed corpus, qualified evaluator/holdout, expert gold labels, statistical policy, sandbox/DB/queue topology, exact Shinka revision, provider credentials/metering, signing identity, independent security review, host compatibility and real 50/200/2,000-scale results.

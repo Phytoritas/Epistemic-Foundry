@@ -1,0 +1,31 @@
+{
+  "$comment": "Effect status to candidate disposition. Kept as data, not Python literals, so this module holds no canonical schema enum value as a string literal (EF4-I22). The engine verifies at every use that the keys cover EffectStatus exactly, so a status added to the contract fails loudly here instead of falling through to a permissive default.",
+  "contract": "epistemic-foundry-effect-disposition/v1",
+  "dispositions": {
+    "FAILED": {
+      "disposition": "failed",
+      "reason": "the effect was attempted and did not succeed",
+      "resolves": true
+    },
+    "NOT_EXECUTED": {
+      "disposition": "cancelled",
+      "reason": "the effect never began, so the candidate leaves the pipeline unpersisted",
+      "resolves": true
+    },
+    "ROLLED_BACK": {
+      "disposition": "cancelled",
+      "reason": "the effect was undone, so nothing it wrote may be counted as persisted",
+      "resolves": true
+    },
+    "SUCCEEDED": {
+      "disposition": "persisted",
+      "reason": "the effect landed and its result artifacts are recorded",
+      "resolves": true
+    },
+    "UNKNOWN": {
+      "disposition": null,
+      "reason": "the runtime could not observe the outcome, so the candidate is neither persisted nor terminal until reconciliation resolves it",
+      "resolves": false
+    }
+  }
+}

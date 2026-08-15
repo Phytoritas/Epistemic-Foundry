@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evolution-stop-certificate.schema.json",
+  "title": "EvolutionStopCertificate",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "certificate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stop_reason": {
+      "enum": [
+        "budget_exhausted",
+        "max_generations",
+        "dry_rounds",
+        "pareto_stability",
+        "coverage_saturation",
+        "safety_stop",
+        "human_stop",
+        "blocked",
+        "failed"
+      ]
+    },
+    "conditions_observed": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "unresolved_candidates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "unassessed_niches": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "partial_results_visible": {
+      "type": "boolean"
+    },
+    "checkpoint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "certificate_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "certificate_id",
+    "evolution_run_id",
+    "stop_reason",
+    "conditions_observed",
+    "unresolved_candidates",
+    "unassessed_niches",
+    "partial_results_visible",
+    "checkpoint_id",
+    "certificate_hash"
+  ],
+  "description": "예산·dry rounds·안정성·커버리지·안전 조건에 따른 종료 근거를 봉인한다."
+}

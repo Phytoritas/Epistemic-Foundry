@@ -17,6 +17,7 @@
  *
  * Declaring sources:
  *   - `schemas/hypothesis-passport.schema.json` (field set and vocabularies)
+ *   - `schemas/scope-vector.schema.json` (scope field set and nested value types)
  *   - `web/src/generated/ui-client/index.mjs` (the only route binding allowed)
  *
  * The canonical OpenAPI document declares exactly one passport operation,
@@ -32,6 +33,7 @@ import { OPERATIONS, getPassport } from "../../generated/ui-client/index.mjs";
 
 const ARRAY_IS_ARRAY = Array.isArray;
 const IS_PROXY = utilTypes.isProxy;
+const OBJECT_DEFINE_PROPERTY = Object.defineProperty;
 const OBJECT_FREEZE = Object.freeze;
 const OBJECT_GET_OWN_PROPERTY_DESCRIPTOR = Object.getOwnPropertyDescriptor;
 const OBJECT_GET_PROTOTYPE_OF = Object.getPrototypeOf;
@@ -311,6 +313,221 @@ const requireUnit = (value, label) => {
   return value;
 };
 
+const SCOPE_VECTOR_FIELDS = OBJECT_FREEZE([
+  "domain",
+  "population",
+  "entity_type",
+  "entity_subtype",
+  "unit_of_analysis",
+  "setting",
+  "geography",
+  "jurisdiction",
+  "language",
+  "lifecycle_stage",
+  "spatial_scale",
+  "temporal_scale",
+  "time_period",
+  "measurement_time",
+  "intervention_or_exposure",
+  "comparator",
+  "inclusion_criteria",
+  "exclusion_criteria",
+  "conditions",
+  "domain_extensions",
+]);
+const SCOPE_INTERVENTION_FIELDS = OBJECT_FREEZE([
+  "name",
+  "category",
+  "min_value",
+  "max_value",
+  "unit",
+  "duration",
+  "frequency",
+  "rate",
+  "route_or_delivery",
+]);
+
+const requireScopeString = (value, label, minimumLength = 0) => {
+  if (typeof value !== "string" || value.length < minimumLength) {
+    fail(CODE, `${label} must be a string${minimumLength ? " with at least one character" : ""}`);
+  }
+  return value;
+};
+
+const requireNullableScopeString = (value, label) =>
+  value === null ? null : requireScopeString(value, label);
+
+const requireScopeNumber = (value, label) => {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    fail(CODE, `${label} must be a finite number`);
+  }
+  return value;
+};
+
+const requireNullableScopeNumber = (value, label) =>
+  value === null ? null : requireScopeNumber(value, label);
+
+const normalizeScopeArray = (value, label, normalizeEntry) => {
+  const entries = requireArray(value, label);
+  const allowedKeys = new Set(["length", ...entries.map((_, index) => String(index))]);
+  for (const key of REFLECT_OWN_KEYS(value)) {
+    if (typeof key !== "string" || !allowedKeys.has(key)) {
+      fail(CODE, `${label} carries the unsupported field ${String(key)}`);
+    }
+  }
+  return entries.map((entry, index) => normalizeEntry(entry, `${label}[${index}]`));
+};
+
+const normalizeScopeScalar = (value, label) => {
+  if (value === null || typeof value === "string" || typeof value === "boolean") return value;
+  if (typeof value === "number") return requireScopeNumber(value, label);
+  fail(CODE, `${label} must be a string, finite number, boolean, or null`);
+};
+
+const normalizeScopeScalarOrList = (value, label) =>
+  ARRAY_IS_ARRAY(value)
+    ? normalizeScopeArray(value, label, normalizeScopeScalar)
+    : normalizeScopeScalar(value, label);
+
+const normalizeScopeScalarMap = (candidate, label) => {
+  if (!isPlainDataObject(candidate)) fail(CODE, `${label} must be a plain data object`);
+  const normalized = {};
+  for (const key of REFLECT_OWN_KEYS(candidate)) {
+    if (typeof key !== "string") {
+      fail(CODE, `${label} carries the unsupported field ${String(key)}`);
+    }
+    const descriptor = OBJECT_GET_OWN_PROPERTY_DESCRIPTOR(candidate, key);
+    if (descriptor === undefined || !descriptor.enumerable || !OBJECT_HAS_OWN(descriptor, "value")) {
+      fail(CODE, `${label}.${key} must be an enumerable data property`);
+    }
+    OBJECT_DEFINE_PROPERTY(normalized, key, {
+      configurable: true,
+      enumerable: true,
+      value: normalizeScopeScalarOrList(descriptor.value, `${label}.${key}`),
+      writable: true,
+    });
+  }
+  return normalized;
+};
+
+const normalizeScopeIntervention = (candidate) => {
+  if (candidate === null) return null;
+  const intervention = requireFields(
+    candidate,
+    "scope.intervention_or_exposure",
+    SCOPE_INTERVENTION_FIELDS,
+  );
+  const rate = readValue(intervention, "rate");
+  if (rate !== null && typeof rate !== "string" && typeof rate !== "number") {
+    fail(CODE, "scope.intervention_or_exposure.rate must be a string, finite number, or null");
+  }
+  return {
+    name: requireScopeString(
+      readValue(intervention, "name"),
+      "scope.intervention_or_exposure.name",
+      1,
+    ),
+    category: requireNullableScopeString(
+      readValue(intervention, "category"),
+      "scope.intervention_or_exposure.category",
+    ),
+    min_value: requireNullableScopeNumber(
+      readValue(intervention, "min_value"),
+      "scope.intervention_or_exposure.min_value",
+    ),
+    max_value: requireNullableScopeNumber(
+      readValue(intervention, "max_value"),
+      "scope.intervention_or_exposure.max_value",
+    ),
+    unit: requireNullableScopeString(
+      readValue(intervention, "unit"),
+      "scope.intervention_or_exposure.unit",
+    ),
+    duration: requireNullableScopeString(
+      readValue(intervention, "duration"),
+      "scope.intervention_or_exposure.duration",
+    ),
+    frequency: requireNullableScopeString(
+      readValue(intervention, "frequency"),
+      "scope.intervention_or_exposure.frequency",
+    ),
+    rate:
+      typeof rate === "number"
+        ? requireScopeNumber(rate, "scope.intervention_or_exposure.rate")
+        : rate,
+    route_or_delivery: requireNullableScopeString(
+      readValue(intervention, "route_or_delivery"),
+      "scope.intervention_or_exposure.route_or_delivery",
+    ),
+  };
+};
+
+const normalizeScopeVector = (candidate) => {
+  const scope = requireFields(candidate, "scope", SCOPE_VECTOR_FIELDS);
+  return {
+    domain: requireNullableScopeString(readValue(scope, "domain"), "scope.domain"),
+    population: requireNullableScopeString(readValue(scope, "population"), "scope.population"),
+    entity_type: requireNullableScopeString(
+      readValue(scope, "entity_type"),
+      "scope.entity_type",
+    ),
+    entity_subtype: requireNullableScopeString(
+      readValue(scope, "entity_subtype"),
+      "scope.entity_subtype",
+    ),
+    unit_of_analysis: requireNullableScopeString(
+      readValue(scope, "unit_of_analysis"),
+      "scope.unit_of_analysis",
+    ),
+    setting: requireNullableScopeString(readValue(scope, "setting"), "scope.setting"),
+    geography: requireNullableScopeString(readValue(scope, "geography"), "scope.geography"),
+    jurisdiction: requireNullableScopeString(
+      readValue(scope, "jurisdiction"),
+      "scope.jurisdiction",
+    ),
+    language: requireNullableScopeString(readValue(scope, "language"), "scope.language"),
+    lifecycle_stage: requireNullableScopeString(
+      readValue(scope, "lifecycle_stage"),
+      "scope.lifecycle_stage",
+    ),
+    spatial_scale: requireNullableScopeString(
+      readValue(scope, "spatial_scale"),
+      "scope.spatial_scale",
+    ),
+    temporal_scale: requireNullableScopeString(
+      readValue(scope, "temporal_scale"),
+      "scope.temporal_scale",
+    ),
+    time_period: requireNullableScopeString(
+      readValue(scope, "time_period"),
+      "scope.time_period",
+    ),
+    measurement_time: requireNullableScopeString(
+      readValue(scope, "measurement_time"),
+      "scope.measurement_time",
+    ),
+    intervention_or_exposure: normalizeScopeIntervention(
+      readValue(scope, "intervention_or_exposure"),
+    ),
+    comparator: requireNullableScopeString(readValue(scope, "comparator"), "scope.comparator"),
+    inclusion_criteria: normalizeScopeArray(
+      readValue(scope, "inclusion_criteria"),
+      "scope.inclusion_criteria",
+      requireScopeString,
+    ),
+    exclusion_criteria: normalizeScopeArray(
+      readValue(scope, "exclusion_criteria"),
+      "scope.exclusion_criteria",
+      requireScopeString,
+    ),
+    conditions: normalizeScopeScalarMap(readValue(scope, "conditions"), "scope.conditions"),
+    domain_extensions: normalizeScopeScalarMap(
+      readValue(scope, "domain_extensions"),
+      "scope.domain_extensions",
+    ),
+  };
+};
+
 const PASSPORT_FIELDS = OBJECT_FREEZE([
   "hypothesis_id",
   "revision",
@@ -416,8 +633,7 @@ export function validateHypothesisPassport(candidate) {
   }
   const statement = requireString(readValue(passport, "canonical_statement"), "canonical_statement");
   if (statement.length < 10) fail(CODE, "canonical_statement must carry at least ten characters");
-  const scope = readValue(passport, "scope");
-  if (!isPlainDataObject(scope)) fail(CODE, "scope must be a plain data object");
+  const scope = normalizeScopeVector(readValue(passport, "scope"));
   const reasoningModes = requireStringArray(
     readValue(passport, "reasoning_modes"),
     "reasoning_modes",
@@ -432,7 +648,7 @@ export function validateHypothesisPassport(candidate) {
     hypothesis_id: requireString(readValue(passport, "hypothesis_id"), "hypothesis_id"),
     revision,
     canonical_statement: statement,
-    scope: { ...scope },
+    scope,
     reasoning_modes: reasoningModes,
     mechanism_chain: requireStringArray(
       readValue(passport, "mechanism_chain"),

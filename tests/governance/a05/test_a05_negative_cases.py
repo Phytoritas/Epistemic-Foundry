@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator, Sequence
 
 import pytest
 
@@ -213,6 +214,28 @@ def test_a05_neg_015_parliament_majority_cannot_override_a_failed_gate() -> None
 
 
 def test_a05_neg_016_non_independent_attestor_is_rejected() -> None:
+    class UnequalString(str):
+        def __eq__(self, other: object) -> bool:
+            return False
+
+    class TwoPassSequence(Sequence[str]):
+        def __init__(self) -> None:
+            self._iterations = 0
+
+        def __len__(self) -> int:
+            return 1
+
+        def __getitem__(self, index: int) -> str:
+            if index != 0:
+                raise IndexError(index)
+            return "AGENT-GEN-1"
+
+        def __iter__(self) -> Iterator[str]:
+            self._iterations += 1
+            if self._iterations == 1:
+                return iter(("AGENT-GEN-1",))
+            return iter(("AGENT-OTHER-1",))
+
     context = {
         "candidate_generator_ids": ("AGENT-GEN-1",),
         "candidate_implementer_ids": ("AGENT-IMPL-1",),
@@ -221,6 +244,11 @@ def test_a05_neg_016_non_independent_attestor_is_rejected() -> None:
         "promotion_commit_authority_ids": ("SERVICE-COMMIT-1",),
     }
     verify_attestor_independence("AGENT-ATTESTOR-9", context)
+    for missing_role in tuple(context):
+        incomplete = {key: value for key, value in context.items() if key != missing_role}
+        with pytest.raises(EvolutionAuthorityError) as raised:
+            verify_attestor_independence("AGENT-ATTESTOR-9", incomplete)
+        assert raised.value.code == "ATTESTOR_INDEPENDENCE_VIOLATION"
     for conflicted in (
         "AGENT-GEN-1",
         "AGENT-IMPL-1",
@@ -232,11 +260,66 @@ def test_a05_neg_016_non_independent_attestor_is_rejected() -> None:
             verify_attestor_independence(conflicted, context)
         assert raised.value.code == "ATTESTOR_INDEPENDENCE_VIOLATION"
 
+    with pytest.raises(EvolutionAuthorityError) as raised:
+        verify_attestor_independence(
+            "AGENT-GEN-1", {"candidate_generator_ids": "AGENT-GEN-1"}
+        )
+    assert raised.value.code == "ATTESTOR_INDEPENDENCE_VIOLATION"
+
+    for attestor_id, members in (
+        ("AGENT-GEN-1", (UnequalString("AGENT-GEN-1"),)),
+        (UnequalString("AGENT-GEN-1"), ("AGENT-GEN-1",)),
+        ("AGENT-GEN-1", TwoPassSequence()),
+    ):
+        with pytest.raises(EvolutionAuthorityError) as raised:
+            verify_attestor_independence(
+                attestor_id,  # type: ignore[arg-type]
+                {"candidate_generator_ids": members},
+            )
+        assert raised.value.code == "ATTESTOR_INDEPENDENCE_VIOLATION"
+
 
 def test_a05_neg_017_self_approval_is_forbidden() -> None:
     verify_approval_independence("HUMAN-REVIEWER-1", ("AGENT-MAKER-1",))
     with pytest.raises(EvolutionAuthorityError) as raised:
         verify_approval_independence("AGENT-MAKER-1", ("AGENT-MAKER-1",))
+    assert raised.value.code == "SELF_APPROVAL_FORBIDDEN"
+
+    class UnequalString(str):
+        def __eq__(self, other: object) -> bool:
+            return False
+
+    malformed_maker_ids = (
+        (),
+        "AGENT-MAKER-1",
+        b"AGENT-MAKER-1",
+        bytearray(b"AGENT-MAKER-1"),
+        {"AGENT-MAKER-1": True},
+        ("AGENT-MAKER-1", None),
+        ("",),
+        object(),
+    )
+    for maker_ids in malformed_maker_ids:
+        with pytest.raises(EvolutionAuthorityError) as raised:
+            verify_approval_independence(
+                "HUMAN-REVIEWER-1", maker_ids  # type: ignore[arg-type]
+            )
+        assert raised.value.code == "SELF_APPROVAL_FORBIDDEN"
+
+    behavior_bearing_maker_ids = (
+        (UnequalString("AGENT-MAKER-1"),),
+    )
+    for maker_ids in behavior_bearing_maker_ids:
+        with pytest.raises(EvolutionAuthorityError) as raised:
+            verify_approval_independence(
+                "AGENT-MAKER-1", maker_ids  # type: ignore[arg-type]
+            )
+        assert raised.value.code == "SELF_APPROVAL_FORBIDDEN"
+
+    with pytest.raises(EvolutionAuthorityError) as raised:
+        verify_approval_independence(
+            UnequalString("AGENT-MAKER-1"), ("AGENT-MAKER-1",)
+        )
     assert raised.value.code == "SELF_APPROVAL_FORBIDDEN"
 
 

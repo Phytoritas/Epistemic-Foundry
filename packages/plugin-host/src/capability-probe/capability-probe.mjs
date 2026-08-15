@@ -775,6 +775,12 @@ export const validateHostCapabilityReport = (candidate) => {
   if (observedHash !== sha256HookJson(preimage)) {
     fail("HOST_CAPABILITY_REPORT_HASH_MISMATCH", "HostCapabilityReport hash does not match");
   }
+  if (
+    preimage.mode === "FULL" &&
+    (blockers.length > 0 || Object.values(capabilities).some(({ state }) => state !== "SUPPORTED"))
+  ) {
+    fail(code, "HostCapabilityReport mode FULL requires supported capabilities and no blockers");
+  }
   return deepFreeze({ ...preimage, report_hash: observedHash });
 };
 

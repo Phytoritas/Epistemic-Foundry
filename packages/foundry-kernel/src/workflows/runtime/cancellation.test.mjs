@@ -151,6 +151,48 @@ test("cancellation_test: partial reconciliation stays partial", () => {
   ]);
 });
 
+test("cancellation_test: one receipt id cannot resolve two pending effects", () => {
+  const base = createSchedulerFixture({
+    nodes: [
+      nodeContractFixture({ nodeId: "ingest" }),
+      nodeContractFixture({ nodeId: "probe" }),
+    ],
+  });
+  startInFlight(base.scheduler, "ingest", "1");
+  startInFlight(base.scheduler, "probe", "2");
+
+  assertCode(
+    () =>
+      cancelRun(
+        cancelArgs(base, {
+          effect_receipts: [
+            { effect_id: "ingest#1", receipt_id: "EF-W02-SHARED", status: "SUCCEEDED" },
+            { effect_id: "probe#1", receipt_id: "EF-W02-SHARED", status: "FAILED" },
+          ],
+        }),
+      ),
+    "EFFECT_RECEIPT_INVALID",
+  );
+});
+
+test("cancellation_test: an unknown effect takes precedence over a reused receipt id", () => {
+  const base = fixture();
+  startInFlight(base.scheduler, "ingest");
+
+  assertCode(
+    () =>
+      cancelRun(
+        cancelArgs(base, {
+          effect_receipts: [
+            { effect_id: "ingest#1", receipt_id: "EF-W02-SHARED", status: "SUCCEEDED" },
+            { effect_id: "ghost#9", receipt_id: "EF-W02-SHARED", status: "FAILED" },
+          ],
+        }),
+      ),
+    "EFFECT_RECEIPT_UNKNOWN_EFFECT",
+  );
+});
+
 test("cancellation_test: foreign, duplicate, and malformed receipts fail closed", () => {
   const base = fixture();
   startInFlight(base.scheduler, "ingest");

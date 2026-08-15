@@ -1,0 +1,559 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/search-completeness-certificate.schema.json",
+  "title": "SearchCompletenessCertificate",
+  "description": "A deterministic all-eleven-lane reconciliation certificate whose run status and claim ceilings derive from validated SearchLaneReceipts.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "lane": {
+      "enum": [
+        "lexical",
+        "semantic",
+        "citation",
+        "entity_variable",
+        "mechanism",
+        "counterevidence",
+        "null",
+        "boundary",
+        "method",
+        "temporal",
+        "external_novelty"
+      ]
+    },
+    "receipt_state": {
+      "enum": [
+        "UNSEARCHED",
+        "SEARCHED_NONE",
+        "SEARCHED_WITH_RESULTS",
+        "PARTIAL",
+        "BLOCKED",
+        "FAILED"
+      ]
+    },
+    "lane_reconciliation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lane": {
+          "$ref": "#/$defs/lane"
+        },
+        "selected": {
+          "type": "boolean"
+        },
+        "plan_disposition": {
+          "enum": [
+            "SELECTED",
+            "NOT_REQUIRED_FOR_CLASS",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "receipt_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "receipt_states": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/receipt_state"
+          }
+        },
+        "reconciled_state": {
+          "$ref": "#/$defs/receipt_state"
+        },
+        "executed_scope_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "unsearched_scope_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "lane",
+        "selected",
+        "plan_disposition",
+        "receipt_ids",
+        "receipt_states",
+        "reconciled_state",
+        "executed_scope_ids",
+        "unsearched_scope_ids"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "selected": {
+                "const": false
+              }
+            },
+            "required": [
+              "selected"
+            ]
+          },
+          "then": {
+            "properties": {
+              "plan_disposition": {
+                "enum": [
+                  "NOT_REQUIRED_FOR_CLASS",
+                  "NOT_APPLICABLE"
+                ]
+              },
+              "receipt_ids": {
+                "maxItems": 1
+              },
+              "receipt_states": {
+                "const": [
+                  "UNSEARCHED"
+                ]
+              },
+              "reconciled_state": {
+                "const": "UNSEARCHED"
+              },
+              "executed_scope_ids": {
+                "maxItems": 0
+              },
+              "unsearched_scope_ids": {
+                "minItems": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "plan_disposition": {
+                "const": "SELECTED"
+              },
+              "receipt_states": {
+                "not": {
+                  "contains": {
+                    "const": "UNSEARCHED"
+                  }
+                }
+              },
+              "reconciled_state": {
+                "enum": [
+                  "SEARCHED_NONE",
+                  "SEARCHED_WITH_RESULTS",
+                  "PARTIAL",
+                  "BLOCKED",
+                  "FAILED"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "certificate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "query_plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plan_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "work_class": {
+      "enum": [
+        "E0",
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5"
+      ]
+    },
+    "required_lanes": {
+      "type": "array",
+      "maxItems": 11,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/lane"
+      }
+    },
+    "lane_receipt_ids": {
+      "type": "array",
+      "minItems": 11,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "lane_reconciliations": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "prefixItems": [
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "lexical"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "semantic"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "citation"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "entity_variable"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "mechanism"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "counterevidence"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "null"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "boundary"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "method"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "temporal"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/lane_reconciliation"
+            },
+            {
+              "properties": {
+                "lane": {
+                  "const": "external_novelty"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "items": false
+    },
+    "completed_lanes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/lane"
+      }
+    },
+    "partial_lanes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/lane"
+      }
+    },
+    "blocked_lanes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/lane"
+      }
+    },
+    "failed_lanes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/lane"
+      }
+    },
+    "unsearched_lanes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/lane"
+      }
+    },
+    "searched_scope": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "unsearched_scope": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "completion_state": {
+      "enum": [
+        "NOT_REQUIRED",
+        "PASS",
+        "PARTIAL",
+        "BLOCKED",
+        "FAIL"
+      ]
+    },
+    "absence_claim_ceiling": {
+      "enum": [
+        "NONE",
+        "LOCAL_CORPUS_ONLY",
+        "CORPUS_CONDITIONAL",
+        "EXTERNAL_CONDITIONAL"
+      ]
+    },
+    "novelty_claim_ceiling": {
+      "enum": [
+        "NOT_ASSESSED",
+        "CORPUS_NOVEL_ONLY",
+        "SEARCH_CONDITIONAL",
+        "PRIOR_ART_FOUND"
+      ]
+    },
+    "known_failures": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "certificate_hash": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "required": [
+    "certificate_id",
+    "run_id",
+    "subject_ref",
+    "query_plan_id",
+    "plan_hash",
+    "work_class",
+    "required_lanes",
+    "lane_receipt_ids",
+    "lane_reconciliations",
+    "completed_lanes",
+    "partial_lanes",
+    "blocked_lanes",
+    "failed_lanes",
+    "unsearched_lanes",
+    "searched_scope",
+    "unsearched_scope",
+    "completion_state",
+    "absence_claim_ceiling",
+    "novelty_claim_ceiling",
+    "known_failures",
+    "generated_at",
+    "certificate_hash"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "work_class": {
+            "const": "E0"
+          }
+        },
+        "required": [
+          "work_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "required_lanes": {
+            "maxItems": 0
+          },
+          "completion_state": {
+            "const": "NOT_REQUIRED"
+          },
+          "completed_lanes": {
+            "maxItems": 0
+          },
+          "partial_lanes": {
+            "maxItems": 0
+          },
+          "blocked_lanes": {
+            "maxItems": 0
+          },
+          "failed_lanes": {
+            "maxItems": 0
+          },
+          "unsearched_lanes": {
+            "const": [
+              "lexical",
+              "semantic",
+              "citation",
+              "entity_variable",
+              "mechanism",
+              "counterevidence",
+              "null",
+              "boundary",
+              "method",
+              "temporal",
+              "external_novelty"
+            ]
+          },
+          "absence_claim_ceiling": {
+            "const": "NONE"
+          },
+          "novelty_claim_ceiling": {
+            "const": "NOT_ASSESSED"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "completion_state": {
+            "not": {
+              "const": "NOT_REQUIRED"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

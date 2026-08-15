@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from bisect import bisect_right
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -336,17 +337,18 @@ def reliability_bins(
 ) -> list[dict[str, Any]]:
     """Equal-width bins over [0, 1]; the top bin closes on 1.0."""
 
-    width = 1.0 / bin_count
+    boundaries = [index / bin_count for index in range(1, bin_count)]
+    buckets: list[list[tuple[float, bool]]] = [[] for _ in range(bin_count)]
+    for confidence, correct in pairs:
+        if 0.0 <= confidence <= 1.0:
+            bucket_index = bisect_right(boundaries, confidence)
+            buckets[bucket_index].append((confidence, correct))
+
     bins: list[dict[str, Any]] = []
     for index in range(bin_count):
-        lower = index * width
-        upper = 1.0 if index == bin_count - 1 else (index + 1) * width
-        members = [
-            (confidence, correct)
-            for confidence, correct in pairs
-            if (confidence >= lower and confidence < upper)
-            or (index == bin_count - 1 and confidence == 1.0)
-        ]
+        lower = index / bin_count
+        upper = 1.0 if index == bin_count - 1 else (index + 1) / bin_count
+        members = buckets[index]
         count = len(members)
         bins.append(
             {

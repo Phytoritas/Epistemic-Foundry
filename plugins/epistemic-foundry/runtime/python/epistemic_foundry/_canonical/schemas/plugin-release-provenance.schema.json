@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/plugin-release-provenance.schema.json",
+  "title": "PluginReleaseProvenance",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "release_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "plugin_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "source_revision": {
+      "type": "string"
+    },
+    "source_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "bundle_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "sbom_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "manifest_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "builder": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "type": "string"
+        },
+        "environment_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "reproducible": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "identity",
+        "environment_hash",
+        "reproducible"
+      ]
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "check_id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "WARN",
+              "FAIL",
+              "NOT_RUN"
+            ]
+          },
+          "details": {
+            "type": "string"
+          },
+          "remediation": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "check_id",
+          "status",
+          "details",
+          "remediation"
+        ]
+      },
+      "minItems": 1
+    },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "identity": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "identity",
+          "signature"
+        ]
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "provenance_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "release_id",
+    "plugin_id",
+    "version",
+    "source_revision",
+    "source_hash",
+    "bundle_hash",
+    "sbom_hash",
+    "manifest_hash",
+    "builder",
+    "checks",
+    "signatures",
+    "created_at",
+    "provenance_hash"
+  ]
+}

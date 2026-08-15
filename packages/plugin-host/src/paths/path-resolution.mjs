@@ -14,8 +14,19 @@ export const PATH_TARGET_MODE = Object.freeze({
   CREATE: "create",
 });
 
+export const ROOT_IDENTITY_VERSION = "G03_ROOT_IDENTITY_V1";
+
 const PATH_BOUNDARIES = new Set(Object.values(PATH_BOUNDARY));
 const PATH_TARGET_MODES = new Set(Object.values(PATH_TARGET_MODE));
+const ROOT_IDENTITY_FIELDS = new Set([
+  "identity_version",
+  "volume_id",
+  "file_id",
+  "birthtime_ns",
+]);
+const VOLUME_ID_PATTERN = /^[0-9]{1,20}$/u;
+const FILE_ID_PATTERN = /^[1-9][0-9]{0,19}$/u;
+const BIRTHTIME_NS_PATTERN = /^[1-9][0-9]*$/u;
 const RESOLUTION_RECORDS = new WeakMap();
 const MAX_PATH_LENGTH = 4_096;
 const WINDOWS_RESERVED_BASENAME =
@@ -34,11 +45,14 @@ const fail = (code, message) => {
 };
 
 const requirePlainRecord = (value, label) => {
-  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+  if (value === null || typeof value !== "object") {
     fail("INVALID_INPUT", `${label} must be a plain object`);
   }
   if (utilTypes.isProxy(value)) {
     fail("PROXY_INPUT_DENIED", `${label} must not be a Proxy`);
+  }
+  if (Array.isArray(value)) {
+    fail("INVALID_INPUT", `${label} must be a plain object`);
   }
   const prototype = Object.getPrototypeOf(value);
   if (prototype !== Object.prototype && prototype !== null) {
@@ -64,6 +78,116 @@ const rejectUnknownFields = (record, allowed, label) => {
       fail("UNEXPECTED_FIELD", `${label} contains an unexpected field`);
     }
   }
+};
+
+const validateRootIdentity = (value, label) => {
+  const identity = requirePlainRecord(value, label);
+  rejectUnknownFields(identity, ROOT_IDENTITY_FIELDS, label);
+
+  const identityVersion = readDataProperty(identity, "identity_version");
+  const volumeId = readDataProperty(identity, "volume_id");
+  const fileId = readDataProperty(identity, "file_id");
+  const birthtimeNs = readDataProperty(identity, "birthtime_ns");
+
+  if (identityVersion !== ROOT_IDENTITY_VERSION) {
+    fail("INVALID_INPUT", `${label}.identity_version is not canonical`);
+  }
+  if (
+    typeof volumeId !== "string" ||
+    !VOLUME_ID_PATTERN.test(volumeId) ||
+    (volumeId.length > 1 && volumeId.startsWith("0"))
+  ) {
+    fail("INVALID_INPUT", `${label}.volume_id is not canonical`);
+  }
+  if (typeof fileId !== "string" || !FILE_ID_PATTERN.test(fileId)) {
+    fail("INVALID_INPUT", `${label}.file_id is not canonical`);
+  }
+  if (
+    birthtimeNs !== null &&
+    (typeof birthtimeNs !== "string" || !BIRTHTIME_NS_PATTERN.test(birthtimeNs))
+  ) {
+    fail("INVALID_INPUT", `${label}.birthtime_ns is not canonical`);
+  }
+
+  return { identityVersion, volumeId, fileId, birthtimeNs };
+};
+
+const freezeRootIdentity = (identityVersion, volumeId, fileId, birthtimeNs) =>
+  Object.freeze({
+    identity_version: identityVersion,
+    volume_id: volumeId,
+    file_id: fileId,
+    birthtime_ns: birthtimeNs,
+  });
+
+const detachedRootIdentity = (identity) =>
+  freezeRootIdentity(
+    identity.identity_version,
+    identity.volume_id,
+    identity.file_id,
+    identity.birthtime_ns,
+  );
+
+const unsupportedRootIdentity = (label) =>
+  fail(
+    "ROOT_IDENTITY_UNSUPPORTED",
+    `${label} does not expose a supported injective directory identity`,
+  );
+
+const canonicalVolumeId = (value, label) => {
+  if (typeof value !== "bigint" || value < 0n) {
+    unsupportedRootIdentity(label);
+  }
+  const canonical = value.toString(10);
+  if (!VOLUME_ID_PATTERN.test(canonical)) {
+    unsupportedRootIdentity(label);
+  }
+  return canonical;
+};
+
+const captureRootIdentity = (stats, label) => {
+  const volumeId = canonicalVolumeId(stats.dev, label);
+  if (typeof stats.ino !== "bigint" || stats.ino <= 0n) {
+    unsupportedRootIdentity(label);
+  }
+  const fileId = stats.ino.toString(10);
+  if (!FILE_ID_PATTERN.test(fileId)) {
+    unsupportedRootIdentity(label);
+  }
+  if (typeof stats.birthtimeNs !== "bigint" || stats.birthtimeNs < 0n) {
+    unsupportedRootIdentity(label);
+  }
+  const birthtimeNs = stats.birthtimeNs === 0n ? null : stats.birthtimeNs.toString(10);
+  if (birthtimeNs !== null && !BIRTHTIME_NS_PATTERN.test(birthtimeNs)) {
+    unsupportedRootIdentity(label);
+  }
+  return freezeRootIdentity(
+    ROOT_IDENTITY_VERSION,
+    volumeId,
+    fileId,
+    birthtimeNs,
+  );
+};
+
+export const serializeRootIdentity = (identity) => {
+  const validated = validateRootIdentity(identity, "rootIdentity");
+  return JSON.stringify({
+    birthtime_ns: validated.birthtimeNs,
+    file_id: validated.fileId,
+    identity_version: validated.identityVersion,
+    volume_id: validated.volumeId,
+  });
+};
+
+export const rootIdentitiesEqual = (left, right) => {
+  const validatedLeft = validateRootIdentity(left, "leftRootIdentity");
+  const validatedRight = validateRootIdentity(right, "rightRootIdentity");
+  return (
+    validatedLeft.identityVersion === validatedRight.identityVersion &&
+    validatedLeft.volumeId === validatedRight.volumeId &&
+    validatedLeft.fileId === validatedRight.fileId &&
+    validatedLeft.birthtimeNs === validatedRight.birthtimeNs
+  );
 };
 
 const requirePathString = (value, label) => {
@@ -127,13 +251,16 @@ const inspectExistingDirectory = (value, label, unavailableCode = "ROOT_UNAVAILA
     fail("ROOT_UNSAFE", `${label} crosses a link, reparse point, or path alias`);
   }
 
+  let identityStats;
+  try {
+    identityStats = fs.lstatSync(canonicalPath, { bigint: true });
+  } catch {
+    fail(unavailableCode, `${label} is not an inspectable directory`);
+  }
+
   return Object.freeze({
     canonicalPath,
-    identity: Object.freeze({
-      device: stats.dev,
-      inode: stats.ino,
-      birthtimeMs: stats.birthtimeMs,
-    }),
+    identity: captureRootIdentity(identityStats, label),
   });
 };
 
@@ -155,8 +282,7 @@ const inspectOptionalWorkspaceState = (workspaceRoot) => {
 const sameDirectoryIdentity = (left, right) =>
   left.identity !== null &&
   right.identity !== null &&
-  left.identity.device === right.identity.device &&
-  left.identity.inode === right.identity.inode;
+  rootIdentitiesEqual(left.identity, right.identity);
 
 const assertDisjoint = (left, right, leftLabel, rightLabel) => {
   if (
@@ -180,11 +306,7 @@ const assertRootIdentity = (root, label) => {
     label,
     "BOUNDARY_ROOT_CHANGED",
   );
-  if (
-    current.identity.device !== root.identity.device ||
-    current.identity.inode !== root.identity.inode ||
-    current.identity.birthtimeMs !== root.identity.birthtimeMs
-  ) {
+  if (!rootIdentitiesEqual(current.identity, root.identity)) {
     fail("BOUNDARY_ROOT_CHANGED", `${label} changed after path resolution`);
   }
 };
@@ -226,7 +348,7 @@ const inspectChildPathNoFollow = (root, segments) => {
     current = path.join(current, segments[index]);
     let stats;
     try {
-      stats = fs.lstatSync(current);
+      stats = fs.lstatSync(current, { bigint: true });
     } catch (error) {
       if (error !== null && typeof error === "object" && error.code === "ENOENT") {
         if (index < segments.length - 1) {
@@ -240,7 +362,7 @@ const inspectChildPathNoFollow = (root, segments) => {
     if (stats.isSymbolicLink()) {
       fail("PATH_LINK_DENIED", "relativePath crosses a symbolic link or reparse point");
     }
-    if (stats.dev !== root.identity.device) {
+    if (canonicalVolumeId(stats.dev, "relativePath") !== root.identity.volume_id) {
       fail("PATH_MOUNT_DENIED", "relativePath crosses a filesystem boundary");
     }
     if (index < segments.length - 1 && !stats.isDirectory()) {
@@ -326,6 +448,20 @@ export const resolvePluginPaths = (input) => {
     }),
   );
   return resolution;
+};
+
+export const readRootIdentity = (resolution, boundary) => {
+  const roots = RESOLUTION_RECORDS.get(resolution);
+  if (roots === undefined) {
+    fail("UNRECOGNIZED_PATH_RESOLUTION", "a resolver-issued path resolution is required");
+  }
+  if (typeof boundary !== "string" || !PATH_BOUNDARIES.has(boundary)) {
+    fail("UNKNOWN_PATH_BOUNDARY", "boundary is not canonical");
+  }
+
+  const root = roots[boundary];
+  assertRootIdentity(root, boundary);
+  return detachedRootIdentity(root.identity);
 };
 
 /**

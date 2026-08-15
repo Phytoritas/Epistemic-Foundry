@@ -1,0 +1,551 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/search-lane-receipt.schema.json",
+  "title": "SearchLaneReceipt",
+  "description": "A hash-bound execution receipt or truthful UNSEARCHED sentinel for exactly one canonical retrieval lane.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "lane": {
+      "enum": [
+        "lexical",
+        "semantic",
+        "citation",
+        "entity_variable",
+        "mechanism",
+        "counterevidence",
+        "null",
+        "boundary",
+        "method",
+        "temporal",
+        "external_novelty"
+      ]
+    }
+  },
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "query_plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plan_hash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "lane": {
+      "$ref": "#/$defs/lane"
+    },
+    "receipt_kind": {
+      "enum": [
+        "SENTINEL",
+        "EXECUTION"
+      ]
+    },
+    "sentinel_reason": {
+      "enum": [
+        null,
+        "NOT_REQUIRED_FOR_CLASS",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "lane_decision_evidence_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "query_text": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "query_hash": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "scope_filter": {
+      "oneOf": [
+        {
+          "$ref": "scope-vector.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "corpus_snapshot_hash": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "index_versions": {
+      "oneOf": [
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "result_ids": {
+      "oneOf": [
+        {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "result_count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "excluded_count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "stop_reason": {
+      "enum": [
+        null,
+        "exhausted_query_plan",
+        "saturation_reached",
+        "budget_exhausted",
+        "time_exhausted",
+        "manual_stop",
+        "policy_blocked",
+        "credential_unavailable",
+        "backend_unavailable",
+        "provider_failure",
+        "integrity_failure",
+        "invalid_response"
+      ]
+    },
+    "search_state": {
+      "enum": [
+        "UNSEARCHED",
+        "SEARCHED_NONE",
+        "SEARCHED_WITH_RESULTS",
+        "PARTIAL",
+        "BLOCKED",
+        "FAILED"
+      ]
+    },
+    "recall_proxy": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "errors": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "started_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "receipt_hash": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "run_id",
+    "query_plan_id",
+    "plan_hash",
+    "lane",
+    "receipt_kind",
+    "sentinel_reason",
+    "lane_decision_evidence_ids",
+    "query_text",
+    "query_hash",
+    "scope_filter",
+    "corpus_snapshot_hash",
+    "index_versions",
+    "result_ids",
+    "result_count",
+    "excluded_count",
+    "stop_reason",
+    "search_state",
+    "recall_proxy",
+    "errors",
+    "started_at",
+    "finished_at",
+    "receipt_hash"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "search_state": {
+            "const": "UNSEARCHED"
+          }
+        },
+        "required": [
+          "search_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "receipt_kind": {
+            "const": "SENTINEL"
+          },
+          "sentinel_reason": {
+            "enum": [
+              "NOT_REQUIRED_FOR_CLASS",
+              "NOT_APPLICABLE"
+            ]
+          },
+          "query_text": {
+            "type": "null"
+          },
+          "query_hash": {
+            "type": "null"
+          },
+          "scope_filter": {
+            "type": "null"
+          },
+          "corpus_snapshot_hash": {
+            "type": "null"
+          },
+          "index_versions": {
+            "type": "null"
+          },
+          "result_ids": {
+            "type": "null"
+          },
+          "result_count": {
+            "type": "null"
+          },
+          "excluded_count": {
+            "type": "null"
+          },
+          "stop_reason": {
+            "type": "null"
+          },
+          "recall_proxy": {
+            "type": "null"
+          },
+          "errors": {
+            "maxItems": 0
+          },
+          "started_at": {
+            "type": "null"
+          },
+          "finished_at": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "receipt_kind": {
+            "const": "EXECUTION"
+          },
+          "sentinel_reason": {
+            "type": "null"
+          },
+          "query_text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "query_hash": {
+            "$ref": "#/$defs/sha256"
+          },
+          "scope_filter": {
+            "$ref": "scope-vector.schema.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "search_state": {
+            "const": "SEARCHED_NONE"
+          }
+        },
+        "required": [
+          "search_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "corpus_snapshot_hash": {
+            "$ref": "#/$defs/sha256"
+          },
+          "index_versions": {
+            "type": "object",
+            "minProperties": 1
+          },
+          "result_ids": {
+            "const": []
+          },
+          "result_count": {
+            "const": 0
+          },
+          "excluded_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "stop_reason": {
+            "enum": [
+              "exhausted_query_plan",
+              "saturation_reached"
+            ]
+          },
+          "errors": {
+            "maxItems": 0
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "search_state": {
+            "const": "SEARCHED_WITH_RESULTS"
+          }
+        },
+        "required": [
+          "search_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "corpus_snapshot_hash": {
+            "$ref": "#/$defs/sha256"
+          },
+          "index_versions": {
+            "type": "object",
+            "minProperties": 1
+          },
+          "result_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "result_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "excluded_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "stop_reason": {
+            "enum": [
+              "exhausted_query_plan",
+              "saturation_reached"
+            ]
+          },
+          "errors": {
+            "maxItems": 0
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "search_state": {
+            "const": "PARTIAL"
+          }
+        },
+        "required": [
+          "search_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "corpus_snapshot_hash": {
+            "$ref": "#/$defs/sha256"
+          },
+          "index_versions": {
+            "type": "object",
+            "minProperties": 1
+          },
+          "result_ids": {
+            "type": "array",
+            "uniqueItems": true
+          },
+          "result_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "excluded_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "stop_reason": {
+            "enum": [
+              "budget_exhausted",
+              "time_exhausted",
+              "manual_stop"
+            ]
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "search_state": {
+            "const": "BLOCKED"
+          }
+        },
+        "required": [
+          "search_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result_ids": {
+            "type": "null"
+          },
+          "result_count": {
+            "type": "null"
+          },
+          "excluded_count": {
+            "type": "null"
+          },
+          "stop_reason": {
+            "enum": [
+              "policy_blocked",
+              "credential_unavailable",
+              "backend_unavailable"
+            ]
+          },
+          "recall_proxy": {
+            "type": "null"
+          },
+          "errors": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "search_state": {
+            "const": "FAILED"
+          }
+        },
+        "required": [
+          "search_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result_ids": {
+            "type": "null"
+          },
+          "result_count": {
+            "type": "null"
+          },
+          "excluded_count": {
+            "type": "null"
+          },
+          "stop_reason": {
+            "enum": [
+              "provider_failure",
+              "integrity_failure",
+              "invalid_response"
+            ]
+          },
+          "recall_proxy": {
+            "type": "null"
+          },
+          "errors": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

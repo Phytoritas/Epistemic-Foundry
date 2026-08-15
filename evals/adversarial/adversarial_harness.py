@@ -154,6 +154,10 @@ FINDING_CODES: dict[str, str] = {
         "the sealed gold corpus could not be read, so neither the label "
         "vocabulary nor the per-case labels can be bound to their source"
     ),
+    "GOLD_CORPUS_REF_MISMATCH": (
+        "the benchmark-declared gold corpus identity does not match the "
+        "sealed corpus that supplies its labels"
+    ),
     "GOLD_LABEL_MISMATCH": (
         "a baseline item's gold label disagrees with the label the sealed "
         "corpus carries for that case, which would grade the system against a "
@@ -305,10 +309,7 @@ def load_gold_corpus(repository_root: str | Path) -> dict[str, Any]:
     return _mapping(loaded, "gold corpus")
 
 
-def gold_case_labels(repository_root: str | Path) -> dict[str, str]:
-    """Case id to gold label, read from the sealed corpus rather than restated."""
-
-    corpus = load_gold_corpus(repository_root)
+def _gold_case_labels(corpus: Mapping[str, Any]) -> dict[str, str]:
     labels: dict[str, str] = {}
     for index, entry in enumerate(_sequence(corpus.get("cases"), "gold cases")):
         case = _mapping(entry, f"gold cases[{index}]")
@@ -318,6 +319,12 @@ def gold_case_labels(repository_root: str | Path) -> dict[str, str]:
     if not labels:
         _fail("GOLD_CORPUS_UNREADABLE", "the sealed gold corpus declares no case")
     return labels
+
+
+def gold_case_labels(repository_root: str | Path) -> dict[str, str]:
+    """Case id to gold label, read from the sealed corpus rather than restated."""
+
+    return _gold_case_labels(load_gold_corpus(repository_root))
 
 
 def gold_labels(repository_root: str | Path) -> tuple[str, ...]:
@@ -634,7 +641,32 @@ def evaluate(payload: Mapping[str, Any], repository_root: str | Path) -> SealedR
             {"path": gold_ref["path"]},
         )
 
-    case_labels = gold_case_labels(repository_root)
+    gold_corpus = load_gold_corpus(repository_root)
+    declared_gold_identity = {
+        "corpus_id": _text(gold_ref["corpus_id"], "corpus_id"),
+        "corpus_version": _text(gold_ref["corpus_version"], "corpus_version"),
+    }
+    actual_gold_identity = {
+        "corpus_id": gold_corpus.get("corpus_id"),
+        "corpus_version": gold_corpus.get("corpus_version"),
+    }
+    if (
+        not all(
+            isinstance(value, str) and bool(value.strip())
+            for value in actual_gold_identity.values()
+        )
+        or actual_gold_identity != declared_gold_identity
+    ):
+        _fail(
+            "GOLD_CORPUS_REF_MISMATCH",
+            "the dataset must cite the identity declared by the sealed gold corpus",
+            {
+                "actual": actual_gold_identity,
+                "declared": declared_gold_identity,
+            },
+        )
+
+    case_labels = _gold_case_labels(gold_corpus)
     vocabulary = tuple(sorted(set(case_labels.values())))
     false_claim_label = _text(benchmark["false_claim_label"], "false_claim_label")
     if false_claim_label not in vocabulary:
@@ -703,8 +735,8 @@ def evaluate(payload: Mapping[str, Any], repository_root: str | Path) -> SealedR
             "false_claim_label": false_claim_label,
         },
         "gold_corpus_ref": {
-            "corpus_id": _text(gold_ref["corpus_id"], "corpus_id"),
-            "corpus_version": _text(gold_ref["corpus_version"], "corpus_version"),
+            "corpus_id": actual_gold_identity["corpus_id"],
+            "corpus_version": actual_gold_identity["corpus_version"],
             "path": GOLD_CORPUS_RELATIVE_PATH,
         },
         "label_vocabulary": list(vocabulary),

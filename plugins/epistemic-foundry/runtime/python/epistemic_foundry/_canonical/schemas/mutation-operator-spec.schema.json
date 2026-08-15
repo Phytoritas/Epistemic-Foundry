@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/mutation-operator-spec.schema.json",
+  "title": "MutationOperatorSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "operator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operator_class": {
+      "enum": [
+        "scope",
+        "mechanism",
+        "prediction",
+        "falsifier",
+        "alternative",
+        "measurement",
+        "causal",
+        "scale_transfer",
+        "method_transfer",
+        "contradiction_resolution",
+        "simplification",
+        "crossover"
+      ]
+    },
+    "input_genome_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "output_genome_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "preserved_invariants": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "required_audits": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "prompt_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "risk_class": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "operator_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "operator_id",
+    "version",
+    "operator_class",
+    "input_genome_types",
+    "output_genome_type",
+    "preconditions",
+    "preserved_invariants",
+    "required_audits",
+    "prompt_ref",
+    "risk_class",
+    "operator_hash"
+  ],
+  "description": "가설 변이 연산자의 입력 타입, 보존 불변조건, 위험 및 검증을 고정한다."
+}

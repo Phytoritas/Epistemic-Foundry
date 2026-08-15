@@ -148,6 +148,25 @@ def test_an_unregistered_role_has_no_acl_and_fails_closed() -> None:
     assert caught.value.code == "ROLE_UNKNOWN"
 
 
+def test_role_registry_acl_members_are_not_string_coerced(tmp_path: Path) -> None:
+    registry = tmp_path / "manifests" / "role_registry.yaml"
+    registry.parent.mkdir(parents=True)
+    registry.write_text(
+        "version: 4.0.0\n"
+        "roles:\n"
+        "- role_id: defender\n"
+        "  evidence_acl:\n"
+        "  - support\n"
+        "  - 7\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ParliamentBlindError) as caught:
+        evidence_acl(tmp_path, "defender")
+
+    assert caught.value.code == "ROLE_REGISTRY_INVALID"
+
+
 def test_a_context_carries_only_the_permitted_classes() -> None:
     context = context_for(BriefRole.DEFENDER.value)
 
@@ -226,6 +245,106 @@ def test_citing_withheld_evidence_is_an_acl_violation() -> None:
     assert caught.value.code == "EVIDENCE_ACL_VIOLATION"
     assert caught.value.context["cited_withheld"] == ["EVN-counter"]
     assert caught.value.context["role"] == "defender"
+
+
+def test_a_tampered_brief_is_refused_before_acl_decisions() -> None:
+    contexts, briefs = adversarial_panel()
+    briefs[0]["assertions"][0]["evidence_ids"] = ["EVN-counter"]
+
+    with pytest.raises(ParliamentBlindError) as caught:
+        seal_dispatch(
+            contexts, briefs, created_at=CREATED_AT, round_number=1, run_id=RUN
+        )
+
+    assert caught.value.code == "BRIEF_HASH_MISMATCH"
+
+
+def test_one_detached_snapshot_binds_hash_and_acl_to_the_same_evidence() -> None:
+    class SwitchingEvidenceIds(list[str]):
+        def __init__(self) -> None:
+            super().__init__(["EVN-counter"])
+            self._reads = 0
+
+        def __iter__(self):
+            self._reads += 1
+            if self._reads == 1:
+                return iter(["EVN-support"])
+            return iter(["EVN-counter"])
+
+    contexts, briefs = adversarial_panel()
+    briefs[0] = brief(
+        "CB-defender",
+        BriefRole.DEFENDER.value,
+        contexts[0],
+        evidence_ids=["EVN-counter"],
+    )
+    briefs[0]["assertions"][0]["evidence_ids"] = SwitchingEvidenceIds()
+
+    with pytest.raises(ParliamentBlindError) as caught:
+        seal_dispatch(
+            contexts, briefs, created_at=CREATED_AT, round_number=1, run_id=RUN
+        )
+
+    assert caught.value.code == "BRIEF_HASH_MISMATCH"
+
+
+@pytest.mark.parametrize(
+    "created_at",
+    [
+        "2026-02-30T12:00:00Z",
+        "2026-08-01T23:58:60Z",
+        "2026-08-01T23:59:60Z",
+        "2026-08-02T00:59:60+01:00",
+    ],
+)
+def test_nonexistent_rfc3339_instants_are_refused(created_at: str) -> None:
+    context = context_for(BriefRole.DEFENDER.value)
+    candidate = brief("CB-valid", BriefRole.DEFENDER.value, context)
+    candidate["created_at"] = created_at
+
+    with pytest.raises(ParliamentBlindError) as caught:
+        seal_brief(candidate)
+
+    assert caught.value.code == "INPUT_INVALID"
+
+
+@pytest.mark.parametrize(
+    "created_at",
+    [
+        "0000-03-01t00:00:00z",
+        "1990-12-31T15:59:60-08:00",
+    ],
+)
+def test_schema_legal_rfc3339_instants_are_preserved(created_at: str) -> None:
+    context = context_for(BriefRole.DEFENDER.value)
+    candidate = brief("CB-valid", BriefRole.DEFENDER.value, context)
+    candidate["created_at"] = created_at
+
+    sealed = seal_brief(candidate)
+
+    assert sealed["created_at"] == created_at
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "code"),
+    [
+        ("strongest_counterargument", None, "INPUT_INVALID"),
+        ("conditions_that_change_verdict", [None], "INPUT_INVALID"),
+        ("missing_evidence", [None], "INPUT_INVALID"),
+        ("schema_version", "v4", "SCHEMA_VERSION_INVALID"),
+    ],
+)
+def test_seal_brief_refuses_noncanonical_council_fields(
+    field: str, value: object, code: str
+) -> None:
+    context = context_for(BriefRole.DEFENDER.value)
+    candidate = brief("CB-valid", BriefRole.DEFENDER.value, context)
+    candidate[field] = value
+
+    with pytest.raises(ParliamentBlindError) as caught:
+        seal_brief(candidate)
+
+    assert caught.value.code == code
 
 
 def test_citing_evidence_no_context_ever_held_is_an_acl_violation() -> None:

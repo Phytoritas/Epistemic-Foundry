@@ -69,12 +69,17 @@ class Denial(str, Enum):
     EGRESS_DENIED = "EGRESS_DENIED"
     ISOLATION_BREACH = "ISOLATION_BREACH"
     LEASE_EXPIRED = "LEASE_EXPIRED"
+    LEASE_INVALID = "LEASE_INVALID"
     LEASE_INSUFFICIENT = "LEASE_INSUFFICIENT"
+    LEASE_NOT_YET_VALID = "LEASE_NOT_YET_VALID"
     LEASE_REVOKED = "LEASE_REVOKED"
     LEASE_SCOPE_DENIED = "LEASE_SCOPE_DENIED"
+    LEASE_UNSEALED = "LEASE_UNSEALED"
     PATH_ESCAPE = "PATH_ESCAPE"
+    POLICY_UNPINNED = "POLICY_UNPINNED"
     QUOTA_EXHAUSTED = "QUOTA_EXHAUSTED"
     QUOTA_UNBOUNDED = "QUOTA_UNBOUNDED"
+    STALE_FENCING_TOKEN = "STALE_FENCING_TOKEN"
 
 
 class Observation(str, Enum):
@@ -161,6 +166,7 @@ PINNED_SAFETY_CLASSES: Final = APPROVAL_RULE["all_effects"]
 GATE_CRITERIA: Final = (
     "capabilities_declared",
     "isolation_verified",
+    "lease_bound",
     "quotas_bounded",
     "deadline_enforced",
     "outputs_hashed",
@@ -182,31 +188,6 @@ _REQUEST_FIELDS: Final = frozenset(
     }
 )
 _PATH_FIELDS: Final = frozenset({"operation", "relative_path", "root_id"})
-_HOLDOUT_FIELDS: Final = frozenset(
-    {
-        "adversarial_partition_handles",
-        "backend_access",
-        "candidate_access",
-        "evaluator_id",
-        "hidden_partition_handles",
-        "holdout_id",
-        "mutation_model_access",
-        "ood_partition_handles",
-        "prompt_access",
-    }
-)
-_LEASE_FIELDS: Final = frozenset(
-    {
-        "approval_ids",
-        "capabilities",
-        "expires_at",
-        "lease_id",
-        "principal_id",
-        "principal_type",
-        "resource_scopes",
-        "revoked",
-    }
-)
 #: Principal types whose reach into a holdout partition the schema forbids.
 SANDBOXED_PRINCIPAL_TYPES: Final = ("agent", "service", "tool")
 
@@ -258,6 +239,12 @@ class SandboxDecision:
     granted_roots: tuple[str, ...]
     egress_origin: str | None
     isolation_verified: tuple[str, ...]
+    lease_id: str
+    lease_hash: str
+    lease_policy_hash: str
+    lease_fencing_token: int
+    scope_fencing_heads: tuple[tuple[str, int], ...]
+    scope_fencing_heads_hash: str
 
 
 @dataclass(frozen=True)
@@ -364,10 +351,48 @@ def _string_tuple(value: object, label: str) -> tuple[str, ...]:
     return tuple(entries)
 
 
+def _utf16_sorted(values: Sequence[str], label: str) -> tuple[str, ...]:
+    """Match JavaScript's default string ordering used by the E03 issuer."""
+
+    try:
+        return tuple(sorted(values, key=lambda value: value.encode("utf-16-be")))
+    except UnicodeEncodeError:
+        _fail(Denial.LEASE_INVALID.value, f"{label} must contain Unicode scalars")
+        raise  # pragma: no cover - _fail always raises
+
+
 def _boolean(value: object, label: str) -> bool:
     if not isinstance(value, bool):
         _fail("INPUT_INVALID", f"{label} must be a boolean")
     return bool(value)
+
+
+def _bounded_text(
+    value: object,
+    label: str,
+    *,
+    minimum: int = 1,
+    maximum: int | None = None,
+    code: str = "INPUT_INVALID",
+) -> str:
+    text = _scalar_text(value, label, code=code)
+    if len(text) < minimum or (maximum is not None and len(text) > maximum):
+        upper = "unbounded" if maximum is None else str(maximum)
+        _fail(
+            code,
+            f"{label} length must be within {minimum}..{upper}",
+        )
+    return text
+
+
+def _scalar_text(value: object, label: str, *, code: str = "INPUT_INVALID") -> str:
+    text = _text(value, label)
+    try:
+        text.encode("utf-8")
+    except UnicodeEncodeError:
+        _fail(code, f"{label} must contain Unicode scalar values")
+        raise  # pragma: no cover - _fail always raises
+    return text
 
 
 def _schema(repository_root: str | Path, relative: str) -> dict[str, Any]:
@@ -427,6 +452,39 @@ def target_manifest_fields(repository_root: str | Path) -> frozenset[str]:
             "SCHEMA_UNREADABLE", "the target manifest schema declares no required set"
         )
     return frozenset(str(entry) for entry in required)  # type: ignore[union-attr]
+
+
+def capability_lease_fields(repository_root: str | Path) -> frozenset[str]:
+    """The exact field set the canonical CapabilityLease schema requires."""
+
+    schema = _schema(repository_root, LEASE_SCHEMA_PATH)
+    required = schema.get("required")
+    properties = schema.get("properties")
+    if (
+        schema.get("additionalProperties") is not False
+        or not isinstance(required, list)
+        or not required
+        or not isinstance(properties, Mapping)
+        or any(not isinstance(entry, str) or not entry for entry in required)
+    ):
+        _fail("SCHEMA_UNREADABLE", "the capability lease schema is incomplete")
+    fields = frozenset(required)
+    if len(fields) != len(required) or fields != frozenset(properties):
+        _fail(
+            "SCHEMA_UNREADABLE",
+            "the capability lease schema required/properties sets disagree",
+        )
+    return fields
+
+
+def lease_principal_types(repository_root: str | Path) -> tuple[str, ...]:
+    return _enum(
+        repository_root,
+        LEASE_SCHEMA_PATH,
+        "properties",
+        "principal_type",
+        "enum",
+    )
 
 
 def network_policies(repository_root: str | Path) -> tuple[str, ...]:
@@ -523,6 +581,27 @@ def isolation_boundaries(repository_root: str | Path) -> tuple[str, ...]:
             "SCHEMA_UNREADABLE", "the holdout schema pins no access boundary to false"
         )
     return boundaries
+
+
+def holdout_manifest_fields(repository_root: str | Path) -> frozenset[str]:
+    """Return the exact closed field set of the canonical holdout manifest."""
+
+    schema = _schema(repository_root, HOLDOUT_SCHEMA_PATH)
+    properties = _mapping(schema.get("properties", {}), "holdout properties")
+    required = schema.get("required")
+    if (
+        not isinstance(required, list)
+        or not required
+        or any(not isinstance(field, str) or not field for field in required)
+        or len(set(required)) != len(required)
+        or frozenset(required) != frozenset(properties)
+        or schema.get("additionalProperties") is not False
+    ):
+        _fail(
+            "SCHEMA_UNREADABLE",
+            "the holdout schema does not declare one exact closed required field set",
+        )
+    return frozenset(required)
 
 
 def seal_adapter(
@@ -741,9 +820,10 @@ def verify_isolation(
     """Confirm the holdout declares every pinned boundary as the schema does."""
 
     value = _mapping(holdout, "HoldoutManifest")
-    _exact_fields(value, _HOLDOUT_FIELDS, "HoldoutManifest")
+    manifest_fields = holdout_manifest_fields(repository_root)
+    _exact_fields(value, manifest_fields, "HoldoutManifest")
     boundaries = isolation_boundaries(repository_root)
-    unknown = sorted(set(boundaries) - _HOLDOUT_FIELDS)
+    unknown = sorted(set(boundaries) - manifest_fields)
     if unknown:
         _fail(
             "VOCABULARY_DRIFT",
@@ -757,14 +837,62 @@ def verify_isolation(
                 f"{boundary} is pinned false by the holdout schema",
                 {"boundary": boundary},
             )
-    _text(value["holdout_id"], "holdout_id")
-    _text(value["evaluator_id"], "evaluator_id")
+    if (
+        _boolean(
+            value["unblinding_approval_required"],
+            "unblinding_approval_required",
+        )
+        is not unblinding_requires_approval(repository_root)
+    ):
+        _fail(
+            Denial.ISOLATION_BREACH.value,
+            "unblinding_approval_required contradicts the holdout schema",
+        )
+    manifest_hash = _text(value["manifest_hash"], "manifest_hash")
+    if (
+        SHA256_PATTERN.fullmatch(manifest_hash) is None
+        or _hash_excluding(value, "manifest_hash") != manifest_hash
+    ):
+        _fail(
+            "HOLDOUT_UNSEALED",
+            "manifest_hash does not match the canonical holdout fields",
+        )
     for field in (
+        "holdout_id",
+        "evaluator_id",
+        "split_strategy",
+        "log_redaction_policy",
+        "cache_isolation_policy",
+    ):
+        _text(value[field], field)
+    for field in ("acl_policy_hash",):
+        digest = _text(value[field], field)
+        if SHA256_PATTERN.fullmatch(digest) is None:
+            _fail("INPUT_INVALID", f"{field} must be a canonical SHA-256 digest")
+    sealed_at = _timestamp(value["sealed_at"], "sealed_at")
+    try:
+        _instant(sealed_at)
+    except ValueError:
+        _fail("INPUT_INVALID", "sealed_at must be a real RFC3339 instant")
+        raise  # pragma: no cover - _fail always raises
+    for field in (
+        "public_partition_refs",
         "adversarial_partition_handles",
         "hidden_partition_handles",
         "ood_partition_handles",
     ):
-        _string_tuple(value[field], field)
+        entries = _string_tuple(value[field], field)
+        if field == "hidden_partition_handles" and not entries:
+            _fail("INPUT_INVALID", f"{field} must contain at least one entry")
+    content_hashes = _string_tuple(value["content_hashes"], "content_hashes")
+    if not content_hashes:
+        _fail("INPUT_INVALID", "content_hashes must contain at least one entry")
+    for index, digest in enumerate(content_hashes):
+        if SHA256_PATTERN.fullmatch(digest) is None:
+            _fail(
+                "INPUT_INVALID",
+                f"content_hashes[{index}] must be a canonical SHA-256 digest",
+            )
     return boundaries
 
 
@@ -832,28 +960,228 @@ def _egress_origin(url: str) -> str:
     return f"{scheme}://{authority.lower()}"
 
 
-def _validate_lease(lease: Mapping[str, Any], now: str) -> dict[str, Any]:
+def _validate_lease(
+    repository_root: str | Path,
+    lease: Mapping[str, Any],
+    now: str,
+    policy_hash: str,
+) -> dict[str, Any]:
     value = _mapping(lease, "CapabilityLease")
-    _exact_fields(value, _LEASE_FIELDS, "CapabilityLease")
-    lease_id = _text(value["lease_id"], "lease_id")
-    if _boolean(value["revoked"], "revoked"):
+    _exact_fields(
+        value,
+        capability_lease_fields(repository_root),
+        "CapabilityLease",
+    )
+    schema = _schema(repository_root, LEASE_SCHEMA_PATH)
+    properties = _mapping(schema.get("properties", {}), "CapabilityLease properties")
+
+    def property_schema(field: str) -> dict[str, Any]:
+        return _mapping(properties.get(field), f"CapabilityLease.{field} schema")
+
+    def bounded_identifier(field: str) -> str:
+        node = property_schema(field)
+        minimum = node.get("minLength")
+        maximum = node.get("maxLength")
+        if (
+            not isinstance(minimum, int)
+            or isinstance(minimum, bool)
+            or not isinstance(maximum, int)
+            or isinstance(maximum, bool)
+        ):
+            _fail("SCHEMA_UNREADABLE", f"CapabilityLease.{field} lacks length bounds")
+        return _bounded_text(
+            value[field],
+            field,
+            minimum=minimum,
+            maximum=maximum,
+            code=Denial.LEASE_INVALID.value,
+        )
+
+    def string_array(field: str) -> tuple[str, ...]:
+        node = property_schema(field)
+        entries = _string_tuple(value[field], field)
+        minimum = node.get("minItems", 0)
+        if not isinstance(minimum, int) or isinstance(minimum, bool):
+            _fail("SCHEMA_UNREADABLE", f"CapabilityLease.{field} has invalid minItems")
+        if len(entries) < minimum:
+            _fail(
+                Denial.LEASE_INVALID.value,
+                f"{field} must contain at least {minimum} entries",
+            )
+        if node.get("uniqueItems") is not True:
+            _fail("SCHEMA_UNREADABLE", f"CapabilityLease.{field} must require uniqueness")
+        item = _mapping(node.get("items", {}), f"CapabilityLease.{field}.items")
+        item_minimum = item.get("minLength", 1)
+        item_maximum = item.get("maxLength")
+        if not isinstance(item_minimum, int) or isinstance(item_minimum, bool):
+            _fail("SCHEMA_UNREADABLE", f"CapabilityLease.{field} item bound is invalid")
+        if item_maximum is not None and (
+            not isinstance(item_maximum, int) or isinstance(item_maximum, bool)
+        ):
+            _fail("SCHEMA_UNREADABLE", f"CapabilityLease.{field} item bound is invalid")
+        return tuple(
+            _bounded_text(
+                entry,
+                f"{field}[{index}]",
+                minimum=item_minimum,
+                maximum=item_maximum,
+                code=Denial.LEASE_INVALID.value,
+            )
+            for index, entry in enumerate(entries)
+        )
+
+    lease_id = bounded_identifier("lease_id")
+    principal_id = bounded_identifier("principal_id")
+    principal_type = _scalar_text(
+        value["principal_type"],
+        "principal_type",
+        code=Denial.LEASE_INVALID.value,
+    )
+    if principal_type not in lease_principal_types(repository_root):
+        _fail(
+            Denial.LEASE_INVALID.value,
+            "principal_type is not canonical",
+            {"principal_type": principal_type},
+        )
+    capabilities = _utf16_sorted(string_array("capabilities"), "capabilities")
+    resource_scopes = _utf16_sorted(string_array("resource_scopes"), "resource_scopes")
+    approval_ids = _utf16_sorted(string_array("approval_ids"), "approval_ids")
+    issued_at = _timestamp(value["issued_at"], "issued_at")
+    expires_at = _timestamp(value["expires_at"], "expires_at")
+    try:
+        issued_instant = _instant(issued_at)
+        expires_instant = _instant(expires_at)
+        now_instant = _instant(now)
+    except ValueError:
+        _fail(Denial.LEASE_INVALID.value, "lease timestamps must be real instants")
+        raise  # pragma: no cover - _fail always raises
+    if issued_instant >= expires_instant:
+        _fail(
+            Denial.LEASE_INVALID.value,
+            "a capability lease must expire strictly after issuance",
+        )
+
+    fencing_schema = property_schema("fencing_token")
+    fencing_minimum = fencing_schema.get("minimum")
+    fencing_token = value["fencing_token"]
+    if (
+        not isinstance(fencing_minimum, int)
+        or isinstance(fencing_minimum, bool)
+        or not isinstance(fencing_token, int)
+        or isinstance(fencing_token, bool)
+        or fencing_token < fencing_minimum
+        or fencing_token > 9_007_199_254_740_991
+    ):
+        _fail(
+            Denial.LEASE_INVALID.value,
+            "fencing_token must be a positive safe integer",
+        )
+
+    policy_pattern = _pattern(
+        repository_root,
+        LEASE_SCHEMA_PATH,
+        "properties",
+        "policy_hash",
+        "pattern",
+    )
+    lease_pattern = _pattern(
+        repository_root,
+        LEASE_SCHEMA_PATH,
+        "properties",
+        "lease_hash",
+        "pattern",
+    )
+    lease_policy_hash = _scalar_text(
+        value["policy_hash"],
+        "policy_hash",
+        code=Denial.LEASE_INVALID.value,
+    )
+    if policy_pattern.fullmatch(lease_policy_hash) is None:
+        _fail(Denial.LEASE_INVALID.value, "policy_hash is not canonical")
+
+    revoked = _boolean(value["revoked"], "revoked")
+    revocation_reason = value["revocation_reason"]
+    if revocation_reason is not None:
+        revocation_reason = _scalar_text(
+            revocation_reason,
+            "revocation_reason",
+            code=Denial.LEASE_INVALID.value,
+        )
+    if (revoked and revocation_reason is None) or (
+        not revoked and revocation_reason is not None
+    ):
+        _fail(
+            Denial.LEASE_INVALID.value,
+            "revocation_reason must exist exactly when revoked is true",
+        )
+    lease_hash = _scalar_text(
+        value["lease_hash"],
+        "lease_hash",
+        code=Denial.LEASE_INVALID.value,
+    )
+    if lease_pattern.fullmatch(lease_hash) is None:
+        _fail(Denial.LEASE_INVALID.value, "lease_hash is not canonical")
+    normalized_lease = {
+        "approval_ids": list(approval_ids),
+        "capabilities": list(capabilities),
+        "expires_at": expires_at,
+        "fencing_token": fencing_token,
+        "issued_at": issued_at,
+        "lease_id": lease_id,
+        "policy_hash": lease_policy_hash,
+        "principal_id": principal_id,
+        "principal_type": principal_type,
+        "resource_scopes": list(resource_scopes),
+        "revocation_reason": revocation_reason,
+        "revoked": revoked,
+    }
+    expected_lease_hash = _digest(normalized_lease)
+    if lease_hash != expected_lease_hash:
+        _fail(
+            Denial.LEASE_UNSEALED.value,
+            "lease_hash does not match the canonical lease fields",
+            {"actual": lease_hash, "expected": expected_lease_hash},
+        )
+    expected_policy_hash = _text(policy_hash, "policy_hash")
+    if policy_pattern.fullmatch(expected_policy_hash) is None:
+        _fail("INPUT_INVALID", "the current policy_hash is not canonical")
+    if lease_policy_hash != expected_policy_hash:
+        _fail(
+            Denial.POLICY_UNPINNED.value,
+            "the lease was issued under a different policy",
+            {
+                "current_policy_hash": expected_policy_hash,
+                "lease_policy_hash": lease_policy_hash,
+            },
+        )
+    if revoked:
         _fail(
             Denial.LEASE_REVOKED.value, f"{lease_id} is revoked", {"lease_id": lease_id}
         )
-    expires_at = _timestamp(value["expires_at"], "expires_at")
-    if _instant(expires_at) <= _instant(now):
+    if now_instant < issued_instant:
+        _fail(
+            Denial.LEASE_NOT_YET_VALID.value,
+            f"{lease_id} is not yet valid",
+            {"issued_at": issued_at, "now": now},
+        )
+    if now_instant >= expires_instant:
         _fail(
             Denial.LEASE_EXPIRED.value,
             f"{lease_id} expired before the invocation",
             {"expires_at": expires_at, "now": now},
         )
     return {
-        "approval_ids": _string_tuple(value["approval_ids"], "approval_ids"),
-        "capabilities": _string_tuple(value["capabilities"], "capabilities"),
+        "approval_ids": approval_ids,
+        "capabilities": capabilities,
+        "expires_at": expires_at,
+        "fencing_token": fencing_token,
+        "issued_at": issued_at,
+        "lease_hash": lease_hash,
         "lease_id": lease_id,
-        "principal_id": _text(value["principal_id"], "principal_id"),
-        "principal_type": _text(value["principal_type"], "principal_type"),
-        "resource_scopes": _string_tuple(value["resource_scopes"], "resource_scopes"),
+        "policy_hash": lease_policy_hash,
+        "principal_id": principal_id,
+        "principal_type": principal_type,
+        "resource_scopes": resource_scopes,
     }
 
 
@@ -865,15 +1193,28 @@ def authorize_invocation(
     holdout: Mapping[str, Any],
     request: Mapping[str, Any],
     now: str,
+    policy_hash: str,
+    scope_fencing_heads: Mapping[str, Any],
 ) -> SandboxDecision:
-    """Admit one invocation, or refuse it with the code that stopped it."""
+    """Admit one invocation against an injected current policy/fence snapshot.
+
+    T04 validates and binds that snapshot; it does not issue policy or lease
+    authority.  The effect owner must source these values from E03 and repeat
+    the authoritative lease/fence check at the atomic effect boundary.
+    """
 
     manifest = _sealed_payload(
         adapter, "tool_adapter", "adapter_hash", Denial.ADAPTER_UNSEALED.value
     )
     verified = verify_isolation(repository_root, holdout)
     protected = _protected_handles(holdout)
-    granted = _validate_lease(lease, _timestamp(now, "now"))
+    granted = _validate_lease(
+        repository_root,
+        lease,
+        _timestamp(now, "now"),
+        policy_hash,
+    )
+    supplied_heads = _mapping(scope_fencing_heads, "scope_fencing_heads")
 
     value = _mapping(request, "InvocationRequest")
     _exact_fields(value, _REQUEST_FIELDS, "InvocationRequest")
@@ -969,6 +1310,41 @@ def authorize_invocation(
             )
         roots.append(root_id)
 
+    touched_roots = tuple(sorted(set(roots)))
+    missing_heads = sorted(set(touched_roots) - set(supplied_heads))
+    unknown_heads = sorted(set(supplied_heads) - set(touched_roots))
+    if missing_heads or unknown_heads:
+        _fail(
+            Denial.STALE_FENCING_TOKEN.value,
+            "the fencing-head snapshot must exactly cover every touched root",
+            {"missing": missing_heads, "unknown": unknown_heads},
+        )
+    checked_heads: list[tuple[str, int]] = []
+    for root_id in touched_roots:
+        head = supplied_heads[root_id]
+        if (
+            not isinstance(head, int)
+            or isinstance(head, bool)
+            or head < 1
+            or head > 9_007_199_254_740_991
+        ):
+            _fail(
+                "INPUT_INVALID",
+                f"scope_fencing_heads.{root_id} must be a positive safe integer",
+            )
+        if head != granted["fencing_token"]:
+            _fail(
+                Denial.STALE_FENCING_TOKEN.value,
+                "the lease no longer owns the touched root",
+                {
+                    "fencing_head": head,
+                    "lease_fencing_token": granted["fencing_token"],
+                    "root_id": root_id,
+                },
+            )
+        checked_heads.append((root_id, head))
+    scope_fencing_heads_hash = _digest(dict(checked_heads))
+
     network_policy = str(manifest["network_policy"])
     rule = NETWORK_POLICY_RULE[network_policy]
     url = value["network_url"]
@@ -1001,9 +1377,15 @@ def authorize_invocation(
         safety_class=str(manifest["safety_class"]),
         data_class=data_class,
         granted_capabilities=tuple(sorted(requested)),
-        granted_roots=tuple(sorted(set(roots))),
+        granted_roots=touched_roots,
         egress_origin=origin,
         isolation_verified=verified,
+        lease_id=str(granted["lease_id"]),
+        lease_hash=str(granted["lease_hash"]),
+        lease_policy_hash=str(granted["policy_hash"]),
+        lease_fencing_token=int(granted["fencing_token"]),
+        scope_fencing_heads=tuple(checked_heads),
+        scope_fencing_heads_hash=scope_fencing_heads_hash,
     )
 
 
@@ -1436,7 +1818,10 @@ def evaluate_tool_gate(
         "deadline",
     )
     status = str(receipt["status"])
-    reconciled = status != "UNKNOWN" or bool(receipt["reconciliation_required"])
+    reconciliation_required = _boolean(
+        receipt["reconciliation_required"], "reconciliation_required"
+    )
+    reconciled = status != "UNKNOWN" and not reconciliation_required
     if verdict["exceeded"] and status == "SUCCEEDED":
         reconciled = False
 
@@ -1446,6 +1831,11 @@ def evaluate_tool_gate(
         and not verdict["exceeded"],
         "effects_reconciled": reconciled,
         "isolation_verified": bool(decision.isolation_verified),
+        "lease_bound": SHA256_PATTERN.fullmatch(decision.lease_hash) is not None
+        and SHA256_PATTERN.fullmatch(decision.lease_policy_hash) is not None
+        and decision.lease_fencing_token > 0
+        and decision.scope_fencing_heads_hash
+        == _digest(dict(decision.scope_fencing_heads)),
         "outputs_hashed": hashed,
         "quotas_bounded": all(
             ledger.limits[name] is not None for name in REQUIRED_BOUNDED_DIMENSIONS
@@ -1480,8 +1870,14 @@ def evaluate_tool_gate(
         "declared_status": declared_status,
         "effect_status": status,
         "failed_criteria": failed,
+        "fencing_token": decision.lease_fencing_token,
         "isolation_verified": list(decision.isolation_verified),
+        "lease_hash": decision.lease_hash,
+        "lease_id": decision.lease_id,
+        "policy_hash": decision.lease_policy_hash,
         "sandbox_profile": decision.sandbox_profile,
+        "scope_fencing_heads": dict(decision.scope_fencing_heads),
+        "scope_fencing_heads_hash": decision.scope_fencing_heads_hash,
         "status": derived,
     }
     report["report_hash"] = _digest(report)

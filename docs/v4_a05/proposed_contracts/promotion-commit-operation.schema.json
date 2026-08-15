@@ -1,0 +1,421 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/promotion-commit-operation.schema.json",
+  "title": "PromotionCommitOperation",
+  "description": "Provider-neutral binding for the A05 promotion commit operation and its Foundry Kernel lease-protected result. References canonical records by ID and hash; it never restates their bodies.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "invocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "operation_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "operation": {
+          "const": "commit_promotion"
+        },
+        "run_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "node_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "action_intent_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "action_intent_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "attempt_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "capability_lease_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "capability_lease_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "fencing_token": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "principal_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "capability": {
+          "const": "promotion:commit"
+        },
+        "resource_scopes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "promotion_pack_artifact_set_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "promotion_pack_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "candidate_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "expected_candidate_revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "passport_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "expected_passport_revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "idempotency_key": {
+          "$ref": "#/$defs/identifier"
+        },
+        "port_binding_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "port_binding_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "request_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "operation_id",
+        "operation",
+        "run_id",
+        "node_id",
+        "attempt",
+        "action_intent_id",
+        "action_intent_hash",
+        "attempt_id",
+        "capability_lease_id",
+        "capability_lease_hash",
+        "fencing_token",
+        "principal_id",
+        "capability",
+        "resource_scopes",
+        "promotion_pack_artifact_set_id",
+        "promotion_pack_hash",
+        "candidate_id",
+        "expected_candidate_revision",
+        "passport_id",
+        "expected_passport_revision",
+        "idempotency_key",
+        "port_binding_id",
+        "port_binding_hash",
+        "request_hash"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "disposition": {
+          "enum": [
+            "COMMITTED",
+            "EXISTING",
+            "OUTCOME_UNKNOWN"
+          ],
+          "description": "COMMITTED and EXISTING are Kernel dispositions. OUTCOME_UNKNOWN is an adapter/attempt state that carries request identity into reconciliation and never asserts a committed transaction."
+        },
+        "operation_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "request_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "port_binding_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "port_binding_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "capability_lease_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "fencing_token": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "lease_use_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "lease_use_hash": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "promotion_decision_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "promotion_decision_hash": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "passport_revision_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "passport_revision_hash": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "event_record_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "event_record_hash": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_candidate_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/revision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "committed_candidate_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/revision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_passport_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/revision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "committed_passport_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/revision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "disposition",
+        "operation_id",
+        "request_hash",
+        "port_binding_id",
+        "port_binding_hash",
+        "capability_lease_id",
+        "fencing_token",
+        "lease_use_id",
+        "lease_use_hash",
+        "promotion_decision_id",
+        "promotion_decision_hash",
+        "passport_revision_id",
+        "passport_revision_hash",
+        "event_record_id",
+        "event_record_hash",
+        "observed_candidate_revision",
+        "committed_candidate_revision",
+        "observed_passport_revision",
+        "committed_passport_revision",
+        "result_hash"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "OUTCOME_UNKNOWN"
+              }
+            },
+            "required": [
+              "disposition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "lease_use_id": {
+                "type": "null"
+              },
+              "lease_use_hash": {
+                "type": "null"
+              },
+              "promotion_decision_id": {
+                "type": "null"
+              },
+              "promotion_decision_hash": {
+                "type": "null"
+              },
+              "passport_revision_id": {
+                "type": "null"
+              },
+              "passport_revision_hash": {
+                "type": "null"
+              },
+              "event_record_id": {
+                "type": "null"
+              },
+              "event_record_hash": {
+                "type": "null"
+              },
+              "committed_candidate_revision": {
+                "type": "null"
+              },
+              "committed_passport_revision": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "capability_lease_id": {
+                "type": "string"
+              },
+              "fencing_token": {
+                "type": "integer"
+              },
+              "lease_use_id": {
+                "type": "string"
+              },
+              "lease_use_hash": {
+                "$ref": "#/$defs/sha256"
+              },
+              "promotion_decision_id": {
+                "type": "string"
+              },
+              "promotion_decision_hash": {
+                "$ref": "#/$defs/sha256"
+              },
+              "passport_revision_id": {
+                "type": "string"
+              },
+              "passport_revision_hash": {
+                "$ref": "#/$defs/sha256"
+              },
+              "event_record_id": {
+                "type": "string"
+              },
+              "event_record_hash": {
+                "$ref": "#/$defs/sha256"
+              },
+              "observed_candidate_revision": {
+                "$ref": "#/$defs/revision"
+              },
+              "committed_candidate_revision": {
+                "$ref": "#/$defs/revision"
+              },
+              "observed_passport_revision": {
+                "$ref": "#/$defs/revision"
+              },
+              "committed_passport_revision": {
+                "$ref": "#/$defs/revision"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "invocation": {
+      "$ref": "#/$defs/invocation"
+    },
+    "result": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/result"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "invocation",
+    "result"
+  ]
+}

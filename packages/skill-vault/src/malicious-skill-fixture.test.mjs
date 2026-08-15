@@ -91,7 +91,7 @@ test("install hooks, dynamic evaluation, and self-approval claims block approval
 });
 
 test("path traversal, absolute paths, and portable name collisions fail closed", () => {
-  for (const path of ["../escape.mjs", "/absolute.mjs", "C:/escape.mjs", "dir\\escape.mjs", "NUL.txt"]) {
+  for (const path of ["../escape.mjs", "/absolute.mjs", "C:/escape.mjs", "dir\\escape.mjs", "NUL.txt", "CON .txt"]) {
     const { guard } = createSkillVaultBoundary();
     assert.throws(
       () => guard.quarantineCandidate(candidateInput({

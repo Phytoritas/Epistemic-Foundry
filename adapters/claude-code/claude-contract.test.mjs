@@ -1,12 +1,11 @@
 // claude_adapter_test / unit and contract tests — what the adapter does with the
 // role registry and the agent files that actually ship.
 //
-// The binding is read from `adapters/claude-code` and `manifests/role_registry.yaml`
-// as they are on disk.  This suite pins the three things the adapter is for: that
-// every canonical RoleSpec compiles to one custom-agent descriptor, that the
-// roles whose agent file is not generated yet are named rather than implied, and
-// that a parallel-write request crosses into an isolated worktree plan carrying
-// nothing the adapter invented.
+// The binding is derived from the adapter declaration, canonical role registry,
+// and the host-visible `.claude/agents` surface.  This suite pins the three things
+// the adapter is for: every canonical RoleSpec compiles to one custom-agent
+// descriptor, every live EF agent's bound frontmatter matches it, and a parallel-write request
+// crosses into an isolated worktree plan carrying nothing the adapter invented.
 
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -40,39 +39,19 @@ const PRODUCT_MODULES = Object.freeze([
 const binding = loadClaudeBinding();
 const readRepo = (relative) => readFileSync(join(REPOSITORY_ROOT, relative), "utf8");
 
-const EVOLUTION_ROLES = Object.freeze(
-  [
-    "archive_curator",
-    "challenge_evolver",
-    "evolution_governor",
-    "evolution_promotion_attestor",
-    "experiment_evolver",
-    "hypothesis_mutator",
-    "parent_selection_auditor",
-    "prompt_genome_auditor",
-    "replication_auditor",
-    "shinka_adapter_auditor",
-    "statistical_governor",
-    "verifier_firewall_auditor",
-  ].sort(),
-);
-
-test("x02_contract: every RoleSpec compiles, and the roles without a file are named", () => {
-  assert.equal(binding.status, BINDING_STATUS.DEGRADED);
+test("x02_contract: every RoleSpec compiles to a live Claude agent", () => {
+  assert.equal(binding.status, BINDING_STATUS.BOUND);
+  assert.equal(binding.agentRoot, ".claude/agents");
   assert.equal(binding.agentTable.length, 28);
-  assert.deepEqual([...new Set(binding.findings.map((row) => row.code))], ["AGENT_FILE_MISSING"]);
-  assert.equal(binding.findings.length, 12);
-  assert.deepEqual(binding.missingRoleIds, EVOLUTION_ROLES);
-  assert.equal(binding.presentRoleIds.length, 16);
-  for (const finding of binding.findings) {
-    assert.equal(finding.path, `${ADAPTER_ROOT}/${finding.name}.md`);
-  }
+  assert.deepEqual(binding.findings, []);
+  assert.deepEqual(binding.missingRoleIds, []);
+  assert.equal(binding.presentRoleIds.length, 28);
 });
 
 test("x02_contract: every present agent file exists and belongs to a declared role", () => {
   for (const roleId of binding.presentRoleIds) {
     const descriptor = describeAgent(binding.agentTable, roleId);
-    assert.doesNotThrow(() => readRepo(`${ADAPTER_ROOT}/${descriptor.name}.md`));
+    assert.doesNotThrow(() => readRepo(`${binding.agentRoot}/${descriptor.name}.md`));
     assert.ok(descriptor.name.startsWith("ef-"));
   }
   assert.ok(binding.presentRoleIds.includes("judge"));

@@ -2339,7 +2339,7 @@ export declare const contractManifest: {
   readonly schema_count: 127;
   readonly example_count: 127;
   readonly schema_bundle_sha256: "sha256:ca2cae307a1d19f37504c27fc0e143fd22d0b94a7f1f93626c7c9a4dc74955cd";
-  readonly example_bundle_sha256: "sha256:6a3847eb8b95e23c8166a8889b1723c260c0fe9c63cc17c06bf010c1c6c538c2";
+  readonly example_bundle_sha256: "sha256:1014c532c1d5d8251f9848e2cbdb953480518477c312ef8f250c652701a6479d";
   readonly contracts: readonly GeneratedContractRecord[];
 };
 export declare const contractBySchemaFile: ReadonlyMap<string, GeneratedContractRecord>;

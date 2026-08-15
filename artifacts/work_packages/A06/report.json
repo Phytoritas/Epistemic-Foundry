@@ -1,197 +1,53 @@
 {
-  "schema_version": 1,
-  "work_package_id": "A06",
-  "attempt_id": "A06-0001",
-  "title": "Independent constitutional audit of evolution authority and non-mutable surfaces — v4 integration checkpoint",
-  "status": "FAIL",
-  "package_status": "FAIL",
-  "implementation_status": "AUDIT_COMPLETE_NONCONFORMANCE_REPRODUCED",
+  "attempt_id": "A06-0003",
   "completion_ready": false,
-  "authority": {
-    "decision_id": "HD-EF4-A05-C01-B04-20260727-001",
-    "contract_attempt": "A05-0002",
-    "dependency_status": "PASS",
-    "bound_artifact_count": 5,
-    "bound_artifact_hash_matches": 5,
-    "historical_a05_spec_gap_preserved": true
+  "evidence_artifacts": {
+    "attempts/0003/constitutional-audit-verification.json": "sha256:8f94d8b67cae5c47ca26b5f185d57dd9369897f023da79caf5f04c11eac75ee9",
+    "attempts/0003/report.json": "sha256:00b3bc5a0ffd3017049dad0d5c16252265968500319bb1cdcad92920a0851917",
+    "attempts/0003/review.md": "sha256:d6938c609dc2aed4a8f173a22694ab0a6b18ab5b1c91a5c4e339ffcbcb3a3716"
   },
-  "classification": {
-    "typed_outcome": "FAIL",
-    "not_spec_gap_reason": "A05-0002 unambiguously defines evaluator and holdout immutability, G00-G14, Parliament, attestation, approval, lease, CAS, and receipt requirements. The observed schema and workflow behavior fails that defined contract.",
-    "not_blocked_reason": "All violations reproduce locally without a missing credential, licensed source, external backend, or unavailable tool.",
-    "fail_closed_reason": "Non-waivable evaluator, holdout, promotion-authority, and receipt-path violations prohibit A06 PASS."
-  },
-  "blocking_findings": [
-    {
-      "finding_id": "A06-F001",
-      "severity": "CRITICAL",
-      "summary": "The canonical evaluator schema accepts candidate-readable and mutable-during-run evaluator bundles."
+  "findings": {
+    "A06-F001": {
+      "closed_by": "A06-0002",
+      "reconfirmed_by": "A06-0003",
+      "status": "PASS"
     },
-    {
-      "finding_id": "A06-F002",
-      "severity": "CRITICAL",
-      "summary": "The canonical holdout schema and runtime seal path accept candidate metadata or aggregate access instead of enforcing NONE."
+    "A06-F002": {
+      "closed_by": "A06-0002",
+      "reconfirmed_by": "A06-0003",
+      "status": "PASS"
     },
-    {
-      "finding_id": "A06-F003",
-      "severity": "CRITICAL",
-      "summary": "A provider-nondeterministic LLM node directly emits PromotionDecision immediately upstream of Passport issuance."
+    "A06-F003": {
+      "closed_by": "A06-0002",
+      "reconfirmed_by": "A06-0003",
+      "status": "PASS"
     },
-    {
-      "finding_id": "A06-F004",
-      "severity": "CRITICAL",
-      "summary": "The Passport path does not graph-enforce G00-G14, Parliament, attestation, approval, promotion lease, CAS, or resolving receipts."
+    "A06-F004": {
+      "closed_by": "A06-0002",
+      "reconfirmed_by": "A06-0003",
+      "status": "PASS"
     },
-    {
-      "finding_id": "A06-F005",
-      "severity": "HIGH",
-      "summary": "The bounded promotion helper is not bound to the canonical evolution workflow."
-    }
-  ],
-  "required_checks": {
-    "schema_and_type_check": {
-      "status": "FAIL",
-      "meta_schema_validation": "PASS_124_OF_124_UNIQUE_IDS",
-      "constitutional_invariant_enforcement": "FAIL_A06_F001_A06_F002"
-    },
-    "unit_and_contract_tests": {
-      "status": "PASS",
-      "passed": 214,
-      "failed": 0,
-      "skipped": 0,
-      "artifact": "artifacts/work_packages/A06/attempts/0001/targeted-regression.junit.xml"
-    },
-    "negative_and_adversarial_tests": {
-      "status": "FAIL",
-      "existing_filtered_suite": "13_PASSED",
-      "constitutional_hostile_fixtures": "FAIL_ACCEPTED_FORBIDDEN_STATES",
-      "artifact": "artifacts/work_packages/A06/attempts/0001/constitutional-audit-verification.json"
-    },
-    "provenance_and_receipt_audit": {
-      "status": "FAIL",
-      "finding_ids": [
-        "A06-F003",
-        "A06-F004",
-        "A06-F005"
-      ]
-    },
-    "independent_review": {
-      "status": "FAIL_CONFIRMED",
-      "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
-      "actor_independent_certification": false,
-      "artifact": "artifacts/work_packages/A06/attempts/0001/review.md"
+    "A06-F005": {
+      "closed_by": "A06-0003",
+      "note": "A06-0002 verified this by asserting one module prefix and two source substrings. The A05 promotion-runtime split made that proxy false while the finding stayed closed, so A06-0003 re-derives it from the A05 package boundary and the resolved executors.",
+      "status": "PASS"
     }
   },
-  "verification": {
-    "constitutional_verifier": {
-      "status": "EXPECTED_EXIT_1_AUDIT_FAIL",
-      "failed_finding_count": 5,
-      "deterministic_replays": 2,
-      "byte_identical": true,
-      "verifier_sha256": "sha256:f938f9d04db75e32962f09979c8daaa10597fbda1883aeb40f192bbc85830cda",
-      "result_sha256": "sha256:5c5c5ad88c5aba464ab007fb8ac278c5be8e2ada00c54726e816569702be7431"
-    },
-    "ruff": "PASS",
-    "source_compilation_without_bytecode": "PASS",
-    "targeted_python": "214_PASSED_0_FAILED_0_SKIPPED",
-    "filtered_adversarial_python": "13_PASSED_0_FAILED_0_SKIPPED",
-    "capability_and_fencing_node": "30_PASSED_0_FAILED_0_SKIPPED",
-    "full_python": "963_PASSED_1_PREEXISTING_J02_FAILURE_0_SKIPPED",
-    "new_a06_regression_count": 0,
-    "new_skip_or_xfail_count": 0
+  "history": {
+    "A06-0001": "FAIL - five constitutional findings reproduced against the then-current schemas and workflows. Preserved as immutable history.",
+    "A06-0002": "PASS - findings F001-F005 re-audited and closed after the A05/C01 corrections.",
+    "A06-0003": "PASS - F005 re-derived after the A05 promotion-runtime split; F001-F004 and schema-meta re-executed unchanged."
   },
-  "regression": {
-    "status": "PREEXISTING_J02_FAILURE_RECONCILED",
-    "full_python_tests": 964,
-    "full_python_passed": 963,
-    "full_python_failed": 1,
-    "failure_node_id": "tests.test_j02_context_budget::test_repository_dependency_lock_closes_exact_tiktoken_pin",
-    "failure_owner": "J02",
-    "a06_causal_impact": "NONE",
-    "repository_wide_green_claimed": false
-  },
-  "scope": {
-    "write_scope": [
-      "docs/v4_a06/**",
-      "artifacts/work_packages/A06/**"
-    ],
-    "product_files_modified": [],
-    "write_scope_violation_count": 0,
-    "subagents_or_fleet_used": false,
-    "actor_independent_certification_claimed": false,
-    "scratch_pycache_removed": true
-  },
-  "rah_state": {
-    "mode": "READ_ONLY",
-    "status": "blocked",
-    "implementation_gate": "fail",
-    "current_generation": "000081-843d5565",
-    "generation_manifest_sha256": "sha256:0aa10f1d9e112955401c56e4b7f07c6aedc490c973c27a2b4c872bd8c8869413",
-    "generation_payload_hashes_verified": 6,
-    "generation_payload_hash_mismatches": 0,
-    "latest_evidence_id": "E0084",
-    "evidence_appended_by_a06": false,
-    "generation_created_by_a06": false
-  },
-  "dependency_effect": {
-    "manifest_package_count": 156,
-    "latest_pass_count": 42,
-    "attempted_non_pass_count": 4,
-    "ready_packages_manifest_order": [
-      "J03"
-    ],
-    "direct_a06_dependents_waiting": [
-      "B05",
-      "C05",
-      "D05",
-      "E05",
-      "F05",
-      "G05",
-      "S05"
-    ]
-  },
-  "historical_and_worktree_preservation": {
-    "prior_attempts_reports_reviews_and_generations_preserved": true,
-    "dirty_worktree_preserved": true,
-    "reset_clean_stash_commit_push_performed": false,
-    "unrelated_product_files_modified_by_a06": false
-  },
-  "remediation_boundary": {
-    "status": "OWNER_AND_EXACT_WRITE_SCOPE_DECISION_REQUIRED",
-    "a06_itself_is_spec_gap": false,
-    "required_surfaces": [
-      "canonical evaluator and holdout schemas plus examples and tests",
-      "verifier-firewall runtime enforcement",
-      "canonical evolution workflow and promotion prompt boundary",
-      "G00-G14, Parliament, attestation, approval, lease, CAS, and receipt bindings",
-      "generated projections and B04 reprojection when root canonical artifacts change"
-    ],
-    "reason": "A06 is audit-only and has no authority to repair these product paths."
-  },
-  "review": {
-    "status": "FAIL_CONFIRMED",
-    "mode": "PRIMARY_SESSION_SEPARATE_ADVERSARIAL_REVIEW",
-    "blocking_finding_count": 5,
-    "actor_independent_certification": false,
-    "assurance_limitation": "The product owner prohibited Fleet and subagents; review is procedurally separate within the primary session and not actor-independent certification."
-  },
-  "evidence_artifacts": [
-    "docs/v4_a06/constitutional_audit.md",
-    "artifacts/work_packages/A06/attempts/0001/constitutional-audit-verifier.py",
-    "artifacts/work_packages/A06/attempts/0001/constitutional-audit-verification.json",
-    "artifacts/work_packages/A06/attempts/0001/targeted-regression.junit.xml",
-    "artifacts/work_packages/A06/attempts/0001/adversarial-regression.junit.xml",
-    "artifacts/work_packages/A06/attempts/0001/full-python-regression.junit.xml",
-    "artifacts/work_packages/A06/attempts/0001/dependency-status.json",
-    "artifacts/work_packages/A06/attempts/0001/full-regression-impact.json",
-    "artifacts/work_packages/A06/attempts/0001/rah-core-integrity.json",
-    "artifacts/work_packages/A06/attempts/0001/commands.jsonl",
-    "artifacts/work_packages/A06/attempts/0001/review.md",
-    "artifacts/work_packages/A06/attempts/0001/report.json"
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "A06 does not claim the evolutionary runtime, plugin runtime, or promotion chain is executable end to end.",
+    "The A05 promotion chain still needs the C01 transport schema and a node-payload delivery binding before it can run."
   ],
-  "next_state": {
-    "A06": "FAIL_WAITING_ON_BOUNDED_REMEDIATION_AUTHORITY",
-    "J03": "INDEPENDENT_DEPENDENCY_READY",
-    "completion_ready": false
-  }
+  "package_id": "A06",
+  "package_status": "PASS",
+  "status": "PASS",
+  "supersedes": [
+    "A06-0001",
+    "A06-0002"
+  ]
 }

@@ -32,8 +32,8 @@ export const ROLE_REGISTRY_PATH = "manifests/role_registry.yaml";
  * The adapter's own binding vocabulary, taken from `adapters/claude-code/README.md`:
  * "write-capable roles require isolated worktrees and disjoint write scopes."
  * A role whose custom-agent file is not yet generated does not refuse the
- * binding: it is a report.  BOUND means every declared role ships an agent file
- * that matches its RoleSpec; DEGRADED means the binding is sound but some agent
+ * binding: it is a report.  BOUND means every declared role ships a live agent file
+ * whose bound frontmatter matches its RoleSpec-derived descriptor; DEGRADED means the binding is sound but some agent
  * files are not generated at this revision, and those roles are named rather
  * than implied.
  */

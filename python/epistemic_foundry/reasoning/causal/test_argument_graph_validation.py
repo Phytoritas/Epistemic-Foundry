@@ -135,7 +135,7 @@ def test_a_live_competing_explanation_caps_identification() -> None:
     record = evaluate(clean_graph(), mode_verdicts=modes(standing_conflicts=2)).payload
 
     assert record["identification_ceiling"] == Identification.ASSUMPTION_DEPENDENT.value
-    assert record["identification_status"] == Identification.ASSUMPTION_DEPENDENT.value
+    assert record["identification_status"] == Identification.NOT_IDENTIFIED.value
     assert (
         "2 conflict(s) still carry competing explanations" in record["ceiling_reasons"]
     )
@@ -156,7 +156,8 @@ def test_a_conditional_deductive_trace_caps_at_assumption_dependent() -> None:
         clean_graph(), mode_verdicts=modes(deductive_status="CONDITIONAL")
     ).payload
 
-    assert record["identification_status"] == Identification.ASSUMPTION_DEPENDENT.value
+    assert record["identification_ceiling"] == Identification.ASSUMPTION_DEPENDENT.value
+    assert record["identification_status"] == Identification.NOT_IDENTIFIED.value
     assert (
         "the deductive trace depends on ledgered assumptions"
         in record["ceiling_reasons"]
@@ -168,7 +169,8 @@ def test_an_incomplete_inductive_synthesis_caps_at_assumption_dependent() -> Non
         clean_graph(), mode_verdicts=modes(inductive_status="PARTIAL")
     ).payload
 
-    assert record["identification_status"] == Identification.ASSUMPTION_DEPENDENT.value
+    assert record["identification_ceiling"] == Identification.ASSUMPTION_DEPENDENT.value
+    assert record["identification_status"] == Identification.NOT_IDENTIFIED.value
     assert "inductive synthesis is not complete" in record["ceiling_reasons"]
 
 
@@ -223,7 +225,80 @@ def test_a_sealed_gate_may_not_exceed_its_recorded_ceiling() -> None:
     with pytest.raises(CausalGateError) as caught:
         validate_causal_gate(payload)
 
-    assert caught.value.code == "CAUSAL_OVERCLAIM"
+    assert caught.value.code == "IDENTIFICATION_STATUS_MISMATCH"
+
+
+@pytest.mark.parametrize("value", [False, "0", 0.5, -1])
+def test_aporia_conflict_count_is_not_coerced(value: object) -> None:
+    verdicts = modes()
+    abductive = next(
+        entry for entry in verdicts if entry["mode"] == InferenceMode.ABDUCTIVE.value
+    )
+    abductive["detail"]["standing_conflict_count"] = value
+
+    with pytest.raises(CausalGateError) as caught:
+        evaluate(clean_graph(), mode_verdicts=verdicts)
+
+    assert caught.value.code == "INPUT_INVALID"
+
+
+def test_rehashing_a_mode_detail_cannot_launder_the_ceiling() -> None:
+    from .contracts import _hash_excluding
+
+    payload = evaluate(clean_graph()).payload
+    abductive = next(
+        entry
+        for entry in payload["mode_verdicts"]
+        if entry["mode"] == InferenceMode.ABDUCTIVE.value
+    )
+    abductive["detail"]["standing_conflict_count"] = 1
+    payload["gate_hash"] = _hash_excluding(payload, "gate_hash")
+
+    with pytest.raises(CausalGateError) as caught:
+        validate_causal_gate(payload)
+
+    assert caught.value.code == "CEILING_MISMATCH"
+
+
+def test_rehashing_a_failed_assessment_as_satisfied_is_rejected() -> None:
+    from .contracts import _hash_excluding
+
+    payload = evaluate(collider_graph(), conditioned_on=["C"]).payload
+    payload["assessments"]["collider"]["satisfied"] = True
+    payload["gate_hash"] = _hash_excluding(payload, "gate_hash")
+
+    with pytest.raises(CausalGateError) as caught:
+        validate_causal_gate(payload)
+
+    assert caught.value.code == "ASSESSMENT_INCONSISTENT"
+
+
+def test_gate_assessments_must_share_the_exact_mechanism_graph_hash() -> None:
+    from .contracts import _hash_excluding
+
+    payload = evaluate(clean_graph()).payload
+    payload["mechanism_graph_hash"] = "sha256:" + "f" * 64
+    payload["gate_hash"] = _hash_excluding(payload, "gate_hash")
+
+    with pytest.raises(CausalGateError) as caught:
+        validate_causal_gate(payload)
+
+    assert caught.value.code == "ASSESSMENT_BINDING_MISMATCH"
+
+
+def test_rehashing_time_order_as_established_is_fail_closed() -> None:
+    from .contracts import _hash_excluding
+
+    payload = evaluate(clean_graph()).payload
+    payload["assessments"]["time_order"]["edge_states"]["E-1"] = "ESTABLISHED"
+    payload["assessments"]["time_order"]["unestablished_edge_ids"] = []
+    payload["assessments"]["time_order"]["satisfied"] = True
+    payload["gate_hash"] = _hash_excluding(payload, "gate_hash")
+
+    with pytest.raises(CausalGateError) as caught:
+        validate_causal_gate(payload)
+
+    assert caught.value.code == "TIME_ORDER_UNQUALIFIED"
 
 
 def test_a_sealed_gate_missing_an_assessment_is_rejected() -> None:
@@ -243,18 +318,16 @@ def test_an_edge_endpoint_must_reference_a_declared_node() -> None:
     from .contracts import seal_mechanism_graph
     from .test_causal_overclaim import edge, node
 
-    payload = seal_mechanism_graph(
-        {
-            "assumptions": [],
-            "edges": [edge("E-1", "X", "GHOST")],
-            "graph_hash": "sha256:" + "0" * 64,
-            "identification_status": Identification.NOT_ASSESSED.value,
-            "mechanism_graph_id": "MG-1",
-            "nodes": [node("X", "cause")],
-        }
-    )
-
     with pytest.raises(CausalGateError) as caught:
-        evaluate(payload)
+        seal_mechanism_graph(
+            {
+                "assumptions": [],
+                "edges": [edge("E-1", "X", "GHOST")],
+                "graph_hash": "sha256:" + "0" * 64,
+                "identification_status": Identification.NOT_ASSESSED.value,
+                "mechanism_graph_id": "MG-1",
+                "nodes": [node("X", "cause")],
+            }
+        )
 
     assert caught.value.code == "EDGE_UNRESOLVED"

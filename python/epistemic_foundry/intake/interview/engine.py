@@ -633,12 +633,6 @@ def build_interview_plan(
         contradiction_by_id,
     )
     known_dimensions = {fact.dimension for fact in facts}
-    for record in history:
-        if (
-            record.target_type is QuestionTargetType.DIMENSION
-            and record.state is PriorQuestionState.ANSWERED
-        ):
-            known_dimensions.add(InterviewDimension(record.target_id))
 
     critical_by_dimension: dict[InterviewDimension, list[InterviewNeed]] = {}
     deferred_noncritical = []
@@ -723,7 +717,10 @@ def build_interview_plan(
                 contradiction = contradiction_by_id[question.target_id]
                 if contradiction.disposition is ContradictionDisposition.UNRESOLVED:
                     pending.add(question.question_id)
-            elif prior.state is PriorQuestionState.ASKED:
+            elif prior.state in (
+                PriorQuestionState.ASKED,
+                PriorQuestionState.ANSWERED,
+            ):
                 pending.add(question.question_id)
 
     if blockers:

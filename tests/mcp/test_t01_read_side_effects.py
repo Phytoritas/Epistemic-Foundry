@@ -72,7 +72,12 @@ def test_t01_read_side_effects_result_mutation_cannot_reach_the_provider() -> No
 
 def test_t01_read_side_effects_failed_calls_also_leave_no_trace() -> None:
     service, read_port, compiler, store = build_service()
-    read_port.records["read_claim"] = {"found": False, "state": "READY", "data": None}
+    read_port.records["read_claim"] = {
+        "found": False,
+        "state": "EMPTY_CONFIRMED",
+        "data": None,
+        "reason": None,
+    }
     before = read_port.snapshot()
 
     for auth, request in (

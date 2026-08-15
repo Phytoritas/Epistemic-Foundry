@@ -165,6 +165,26 @@ test("g05_surface: the loaded surface is frozen", () => {
   assert.throws(() => {
     loaded.surface = null;
   }, TypeError);
+
+  const skill = loaded.surface.skills[0];
+  const authorityCommand = loaded.authorityBearingCommands[0];
+  assert.ok(Object.isFrozen(loaded.surface));
+  assert.ok(Object.isFrozen(skill.available_commands));
+  assert.ok(Object.isFrozen(loaded.inventory.budgets));
+  assert.ok(Object.isFrozen(loaded.projectedCommands[0]));
+  assert.throws(() => skill.available_commands.push(authorityCommand), TypeError);
+  assert.throws(() => {
+    loaded.inventory.budgets.activation_max_o200k_tokens = 0;
+  }, TypeError);
+  assert.equal("set" in loaded.agentCards, false);
+  assert.equal("set" in loaded.referencesById, false);
+  assert.throws(() => Map.prototype.set.call(loaded.agentCards, "forged", {}), TypeError);
+  assert.throws(() => Map.prototype.set.call(loaded.referencesById, "forged", {}), TypeError);
+
+  const immutableReceipt = surfaceReceipt(loaded);
+  assert.ok(Object.isFrozen(immutableReceipt));
+  assert.ok(Object.isFrozen(immutableReceipt.sources));
+  assert.ok(immutableReceipt.sources.every((row) => Object.isFrozen(row)));
 });
 
 test("g05_surface: the surface claims three of the four mutable genome kinds", () => {

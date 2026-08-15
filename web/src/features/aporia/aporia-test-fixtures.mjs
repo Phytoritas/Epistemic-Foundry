@@ -6,10 +6,32 @@
  * shallow override object so a single adversarial field can be perturbed.
  */
 
-const hash = (character) => `sha256:${character.repeat(64)}`;
-
-export const GRAPH_HASH = hash("a");
+export const GRAPH_HASH =
+  "sha256:753e780e02eb9e32c3b3f0738daa4b998b4c1f62eeadd45bc9e903632d5f3b9f";
 export const RUN_ID = "RUN-0001";
+
+const scopeVector = () => ({
+  domain: null,
+  population: null,
+  entity_type: null,
+  entity_subtype: null,
+  unit_of_analysis: null,
+  setting: "greenhouse",
+  geography: null,
+  jurisdiction: null,
+  language: null,
+  lifecycle_stage: null,
+  spatial_scale: null,
+  temporal_scale: null,
+  time_period: null,
+  measurement_time: null,
+  intervention_or_exposure: null,
+  comparator: null,
+  inclusion_criteria: [],
+  exclusion_criteria: [],
+  conditions: {},
+  domain_extensions: {},
+});
 
 /** One argument node, overridable field by field. */
 export const node = (overrides = {}) => ({
@@ -17,7 +39,7 @@ export const node = (overrides = {}) => ({
   node_type: "premise",
   statement: "The greenhouse trials report a positive yield response.",
   evidence_ids: ["EV-0001"],
-  scope: { setting: "greenhouse" },
+  scope: scopeVector(),
   status: "accepted",
   ...overrides,
 });

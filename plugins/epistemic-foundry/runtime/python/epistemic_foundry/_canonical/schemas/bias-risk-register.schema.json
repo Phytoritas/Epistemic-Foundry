@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/bias-risk-register.schema.json",
+  "title": "BiasRiskRegister",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "register_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "risk_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "risk_type": {
+            "enum": [
+              "publication_bias",
+              "selection_bias",
+              "measurement_bias",
+              "confounding",
+              "survivorship_bias",
+              "citation_bias",
+              "language_bias",
+              "geographic_bias",
+              "time_lag_bias",
+              "availability_bias",
+              "model_bias",
+              "prompt_bias",
+              "corpus_bias",
+              "other"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical",
+              "unknown"
+            ]
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mitigation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "residual_risk": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "unknown"
+            ]
+          }
+        },
+        "required": [
+          "risk_id",
+          "risk_type",
+          "severity",
+          "evidence_ids",
+          "mitigation",
+          "residual_risk"
+        ]
+      }
+    },
+    "overall_residual_risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "unknown"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "register_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "register_id",
+    "subject_id",
+    "risks",
+    "overall_residual_risk",
+    "created_at",
+    "register_hash"
+  ]
+}

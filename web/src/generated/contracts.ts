@@ -2,7 +2,7 @@
 // These UI descriptors project canonical schemas; they are not a replacement validator.
 
 export const contractBundleSha256 = "sha256:ca2cae307a1d19f37504c27fc0e143fd22d0b94a7f1f93626c7c9a4dc74955cd" as const;
-export const exampleBundleSha256 = "sha256:6a3847eb8b95e23c8166a8889b1723c260c0fe9c63cc17c06bf010c1c6c538c2" as const;
+export const exampleBundleSha256 = "sha256:1014c532c1d5d8251f9848e2cbdb953480518477c312ef8f250c652701a6479d" as const;
 export const uiContracts = {
   "ActionIntent": {
     "schemaId": "https://epistemic-foundry.local/schemas/action-intent.schema.json",

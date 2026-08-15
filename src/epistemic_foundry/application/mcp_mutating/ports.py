@@ -1,8 +1,10 @@
-"""Injected ports for the T02 mutation lifecycle.
+"""Injected ports for the T02 mutation runtime.
 
-Every authority and evidence artifact is created by the server behind these
-ports.  A client may never supply a CapabilityLease or an EffectReceipt, and
-no port here reaches a live store: kernel binding is a later work package.
+Production mutation handling crosses one compound runtime boundary.  The
+runtime owns authority, idempotency, effects, and receipts and returns the
+existing T02 mutation-result payload directly.  The finer-grained value and
+port types below remain available to the reconciliation code that still uses
+them; the production MCP handler does not compose them.
 """
 
 from __future__ import annotations
@@ -10,6 +12,8 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any, Final, Protocol
+
+from ..mcp_common.contracts import AuthContext
 
 #: EffectReceipt statuses (schemas/effect-receipt.schema.json).  This module is
 #: the single declaring site for the effect-status vocabulary in this package;
@@ -35,8 +39,40 @@ STATUS_PROJECTION: Final = {
 }
 #: The synthetic operation id a dry run records instead of a real effect.
 DRY_RUN_OPERATION_ID: Final = "urn:epistemic-foundry:non-effect:dry-run"
-#: Recorded when an intent exists but the external operation was never observed.
-UNOBSERVED_OPERATION_ID: Final = "urn:epistemic-foundry:unobserved-effect"
+
+
+@dataclass(frozen=True, slots=True)
+class MutationRuntimeRequest:
+    """One already-validated mutation invocation at the runtime boundary."""
+
+    tool_name: str
+    handler_operation: str
+    capability: str
+    risk_class: str
+    approval_class: str
+    expected_revision_required: bool
+    validated_arguments: Mapping[str, Any]
+    auth: AuthContext
+    semantic_fingerprint: str
+    request_id: str
+    generated_at: str
+
+
+class MutationRuntimePort(Protocol):
+    """Execute the complete mutation lifecycle behind one runtime call."""
+
+    def execute(self, request: MutationRuntimeRequest) -> Mapping[str, Any]: ...
+
+
+class MutationRuntimeUnavailable(RuntimeError):
+    """The runtime could not start an effect for a stable public reason."""
+
+    def __init__(self, reason: str) -> None:
+        normalized = reason.strip()
+        if not normalized:
+            raise ValueError("a mutation runtime unavailability reason is required")
+        self.reason = normalized
+        super().__init__(normalized)
 
 
 @dataclass(frozen=True, slots=True)
@@ -86,8 +122,22 @@ class Reservation:
     idempotency_key: str
     fingerprint: str
     created: bool
+    revision: int = 0
     stored_intent_id: str | None = None
+    stored_attempt_id: str | None = None
     stored_receipt_id: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class AttemptTransition:
+    """Linearizable durable-Attempt transition for one reservation."""
+
+    attempt: Mapping[str, Any]
+    attempt_id: str
+    intent_id: str
+    started_at: str
+    reservation: Reservation
+    execute_permitted: bool
 
 
 @dataclass(frozen=True, slots=True)
@@ -100,7 +150,7 @@ class EffectOutcome:
     """
 
     status: str
-    external_operation_id: str
+    external_operation_id: str | None
     observed_state_hash: str
     new_revision: str | None = None
     result_artifact_ids: tuple[str, ...] = field(default_factory=tuple)
@@ -140,11 +190,41 @@ class CapabilityLeasePort(Protocol):
 
 
 class IdempotencyReservationPort(Protocol):
+    """Monotonic lifecycle CAS; only a fresh durable Attempt permits execution."""
+
     def reserve(self, *, idempotency_key: str, fingerprint: str) -> Reservation: ...
 
-    def bind(
-        self, *, idempotency_key: str, intent_id: str, receipt_id: str
-    ) -> None: ...
+    def bind_intent(
+        self,
+        *,
+        idempotency_key: str,
+        fingerprint: str,
+        expected_revision: int,
+        intent_id: str,
+    ) -> Reservation: ...
+
+    def begin_attempt(
+        self,
+        *,
+        idempotency_key: str,
+        fingerprint: str,
+        expected_revision: int,
+        intent_id: str,
+        intent_hash: str,
+        attempt_id: str,
+        started_at: str,
+        dry_run: bool,
+    ) -> AttemptTransition: ...
+
+    def bind_receipt(
+        self,
+        *,
+        idempotency_key: str,
+        fingerprint: str,
+        expected_revision: int,
+        attempt_id: str,
+        receipt_id: str,
+    ) -> Reservation: ...
 
 
 class RevisionPort(Protocol):
@@ -152,6 +232,8 @@ class RevisionPort(Protocol):
 
 
 class ActionIntentStorePort(Protocol):
+    """Create-or-load immutable ActionIntents by deterministic identity."""
+
     def persist(self, intent: Mapping[str, Any]) -> Mapping[str, Any]: ...
 
 
@@ -175,6 +257,16 @@ class EffectExecutorPort(Protocol):
 
 
 class EffectReceiptStorePort(Protocol):
-    def persist(self, receipt: Mapping[str, Any]) -> Mapping[str, Any]: ...
+    """Append-only Attempt receipt lineage with deterministic current tails."""
+
+    def persist(
+        self, receipt: Mapping[str, Any], *, attempt_id: str | None = None
+    ) -> Mapping[str, Any]: ...
 
     def find(self, receipt_id: str) -> Mapping[str, Any] | None: ...
+
+    def find_for_attempt(self, attempt_id: str) -> Mapping[str, Any] | None: ...
+
+    def precedes(
+        self, *, attempt_id: str, receipt_id: str, tail_receipt_id: str
+    ) -> bool: ...

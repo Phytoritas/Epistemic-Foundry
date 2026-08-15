@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/challenge-result.schema.json",
+  "title": "ChallengeResult",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "challenge_result_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "challenge_genome_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage_result_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outcome": {
+      "enum": [
+        "SURVIVED",
+        "REFUTED",
+        "SCOPE_RESTRICTED",
+        "METHOD_FAILURE",
+        "INCONCLUSIVE",
+        "ERROR"
+      ]
+    },
+    "severity": {
+      "enum": [
+        "critical",
+        "major",
+        "minor"
+      ]
+    },
+    "observed_effect": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reproduction_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "result_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "challenge_result_id",
+    "challenge_genome_id",
+    "target_candidate_id",
+    "stage_result_id",
+    "outcome",
+    "severity",
+    "observed_effect",
+    "reproduction_artifact_ids",
+    "result_hash"
+  ],
+  "description": "반증 challenge가 후보를 어떤 조건에서 무너뜨리거나 경계를 좁혔는지 기록한다."
+}

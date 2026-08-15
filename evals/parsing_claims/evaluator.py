@@ -486,21 +486,31 @@ def evaluate(payload: Mapping[str, Any], repository_root: str | Path) -> SealedR
         else 2 * precision * recall / (precision + recall)
     )
 
-    promoted = sorted(
-        predicted_keyed[key]["claim_id"]
+    eligible_keys = [
+        key
         for key in matched_keys
         if gold_keyed[key]["evidence_layer"] == UNSUPPORTED_LAYER
-        and predicted_keyed[key]["evidence_layer"] != UNSUPPORTED_LAYER
+    ]
+    promoted = sorted(
+        predicted_keyed[key]["claim_id"]
+        for key in eligible_keys
+        if predicted_keyed[key]["evidence_layer"] != UNSUPPORTED_LAYER
     )
+    promotion_denominator = len(eligible_keys)
     promotion: dict[str, Any] = {
         "claim_ids": promoted,
         "count": len(promoted),
-        "denominator": true_positive,
-        "rate": None if true_positive == 0 else len(promoted) / true_positive,
+        "denominator": promotion_denominator,
+        "rate": (
+            None
+            if promotion_denominator == 0
+            else len(promoted) / promotion_denominator
+        ),
     }
-    if true_positive == 0:
+    if promotion_denominator == 0:
         promotion["reason"] = (
-            "no matched pair exists, so promotion is undefined rather than zero"
+            "no matched gold-unsupported pair exists, so promotion is undefined "
+            "rather than zero"
         )
 
     report: dict[str, Any] = {

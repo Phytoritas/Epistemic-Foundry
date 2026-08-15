@@ -14,6 +14,8 @@ from .contracts import (
     assemble_evidence_pack,
     build_dependency_clusters,
     validate_evidence_dependency_cluster,
+    validate_evidence_dependency_cluster_shape,
+    validate_evidence_dependency_clusters_from_sources,
     validate_evidence_pack,
 )
 
@@ -31,5 +33,7 @@ __all__ = [
     "assemble_evidence_pack",
     "build_dependency_clusters",
     "validate_evidence_dependency_cluster",
+    "validate_evidence_dependency_cluster_shape",
+    "validate_evidence_dependency_clusters_from_sources",
     "validate_evidence_pack",
 ]

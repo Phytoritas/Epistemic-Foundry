@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/backend-adapter-qualification.schema.json",
+  "title": "BackendAdapterQualification",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "qualification_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "backend_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability_tests": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "deterministic_seed": {
+          "type": "boolean"
+        },
+        "sandbox_isolation": {
+          "type": "boolean"
+        },
+        "candidate_count_reconciliation": {
+          "type": "boolean"
+        },
+        "effect_receipts": {
+          "type": "boolean"
+        },
+        "resume_integrity": {
+          "type": "boolean"
+        },
+        "evaluator_separation": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "deterministic_seed",
+        "sandbox_isolation",
+        "candidate_count_reconciliation",
+        "effect_receipts",
+        "resume_integrity",
+        "evaluator_separation"
+      ]
+    },
+    "known_limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "status": {
+      "enum": [
+        "QUALIFIED",
+        "CONDITIONAL",
+        "REJECTED"
+      ]
+    },
+    "allowed_release_level": {
+      "type": "string",
+      "minLength": 1
+    },
+    "qualification_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "qualification_id",
+    "backend_manifest_id",
+    "capability_tests",
+    "known_limitations",
+    "status",
+    "allowed_release_level",
+    "qualification_hash"
+  ],
+  "description": "외부 진화 백엔드가 격리·재현·영수증·중단 계약을 지키는지 검증한다."
+}

@@ -1238,28 +1238,113 @@ const assertExternalRecordType = (recordType) => {
   return type;
 };
 
-const createLeaseCommitStore = (store) =>
+const normalizeExternalRecordTypeAllowlist = (candidate) => {
+  const recordTypes = requireStringArray(candidate, "allowedRecordTypes", {
+    minItems: 1,
+    unique: true,
+    sort: true,
+  });
+  for (const recordType of recordTypes) assertExternalRecordType(recordType);
+  return new Set(recordTypes);
+};
+
+const assertAllowedExternalRecordType = (recordType, allowedRecordTypes) => {
+  const type = assertExternalRecordType(recordType);
+  if (allowedRecordTypes !== null && !allowedRecordTypes.has(type)) {
+    fail(
+      "CAPABILITY_STATE_ACCESS_DENIED",
+      "lease callback record type is outside its explicit allowlist",
+      { recordType: type },
+    );
+  }
+  return type;
+};
+
+const createLeaseCommitStore = (store, allowedRecordTypes = null) =>
   OBJECT_FREEZE({
     readRevisionedRecord(recordType, recordId) {
-      return store.readRevisionedRecord(assertExternalRecordType(recordType), recordId);
+      return store.readRevisionedRecord(
+        assertAllowedExternalRecordType(recordType, allowedRecordTypes),
+        recordId,
+      );
     },
     createRevisionedRecord(candidate) {
       const command = requirePlainDataObject(candidate, "create record command", {
         allowedKeys: ["recordType", "recordId", "value"],
       });
-      assertExternalRecordType(readDataProperty(command, "recordType"));
+      assertAllowedExternalRecordType(
+        readDataProperty(command, "recordType"),
+        allowedRecordTypes,
+      );
       return store.createRevisionedRecord(command);
     },
     compareAndSwapRevision(candidate) {
       const command = requirePlainDataObject(candidate, "compare-and-swap command", {
         allowedKeys: ["recordType", "recordId", "expectedRevision", "value"],
       });
-      assertExternalRecordType(readDataProperty(command, "recordType"));
+      assertAllowedExternalRecordType(
+        readDataProperty(command, "recordType"),
+        allowedRecordTypes,
+      );
       return store.compareAndSwapRevision(command);
     },
   });
 
+const readLeaseUseRecord = (store, operationId) => {
+  const recordId = operationRecordId(operationId);
+  const record = store.readRevisionedRecord(CAPABILITY_RECORD_TYPES.LEASE_USE, recordId);
+  if (record === null) return null;
+  const use = requirePlainDataObject(
+    requireImmutableRecord(
+      record,
+      "lease use",
+      CAPABILITY_RECORD_TYPES.LEASE_USE,
+      recordId,
+    ),
+    "lease use",
+    {
+      allowedKeys: [
+        "operation_id",
+        "request_hash",
+        "lease_id",
+        "fencing_token",
+        "committed_at",
+        "result",
+        "outbox_id",
+      ],
+      code: "CAPABILITY_STATE_INTEGRITY_FAILED",
+    },
+  );
+  if (
+    readDataProperty(use, "operation_id") !== operationId ||
+    !SHA256_PATTERN.test(readDataProperty(use, "request_hash")) ||
+    !NUMBER_IS_SAFE_INTEGER(readDataProperty(use, "fencing_token")) ||
+    readDataProperty(use, "fencing_token") < 1
+  ) {
+    fail("CAPABILITY_STATE_INTEGRITY_FAILED", "lease use identity is invalid", {
+      operationId,
+    });
+  }
+  requireNonEmptyString(
+    readDataProperty(use, "lease_id"),
+    "lease use.lease_id",
+    "CAPABILITY_STATE_INTEGRITY_FAILED",
+  );
+  requireTimestamp(
+    readDataProperty(use, "committed_at"),
+    "lease use.committed_at",
+    "CAPABILITY_STATE_INTEGRITY_FAILED",
+  );
+  requireNonEmptyString(
+    readDataProperty(use, "outbox_id"),
+    "lease use.outbox_id",
+    "CAPABILITY_STATE_INTEGRITY_FAILED",
+  );
+  return OBJECT_FREEZE({ recordId, use: canonicalClone(use) });
+};
+
 const CONSTRUCTOR_TOKEN = Symbol("CapabilityAuthority");
+const CAPABILITY_AUTHORITY_DEPENDENCY_IDENTITIES = new WeakMap();
 
 export class CapabilityAuthority {
   #artifactStore;
@@ -1286,6 +1371,15 @@ export class CapabilityAuthority {
     );
     this.#capabilityRules = new Map(
       this.#policy.capability_rules.map((entry) => [entry.capability, entry]),
+    );
+    CAPABILITY_AUTHORITY_DEPENDENCY_IDENTITIES.set(
+      this,
+      OBJECT_FREEZE({
+        artifactStore: dependencies.artifactStore,
+        ledger: dependencies.ledger,
+        stateStore: dependencies.stateStore,
+        clock: dependencies.clock,
+      }),
     );
   }
 
@@ -1348,6 +1442,11 @@ export class CapabilityAuthority {
         });
       }
     }
+    const requiresApproval = command.capabilities.some(
+      (capability) =>
+        this.#capabilityRules.get(capability).required_approval_type !== null,
+    );
+    if (!requiresApproval) return;
     const subject = this.#subjects.get(command.lease_id);
     if (subject === undefined) {
       fail("LEASE_SUBJECT_UNKNOWN", "lease is absent from the sealed subject registry", {
@@ -1573,6 +1672,13 @@ export class CapabilityAuthority {
           approvalId,
           authorityId: approval.authority_id,
         });
+      }
+      if (approval.conditions.length > 0) {
+        fail(
+          "APPROVAL_CONDITIONS_UNASSESSED",
+          "conditional approval cannot authorize a lease without assessed condition results",
+          { approvalId },
+        );
       }
       matched.add(approval.approval_type);
     }
@@ -1983,7 +2089,7 @@ export class CapabilityAuthority {
     return result.lease;
   }
 
-  commitWithLease(candidate, callback) {
+  #commitWithLeaseCore(candidate, callback, allowedRecordTypes) {
     if (typeof callback !== "function") fail("INVALID_INPUT", "lease commit callback must be a function");
     const command = requirePlainDataObject(candidate, "lease use command", {
       allowedKeys: USE_COMMAND_KEYS,
@@ -2011,34 +2117,22 @@ export class CapabilityAuthority {
     });
     const recordId = operationRecordId(normalized.operation_id);
     const transactionResult = this.#stateStore.transaction((store) => {
-      const existing = store.readRevisionedRecord(CAPABILITY_RECORD_TYPES.LEASE_USE, recordId);
+      const existing = readLeaseUseRecord(store, normalized.operation_id);
       if (existing !== null) {
-        const use = requirePlainDataObject(
-          requireImmutableRecord(existing, "lease use", CAPABILITY_RECORD_TYPES.LEASE_USE, recordId),
-          "lease use",
-          {
-            allowedKeys: [
-              "operation_id",
-              "request_hash",
-              "lease_id",
-              "fencing_token",
-              "committed_at",
-              "result",
-              "outbox_id",
-            ],
-            code: "CAPABILITY_STATE_INTEGRITY_FAILED",
-          },
-        );
+        const { use } = existing;
         if (readDataProperty(use, "request_hash") !== requestHash) {
           fail("LEASE_OPERATION_CONFLICT", "operation ID is bound to another lease request");
         }
-        return OBJECT_FREEZE({ status: "EXISTING", use: canonicalClone(use) });
+        return OBJECT_FREEZE({ status: "EXISTING", use });
       }
       const startedAt = this.#now();
       const lease = this.#assertCurrentLease(store, normalized.lease, normalized, startedAt);
       let callbackResult;
       try {
-        callbackResult = callback(createLeaseCommitStore(store), lease);
+        callbackResult = callback(
+          createLeaseCommitStore(store, allowedRecordTypes),
+          lease,
+        );
       } catch (error) {
         if (error instanceof CapabilityAuthorityError) throw error;
         fail(
@@ -2098,13 +2192,46 @@ export class CapabilityAuthority {
       });
       return OBJECT_FREEZE({ status: "COMMITTED", use });
     });
-    this.#publish(transactionResult.use.outbox_id);
+    return OBJECT_FREEZE({ recordId, transactionResult });
+  }
+
+  commitWithLease(candidate, callback) {
+    const { recordId, transactionResult } = this.#commitWithLeaseCore(
+      candidate,
+      callback,
+      null,
+    );
+    const published = this.#publish(transactionResult.use.outbox_id);
     return OBJECT_FREEZE({
       status: transactionResult.status,
       operation_id: transactionResult.use.operation_id,
       lease_id: transactionResult.use.lease_id,
       fencing_token: transactionResult.use.fencing_token,
       result: transactionResult.use.result,
+      lease_use_id: recordId,
+      lease_use_hash: sha256CanonicalJson(transactionResult.use),
+      event_record_id: published.event_id,
+      event_record_hash: published.event_hash,
+    });
+  }
+
+  commitWithLeaseDeferredEvent(candidate, callback, allowedRecordTypes) {
+    const allowlist = normalizeExternalRecordTypeAllowlist(allowedRecordTypes);
+    const { recordId, transactionResult } = this.#commitWithLeaseCore(
+      candidate,
+      callback,
+      allowlist,
+    );
+    return OBJECT_FREEZE({
+      status: transactionResult.status,
+      operation_id: transactionResult.use.operation_id,
+      lease_id: transactionResult.use.lease_id,
+      fencing_token: transactionResult.use.fencing_token,
+      result: transactionResult.use.result,
+      lease_use_id: recordId,
+      lease_use_hash: sha256CanonicalJson(transactionResult.use),
+      event_outbox_id: transactionResult.use.outbox_id,
+      event_publication_status: "DEFERRED",
     });
   }
 
@@ -2194,6 +2321,89 @@ export class CapabilityAuthority {
     return result.lease;
   }
 
+  inspectLeaseUse(operationId) {
+    const id = requireNonEmptyString(operationId, "operationId");
+    return this.#stateStore.transaction((store) => {
+      const record = readLeaseUseRecord(store, id);
+      if (record === null) return null;
+      const { recordId, use } = record;
+      const identity = outboxIdentity("lease-use", id);
+      const outboxRecord = store.readRevisionedRecord(
+        CAPABILITY_RECORD_TYPES.OUTBOX,
+        identity.outboxId,
+      );
+      if (
+        outboxRecord === null ||
+        outboxRecord.recordType !== CAPABILITY_RECORD_TYPES.OUTBOX ||
+        outboxRecord.recordId !== identity.outboxId
+      ) {
+        fail("CAPABILITY_STATE_INTEGRITY_FAILED", "lease use event outbox is missing", {
+          operationId: id,
+        });
+      }
+      const outbox = validateOutbox(outboxRecord.value);
+      if (
+        outboxRecord.revision !== (outbox.published ? 1 : 0) ||
+        use.outbox_id !== identity.outboxId ||
+        outbox.outbox_id !== identity.outboxId ||
+        outbox.event_id !== identity.eventId ||
+        outbox.payload_artifact_id !== identity.artifactId ||
+        outbox.event_type !== CAPABILITY_EVENT_TYPES.LEASE_USE_COMMITTED ||
+        outbox.aggregate_type !== "capability_lease" ||
+        outbox.aggregate_id !== use.lease_id ||
+        !sameCanonical(outbox.payload, { use })
+      ) {
+        fail("CAPABILITY_STATE_INTEGRITY_FAILED", "lease use event binding is invalid", {
+          operationId: id,
+        });
+      }
+      return OBJECT_FREEZE({
+        status: "COMMITTED",
+        operation_id: use.operation_id,
+        request_hash: use.request_hash,
+        lease_id: use.lease_id,
+        fencing_token: use.fencing_token,
+        result: use.result,
+        lease_use_id: recordId,
+        lease_use_hash: sha256CanonicalJson(use),
+        event_outbox_id: outbox.outbox_id,
+        event_publication_status: outbox.published
+          ? "PUBLISHED"
+          : "PENDING_EVENT_RECONCILIATION",
+        event: OBJECT_FREEZE({
+          event_id: outbox.event_id,
+          run_id: outbox.run_id,
+          event_type: outbox.event_type,
+          aggregate_type: outbox.aggregate_type,
+          aggregate_id: outbox.aggregate_id,
+          actor_id: outbox.actor_id,
+          payload_artifact_id: outbox.payload_artifact_id,
+          occurred_at: outbox.occurred_at,
+          schema_version: EVENT_SCHEMA_VERSION,
+          event_hash: outbox.event_hash,
+        }),
+      });
+    });
+  }
+
+  reconcileLeaseUseEvent(operationId) {
+    const id = requireNonEmptyString(operationId, "operationId");
+    const before = this.inspectLeaseUse(id);
+    if (before === null) {
+      fail("CAPABILITY_STATE_MISSING", "lease use does not exist", { operationId: id });
+    }
+    this.#publish(before.event_outbox_id);
+    const after = this.inspectLeaseUse(id);
+    if (after === null || after.event_publication_status !== "PUBLISHED") {
+      fail(
+        "CAPABILITY_EVENT_RECONCILIATION_REQUIRED",
+        "lease use event publication remains unresolved",
+        { operationId: id },
+      );
+    }
+    return after;
+  }
+
   readLease(leaseId) {
     const id = requireNonEmptyString(leaseId, "leaseId");
     return this.#stateStore.transaction((store) => this.#readLease(store, id).lease);
@@ -2225,6 +2435,14 @@ export class CapabilityAuthority {
     return OBJECT_FREEZE({ existing, published, total: outboxIds.length });
   }
 }
+
+export const getCapabilityAuthorityDependencyIdentity = (authority) => {
+  const identity = CAPABILITY_AUTHORITY_DEPENDENCY_IDENTITIES.get(authority);
+  if (identity === undefined) {
+    fail("INVALID_INPUT", "authority must come from createCapabilityAuthority()");
+  }
+  return identity;
+};
 
 export const createCapabilityAuthority = (options) =>
   new CapabilityAuthority(CONSTRUCTOR_TOKEN, normalizeDependencies(options));

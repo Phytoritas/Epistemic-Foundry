@@ -325,6 +325,13 @@ test("g05_refuse: routing a skill outside the surface is refused", () => {
   assert.equal(error.context.skill_id, "foundry-recall");
 });
 
+test("g05_refuse: disclosure is limited to evolution-surface skills", () => {
+  const error = refusal(() => resolveDisclosure(loaded, "foundry-recall", {}));
+
+  assert.equal(error.code, "SKILL_OUT_OF_SURFACE");
+  assert.equal(error.context.skill_id, "foundry-recall");
+});
+
 test("g05_refuse: disclosing for a skill the payload does not declare is refused", () => {
   const error = refusal(() => resolveDisclosure(loaded, "foundry-invented", {}));
 

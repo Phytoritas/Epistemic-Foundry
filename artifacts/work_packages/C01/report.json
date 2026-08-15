@@ -1,75 +1,39 @@
 {
-  "work_package_id": "C01",
-  "base_checkpoint": "A04:PASS",
-  "status": "SPEC_GAP",
-  "changed_files": [
-    "artifacts/work_packages/C01/schema-meta-validation.json",
-    "artifacts/work_packages/C01/openapi-authority-audit.json",
-    "artifacts/work_packages/C01/commands.jsonl",
-    "artifacts/work_packages/C01/review.md",
-    "artifacts/work_packages/C01/report.json"
+  "attempt_history": [
+    "0002",
+    "0003",
+    "0004",
+    "0005",
+    "0006",
+    "0007",
+    "0008",
+    "0009"
   ],
-  "checks": [
-    {
-      "command": "schema_meta_validation",
-      "exit_code": 0,
-      "artifact": "artifacts/work_packages/C01/schema-meta-validation.json"
-    },
-    {
-      "command": "openapi_validation",
-      "exit_code": 1,
-      "artifact": "artifacts/work_packages/C01/openapi-authority-audit.json"
-    },
-    {
-      "command": "write_scope_audit",
-      "exit_code": 0,
-      "artifact": "artifacts/work_packages/C01/commands.jsonl#C01-C005"
-    },
-    {
-      "command": "uv run --locked pytest tests -p no:cacheprovider",
-      "exit_code": 0,
-      "artifact": "artifacts/work_packages/C01/commands.jsonl#C01-C009"
-    }
+  "attempt_id": "C01-0009",
+  "completion_ready": false,
+  "implementation_status": "PASS",
+  "not_claimed": [
+    "completion_ready=true",
+    "release or production readiness",
+    "terminal completion of the 156-package DAG"
   ],
-  "review": {
-    "agent": "primary_author",
-    "status": "SPEC_GAP_WITH_RECORDED_PROCEDURE_DEVIATION",
-    "findings_resolved": [],
-    "blocking_findings": [
-      "The endpoint authority referenced by docs/api_contract.md resolves to an unrelated MASTER_SPEC.md section, and no canonical REST v1 method/path inventory exists."
+  "package_status": "PASS",
+  "standing_evidence": {
+    "attempts/0009/report.json": "sha256:48797e915d6a9916bd56710b4b85b65e6cbcd5b6733eb0c9244f0f06162577ed",
+    "attempts/0009/review.md": "sha256:1c8a361f9f2eae8df6ff67f99bbcfe233230568765587724ad9541f2d84f26bf"
+  },
+  "status": "PASS",
+  "supersedes": {
+    "authorizing_decision": "HD-EF4-C01-SG005-20260731-001",
+    "prior_root_status": "SPEC_GAP",
+    "rationale": "C01-0001 recorded SPEC_GAP because no higher authority defined the REST v1 operation inventory. Five product-owner decisions supplied it, and C01-0009 revalidates the canonical contract at 127 schemas, 127 examples, and 33 OpenAPI operations.",
+    "resolved_spec_gaps": [
+      "C01-SG001",
+      "C01-SG002",
+      "C01-SG003",
+      "C01-SG004",
+      "C01-SG005"
     ]
   },
-  "output_artifacts": [
-    "artifacts/work_packages/C01/schema-meta-validation.json",
-    "artifacts/work_packages/C01/openapi-authority-audit.json",
-    "artifacts/work_packages/C01/commands.jsonl",
-    "artifacts/work_packages/C01/review.md",
-    "artifacts/work_packages/C01/report.json"
-  ],
-  "open_risks": [
-    "Review was performed by the primary author under explicit user instruction and is not independent assurance.",
-    "REST v1 paths, methods, operation semantics, and schema mappings remain undefined.",
-    "The bundle-wide PACKAGE_MANIFEST is stale relative to pre-existing dirty-worktree changes; this does not invalidate the isolated schema check but prevents a clean whole-bundle pass."
-  ],
-  "spec_gaps": [
-    {
-      "id": "C01-SG001",
-      "summary": "No valid higher-order authority defines the REST v1 path/method and request/response contract required to author canonical OpenAPI without invention.",
-      "required_decision": "Correct the authoritative reference and define the versioned REST v1 operation inventory and canonical schema mappings."
-    }
-  ],
-  "not_verified": [
-    "OpenAPI 3.1 parsing and reference resolution because no authoritative OpenAPI document can be authored",
-    "generated HTTP clients or server conformance",
-    "production REST runtime, authentication, authorization, CSRF, or network behavior"
-  ],
-  "next_ready": [
-    "S01"
-  ],
-  "blocked_dependents": [
-    "C02",
-    "C03",
-    "C04",
-    "U01"
-  ]
+  "work_package_id": "C01"
 }

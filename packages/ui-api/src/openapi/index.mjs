@@ -26,5 +26,6 @@ export {
   deriveCoverageRecord,
   recomputeCoverageSha256,
 } from "./server-surface.mjs";
+export { createNodeHttpLivenessAdapter } from "./node-http-adapter.mjs";
 export { FINDING_CODES, OpenApiSurfaceError } from "./surface-errors.mjs";
 export { parseYamlSubset } from "./yaml-subset.mjs";

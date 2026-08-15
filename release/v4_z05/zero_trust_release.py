@@ -166,6 +166,14 @@ _LENS_PER_FAMILY = 12
 #: vocabulary, not a canonical wire enum.
 _NON_FAILING_LENS_STATUSES: frozenset[str] = frozenset({"CONDITIONAL"})
 
+#: The three dependency surfaces Z05 is authorized and required to compose.
+#: Their names are the sealed identities used by the S05, T05 and Y05 contracts;
+#: accepting a subset or an unrelated surface would let the release omit a
+#: required dependency while still presenting a complete composition.
+_REQUIRED_SEALED_SURFACES: frozenset[str] = frozenset(
+    {"security_v4_s05", "adapters_v4_t05", "operations_v4_y05"}
+)
+
 #: The acceptance-matrix key that declares the current bundle's maturity floor.
 _ACCEPTANCE_MATRIX_PATH = "manifests/acceptance_matrix.yaml"
 _MATURITY_FLOOR_KEY = "status_of_this_bundle"
@@ -578,17 +586,35 @@ def compose_sealed_surface_fingerprint(
 
     Each surface contributes a set of identity tokens — its declared finding-code
     vocabulary — and the release seals a fingerprint over them.  A surface that is
-    absent or declares no token is refused rather than sealed, and because the
-    fingerprint is a pure function of the tokens, a break that removes or renames a
-    surface's vocabulary changes the fingerprint the release binds.  The receipt is
-    content-addressed.
+    absent, extra or declares no token is refused rather than sealed, and because
+    the fingerprint is a pure function of the tokens, a break that removes or
+    renames a surface's vocabulary changes the fingerprint the release binds.  The
+    receipt is content-addressed.
     """
     provided = _require_mapping(surfaces, "surfaces")
-    if not provided:
-        _fail("SEALED_SURFACE_MISSING", "no sealed surface was provided to bind")
+    invalid_key_types = sorted(
+        {type(name).__name__ for name in provided if type(name) is not str}
+    )
+    if invalid_key_types:
+        _fail(
+            "SEALED_SURFACE_MISSING",
+            "sealed surface names must be exact strings",
+            {"invalid_key_types": invalid_key_types},
+        )
+    provided_names = set(provided)
+    if provided_names != _REQUIRED_SEALED_SURFACES:
+        _fail(
+            "SEALED_SURFACE_MISSING",
+            "the sealed surface set must match the required S05, T05 and Y05 "
+            "surfaces exactly",
+            {
+                "missing": sorted(_REQUIRED_SEALED_SURFACES - provided_names),
+                "extra": sorted(provided_names - _REQUIRED_SEALED_SURFACES),
+            },
+        )
 
     fingerprint: dict[str, Any] = {}
-    for name in sorted(provided):
+    for name in sorted(_REQUIRED_SEALED_SURFACES):
         tokens = _require_sequence(provided[name], f"surfaces[{name}]")
         cleaned = sorted(
             {_require_text(token, f"surfaces[{name}][]") for token in tokens}

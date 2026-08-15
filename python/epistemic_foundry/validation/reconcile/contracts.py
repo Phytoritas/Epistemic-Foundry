@@ -684,6 +684,12 @@ def _bind_surfaces(
             "the experiment result does not validate against its schema",
             {"errors": errors},
         )
+    if result["result_hash"] != hash_excluding(result, "result_hash"):
+        _fail(
+            "INPUT_INVALID",
+            "the experiment result does not re-derive the result_hash it publishes",
+            {"input": "experiment_result", "field": "result_hash"},
+        )
 
     declared_run = _text(run_id, "run_id")
     declared_result = _text(source_result_id, "source_result_id")

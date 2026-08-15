@@ -283,7 +283,13 @@ export function validateAuditExport(bundle) {
       unknown: keys.filter((key) => !expectedKeys.includes(key)),
     });
   }
-  sealDriftReport(bundle.drift_report);
+  const drift = sealDriftReport(bundle.drift_report);
+  if (drift.run_id !== bundle.run_id) {
+    fail("EXPORT_RUN_MISMATCH", "the drift report belongs to a different run", {
+      drift_run_id: drift.run_id,
+      run_id: bundle.run_id,
+    });
+  }
   const reconciliation = requireObject(bundle.reconciliation, "reconciliation");
   if (reconciliation.missing_count > 0 || reconciliation.orphaned_count > 0) {
     fail(

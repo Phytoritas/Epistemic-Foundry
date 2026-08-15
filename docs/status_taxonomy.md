@@ -56,6 +56,8 @@ advisory backend score cannot be translated into `PROMOTED`.
 - `PRODUCTION_2000`
 - `CROSS_DOMAIN_QUALIFIED`
 
-This v4 package is a `SPEC_BUNDLE`. It does not claim `PLUGIN_ALPHA`,
-evolution runtime implementation, qualified scientific performance, or
-production readiness.
+This v4 package is currently qualified only as a `SPEC_BUNDLE`. Its authorized
+implementation target is `PLUGIN_ALPHA`, so an executable candidate may exist
+without implying that all fifteen gates passed. It does not yet claim a
+`PLUGIN_ALPHA` release, qualified scientific performance or production
+readiness.

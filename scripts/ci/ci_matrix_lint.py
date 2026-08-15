@@ -20,16 +20,68 @@ ACTION_PINS = {
     "astral-sh/setup-uv": "94527f2e458b27549849d47d273a16bec83a01e9",
     "actions/cache": "caa296126883cff596d87d8935842f9db880ef25",
 }
+EXPECTED_JOB_KEYS = frozenset({"name", "runs-on", "timeout-minutes", "strategy", "env", "steps"})
+EXPECTED_STRATEGY_KEYS = frozenset({"fail-fast", "matrix"})
+EXPECTED_MATRIX_KEYS = frozenset({"os"})
+EXPECTED_JOB_ENV_KEYS = frozenset(
+    {
+        "SOURCE_DATE_EPOCH",
+        "PYTHONHASHSEED",
+        "NO_COLOR",
+        "NPM_CONFIG_AUDIT",
+        "NPM_CONFIG_FUND",
+        "NPM_CONFIG_CACHE",
+        "UV_CACHE_DIR",
+    }
+)
+EXPECTED_STEP_NAMES = (
+    "Check out source",
+    "Set up Node.js",
+    "Set up Python",
+    "Set up uv",
+    "Restore disposable dependency cache",
+    "Verify pinned toolchain and lockfiles",
+    "Install locked dependencies",
+    "Validate CI and cache policy",
+    "Verify workspace boundaries",
+    "Run Python regression suite",
+    "Compare independent builds",
+)
+ACTION_STEP_NAMES = frozenset(EXPECTED_STEP_NAMES[:5])
+RUN_STEP_NAMES = frozenset(EXPECTED_STEP_NAMES[5:])
+ACTION_STEP_KEYS = frozenset({"name", "uses", "with"})
+RUN_STEP_KEYS = frozenset({"name", "run"})
+INSTALL_STEP_NAME = "Install locked dependencies"
+PYTEST_STEP_NAME = "Run Python regression suite"
+INSTALL_COMMANDS = (
+    "npm ci --ignore-scripts",
+    "uv sync --locked --extra dev --group skill-context --no-python-downloads",
+)
+PYTEST_COMMAND = "uv run --locked --group skill-context pytest tests -p no:cacheprovider"
+EXPECTED_RUN_COMMANDS = {
+    "Verify pinned toolchain and lockfiles": ("python scripts/build/check_locks.py",),
+    INSTALL_STEP_NAME: INSTALL_COMMANDS,
+    "Validate CI and cache policy": (
+        "uv run --locked python scripts/ci/ci_matrix_lint.py",
+        "uv run --locked python scripts/ci/cache_key_audit.py",
+        "uv run --locked python scripts/ci/test_ci_policy.py",
+    ),
+    "Verify workspace boundaries": (
+        "npm run check:structure",
+        "npm run check:boundaries",
+    ),
+    PYTEST_STEP_NAME: (PYTEST_COMMAND,),
+    "Compare independent builds": ("uv run --locked python scripts/build/double_build.py",),
+}
 REQUIRED_COMMANDS = (
     "python scripts/build/check_locks.py",
-    "npm ci --ignore-scripts",
-    "uv sync --locked --extra dev --no-python-downloads",
+    *INSTALL_COMMANDS,
     "npm run check:structure",
     "npm run check:boundaries",
     "uv run --locked python scripts/ci/ci_matrix_lint.py",
     "uv run --locked python scripts/ci/cache_key_audit.py",
     "uv run --locked python scripts/ci/test_ci_policy.py",
-    "uv run --locked pytest tests -p no:cacheprovider",
+    PYTEST_COMMAND,
     "uv run --locked python scripts/build/double_build.py",
 )
 
@@ -52,6 +104,12 @@ def validate(root: Path) -> dict[str, Any]:
     workflow = load_yaml(workflow_path)
     toolchain = json.loads((root / "toolchains/toolchain-lock.json").read_text(encoding="utf-8"))
 
+    if "if" in workflow:
+        failures.append("workflow may not define if")
+    if "defaults" in workflow:
+        failures.append("workflow may not define defaults")
+    if "env" in workflow:
+        failures.append("workflow may not define env")
     permissions = workflow.get("permissions")
     if permissions != {"contents": "read"}:
         failures.append("workflow permissions must be exactly contents: read")
@@ -62,10 +120,18 @@ def validate(root: Path) -> dict[str, Any]:
             failures.append(f"workflow is missing required trigger {trigger}")
 
     jobs = workflow.get("jobs")
+    if isinstance(jobs, dict) and set(jobs) != {"cross-platform"}:
+        failures.append("workflow jobs must contain only cross-platform")
     job = jobs.get("cross-platform") if isinstance(jobs, dict) else None
     if not isinstance(job, dict):
         failures.append("missing jobs.cross-platform")
         job = {}
+    if "if" in job:
+        failures.append("cross-platform job may not define if")
+    if "defaults" in job:
+        failures.append("cross-platform job may not define defaults")
+    if set(job) != EXPECTED_JOB_KEYS:
+        failures.append("cross-platform job keys must match the reviewed allowlist exactly")
     if job.get("runs-on") != "${{ matrix.os }}":
         failures.append("cross-platform job must run on matrix.os")
     if job.get("continue-on-error") is not None:
@@ -75,9 +141,13 @@ def validate(root: Path) -> dict[str, Any]:
         failures.append("cross-platform timeout-minutes must be between 1 and 30")
 
     strategy = job.get("strategy") if isinstance(job.get("strategy"), dict) else {}
+    if set(strategy) != EXPECTED_STRATEGY_KEYS:
+        failures.append("cross-platform strategy keys must match the reviewed allowlist exactly")
     if strategy.get("fail-fast") is not False:
         failures.append("matrix fail-fast must be false so every OS produces a result")
     matrix = strategy.get("matrix") if isinstance(strategy.get("matrix"), dict) else {}
+    if set(matrix) != EXPECTED_MATRIX_KEYS:
+        failures.append("cross-platform matrix keys must be exactly ['os']")
     runners = matrix.get("os") if isinstance(matrix.get("os"), list) else []
     if set(runners) != EXPECTED_RUNNERS or len(runners) != len(EXPECTED_RUNNERS):
         failures.append(f"matrix.os must contain exactly {sorted(EXPECTED_RUNNERS)}")
@@ -86,19 +156,109 @@ def validate(root: Path) -> dict[str, Any]:
             failures.append(f"runner image must use a versioned label: {runner!r}")
 
     environment = job.get("env") if isinstance(job.get("env"), dict) else {}
+    if set(environment) != EXPECTED_JOB_ENV_KEYS:
+        failures.append("cross-platform job env keys must match the reviewed allowlist exactly")
     if scalar(environment.get("SOURCE_DATE_EPOCH")) != str(toolchain.get("source_date_epoch")):
         failures.append("SOURCE_DATE_EPOCH must match toolchain-lock.json")
     if scalar(environment.get("PYTHONHASHSEED")) != "0":
         failures.append("PYTHONHASHSEED must be fixed to 0")
 
     steps = job.get("steps") if isinstance(job.get("steps"), list) else []
+    observed_step_names = tuple(
+        step.get("name") if isinstance(step, dict) else None
+        for step in steps
+    )
+    if observed_step_names != EXPECTED_STEP_NAMES:
+        failures.append("cross-platform step names must match the reviewed order exactly")
+    for step in steps:
+        if not isinstance(step, dict):
+            continue
+        name = step.get("name")
+        if not isinstance(name, str):
+            continue
+        if name in ACTION_STEP_NAMES:
+            expected_keys = ACTION_STEP_KEYS
+        elif name in RUN_STEP_NAMES:
+            expected_keys = RUN_STEP_KEYS
+        else:
+            continue
+        if set(step) != expected_keys:
+            failures.append(f"{name} step keys must be exactly {sorted(expected_keys)}")
+
+    expected_action_with = {
+        "Check out source": {"persist-credentials": False},
+        "Set up Node.js": {"node-version": toolchain["tools"]["node"]["version"]},
+        "Set up Python": {"python-version": toolchain["tools"]["python"]["version"]},
+        "Set up uv": {
+            "version": toolchain["tools"]["uv"]["version"],
+            "enable-cache": False,
+        },
+        "Restore disposable dependency cache": {
+            "path": (
+                "${{ runner.temp }}/efoundry-cache/npm\n"
+                "${{ runner.temp }}/efoundry-cache/uv\n"
+            ),
+            "key": (
+                "efoundry-deps-v1-${{ matrix.os }}-${{ runner.arch }}-"
+                "${{ hashFiles('package-lock.json', 'uv.lock', "
+                "'toolchains/toolchain-lock.json', "
+                "'toolchains/python-build-constraints.txt') }}"
+            ),
+            "enableCrossOsArchive": False,
+            "fail-on-cache-miss": False,
+        },
+    }
+    for name, expected_with in expected_action_with.items():
+        named_steps = [
+            step
+            for step in steps
+            if isinstance(step, dict) and step.get("name") == name
+        ]
+        if len(named_steps) != 1:
+            failures.append(f"{name} action step must appear exactly once")
+            continue
+        values = named_steps[0].get("with")
+        if not isinstance(values, dict) or values != expected_with:
+            failures.append(f"{name} step with mapping must match the reviewed values exactly")
+
+    step_positions: dict[str, int] = {}
+    for name, expected_commands in EXPECTED_RUN_COMMANDS.items():
+        named_steps = [
+            (index, step)
+            for index, step in enumerate(steps)
+            if isinstance(step, dict) and step.get("name") == name
+        ]
+        if len(named_steps) != 1:
+            failures.append(f"{name} step must appear exactly once")
+            continue
+        index, step = named_steps[0]
+        step_positions[name] = index
+        if "if" in step:
+            failures.append(f"{name} step may not define if")
+        run = step.get("run")
+        observed_commands = tuple(run.splitlines()) if isinstance(run, str) else ()
+        if observed_commands != expected_commands:
+            failures.append(f"{name} step must contain exactly the reviewed command sequence")
+
+    if (
+        INSTALL_STEP_NAME in step_positions
+        and PYTEST_STEP_NAME in step_positions
+        and step_positions[INSTALL_STEP_NAME] >= step_positions[PYTEST_STEP_NAME]
+    ):
+        failures.append(f"{INSTALL_STEP_NAME} step must precede {PYTEST_STEP_NAME} step")
+
     observed_actions: dict[str, str] = {}
     action_counts: dict[str, int] = {}
-    command_text = "\n".join(scalar(step.get("run")) for step in steps if isinstance(step, dict))
+    command_lines: list[str] = []
     for step in steps:
         if not isinstance(step, dict):
             failures.append("every workflow step must be an object")
             continue
+        command_lines.extend(
+            line.strip()
+            for line in scalar(step.get("run")).splitlines()
+            if line.strip()
+        )
         if step.get("continue-on-error") is not None:
             failures.append(f"step may not suppress failures: {step.get('name')!r}")
         uses = step.get("uses")
@@ -141,8 +301,12 @@ def validate(root: Path) -> dict[str, Any]:
         failures.append("checkout must disable persisted credentials")
 
     for required in REQUIRED_COMMANDS:
-        if required not in command_text:
-            failures.append(f"cross-platform job is missing required command: {required}")
+        observed_count = command_lines.count(required)
+        if observed_count != 1:
+            failures.append(
+                "cross-platform job must contain required exact command exactly once: "
+                f"{required} (observed {observed_count})"
+            )
 
     return {
         "check": "ci_matrix_lint",

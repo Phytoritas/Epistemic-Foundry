@@ -5,6 +5,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  canonicalizeSchedulerJson,
+  sha256SchedulerJson,
+} from "../../scheduler/dag-scheduler.mjs";
+import {
   createSchedulerFixture,
   nodeContractFixture,
   runNodeSuccessfully,
@@ -64,6 +68,14 @@ function assertCode(fn, code) {
   assert.fail(`expected ${code}`);
 }
 
+function resealManifest(candidate) {
+  const { checkpoint_hash: _drop, ...semantic } = candidate;
+  return {
+    ...semantic,
+    checkpoint_hash: sha256SchedulerJson(canonicalizeSchedulerJson(semantic)),
+  };
+}
+
 test("checkpoint_resume_test: sealing proves replay rather than asserting it", () => {
   const base = fixture();
   runNodeSuccessfully(base.scheduler, "ingest");
@@ -94,6 +106,66 @@ test("checkpoint_resume_test: sealing is deterministic and hash-bound", () => {
 
   const extra = { ...first.manifest, surprise: true };
   assertCode(() => validateCheckpointManifest(extra), "CHECKPOINT_FIELD_SET_INVALID");
+});
+
+test("checkpoint_resume_test: rehashed schema-invalid manifests cannot resume", () => {
+  const base = fixture();
+  runNodeSuccessfully(base.scheduler, "ingest");
+  const sealed = sealCheckpoint(sealArgs(base));
+  const invalid = [
+    { created_at: "2026-02-30T00:00:00Z" },
+    { created_at: "2026-06-30T23:58:60Z" },
+    { created_at: "2026-06-30T22:59:60Z" },
+    { artifact_ids: {} },
+    { layer_index: -1 },
+    { event_sequence: -1 },
+    { checkpoint_id: "" },
+  ];
+
+  for (const override of invalid) {
+    const forged = resealManifest({ ...sealed.manifest, ...override });
+    assertCode(() => validateCheckpointManifest(forged), "CHECKPOINT_INPUT_INVALID");
+  }
+
+  const forged = resealManifest({
+    ...sealed.manifest,
+    created_at: "not-a-timestamp",
+  });
+  assertCode(
+    () =>
+      resumeFromCheckpoint({
+        budget_envelope: base.budget,
+        commands: sealed.commands,
+        manifest: forged,
+        plan: base.plan,
+        review: review(forged),
+      }),
+    "CHECKPOINT_INPUT_INVALID",
+  );
+});
+
+test("checkpoint_resume_test: schema-valid array identity and leap seconds are preserved", () => {
+  const base = fixture();
+  const sealed = sealCheckpoint(sealArgs(base));
+  const forged = resealManifest({
+    ...sealed.manifest,
+    artifact_ids: ["z", "", "z", "a"],
+    checkpoint_id: " ",
+    created_at: "2026-07-01t05:29:60+05:30",
+  });
+
+  const validated = validateCheckpointManifest(forged);
+  assert.deepEqual(validated.artifact_ids, ["z", "", "z", "a"]);
+  assert.equal(validated.checkpoint_id, " ");
+  assert.equal(validated.created_at, "2026-07-01t05:29:60+05:30");
+
+  const yearZero = validateCheckpointManifest(
+    resealManifest({
+      ...sealed.manifest,
+      created_at: "0000-03-01T00:00:00Z",
+    }),
+  );
+  assert.equal(yearZero.created_at, "0000-03-01T00:00:00Z");
 });
 
 test("checkpoint_resume_test: run and plan identity are enforced when sealing", () => {

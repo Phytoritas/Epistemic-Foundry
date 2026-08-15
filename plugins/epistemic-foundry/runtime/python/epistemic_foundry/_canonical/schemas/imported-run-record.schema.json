@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/imported-run-record.schema.json",
+  "title": "ImportedRunRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "import_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "source_version": {
+      "type": "string"
+    },
+    "target_version": {
+      "type": "string"
+    },
+    "source_run_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "target_session_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "source_snapshot_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "migration_plan_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "derived_phase": {
+      "enum": [
+        "IDLE",
+        "I",
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ]
+    },
+    "unconverted_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "manufactured_receipts": {
+      "type": "boolean"
+    },
+    "imported_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "import_id",
+    "source_version",
+    "target_version",
+    "source_run_id",
+    "target_session_id",
+    "source_snapshot_hash",
+    "migration_plan_id",
+    "derived_phase",
+    "unconverted_fields",
+    "manufactured_receipts",
+    "imported_at",
+    "record_hash"
+  ]
+}

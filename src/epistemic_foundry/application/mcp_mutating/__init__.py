@@ -1,17 +1,11 @@
-"""T02 MCP mutating tool surface.
-
-Composed onto the sealed T01 kernel: the same ``ToolService`` runs the same
-frozen authorization order, the same shared result and error envelopes carry
-the answer, and T02 contributes only the mutating catalog, the mutation
-payload, the closed mutation subcode, and the receipt-bound lifecycle.
-"""
+"""T02 MCP mutating tool surface over one compound runtime boundary."""
 
 from .handler_factory import MutationHandler, build_mutating_registry
 from .ports import (
     DRY_RUN_OPERATION_ID,
     EFFECT_STATUSES,
-    UNOBSERVED_OPERATION_ID,
     ActionIntentStorePort,
+    AttemptTransition,
     ApprovalResolverPort,
     ApprovalVerdict,
     CapabilityLeasePort,
@@ -20,6 +14,9 @@ from .ports import (
     EffectReceiptStorePort,
     IdempotencyReservationPort,
     LeaseGrant,
+    MutationRuntimePort,
+    MutationRuntimeRequest,
+    MutationRuntimeUnavailable,
     PolicyDecision,
     PolicyEvaluatorPort,
     Reservation,
@@ -49,6 +46,7 @@ from .service import (
 
 __all__ = [
     "ActionIntentStorePort",
+    "AttemptTransition",
     "ApprovalResolverPort",
     "ApprovalVerdict",
     "CapabilityLeasePort",
@@ -67,13 +65,15 @@ __all__ = [
     "MutatingToolSpec",
     "MutationError",
     "MutationHandler",
+    "MutationRuntimePort",
+    "MutationRuntimeRequest",
+    "MutationRuntimeUnavailable",
     "PolicyDecision",
     "PolicyEvaluatorPort",
     "ReconciliationProbePort",
     "Reservation",
     "RevisionPort",
     "TERMINAL_STATUSES",
-    "UNOBSERVED_OPERATION_ID",
     "UNRESOLVED_STATUS",
     "build_mutating_registry",
     "is_unresolved",

@@ -8,6 +8,7 @@ or `BLOCKED`, never a silent fallback that looks like full operation.
 
 from __future__ import annotations
 
+from .alpha_evolve import AlphaInvocationError, alpha_check
 from .capabilities import (
     CapabilityNegotiationFailure,
     build_capability_manifest,
@@ -16,7 +17,9 @@ from .capabilities import (
 )
 
 __all__ = [
+    "AlphaInvocationError",
     "CapabilityNegotiationFailure",
+    "alpha_check",
     "build_capability_manifest",
     "build_host_report",
     "negotiate_mode",

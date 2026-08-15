@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/replay-report.schema.json",
+  "title": "ReplayReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "replay_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replay_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "enum": [
+        "strict",
+        "semantic"
+      ]
+    },
+    "pinned_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unavailable_pins": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "event_equivalence": {
+      "enum": [
+        "EXACT",
+        "SEMANTICALLY_EQUIVALENT",
+        "DRIFT",
+        "NOT_COMPARABLE"
+      ]
+    },
+    "artifact_hash_matches": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "artifact_hash_mismatches": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "gate_differences": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verdict_differences": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "drift_classification": {
+      "enum": [
+        "NONE",
+        "MODEL",
+        "PROMPT",
+        "CORPUS",
+        "ONTOLOGY",
+        "POLICY",
+        "WORKFLOW",
+        "MULTIPLE",
+        "UNKNOWN"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "replay_id",
+    "source_run_id",
+    "replay_run_id",
+    "mode",
+    "pinned_artifacts",
+    "unavailable_pins",
+    "event_equivalence",
+    "artifact_hash_matches",
+    "artifact_hash_mismatches",
+    "gate_differences",
+    "verdict_differences",
+    "drift_classification",
+    "created_at",
+    "report_hash"
+  ]
+}

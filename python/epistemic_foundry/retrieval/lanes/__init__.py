@@ -13,7 +13,7 @@ from .contracts import (
     CandidateSetResult,
     QueryFamily,
     RelationDirection,
-    ReleaseGuardResult,
+    NonVectorAssessmentResult,
     RetrievalChannel,
     RetrievalContractError,
     SealedBackendRequest,
@@ -24,7 +24,7 @@ from .contracts import (
     classify_relation_direction,
     compute_candidate_hash,
     compute_candidate_id,
-    evaluate_non_vector_release,
+    assess_non_vector_origin,
     evaluate_retrieval_benchmark,
     ndcg_at_k,
     rank_fixture_corpus,
@@ -34,6 +34,7 @@ from .contracts import (
     sha256_bytes,
     validate_backend_response,
     validate_retrieval_candidate,
+    validate_sealed_backend_request,
 )
 
 __all__ = [
@@ -44,7 +45,7 @@ __all__ = [
     "CandidateSetResult",
     "QueryFamily",
     "RelationDirection",
-    "ReleaseGuardResult",
+    "NonVectorAssessmentResult",
     "RetrievalChannel",
     "RetrievalContractError",
     "SealedBackendRequest",
@@ -55,7 +56,7 @@ __all__ = [
     "classify_relation_direction",
     "compute_candidate_hash",
     "compute_candidate_id",
-    "evaluate_non_vector_release",
+    "assess_non_vector_origin",
     "evaluate_retrieval_benchmark",
     "ndcg_at_k",
     "rank_fixture_corpus",
@@ -65,4 +66,5 @@ __all__ = [
     "sha256_bytes",
     "validate_backend_response",
     "validate_retrieval_candidate",
+    "validate_sealed_backend_request",
 ]

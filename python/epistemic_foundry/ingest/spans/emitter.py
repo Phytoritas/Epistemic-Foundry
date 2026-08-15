@@ -157,6 +157,73 @@ def _canonical_json(value: object) -> bytes:
         ) from error
 
 
+def _json_snapshot(value: object, label: str, active: set[int]) -> object:
+    """Detach caller-owned JSON through base primitive operations."""
+
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return str.__str__(value)
+    if isinstance(value, int):
+        return int.__int__(value)
+    if isinstance(value, float):
+        number = float.__float__(value)
+        if not math.isfinite(number):
+            _fail("SOURCE_SPAN_INPUT_INVALID", f"{label} must contain finite JSON")
+        return 0.0 if number == 0 else number
+    if isinstance(value, (bytes, bytearray, memoryview)):
+        _fail("SOURCE_SPAN_INPUT_INVALID", f"{label} must not contain bytes")
+    identity = id(value)
+    if identity in active:
+        _fail("SOURCE_SPAN_INPUT_INVALID", f"{label} must not contain a cycle")
+    if isinstance(value, Mapping):
+        result: dict[str, object] = {}
+        active.add(identity)
+        try:
+            for key, entry in value.items():
+                if not isinstance(key, str):
+                    _fail(
+                        "SOURCE_SPAN_INPUT_INVALID",
+                        f"{label} keys must be strings",
+                    )
+                plain_key = str.__str__(key)
+                if plain_key in result:
+                    _fail(
+                        "SOURCE_SPAN_INPUT_INVALID",
+                        f"{label} keys must be unique",
+                    )
+                result[plain_key] = _json_snapshot(
+                    entry,
+                    f"{label}.{plain_key}",
+                    active,
+                )
+        finally:
+            active.remove(identity)
+        return result
+    if isinstance(value, Sequence):
+        result_list: list[object] = []
+        active.add(identity)
+        try:
+            for index, entry in enumerate(value):
+                result_list.append(
+                    _json_snapshot(entry, f"{label}[{index}]", active)
+                )
+        finally:
+            active.remove(identity)
+        return result_list
+    _fail("SOURCE_SPAN_INPUT_INVALID", f"{label} must contain only JSON values")
+
+
+def _json_object_snapshot(value: object, label: str) -> dict[str, object]:
+    snapshot = _json_snapshot(value, label, set())
+    if type(snapshot) is not dict:
+        _fail("SOURCE_SPAN_INPUT_INVALID", f"{label} must be an object")
+    _canonical_json(snapshot)
+    return snapshot
+
+
 def _sha256(value: bytes) -> str:
     return "sha256:" + hashlib.sha256(value).hexdigest()
 
@@ -185,6 +252,17 @@ def _integer(value: object, label: str, *, minimum: int = 0) -> int:
             f"{label} must be an integer greater than or equal to {minimum}",
         )
     return value
+
+
+def _finite_number(value: object, label: str) -> int | float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        _fail("SOURCE_SPAN_INPUT_INVALID", f"{label} must be numeric")
+    if isinstance(value, int):
+        return int.__int__(value)
+    number = float.__float__(value)
+    if not math.isfinite(number):
+        _fail("SOURCE_SPAN_INPUT_INVALID", f"{label} must be finite")
+    return number
 
 
 def _digest(value: object, label: str) -> str:
@@ -241,46 +319,32 @@ def _parse_enum(value: object, enum_type: type[Enum], label: str) -> Enum:
 
 def _bbox(
     value: object,
-    coordinate_system: CoordinateSystem,
-) -> tuple[float, float, float, float] | None:
+) -> tuple[int | float, int | float, int | float, int | float] | None:
     if value is None:
-        if coordinate_system is not CoordinateSystem.NOT_AVAILABLE:
-            _fail(
-                "SOURCE_SPAN_INPUT_INVALID",
-                "bbox=null requires coordinate_system=not_available",
-            )
         return None
-    if coordinate_system is CoordinateSystem.NOT_AVAILABLE:
-        _fail(
-            "SOURCE_SPAN_INPUT_INVALID",
-            "a bbox requires an explicit coordinate system",
-        )
     if not isinstance(value, Sequence) or isinstance(value, (str, bytes, bytearray)):
         _fail("SOURCE_SPAN_INPUT_INVALID", "bbox must be null or four numbers")
     if len(value) != 4:
         _fail("SOURCE_SPAN_INPUT_INVALID", "bbox must contain exactly four numbers")
-    values: list[float] = []
+    values: list[int | float] = []
     for index, item in enumerate(value):
-        if isinstance(item, bool) or not isinstance(item, (int, float)):
-            _fail("SOURCE_SPAN_INPUT_INVALID", f"bbox[{index}] must be numeric")
-        number = float(item)
-        if not math.isfinite(number):
-            _fail("SOURCE_SPAN_INPUT_INVALID", f"bbox[{index}] must be finite")
-        values.append(0.0 if number == 0 else number)
-    x0, y0, x1, y1 = values
-    if min(values) < 0 or x1 <= x0 or y1 <= y0:
-        _fail(
-            "SOURCE_SPAN_INPUT_INVALID",
-            "bbox must have non-negative coordinates and positive extent",
-        )
-    if coordinate_system is CoordinateSystem.NORMALIZED_TOP_LEFT and any(
-        number > 1 for number in values
-    ):
-        _fail(
-            "SOURCE_SPAN_INPUT_INVALID",
-            "normalized_top_left bbox values must be between zero and one",
-        )
-    return x0, y0, x1, y1
+        values.append(_finite_number(item, f"bbox[{index}]"))
+    return values[0], values[1], values[2], values[3]
+
+
+def _page(
+    value: object,
+    coordinate_system: CoordinateSystem,
+    bbox: tuple[int | float, int | float, int | float, int | float] | None,
+) -> int | None:
+    if value is None:
+        if coordinate_system is not CoordinateSystem.NOT_AVAILABLE or bbox is not None:
+            _fail(
+                "SOURCE_SPAN_INPUT_INVALID",
+                "page=null requires coordinate_system=not_available and bbox=null",
+            )
+        return None
+    return _integer(value, "page", minimum=1)
 
 
 def _validate_range(char_start: object, char_end: object) -> tuple[int, int]:
@@ -337,11 +401,13 @@ class SourceSnapshot:
         """Copy UTF-8 source content and seal its digest before span emission."""
 
         if isinstance(content, str):
-            source_text = content[:]
+            source_text = str.__str__(content)
         elif isinstance(content, (bytes, bytearray, memoryview)):
             try:
-                source_text = bytes(content).decode("utf-8", errors="strict")
-            except UnicodeDecodeError as error:
+                source_text = memoryview(content).tobytes().decode(
+                    "utf-8", errors="strict"
+                )
+            except (TypeError, ValueError, UnicodeDecodeError) as error:
                 raise SourceSpanContractError(
                     "SOURCE_SPAN_INPUT_INVALID",
                     "source bytes must be valid UTF-8",
@@ -376,10 +442,10 @@ class SpanCandidate:
     """Typed locator proposal; source-derived fields are intentionally absent."""
 
     kind: SpanKind
-    page: int
+    page: int | None
     section: str | None
     semantic_unit: SemanticUnit
-    bbox: tuple[float, float, float, float] | None
+    bbox: tuple[int | float, int | float, int | float, int | float] | None
     char_start: int
     char_end: int
     parser_name: str
@@ -389,17 +455,17 @@ class SpanCandidate:
 
     def __post_init__(self) -> None:
         kind = _enum(self.kind, SpanKind, "kind")
-        _integer(self.page, "page", minimum=1)
         if self.section is not None:
-            _text(self.section, "section")
+            _text(self.section, "section", allow_empty=True)
         unit = _enum(self.semantic_unit, SemanticUnit, "semantic_unit")
         coordinate_system = _enum(
             self.coordinate_system,
             CoordinateSystem,
             "coordinate_system",
         )
-        normalized_bbox = _bbox(self.bbox, coordinate_system)  # type: ignore[arg-type]
+        normalized_bbox = _bbox(self.bbox)
         object.__setattr__(self, "bbox", normalized_bbox)
+        _page(self.page, coordinate_system, normalized_bbox)  # type: ignore[arg-type]
         _validate_range(self.char_start, self.char_end)
         _text(self.parser_name, "parser_name")
         _exact_version(self.parser_version)
@@ -423,10 +489,10 @@ class SourceSpan:
     span_id: str
     document_id: str
     paper_version_id: str
-    page: int
+    page: int | None
     section: str | None
     semantic_unit: SemanticUnit
-    bbox: tuple[float, float, float, float] | None
+    bbox: tuple[int | float, int | float, int | float, int | float] | None
     char_start: int
     char_end: int
     verbatim_text: str
@@ -445,17 +511,17 @@ class SourceSpan:
             )
         _text(self.document_id, "document_id")
         _text(self.paper_version_id, "paper_version_id")
-        _integer(self.page, "page", minimum=1)
         if self.section is not None:
-            _text(self.section, "section")
+            _text(self.section, "section", allow_empty=True)
         _enum(self.semantic_unit, SemanticUnit, "semantic_unit")
         coordinate_system = _enum(
             self.coordinate_system,
             CoordinateSystem,
             "coordinate_system",
         )
-        normalized_bbox = _bbox(self.bbox, coordinate_system)  # type: ignore[arg-type]
+        normalized_bbox = _bbox(self.bbox)
         object.__setattr__(self, "bbox", normalized_bbox)
+        _page(self.page, coordinate_system, normalized_bbox)  # type: ignore[arg-type]
         start, end = _validate_range(self.char_start, self.char_end)
         verbatim_text = _text(self.verbatim_text, "verbatim_text")
         if end - start != len(verbatim_text):
@@ -592,8 +658,7 @@ def emit(
 def source_span_from_mapping(value: Mapping[str, object]) -> SourceSpan:
     """Parse a persisted canonical record without tolerating unknown fields."""
 
-    if not isinstance(value, Mapping):
-        _fail("SOURCE_SPAN_INPUT_INVALID", "persisted SourceSpan must be an object")
+    value = _json_object_snapshot(value, "persisted SourceSpan")
     actual_fields = frozenset(value)
     if actual_fields != _SOURCE_SPAN_FIELDS:
         _fail(
@@ -606,18 +671,19 @@ def source_span_from_mapping(value: Mapping[str, object]) -> SourceSpan:
         )
     section = value["section"]
     if section is not None:
-        section = _text(section, "section")
+        section = _text(section, "section", allow_empty=True)
     coordinate_system = _parse_enum(
         value["coordinate_system"],
         CoordinateSystem,
         "coordinate_system",
     )
-    bbox = _bbox(value["bbox"], coordinate_system)  # type: ignore[arg-type]
+    bbox = _bbox(value["bbox"])
+    page = _page(value["page"], coordinate_system, bbox)  # type: ignore[arg-type]
     return SourceSpan(
         span_id=_text(value["span_id"], "span_id"),
         document_id=_text(value["document_id"], "document_id"),
         paper_version_id=_text(value["paper_version_id"], "paper_version_id"),
-        page=_integer(value["page"], "page", minimum=1),
+        page=page,
         section=section,
         semantic_unit=_parse_enum(
             value["semantic_unit"],

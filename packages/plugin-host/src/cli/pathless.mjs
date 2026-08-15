@@ -28,6 +28,9 @@ export const STRIPPED_ENV_KEYS = Object.freeze([
   "PYTHONPATH",
   "Path",
 ]);
+const STRIPPED_ENV_KEYS_CASEFOLDED = new Set(
+  STRIPPED_ENV_KEYS.map((key) => key.toUpperCase()),
+);
 
 /** Source patterns that would reintroduce a PATH lookup. */
 const FORBIDDEN_SOURCE_PATTERNS = Object.freeze([
@@ -50,7 +53,7 @@ export function resolveExecutable() {
  * later cannot silently change a child's behaviour.
  */
 export function childEnvironment(parentEnv = process.env, overrides = {}) {
-  const child = {};
+  const child = Object.create(null);
   for (const key of INHERITABLE_ENV_KEYS) {
     const value = parentEnv?.[key];
     if (typeof value === "string") {
@@ -58,7 +61,7 @@ export function childEnvironment(parentEnv = process.env, overrides = {}) {
     }
   }
   for (const [key, value] of Object.entries(overrides)) {
-    if (STRIPPED_ENV_KEYS.includes(key)) {
+    if (STRIPPED_ENV_KEYS_CASEFOLDED.has(key.toUpperCase())) {
       throw new CliContractError(
         "ENV_KEY_FORBIDDEN",
         `${key} would reintroduce ambient executable lookup`,
@@ -109,7 +112,7 @@ export function spawnPlan(scriptPath, args = [], { cwd, env } = {}) {
     executable: resolveExecutable(),
     options: Object.freeze({
       cwd: cwd ?? process.cwd(),
-      env: childEnvironment(process.env, env ?? {}),
+      env: Object.freeze(childEnvironment(process.env, env ?? {})),
       shell: false,
       windowsHide: true,
     }),

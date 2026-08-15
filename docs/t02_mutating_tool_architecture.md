@@ -134,13 +134,23 @@ CAPABILITY_AUTHORIZATION
   7 issue or validate the exact-scope CapabilityLease
 HANDLER_EXECUTION
   1 resolve or reserve idempotency
-  2 persist the final ActionIntent
+  2 create-or-load the deterministic ActionIntent and CAS-bind it
   3 revalidate lease expiry, revocation, scope, policy hash, fence
   4 enforce expected revision / CAS
-  5 execute the effect or the dry run
-  6 persist the EffectReceipt
-  7 reconcile when necessary
+  5 atomically persist and bind the durable Attempt
+  6 execute the effect once, or finish the already-computed dry-run preview
+  7 persist the EffectReceipt against that exact Attempt
+  8 CAS-bind the receipt and reconcile when necessary
 ```
+
+Only the transaction that first creates the Attempt may call the live effect
+executor. An ActionIntent without an Attempt is `NOT_STARTED` and remains safe
+to retry. An Attempt without a receipt is `RECONCILING`: ordinary replay must
+not execute again or fabricate an `UNKNOWN` receipt while the first caller may
+still be running. It returns the retryable `EFFECT_RECONCILING` mutation error
+until a receipt tail exists. The receipt store returns the append-only current
+tail for the Attempt, allowing replay to adopt a receipt persisted just before
+a crash.
 
 A lease is never issued before required approvals pass; its scope covers the
 exact workspace and target rather than the tool class; its expiry is no later
@@ -160,6 +170,7 @@ rides in `details`:
 | `LEASE_DENIED` | `UNAUTHORIZED` |
 | `LEASE_INVALID` | `UNAUTHORIZED` |
 | `REVISION_CONFLICT` | `INVALID_REQUEST` |
+| `EFFECT_RECONCILING` | `INTERNAL` |
 | `RECONCILIATION_FAILED` | `INTERNAL` |
 
 Key/fingerprint mismatch uses the existing top-level `IDEMPOTENCY_CONFLICT`.

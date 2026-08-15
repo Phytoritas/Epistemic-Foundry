@@ -19,12 +19,80 @@ export const JSONRPC_INVALID_REQUEST = -32600;
 export const JSONRPC_METHOD_NOT_FOUND = -32601;
 export const JSONRPC_INVALID_PARAMS = -32602;
 
+const NUMERIC_ID_SOURCE = Symbol("epistemic-foundry.numeric-id-source");
+const JSON_NUMBER_PATTERN =
+  /^(-?)(0|[1-9]\d*)(?:\.(\d+))?(?:[eE]([+-]?)(\d+))?$/;
+
 export function toolDescriptors() {
   return structuredClone(descriptorDocument.tools);
 }
 
-function jsonrpcError(requestId, code, message) {
-  return { jsonrpc: JSONRPC_VERSION, id: requestId, error: { code, message } };
+function attachNumericIdSource(value, source, requestId) {
+  Object.defineProperty(value, NUMERIC_ID_SOURCE, {
+    value: Object.freeze({ source, value: requestId }),
+    enumerable: true,
+  });
+  return value;
+}
+
+function numericIdSource(value, requestId) {
+  const metadata = value?.[NUMERIC_ID_SOURCE];
+  return metadata !== undefined && Object.is(metadata.value, requestId)
+    ? metadata.source
+    : undefined;
+}
+
+/** Parse JSON while retaining the exact top-level numeric `id` token. */
+export function parseJsonrpcMessage(text) {
+  const numericIds = new WeakMap();
+  const parsed = JSON.parse(text, function retainNumericId(key, value, context) {
+    if (key === "id" && typeof value === "number") {
+      if (typeof context?.source !== "string") {
+        throw new TypeError("JSON.parse reviver context.source is required");
+      }
+      numericIds.set(this, { source: context.source, value });
+    }
+    return value;
+  });
+  if (typeof parsed === "object" && parsed !== null) {
+    const metadata = numericIds.get(parsed);
+    if (metadata !== undefined) {
+      attachNumericIdSource(parsed, metadata.source, metadata.value);
+    }
+  }
+  return parsed;
+}
+
+/** Serialize a response while emitting an exact retained numeric `id` token. */
+export function stringifyJsonrpcMessage(value) {
+  const metadata = value?.[NUMERIC_ID_SOURCE];
+  if (metadata === undefined || !Object.is(value.id, metadata.value)) {
+    return JSON.stringify(value);
+  }
+  if (typeof JSON.rawJSON !== "function") {
+    throw new TypeError("JSON.rawJSON is required");
+  }
+  return JSON.stringify(value, function emitNumericId(key, current) {
+    return key === "id" && this === value
+      ? JSON.rawJSON(metadata.source)
+      : current;
+  });
+}
+
+function jsonrpcError(requestId, code, message, source) {
+  const response = { jsonrpc: JSONRPC_VERSION };
+  if (requestId !== undefined) response.id = requestId;
+  response.error = { code, message };
+  return source === undefined
+    ? response
+    : attachNumericIdSource(response, source, requestId);
+}
+
+function jsonrpcResult(requestId, result, source) {
+  const response = { jsonrpc: JSONRPC_VERSION, id: requestId, result };
+  return source === undefined
+    ? response
+    : attachNumericIdSource(response, source, requestId);
 }
 
 function initializeResult() {
@@ -47,69 +115,237 @@ function isPlainObject(value) {
   );
 }
 
+function hasOnlyUnicodeScalars(value) {
+  for (let index = 0; index < value.length; index += 1) {
+    const code = value.charCodeAt(index);
+    if (code >= 0xd800 && code <= 0xdbff) {
+      if (index + 1 >= value.length) return false;
+      const next = value.charCodeAt(index + 1);
+      if (next < 0xdc00 || next > 0xdfff) return false;
+      index += 1;
+    } else if (code >= 0xdc00 && code <= 0xdfff) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function trimUnsignedDecimal(value) {
+  let index = 0;
+  while (index < value.length - 1 && value.charCodeAt(index) === 0x30) {
+    index += 1;
+  }
+  return value.slice(index);
+}
+
+function compareUnsignedDecimals(left, right) {
+  if (left.length !== right.length) return left.length < right.length ? -1 : 1;
+  if (left === right) return 0;
+  return left < right ? -1 : 1;
+}
+
+function addUnsignedDecimals(left, right) {
+  let leftIndex = left.length - 1;
+  let rightIndex = right.length - 1;
+  let carry = 0;
+  const result = [];
+  while (leftIndex >= 0 || rightIndex >= 0 || carry !== 0) {
+    const leftDigit = leftIndex >= 0 ? left.charCodeAt(leftIndex) - 0x30 : 0;
+    const rightDigit = rightIndex >= 0 ? right.charCodeAt(rightIndex) - 0x30 : 0;
+    const sum = leftDigit + rightDigit + carry;
+    result.push(String(sum % 10));
+    carry = Math.floor(sum / 10);
+    leftIndex -= 1;
+    rightIndex -= 1;
+  }
+  return result.reverse().join("");
+}
+
+function subtractUnsignedDecimals(left, right) {
+  let leftIndex = left.length - 1;
+  let rightIndex = right.length - 1;
+  let borrow = 0;
+  const result = [];
+  while (leftIndex >= 0) {
+    let digit = left.charCodeAt(leftIndex) - 0x30 - borrow;
+    const subtrahend =
+      rightIndex >= 0 ? right.charCodeAt(rightIndex) - 0x30 : 0;
+    if (digit < subtrahend) {
+      digit += 10;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+    result.push(String(digit - subtrahend));
+    leftIndex -= 1;
+    rightIndex -= 1;
+  }
+  return trimUnsignedDecimal(result.reverse().join(""));
+}
+
+function normalizeJsonIntegerSource(source) {
+  const match = JSON_NUMBER_PATTERN.exec(source);
+  if (match === null) return null;
+
+  const [, sign, integerDigits, fractionDigits = "", exponentSign = "", rawExponent = "0"] =
+    match;
+  const coefficient = trimUnsignedDecimal(`${integerDigits}${fractionDigits}`);
+  if (coefficient === "0") return "0";
+
+  const exponent = trimUnsignedDecimal(rawExponent);
+  const fractionLength = String(fractionDigits.length);
+  let powerIsNegative;
+  let powerMagnitude;
+  if (exponentSign === "-" && exponent !== "0") {
+    powerIsNegative = true;
+    powerMagnitude = addUnsignedDecimals(exponent, fractionLength);
+  } else if (compareUnsignedDecimals(exponent, fractionLength) >= 0) {
+    powerIsNegative = false;
+    powerMagnitude = subtractUnsignedDecimals(exponent, fractionLength);
+  } else {
+    powerIsNegative = true;
+    powerMagnitude = subtractUnsignedDecimals(fractionLength, exponent);
+  }
+
+  let significantEnd = coefficient.length;
+  while (
+    significantEnd > 0 &&
+    coefficient.charCodeAt(significantEnd - 1) === 0x30
+  ) {
+    significantEnd -= 1;
+  }
+  const trailingZeroCount = coefficient.length - significantEnd;
+  let exactTrailingZeros;
+  if (powerIsNegative) {
+    if (
+      compareUnsignedDecimals(powerMagnitude, String(trailingZeroCount)) > 0
+    ) {
+      return null;
+    }
+    exactTrailingZeros = String(trailingZeroCount - Number(powerMagnitude));
+  } else {
+    exactTrailingZeros = addUnsignedDecimals(
+      String(trailingZeroCount),
+      powerMagnitude,
+    );
+  }
+
+  const prefix = sign === "-" ? "-" : "";
+  const significant = coefficient.slice(0, significantEnd);
+  if (exactTrailingZeros === "0") return `${prefix}${significant}`;
+
+  const exponentOverhead = String(exactTrailingZeros.length + 1);
+  if (compareUnsignedDecimals(exactTrailingZeros, exponentOverhead) > 0) {
+    return `${prefix}${significant}e${exactTrailingZeros}`;
+  }
+  return `${prefix}${significant}${"0".repeat(Number(exactTrailingZeros))}`;
+}
+
+function classifyRequestId(request) {
+  if (!Object.hasOwn(request, "id")) return { kind: "absent" };
+  const value = request.id;
+  if (typeof value === "string") {
+    return hasOnlyUnicodeScalars(value)
+      ? { kind: "valid", value, correlation: JSON.stringify(value) }
+      : { kind: "invalid" };
+  }
+  if (typeof value !== "number") return { kind: "invalid" };
+
+  const source = numericIdSource(request, value);
+  if (source !== undefined) {
+    const correlation = normalizeJsonIntegerSource(source);
+    return correlation === null
+      ? { kind: "invalid" }
+      : { kind: "valid", value, correlation, source };
+  }
+  if (!Number.isSafeInteger(value)) return { kind: "invalid" };
+  return {
+    kind: "valid",
+    value,
+    correlation: normalizeJsonIntegerSource(JSON.stringify(value)),
+  };
+}
+
 /**
  * Handle one JSON-RPC request against the injected handler port.
  *
  * The handler port mirrors the shared Python ToolService:
  * `call(toolName, argumentsObject, requestId)` returning
- * `{ envelope, isError }`.  Notifications receive `null`.
+ * `{ envelope, isError }`. Notifications are not dispatched.
  */
 export async function handleJsonrpc(request, handlerPort) {
   if (!isPlainObject(request)) {
-    return jsonrpcError(null, JSONRPC_INVALID_REQUEST, "request must be an object");
+    return jsonrpcError(undefined, JSONRPC_INVALID_REQUEST, "request must be an object");
   }
-  const requestId = Object.hasOwn(request, "id") ? request.id : undefined;
-  const idIsInvalid =
-    typeof requestId === "boolean" ||
-    Array.isArray(requestId) ||
-    isPlainObject(requestId);
-  if (request.jsonrpc !== JSONRPC_VERSION || typeof request.method !== "string" || idIsInvalid) {
-    const reportable =
-      typeof requestId === "string" || typeof requestId === "number" ? requestId : null;
+  const requestId = classifyRequestId(request);
+  if (
+    request.jsonrpc !== JSONRPC_VERSION ||
+    typeof request.method !== "string" ||
+    requestId.kind === "invalid"
+  ) {
+    const reportable = requestId.kind === "valid" ? requestId.value : undefined;
     return jsonrpcError(
       reportable,
       JSONRPC_INVALID_REQUEST,
       "request is not a JSON-RPC 2.0 call",
+      requestId.kind === "valid" ? requestId.source : undefined,
     );
   }
-  if (requestId === undefined || requestId === null) {
+  if (requestId.kind === "absent") {
+    if (
+      Object.hasOwn(request, "params") &&
+      !isPlainObject(request.params) &&
+      !Array.isArray(request.params)
+    ) {
+      return jsonrpcError(
+        undefined,
+        JSONRPC_INVALID_REQUEST,
+        "request params must be an object or array",
+      );
+    }
     return null;
   }
   if (request.method === "initialize") {
-    return { jsonrpc: JSONRPC_VERSION, id: requestId, result: initializeResult() };
+    return jsonrpcResult(requestId.value, initializeResult(), requestId.source);
   }
   if (request.method === "tools/list") {
-    return {
-      jsonrpc: JSONRPC_VERSION,
-      id: requestId,
-      result: { tools: toolDescriptors() },
-    };
+    return jsonrpcResult(
+      requestId.value,
+      { tools: toolDescriptors() },
+      requestId.source,
+    );
   }
   if (request.method === "tools/call") {
     const params = request.params;
     if (!isPlainObject(params) || typeof params.name !== "string") {
-      return jsonrpcError(requestId, JSONRPC_INVALID_PARAMS, "params.name is required");
+      return jsonrpcError(
+        requestId.value,
+        JSONRPC_INVALID_PARAMS,
+        "params.name is required",
+        requestId.source,
+      );
     }
     const args = Object.hasOwn(params, "arguments") ? params.arguments : {};
     const { envelope, isError } = await handlerPort.call(
       params.name,
       args,
-      String(requestId),
+      requestId.correlation,
     );
-    return {
-      jsonrpc: JSONRPC_VERSION,
-      id: requestId,
-      result: {
+    return jsonrpcResult(
+      requestId.value,
+      {
         content: [{ type: "text", text: JSON.stringify(envelope) }],
         structuredContent: envelope,
         isError: Boolean(isError),
       },
-    };
+      requestId.source,
+    );
   }
   return jsonrpcError(
-    requestId,
+    requestId.value,
     JSONRPC_METHOD_NOT_FOUND,
     `unknown method: ${request.method}`,
+    requestId.source,
   );
 }
 
@@ -132,13 +368,13 @@ export async function handleHttpPost({ path, body, headers, handlerPort }) {
   }
   let request;
   try {
-    request = JSON.parse(body);
+    request = parseJsonrpcMessage(body);
   } catch {
     return {
       status: 400,
       headers: responseHeaders,
-      body: JSON.stringify(
-        jsonrpcError(null, JSONRPC_PARSE_ERROR, "body is not valid JSON"),
+      body: stringifyJsonrpcMessage(
+        jsonrpcError(undefined, JSONRPC_PARSE_ERROR, "body is not valid JSON"),
       ),
     };
   }
@@ -146,7 +382,11 @@ export async function handleHttpPost({ path, body, headers, handlerPort }) {
   if (response === null) {
     return { status: 202, headers: responseHeaders, body: "" };
   }
-  return { status: 200, headers: responseHeaders, body: JSON.stringify(response) };
+  return {
+    status: 200,
+    headers: responseHeaders,
+    body: stringifyJsonrpcMessage(response),
+  };
 }
 
 /** Line-delimited stateless STDIO loop over async line iterables. */
@@ -159,15 +399,15 @@ export async function serveStdio(lines, write, handlerPort) {
     }
     let response;
     try {
-      response = await handleJsonrpc(JSON.parse(line), handlerPort);
+      response = await handleJsonrpc(parseJsonrpcMessage(line), handlerPort);
     } catch (error) {
       response =
         error instanceof SyntaxError
-          ? jsonrpcError(null, JSONRPC_PARSE_ERROR, "request line is not valid JSON")
-          : jsonrpcError(null, JSONRPC_INVALID_REQUEST, "request handling failed");
+          ? jsonrpcError(undefined, JSONRPC_PARSE_ERROR, "request line is not valid JSON")
+          : jsonrpcError(undefined, JSONRPC_INVALID_REQUEST, "request handling failed");
     }
     if (response !== null) {
-      write(`${JSON.stringify(response)}\n`);
+      write(`${stringifyJsonrpcMessage(response)}\n`);
       handled += 1;
     }
   }

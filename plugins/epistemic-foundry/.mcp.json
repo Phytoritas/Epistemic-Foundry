@@ -1,13 +1,12 @@
 {
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
   "mcpServers": {
     "epistemic-foundry": {
+      "type": "stdio",
+      "cwd": "./",
       "command": "node",
       "args": [
-        "${CLAUDE_PLUGIN_ROOT}/bin/efoundry.mjs",
-        "mcp",
-        "serve",
-        "--transport",
-        "stdio"
+        "./dist/mcp-server.mjs"
       ]
     }
   }

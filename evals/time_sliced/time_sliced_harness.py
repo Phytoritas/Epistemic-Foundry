@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import datetime
@@ -42,6 +43,12 @@ BENCHMARK_RELATIVE_PATH: Final = "evals/time_sliced/time_sliced_cases.json"
 RESULTS_RELATIVE_PATH: Final = "evals/time_sliced/time_sliced_results.json"
 #: The sealed Q01 corpus every item's label is bound to.
 GOLD_CORPUS_RELATIVE_PATH: Final = "evals/gold/insight_gold_cases.json"
+
+_RFC3339_INSTANT_PATTERN: Final = re.compile(
+    r"^[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])[Tt]"
+    r"(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]"
+    r"(?:\.[0-9]+)?(?:[Zz]|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])$"
+)
 
 _BENCHMARK_FIELDS: Final = frozenset(
     {
@@ -277,8 +284,12 @@ def _text(value: object, label: str) -> str:
 
 def _instant(value: object, label: str) -> datetime:
     text = _text(value, label)
+    if _RFC3339_INSTANT_PATTERN.fullmatch(text) is None:
+        _fail(
+            "TIMESTAMP_INVALID", f"{label} is not an RFC3339 instant", {"value": text}
+        )
     try:
-        parsed = datetime.fromisoformat(text)
+        parsed = datetime.fromisoformat(text[:-1] + "Z" if text.endswith("z") else text)
     except ValueError:
         _fail(
             "TIMESTAMP_INVALID", f"{label} is not an RFC3339 instant", {"value": text}
@@ -403,6 +414,8 @@ def _document_ids(
     value: object,
     label: str,
     documents: Mapping[str, Mapping[str, Any]],
+    *,
+    allow_empty: bool = False,
 ) -> list[str]:
     ids: list[str] = []
     for entry in _sequence(value, label):
@@ -420,7 +433,7 @@ def _document_ids(
                 {"document_id": document_id, "field": label},
             )
         ids.append(document_id)
-    if not ids:
+    if not ids and not allow_empty:
         _fail("INPUT_INVALID", f"{label} must not be empty")
     return ids
 
@@ -493,6 +506,7 @@ def _validate_items(
             record["retrieved_document_ids"],
             f"{item_id}.retrieved_document_ids",
             documents,
+            allow_empty=True,
         )
         items.append(
             {

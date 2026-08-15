@@ -184,6 +184,33 @@ def test_every_disagreement_in_the_corpus_is_adjudicated() -> None:
             assert case["adjudication"] is None, case["case_id"]
 
 
+def test_annotation_order_does_not_change_canonical_adjudication_meaning() -> None:
+    payload = corpus()
+    case = case_of(payload, "GC-false-004")
+    case["annotations"][0]["annotator_id"] = "ann-A"
+    case["annotations"][1]["annotator_id"] = "ann-a"
+    permuted = copy.deepcopy(payload)
+    case_of(permuted, "GC-false-004")["annotations"].reverse()
+
+    canonical = validate_corpus(payload)
+    reordered = validate_corpus(permuted)
+    canonical_case = case_of(canonical.payload, "GC-false-004")
+
+    assert canonical.canonical_bytes == reordered.canonical_bytes
+    assert [
+        (annotation["annotator_id"], annotation["label"])
+        for annotation in canonical_case["annotations"]
+    ] == [
+        ("ann-A", CaseClass.FALSE_INSIGHT.value),
+        ("ann-a", CaseClass.BOUNDARY.value),
+    ]
+    assert (
+        canonical_case["adjudication"]["resolution"]
+        == Resolution.ANNOTATOR_A_CORRECT.value
+    )
+    assert canonical_case["gold_label"] == CaseClass.FALSE_INSIGHT.value
+
+
 def test_an_unadjudicated_disagreement_is_refused() -> None:
     payload = corpus()
     case_of(payload, "GC-false-004")["adjudication"] = None
@@ -229,6 +256,51 @@ def test_a_non_canonical_resolution_is_refused() -> None:
     assert caught.value.code == "RESOLUTION_INVALID"
 
 
+def test_annotator_a_resolution_must_match_the_gold_label() -> None:
+    payload = corpus()
+    case = case_of(payload, "GC-false-004")
+    annotations = {
+        annotation["annotator_id"]: annotation for annotation in case["annotations"]
+    }
+    annotations["ann-a"]["label"] = CaseClass.BOUNDARY.value
+    annotations["ann-b"]["label"] = CaseClass.FALSE_INSIGHT.value
+
+    with pytest.raises(GoldCorpusError) as caught:
+        validate_corpus(payload)
+
+    assert caught.value.code == "ADJUDICATION_GOLD_MISMATCH"
+    assert caught.value.context["resolution"] == Resolution.ANNOTATOR_A_CORRECT.value
+
+
+def test_annotator_b_resolution_must_match_the_gold_label() -> None:
+    payload = corpus()
+    case_of(payload, "GC-false-004")["adjudication"]["resolution"] = (
+        Resolution.ANNOTATOR_B_CORRECT.value
+    )
+
+    with pytest.raises(GoldCorpusError) as caught:
+        validate_corpus(payload)
+
+    assert caught.value.code == "ADJUDICATION_GOLD_MISMATCH"
+    assert caught.value.context["resolution"] == Resolution.ANNOTATOR_B_CORRECT.value
+
+
+def test_neither_correct_may_not_reuse_a_submitted_label() -> None:
+    payload = corpus()
+    case_of(payload, "GC-false-004")["adjudication"]["resolution"] = (
+        Resolution.NEITHER_CORRECT.value
+    )
+
+    with pytest.raises(GoldCorpusError) as caught:
+        validate_corpus(payload)
+
+    assert caught.value.code == "ADJUDICATION_GOLD_MISMATCH"
+    assert caught.value.context["gold_label"] in {
+        caught.value.context["annotator_a"]["label"],
+        caught.value.context["annotator_b"]["label"],
+    }
+
+
 def test_the_resolution_vocabulary_admits_ambiguous_guidance() -> None:
     assert sorted(RESOLUTIONS) == [
         "ANNOTATOR_A_CORRECT",
@@ -256,6 +328,20 @@ def test_an_adjudication_must_be_dated() -> None:
         validate_corpus(payload)
 
     assert caught.value.code == "INPUT_INVALID"
+
+
+def test_a_third_annotator_is_refused() -> None:
+    payload = corpus()
+    case = case_of(payload, "GC-true-003")
+    third_annotation = copy.deepcopy(case["annotations"][0])
+    third_annotation["annotator_id"] = "ann-c"
+    case["annotations"].append(third_annotation)
+
+    with pytest.raises(GoldCorpusError) as caught:
+        validate_corpus(payload)
+
+    assert caught.value.code == "EXCESS_ANNOTATORS"
+    assert caught.value.context["annotator_count"] == 3
 
 
 def test_the_gold_label_of_a_unanimous_case_is_the_one_both_gave() -> None:

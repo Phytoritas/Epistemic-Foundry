@@ -30,8 +30,16 @@ const UNRESOLVED_ATTEMPT_STATES = Object.freeze([
   "RUNNING",
   "RECONCILING",
 ]);
+const FINAL_TERMINAL_NODE_STATUSES = Object.freeze([
+  "SUCCEEDED",
+  "FAILED_FINAL",
+  "BLOCKED",
+  "SPEC_GAP",
+  "CANCELLED",
+]);
 const REVIEW_DECISIONS = Object.freeze(["APPROVE", "REJECT"]);
-const RFC3339 = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$/;
+const RFC3339 =
+  /^(\d{4})-(\d{2})-(\d{2})[Tt](\d{2}):(\d{2}):(\d{2})(?:\.[0-9]+)?(?:[Zz]|([+-])(\d{2}):(\d{2}))$/;
 const SHA256 = /^sha256:[0-9a-f]{64}$/;
 
 export class CheckpointRuntimeError extends Error {
@@ -79,9 +87,104 @@ const requireText = (value, label) => {
   return value;
 };
 
+const isLeapYear = (year) => year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+
+const daysInMonth = (year, month) =>
+  [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][
+    month - 1
+  ];
+
 const requireTimestamp = (value, label) => {
-  if (typeof value !== "string" || !RFC3339.test(value)) {
-    fail("CHECKPOINT_INPUT_INVALID", `${label} must be an RFC 3339 timestamp`);
+  if (typeof value !== "string") {
+    fail("CHECKPOINT_INPUT_INVALID", `${label} must be a real RFC 3339 timestamp`);
+  }
+  const match = RFC3339.exec(value);
+  if (match === null) {
+    fail("CHECKPOINT_INPUT_INVALID", `${label} must be a real RFC 3339 timestamp`);
+  }
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const hour = Number(match[4]);
+  const minute = Number(match[5]);
+  const second = Number(match[6]);
+  const offsetHour = match[8] === undefined ? 0 : Number(match[8]);
+  const offsetMinute = match[9] === undefined ? 0 : Number(match[9]);
+  const offsetSign = match[7] === "-" ? -1 : 1;
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > daysInMonth(year, month) ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 60 ||
+    offsetHour > 23 ||
+    offsetMinute > 59
+  ) {
+    fail("CHECKPOINT_INPUT_INVALID", `${label} must be a real RFC 3339 timestamp`);
+  }
+  const signedOffsetMinutes =
+    match[7] === undefined ? 0 : offsetSign * (offsetHour * 60 + offsetMinute);
+  const utcMinuteOfDay =
+    ((hour * 60 + minute - signedOffsetMinutes) % 1_440 + 1_440) % 1_440;
+  if (second === 60) {
+    const utcMinutes = hour * 60 + minute - signedOffsetMinutes;
+    let utcYear = year;
+    let utcMonth = month;
+    let utcDay = day + Math.floor(utcMinutes / 1_440);
+    if (utcDay < 1) {
+      utcMonth -= 1;
+      if (utcMonth < 1) {
+        utcYear -= 1;
+        utcMonth = 12;
+      }
+      utcDay = daysInMonth(utcYear, utcMonth);
+    } else if (utcDay > daysInMonth(utcYear, utcMonth)) {
+      utcDay = 1;
+      utcMonth += 1;
+      if (utcMonth > 12) {
+        utcYear += 1;
+        utcMonth = 1;
+      }
+    }
+    if (
+      utcMinuteOfDay !== 23 * 60 + 59 ||
+      utcDay !== daysInMonth(utcYear, utcMonth)
+    ) {
+      fail(
+        "CHECKPOINT_INPUT_INVALID",
+        `${label} has a leap second outside UTC month-end 23:59`,
+      );
+    }
+  }
+  return value;
+};
+
+const requireSchemaString = (value, label, { minLength = 0 } = {}) => {
+  if (typeof value !== "string" || value.length < minLength) {
+    fail("CHECKPOINT_INPUT_INVALID", `${label} must be a schema-valid string`);
+  }
+  return value;
+};
+
+const requireSchemaStringArray = (value, label) => {
+  if (!Array.isArray(value)) {
+    fail("CHECKPOINT_INPUT_INVALID", `${label} must be an array`);
+  }
+  const entries = [];
+  for (let index = 0; index < value.length; index += 1) {
+    if (!Object.hasOwn(value, index)) {
+      fail("CHECKPOINT_INPUT_INVALID", `${label} must not be sparse`);
+    }
+    entries.push(requireSchemaString(value[index], `${label}[${index}]`));
+  }
+  return entries;
+};
+
+const requireSchemaNonNegativeInteger = (value, label) => {
+  if (!Number.isInteger(value) || value < 0) {
+    fail("CHECKPOINT_INPUT_INVALID", `${label} must be a non-negative integer`);
   }
   return value;
 };
@@ -100,6 +203,15 @@ const requireNonNegativeInteger = (value, label) => {
     fail("CHECKPOINT_INPUT_INVALID", `${label} must be a non-negative integer`);
   }
   return value;
+};
+
+const freezeCheckpointManifest = (manifest) => {
+  Object.freeze(manifest.artifact_ids);
+  Object.freeze(manifest.expected_node_ids);
+  Object.freeze(manifest.gate_decision_ids);
+  Object.freeze(manifest.pending_effect_ids);
+  Object.freeze(manifest.terminal_node_ids);
+  return Object.freeze(manifest);
 };
 
 /** Every attempt whose effect is not yet resolved to a terminal receipt. */
@@ -123,6 +235,35 @@ export function pendingEffects(snapshot) {
       : left.node_id.localeCompare(right.node_id),
   );
 }
+
+const deriveCheckpointProjections = ({ snapshot, plan }) => {
+  const terminal = [];
+  const expected = [];
+  for (const [nodeId, attempts] of Object.entries(snapshot.node_attempts ?? {})) {
+    expected.push(nodeId);
+    const latestAttempt = attempts.at(-1) ?? null;
+    if (
+      latestAttempt !== null &&
+      FINAL_TERMINAL_NODE_STATUSES.includes(latestAttempt.status)
+    ) {
+      terminal.push(nodeId);
+    }
+  }
+  for (const nodeId of plan.nodes.map((node) => node.node_id)) {
+    if (!expected.includes(nodeId)) expected.push(nodeId);
+  }
+
+  return {
+    expected_node_ids: [...expected].sort(),
+    pending_effect_ids: pendingEffects(snapshot).map(
+      (entry) => `${entry.node_id}#${entry.attempt}`,
+    ),
+    terminal_node_ids: [...terminal].sort(),
+  };
+};
+
+const equalStringArrays = (left, right) =>
+  left.length === right.length && left.every((entry, index) => entry === right[index]);
 
 function replayEvidence({ run_id, plan, budget_envelope, commands }) {
   const rebuilt = replaySchedulerCommands({ run_id, plan, budget_envelope, commands });
@@ -181,30 +322,21 @@ export function sealCheckpoint({
     );
   }
 
-  const terminal = [];
-  const expected = [];
-  for (const [nodeId, attempts] of Object.entries(snapshot.node_attempts ?? {})) {
-    expected.push(nodeId);
-    if (attempts.some((attempt) => attempt.status === "SUCCEEDED")) terminal.push(nodeId);
-  }
-  for (const nodeId of plan.nodes.map((node) => node.node_id)) {
-    if (!expected.includes(nodeId)) expected.push(nodeId);
-  }
-
+  const projections = deriveCheckpointProjections({ snapshot, plan });
   const pending = pendingEffects(snapshot);
   const semantic = {
     artifact_ids: requireStringArray(artifactIds, "artifact_ids"),
     checkpoint_id: checkpointId,
     created_at: createdAt,
     event_sequence: replay.command_count,
-    expected_node_ids: [...expected].sort(),
+    expected_node_ids: projections.expected_node_ids,
     gate_decision_ids: requireStringArray(gateDecisionIds, "gate_decision_ids"),
     layer_index: layerIndex,
-    pending_effect_ids: pending.map((entry) => `${entry.node_id}#${entry.attempt}`),
+    pending_effect_ids: projections.pending_effect_ids,
     replay_verified: replayVerified,
     run_id: runId,
     state_hash: snapshot.state_hash,
-    terminal_node_ids: [...terminal].sort(),
+    terminal_node_ids: projections.terminal_node_ids,
   };
   const manifest = {
     ...semantic,
@@ -212,7 +344,7 @@ export function sealCheckpoint({
   };
   return Object.freeze({
     commands,
-    manifest: Object.freeze(manifest),
+    manifest: freezeCheckpointManifest(manifest),
     pending_effects: Object.freeze(pending),
   });
 }
@@ -242,18 +374,49 @@ export function validateCheckpointManifest(manifest) {
       unknown: keys.filter((key) => !expectedKeys.includes(key)),
     });
   }
+  const stateHash = requireSchemaString(manifest.state_hash, "state_hash", { minLength: 1 });
+  const asserted = requireSchemaString(manifest.checkpoint_hash, "checkpoint_hash", {
+    minLength: 1,
+  });
+  if (!SHA256.test(stateHash) || !SHA256.test(asserted)) {
+    fail("CHECKPOINT_FIELD_SET_INVALID", "state_hash and checkpoint_hash must be sha256 ids");
+  }
   if (typeof manifest.replay_verified !== "boolean") {
     fail("CHECKPOINT_FIELD_SET_INVALID", "replay_verified must be a boolean");
   }
-  if (!SHA256.test(String(manifest.state_hash)) || !SHA256.test(String(manifest.checkpoint_hash))) {
-    fail("CHECKPOINT_FIELD_SET_INVALID", "state_hash and checkpoint_hash must be sha256 ids");
-  }
-  const { checkpoint_hash: asserted, ...semantic } = manifest;
+  const semantic = {
+    artifact_ids: requireSchemaStringArray(manifest.artifact_ids, "artifact_ids"),
+    checkpoint_id: requireSchemaString(manifest.checkpoint_id, "checkpoint_id", {
+      minLength: 1,
+    }),
+    created_at: requireTimestamp(manifest.created_at, "created_at"),
+    event_sequence: requireSchemaNonNegativeInteger(manifest.event_sequence, "event_sequence"),
+    expected_node_ids: requireSchemaStringArray(
+      manifest.expected_node_ids,
+      "expected_node_ids",
+    ),
+    gate_decision_ids: requireSchemaStringArray(
+      manifest.gate_decision_ids,
+      "gate_decision_ids",
+    ),
+    layer_index: requireSchemaNonNegativeInteger(manifest.layer_index, "layer_index"),
+    pending_effect_ids: requireSchemaStringArray(
+      manifest.pending_effect_ids,
+      "pending_effect_ids",
+    ),
+    replay_verified: manifest.replay_verified,
+    run_id: requireSchemaString(manifest.run_id, "run_id", { minLength: 1 }),
+    state_hash: stateHash,
+    terminal_node_ids: requireSchemaStringArray(
+      manifest.terminal_node_ids,
+      "terminal_node_ids",
+    ),
+  };
   const recomputed = sha256SchedulerJson(canonicalizeSchedulerJson(semantic));
   if (asserted !== recomputed) {
     fail("CHECKPOINT_HASH_MISMATCH", "checkpoint_hash does not match canonical content");
   }
-  return Object.freeze(structuredClone(manifest));
+  return freezeCheckpointManifest({ ...semantic, checkpoint_hash: asserted });
 }
 
 /** Pause a run: admission stops, in-flight attempts and effects are preserved. */
@@ -282,7 +445,7 @@ export function pauseRun({ scheduler, run_id: runId, plan, budget_envelope: budg
  *
  * A checkpoint may resume only when an independent review APPROVED it, the
  * reviewer is not the author, the stored manifest self-hash holds, and the
- * command log replays to the exact recorded state hash.
+ * command log replays to the exact recorded state hash and projections.
  */
 export function resumeFromCheckpoint({
   manifest,
@@ -332,6 +495,29 @@ export function resumeFromCheckpoint({
       rebuilt_state_hash: replay.rebuilt_state_hash,
       sealed_state_hash: sealed.state_hash,
     });
+  }
+  const manifestProjections = {
+    expected_node_ids: sealed.expected_node_ids,
+    pending_effect_ids: sealed.pending_effect_ids,
+    terminal_node_ids: sealed.terminal_node_ids,
+  };
+  const derivedProjections = deriveCheckpointProjections({
+    snapshot: replay.snapshot,
+    plan,
+  });
+  const mismatchedFields = Object.keys(manifestProjections).filter(
+    (field) => !equalStringArrays(manifestProjections[field], derivedProjections[field]),
+  );
+  if (mismatchedFields.length > 0) {
+    fail(
+      "CHECKPOINT_PROJECTION_MISMATCH",
+      "checkpoint projections do not match the replay-derived scheduler state",
+      {
+        derived: derivedProjections,
+        manifest: manifestProjections,
+        mismatched_fields: mismatchedFields,
+      },
+    );
   }
 
   const scheduler = createDagScheduler({
@@ -394,16 +580,34 @@ export function cancelRun({
     if (!["SUCCEEDED", "FAILED", "ROLLED_BACK", "NOT_EXECUTED", "UNKNOWN"].includes(status)) {
       fail("EFFECT_RECEIPT_INVALID", `effect_receipts[${index}].status is not canonical`);
     }
-    requireText(receipt.receipt_id, `effect_receipts[${index}].receipt_id`);
+    const reconciliationRequired = receipt.reconciliation_required;
+    if (typeof reconciliationRequired !== "boolean") {
+      fail(
+        "EFFECT_RECEIPT_INVALID",
+        `effect_receipts[${index}].reconciliation_required must be boolean`,
+      );
+    }
+    const receiptId = requireText(receipt.receipt_id, `effect_receipts[${index}].receipt_id`);
     if (receiptsByEffect.has(effectId)) {
       fail("EFFECT_RECEIPT_INVALID", `duplicate receipt for effect ${effectId}`);
     }
-    receiptsByEffect.set(effectId, { receipt_id: receipt.receipt_id, status });
+    receiptsByEffect.set(effectId, {
+      receipt_id: receiptId,
+      reconciliation_required: reconciliationRequired,
+      status,
+    });
   }
   for (const effectId of receiptsByEffect.keys()) {
     if (!sealed.manifest.pending_effect_ids.includes(effectId)) {
       fail("EFFECT_RECEIPT_UNKNOWN_EFFECT", `receipt targets an effect outside this run: ${effectId}`);
     }
+  }
+  const receiptIds = new Set();
+  for (const { receipt_id: receiptId } of receiptsByEffect.values()) {
+    if (receiptIds.has(receiptId)) {
+      fail("EFFECT_RECEIPT_INVALID", `duplicate receipt id ${receiptId}`);
+    }
+    receiptIds.add(receiptId);
   }
 
   const reconciled = [];
@@ -414,6 +618,8 @@ export function cancelRun({
       unresolved.push({ effect_id: effectId, reason: "NO_RESOLVING_RECEIPT" });
     } else if (receipt.status === "UNKNOWN") {
       unresolved.push({ effect_id: effectId, reason: "RECEIPT_STATUS_UNKNOWN" });
+    } else if (receipt.reconciliation_required === true) {
+      unresolved.push({ effect_id: effectId, reason: "RECEIPT_RECONCILIATION_REQUIRED" });
     } else {
       reconciled.push({ effect_id: effectId, receipt_id: receipt.receipt_id, status: receipt.status });
     }

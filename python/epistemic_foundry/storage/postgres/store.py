@@ -2075,8 +2075,12 @@ class PostgresStateStore:
             revision = _require_revision(values[2], "persisted revision")
             record_type = _decode_identifier(values[0], "record_type")
             record_id = _decode_identifier(values[1], "record_id")
+            if type(values[3]) is not str:
+                _fail("INVALID_RECORD_VALUE", "persisted value must be JSON text")
             decoded = json.loads(values[3], parse_int=_parse_json_integer)
             _validate_json_value(decoded, "persisted value")
+            if values[3] != _encode_json(decoded):
+                _fail("INVALID_RECORD_VALUE", "persisted value is not canonical JSON")
             return {
                 "recordType": record_type,
                 "recordId": record_id,

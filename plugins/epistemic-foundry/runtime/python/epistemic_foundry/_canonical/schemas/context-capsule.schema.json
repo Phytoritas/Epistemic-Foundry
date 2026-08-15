@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/context-capsule.schema.json",
+  "title": "ContextCapsule",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "capsule_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "phase": {
+      "enum": [
+        "IDLE",
+        "I",
+        "F",
+        "O",
+        "R",
+        "G",
+        "E"
+      ]
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "run_spec_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "policy_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 128
+      },
+      "uniqueItems": true
+    },
+    "summaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "summary": {
+            "type": "string"
+          },
+          "source_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "summary_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "summary",
+          "source_hash",
+          "summary_hash"
+        ]
+      }
+    },
+    "open_blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "excluded_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 128
+      },
+      "uniqueItems": true
+    },
+    "allowed_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "token_budget": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "capsule_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "capsule_id",
+    "session_id",
+    "phase",
+    "purpose",
+    "run_spec_hash",
+    "policy_hash",
+    "artifact_ids",
+    "summaries",
+    "open_blockers",
+    "excluded_artifact_ids",
+    "allowed_capabilities",
+    "token_budget",
+    "created_at",
+    "expires_at",
+    "capsule_hash"
+  ]
+}

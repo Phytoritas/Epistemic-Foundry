@@ -102,6 +102,39 @@ test("hook_schema_fixture_test: object insertion order cannot change hashes", as
   assert.equal(canonicalizeHookJson(left), canonicalizeHookJson(right));
 });
 
+test("hook_schema_fixture_test: RFC 3339 case and UTC-aligned leap seconds are exact", async () => {
+  const acceptedReceivedAt = [
+    "2026-12-31T23:59:60Z",
+    "2026-07-29t04:00:00.000z",
+    "2027-01-01T00:59:60+01:00",
+    "2026-12-31T22:59:60-01:00",
+  ];
+  for (const receivedAt of acceptedReceivedAt) {
+    const envelope = await dispatchHookEvent(
+      { ...fixtureRequest(), received_at: receivedAt },
+      { decide: allowDecision, timeout_ms: 1_000 },
+    );
+    assert.equal(envelope.received_at, receivedAt);
+  }
+
+  const refusedReceivedAt = [
+    "2027-01-01T00:58:60+01:00",
+    "2026-12-31T23:59:60+01:00",
+    "2026-12-31T23:59:61Z",
+    "2026-02-29T12:00:00Z",
+    "2026-12-31T23:59:59+24:00",
+  ];
+  for (const receivedAt of refusedReceivedAt) {
+    await assert.rejects(
+      dispatchHookEvent(
+        { ...fixtureRequest(), received_at: receivedAt },
+        { decide: allowDecision, timeout_ms: 1_000 },
+      ),
+      expectCode("INVALID_INPUT"),
+    );
+  }
+});
+
 test("hook_schema_fixture_test: the decision callback receives only an immutable canonical view", async () => {
   let observed;
   const envelope = await dispatchHookEvent(fixtureRequest(), {

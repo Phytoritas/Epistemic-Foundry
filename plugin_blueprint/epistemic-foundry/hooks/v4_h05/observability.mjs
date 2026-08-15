@@ -19,9 +19,11 @@
 //      registration observes is named in an explicit `not_observed` list, and a
 //      claim of more coverage than the registrations support is refused.
 //
-// The module owns no state and holds no clock: every timestamp is supplied by
-// the caller, and every hash is re-derivable from the values published beside
-// it with the gateway's own canonical-JSON digest.
+// The module owns no canonical or persistent state and holds no clock: every
+// timestamp is supplied by the caller, and every hash is re-derivable from the
+// values published beside it with the gateway's own canonical-JSON digest.  An
+// ephemeral private binding keeps the complete canonical verified state
+// attached to the exact loaded context that exposed its compatibility snapshot.
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -88,7 +90,7 @@ export const FINDING_CODES = Object.freeze({
   HOST_UNDECLARED:
     "a registration named a host the sealed hook gateway does not declare, so it claims coverage of a host that cannot deliver events",
   OBSERVATION_UNREGISTERED:
-    "an observation was offered for a registration, host or event type that the registration set does not declare, so it would be coverage nobody registered",
+    "an observation was offered through an unverified loaded context, or for a registration, host or event type that the registration set does not declare, so it would be coverage nobody registered",
   OBSERVER_AUTHORITY_CLAIMED:
     "an observability registration declared a control-bearing decision; observing a host event never grants authority to allow, block or rewrite it",
   REGISTRATION_DUPLICATED:
@@ -139,6 +141,23 @@ const HOST_SET = new Set(HOOK_HOSTS);
 const EVENT_TYPE_SET = new Set(HOOK_EVENT_TYPES);
 const DECISION_SET = new Set(HOOK_DECISIONS);
 const COVERAGE_SET = new Set(HOOK_COVERAGE);
+
+// Public values are compatibility snapshots.  Only this module-private state is
+// authoritative, and the WeakMap key brands the exact object returned by
+// loadObservability rather than any forged or cloned lookalike.
+const VERIFIED_STATE_BY_CONTEXT = new WeakMap();
+
+const requireVerifiedState = (loaded, context = {}) => {
+  const state = VERIFIED_STATE_BY_CONTEXT.get(loaded);
+  if (state === undefined) {
+    fail(
+      "OBSERVATION_UNREGISTERED",
+      "the loaded context was not returned by this loadObservability instance",
+      context,
+    );
+  }
+  return state;
+};
 
 const isPlainObject = (value) =>
   value !== null && typeof value === "object" && !Array.isArray(value);
@@ -456,6 +475,43 @@ const verifyRegistration = (loaded, registration) => {
   );
 };
 
+const immutableRegistrationCopy = (registration) =>
+  Object.freeze({
+    ...registration,
+    event_types: Object.freeze([...registration.event_types]),
+    hosts: Object.freeze([...registration.hosts]),
+    payload_access: Object.freeze([...registration.payload_access]),
+  });
+
+const immutableDeclarationCopy = (declaration) =>
+  Object.freeze({
+    ...declaration,
+    control_decisions: Object.freeze([...declaration.control_decisions]),
+    coverage_rank: Object.freeze({ ...declaration.coverage_rank }),
+    observed_hosts: Object.freeze([...declaration.observed_hosts]),
+    observer_decisions: Object.freeze([...declaration.observer_decisions]),
+    registrations: Object.freeze(
+      declaration.registrations.map((registration) =>
+        immutableRegistrationCopy(registration),
+      ),
+    ),
+  });
+
+const immutableHoldoutCopy = (holdout) =>
+  Object.freeze({
+    ...holdout,
+    declaredFields: Object.freeze([...holdout.declaredFields]),
+    deniedAccessFlags: Object.freeze([...holdout.deniedAccessFlags]),
+    isolatedFields: Object.freeze([...holdout.isolatedFields]),
+    isolatedPartitions: Object.freeze([...holdout.isolatedPartitions]),
+  });
+
+const decisionSetCopy = (decisions) =>
+  Object.freeze({
+    control: new Set(decisions.control),
+    observer: new Set(decisions.observer),
+  });
+
 /** Read, cross-check and freeze the whole H05 observability registration set. */
 export const loadObservability = ({ root = REPOSITORY_ROOT } = {}) => {
   const declaration = requireFields(readJson(root, REGISTRATIONS_PATH), SET_FIELDS, "registrations");
@@ -508,15 +564,47 @@ export const loadObservability = ({ root = REPOSITORY_ROOT } = {}) => {
     }
   }
 
-  return Object.freeze({
-    ...loaded,
-    observedHosts,
-    observedPairs: Object.freeze(new Map(claimed)),
-    registrationIds: ids,
-    registrationsById: Object.freeze(
-      new Map(declaration.registrations.map((row) => [row.registration_id, Object.freeze(row)])),
+  const canonicalDeclaration = immutableDeclarationCopy(declaration);
+  const verifiedState = Object.freeze({
+    commandPrefix: loaded.commandPrefix,
+    declaration: canonicalDeclaration,
+    decisions: decisionSetCopy(decisions),
+    evolutionEventTypes: Object.freeze([...evolutionEventTypes]),
+    holdout: immutableHoldoutCopy(holdout),
+    observedHosts: Object.freeze([...observedHosts]),
+    observedPairs: new Map(claimed),
+    registrationIds: Object.freeze([...ids]),
+    registrationsById: new Map(
+      canonicalDeclaration.registrations.map((registration) => [
+        registration.registration_id,
+        registration,
+      ]),
     ),
+    root,
   });
+  const publicDeclaration = immutableDeclarationCopy(verifiedState.declaration);
+  const registrationSnapshotById = new Map(
+    publicDeclaration.registrations.map((registration) => [
+      registration.registration_id,
+      registration,
+    ]),
+  );
+  const result = Object.freeze({
+    commandPrefix: verifiedState.commandPrefix,
+    declaration: publicDeclaration,
+    decisions: decisionSetCopy(verifiedState.decisions),
+    evolutionEventTypes: Object.freeze([...verifiedState.evolutionEventTypes]),
+    holdout: immutableHoldoutCopy(verifiedState.holdout),
+    root: verifiedState.root,
+    observedHosts: Object.freeze([...verifiedState.observedHosts]),
+    observedPairs: Object.freeze(new Map(verifiedState.observedPairs)),
+    registrationIds: Object.freeze([...verifiedState.registrationIds]),
+    // Compatibility snapshot only. Map mutations cannot change the private
+    // verified state used by authoritative derivations.
+    registrationsById: Object.freeze(registrationSnapshotById),
+  });
+  VERIFIED_STATE_BY_CONTEXT.set(result, verifiedState);
+  return result;
 };
 
 /**
@@ -528,16 +616,17 @@ export const loadObservability = ({ root = REPOSITORY_ROOT } = {}) => {
  * this projection, and the receipt publishes that fact rather than implying it.
  */
 export const projectHookBundle = (loaded) => {
+  const state = requireVerifiedState(loaded);
   const hooks = {};
   for (const eventType of HOOK_EVENT_TYPES) {
-    const rows = loaded.declaration.registrations
+    const rows = state.declaration.registrations
       .filter((row) => row.event_types.includes(eventType))
       .map((row) => {
         const entry = {
           hooks: [
             {
               type: "command",
-              command: `${loaded.commandPrefix} ${row.runner_argument}`,
+              command: `${state.commandPrefix} ${row.runner_argument}`,
               timeout: row.timeout_seconds,
               statusMessage: row.status_message,
             },
@@ -552,7 +641,8 @@ export const projectHookBundle = (loaded) => {
 
 /** Whether the plugin manifest lists this projection; it does not, and says so. */
 export const pluginManifestWiring = (loaded) => {
-  const manifest = readJson(loaded.root, PLUGIN_MANIFEST_PATH);
+  const state = requireVerifiedState(loaded);
+  const manifest = readJson(state.root, PLUGIN_MANIFEST_PATH);
   const declared = Array.isArray(manifest?.hooks) ? manifest.hooks : [];
   const wired = declared.filter((entry) => typeof entry === "string" && entry.includes("v4_h05"));
   return Object.freeze({
@@ -576,13 +666,14 @@ export const pluginManifestWiring = (loaded) => {
  * the one a coverage claim is checked against.
  */
 export const coverageReport = (loaded) => {
+  const state = requireVerifiedState(loaded);
   const notObserved = [];
   const eventTypes = HOOK_EVENT_TYPES.map((eventType) => {
     const observedHosts = [];
     const unobservedHosts = [];
     for (const host of HOOK_HOSTS) {
       const key = `${host}:${eventType}`;
-      if (loaded.observedPairs.has(key)) observedHosts.push(host);
+      if (state.observedPairs.has(key)) observedHosts.push(host);
       else {
         unobservedHosts.push(host);
         notObserved.push(key);
@@ -599,7 +690,7 @@ export const coverageReport = (loaded) => {
       event_type: eventType,
       hosts_observed: observedHosts.sort(),
       hosts_unobserved: unobservedHosts.sort(),
-      in_evolution_surface: loaded.evolutionEventTypes.includes(eventType),
+      in_evolution_surface: state.evolutionEventTypes.includes(eventType),
     };
   }).sort((left, right) => (left.event_type < right.event_type ? -1 : 1));
 
@@ -610,12 +701,12 @@ export const coverageReport = (loaded) => {
     declared_event_type_count: HOOK_EVENT_TYPES.length,
     declared_host_count: HOOK_HOSTS.length,
     event_types: eventTypes,
-    evolution_event_types: [...loaded.evolutionEventTypes],
+    evolution_event_types: [...state.evolutionEventTypes],
     hosts_never_observed: HOOK_HOSTS.filter(
-      (host) => !loaded.observedHosts.includes(host),
+      (host) => !state.observedHosts.includes(host),
     ).sort(),
     not_observed: notObserved.sort(),
-    observed_pair_count: loaded.observedPairs.size,
+    observed_pair_count: state.observedPairs.size,
   });
 };
 
@@ -628,6 +719,7 @@ export const coverageReport = (loaded) => {
  * blindness as sight, the second hides what the plugin can see.
  */
 export const assertCoverageClaim = (loaded, claim) => {
+  const state = requireVerifiedState(loaded);
   requireFields(claim, CLAIM_FIELDS, "coverage claim");
   const derived = coverageReport(loaded);
   const claimed = claim.coverage_by_event_type;
@@ -639,7 +731,7 @@ export const assertCoverageClaim = (loaded, claim) => {
         event_type: eventType,
       });
     }
-    compareCoverage(loaded.declaration, claimed[eventType], derived.coverage_by_event_type[eventType], {
+    compareCoverage(state.declaration, claimed[eventType], derived.coverage_by_event_type[eventType], {
       event_type: eventType,
       label: `coverage claim for ${eventType}`,
     });
@@ -678,17 +770,20 @@ const holdoutFieldsInPayload = (value, isolated, path, found, seen) => {
   return found;
 };
 
-/** The holdout-flagged fields a candidate payload carries, by path. */
-export const holdoutFlaggedPaths = (loaded, payload) =>
+const holdoutFlaggedPathsFromState = (state, payload) =>
   Object.freeze(
     holdoutFieldsInPayload(
       payload,
-      new Set(loaded.holdout.isolatedFields),
+      new Set(state.holdout.isolatedFields),
       "payload",
       [],
       new WeakSet(),
     ).sort(),
   );
+
+/** The holdout-flagged fields a candidate payload carries, by path. */
+export const holdoutFlaggedPaths = (loaded, payload) =>
+  holdoutFlaggedPathsFromState(requireVerifiedState(loaded), payload);
 
 /**
  * Revalidate an emitted observation as a HookEventEnvelope.
@@ -723,7 +818,8 @@ export const observeEvolutionEvent = async (
   loaded,
   { registrationId, eventId, host, eventType, sessionId = null, toolName = null, observedAt, payload },
 ) => {
-  const registration = loaded.registrationsById.get(registrationId);
+  const state = requireVerifiedState(loaded, { registration_id: registrationId });
+  const registration = state.registrationsById.get(registrationId);
   if (registration === undefined) {
     fail("OBSERVATION_UNREGISTERED", `${registrationId} is not a declared registration`, {
       registration_id: registrationId,
@@ -746,7 +842,7 @@ export const observeEvolutionEvent = async (
       registration_id: registrationId,
     });
   }
-  const flagged = holdoutFlaggedPaths(loaded, payload);
+  const flagged = holdoutFlaggedPathsFromState(state, payload);
   if (flagged.length > 0) {
     fail("HOLDOUT_OBSERVATION_DENIED", `${registrationId} was offered holdout-flagged material`, {
       paths: [...flagged],
@@ -789,13 +885,14 @@ export const observeEvolutionEvent = async (
  * digest of its UTF-8 text, so a changed source changes the receipt.
  */
 export const observabilityReceipt = (loaded) => {
+  const state = requireVerifiedState(loaded);
   const report = coverageReport(loaded);
   const wiring = pluginManifestWiring(loaded);
   const preimage = {
     coverage_by_event_type: report.coverage_by_event_type,
     declaring_sources: [...DECLARING_SOURCES]
       .sort()
-      .map((path) => ({ path, text_hash: sha256HookJson(readText(loaded.root, path)) })),
+      .map((path) => ({ path, text_hash: sha256HookJson(readText(state.root, path)) })),
     evolution_event_types: [...report.evolution_event_types],
     gateway_vocabulary: {
       coverage: [...HOOK_COVERAGE],
@@ -803,19 +900,19 @@ export const observabilityReceipt = (loaded) => {
       event_types: [...HOOK_EVENT_TYPES],
       hosts: [...HOOK_HOSTS],
     },
-    holdout_denied_access_flags: [...loaded.holdout.deniedAccessFlags],
-    holdout_isolated_fields: [...loaded.holdout.isolatedFields],
+    holdout_denied_access_flags: [...state.holdout.deniedAccessFlags],
+    holdout_isolated_fields: [...state.holdout.isolatedFields],
     hosts_never_observed: [...report.hosts_never_observed],
     not_observed: [...report.not_observed],
-    observed_hosts: [...loaded.observedHosts],
+    observed_hosts: [...state.observedHosts],
     observed_pair_count: report.observed_pair_count,
     plugin_manifest_hook_count: wiring.manifest_hook_count,
     plugin_manifest_wired: wiring.manifest_wired,
     projected_bundle_hash: sha256HookJson(projectHookBundle(loaded)),
-    registration_count: loaded.declaration.registrations.length,
-    registration_ids: [...loaded.registrationIds],
-    registration_set_id: loaded.declaration.registration_set_id,
-    registration_set_version: loaded.declaration.registration_set_version,
+    registration_count: state.declaration.registrations.length,
+    registration_ids: [...state.registrationIds],
+    registration_set_id: state.declaration.registration_set_id,
+    registration_set_version: state.declaration.registration_set_version,
   };
   const receiptHash = sha256HookJson(preimage);
   return Object.freeze({

@@ -72,6 +72,16 @@ test("pathless_cli_test: an override cannot smuggle PATH back in", () => {
   }
 });
 
+test("pathless_cli_test: Windows-style case variants cannot smuggle lookup variables back in", () => {
+  for (const key of ["path", "pAtHeXt", "node_options", "Node_Path", "pythonpath"]) {
+    assert.throws(
+      () => childEnvironment({}, { [key]: "/tmp/evil" }),
+      (error) => error instanceof CliContractError && error.code === "ENV_KEY_FORBIDDEN",
+      key,
+    );
+  }
+});
+
 test("pathless_cli_test: an override must be a string", () => {
   assert.throws(
     () => childEnvironment({}, { EFOUNDRY_RUN: 7 }),
@@ -131,6 +141,12 @@ test("pathless_cli_test: the plan is frozen so a caller cannot re-enable the she
     plan.options.shell = true;
   }, TypeError);
   assert.equal(plan.options.shell, false);
+
+  assert.throws(() => {
+    "use strict";
+    plan.options.env.PATH = "/tmp/evil";
+  }, TypeError);
+  assert.equal("PATH" in plan.options.env, false);
 });
 
 test("pathless_cli_test: the source scanner names every lookup it finds", () => {
@@ -187,6 +203,7 @@ test("pathless_cli_test: the shipped dispatcher is PATH-less too", () => {
   const source = readFileSync(dispatcher, "utf8");
 
   assert.deepEqual(pathlessViolations(source), []);
-  assert.match(source, /spawn\(process\.execPath,/u);
-  assert.match(source, /shell: false/u);
+  assert.match(source, /new URL\(["']\.\.\/dist\/cli\.mjs["'], import\.meta\.url\)/u);
+  assert.match(source, /await import\(payloadCli\.href\)/u);
+  assert.doesNotMatch(source, /\b(?:spawn|exec|execFile|fork)\s*\(/u);
 });

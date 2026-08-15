@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
@@ -128,6 +129,7 @@ TRACE_FIELDS: Final = frozenset(
     {
         "proof_trace_id",
         "argument_graph_id",
+        "argument_graph_hash",
         "run_id",
         "hypothesis_id",
         "created_at",
@@ -164,6 +166,27 @@ SCOPE_SCALAR_FIELDS: Final = (
 SCOPE_SET_FIELDS: Final = ("exclusion_criteria", "inclusion_criteria")
 #: Key/value maps; a dropped or altered key widens or moves the scope.
 SCOPE_MAP_FIELDS: Final = ("conditions", "domain_extensions")
+INTERVENTION_FIELDS: Final = frozenset(
+    {
+        "name",
+        "category",
+        "min_value",
+        "max_value",
+        "unit",
+        "duration",
+        "frequency",
+        "rate",
+        "route_or_delivery",
+    }
+)
+_INTERVENTION_NULLABLE_TEXT_FIELDS: Final = (
+    "category",
+    "duration",
+    "frequency",
+    "route_or_delivery",
+    "unit",
+)
+_INTERVENTION_NULLABLE_NUMBER_FIELDS: Final = ("max_value", "min_value")
 
 
 class ProofTraceError(ValueError):
@@ -214,6 +237,78 @@ def _canonical_json(value: object) -> bytes:
         raise  # pragma: no cover - _fail always raises
 
 
+def _json_snapshot(
+    value: object,
+    label: str,
+    memo: dict[int, object],
+    active: set[int],
+) -> object:
+    """Read each caller-owned JSON container once into plain Python values."""
+
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return str.__str__(value)
+    if isinstance(value, int):
+        return int.__int__(value)
+    if isinstance(value, float):
+        return float.__float__(value)
+    if isinstance(value, (bytes, bytearray)):
+        _fail("CANONICALIZATION_FAILED", f"{label} contains a non-JSON value")
+    if isinstance(value, Mapping):
+        identity = id(value)
+        if identity in active:
+            _fail("CANONICALIZATION_FAILED", f"{label} contains a cycle")
+        if identity in memo:
+            return memo[identity]
+        detached_mapping: dict[str, object] = {}
+        memo[identity] = detached_mapping
+        active.add(identity)
+        try:
+            for key, entry in value.items():
+                if not isinstance(key, str):
+                    _fail("INPUT_INVALID", f"{label} keys must be strings")
+                plain_key = str.__str__(key)
+                if plain_key in detached_mapping:
+                    _fail("INPUT_INVALID", f"{label} keys must be unique")
+                detached_mapping[plain_key] = _json_snapshot(
+                    entry, f"{label}.{plain_key}", memo, active
+                )
+        finally:
+            active.remove(identity)
+        return detached_mapping
+    if isinstance(value, Sequence):
+        identity = id(value)
+        if identity in active:
+            _fail("CANONICALIZATION_FAILED", f"{label} contains a cycle")
+        if identity in memo:
+            return memo[identity]
+        detached_sequence: list[object] = []
+        memo[identity] = detached_sequence
+        active.add(identity)
+        try:
+            for index, entry in enumerate(value):
+                detached_sequence.append(
+                    _json_snapshot(entry, f"{label}[{index}]", memo, active)
+                )
+        finally:
+            active.remove(identity)
+        return detached_sequence
+    _fail("CANONICALIZATION_FAILED", f"{label} contains a non-JSON value")
+
+
+def _detached_json_object(value: object, label: str) -> dict[str, Any]:
+    """Capture one immutable JSON view before any semantic reads."""
+
+    detached = _json_snapshot(value, label, {}, set())
+    if type(detached) is not dict:  # pragma: no cover - caller shape invariant
+        _fail("INPUT_INVALID", f"{label} must be a mapping")
+    _canonical_json(detached)
+    return detached
+
+
 def _hex_digest(value: object) -> str:
     return hashlib.sha256(_canonical_json(value)).hexdigest()
 
@@ -262,11 +357,194 @@ def _text(value: object, label: str) -> str:
     return str(value)
 
 
+def _month_length(year: int, month: int) -> int:
+    leap_year = year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    return (
+        31,
+        29 if leap_year else 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    )[month - 1]
+
+
+def _shift_calendar_day(
+    year: int, month: int, day: int, day_delta: int
+) -> tuple[int, int, int]:
+    while day_delta > 0:
+        day += 1
+        if day > _month_length(year, month):
+            day = 1
+            month += 1
+            if month > 12:
+                month = 1
+                year += 1
+        day_delta -= 1
+    while day_delta < 0:
+        day -= 1
+        if day < 1:
+            month -= 1
+            if month < 1:
+                month = 12
+                year -= 1
+            day = _month_length(year, month)
+        day_delta += 1
+    return year, month, day
+
+
 def _timestamp(value: object, label: str) -> str:
     text = _text(value, label)
     if RFC3339_PATTERN.fullmatch(text) is None:
         _fail("INPUT_INVALID", f"{label} must be an RFC3339 timestamp")
+    year = int(text[0:4])
+    month = int(text[5:7])
+    day = int(text[8:10])
+    hour = int(text[11:13])
+    minute = int(text[14:16])
+    second = int(text[17:19])
+    if (
+        month < 1
+        or month > 12
+        or day < 1
+        or day > _month_length(year, month)
+        or hour > 23
+        or minute > 59
+        or second > 60
+    ):
+        _fail("INPUT_INVALID", f"{label} must be a real RFC3339 timestamp")
+    offset_minutes = 0
+    if not text.endswith("Z"):
+        offset_hour = int(text[-5:-3])
+        offset_minute = int(text[-2:])
+        if offset_hour > 23 or offset_minute > 59:
+            _fail("INPUT_INVALID", f"{label} must be a real RFC3339 timestamp")
+        offset_minutes = offset_hour * 60 + offset_minute
+        if text[-6] == "-":
+            offset_minutes = -offset_minutes
+    if second == 60:
+        utc_day_delta, utc_minute = divmod(
+            hour * 60 + minute - offset_minutes,
+            1440,
+        )
+        utc_year, utc_month, utc_day = _shift_calendar_day(
+            year,
+            month,
+            day,
+            utc_day_delta,
+        )
+        if utc_minute != 1439 or utc_day != _month_length(utc_year, utc_month):
+            _fail(
+                "INPUT_INVALID",
+                f"{label} leap second must be at a UTC month end",
+            )
     return text
+
+
+def _validate_intervention(value: object, label: str) -> dict[str, Any] | None:
+    if value is None:
+        return None
+    intervention = _mapping(value, label)
+    _exact_fields(intervention, INTERVENTION_FIELDS, label)
+    intervention["name"] = _text(intervention["name"], f"{label}.name")
+    for field in _INTERVENTION_NULLABLE_TEXT_FIELDS:
+        entry = intervention[field]
+        if entry is not None and not isinstance(entry, str):
+            _fail("INPUT_INVALID", f"{label}.{field} must be a string or null")
+    for field in _INTERVENTION_NULLABLE_NUMBER_FIELDS:
+        entry = intervention[field]
+        if entry is not None and type(entry) not in (int, float):
+            _fail("INPUT_INVALID", f"{label}.{field} must be a number or null")
+    rate = intervention["rate"]
+    if (
+        rate is not None
+        and not isinstance(rate, str)
+        and type(rate) not in (int, float)
+    ):
+        _fail("INPUT_INVALID", f"{label}.rate must be a string, number, or null")
+    return intervention
+
+
+def _scope_scalar(value: object, label: str) -> object:
+    """Validate one canonical ScopeVector scalar without Python bool/int aliasing."""
+
+    if value is None or type(value) in (bool, str, int):
+        return value
+    if type(value) is float:
+        if not math.isfinite(value):
+            _fail("INPUT_INVALID", f"{label} must be a finite JSON scalar")
+        return value
+    _fail("INPUT_INVALID", f"{label} must be a JSON scalar")
+
+
+def _scope_scalar_or_list(value: object, label: str) -> object:
+    if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):
+        return [
+            _scope_scalar(entry, f"{label}[{index}]")
+            for index, entry in enumerate(value)
+        ]
+    return _scope_scalar(value, label)
+
+
+def _scope_map(value: object, label: str) -> dict[str, object]:
+    mapping = _mapping(value, label)
+    return {
+        key: _scope_scalar_or_list(entry, f"{label}.{key}")
+        for key, entry in mapping.items()
+    }
+
+
+def _json_value_equal(left: object, right: object) -> bool:
+    """JSON-semantic equality: booleans are not numbers; numeric kinds interoperate."""
+
+    if type(left) is bool or type(right) is bool:
+        return type(left) is bool and type(right) is bool and left == right
+    if type(left) in (int, float) and type(right) in (int, float):
+        return left == right
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, list):
+        return len(left) == len(right) and all(
+            _json_value_equal(left_entry, right_entry)
+            for left_entry, right_entry in zip(left, right, strict=True)
+        )
+    return left == right
+
+
+def _intervention_within(
+    conclusion: Mapping[str, Any], premise: Mapping[str, Any]
+) -> bool:
+    for field in (
+        "category",
+        "duration",
+        "frequency",
+        "name",
+        "rate",
+        "route_or_delivery",
+        "unit",
+    ):
+        premise_value = premise[field]
+        if premise_value is not None and conclusion[field] != premise_value:
+            return False
+    premise_minimum = premise["min_value"]
+    conclusion_minimum = conclusion["min_value"]
+    if premise_minimum is not None and (
+        conclusion_minimum is None or conclusion_minimum < premise_minimum
+    ):
+        return False
+    premise_maximum = premise["max_value"]
+    conclusion_maximum = conclusion["max_value"]
+    if premise_maximum is not None and (
+        conclusion_maximum is None or conclusion_maximum > premise_maximum
+    ):
+        return False
+    return True
 
 
 def _validate_scope(value: object, label: str) -> dict[str, Any]:
@@ -280,11 +558,20 @@ def _validate_scope(value: object, label: str) -> dict[str, Any]:
         )
     )
     _exact_fields(scope, expected, label)
+    for field in SCOPE_SCALAR_FIELDS:
+        entry = scope[field]
+        if entry is not None and type(entry) is not str:
+            _fail("INPUT_INVALID", f"{label}.{field} must be a string or null")
     for field in SCOPE_SET_FIELDS:
         entries = _sequence(scope[field], f"{label}.{field}")
-        scope[field] = sorted({_text(entry, f"{label}.{field}") for entry in entries})
+        if any(type(entry) is not str for entry in entries):
+            _fail("INPUT_INVALID", f"{label}.{field} entries must be strings")
+        scope[field] = sorted(set(entries))
     for field in SCOPE_MAP_FIELDS:
-        scope[field] = _mapping(scope[field], f"{label}.{field}")
+        scope[field] = _scope_map(scope[field], f"{label}.{field}")
+    scope["intervention_or_exposure"] = _validate_intervention(
+        scope["intervention_or_exposure"], f"{label}.intervention_or_exposure"
+    )
     return scope
 
 
@@ -382,7 +669,7 @@ def scope_widening(
         elif (
             conclusion_value is not None
             and constrained
-            and conclusion_value not in constrained
+            and not all(conclusion_value == value for value in constrained)
         ):
             findings.append(
                 {
@@ -407,10 +694,50 @@ def scope_widening(
                     findings.append(
                         {"field": f"{field}.{key}", "kind": "DROPPED_CONDITION"}
                     )
-                elif conclusion_scope[field][key] != value:
+                elif not _json_value_equal(conclusion_scope[field][key], value):
                     findings.append(
                         {"field": f"{field}.{key}", "kind": "ALTERED_CONDITION"}
                     )
+    premise_interventions = [
+        scope["intervention_or_exposure"] for scope in premise_scopes
+    ]
+    constrained_interventions = [
+        value for value in premise_interventions if value is not None
+    ]
+    conclusion_intervention = conclusion_scope["intervention_or_exposure"]
+    if conclusion_intervention is None and constrained_interventions:
+        findings.append(
+            {
+                "field": "intervention_or_exposure",
+                "kind": "DROPPED_BOUNDARY",
+                "premise_values": sorted(
+                    {
+                        _canonical_json(value).decode("utf-8")
+                        for value in constrained_interventions
+                    }
+                ),
+            }
+        )
+    elif (
+        conclusion_intervention is not None
+        and constrained_interventions
+        and not all(
+            _intervention_within(conclusion_intervention, value)
+            for value in constrained_interventions
+        )
+    ):
+        findings.append(
+            {
+                "field": "intervention_or_exposure",
+                "kind": "UNCOVERED_VALUE",
+                "premise_values": sorted(
+                    {
+                        _canonical_json(value).decode("utf-8")
+                        for value in constrained_interventions
+                    }
+                ),
+            }
+        )
     unique: list[dict[str, Any]] = []
     for finding in findings:
         if finding not in unique:
@@ -476,7 +803,7 @@ def _assert_acyclic(
 def build_proof_trace(graph: Mapping[str, Any]) -> SealedArtifact:
     """Check one ArgumentGraph and seal its proof trace and assumption ledger."""
 
-    value = _mapping(graph, "ArgumentGraph")
+    value = _detached_json_object(graph, "ArgumentGraph")
     _exact_fields(value, GRAPH_FIELDS, "ArgumentGraph")
     graph_id = _text(value["argument_graph_id"], "argument_graph_id")
     run_id = _text(value["run_id"], "run_id")
@@ -715,6 +1042,7 @@ def build_proof_trace(graph: Mapping[str, Any]) -> SealedArtifact:
 
     trace: dict[str, Any] = {
         "argument_graph_id": graph_id,
+        "argument_graph_hash": graph_hash,
         "assumption_ledger": ledger,
         "broken_edges": sorted(
             broken, key=lambda entry: (entry["conclusion_id"], entry["node_id"])
@@ -727,26 +1055,33 @@ def build_proof_trace(graph: Mapping[str, Any]) -> SealedArtifact:
         "status": status,
         "unresolved_objection_ids": declared_objections,
     }
-    trace["proof_trace_id"] = "PT-" + _hex_digest(
-        {
-            "argument_graph_id": graph_id,
-            "assumption_ledger": ledger,
-            "conclusions": conclusions,
-            "created_at": created_at,
-            "graph_hash": graph_hash,
-        }
-    )
+    trace["proof_trace_id"] = _proof_trace_id(trace)
     trace["trace_hash"] = _hash_excluding(trace, "trace_hash")
     return validate_proof_trace(trace)
+
+
+def _proof_trace_id(payload: Mapping[str, Any]) -> str:
+    return "PT-" + _hex_digest(
+        {
+            "argument_graph_id": payload["argument_graph_id"],
+            "assumption_ledger": payload["assumption_ledger"],
+            "conclusions": payload["conclusions"],
+            "created_at": payload["created_at"],
+            "graph_hash": payload["argument_graph_hash"],
+        }
+    )
 
 
 def validate_proof_trace(payload: Mapping[str, Any]) -> SealedArtifact:
     """Validate one proof-trace record shape, vocabulary, and self-hash."""
 
-    value = _mapping(payload, "ProofTrace")
+    value = _detached_json_object(payload, "ProofTrace")
     _exact_fields(value, TRACE_FIELDS, "ProofTrace")
     _text(value["proof_trace_id"], "proof_trace_id")
     _text(value["argument_graph_id"], "argument_graph_id")
+    argument_graph_hash = _text(value["argument_graph_hash"], "argument_graph_hash")
+    if SHA256_PATTERN.fullmatch(argument_graph_hash) is None:
+        _fail("INPUT_INVALID", "argument_graph_hash must be a sha256 digest")
     _text(value["run_id"], "run_id")
     _text(value["hypothesis_id"], "hypothesis_id")
     _timestamp(value["created_at"], "created_at")
@@ -791,20 +1126,36 @@ def validate_proof_trace(payload: Mapping[str, Any]) -> SealedArtifact:
                 "a sealed trace may not record an unresolved scope widening",
                 {"conclusion_id": check["conclusion_id"]},
             )
-    if value["broken_edges"] and value["status"] != TraceStatus.BROKEN.value:
-        _fail(
-            "BROKEN_EDGE",
-            "a trace with broken support must be reported as BROKEN",
-        )
+    broken_edges = _sequence(value["broken_edges"], "broken_edges")
     if _hash_excluding(value, "trace_hash") != value["trace_hash"]:
         _fail("TRACE_HASH_MISMATCH", "trace_hash does not match its content")
+    expected_status = (
+        TraceStatus.BROKEN.value
+        if broken_edges
+        else TraceStatus.CONDITIONAL.value
+        if ledger
+        else TraceStatus.VALID.value
+    )
+    if value["status"] != expected_status:
+        _fail(
+            "STATUS_MISMATCH",
+            "proof trace status does not match its broken edges and assumption ledger",
+            {"actual": value["status"], "expected": expected_status},
+        )
+    expected_trace_id = _proof_trace_id(value)
+    if value["proof_trace_id"] != expected_trace_id:
+        _fail(
+            "PROOF_TRACE_ID_MISMATCH",
+            "proof_trace_id is not bound to the recorded ArgumentGraph and trace",
+            {"actual": value["proof_trace_id"], "expected": expected_trace_id},
+        )
     return SealedArtifact("ProofTrace", _canonical_json(value))
 
 
 def seal_argument_graph(payload: Mapping[str, Any]) -> dict[str, Any]:
     """Stamp an ArgumentGraph with its canonical content hash."""
 
-    value = _mapping(payload, "ArgumentGraph")
+    value = _detached_json_object(payload, "ArgumentGraph")
     _exact_fields(value, GRAPH_FIELDS, "ArgumentGraph")
     value["graph_hash"] = _hash_excluding(value, "graph_hash")
     return value

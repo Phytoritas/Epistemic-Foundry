@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import hashlib
 import json
+from collections.abc import Iterator, Mapping
 from pathlib import Path
 
 import pytest
@@ -10,11 +12,33 @@ from .contracts import (
     EvidencePackContractError,
     build_dependency_clusters,
     validate_evidence_dependency_cluster,
+    validate_evidence_dependency_cluster_shape,
+    validate_evidence_dependency_clusters_from_sources,
 )
 
 ROOT = Path(__file__).resolve().parents[4]
 CREATED_AT = "2026-07-31T00:00:00Z"
 RUN_ID = "RUN-1"
+
+
+class DuplicateItemsMapping(Mapping[str, object]):
+    def __init__(self, items: list[tuple[str, object]]) -> None:
+        self._items = items
+
+    def __getitem__(self, key: str) -> object:
+        for candidate, value in reversed(self._items):
+            if candidate == key:
+                return value
+        raise KeyError(key)
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(dict(self._items))
+
+    def __len__(self) -> int:
+        return len(dict(self._items))
+
+    def items(self) -> list[tuple[str, object]]:
+        return list(self._items)
 
 
 def cluster_schema_validator() -> Draft202012Validator:
@@ -65,6 +89,19 @@ def build(units: list[dict[str, object]], **kwargs: object):
     return build_dependency_clusters(
         units, run_id=RUN_ID, created_at=CREATED_AT, **kwargs
     )
+
+
+def reseal_cluster(payload: dict[str, object]) -> dict[str, object]:
+    preimage = {key: value for key, value in payload.items() if key != "cluster_hash"}
+    encoded = json.dumps(
+        preimage,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode("utf-8")
+    payload["cluster_hash"] = "sha256:" + hashlib.sha256(encoded).hexdigest()
+    return payload
 
 
 def test_dependency_cluster_test_shared_dataset_and_preprint_family_merge() -> None:
@@ -197,6 +234,38 @@ def test_dependency_cluster_test_duplicate_evidence_ids_fail_closed() -> None:
     assert raised.value.code == "EVIDENCE_ID_DUPLICATE"
 
 
+def test_dependency_cluster_test_duplicate_projected_keys_fail_closed() -> None:
+    source = unit("EVN-1")
+    duplicate = DuplicateItemsMapping(
+        [("evidence_id", "EVN-shadow"), *source.items()]
+    )
+
+    with pytest.raises(EvidencePackContractError) as raised:
+        build_dependency_clusters(
+            [duplicate], run_id=RUN_ID, created_at=CREATED_AT
+        )
+
+    assert raised.value.code == "INPUT_INVALID"
+
+
+def test_dependency_cluster_test_identity_strings_are_not_trimmed() -> None:
+    clusters = build(
+        [
+            unit("EVN-1", dataset_ids=["D1"]),
+            unit(" EVN-1 ", dataset_ids=["D1"]),
+        ]
+    )
+
+    assert clusters[0].payload["evidence_ids"] == [" EVN-1 ", "EVN-1"]
+
+
+def test_dependency_cluster_test_whitespace_only_identity_is_rejected() -> None:
+    with pytest.raises(EvidencePackContractError) as raised:
+        build([unit("   ")])
+
+    assert raised.value.code == "INPUT_INVALID"
+
+
 def test_dependency_cluster_test_unknown_unit_field_fails_closed() -> None:
     broken = unit("EVN-1")
     broken["surprise"] = True
@@ -224,6 +293,45 @@ def test_dependency_cluster_test_output_is_schema_valid_and_revalidates() -> Non
             validate_evidence_dependency_cluster(payload).canonical_bytes
             == cluster.canonical_bytes
         )
+
+
+def test_dependency_cluster_shape_validation_grants_no_source_authority() -> None:
+    units = preprint_family_units()
+    payload = build(units)[0].payload
+    payload["support_count_adjusted"] = 0.5
+    reseal_cluster(payload)
+
+    assert (
+        validate_evidence_dependency_cluster_shape(payload).payload[
+            "support_count_adjusted"
+        ]
+        == 0.5
+    )
+    with pytest.raises(EvidencePackContractError) as raised:
+        validate_evidence_dependency_clusters_from_sources(
+            [payload],
+            units=units,
+            run_id=RUN_ID,
+            created_at=CREATED_AT,
+        )
+
+    assert raised.value.code == "CLUSTER_RECONSTRUCTION_MISMATCH"
+
+
+def test_dependency_cluster_source_validation_returns_rebuilt_records() -> None:
+    units = preprint_family_units()
+    clusters = build(units)
+
+    rebuilt = validate_evidence_dependency_clusters_from_sources(
+        [entry.payload for entry in clusters],
+        units=units,
+        run_id=RUN_ID,
+        created_at=CREATED_AT,
+    )
+
+    assert [entry.canonical_bytes for entry in rebuilt] == [
+        entry.canonical_bytes for entry in clusters
+    ]
 
 
 def test_dependency_cluster_test_canonical_example_is_schema_valid() -> None:

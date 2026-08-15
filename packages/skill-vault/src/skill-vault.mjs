@@ -305,7 +305,7 @@ const parsePortablePath = (value, label) => {
   }
   const segments = text.split("/");
   for (const segment of segments) {
-    const baseName = segment.split(".", 1)[0];
+    const baseName = segment.split(".", 1)[0].replace(/[ .]+$/u, "");
     if (
       segment.length === 0 ||
       segment === "." ||
@@ -624,6 +624,17 @@ export const createSkillVaultBoundary = () => {
           { maxLength: 512 },
         );
         files.push(Object.freeze({ path: portablePath, kind, executable: false, target }));
+      }
+    }
+    for (const collisionKey of pathKeys) {
+      for (
+        let slashIndex = collisionKey.indexOf("/");
+        slashIndex !== -1;
+        slashIndex = collisionKey.indexOf("/", slashIndex + 1)
+      ) {
+        if (pathKeys.has(collisionKey.slice(0, slashIndex))) {
+          fail("PATH_COLLISION", `skill entries collide on a portable filesystem: ${collisionKey}`);
+        }
       }
     }
     files.sort((left, right) => compareUtf8(left.path, right.path));

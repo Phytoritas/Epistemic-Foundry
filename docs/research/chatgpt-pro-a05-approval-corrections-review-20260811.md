@@ -1,0 +1,3 @@
+BLOCKER: `attestation.py` still accepts behavior-bearing `str` subclasses through `isinstance`. For example, an `UnequalString("AGENT-GEN-1")` overriding `__eq__` to return `False` passes validation and defeats the unchanged legacy membership comparison, allowing a candidate generator to act as its own attestor.  
+
+SMALLEST A05-LOCAL CORRECTION: Mirror the approval boundary: require `type(attestor_id) is str` and `type(member) is str`, snapshot every conflict-role sequence once to a tuple, and delegate once using a plain snapshot-backed context rather than the caller-owned mapping. Preserve the existing export and keep any added assertions inside NEG-016.

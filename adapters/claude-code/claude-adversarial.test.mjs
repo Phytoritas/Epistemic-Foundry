@@ -4,9 +4,8 @@
 // Each case stages the declaring inputs into a temporary root and damages
 // exactly one of them, so the refusal that follows can only be caused by that
 // damage.  The real registry and the shipped agent files are never written to.
-// The positive control at the end generates the agent files the surface has not
-// built yet and shows the binding turn BOUND, so DEGRADED is a derived status
-// rather than a constant.
+// Removing a live agent proves that DEGRADED is derived rather than constant;
+// changing a shadow adapter copy proves the binding follows the host surface.
 
 import assert from "node:assert/strict";
 import test from "node:test";
@@ -17,12 +16,13 @@ import {
   BINDING_DECLARATION_PATH,
   BINDING_STATUS,
   ClaudeAdapterError,
+  claudeBindingReceipt,
   loadClaudeBinding,
   ROLE_MAPPING_PATH,
   ROLE_REGISTRY_PATH,
 } from "./index.mjs";
 import {
-  generateMissingAgents,
+  readStaged,
   refusal,
   removeStaged,
   stageDeclaration,
@@ -35,7 +35,7 @@ import {
 
 const binding = loadClaudeBinding();
 const loadFrom = (root) => refusal(() => loadClaudeBinding({ root }));
-const agentPath = (name) => `${ADAPTER_ROOT}/${name}.md`;
+const agentPath = (name) => `${binding.agentRoot}/${name}.md`;
 
 test("x02_adversarial: a host the gateway does not declare is refused", (t) => {
   const root = stageDeclaration(t, (declaration) => {
@@ -66,6 +66,14 @@ test("x02_adversarial: a write tool already granted as a base tool is refused", 
 test("x02_adversarial: a declaration the adapter cannot read refuses rather than defaults", (t) => {
   const root = stageRoot(t);
   removeStaged(root, BINDING_DECLARATION_PATH);
+
+  assert.equal(loadFrom(root).code, "DECLARATION_NONCANONICAL");
+});
+
+test("x02_adversarial: the declared live agent root cannot escape the repository", (t) => {
+  const root = stageDeclaration(t, (declaration) => {
+    declaration.agent_root = "../outside-agents";
+  });
 
   assert.equal(loadFrom(root).code, "DECLARATION_NONCANONICAL");
 });
@@ -195,6 +203,19 @@ test("x02_adversarial: an agent file whose name contradicts its RoleSpec is refu
   assert.equal(error.context.role_id, "judge");
 });
 
+test("x02_adversarial: a receipt revalidates a live agent changed after load", (t) => {
+  const root = stageRoot(t);
+  const loaded = loadClaudeBinding({ root });
+  writeStaged(
+    root,
+    agentPath("ef-judge"),
+    readStaged(root, agentPath("ef-judge")).replace("name: ef-judge", "name: ef-judgement"),
+  );
+
+  const error = refusal(() => claudeBindingReceipt(loaded));
+  assert.equal(error.code, "AGENT_NAME_DRIFT");
+});
+
 test("x02_adversarial: an agent file whose description contradicts its RoleSpec is refused", (t) => {
   const root = stageText(t, agentPath("ef-judge"), (text) =>
     text.replace(/description: ".*"/u, 'description: "Do whatever seems best."'),
@@ -221,20 +242,38 @@ test("x02_adversarial: an agent file whose model contradicts the declaration is 
   assert.equal(error.context.declared, "sonnet");
 });
 
+test("x02_adversarial: undeclared host-only frontmatter is refused", (t) => {
+  const root = stageText(t, agentPath("ef-evolution-governor"), (text) =>
+    text.replace("permissionMode: plan", "permissionMode: acceptEdits"),
+  );
+
+  assert.equal(loadFrom(root).code, "AGENT_FRONTMATTER_UNREADABLE");
+});
+
 test("x02_adversarial: an agent file with an incomplete frontmatter block is refused", (t) => {
   const root = stageText(t, agentPath("ef-judge"), (text) => text.replace("model: inherit\n", ""));
 
   assert.equal(loadFrom(root).code, "AGENT_FRONTMATTER_UNREADABLE");
 });
 
-test("x02_adversarial: generating the missing agent files turns the binding BOUND", (t) => {
+test("x02_adversarial: removing a live agent makes the binding DEGRADED", (t) => {
   const root = stageRoot(t);
-  generateMissingAgents(root, binding);
+  removeStaged(root, agentPath("ef-evolution-governor"));
 
   const built = loadClaudeBinding({ root });
 
+  assert.equal(built.status, BINDING_STATUS.DEGRADED);
+  assert.deepEqual(built.missingRoleIds, ["evolution_governor"]);
+  assert.equal(built.findings[0].path, `${binding.agentRoot}/ef-evolution-governor.md`);
+  assert.equal(built.presentRoleIds.length, built.agentTable.length - 1);
+});
+
+test("x02_adversarial: changing a shadow agent does not change the live binding", (t) => {
+  const root = stageText(t, `${ADAPTER_ROOT}/ef-judge.md`, (text) =>
+    text.replace("name: ef-judge", "name: ef-shadow-judge"),
+  );
+
+  const built = loadClaudeBinding({ root });
   assert.equal(built.status, BINDING_STATUS.BOUND);
   assert.deepEqual(built.findings, []);
-  assert.deepEqual(built.missingRoleIds, []);
-  assert.equal(built.presentRoleIds.length, built.agentTable.length);
 });

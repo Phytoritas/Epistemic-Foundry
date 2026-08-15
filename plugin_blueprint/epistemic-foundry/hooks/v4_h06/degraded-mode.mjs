@@ -27,9 +27,12 @@
 //      bundle the new host report was probed with.  Re-enablement is never
 //      assumed from a fresh report alone.
 //
-// The module owns no state, holds no clock, and reads no environment: every
-// timestamp arrives inside a caller-supplied host report, and every hash is
-// re-derivable with the sealed gateway's canonical-JSON digest.
+// The module owns no canonical or persistent state, holds no clock, and reads
+// no environment: every timestamp arrives inside a caller-supplied host report,
+// and every hash is re-derivable with the sealed gateway's canonical-JSON
+// digest.  An ephemeral private binding keeps the complete canonical verified
+// state attached to the exact gate context that exposed its compatibility
+// snapshot.
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -213,6 +216,23 @@ const MODE_SET = new Set(HOST_CAPABILITY_MODES);
 const HOST_SET = new Set(HOOK_HOSTS);
 const EVENT_TYPE_SET = new Set(HOOK_EVENT_TYPES);
 const COVERAGE_SET = new Set(HOOK_COVERAGE);
+
+// Public values are compatibility snapshots.  Only this module-private state is
+// authoritative, and the WeakMap key brands the exact object returned by
+// openDegradedGate rather than any forged or cloned lookalike.
+const VERIFIED_GATE_STATE_BY_CONTEXT = new WeakMap();
+
+const requireVerifiedGateState = (gate, context = {}) => {
+  const state = VERIFIED_GATE_STATE_BY_CONTEXT.get(gate);
+  if (state === undefined) {
+    fail(
+      "DECLARATION_UNREADABLE",
+      "the gate context was not returned by this openDegradedGate instance",
+      context,
+    );
+  }
+  return state;
+};
 
 const isPlainObject = (value) =>
   value !== null && typeof value === "object" && !Array.isArray(value);
@@ -589,6 +609,26 @@ const hostStateInput = (state) => ({
   tool_paths: [...state.toolPaths],
 });
 
+const canonicalPolicyCopy = (policy) =>
+  Object.freeze({
+    bindings: new Map(policy.bindings),
+    declared: deepFreeze({
+      ...policy.declared,
+      degraded_modes: [...policy.declared.degraded_modes],
+      enabled_capability_states: [...policy.declared.enabled_capability_states],
+      full_modes: [...policy.declared.full_modes],
+      host_bindings: policy.declared.host_bindings.map((binding) => ({ ...binding })),
+    }),
+    degradedModes: new Set(policy.degradedModes),
+    enabledStates: new Set(policy.enabledStates),
+    fullModes: new Set(policy.fullModes),
+    hookCapabilityName: policy.hookCapabilityName,
+    hostedToolCapabilityName: policy.hostedToolCapabilityName,
+    policyId: policy.policyId,
+    policyVersion: policy.policyVersion,
+    root: policy.root,
+  });
+
 const verifyRecovery = (policy, states, prior, candidate) => {
   requireFields(candidate, RECOVERY_FIELDS, "recovery", "DECLARATION_UNREADABLE");
   const gatewayHost = requireNonEmptyString(
@@ -782,19 +822,36 @@ export const openDegradedGate = ({
           : 1,
     );
 
-  return Object.freeze({
+  const verifiedState = Object.freeze({
     coverageOrder: deriveCoverageOrder(observability),
-    disabledHosts: Object.freeze(disabledHosts),
-    enabledHosts: Object.freeze(enabledHosts),
-    fullReport: coverageReport(observability),
-    hostStates: Object.freeze(new Map(states)),
+    disabledHosts: Object.freeze([...disabledHosts]),
+    enabledHosts: Object.freeze([...enabledHosts]),
+    fullReport: deepFreeze(coverageReport(observability)),
+    hostStates: new Map(states),
     observability,
-    policy,
+    policy: canonicalPolicyCopy(policy),
     priorReceipt: prior,
     recoveries: deepFreeze(verified),
     root,
     unverifiedActions: deepFreeze(unverifiedActions),
   });
+  const result = Object.freeze({
+    coverageOrder: verifiedState.coverageOrder,
+    disabledHosts: Object.freeze([...verifiedState.disabledHosts]),
+    enabledHosts: Object.freeze([...verifiedState.enabledHosts]),
+    fullReport: deepFreeze(coverageReport(verifiedState.observability)),
+    // Compatibility snapshot only. Map mutations cannot change the private
+    // verified state used by authoritative derivations.
+    hostStates: Object.freeze(new Map(verifiedState.hostStates)),
+    observability: verifiedState.observability,
+    policy: canonicalPolicyCopy(verifiedState.policy),
+    priorReceipt: verifiedState.priorReceipt,
+    recoveries: verifiedState.recoveries,
+    root: verifiedState.root,
+    unverifiedActions: verifiedState.unverifiedActions,
+  });
+  VERIFIED_GATE_STATE_BY_CONTEXT.set(result, verifiedState);
+  return result;
 };
 
 /**
@@ -807,12 +864,13 @@ export const openDegradedGate = ({
  * can only ever say the same or less — never more.
  */
 export const degradedCoverageReport = (gate) => {
-  const order = gate.coverageOrder;
-  const enabled = new Set(gate.enabledHosts);
+  const state = requireVerifiedGateState(gate);
+  const order = state.coverageOrder;
+  const enabled = new Set(state.enabledHosts);
   const withdrawn = [];
-  const notObserved = [...gate.fullReport.not_observed];
+  const notObserved = [...state.fullReport.not_observed];
 
-  const eventTypes = gate.fullReport.event_types.map((row) => {
+  const eventTypes = state.fullReport.event_types.map((row) => {
     const observed = row.hosts_observed.filter((host) => enabled.has(host)).sort();
     const withdrawnHosts = row.hosts_observed.filter((host) => !enabled.has(host)).sort();
     for (const host of withdrawnHosts) {
@@ -847,12 +905,12 @@ export const degradedCoverageReport = (gate) => {
       eventTypes.map((row) => [row.event_type, row.coverage]),
     ),
     event_types: eventTypes,
-    full_coverage_by_event_type: { ...gate.fullReport.coverage_by_event_type },
-    hook_disabled_hosts: [...gate.disabledHosts],
-    hook_enabled_hosts: [...gate.enabledHosts],
+    full_coverage_by_event_type: { ...state.fullReport.coverage_by_event_type },
+    hook_disabled_hosts: [...state.disabledHosts],
+    hook_enabled_hosts: [...state.enabledHosts],
     not_observed: [...new Set(notObserved)].sort(),
     observed_pair_count: eventTypes.reduce((total, row) => total + row.hosts_observed.length, 0),
-    unverified_actions: gate.unverifiedActions.map((row) => ({
+    unverified_actions: state.unverifiedActions.map((row) => ({
       gateway_host: row.gateway_host,
       reasons: [...row.reasons],
       tool_path: row.tool_path,
@@ -862,14 +920,16 @@ export const degradedCoverageReport = (gate) => {
 };
 
 /** The explicit list of actions no local hook can attest, never an omission. */
-export const unverifiedActions = (gate) =>
-  deepFreeze(
-    gate.unverifiedActions.map((row) => ({
+export const unverifiedActions = (gate) => {
+  const state = requireVerifiedGateState(gate);
+  return deepFreeze(
+    state.unverifiedActions.map((row) => ({
       gateway_host: row.gateway_host,
       reasons: [...row.reasons],
       tool_path: row.tool_path,
     })),
   );
+};
 
 /**
  * Verify an externally supplied coverage claim against the degraded report.
@@ -880,6 +940,7 @@ export const unverifiedActions = (gate) =>
  * no longer supports.
  */
 export const assertDegradedCoverageClaim = (gate, claim) => {
+  const state = requireVerifiedGateState(gate);
   requireFields(claim, CLAIM_FIELDS, "coverage claim", "DECLARATION_UNREADABLE");
   const derived = degradedCoverageReport(gate);
   const claimed = claim.coverage_by_event_type;
@@ -897,7 +958,7 @@ export const assertDegradedCoverageClaim = (gate, claim) => {
       });
     }
     compareCoverage(
-      gate.coverageOrder,
+      state.coverageOrder,
       claimed[eventType],
       derived.coverage_by_event_type[eventType],
       { event_type: eventType, label: `degraded coverage claim for ${eventType}` },
@@ -933,6 +994,7 @@ export const assertDegradedCoverageClaim = (gate, claim) => {
  * with the reasons its action is unverified attached.
  */
 export const assertStepProvenance = (gate, step) => {
+  const state = requireVerifiedGateState(gate);
   requireFields(step, STEP_FIELDS, "workflow step", "DECLARATION_UNREADABLE");
   const stepId = requireNonEmptyString(step.step_id, "workflow step.step_id", "DECLARATION_UNREADABLE");
   const gatewayHost = step.gateway_host;
@@ -950,12 +1012,16 @@ export const assertStepProvenance = (gate, step) => {
     });
   }
 
-  const state = gate.hostStates.get(gatewayHost) ?? null;
+  const hostState = state.hostStates.get(gatewayHost) ?? null;
   const toolPath = step.tool_path;
   if (toolPath !== null) {
-    if (typeof toolPath !== "string" || state === null || !state.toolPaths.includes(toolPath)) {
+    if (
+      typeof toolPath !== "string" ||
+      hostState === null ||
+      !hostState.toolPaths.includes(toolPath)
+    ) {
       fail("TOOL_PATH_UNDECLARED", `${stepId} names a tool path ${gatewayHost} does not declare`, {
-        declared: state === null ? [] : [...state.toolPaths],
+        declared: hostState === null ? [] : [...hostState.toolPaths],
         gateway_host: gatewayHost,
         step_id: stepId,
         tool_path: toolPath,
@@ -964,11 +1030,13 @@ export const assertStepProvenance = (gate, step) => {
   }
 
   const unverified =
-    state === null || toolPath === null
+    hostState === null || toolPath === null
       ? null
-      : (state.unverified.find((row) => row.tool_path === toolPath) ?? null);
+      : (hostState.unverified.find((row) => row.tool_path === toolPath) ?? null);
   const reasons = unverified === null ? [] : [...unverified.reasons];
-  const asserted = gate.coverageOrder.rank[step.claimed_coverage] > gate.coverageOrder.rank[gate.coverageOrder.least];
+  const asserted =
+    state.coverageOrder.rank[step.claimed_coverage] >
+    state.coverageOrder.rank[state.coverageOrder.least];
 
   if (asserted && reasons.length > 0) {
     fail(
@@ -1019,19 +1087,21 @@ export const assertStepProvenance = (gate, step) => {
  * helper adds no authority; it only removes the temptation to rebuild the gate
  * without the receipt that makes the transition checkable.
  */
-export const recoverHookHost = (gate, { hostState, recovery }) => {
+export const recoverHookHost = (gate, options) => {
+  const state = requireVerifiedGateState(gate);
+  const { hostState, recovery } = options ?? {};
   requireFields(recovery, RECOVERY_FIELDS, "recovery", "DECLARATION_UNREADABLE");
-  const retained = [...gate.hostStates.keys()]
+  const retained = [...state.hostStates.keys()]
     .filter((host) => host !== recovery.gateway_host)
     .sort()
-    .map((host) => hostStateInput(gate.hostStates.get(host)));
+    .map((host) => hostStateInput(state.hostStates.get(host)));
   return openDegradedGate({
     hostStates: [...retained, hostState],
-    observability: gate.observability,
-    policy: gate.policy,
+    observability: state.observability,
+    policy: state.policy,
     priorReceipt: degradedModeReceipt(gate),
     recoveries: [recovery],
-    root: gate.root,
+    root: state.root,
   });
 };
 
@@ -1044,6 +1114,7 @@ export const recoverHookHost = (gate, { hostState, recovery }) => {
  * bound by hash rather than restated.
  */
 export const degradedModeReceipt = (gate) => {
+  const state = requireVerifiedGateState(gate);
   const report = degradedCoverageReport(gate);
   const preimage = {
     capability_vocabulary: {
@@ -1053,7 +1124,7 @@ export const degradedModeReceipt = (gate) => {
     coverage_by_event_type: { ...report.coverage_by_event_type },
     declaring_sources: [...DECLARING_SOURCES]
       .sort()
-      .map((path) => ({ path, text_hash: sha256HookJson(readText(gate.root, path)) })),
+      .map((path) => ({ path, text_hash: sha256HookJson(readText(state.root, path)) })),
     full_coverage_by_event_type: { ...report.full_coverage_by_event_type },
     gateway_vocabulary: {
       coverage: [...HOOK_COVERAGE],
@@ -1062,28 +1133,28 @@ export const degradedModeReceipt = (gate) => {
     },
     hook_disabled_hosts: [...report.hook_disabled_hosts],
     hook_enabled_hosts: [...report.hook_enabled_hosts],
-    host_states: [...gate.hostStates.keys()].sort().map((host) => {
-      const state = gate.hostStates.get(host);
+    host_states: [...state.hostStates.keys()].sort().map((host) => {
+      const hostState = state.hostStates.get(host);
       return {
-        capability_report_host: state.report.host,
-        capability_report_hash: state.report.report_hash,
-        capability_report_id: state.report.report_id,
+        capability_report_host: hostState.report.host,
+        capability_report_hash: hostState.report.report_hash,
+        capability_report_id: hostState.report.report_id,
         gateway_host: host,
-        hook_capability_state: state.hookCapability.state,
-        hooks_enabled: state.hooksEnabled,
+        hook_capability_state: hostState.hookCapability.state,
+        hooks_enabled: hostState.hooksEnabled,
         hosted_tool_capability_state:
-          state.hostedCapability === null ? null : state.hostedCapability.state,
-        hosted_tool_paths: [...state.hostedToolPaths],
-        mode: state.report.mode,
-        tool_paths: [...state.toolPaths],
+          hostState.hostedCapability === null ? null : hostState.hostedCapability.state,
+        hosted_tool_paths: [...hostState.hostedToolPaths],
+        mode: hostState.report.mode,
+        tool_paths: [...hostState.toolPaths],
       };
     }),
     not_observed: [...report.not_observed],
-    observability_receipt_hash: observabilityReceipt(gate.observability).receipt_hash,
+    observability_receipt_hash: observabilityReceipt(state.observability).receipt_hash,
     observed_pair_count: report.observed_pair_count,
-    policy_id: gate.policy.policyId,
-    policy_version: gate.policy.policyVersion,
-    recoveries: gate.recoveries.map((row) => ({ ...row })),
+    policy_id: state.policy.policyId,
+    policy_version: state.policy.policyVersion,
+    recoveries: state.recoveries.map((row) => ({ ...row })),
     unverified_actions: report.unverified_actions.map((row) => ({
       gateway_host: row.gateway_host,
       reasons: [...row.reasons],

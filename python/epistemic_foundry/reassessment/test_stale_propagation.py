@@ -51,6 +51,15 @@ def test_stale_propagation_test_closure_is_transitive_not_one_hop() -> None:
     assert closure == ["CLM-A", "CLM-B", "EV-A", "HP-A", "HP-B", "PACK-A"]
 
 
+def test_stale_propagation_test_scalar_seed_is_not_split_into_artifact_ids() -> None:
+    indexed = validate_graph(deep_graph())
+
+    with pytest.raises(ReassessmentError) as raised:
+        dependent_closure("DOC-A", indexed)
+
+    assert raised.value.code == "INPUT_INVALID"
+
+
 def test_stale_propagation_test_a_provenance_cycle_terminates() -> None:
     indexed = validate_graph(deep_graph())
 

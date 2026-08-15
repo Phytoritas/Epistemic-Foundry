@@ -31,11 +31,38 @@ function canonicalize(value, seen) {
       );
     }
     seen.add(value);
-    const rendered = value.map((entry) => canonicalize(entry, seen));
+    const ownNames = Object.getOwnPropertyNames(value);
+    if (
+      Object.getOwnPropertySymbols(value).length > 0 ||
+      ownNames.length !== value.length + 1
+    ) {
+      throw new CliContractError(
+        "ENVELOPE_NOT_CANONICAL",
+        "an array must contain only its indexed JSON values",
+      );
+    }
+    const rendered = [];
+    for (let index = 0; index < value.length; index += 1) {
+      const descriptor = Object.getOwnPropertyDescriptor(value, String(index));
+      if (descriptor === undefined || !descriptor.enumerable || !("value" in descriptor)) {
+        throw new CliContractError(
+          "ENVELOPE_NOT_CANONICAL",
+          "a sparse or accessor-backed array cannot be rendered as canonical JSON",
+        );
+      }
+      rendered.push(canonicalize(descriptor.value, seen));
+    }
     seen.delete(value);
     return rendered;
   }
   if (typeof value === "object") {
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== Object.prototype && prototype !== null) {
+      throw new CliContractError(
+        "ENVELOPE_NOT_CANONICAL",
+        "a CLI envelope may contain only plain JSON objects",
+      );
+    }
     if (seen.has(value)) {
       throw new CliContractError(
         "ENVELOPE_NOT_CANONICAL",
@@ -43,9 +70,26 @@ function canonicalize(value, seen) {
       );
     }
     seen.add(value);
-    const rendered = {};
-    for (const key of Object.keys(value).sort()) {
-      const entry = value[key];
+    const keys = Object.keys(value).sort();
+    if (
+      Object.getOwnPropertySymbols(value).length > 0 ||
+      Object.getOwnPropertyNames(value).length !== keys.length
+    ) {
+      throw new CliContractError(
+        "ENVELOPE_NOT_CANONICAL",
+        "a CLI envelope object must contain only enumerable string fields",
+      );
+    }
+    const rendered = Object.create(null);
+    for (const key of keys) {
+      const descriptor = Object.getOwnPropertyDescriptor(value, key);
+      if (descriptor === undefined || !("value" in descriptor)) {
+        throw new CliContractError(
+          "ENVELOPE_NOT_CANONICAL",
+          `${key} must be a data field, not an accessor`,
+        );
+      }
+      const entry = descriptor.value;
       if (entry === undefined) {
         throw new CliContractError(
           "ENVELOPE_NOT_CANONICAL",

@@ -249,12 +249,71 @@ export function sealDriftReport(report) {
       verdict: report.verdict,
     });
   }
-  if (report.unclassified_differences.length > 0) {
-    fail(
-      "DRIFT_UNCLASSIFIED",
-      "every replay difference must be typed strict or semantic before sealing",
-      { paths: report.unclassified_differences.map((entry) => entry.path).sort() },
-    );
+  const expectedRecordKeys = [
+    "actual",
+    "drift_class",
+    "expected",
+    "path",
+    "present_in_actual",
+    "present_in_expected",
+  ];
+  const buckets = [
+    ["semantic_differences", "SEMANTIC"],
+    ["strict_differences", "STRICT"],
+    ["unclassified_differences", "UNCLASSIFIED"],
+  ];
+  for (const [bucket, bucketClass] of buckets) {
+    const records = report[bucket];
+    if (!Array.isArray(records)) {
+      fail("DRIFT_INPUT_INVALID", `${bucket} must be an array`);
+    }
+    for (const [index, record] of records.entries()) {
+      requireObject(record, `${bucket}[${index}]`);
+      const recordKeys = Object.keys(record).sort();
+      if (recordKeys.join(" ") !== expectedRecordKeys.join(" ")) {
+        fail("DRIFT_FIELD_SET_INVALID", "difference record field set is not canonical", {
+          bucket,
+          index,
+          missing: expectedRecordKeys.filter((key) => !recordKeys.includes(key)),
+          unknown: recordKeys.filter((key) => !expectedRecordKeys.includes(key)),
+        });
+      }
+      requireText(record.path, `${bucket}[${index}].path`);
+      for (const flag of ["present_in_actual", "present_in_expected"]) {
+        if (typeof record[flag] !== "boolean") {
+          fail("DRIFT_INPUT_INVALID", `${bucket}[${index}].${flag} must be a boolean`);
+        }
+      }
+
+      const derivedClass = classifyDifference(record.path);
+      const classDetails = {
+        bucket: bucketClass,
+        declared: record.drift_class,
+        derived: derivedClass,
+        path: record.path,
+      };
+      if (derivedClass === "UNCLASSIFIED") {
+        fail(
+          "DRIFT_UNCLASSIFIED",
+          "every replay difference must be typed strict or semantic before sealing",
+          classDetails,
+        );
+      }
+      if (record.drift_class !== derivedClass || derivedClass !== bucketClass) {
+        if (bucketClass === "STRICT" && derivedClass === "SEMANTIC") {
+          fail(
+            "DRIFT_SEMANTIC_MISFILED",
+            "a semantic field was filed as strict drift",
+            classDetails,
+          );
+        }
+        fail(
+          "DRIFT_CLASS_MISMATCH",
+          "a replay difference class does not match its bucket",
+          classDetails,
+        );
+      }
+    }
   }
   const semanticCount = report.semantic_differences.length;
   const strictCount = report.strict_differences.length;
@@ -266,27 +325,6 @@ export function sealDriftReport(report) {
       report.difference_count
   ) {
     fail("DRIFT_COUNT_MISMATCH", "the drift counts do not reconcile with the records");
-  }
-  for (const record of report.semantic_differences) {
-    if (record.drift_class !== "SEMANTIC") {
-      fail("DRIFT_CLASS_MISMATCH", "a semantic record is not classified semantic", {
-        path: record.path,
-      });
-    }
-  }
-  for (const record of report.strict_differences) {
-    if (record.drift_class !== "STRICT") {
-      fail("DRIFT_CLASS_MISMATCH", "a strict record is not classified strict", {
-        path: record.path,
-      });
-    }
-    if (SEMANTIC_FIELDS.includes(leafName(record.path))) {
-      fail(
-        "DRIFT_SEMANTIC_MISFILED",
-        "a semantic field was filed as strict drift",
-        { path: record.path },
-      );
-    }
   }
   const expectedVerdict =
     semanticCount > 0 ? "DIVERGED" : strictCount > 0 ? "REPRODUCIBLE_WITH_STRICT_DRIFT" : "REPRODUCIBLE";

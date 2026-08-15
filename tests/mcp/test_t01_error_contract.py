@@ -37,7 +37,12 @@ def test_t01_error_contract_code_vocabulary_is_frozen() -> None:
 
 def test_t01_error_contract_every_error_envelope_is_schema_valid() -> None:
     service, read_port, _compiler, _store = build_service()
-    read_port.records["read_claim"] = {"found": False, "state": "READY", "data": None}
+    read_port.records["read_claim"] = {
+        "found": False,
+        "state": "EMPTY_CONFIRMED",
+        "data": None,
+        "reason": None,
+    }
     catalog = service.catalog
 
     cases = [

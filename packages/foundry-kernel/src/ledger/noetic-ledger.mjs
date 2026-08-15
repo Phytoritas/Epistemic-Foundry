@@ -17,7 +17,7 @@ const PLAIN_OBJECT_PROTOTYPE = Object.prototype;
 const SHA256_PATTERN = /^sha256:[0-9a-f]{64}$/u;
 const SEMVER_PATTERN = /^[0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$/u;
 const RFC3339_PATTERN =
-  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|([+-])(\d{2}):(\d{2}))$/u;
+  /^(\d{4})-(\d{2})-(\d{2})[Tt](\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:[Zz]|([+-])(\d{2}):(\d{2}))$/u;
 const STREAM_SCHEMA_VERSION = "1.0.0";
 const DEFAULT_EVENT_SCHEMA_VERSION = "4.0.0";
 const EVENT_RECORD_TYPE = "noetic-ledger.event.v1";
@@ -74,6 +74,11 @@ const APPEND_INTENT_KEYS = OBJECT_FREEZE([
   "payload_hash",
   "occurred_at",
   "schema_version",
+]);
+const EXPECTED_HEAD_KEYS = OBJECT_FREEZE([
+  "event_count",
+  "tail_event_id",
+  "tail_event_hash",
 ]);
 
 export const NOETIC_LEDGER_RECORD_TYPES = OBJECT_FREEZE({
@@ -159,6 +164,11 @@ const readDataProperty = (object, key) =>
 
 const isLeapYear = (year) => year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 
+const daysInMonth = (year, month) =>
+  [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][
+    month - 1
+  ];
+
 const isCanonicalArrayIndex = (key, length) => {
   if (typeof key !== "string" || !/^(0|[1-9][0-9]*)$/u.test(key)) return false;
   const index = Number(key);
@@ -177,20 +187,47 @@ const isRfc3339 = (value) => {
   const second = Number(match[6]);
   const offsetHour = match[8] === undefined ? 0 : Number(match[8]);
   const offsetMinute = match[9] === undefined ? 0 : Number(match[9]);
-  const monthLengths = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  return (
-    year >= 1 &&
-    month >= 1 &&
-    month <= 12 &&
-    day >= 1 &&
-    day <= monthLengths[month - 1] &&
-    hour <= 23 &&
-    minute <= 59 &&
-    second <= 59 &&
-    offsetHour <= 23 &&
-    offsetMinute <= 59 &&
-    NUMBER_IS_FINITE(Date.parse(value))
-  );
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > daysInMonth(year, month) ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 60 ||
+    offsetHour > 23 ||
+    offsetMinute > 59
+  ) {
+    return false;
+  }
+  if (second <= 59) return true;
+
+  const offsetSign = match[7] === "-" ? -1 : 1;
+  const offsetMinutes =
+    match[7] === undefined ? 0 : offsetSign * (offsetHour * 60 + offsetMinute);
+  const utcMinutes = hour * 60 + minute - offsetMinutes;
+  const utcMinuteOfDay = ((utcMinutes % 1_440) + 1_440) % 1_440;
+  if (utcMinuteOfDay !== 23 * 60 + 59) return false;
+
+  let utcYear = year;
+  let utcMonth = month;
+  let utcDay = day + Math.floor(utcMinutes / 1_440);
+  if (utcDay < 1) {
+    utcMonth -= 1;
+    if (utcMonth < 1) {
+      utcYear -= 1;
+      utcMonth = 12;
+    }
+    utcDay = daysInMonth(utcYear, utcMonth);
+  } else if (utcDay > daysInMonth(utcYear, utcMonth)) {
+    utcDay = 1;
+    utcMonth += 1;
+    if (utcMonth > 12) {
+      utcYear += 1;
+      utcMonth = 1;
+    }
+  }
+  return utcDay === daysInMonth(utcYear, utcMonth);
 };
 
 const assertCanonicalJsonValue = (value, label = "value", ancestors = new WeakSet()) => {
@@ -347,6 +384,40 @@ const normalizeEventInput = (input) => {
     occurred_at: occurredAt,
     schema_version: schemaVersion,
   });
+};
+
+const normalizeExpectedHead = (candidate) => {
+  const head = requirePlainDataObject(candidate, "expectedHead", {
+    allowedKeys: EXPECTED_HEAD_KEYS,
+  });
+  const eventCount = readDataProperty(head, "event_count");
+  const tailEventId = readDataProperty(head, "tail_event_id");
+  const tailEventHash = readDataProperty(head, "tail_event_hash");
+  if (!NUMBER_IS_SAFE_INTEGER(eventCount) || eventCount < 0) {
+    fail("INVALID_INPUT", "expectedHead.event_count must be a non-negative safe integer");
+  }
+  if (eventCount === 0) {
+    if (tailEventId !== null || tailEventHash !== null) {
+      fail("INVALID_INPUT", "an empty expectedHead must have null tail fields");
+    }
+  } else {
+    requireNonEmptyString(tailEventId, "expectedHead.tail_event_id");
+    if (typeof tailEventHash !== "string" || !SHA256_PATTERN.test(tailEventHash)) {
+      fail("INVALID_INPUT", "expectedHead.tail_event_hash is not canonical");
+    }
+  }
+  return OBJECT_FREEZE({
+    event_count: eventCount,
+    tail_event_id: tailEventId,
+    tail_event_hash: tailEventHash,
+  });
+};
+
+const normalizeAppendConditionalOptions = (options) => {
+  const object = requirePlainDataObject(options, "appendConditional options", {
+    allowedKeys: ["expectedHead"],
+  });
+  return normalizeExpectedHead(readDataProperty(object, "expectedHead"));
 };
 
 const eventHashInput = (event) => {
@@ -638,6 +709,29 @@ const buildRunStream = (runId, events) => {
   };
 };
 
+const runHead = (events) => {
+  const tail = events.length === 0 ? null : events[events.length - 1];
+  return OBJECT_FREEZE({
+    event_count: events.length,
+    tail_event_id: tail === null ? null : tail.event_id,
+    tail_event_hash: tail === null ? null : tail.event_hash,
+  });
+};
+
+const predecessorHead = (events, event) => {
+  const predecessor = event.sequence === 1 ? null : events[event.sequence - 2];
+  return OBJECT_FREEZE({
+    event_count: event.sequence - 1,
+    tail_event_id: predecessor === null ? null : predecessor.event_id,
+    tail_event_hash: event.previous_event_hash,
+  });
+};
+
+const sameHead = (left, right) =>
+  left.event_count === right.event_count &&
+  left.tail_event_id === right.tail_event_id &&
+  left.tail_event_hash === right.tail_event_hash;
+
 const sameAppendIntent = (event, intent) => {
   for (let index = 0; index < APPEND_INTENT_KEYS.length; index += 1) {
     const key = APPEND_INTENT_KEYS[index];
@@ -822,6 +916,7 @@ const assertDeterministicTrace = (left, right, events) => {
 };
 
 const CONSTRUCTOR_TOKEN = Symbol("NoeticLedger");
+const UNCONDITIONAL_APPEND = Symbol("unconditional-append");
 
 export class NoeticLedger {
   #artifactStore;
@@ -836,9 +931,21 @@ export class NoeticLedger {
   }
 
   append(input) {
+    return this.#append(input, UNCONDITIONAL_APPEND);
+  }
+
+  appendConditional(input, options) {
+    return this.#append(input, options);
+  }
+
+  #append(input, conditionalOptions) {
     const normalized = normalizeEventInput(input);
     const payload = resolvePayload(this.#artifactStore, normalized.payload_artifact_id);
     const intent = OBJECT_FREEZE({ ...normalized, payload_hash: payload.payloadHash });
+    const expectedHead =
+      conditionalOptions === UNCONDITIONAL_APPEND
+        ? UNCONDITIONAL_APPEND
+        : normalizeAppendConditionalOptions(conditionalOptions);
 
     return this.#stateStore.transaction((store) => {
       const existingRecord = store.readRevisionedRecord(EVENT_RECORD_TYPE, normalized.event_id);
@@ -865,10 +972,36 @@ export class NoeticLedger {
             runId: existing.run_id,
           });
         }
+        if (expectedHead !== UNCONDITIONAL_APPEND) {
+          const actualPredecessorHead = predecessorHead(snapshot.events, existing);
+          if (!sameHead(expectedHead, actualPredecessorHead)) {
+            fail(
+              "EVENT_EXPECTED_HEAD_CONFLICT",
+              "existing event predecessor does not match expectedHead",
+              {
+                eventId: existing.event_id,
+                expectedHead,
+                actualHead: actualPredecessorHead,
+              },
+            );
+          }
+        }
         return OBJECT_FREEZE({ event: existing, status: "EXISTING" });
       }
 
       const snapshot = loadRunSnapshot(store, normalized.run_id);
+      if (expectedHead !== UNCONDITIONAL_APPEND) {
+        const actualHead = runHead(snapshot.events);
+        if (!sameHead(expectedHead, actualHead)) {
+          return deepFreeze({
+            status: "STALE_LEDGER_HEAD",
+            code: "STALE_LEDGER_HEAD",
+            event: null,
+            expected_head: expectedHead,
+            actual_head: actualHead,
+          });
+        }
+      }
       const previousEventHash = snapshot.tailEventHash;
       const eventWithoutHash = {
         event_id: normalized.event_id,

@@ -1,35 +1,44 @@
 // Read-and-verify: do the shipped custom-agent files actually bind to the
 // canonical roles, and are their writers isolated?
 //
-// Nothing here rewrites an agent file.  `adapters/claude-code` is read as it
-// ships — its binding declaration, its role mapping, and the custom-agent files
-// it has generated so far — and every claim each file makes is checked against a
-// source entitled to make it: the hook gateway declares the host, the role
+// Nothing here rewrites an agent file.  The adapter declaration and role mapping
+// live under `adapters/claude-code`; the host-visible custom agents are read from
+// the declared `.claude/agents` surface.  The host metadata this binding
+// publishes is checked against a source entitled to make it: the hook gateway
+// declares the host, the role
 // registry declares the roles and their scopes, and the binding declaration
 // declares the concrete tool grant and model a generated file must carry.
 //
 // Two kinds of outcome are kept apart on purpose.  An agent file that
-// contradicts its RoleSpec — a wrong name, description, tool grant or model — is
+// contradicts its RoleSpec-derived host metadata — a wrong name, description,
+// tool grant or model — is
 // a refusal: the binding is wrong and must not be reported as anything else.  A
 // declared role whose agent file is not generated at this revision is a finding,
 // and the binding is DEGRADED — the role is real, and the part of the surface
 // that does not ship yet is named rather than implied.
 
-import { readdirSync } from "node:fs";
-import { posix } from "node:path";
+import {
+  closeSync,
+  constants as fsConstants,
+  fstatSync,
+  openSync,
+  readFileSync,
+  readdirSync,
+  realpathSync,
+  statSync,
+} from "node:fs";
+import { isAbsolute, join, posix, relative, sep, win32 } from "node:path";
 
 import { HOOK_HOSTS, sha256HookJson } from "../../packages/plugin-host/src/hooks/gateway/hook-gateway.mjs";
 import {
-  ADAPTER_ROOT,
   BINDING_DECLARATION_PATH,
   BINDING_STATUS,
+  ClaudeAdapterError,
   deepFreeze,
   fail,
   isPlainObject,
-  pathExists,
   readBytes,
   readJson,
-  readText,
   REPOSITORY_ROOT,
   requireCanonicalStrings,
   requireFields,
@@ -47,12 +56,164 @@ export const DECLARATION_FIELDS = Object.freeze([
   "adapter_id",
   "adapter_version",
   "agent_file_suffix",
+  "agent_root",
   "base_tools",
   "declared_host",
   "frontmatter_fields",
   "model",
+  "optional_frontmatter",
   "write_tool",
 ]);
+
+const requireRepositoryRelativePath = (candidate, label, code) => {
+  if (
+    typeof candidate !== "string" ||
+    candidate.length === 0 ||
+    candidate.includes("\\") ||
+    candidate.includes("\0") ||
+    posix.isAbsolute(candidate) ||
+    win32.isAbsolute(candidate) ||
+    /^[A-Za-z]:/u.test(candidate)
+  ) {
+    fail(code, `${label} must be a repository-relative POSIX path`, { path: candidate });
+  }
+  const normalized = posix.normalize(candidate);
+  if (
+    normalized !== candidate ||
+    normalized === "." ||
+    normalized === ".." ||
+    normalized.startsWith("../")
+  ) {
+    fail(code, `${label} escapes or is not canonical within the repository`, {
+      normalized,
+      path: candidate,
+    });
+  }
+  return normalized;
+};
+
+const resolveAgentRoot = (root, agentRoot, code) => {
+  const canonical = requireRepositoryRelativePath(agentRoot, "declaration.agent_root", code);
+  let repositoryRoot;
+  let actualRoot;
+  let rootIsDirectory;
+  try {
+    repositoryRoot = realpathSync(root);
+    actualRoot = realpathSync(join(root, canonical));
+    rootIsDirectory = statSync(actualRoot).isDirectory();
+  } catch (error) {
+    if (error?.code === "ENOENT") return null;
+    fail(code, `declared agent root cannot be resolved: ${error.message}`, { path: agentRoot });
+  }
+  const fromRepository = relative(repositoryRoot, actualRoot);
+  if (
+    fromRepository === "" ||
+    fromRepository === ".." ||
+    fromRepository.startsWith(`..${sep}`) ||
+    isAbsolute(fromRepository) ||
+    !rootIsDirectory
+  ) {
+    fail(code, "declared agent root does not resolve to a repository directory", {
+      path: agentRoot,
+    });
+  }
+  return actualRoot;
+};
+
+const sameFileIdentity = (left, right) =>
+  left.dev === right.dev &&
+  left.ino === right.ino &&
+  left.size === right.size &&
+  left.mtimeNs === right.mtimeNs &&
+  left.ctimeNs === right.ctimeNs;
+
+const captureAgentFile = (root, agentRoot, file, code) => {
+  const actualRoot = resolveAgentRoot(root, agentRoot, code);
+  if (actualRoot === null) return null;
+  let actualPathBefore;
+  try {
+    actualPathBefore = realpathSync(join(actualRoot, file));
+  } catch (error) {
+    if (error?.code === "ENOENT") return null;
+    fail(code, `agent file cannot be resolved: ${error.message}`, { file });
+  }
+  const fromAgentRoot = relative(actualRoot, actualPathBefore);
+  if (
+    fromAgentRoot === "" ||
+    fromAgentRoot === ".." ||
+    fromAgentRoot.startsWith(`..${sep}`) ||
+    isAbsolute(fromAgentRoot)
+  ) {
+    fail(code, "agent file does not resolve inside the declared agent root", { file });
+  }
+  let descriptor;
+  try {
+    descriptor = openSync(actualPathBefore, fsConstants.O_RDONLY);
+  } catch (error) {
+    fail(code, `agent file ${file} cannot be opened: ${error.message}`, { file });
+  }
+  let capture = null;
+  let captureError = null;
+  try {
+    const before = fstatSync(descriptor, { bigint: true });
+    if (!before.isFile()) {
+      fail(code, "agent path is not a regular file", { file });
+    }
+    const bytes = readFileSync(descriptor);
+    const after = fstatSync(descriptor, { bigint: true });
+    let actualPathAfter;
+    let pathIdentity;
+    try {
+      actualPathAfter = realpathSync(join(actualRoot, file));
+      pathIdentity = statSync(actualPathAfter, { bigint: true });
+    } catch (error) {
+      fail(code, `agent file changed while being captured: ${error.message}`, { file });
+    }
+    if (
+      actualPathAfter !== actualPathBefore ||
+      !sameFileIdentity(before, after) ||
+      before.dev !== pathIdentity.dev ||
+      before.ino !== pathIdentity.ino
+    ) {
+      fail(code, "agent file changed while being captured", { file });
+    }
+    capture = { bytes, sha256: sha256(bytes) };
+  } catch (error) {
+    captureError = error;
+  }
+  try {
+    closeSync(descriptor);
+  } catch (error) {
+    if (captureError === null) captureError = error;
+  }
+  if (captureError !== null) {
+    if (captureError instanceof ClaudeAdapterError) throw captureError;
+    fail(code, `agent file capture failed: ${captureError.message}`, { file });
+  }
+  return capture;
+};
+
+const listAgentEntries = (actualRoot, code) => {
+  if (actualRoot === null) return [];
+  try {
+    return readdirSync(actualRoot).sort();
+  } catch (error) {
+    fail(code, `declared agent root cannot be listed: ${error.message}`);
+  }
+};
+
+const captureDeclaringSources = (root) =>
+  BINDING_SOURCE_PATHS.map((path) => ({
+    path,
+    sha256: sha256(readBytes(root, path, "DECLARATION_NONCANONICAL")),
+  })).sort((left, right) => (left.path < right.path ? -1 : 1));
+
+const sameSources = (left, right) =>
+  left.length === right.length &&
+  left.every(
+    (source, index) =>
+      source.path === right[index].path && source.sha256 === right[index].sha256,
+  );
 
 const readDeclaration = (root) => {
   const declaration = requireFields(
@@ -67,9 +228,31 @@ const readDeclaration = (root) => {
     "declaration.frontmatter_fields",
     "DECLARATION_NONCANONICAL",
   );
-  for (const key of ["adapter_id", "adapter_version", "agent_file_suffix", "declared_host", "model", "write_tool"]) {
+  for (const key of ["adapter_id", "adapter_version", "agent_file_suffix", "agent_root", "declared_host", "model", "write_tool"]) {
     if (typeof declaration[key] !== "string" || declaration[key].length === 0) {
       fail("DECLARATION_NONCANONICAL", `declaration.${key} must be a non-empty string`, { key });
+    }
+  }
+  requireRepositoryRelativePath(
+    declaration.agent_root,
+    "declaration.agent_root",
+    "DECLARATION_NONCANONICAL",
+  );
+  if (!isPlainObject(declaration.optional_frontmatter)) {
+    fail("DECLARATION_NONCANONICAL", "declaration.optional_frontmatter must be an object");
+  }
+  const optionalFields = Object.keys(declaration.optional_frontmatter);
+  if (optionalFields.some((key, index) => key !== [...optionalFields].sort()[index])) {
+    fail("DECLARATION_NONCANONICAL", "declaration.optional_frontmatter must be key-sorted");
+  }
+  for (const key of optionalFields) {
+    if (
+      !/^[A-Za-z][A-Za-z0-9_]*$/u.test(key) ||
+      typeof declaration.optional_frontmatter[key] !== "string" ||
+      declaration.optional_frontmatter[key].length === 0 ||
+      declaration.frontmatter_fields.includes(key)
+    ) {
+      fail("DECLARATION_NONCANONICAL", "declaration.optional_frontmatter is invalid", { key });
     }
   }
   if (!declaration.agent_file_suffix.startsWith(".")) {
@@ -96,7 +279,7 @@ export const parseAgentFrontmatter = (text, declaration, relative) => {
   const frontmatter = {};
   for (const line of match[1].split("\n")) {
     if (line.trim().length === 0) continue;
-    const field = /^([a-z_]+): (.+)$/u.exec(line);
+    const field = /^([A-Za-z][A-Za-z0-9_]*): (.+)$/u.exec(line);
     if (field === null) {
       fail("AGENT_FRONTMATTER_UNREADABLE", `${relative} holds an unreadable frontmatter line`, {
         line: line.trim(),
@@ -124,7 +307,32 @@ export const parseAgentFrontmatter = (text, declaration, relative) => {
       frontmatter[key] = rawValue;
     }
   }
-  requireFields(frontmatter, declaration.frontmatter_fields, `${relative} frontmatter`, "AGENT_FRONTMATTER_UNREADABLE");
+  const optionalFields = Object.keys(declaration.optional_frontmatter);
+  const actualFields = Object.keys(frontmatter);
+  const missing = declaration.frontmatter_fields.filter((key) => !actualFields.includes(key));
+  const unknown = actualFields.filter(
+    (key) => !declaration.frontmatter_fields.includes(key) && !optionalFields.includes(key),
+  );
+  if (missing.length > 0 || unknown.length > 0) {
+    fail("AGENT_FRONTMATTER_UNREADABLE", `${relative} frontmatter fields are not canonical`, {
+      missing,
+      path: relative,
+      unknown,
+    });
+  }
+  for (const key of optionalFields) {
+    if (
+      Object.hasOwn(frontmatter, key) &&
+      frontmatter[key] !== declaration.optional_frontmatter[key]
+    ) {
+      fail("AGENT_FRONTMATTER_UNREADABLE", `${relative} optional frontmatter is not declared`, {
+        declared: frontmatter[key],
+        expected: declaration.optional_frontmatter[key],
+        key,
+        path: relative,
+      });
+    }
+  }
   return frontmatter;
 };
 
@@ -143,27 +351,39 @@ const readShippedAgents = (root, declaration, table) => {
   const expectedByFile = new Map(table.map((row) => [`${row.name}${suffix}`, row.role_id]));
 
   const present = new Set();
-  for (const entry of readdirSync(posix.join(root, ADAPTER_ROOT)).sort()) {
+  const actualAgentRoot = resolveAgentRoot(
+    root,
+    declaration.agent_root,
+    "DECLARATION_NONCANONICAL",
+  );
+  for (const entry of listAgentEntries(actualAgentRoot, "DECLARATION_NONCANONICAL")) {
     if (!entry.endsWith(suffix) || !AGENT_FILE_PATTERN.test(entry)) continue;
     if (!expectedByFile.has(entry)) {
-      fail("AGENT_FILE_UNDECLARED", `agent file ${entry} maps to no declared role`, { file: entry });
+      fail("AGENT_FILE_UNDECLARED", `agent file ${entry} maps to no declared role`, {
+        file: entry,
+        root: declaration.agent_root,
+      });
     }
     present.add(entry);
   }
 
   const findings = [];
+  const sources = [];
   const presentRoleIds = [];
   const missingRoleIds = [];
   for (const descriptor of table) {
     const file = `${descriptor.name}${suffix}`;
-    const relative = `${ADAPTER_ROOT}/${file}`;
-    if (!present.has(file) || !pathExists(root, relative)) {
+    const relative = `${declaration.agent_root}/${file}`;
+    const captured = present.has(file)
+      ? captureAgentFile(root, declaration.agent_root, file, "AGENT_FRONTMATTER_UNREADABLE")
+      : null;
+    if (captured === null) {
       findings.push({ code: "AGENT_FILE_MISSING", name: descriptor.name, path: relative, role_id: descriptor.role_id });
       missingRoleIds.push(descriptor.role_id);
       continue;
     }
     const frontmatter = parseAgentFrontmatter(
-      readText(root, relative, "AGENT_FRONTMATTER_UNREADABLE"),
+      captured.bytes.toString("utf8"),
       declaration,
       relative,
     );
@@ -197,6 +417,21 @@ const readShippedAgents = (root, declaration, table) => {
       });
     }
     presentRoleIds.push(descriptor.role_id);
+    sources.push({ path: relative, sha256: captured.sha256 });
+  }
+
+  const finalEntries = new Set(
+    listAgentEntries(actualAgentRoot, "AGENT_FRONTMATTER_UNREADABLE").filter(
+      (entry) => entry.endsWith(suffix) && AGENT_FILE_PATTERN.test(entry),
+    ),
+  );
+  if (
+    present.size !== finalEntries.size ||
+    [...present].some((entry) => !finalEntries.has(entry))
+  ) {
+    fail("AGENT_FRONTMATTER_UNREADABLE", "live agent set changed while being captured", {
+      root: declaration.agent_root,
+    });
   }
 
   findings.sort((left, right) => (`${left.code} ${left.path}` < `${right.code} ${right.path}` ? -1 : 1));
@@ -204,11 +439,13 @@ const readShippedAgents = (root, declaration, table) => {
     findings,
     missingRoleIds: missingRoleIds.slice().sort(),
     presentRoleIds: presentRoleIds.slice().sort(),
+    sources: sources.slice().sort((left, right) => (left.path < right.path ? -1 : 1)),
   };
 };
 
 /** Read, cross-check and freeze the whole Claude Code role binding. */
 export const loadClaudeBinding = ({ root = REPOSITORY_ROOT } = {}) => {
+  const declaringSourcesBefore = captureDeclaringSources(root);
   const declaration = readDeclaration(root);
   const adapterHost = selectDeclared(HOOK_HOSTS, declaration.declared_host, "declaration.declared_host", "HOST_UNDECLARED");
   const agentTable = buildAgentDescriptorTable({
@@ -219,14 +456,21 @@ export const loadClaudeBinding = ({ root = REPOSITORY_ROOT } = {}) => {
   });
   const worktreePlan = deriveWorktreePlan(agentTable);
   const agents = readShippedAgents(root, declaration, agentTable);
+  const declaringSourcesAfter = captureDeclaringSources(root);
+  if (!sameSources(declaringSourcesBefore, declaringSourcesAfter)) {
+    fail("DECLARATION_NONCANONICAL", "binding sources changed while being read");
+  }
 
   return deepFreeze({
     adapterHost,
+    agentRoot: declaration.agent_root,
     agentTable,
     declaration,
+    declaringSources: declaringSourcesAfter,
     findings: agents.findings,
     missingRoleIds: agents.missingRoleIds,
     presentRoleIds: agents.presentRoleIds,
+    agentSources: agents.sources,
     root,
     status: agents.findings.length === 0 ? BINDING_STATUS.BOUND : BINDING_STATUS.DEGRADED,
     worktreePlan,
@@ -245,40 +489,34 @@ export const BINDING_SOURCE_PATHS = Object.freeze(
  * produces the same receipt and a changed input always produces a different one.
  */
 export const claudeBindingReceipt = (binding) => {
-  const suffix = binding.declaration.agent_file_suffix;
+  const current = loadClaudeBinding({ root: binding.root });
   const sources = [
-    ...BINDING_SOURCE_PATHS.map((path) => ({
-      path,
-      sha256: sha256(readBytes(binding.root, path, "DECLARATION_NONCANONICAL")),
-    })),
-    ...binding.presentRoleIds.map((roleId) => {
-      const descriptor = binding.agentTable.find((row) => row.role_id === roleId);
-      const path = `${ADAPTER_ROOT}/${descriptor.name}${suffix}`;
-      return { path, sha256: sha256(readBytes(binding.root, path, "AGENT_FRONTMATTER_UNREADABLE")) };
-    }),
+    ...current.declaringSources.map((source) => ({ ...source })),
+    ...current.agentSources.map((source) => ({ ...source })),
   ].sort((left, right) => (left.path < right.path ? -1 : 1));
 
   const preimage = {
-    adapter_host: binding.adapterHost,
-    adapter_id: binding.declaration.adapter_id,
-    adapter_version: binding.declaration.adapter_version,
-    agent_count: binding.agentTable.length,
-    agent_table_hash: agentTableHash(binding.agentTable),
-    binding_status: binding.status,
-    findings: binding.findings.map((row) => ({
+    adapter_host: current.adapterHost,
+    adapter_id: current.declaration.adapter_id,
+    adapter_version: current.declaration.adapter_version,
+    agent_root: current.agentRoot,
+    agent_count: current.agentTable.length,
+    agent_table_hash: agentTableHash(current.agentTable),
+    binding_status: current.status,
+    findings: current.findings.map((row) => ({
       code: row.code,
       name: row.name,
       path: row.path,
       role_id: row.role_id,
     })),
-    missing_agents: [...binding.missingRoleIds],
-    present_agents: [...binding.presentRoleIds],
-    read_only_agents: binding.agentTable
+    missing_agents: [...current.missingRoleIds],
+    present_agents: [...current.presentRoleIds],
+    read_only_agents: current.agentTable
       .filter((row) => row.isolation !== "worktree")
       .map((row) => row.role_id)
       .sort(),
     sources,
-    worktrees: binding.worktreePlan.map((row) => ({
+    worktrees: current.worktreePlan.map((row) => ({
       isolation: row.isolation,
       role_id: row.role_id,
       write_scope: [...row.write_scope],

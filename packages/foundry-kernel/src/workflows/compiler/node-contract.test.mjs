@@ -104,7 +104,9 @@ function assertCode(fn, code) {
 test("node_contract_test: vocabulary derives from the canonical schema", () => {
   const vocabulary = deriveNodeVocabulary(nodeContractSchema);
 
-  assert.equal(vocabulary.fields.length, 21);
+  assert.equal(vocabulary.fields.length, 22);
+  assert.equal(vocabulary.required_fields.length, 21);
+  assert.deepEqual(vocabulary.executor_statuses, ["executor_bound", "executor_unbound"]);
   assert.deepEqual(vocabulary.executor_types, [
     "deterministic",
     "llm",
@@ -149,6 +151,35 @@ test("node_contract_test: non-canonical vocabulary values fail closed", () => {
   assertCode(() => compileNode({ determinism_class: "random" }), "NODE_CONTRACT_INVALID");
   assertCode(() => compileNode({ failure_policy: "ignore" }), "NODE_CONTRACT_INVALID");
   assertCode(() => compileNode({ model_tier: "gigantic" }), "NODE_CONTRACT_INVALID");
+  assertCode(() => compileNode({ executor_status: "maybe" }), "NODE_CONTRACT_INVALID");
+});
+
+test("node_contract_test: optional executor status remains identity-bearing and fail-closed", () => {
+  const absent = compileNode({});
+  const bound = compileNode({ executor_status: "executor_bound" });
+
+  assert.deepEqual(absent.executor_status_by_node, [
+    { executor_status: null, node_id: "node_a" },
+  ]);
+  assert.deepEqual(absent.executor_status_census, {
+    executor_bound: 0,
+    executor_unbound: 0,
+    unverified: 1,
+  });
+  assert.deepEqual(bound.executor_status_by_node, [
+    { executor_status: "executor_bound", node_id: "node_a" },
+  ]);
+  assert.deepEqual(bound.executor_status_census, {
+    executor_bound: 1,
+    executor_unbound: 0,
+    unverified: 0,
+  });
+  assert.notEqual(absent.compiled_sha256, bound.compiled_sha256);
+  assert.equal(absent.scheduler_plan_sha256, bound.scheduler_plan_sha256);
+  assertCode(
+    () => compileNode({ executor_status: "executor_unbound" }),
+    "EXECUTOR_UNBOUND",
+  );
 });
 
 test("node_contract_test: the field set is exact", () => {

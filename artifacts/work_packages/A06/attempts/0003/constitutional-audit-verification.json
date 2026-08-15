@@ -1,0 +1,30 @@
+{
+  "attempt_id": "A06-0003",
+  "f005": {
+    "authority_package": "epistemic_foundry.governance.evolution_authority",
+    "bindings": {
+      "chamber_delegates_to_promotion_workflow": true,
+      "commit_path_invokes_decider": true,
+      "commit_path_invokes_semantic_validator": true,
+      "commit_path_refuses_without_trusted_port": true,
+      "decider_defined": true,
+      "semantic_validator_defined": true
+    },
+    "f005_status": "PASS",
+    "foreign_runtime_nodes": [],
+    "implementing_modules": [
+      "epistemic_foundry.governance.evolution_authority.nodes",
+      "epistemic_foundry.governance.evolution_authority.promotion",
+      "epistemic_foundry.governance.evolution_authority.reconciliation"
+    ],
+    "runtime_bound_node_count": 21,
+    "superseded_attempt_assumptions": [
+      "single module prefix ...evolution_authority.nodes:",
+      "literal 'PromotionCommitter' in nodes.py",
+      "literal 'decide_promotion(request)' in nodes.py"
+    ],
+    "unbound_runtime_nodes": [],
+    "unresolved_runtime_nodes": []
+  },
+  "scope": "F005 runtime-binding re-audit only.  A06-0002 findings F001-F004 and the schema-meta audit are unaffected by the A05 promotion runtime change and remain valid as recorded."
+}

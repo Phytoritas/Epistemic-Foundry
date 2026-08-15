@@ -127,6 +127,37 @@ def test_a_future_document_in_the_visible_set_is_refused() -> None:
     assert error.context["item_id"] == "TS-2023-001"
 
 
+def test_an_empty_retrieval_is_retained_as_a_valid_zero_result_case() -> None:
+    payload = benchmark()
+    item_id = "TS-2023-001"
+    item_of(payload, item_id)["retrieved_document_ids"] = []
+
+    report = evaluate(resealed(payload), ROOT).payload
+    slice_2023 = next(
+        entry for entry in report["slices"] if entry["slice_id"] == "SLICE-2023"
+    )
+
+    assert report["status"] == "PASS"
+    assert report["counts"]["items"] == len(payload["items"])
+    assert report["overall"]["item_count"] == len(payload["items"])
+    assert report["overall"]["correct"] == 8
+    assert report["overall"]["accuracy"] == 8 / 12
+    assert slice_2023["item_count"] == 4
+    assert slice_2023["correct"] == 2
+    assert slice_2023["accuracy"] == 0.5
+    assert item_id in slice_2023["item_ids"]
+    assert report["leakage"]["future_documents_admitted"] == 0
+
+
+def test_an_empty_visible_document_set_remains_input_invalid() -> None:
+    payload = benchmark()
+    item_of(payload, "TS-2023-001")["visible_document_ids"] = []
+
+    error = refused(resealed(payload), "INPUT_INVALID")
+
+    assert "visible_document_ids must not be empty" in str(error)
+
+
 def test_a_slice_with_nothing_later_to_withhold_is_refused() -> None:
     payload = benchmark()
     payload["slices"].append(

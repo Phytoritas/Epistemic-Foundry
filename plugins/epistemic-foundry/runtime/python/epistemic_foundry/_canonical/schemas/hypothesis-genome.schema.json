@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/hypothesis-genome.schema.json",
+  "title": "HypothesisGenome",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "genome_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "enum": [
+        "DRAFT",
+        "ELIGIBLE",
+        "EVALUATING",
+        "ARCHIVED",
+        "PROMOTION_REVIEW",
+        "PROMOTED",
+        "REJECTED",
+        "SUPERSEDED",
+        "INVALIDATED"
+      ]
+    },
+    "canonical_claim": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope_vector_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mechanism_graph_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prediction_gene_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "falsifier_gene_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "alternative_hypothesis_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "measurement_contract_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "evidence_pack_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "validation_plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lineage_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "complexity_budget": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "uncertainty_notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "provenance_hash": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "genome_id",
+    "revision",
+    "status",
+    "canonical_claim",
+    "scope_vector_id",
+    "mechanism_graph_id",
+    "prediction_gene_ids",
+    "falsifier_gene_ids",
+    "alternative_hypothesis_ids",
+    "measurement_contract_ids",
+    "evidence_pack_id",
+    "validation_plan_id",
+    "lineage_id",
+    "complexity_budget",
+    "uncertainty_notes",
+    "provenance_hash",
+    "created_at"
+  ],
+  "description": "목적·범위·기전·예측·반증·측정·검증을 하나의 진화 가능한 가설 유전체로 고정한다."
+}

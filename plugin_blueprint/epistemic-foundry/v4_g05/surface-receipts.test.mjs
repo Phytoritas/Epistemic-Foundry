@@ -17,6 +17,7 @@ import {
   FAMILY_INDEX_PATH,
   INVENTORY_PATH,
   loadSurface,
+  PAYLOAD_ROOT,
   REPOSITORY_ROOT,
   ROUTING_DECISION_SCHEMA_PATH,
   routeEvolutionRequest,
@@ -24,7 +25,14 @@ import {
   SURFACE_PATH,
   surfaceReceipt,
 } from "./index.mjs";
-import { ROUTE_TEMPLATE, stageSurface } from "./surface-fixtures.mjs";
+import {
+  readStaged,
+  readStagedJson,
+  ROUTE_TEMPLATE,
+  stageSurface,
+  writeStaged,
+  writeStagedJson,
+} from "./surface-fixtures.mjs";
 
 const loaded = loadSurface();
 const receipt = surfaceReceipt(loaded);
@@ -55,6 +63,9 @@ test("g05_receipt: every declaring source is bound by its actual digest", () => 
     ROUTING_DECISION_SCHEMA_PATH,
     SPEC_PATH,
     SURFACE_PATH,
+    ...loaded.surface.skills.map(
+      (skill) => `${PAYLOAD_ROOT}/skills/${skill.skill_id}/agents/openai.yaml`,
+    ),
   ].sort();
 
   assert.deepEqual(
@@ -74,11 +85,62 @@ test("g05_receipt: a changed declaration changes the receipt", (t) => {
   assert.equal(changed.surface_version, "4.0.0-g05.2");
 });
 
+test("g05_receipt: later source drift cannot rewrite a loaded snapshot", (t) => {
+  const root = stageSurface(t, () => {});
+  const snapshot = loadSurface({ root });
+  const before = surfaceReceipt(snapshot);
+  const surface = readStagedJson(root, SURFACE_PATH);
+  surface.surface_version = "4.0.0-g05.later-drift";
+  writeStagedJson(root, SURFACE_PATH, surface);
+
+  assert.deepEqual(surfaceReceipt(snapshot), before);
+  assert.notEqual(surfaceReceipt(loadSurface({ root })).receipt_hash, before.receipt_hash);
+});
+
+test("g05_receipt: agent policy bytes belong to the loaded snapshot", (t) => {
+  const root = stageSurface(t, () => {});
+  const snapshot = loadSurface({ root });
+  const before = surfaceReceipt(snapshot);
+  const card = `${PAYLOAD_ROOT}/skills/${snapshot.surface.skills[0].skill_id}/agents/openai.yaml`;
+  writeStaged(root, card, `${readStaged(root, card)}\n`);
+
+  assert.deepEqual(surfaceReceipt(snapshot), before);
+  assert.notEqual(surfaceReceipt(loadSurface({ root })).receipt_hash, before.receipt_hash);
+});
+
 test("g05_receipt: the receipt records the CLI reality it found", () => {
   assert.equal(receipt.proposed_command_count, 25);
   assert.equal(receipt.projected_command_count, 22);
+  assert.deepEqual(
+    receipt.projected_commands,
+    loaded.projectedCommands.map((row) => ({
+      command: row.command,
+      mutating: row.mutating,
+      segments: [...row.segments],
+      title: row.title,
+      tool: row.tool,
+    })),
+  );
   assert.deepEqual(receipt.proposed_commands_projected, []);
   assert.equal(receipt.skill_count, 15);
+});
+
+test("g05_receipt: a same-count CLI projection change changes the receipt", () => {
+  const unclaimed = loaded.projectedCommands.find(
+    (row) =>
+      !receipt.available_commands.some((available) => available.command === row.command) &&
+      !receipt.authority_bearing_commands.includes(row.command),
+  );
+  assert.ok(unclaimed);
+  const projectedCommands = loaded.projectedCommands.map((row) =>
+    row === unclaimed ? { ...row, title: `${row.title} changed` } : row,
+  );
+
+  assert.equal(projectedCommands.length, loaded.projectedCommands.length);
+  assert.notEqual(
+    surfaceReceipt({ ...loaded, projectedCommands }).receipt_hash,
+    receipt.receipt_hash,
+  );
 });
 
 test("g05_receipt: every available command is published with its effect class", () => {

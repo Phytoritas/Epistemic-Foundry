@@ -14,6 +14,8 @@ import {
   JSONRPC_INVALID_REQUEST,
   JSONRPC_VERSION,
   handleJsonrpc as handleReadJsonrpc,
+  parseJsonrpcMessage,
+  stringifyJsonrpcMessage,
 } from "../read/mcp-server.mjs";
 import {
   GLOBAL_EXACT_COUNT,
@@ -85,7 +87,10 @@ export async function handleJsonrpc(request, handlerPort) {
 }
 
 function jsonrpcError(requestId, code, message) {
-  return { jsonrpc: JSONRPC_VERSION, id: requestId, error: { code, message } };
+  const response = { jsonrpc: JSONRPC_VERSION };
+  if (requestId !== undefined) response.id = requestId;
+  response.error = { code, message };
+  return response;
 }
 
 /** One stateless Streamable HTTP POST /mcp exchange; no SSE fallback. */
@@ -107,13 +112,13 @@ export async function handleHttpPost({ path, body, headers, handlerPort }) {
   }
   let request;
   try {
-    request = JSON.parse(body);
+    request = parseJsonrpcMessage(body);
   } catch {
     return {
       status: 400,
       headers: responseHeaders,
-      body: JSON.stringify(
-        jsonrpcError(null, JSONRPC_PARSE_ERROR, "body is not valid JSON"),
+      body: stringifyJsonrpcMessage(
+        jsonrpcError(undefined, JSONRPC_PARSE_ERROR, "body is not valid JSON"),
       ),
     };
   }
@@ -121,7 +126,7 @@ export async function handleHttpPost({ path, body, headers, handlerPort }) {
   if (response === null) {
     return { status: 202, headers: responseHeaders, body: "" };
   }
-  return { status: 200, headers: responseHeaders, body: JSON.stringify(response) };
+  return { status: 200, headers: responseHeaders, body: stringifyJsonrpcMessage(response) };
 }
 
 /** Line-delimited stateless STDIO loop over async line iterables. */
@@ -134,15 +139,15 @@ export async function serveStdio(lines, write, handlerPort) {
     }
     let response;
     try {
-      response = await handleJsonrpc(JSON.parse(line), handlerPort);
+      response = await handleJsonrpc(parseJsonrpcMessage(line), handlerPort);
     } catch (error) {
       response =
         error instanceof SyntaxError
-          ? jsonrpcError(null, JSONRPC_PARSE_ERROR, "request line is not valid JSON")
-          : jsonrpcError(null, JSONRPC_INVALID_REQUEST, "request handling failed");
+          ? jsonrpcError(undefined, JSONRPC_PARSE_ERROR, "request line is not valid JSON")
+          : jsonrpcError(undefined, JSONRPC_INVALID_REQUEST, "request handling failed");
     }
     if (response !== null) {
-      write(`${JSON.stringify(response)}\n`);
+      write(`${stringifyJsonrpcMessage(response)}\n`);
       handled += 1;
     }
   }

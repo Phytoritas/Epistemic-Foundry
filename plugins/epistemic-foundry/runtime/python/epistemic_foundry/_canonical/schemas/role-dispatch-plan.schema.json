@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/role-dispatch-plan.schema.json",
+  "title": "RoleDispatchPlan",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "plan_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "role_id": {
+            "type": "string"
+          },
+          "host_agent_type": {
+            "type": "string"
+          },
+          "model_tier": {
+            "enum": [
+              "deterministic",
+              "economy",
+              "balanced",
+              "frontier"
+            ]
+          },
+          "tool_acl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "evidence_acl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "read_scope": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "write_scope": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "budget_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "timeout_seconds": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "independence_group": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "role_id",
+          "host_agent_type",
+          "model_tier",
+          "tool_acl",
+          "evidence_acl",
+          "read_scope",
+          "write_scope",
+          "depends_on",
+          "budget_tokens",
+          "timeout_seconds",
+          "independence_group"
+        ]
+      },
+      "minItems": 1
+    },
+    "expected_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "fan_in_policy": {
+      "enum": [
+        "all_required",
+        "quorum_with_partial_label",
+        "hierarchical"
+      ]
+    },
+    "missing_result_policy": {
+      "enum": [
+        "fail_gate",
+        "partial_only",
+        "escalate"
+      ]
+    },
+    "max_concurrency": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16
+    },
+    "budget_envelope_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "plan_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "plan_id",
+    "session_id",
+    "roles",
+    "expected_count",
+    "fan_in_policy",
+    "missing_result_policy",
+    "max_concurrency",
+    "budget_envelope_id",
+    "plan_hash"
+  ]
+}

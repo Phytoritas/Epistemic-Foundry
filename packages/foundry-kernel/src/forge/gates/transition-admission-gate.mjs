@@ -63,6 +63,12 @@ const STATE_KEYS = OBJECT_FREEZE([
   "state_hash",
 ]);
 const STATE_HASH_KEYS = OBJECT_FREEZE(STATE_KEYS.filter((key) => key !== "state_hash"));
+const PHASE_HISTORY_KEYS = OBJECT_FREEZE(["from", "to", "event_id", "at"]);
+const DURABLE_ADMISSION_INPUT_KEYS = OBJECT_FREEZE([
+  "current_state",
+  "transition_request",
+  "artifact_store",
+]);
 const REQUEST_KEYS = OBJECT_FREEZE([
   "request_id",
   "session_id",
@@ -215,6 +221,7 @@ const SCHEMA_REFS = OBJECT_FREEZE({
 });
 
 export const TRANSITION_ADMISSION_VERSION = "4.0.0-f03.2";
+export const DURABLE_TRANSITION_ADMISSION_VERSION = "4.0.0-f03.3";
 
 export class TransitionAdmissionError extends Error {
   constructor(code, message, details = undefined, options = undefined) {
@@ -405,7 +412,29 @@ const validateState = (candidate) => {
     code,
   });
   requireStringArray(state.open_blockers, "open_blockers", { code });
-  requireDenseArray(state.phase_history, "phase_history", code);
+  const phaseHistory = requireDenseArray(state.phase_history, "phase_history", code);
+  for (let index = 0; index < phaseHistory.length; index += 1) {
+    const entry = requirePlainRecord(phaseHistory[index], `phase_history[${index}]`, {
+      allowedKeys: PHASE_HISTORY_KEYS,
+      requiredKeys: PHASE_HISTORY_KEYS,
+      code,
+    });
+    if (!PHASES.has(entry.from) || !PHASES.has(entry.to)) {
+      fail(code, `phase_history[${index}] phases are not canonical`);
+    }
+    requireString(entry.event_id, `phase_history[${index}].event_id`, {
+      min: 3,
+      max: 128,
+      code,
+    });
+    requireTimestamp(entry.at, `phase_history[${index}].at`, code);
+  }
+  if (phaseHistory.length > state.revision) {
+    fail(code, "phase_history cannot exceed revision");
+  }
+  if (phaseHistory.length !== 0 && phaseHistory[phaseHistory.length - 1].to !== state.phase) {
+    fail(code, "phase_history final phase does not match phase");
+  }
   requireHash(state.policy_hash, "policy_hash", code);
   requireHash(state.corpus_snapshot_hash, "corpus_snapshot_hash", code);
   requireTimestamp(state.updated_at, "updated_at", code);
@@ -460,6 +489,32 @@ const validateRequest = (candidate) => {
   requireString(request.idempotency_key, "idempotency_key", { min: 8, code });
   requireTimestamp(request.requested_at, "requested_at", code);
   return request;
+};
+
+const validateDurableAdmissionInput = (candidate) => {
+  const code = "INVALID_TRANSITION_ADMISSION_INPUT";
+  const input = requirePlainRecord(candidate, "DurableForgeTransitionAdmissionInput", {
+    allowedKeys: DURABLE_ADMISSION_INPUT_KEYS,
+    requiredKeys: DURABLE_ADMISSION_INPUT_KEYS,
+    code,
+  });
+  const currentState = readDataProperty(input, "current_state", "admission input", code);
+  const transitionRequest = readDataProperty(
+    input,
+    "transition_request",
+    "admission input",
+    code,
+  );
+  const artifactStore = readDataProperty(input, "artifact_store", "admission input", code);
+  if (
+    artifactStore === null ||
+    !["object", "function"].includes(typeof artifactStore) ||
+    ARRAY_IS_ARRAY(artifactStore) ||
+    IS_PROXY(artifactStore)
+  ) {
+    fail("INVALID_ARTIFACT_STORE", "artifact_store must be a non-proxy object");
+  }
+  return { currentState, transitionRequest, artifactStore };
 };
 
 const validateStateRequestBinding = (state, request) => {
@@ -744,7 +799,14 @@ const validatePhaseArtifact = (candidate, label) => {
   return artifact;
 };
 
-const validatePhaseArtifactSet = (candidate, resolved, state, request, receiptById) => {
+const validatePhaseArtifactSet = (
+  candidate,
+  resolved,
+  state,
+  request,
+  receiptById,
+  { requireStateRetention = true } = {},
+) => {
   const code = "INVALID_PHASE_ARTIFACT_SET";
   const phaseSet = requirePlainRecord(candidate, "PhaseArtifactSet", {
     allowedKeys: PHASE_SET_KEYS,
@@ -815,7 +877,7 @@ const validatePhaseArtifactSet = (candidate, resolved, state, request, receiptBy
         { setId: phaseSet.set_id, artifactId: entry.artifact_id, receiptId: entry.receipt_id },
       );
     }
-    if (!retainedArtifacts.has(entry.artifact_id)) {
+    if (requireStateRetention && !retainedArtifacts.has(entry.artifact_id)) {
       fail(
         "PHASE_ARTIFACT_NOT_IN_STATE",
         "phase artifact is not retained by the current ForgeSessionState",
@@ -861,6 +923,24 @@ const resolvePhaseArtifactSet = (resolvedReceipts, state, request, receiptById) 
   }
   const parsed = parseJsonArtifact(candidates[0], "PhaseArtifactSet", "INVALID_PHASE_ARTIFACT_SET");
   return validatePhaseArtifactSet(parsed, candidates[0], state, request, receiptById);
+};
+
+const resolveDurablePhaseArtifactSet = (resolvedReceipts, state, request, receiptById) => {
+  if (request.from_phase === "IDLE") return null;
+  const candidates = resolvedReceipts.filter((resolved) =>
+    isSchemaRef(resolved, "PHASE_ARTIFACT_SET"),
+  );
+  if (candidates.length !== 1) {
+    fail(
+      "PHASE_ARTIFACT_SET_REQUIRED",
+      "a non-IDLE transition requires exactly one current PhaseArtifactSet receipt",
+      { receiptCount: candidates.length },
+    );
+  }
+  const parsed = parseJsonArtifact(candidates[0], "PhaseArtifactSet", "INVALID_PHASE_ARTIFACT_SET");
+  return validatePhaseArtifactSet(parsed, candidates[0], state, request, receiptById, {
+    requireStateRetention: false,
+  });
 };
 
 const validateIdleClassificationReceipt = (resolvedReceipts, state, request) => {
@@ -1048,8 +1128,15 @@ const validateGateDecision = (candidate, resolved, state) => {
   return deepFreeze(canonicalClone(decision));
 };
 
-const resolveGateDecisions = (resolvedReceipts, state, request) => {
-  const candidates = resolvedReceipts.filter((resolved) => isSchemaRef(resolved, "GATE_DECISION"));
+const resolveGateDecisions = (
+  resolvedReceipts,
+  state,
+  request,
+  gateReceiptCandidates = resolvedReceipts,
+) => {
+  const candidates = gateReceiptCandidates.filter((resolved) =>
+    isSchemaRef(resolved, "GATE_DECISION"),
+  );
   const decisions = candidates.map((resolved) =>
     validateGateDecision(
       parseJsonArtifact(resolved, "GateDecision", "INVALID_GATE_DECISION"),
@@ -1243,6 +1330,86 @@ const receiptBindings = (resolvedReceipts) =>
     }))
     .sort((left, right) => compareCanonicalText(left.receipt_id, right.receipt_id));
 
+const durableReceiptClosure = ({
+  resolvedReceipts,
+  request,
+  idleClassification,
+  phaseSet,
+  gateDecisions,
+  humanDecision,
+}) => {
+  const receiptById = new Map(
+    resolvedReceipts.map((resolved) => [resolved.receipt.receipt_id, resolved]),
+  );
+  const receiptByArtifactId = new Map(
+    resolvedReceipts.map((resolved) => [resolved.manifest.artifact_id, resolved]),
+  );
+  const requestedGateIds = new Set(request.gate_result_ids);
+  const selectedGateIds = new Set(gateDecisions.map((decision) => decision.gate_id));
+  const selectedHumanDecisionId = humanDecision?.decision_id ?? null;
+  const usedReceiptIds = new Set();
+  const retainReceipt = (receiptId) => {
+    const resolved = receiptById.get(receiptId);
+    if (resolved === undefined) {
+      fail("ARTIFACT_RECEIPT_UNRESOLVED", "used transition receipt is not supplied", {
+        receiptId,
+      });
+    }
+    if (
+      isSchemaRef(resolved, "GATE_DECISION") &&
+      (!requestedGateIds.has(resolved.manifest.artifact_id) ||
+        !selectedGateIds.has(resolved.manifest.artifact_id))
+    ) {
+      return;
+    }
+    if (
+      isSchemaRef(resolved, "HUMAN_DECISION") &&
+      (request.human_decision_id === null ||
+        resolved.manifest.artifact_id !== request.human_decision_id ||
+        resolved.manifest.artifact_id !== selectedHumanDecisionId)
+    ) {
+      return;
+    }
+    usedReceiptIds.add(receiptId);
+  };
+  const retainArtifact = (artifactId) => {
+    const resolved = receiptByArtifactId.get(artifactId);
+    if (resolved === undefined) {
+      fail("ARTIFACT_RECEIPT_UNRESOLVED", "used transition artifact has no supplied receipt", {
+        artifactId,
+      });
+    }
+    retainReceipt(resolved.receipt.receipt_id);
+  };
+
+  if (idleClassification !== null) retainArtifact(idleClassification.classification_id);
+  if (phaseSet !== null) {
+    retainArtifact(phaseSet.set_id);
+    for (const entry of phaseSet.required_artifacts) retainReceipt(entry.receipt_id);
+    for (const entry of phaseSet.optional_artifacts) {
+      if (entry.status === "VALID") retainReceipt(entry.receipt_id);
+    }
+  }
+  for (const decision of gateDecisions) {
+    retainArtifact(decision.gate_id);
+    for (const artifactId of decision.evidence_ids) retainArtifact(artifactId);
+    for (const artifactId of decision.input_artifact_ids) retainArtifact(artifactId);
+  }
+  if (humanDecision !== null) retainArtifact(humanDecision.decision_id);
+
+  const unusedReceiptIds = request.artifact_receipt_ids
+    .filter((receiptId) => !usedReceiptIds.has(receiptId))
+    .sort(compareCanonicalText);
+  if (unusedReceiptIds.length !== 0) {
+    fail(
+      "UNUSED_TRANSITION_RECEIPT",
+      "durable transition admission rejects receipts outside the exact used closure",
+      { unusedReceiptIds },
+    );
+  }
+  return resolvedReceipts.filter((resolved) => usedReceiptIds.has(resolved.receipt.receipt_id));
+};
+
 const buildAdmission = ({
   state,
   request,
@@ -1284,6 +1451,20 @@ const buildAdmission = ({
   });
 };
 
+const buildDurableAdmission = (admissionInput, artifactRetention) => {
+  const semantic = canonicalClone(buildAdmission(admissionInput));
+  delete semantic.admission_id;
+  delete semantic.admission_hash;
+  semantic.admission_version = DURABLE_TRANSITION_ADMISSION_VERSION;
+  semantic.artifact_retention = [...artifactRetention];
+  const admissionHash = sha256CanonicalJson(semantic);
+  return deepFreeze({
+    ...semantic,
+    admission_id: `FTA-${admissionHash.slice("sha256:".length)}`,
+    admission_hash: admissionHash,
+  });
+};
+
 export const admitForgeTransition = ({
   current_state,
   transition_request,
@@ -1315,6 +1496,81 @@ export const admitForgeTransition = ({
     gateDecisions,
     humanDecision,
   });
+  return deepFreeze({
+    admission,
+    idle_classification: idleClassification,
+    phase_artifact_set: phaseArtifactSet,
+    gate_decisions: gateDecisions,
+    human_decision: humanDecision,
+  });
+};
+
+export const admitDurableForgeTransition = (candidate) => {
+  const { currentState, transitionRequest, artifactStore } =
+    validateDurableAdmissionInput(candidate);
+  const state = validateState(currentState);
+  const request = validateRequest(transitionRequest);
+  validateStateRequestBinding(state, request);
+  const resolvedReceipts = resolveReceipts(artifactStore, request.artifact_receipt_ids);
+  const receiptById = new Map(
+    resolvedReceipts.map((resolved) => [resolved.receipt.receipt_id, resolved]),
+  );
+  const phaseArtifactSet = resolveDurablePhaseArtifactSet(
+    resolvedReceipts,
+    state,
+    request,
+    receiptById,
+  );
+  const classificationReceipts =
+    request.from_phase === "IDLE"
+      ? resolvedReceipts.filter((resolved) => isSchemaRef(resolved, "CLASSIFICATION"))
+      : [];
+  const idleClassification = validateIdleClassificationReceipt(
+    classificationReceipts,
+    state,
+    request,
+  );
+  const requestedGateIds = new Set(request.gate_result_ids);
+  const gateReceiptCandidates = resolvedReceipts.filter((resolved) =>
+    requestedGateIds.has(resolved.manifest.artifact_id),
+  );
+  const gateDecisions = resolveGateDecisions(
+    resolvedReceipts,
+    state,
+    request,
+    gateReceiptCandidates,
+  );
+  const humanDecisionReceipts =
+    request.human_decision_id === null
+      ? []
+      : resolvedReceipts.filter(
+          (resolved) => resolved.manifest.artifact_id === request.human_decision_id,
+        );
+  const humanDecision = resolveHumanDecision(humanDecisionReceipts, state, request);
+  validateWaiverProvenance(gateDecisions, humanDecision);
+  const usedResolvedReceipts = durableReceiptClosure({
+    resolvedReceipts,
+    request,
+    idleClassification,
+    phaseSet: phaseArtifactSet,
+    gateDecisions,
+    humanDecision,
+  });
+  const artifactRetention = [
+    ...new Set(usedResolvedReceipts.map((resolved) => resolved.manifest.artifact_id)),
+  ].sort(compareCanonicalText);
+  const admission = buildDurableAdmission(
+    {
+      state,
+      request,
+      resolvedReceipts: usedResolvedReceipts,
+      idleClassification,
+      phaseSet: phaseArtifactSet,
+      gateDecisions,
+      humanDecision,
+    },
+    artifactRetention,
+  );
   return deepFreeze({
     admission,
     idle_classification: idleClassification,

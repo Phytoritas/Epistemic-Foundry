@@ -441,7 +441,14 @@ class SchemaTypes:
         if schema_type == "array" or "items" in fragment or "prefixItems" in fragment:
             prefix = fragment.get("prefixItems")
             if isinstance(prefix, list) and prefix:
-                return "tuple[" + ", ".join(self.py_type(contract, item) for item in prefix) + "]"
+                rendered: list[str] = []
+                for item in prefix:
+                    value = self.py_type(contract, item)
+                    if value not in rendered:
+                        rendered.append(value)
+                if len(rendered) == 1:
+                    return f"list[{rendered[0]}]"
+                return "list[Union[" + ", ".join(rendered) + "]]"
             return f"list[{self.py_type(contract, fragment.get('items', {}))}]"
         if schema_type == "object" or "properties" in fragment:
             return "dict[str, JsonValue]"

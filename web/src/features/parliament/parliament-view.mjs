@@ -17,8 +17,10 @@
  * The module reads no clock, no random source, no environment and no file.
  */
 
+import { createHash } from "node:crypto";
 import { types as utilTypes } from "node:util";
 
+import { canonicalJsonSha256 } from "../../app/record-hash.mjs";
 import {
   OPERATIONS,
   createDeliberationRun,
@@ -102,6 +104,10 @@ export const PARLIAMENT_OPERATION_IDS = OBJECT_FREEZE([
 export const PARLIAMENT_FINDING_CODES = OBJECT_FREEZE({
   PARLIAMENT_INPUT_INVALID:
     "The adjudication, brief, or minority-report payload is not a plain data object carrying exactly the field set its canonical schema declares, so no element could be read without guessing what the caller meant.",
+  PARLIAMENT_RECORD_HASH_MISMATCH:
+    "The adjudication, brief, or minority report does not re-derive the digest it claims, so rendering it would attribute a verdict, assertion, or dissent to content that the cited digest does not identify.",
+  PARLIAMENT_CANONICALIZATION_DIALECT_UNRATIFIED:
+    "The record digest is consistent with the Python producer's number-rendering dialect but not this JavaScript verifier's canonical form, so the unratified Foundry cross-language canonical JSON number-rendering contract leaves the record unverifiable; this diagnostic is not by itself evidence of tampering and cannot authorize rendering.",
   UNKNOWN_VERDICT:
     "The adjudication or a brief declares a verdict outside the canonical seven-value vocabulary, and displaying it would present a state the Parliament contract does not define.",
   UNKNOWN_PROMOTION_RECOMMENDATION:
@@ -237,6 +243,101 @@ const requireHash = (value, label) => {
   return value;
 };
 
+const UNRATIFIED_NUMBER_CANONICALIZATION_CONTRACT =
+  "Foundry cross-language canonical JSON number-rendering contract";
+
+const compareCodePoints = (left, right) => {
+  const leftPoints = [...left];
+  const rightPoints = [...right];
+  const shared = Math.min(leftPoints.length, rightPoints.length);
+  for (let index = 0; index < shared; index += 1) {
+    const difference = leftPoints[index].codePointAt(0) - rightPoints[index].codePointAt(0);
+    if (difference !== 0) return difference < 0 ? -1 : 1;
+  }
+  if (leftPoints.length === rightPoints.length) return 0;
+  return leftPoints.length < rightPoints.length ? -1 : 1;
+};
+
+const pythonReprNumber = (value) => {
+  if (!Number.isFinite(value)) {
+    throw new TypeError("Python-dialect JSON cannot encode a non-finite number");
+  }
+  if (Object.is(value, -0)) return "-0.0";
+  const magnitude = Math.abs(value);
+  if (magnitude !== 0 && (magnitude < 1e-4 || magnitude >= 1e16)) {
+    const [mantissa, exponent] = value.toExponential().split("e");
+    const sign = exponent.startsWith("-") ? "-" : "+";
+    const digits = exponent.replace(/^[+-]/u, "").padStart(2, "0");
+    return `${mantissa}e${sign}${digits}`;
+  }
+  const rendered = String(value);
+  return Number.isInteger(value) ? `${rendered}.0` : rendered;
+};
+
+/**
+ * Diagnostic only: parsed Numbers no longer retain Python int/float identity.
+ * Integral Numbers are therefore treated as floats, which can misclassify a
+ * mismatch and must never turn a refused record into an accepted one.
+ */
+const pythonNumberDialectJson = (value, fieldName = null) => {
+  if (value === null) return "null";
+  const kind = typeof value;
+  if (kind === "string" || kind === "boolean") return JSON.stringify(value);
+  if (kind === "number") {
+    // CouncilBrief.round is declared as an integer; the remaining numeric
+    // fields in these three records are schema numbers emitted as floats.
+    return fieldName === "round" ? JSON.stringify(value) : pythonReprNumber(value);
+  }
+  if (ARRAY_IS_ARRAY(value)) {
+    return `[${value.map((entry) => pythonNumberDialectJson(entry)).join(",")}]`;
+  }
+  if (kind !== "object") {
+    throw new TypeError(`Python-dialect JSON cannot encode a ${kind} value`);
+  }
+  return `{${Object.keys(value)
+    .sort(compareCodePoints)
+    .map((key) => `${JSON.stringify(key)}:${pythonNumberDialectJson(value[key], key)}`)
+    .join(",")}}`;
+};
+
+const pythonNumberDialectSha256 = (value) =>
+  `sha256:${createHash("sha256")
+    .update(pythonNumberDialectJson(value), "utf8")
+    .digest("hex")}`;
+
+const requireMatchingRecordHash = (record, hashField, label) => {
+  const preimage = { ...record };
+  delete preimage[hashField];
+  const claimedDigest = record[hashField];
+  const derivedDigest = canonicalJsonSha256(preimage);
+  if (claimedDigest !== derivedDigest) {
+    const pythonDialectDigest = pythonNumberDialectSha256(preimage);
+    if (claimedDigest === pythonDialectDigest) {
+      fail(
+        "PARLIAMENT_CANONICALIZATION_DIALECT_UNRATIFIED",
+        `${label}.${hashField} is consistent with a Python/JavaScript canonicalization-dialect divergence; the ${UNRATIFIED_NUMBER_CANONICALIZATION_CONTRACT} is unratified, so the record remains refused and the mismatch is not by itself evidence of tampering`,
+        {
+          hash_field: hashField,
+          claimed_digest: claimedDigest,
+          derived_digest: derivedDigest,
+          python_dialect_digest: pythonDialectDigest,
+          unratified_contract: UNRATIFIED_NUMBER_CANONICALIZATION_CONTRACT,
+        },
+      );
+    }
+    fail(
+      "PARLIAMENT_RECORD_HASH_MISMATCH",
+      `${label}.${hashField} does not match its canonical record preimage`,
+      {
+        hash_field: hashField,
+        claimed_digest: claimedDigest,
+        derived_digest: derivedDigest,
+      },
+    );
+  }
+  return record;
+};
+
 const requireMember = (value, label, vocabulary, code) => {
   const text = requireString(value, label);
   if (!vocabulary.includes(text)) {
@@ -326,7 +427,7 @@ const normalizeAdjudication = (candidate) => {
   if (typeof override !== "boolean") {
     fail(CODE, "deterministic_gate_override_attempted must be a boolean");
   }
-  return {
+  const normalized = {
     adjudication_id: requireString(readValue(adjudication, "adjudication_id"), "adjudication_id"),
     run_id: requireString(readValue(adjudication, "run_id"), "run_id"),
     hypothesis_id: requireString(readValue(adjudication, "hypothesis_id"), "hypothesis_id"),
@@ -376,6 +477,7 @@ const normalizeAdjudication = (candidate) => {
       "adjudication_hash",
     ),
   };
+  return requireMatchingRecordHash(normalized, "adjudication_hash", "Adjudication");
 };
 
 const normalizeAssertion = (candidate, briefLabel, index) => {
@@ -421,7 +523,7 @@ const normalizeBrief = (candidate, index) => {
   if (conditions.length === 0) {
     fail(CODE, `${label}.conditions_that_change_verdict must carry at least one condition`);
   }
-  return {
+  const normalized = {
     brief_id: requireString(readValue(brief, "brief_id"), `${label}.brief_id`),
     run_id: requireString(readValue(brief, "run_id"), `${label}.run_id`),
     round,
@@ -451,6 +553,7 @@ const normalizeBrief = (candidate, index) => {
     brief_hash: requireHash(readValue(brief, "brief_hash"), `${label}.brief_hash`),
     created_at: requireString(readValue(brief, "created_at"), `${label}.created_at`),
   };
+  return requireMatchingRecordHash(normalized, "brief_hash", label);
 };
 
 const normalizeMinorityReport = (candidate, index) => {
@@ -467,7 +570,7 @@ const normalizeMinorityReport = (candidate, index) => {
   if (typeof gain !== "number" || !Number.isFinite(gain) || gain < 0) {
     fail(CODE, `${label}.expected_information_gain must be a finite non-negative number`);
   }
-  return {
+  const normalized = {
     minority_report_id: requireString(
       readValue(report, "minority_report_id"),
       `${label}.minority_report_id`,
@@ -491,6 +594,7 @@ const normalizeMinorityReport = (candidate, index) => {
     created_at: requireString(readValue(report, "created_at"), `${label}.created_at`),
     report_hash: requireHash(readValue(report, "report_hash"), `${label}.report_hash`),
   };
+  return requireMatchingRecordHash(normalized, "report_hash", label);
 };
 
 const normalizePresentation = (candidate) => {

@@ -16,13 +16,14 @@ import json
 import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from datetime import datetime
 from types import MappingProxyType
 from typing import Any, Final
 
 RFC3339_PATTERN: Final = re.compile(
-    r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"
-    r"(?:\.[0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    r"^(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})[Tt]"
+    r"(?P<hour>[0-9]{2}):(?P<minute>[0-9]{2}):(?P<second>[0-9]{2})"
+    r"(?:\.[0-9]+)?(?P<zone>[Zz]|(?P<offset_sign>[+-])"
+    r"(?P<offset_hour>[0-9]{2}):(?P<offset_minute>[0-9]{2}))$"
 )
 SHA256_PATTERN: Final = re.compile(r"^sha256:[0-9a-f]{64}$")
 
@@ -64,7 +65,15 @@ NO_ACTION: Final = "no_action"
 PRIORITIES: Final = ("P0", "P1", "P2", "P3")
 
 #: Artifact classes the reassessment graph distinguishes.
-ARTIFACT_CLASSES: Final = ("document", "evidence", "claim", "pack", "passport")
+ARTIFACT_CLASSES: Final = (
+    "document",
+    "evidence",
+    "claim",
+    "pack",
+    "passport",
+    "span",
+    "decision",
+)
 
 #: Passport staleness states.  FRESH is never assigned by this component: a
 #: Passport reached by an update is either stale or invalidated.
@@ -188,15 +197,95 @@ def _text(value: object, label: str) -> str:
     return value.strip()
 
 
+def _month_length(year: int, month: int) -> int:
+    leap_year = year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    return (
+        31,
+        29 if leap_year else 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    )[month - 1]
+
+
+def _shift_calendar_day(
+    year: int, month: int, day: int, day_delta: int
+) -> tuple[int, int, int]:
+    while day_delta > 0:
+        day += 1
+        if day > _month_length(year, month):
+            day = 1
+            month += 1
+            if month > 12:
+                month = 1
+                year += 1
+        day_delta -= 1
+    while day_delta < 0:
+        day -= 1
+        if day < 1:
+            month -= 1
+            if month < 1:
+                month = 12
+                year -= 1
+            day = _month_length(year, month)
+        day_delta += 1
+    return year, month, day
+
+
 def _timestamp(value: object, label: str) -> str:
-    if type(value) is not str or RFC3339_PATTERN.fullmatch(value) is None:
+    if type(value) is not str:
         _fail("TIMESTAMP_INVALID", f"{label} must be RFC 3339 with an explicit offset")
-    try:
-        datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError as error:
-        raise ReassessmentError(
-            "TIMESTAMP_INVALID", f"{label} is not a real timestamp"
-        ) from error
+    match = RFC3339_PATTERN.fullmatch(value)
+    if match is None:
+        _fail("TIMESTAMP_INVALID", f"{label} must be RFC 3339 with an explicit offset")
+    year = int(match.group("year"))
+    month = int(match.group("month"))
+    day = int(match.group("day"))
+    hour = int(match.group("hour"))
+    minute = int(match.group("minute"))
+    second = int(match.group("second"))
+    if (
+        month < 1
+        or month > 12
+        or day < 1
+        or day > _month_length(year, month)
+        or hour > 23
+        or minute > 59
+        or second > 60
+    ):
+        _fail("TIMESTAMP_INVALID", f"{label} is not a real timestamp")
+    offset_minutes = 0
+    if match.group("zone") not in {"Z", "z"}:
+        offset_hour = int(match.group("offset_hour"))
+        offset_minute = int(match.group("offset_minute"))
+        if offset_hour > 23 or offset_minute > 59:
+            _fail("TIMESTAMP_INVALID", f"{label} is not a real timestamp")
+        offset_minutes = offset_hour * 60 + offset_minute
+        if match.group("offset_sign") == "-":
+            offset_minutes = -offset_minutes
+    if second == 60:
+        utc_day_delta, utc_minute = divmod(
+            hour * 60 + minute - offset_minutes,
+            1440,
+        )
+        utc_year, utc_month, utc_day = _shift_calendar_day(
+            year,
+            month,
+            day,
+            utc_day_delta,
+        )
+        if utc_minute != 1439 or utc_day != _month_length(utc_year, utc_month):
+            _fail(
+                "TIMESTAMP_INVALID",
+                f"{label} leap second must be at a UTC month end",
+            )
     return value
 
 
@@ -227,6 +316,11 @@ def validate_graph(nodes: Sequence[Mapping[str, object]]) -> dict[str, dict[str,
         if not isinstance(candidate, Mapping):
             _fail("INPUT_INVALID", f"graph[{index}] must be an object")
         node = dict(candidate)
+        if any(type(key) is not str for key in node):
+            _fail(
+                "FIELD_SET_INVALID",
+                f"graph[{index}] field names must be strings",
+            )
         missing = sorted(_NODE_FIELDS - set(node))
         unknown = sorted(set(node) - _NODE_FIELDS)
         if missing or unknown:
@@ -268,13 +362,30 @@ def dependent_closure(
 ) -> list[str]:
     """Every artifact transitively depending on ``seeds`` (cycle tolerant)."""
 
-    dependents: dict[str, list[str]] = {artifact_id: [] for artifact_id in graph}
-    for artifact_id, node in graph.items():
+    if not isinstance(seeds, Sequence) or isinstance(seeds, (str, bytes, bytearray)):
+        _fail("INPUT_INVALID", "seeds must be an array")
+    if not isinstance(graph, Mapping):
+        _fail("INPUT_INVALID", "graph must be an indexed object")
+    items = list(graph.items())
+    indexed = validate_graph([node for _, node in items])
+    normalized_keys = [
+        _text(key, f"graph key[{index}]")
+        for index, (key, _) in enumerate(items)
+    ]
+    if [key for key, _ in items] != normalized_keys or normalized_keys != list(
+        indexed
+    ):
+        _fail(
+            "GRAPH_INDEX_MISMATCH",
+            "graph keys must be canonical and equal node artifact_id",
+        )
+    dependents: dict[str, list[str]] = {artifact_id: [] for artifact_id in indexed}
+    for artifact_id, node in indexed.items():
         for dependency in node["depends_on"]:
             dependents[dependency].append(artifact_id)
     seed_ids = [_text(seed, "seed") for seed in seeds]
     for seed in seed_ids:
-        if seed not in graph:
+        if seed not in indexed:
             _fail(
                 "TRIGGER_ARTIFACT_UNKNOWN",
                 f"trigger artifact {seed} is not in the graph",

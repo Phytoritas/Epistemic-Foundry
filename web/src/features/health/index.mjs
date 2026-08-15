@@ -14,3 +14,12 @@ export {
   unknownHealthView,
   validateHealthReport,
 } from "./health-view.mjs";
+
+export {
+  ConsoleHealthRuntimeError,
+  createHealthRuntimeAdapter,
+  HEALTH_RUNTIME_FINDING_CODES,
+  HEALTH_RUNTIME_VERSION,
+} from "./health-runtime-adapter.mjs";
+
+export { createHealthViewRuntime } from "./health-view-runtime.mjs";

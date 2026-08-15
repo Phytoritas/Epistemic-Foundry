@@ -13,7 +13,8 @@
 // revision is a finding, and the binding is DEGRADED — the payload is what it
 // says it is, and the part of it that cannot run is named rather than implied.
 
-import { posix } from "node:path";
+import { readFileSync, realpathSync } from "node:fs";
+import { isAbsolute, join, posix, relative, sep, win32 } from "node:path";
 
 import {
   HOOK_COVERAGE,
@@ -24,6 +25,7 @@ import {
 import {
   BINDING_DECLARATION_PATH,
   BINDING_STATUS,
+  CodexAdapterError,
   deepFreeze,
   fail,
   isPlainObject,
@@ -63,6 +65,77 @@ export const DECLARATION_FIELDS = Object.freeze([
 const REGISTRATION_FIELDS = Object.freeze(["command", "statusMessage", "timeout", "type"]);
 const COMMAND_PATTERN = /^node "\$\{PLUGIN_ROOT\}\/([^"]+)" ([a-z][a-z0-9-]*)$/u;
 
+const requirePayloadRelativePath = (candidate, label, code) => {
+  if (
+    typeof candidate !== "string" ||
+    candidate.length === 0 ||
+    candidate.includes("\\") ||
+    candidate.includes("\0") ||
+    posix.isAbsolute(candidate) ||
+    win32.isAbsolute(candidate) ||
+    /^[A-Za-z]:/u.test(candidate)
+  ) {
+    fail(code, `${label} must be a payload-relative POSIX path`, { path: candidate });
+  }
+  const normalized = posix.normalize(candidate);
+  if (
+    normalized !== candidate ||
+    normalized === "." ||
+    normalized === ".." ||
+    normalized.startsWith("../")
+  ) {
+    fail(code, `${label} escapes or is not canonical within the payload`, {
+      normalized,
+      path: candidate,
+    });
+  }
+  return normalized;
+};
+
+const resolvePayloadFile = (root, relativePath, label, code) => {
+  const canonical = requirePayloadRelativePath(relativePath, label, code);
+  const logicalPath = posix.join(PAYLOAD_ROOT, canonical);
+  if (!pathExists(root, logicalPath)) return null;
+  try {
+    const payloadRoot = realpathSync(join(root, PAYLOAD_ROOT));
+    const actualPath = realpathSync(join(root, logicalPath));
+    const fromPayload = relative(payloadRoot, actualPath);
+    if (
+      fromPayload === "" ||
+      fromPayload === ".." ||
+      fromPayload.startsWith(`..${sep}`) ||
+      isAbsolute(fromPayload)
+    ) {
+      fail(code, `${label} resolves outside the payload`, {
+        path: relativePath,
+      });
+    }
+    return actualPath;
+  } catch (error) {
+    if (error instanceof CodexAdapterError) throw error;
+    fail(code, `${label} cannot be resolved inside the payload: ${error.message}`, {
+      path: relativePath,
+    });
+  }
+};
+
+const payloadFileExists = (root, relativePath, label, code) =>
+  resolvePayloadFile(root, relativePath, label, code) !== null;
+
+const readPayloadBytes = (root, relativePath, label, code) => {
+  const actualPath = resolvePayloadFile(root, relativePath, label, code);
+  if (actualPath === null) {
+    fail(code, `${label} is missing from the payload`, { path: relativePath });
+  }
+  try {
+    return readFileSync(actualPath);
+  } catch (error) {
+    fail(code, `${label} cannot be read from the payload: ${error.message}`, {
+      path: relativePath,
+    });
+  }
+};
+
 const readDeclaration = (root) => {
   const declaration = requireFields(
     readJson(root, BINDING_DECLARATION_PATH, "DECLARATION_NONCANONICAL"),
@@ -85,6 +158,20 @@ const readDeclaration = (root) => {
       fail("DECLARATION_NONCANONICAL", `declaration.${key} must be a non-empty string`, { key });
     }
   }
+  for (const key of ["entrypoints", "hook_files"]) {
+    for (const relativePath of declaration[key]) {
+      requirePayloadRelativePath(
+        relativePath,
+        `declaration.${key}`,
+        "DECLARATION_NONCANONICAL",
+      );
+    }
+  }
+  requirePayloadRelativePath(
+    declaration.dispatcher,
+    "declaration.dispatcher",
+    "DECLARATION_NONCANONICAL",
+  );
   if (!declaration.entrypoints.includes(declaration.dispatcher)) {
     fail("DECLARATION_NONCANONICAL", "the declared dispatcher is not a declared entrypoint", {
       dispatcher: declaration.dispatcher,
@@ -121,7 +208,7 @@ const readManifest = (root, declaration) => {
 const resolveDeclaredEntrypoints = (root, declaration, manifest) => {
   const resolved = [];
   for (const relative of declaration.entrypoints) {
-    if (!pathExists(root, posix.join(PAYLOAD_ROOT, relative))) {
+    if (!payloadFileExists(root, relative, "declared entrypoint", "ENTRYPOINT_MISSING")) {
       fail("ENTRYPOINT_MISSING", `the payload does not ship declared entrypoint ${relative}`, {
         path: relative,
       });
@@ -137,8 +224,12 @@ const resolveDeclaredEntrypoints = (root, declaration, manifest) => {
         field,
       });
     }
-    const relative = posix.normalize(declared.slice(2));
-    if (relative.startsWith("..") || !pathExists(root, posix.join(PAYLOAD_ROOT, relative))) {
+    const relative = requirePayloadRelativePath(
+      declared.slice(2),
+      `manifest.interface.${field}`,
+      "ENTRYPOINT_MISSING",
+    );
+    if (!payloadFileExists(root, relative, `manifest asset ${field}`, "ENTRYPOINT_MISSING")) {
       fail("ENTRYPOINT_MISSING", `the payload does not ship declared asset ${relative}`, {
         field,
         path: relative,
@@ -168,21 +259,25 @@ export const parseDispatcherTarget = (source, dispatcherPath) => {
       targets,
     });
   }
-  const resolved = posix.normalize(posix.join(posix.dirname(dispatcherPath), targets[0]));
-  if (resolved.startsWith("..")) {
-    fail("DISPATCHER_UNREADABLE", `${dispatcherPath} resolves outside the payload`, {
+  const target = targets[0];
+  if (target.includes("\\") || posix.isAbsolute(target) || win32.isAbsolute(target)) {
+    fail("DISPATCHER_UNREADABLE", `${dispatcherPath} names a non-relative payload target`, {
       dispatcher: dispatcherPath,
-      resolved,
+      target,
     });
   }
-  return resolved;
+  return requirePayloadRelativePath(
+    posix.normalize(posix.join(posix.dirname(dispatcherPath), target)),
+    `${dispatcherPath} target`,
+    "DISPATCHER_UNREADABLE",
+  );
 };
 
 const readRegistrations = (root, declaration, eventTypes) => {
   const registrations = [];
   for (const relative of declaration.hook_files) {
     const path = posix.join(PAYLOAD_ROOT, relative);
-    if (!pathExists(root, path)) {
+    if (!payloadFileExists(root, relative, "declared hook file", "HOOK_FILE_MISSING")) {
       fail("HOOK_FILE_MISSING", `the payload does not ship hook registration ${relative}`, {
         path: relative,
       });
@@ -241,11 +336,16 @@ const readRegistrations = (root, declaration, eventTypes) => {
               path: relative,
             });
           }
+          const target = requirePayloadRelativePath(
+            parsed[1],
+            `${relative}.${eventType} hook target`,
+            "HOOK_COMMAND_UNPARSEABLE",
+          );
           registrations.push({
             event_type: eventType,
             hook_file: relative,
             matcher,
-            target: posix.normalize(parsed[1]),
+            target,
             verb: parsed[2],
           });
         }
@@ -344,7 +444,7 @@ export const loadCodexBinding = ({ root = REPOSITORY_ROOT } = {}) => {
   );
 
   const findings = [];
-  if (!pathExists(root, posix.join(PAYLOAD_ROOT, dispatcherTarget))) {
+  if (!payloadFileExists(root, dispatcherTarget, "dispatcher target", "DISPATCHER_UNREADABLE")) {
     findings.push({
       code: "DISPATCHER_PAYLOAD_MISSING",
       event_types: [],
@@ -352,7 +452,9 @@ export const loadCodexBinding = ({ root = REPOSITORY_ROOT } = {}) => {
     });
   }
   for (const target of [...new Set(registrations.map((row) => row.target))].sort()) {
-    if (pathExists(root, posix.join(PAYLOAD_ROOT, target))) continue;
+    if (payloadFileExists(root, target, "hook command target", "HOOK_COMMAND_UNPARSEABLE")) {
+      continue;
+    }
     findings.push({
       code: "HOOK_COMMAND_TARGET_MISSING",
       event_types: [
@@ -401,40 +503,98 @@ export const BINDING_SOURCE_PATHS = Object.freeze(
  * different one.
  */
 export const codexBindingReceipt = (binding) => {
+  const dispatcherTargetPath = posix.join(PAYLOAD_ROOT, binding.dispatcherTarget);
+  let dispatcherTargetBytes = null;
+  const resolvedDispatcherTarget = resolvePayloadFile(
+    binding.root,
+    binding.dispatcherTarget,
+    "dispatcher target",
+    "DISPATCHER_UNREADABLE",
+  );
+  if (resolvedDispatcherTarget !== null) {
+    try {
+      dispatcherTargetBytes = readFileSync(resolvedDispatcherTarget);
+    } catch (error) {
+      fail("DISPATCHER_UNREADABLE", `dispatcher target cannot be read: ${error.message}`, {
+        path: binding.dispatcherTarget,
+      });
+    }
+  }
+  const findings = binding.findings.filter(
+    (finding) =>
+      finding.code !== "DISPATCHER_PAYLOAD_MISSING" ||
+      finding.path !== binding.dispatcherTarget,
+  );
+  if (dispatcherTargetBytes === null) {
+    findings.push({
+      code: "DISPATCHER_PAYLOAD_MISSING",
+      event_types: [],
+      path: binding.dispatcherTarget,
+    });
+  }
+  findings.sort((left, right) =>
+    left.code === right.code
+      ? left.path < right.path
+        ? -1
+        : left.path > right.path
+          ? 1
+          : 0
+      : left.code < right.code
+        ? -1
+        : 1,
+  );
   const sources = [
     ...BINDING_SOURCE_PATHS.map((path) => ({
       path,
-      sha256: sha256(readBytes(binding.root, path, "MANIFEST_UNREADABLE")),
+      sha256: sha256(
+        path.startsWith(`${PAYLOAD_ROOT}/`)
+          ? readPayloadBytes(
+              binding.root,
+              path.slice(PAYLOAD_ROOT.length + 1),
+              "plugin manifest",
+              "MANIFEST_UNREADABLE",
+            )
+          : readBytes(binding.root, path, "MANIFEST_UNREADABLE"),
+      ),
     })),
     ...binding.declaration.hook_files.map((relative) => ({
       path: posix.join(PAYLOAD_ROOT, relative),
       sha256: sha256(
-        readBytes(binding.root, posix.join(PAYLOAD_ROOT, relative), "HOOK_FILE_MISSING"),
+        readPayloadBytes(binding.root, relative, "declared hook file", "HOOK_FILE_MISSING"),
       ),
     })),
     {
       path: posix.join(PAYLOAD_ROOT, binding.declaration.dispatcher),
       sha256: sha256(
-        readBytes(
+        readPayloadBytes(
           binding.root,
-          posix.join(PAYLOAD_ROOT, binding.declaration.dispatcher),
+          binding.declaration.dispatcher,
+          "plugin dispatcher",
           "DISPATCHER_UNREADABLE",
         ),
       ),
     },
+    ...(dispatcherTargetBytes === null
+      ? []
+      : [
+          {
+            path: dispatcherTargetPath,
+            sha256: sha256(dispatcherTargetBytes),
+          },
+        ]),
   ].sort((left, right) => (left.path < right.path ? -1 : 1));
 
   const preimage = {
     adapter_id: binding.declaration.adapter_id,
     adapter_version: binding.declaration.adapter_version,
     adapter_host: binding.adapterHost,
-    binding_status: binding.status,
+    binding_status: findings.length === 0 ? BINDING_STATUS.BOUND : BINDING_STATUS.DEGRADED,
     coverage_by_event_type: [...binding.coverageByEventType.entries()]
       .map(([event_type, coverage]) => ({ coverage, event_type }))
       .sort((left, right) => (left.event_type < right.event_type ? -1 : 1)),
     dispatcher_target: binding.dispatcherTarget,
     entrypoints: binding.entrypoints.map((row) => ({ field: row.field, path: row.path })),
-    findings: binding.findings.map((row) => ({
+    findings: findings.map((row) => ({
       code: row.code,
       event_types: [...row.event_types],
       path: row.path,

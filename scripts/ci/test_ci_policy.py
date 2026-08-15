@@ -47,10 +47,12 @@ class PolicyMutationTests(unittest.TestCase):
         self.assertIn(old, text, f"fixture mutation anchor missing: {old!r}")
         self.workflow_path.write_text(text.replace(old, new, 1), encoding="utf-8", newline="\n")
 
-    def assert_matrix_rejects(self) -> None:
+    def assert_matrix_rejects(self, expected_failure: str | None = None) -> None:
         result = ci_matrix_lint.validate(self.root)
         self.assertEqual("FAIL", result["status"], result)
         self.assertTrue(result["failures"], result)
+        if expected_failure is not None:
+            self.assertIn(expected_failure, result["failures"], result)
 
     def assert_cache_rejects(self) -> None:
         result = cache_key_audit.validate(self.root)
@@ -72,6 +74,15 @@ class PolicyMutationTests(unittest.TestCase):
         )
         self.assert_matrix_rejects()
 
+    def test_checkout_ref_is_rejected(self) -> None:
+        self.mutate(
+            "          persist-credentials: false\n",
+            "          persist-credentials: false\n          ref: main\n",
+        )
+        self.assert_matrix_rejects(
+            "Check out source step with mapping must match the reviewed values exactly"
+        )
+
     def test_duplicate_action_step_is_rejected(self) -> None:
         anchor = "      - name: Set up Node.js\n"
         duplicate = (
@@ -85,6 +96,111 @@ class PolicyMutationTests(unittest.TestCase):
     def test_pull_request_target_is_rejected(self) -> None:
         self.mutate("  pull_request:\n", "  pull_request_target:\n")
         self.assert_matrix_rejects()
+
+    def test_job_condition_is_rejected(self) -> None:
+        self.mutate(
+            "    timeout-minutes: 30\n",
+            "    timeout-minutes: 30\n    if: ${{ false }}\n",
+        )
+        self.assert_matrix_rejects("cross-platform job may not define if")
+
+    def test_workflow_pytest_addopts_is_rejected(self) -> None:
+        self.mutate(
+            "permissions:\n  contents: read\n",
+            (
+                "permissions:\n  contents: read\n\n"
+                "env:\n  PYTEST_ADDOPTS: --ignore=tests/test_j02_context_budget.py\n"
+            ),
+        )
+        self.assert_matrix_rejects("workflow may not define env")
+
+    def test_matrix_exclude_is_rejected(self) -> None:
+        self.mutate(
+            "          - windows-2025\n",
+            "          - windows-2025\n        exclude:\n          - os: windows-2025\n",
+        )
+        self.assert_matrix_rejects("cross-platform matrix keys must be exactly ['os']")
+
+    def test_job_pytest_addopts_is_rejected(self) -> None:
+        self.mutate(
+            '      PYTHONHASHSEED: "0"\n',
+            (
+                '      PYTHONHASHSEED: "0"\n'
+                '      PYTEST_ADDOPTS: "--ignore=tests/test_j02_context_budget.py"\n'
+            ),
+        )
+        self.assert_matrix_rejects(
+            "cross-platform job env keys must match the reviewed allowlist exactly"
+        )
+
+    def test_reviewed_step_custom_shell_is_rejected(self) -> None:
+        self.mutate(
+            "      - name: Run Python regression suite\n",
+            "      - name: Run Python regression suite\n        shell: bash\n",
+        )
+        self.assert_matrix_rejects(
+            "Run Python regression suite step keys must be exactly ['name', 'run']"
+        )
+
+    def test_missing_skill_context_group_on_full_pytest_is_rejected(self) -> None:
+        self.mutate(
+            "uv run --locked --group skill-context pytest tests -p no:cacheprovider",
+            "uv run --locked pytest tests -p no:cacheprovider",
+        )
+        self.assert_matrix_rejects(
+            "Run Python regression suite step must contain exactly the reviewed command sequence"
+        )
+
+    def test_missing_skill_context_group_on_install_is_rejected(self) -> None:
+        self.mutate(
+            "uv sync --locked --extra dev --group skill-context --no-python-downloads",
+            "uv sync --locked --extra dev --no-python-downloads",
+        )
+        self.assert_matrix_rejects(
+            "Install locked dependencies step must contain exactly the reviewed command sequence"
+        )
+
+    def test_conditional_python_regression_suite_is_rejected(self) -> None:
+        self.mutate(
+            "      - name: Run Python regression suite\n",
+            "      - name: Run Python regression suite\n        if: ${{ false }}\n",
+        )
+        self.assert_matrix_rejects("Run Python regression suite step may not define if")
+
+    def test_trailing_python_regression_selector_is_rejected(self) -> None:
+        self.mutate(
+            "uv run --locked --group skill-context pytest tests -p no:cacheprovider",
+            (
+                "uv run --locked --group skill-context pytest tests -p no:cacheprovider "
+                "--ignore=tests/test_j02_context_budget.py"
+            ),
+        )
+        self.assert_matrix_rejects(
+            "Run Python regression suite step must contain exactly the reviewed command sequence"
+        )
+
+    def test_echo_decoy_for_required_command_is_rejected(self) -> None:
+        self.mutate(
+            "          npm run check:boundaries\n",
+            '          echo "npm run check:boundaries"\n',
+        )
+        self.assert_matrix_rejects(
+            "cross-platform job must contain required exact command exactly once: "
+            "npm run check:boundaries (observed 0)"
+        )
+
+    def test_validation_step_github_env_write_is_rejected(self) -> None:
+        self.mutate(
+            "          uv run --locked python scripts/ci/test_ci_policy.py\n",
+            (
+                "          uv run --locked python scripts/ci/test_ci_policy.py\n"
+                '          echo "PYTEST_ADDOPTS=--ignore=tests/test_j02_context_budget.py" '
+                ">> $GITHUB_ENV\n"
+            ),
+        )
+        self.assert_matrix_rejects(
+            "Validate CI and cache policy step must contain exactly the reviewed command sequence"
+        )
 
     def test_missing_lock_input_is_rejected(self) -> None:
         self.mutate("'uv.lock', ", "")

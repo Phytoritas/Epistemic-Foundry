@@ -11,7 +11,6 @@ import pytest
 
 from epistemic_foundry.application.mcp_mutating import (
     DRY_RUN_OPERATION_ID,
-    UNOBSERVED_OPERATION_ID,
     EffectOutcome,
     is_unresolved,
     outstanding_receipts,
@@ -59,6 +58,8 @@ def test_a_committed_effect_binds_intent_lease_and_receipt(build_harness) -> Non
     assert mutation["capability_lease_id"] == harness.leases.issued[0].lease_id
     assert mutation["effect_receipt_id"] == harness.receipts.receipts[0]["receipt_id"]
     assert envelope["receipts"][0]["artifact_id"] == mutation["action_intent_id"]
+    assert len(harness.idempotency.attempts) == 1
+    assert harness.idempotency.records["key-1"]["revision"] == 3
 
 
 def test_the_lease_is_issued_before_the_effect_and_revalidated(build_harness) -> None:
@@ -270,7 +271,9 @@ def test_an_unresolved_effect_is_unknown_and_never_claims_failure(
     assert envelope["read_model_state"] == "DEGRADED"
 
 
-def test_a_crash_between_intent_and_receipt_replays_as_unknown(build_harness) -> None:
+def test_an_attempt_without_a_receipt_is_reconciling_and_never_reexecutes(
+    build_harness,
+) -> None:
     harness = build_harness()
     fingerprint = semantic_fingerprint(
         arguments=call_arguments(
@@ -280,21 +283,66 @@ def test_a_crash_between_intent_and_receipt_replays_as_unknown(build_harness) ->
         tool=POLICY_ONLY_TOOL,
     )
     harness.idempotency.seed(
-        "crashed", fingerprint, intent_id="intent-orphan", receipt_id=None
+        "crashed",
+        fingerprint,
+        intent_id="intent-orphan",
+        attempt_id="attempt-orphan",
+        receipt_id=None,
     )
 
     envelope, is_error = harness.call(POLICY_ONLY_TOOL, idempotency_key="crashed")
 
-    mutation = envelope["data"]["mutation"]
+    assert is_error is True
+    assert envelope["details"]["mutation_error_code"] == "EFFECT_RECONCILING"
+    assert envelope["details"]["reconciliation_required"] is True
+    assert envelope["retryable"] is True
+    assert harness.executor.executions == []
+    assert harness.receipts.receipts == []
+
+
+def test_replay_adopts_a_receipt_persisted_before_reservation_binding(
+    build_harness,
+) -> None:
+    harness = build_harness()
+    key = "receipt-crash"
+    intent_id = "intent-receipt-crash"
+    attempt_id = "attempt-receipt-crash"
+    fingerprint = semantic_fingerprint(
+        arguments=call_arguments(harness.catalog, POLICY_ONLY_TOOL, idempotency_key=key),
+        auth=harness.auth(POLICY_ONLY_TOOL),
+        tool=POLICY_ONLY_TOOL,
+    )
+    harness.idempotency.seed(
+        key,
+        fingerprint,
+        intent_id=intent_id,
+        attempt_id=attempt_id,
+        receipt_id=None,
+    )
+    stored = harness.receipts.persist(
+        {
+            "error_artifact_ids": [],
+            "external_operation_id": "op-receipt-crash",
+            "idempotency_key": key,
+            "intent_id": intent_id,
+            "new_revision": "rev-2",
+            "observed_state_hash": "sha256:" + "0" * 64,
+            "reconciliation_required": False,
+            "result_artifact_ids": [],
+            "status": "SUCCEEDED",
+        },
+        attempt_id=attempt_id,
+    )
+
+    envelope, is_error = harness.call(POLICY_ONLY_TOOL, idempotency_key=key)
+
     assert is_error is False
-    assert mutation["effect_status"] == "UNKNOWN"
-    assert mutation["committed"] is None
-    assert mutation["reconciliation_required"] is True
-    # The effect is never re-attempted while the outcome is unknown.
     assert harness.executor.executions == []
     assert (
-        harness.receipts.receipts[0]["external_operation_id"] == UNOBSERVED_OPERATION_ID
+        envelope["data"]["mutation"]["effect_receipt_id"]
+        == stored["receipt_id"]
     )
+    assert harness.idempotency.records[key]["receipt_id"] == stored["receipt_id"]
 
 
 def test_a_reservation_without_an_intent_may_safely_continue(build_harness) -> None:
@@ -312,6 +360,31 @@ def test_a_reservation_without_an_intent_may_safely_continue(build_harness) -> N
 
     assert is_error is False
     assert envelope["data"]["mutation"]["effect_status"] == "SUCCEEDED"
+    assert harness.executor.executions == ["mutate_session_transition"]
+
+
+def test_an_intent_without_an_attempt_is_not_started_and_may_retry(
+    build_harness,
+) -> None:
+    harness = build_harness(revisions={(WORKSPACE, TARGET): "rev-moved"})
+
+    first, first_is_error = harness.call(
+        POLICY_ONLY_TOOL, idempotency_key="not-started"
+    )
+
+    assert first_is_error is True
+    assert first["details"]["mutation_error_code"] == "REVISION_CONFLICT"
+    assert harness.idempotency.attempts == {}
+    assert harness.executor.executions == []
+
+    harness.revisions.revisions[(WORKSPACE, TARGET)] = "rev-1"
+    second, second_is_error = harness.call(
+        POLICY_ONLY_TOOL, idempotency_key="not-started"
+    )
+
+    assert second_is_error is False
+    assert second["data"]["mutation"]["effect_status"] == "SUCCEEDED"
+    assert len(harness.idempotency.attempts) == 1
     assert harness.executor.executions == ["mutate_session_transition"]
 
 
@@ -359,11 +432,20 @@ def test_reconciliation_closes_an_unknown_receipt(build_harness) -> None:
     assert resolved["reconciles_receipt_id"] == unresolved["receipt_id"]
     assert is_unresolved(unresolved) is True
     assert is_unresolved(resolved) is False
+    assert outstanding_receipts(harness.receipts.receipts) == ()
     report = reconciliation_report(
-        intents=harness.intents.intents, receipts=harness.receipts.receipts
+        attempts=list(harness.idempotency.attempts.values()),
+        intents=harness.intents.intents,
+        receipts=harness.receipts.receipts,
     )
     assert report["reconciled"] is True
     assert report["unresolved_intent_ids"] == []
+
+    replayed, replayed_is_error = harness.call(POLICY_ONLY_TOOL)
+
+    assert replayed_is_error is False
+    assert replayed["data"]["mutation"]["effect_status"] == "SUCCEEDED"
+    assert harness.executor.executions == ["mutate_session_transition"]
 
 
 def test_a_probe_that_cannot_observe_leaves_the_obligation_open(build_harness) -> None:
@@ -389,7 +471,9 @@ def test_a_probe_that_cannot_observe_leaves_the_obligation_open(build_harness) -
     assert still is unresolved
     assert len(harness.receipts.receipts) == 1
     report = reconciliation_report(
-        intents=harness.intents.intents, receipts=harness.receipts.receipts
+        attempts=list(harness.idempotency.attempts.values()),
+        intents=harness.intents.intents,
+        receipts=harness.receipts.receipts,
     )
     assert report["reconciled"] is False
     assert report["unresolved_intent_ids"] == [harness.intents.intents[0]["intent_id"]]
@@ -427,6 +511,7 @@ def test_a_probe_may_not_report_a_non_terminal_status(build_harness) -> None:
 
 def test_a_reconciliation_report_flags_an_intent_with_no_receipt() -> None:
     report = reconciliation_report(
+        attempts=[{"intent_id": "intent-1"}, {"intent_id": "intent-2"}],
         intents=[{"intent_id": "intent-1"}, {"intent_id": "intent-2"}],
         receipts=[{"intent_id": "intent-1", "status": "SUCCEEDED"}],
     )
@@ -438,6 +523,7 @@ def test_a_reconciliation_report_flags_an_intent_with_no_receipt() -> None:
 
 def test_a_reconciliation_report_flags_an_orphaned_receipt() -> None:
     report = reconciliation_report(
+        attempts=[{"intent_id": "intent-1"}],
         intents=[{"intent_id": "intent-1"}],
         receipts=[
             {"intent_id": "intent-1", "status": "SUCCEEDED"},
@@ -447,6 +533,17 @@ def test_a_reconciliation_report_flags_an_orphaned_receipt() -> None:
 
     assert report["reconciled"] is False
     assert report["orphaned_receipt_intent_ids"] == ["intent-ghost"]
+
+
+def test_a_reconciliation_report_does_not_require_a_receipt_before_attempt() -> None:
+    report = reconciliation_report(
+        attempts=[],
+        intents=[{"intent_id": "intent-not-started"}],
+        receipts=[],
+    )
+
+    assert report["reconciled"] is True
+    assert report["intents_missing_receipts"] == []
 
 
 def test_cross_workspace_access_is_denied_before_any_authority_work(

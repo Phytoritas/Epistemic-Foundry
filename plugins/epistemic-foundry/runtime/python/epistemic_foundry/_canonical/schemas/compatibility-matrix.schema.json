@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/compatibility-matrix.schema.json",
+  "title": "CompatibilityMatrix",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "matrix_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "plugin_version": {
+      "type": "string"
+    },
+    "tested_hosts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "host": {
+            "type": "string"
+          },
+          "host_version": {
+            "type": "string"
+          },
+          "os": {
+            "enum": [
+              "linux",
+              "macos",
+              "windows"
+            ]
+          },
+          "surface": {
+            "type": "string"
+          },
+          "install": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "NOT_TESTED"
+            ]
+          },
+          "hooks": {
+            "enum": [
+              "PASS",
+              "PARTIAL",
+              "FAIL",
+              "NOT_SUPPORTED",
+              "NOT_TESTED"
+            ]
+          },
+          "mcp": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "NOT_SUPPORTED",
+              "NOT_TESTED"
+            ]
+          },
+          "worktrees": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "NOT_SUPPORTED",
+              "NOT_TESTED"
+            ]
+          },
+          "known_limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "host",
+          "host_version",
+          "os",
+          "surface",
+          "install",
+          "hooks",
+          "mcp",
+          "worktrees",
+          "known_limitations"
+        ]
+      },
+      "minItems": 1
+    },
+    "minimum_supported_versions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "matrix_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "matrix_id",
+    "plugin_version",
+    "tested_hosts",
+    "minimum_supported_versions",
+    "generated_at",
+    "matrix_hash"
+  ]
+}

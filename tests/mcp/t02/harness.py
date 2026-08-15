@@ -13,8 +13,13 @@ from pathlib import Path
 from typing import Any
 
 from epistemic_foundry.application.mcp_common import AuthContext, ToolService
+from epistemic_foundry.application.mcp_common.contracts import (
+    canonical_json_bytes,
+    sha256_id,
+)
 from epistemic_foundry.application.mcp_mutating import (
     ApprovalVerdict,
+    AttemptTransition,
     EffectOutcome,
     LeaseGrant,
     PolicyDecision,
@@ -210,6 +215,28 @@ class FakeLeaseIssuer:
 class FakeIdempotencyStore:
     def __init__(self) -> None:
         self.records: dict[str, dict[str, Any]] = {}
+        self.attempts: dict[str, dict[str, Any]] = {}
+
+    @staticmethod
+    def _attempt_record(
+        *,
+        attempt_id: str,
+        fingerprint: str,
+        idempotency_key: str,
+        intent_id: str,
+        started_at: str,
+    ) -> dict[str, Any]:
+        record = {
+            "attempt_id": attempt_id,
+            "attempt_number": 1,
+            "idempotency_key": idempotency_key,
+            "intent_hash": fingerprint,
+            "intent_id": intent_id,
+            "run_id": "run-t02",
+            "started_at": started_at,
+        }
+        record["attempt_hash"] = sha256_id(canonical_json_bytes(record))
+        return record
 
     def seed(
         self,
@@ -217,37 +244,154 @@ class FakeIdempotencyStore:
         fingerprint: str,
         *,
         intent_id: str | None,
+        attempt_id: str | None = None,
         receipt_id: str | None,
     ) -> None:
         self.records[key] = {
+            "attempt_id": attempt_id,
             "fingerprint": fingerprint,
             "intent_id": intent_id,
             "receipt_id": receipt_id,
+            "revision": sum(
+                entry is not None for entry in (intent_id, attempt_id, receipt_id)
+            ),
         }
+        if attempt_id is not None:
+            if intent_id is None:
+                raise ValueError("an Attempt requires an ActionIntent")
+            self.attempts[attempt_id] = self._attempt_record(
+                attempt_id=attempt_id,
+                fingerprint=fingerprint,
+                idempotency_key=key,
+                intent_id=intent_id,
+                started_at="2026-08-01T08:00:00Z",
+            )
+
+    def _reservation(self, key: str, *, created: bool = False) -> Reservation:
+        record = self.records[key]
+        return Reservation(
+            created=created,
+            fingerprint=str(record["fingerprint"]),
+            idempotency_key=key,
+            revision=int(record["revision"]),
+            stored_attempt_id=record["attempt_id"],
+            stored_intent_id=record["intent_id"],
+            stored_receipt_id=record["receipt_id"],
+        )
+
+    def _current(
+        self, key: str, fingerprint: str, expected_revision: int
+    ) -> dict[str, Any]:
+        record = self.records[key]
+        if record["fingerprint"] != fingerprint:
+            raise RuntimeError("idempotency fingerprint conflict")
+        if record["revision"] != expected_revision:
+            raise RuntimeError("stale idempotency reservation revision")
+        return record
 
     def reserve(self, *, idempotency_key: str, fingerprint: str) -> Reservation:
         existing = self.records.get(idempotency_key)
         if existing is None:
             self.records[idempotency_key] = {
+                "attempt_id": None,
                 "fingerprint": fingerprint,
                 "intent_id": None,
                 "receipt_id": None,
+                "revision": 0,
             }
-            return Reservation(
-                created=True, fingerprint=fingerprint, idempotency_key=idempotency_key
+            return self._reservation(idempotency_key, created=True)
+        return self._reservation(idempotency_key)
+
+    def bind_intent(
+        self,
+        *,
+        idempotency_key: str,
+        fingerprint: str,
+        expected_revision: int,
+        intent_id: str,
+    ) -> Reservation:
+        record = self.records[idempotency_key]
+        if record["fingerprint"] != fingerprint:
+            raise RuntimeError("idempotency fingerprint conflict")
+        if record["intent_id"] is not None:
+            if record["intent_id"] != intent_id:
+                raise RuntimeError("ActionIntent identity conflict")
+            return self._reservation(idempotency_key)
+        record = self._current(idempotency_key, fingerprint, expected_revision)
+        record["intent_id"] = intent_id
+        record["revision"] += 1
+        return self._reservation(idempotency_key)
+
+    def begin_attempt(
+        self,
+        *,
+        idempotency_key: str,
+        fingerprint: str,
+        expected_revision: int,
+        intent_id: str,
+        intent_hash: str,
+        attempt_id: str,
+        started_at: str,
+        dry_run: bool,
+    ) -> AttemptTransition:
+        record = self.records[idempotency_key]
+        if record["fingerprint"] != fingerprint:
+            raise RuntimeError("idempotency fingerprint conflict")
+        if record["intent_id"] != intent_id:
+            raise RuntimeError("Attempt ActionIntent binding conflict")
+        if record["attempt_id"] is not None:
+            if record["attempt_id"] != attempt_id:
+                raise RuntimeError("Attempt identity conflict")
+            stored = self.attempts[attempt_id]
+            return AttemptTransition(
+                attempt=dict(stored),
+                attempt_id=attempt_id,
+                execute_permitted=False,
+                intent_id=intent_id,
+                reservation=self._reservation(idempotency_key),
+                started_at=str(stored["started_at"]),
             )
-        return Reservation(
-            created=False,
-            fingerprint=str(existing["fingerprint"]),
+        record = self._current(idempotency_key, fingerprint, expected_revision)
+        self.attempts[attempt_id] = self._attempt_record(
+            attempt_id=attempt_id,
+            fingerprint=intent_hash,
             idempotency_key=idempotency_key,
-            stored_intent_id=existing["intent_id"],
-            stored_receipt_id=existing["receipt_id"],
+            intent_id=intent_id,
+            started_at=started_at,
+        )
+        record["attempt_id"] = attempt_id
+        record["revision"] += 1
+        return AttemptTransition(
+            attempt=dict(self.attempts[attempt_id]),
+            attempt_id=attempt_id,
+            execute_permitted=True,
+            intent_id=intent_id,
+            reservation=self._reservation(idempotency_key),
+            started_at=started_at,
         )
 
-    def bind(self, *, idempotency_key: str, intent_id: str, receipt_id: str) -> None:
+    def bind_receipt(
+        self,
+        *,
+        idempotency_key: str,
+        fingerprint: str,
+        expected_revision: int,
+        attempt_id: str,
+        receipt_id: str,
+    ) -> Reservation:
         record = self.records[idempotency_key]
-        record["intent_id"] = intent_id
+        if record["fingerprint"] != fingerprint:
+            raise RuntimeError("idempotency fingerprint conflict")
+        if record["attempt_id"] != attempt_id:
+            raise RuntimeError("EffectReceipt Attempt binding conflict")
+        if record["receipt_id"] is not None:
+            if record["receipt_id"] != receipt_id:
+                raise RuntimeError("EffectReceipt identity conflict")
+            return self._reservation(idempotency_key)
+        record = self._current(idempotency_key, fingerprint, expected_revision)
         record["receipt_id"] = receipt_id
+        record["revision"] += 1
+        return self._reservation(idempotency_key)
 
 
 class FakeRevisionStore:
@@ -265,9 +409,21 @@ class FakeIntentStore:
         self.intents: list[dict[str, Any]] = []
 
     def persist(self, intent: Mapping[str, Any]) -> Mapping[str, Any]:
-        stored = {**intent, "intent_id": f"intent-{len(self.intents) + 1}"}
+        stored = dict(intent)
+        intent_id = str(stored["intent_id"])
+        existing = self.find(intent_id)
+        if existing is not None:
+            if dict(existing) != stored:
+                raise RuntimeError("ActionIntent identity conflict")
+            return existing
         self.intents.append(stored)
         return stored
+
+    def find(self, intent_id: str) -> Mapping[str, Any] | None:
+        for intent in self.intents:
+            if intent["intent_id"] == intent_id:
+                return intent
+        return None
 
 
 @dataclass
@@ -306,10 +462,37 @@ class FakeExecutor:
 class FakeReceiptStore:
     def __init__(self) -> None:
         self.receipts: list[dict[str, Any]] = []
+        self.attempt_tails: dict[str, str] = {}
+        self.receipt_attempts: dict[str, str] = {}
 
-    def persist(self, receipt: Mapping[str, Any]) -> Mapping[str, Any]:
-        stored = {**receipt, "receipt_id": f"receipt-{len(self.receipts) + 1}"}
+    def persist(
+        self, receipt: Mapping[str, Any], *, attempt_id: str | None = None
+    ) -> Mapping[str, Any]:
+        predecessor = receipt.get("reconciles_receipt_id")
+        if attempt_id is None and predecessor is not None:
+            attempt_id = self.receipt_attempts.get(str(predecessor))
+            if attempt_id is None:
+                raise RuntimeError("reconciliation predecessor is not Attempt-bound")
+        if attempt_id is not None and predecessor is None:
+            receipt_id = f"receipt-{attempt_id}"
+        else:
+            receipt_id = f"receipt-{len(self.receipts) + 1}"
+        stored = {**receipt, "receipt_id": receipt_id}
+        existing = self.find(receipt_id)
+        if existing is not None:
+            if dict(existing) != stored:
+                raise RuntimeError("EffectReceipt identity conflict")
+            return existing
+        if (
+            attempt_id is not None
+            and predecessor is None
+            and attempt_id in self.attempt_tails
+        ):
+            raise RuntimeError("Attempt already has an execution receipt")
         self.receipts.append(stored)
+        if attempt_id is not None:
+            self.receipt_attempts[receipt_id] = attempt_id
+            self.attempt_tails[attempt_id] = receipt_id
         return stored
 
     def find(self, receipt_id: str) -> Mapping[str, Any] | None:
@@ -317,6 +500,24 @@ class FakeReceiptStore:
             if receipt["receipt_id"] == receipt_id:
                 return receipt
         return None
+
+    def find_for_attempt(self, attempt_id: str) -> Mapping[str, Any] | None:
+        receipt_id = self.attempt_tails.get(attempt_id)
+        return self.find(receipt_id) if receipt_id is not None else None
+
+    def precedes(
+        self, *, attempt_id: str, receipt_id: str, tail_receipt_id: str
+    ) -> bool:
+        if self.receipt_attempts.get(receipt_id) != attempt_id:
+            return False
+        current = self.find(tail_receipt_id)
+        while current is not None:
+            current_id = str(current["receipt_id"])
+            if current_id == receipt_id:
+                return True
+            predecessor = current.get("reconciles_receipt_id")
+            current = self.find(str(predecessor)) if predecessor is not None else None
+        return False
 
 
 @dataclass

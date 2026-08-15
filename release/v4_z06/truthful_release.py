@@ -80,6 +80,11 @@ FINDING_CODES: dict[str, str] = {
         "extraction root — absolute, drive-qualified or traversing with ``..`` — "
         "which is the zip-slip write-outside-root a clean extraction must refuse"
     ),
+    "BUNDLE_DUPLICATE_MEMBER": (
+        "the declared manifest or extracted bundle repeats a member path, so "
+        "path-keyed reconciliation would collapse distinct archive entries and "
+        "could falsely attest an exact clean extraction"
+    ),
     "BUNDLE_MEMBER_TAMPERED": (
         "an extracted member's content hash does not match the digest the bundle "
         "manifest declares, so the extraction is not byte-identical to what was "
@@ -300,6 +305,12 @@ def require_clean_extraction(
                 "a declared bundle member escapes the extraction root",
                 {"path": path},
             )
+        if path in declared:
+            _fail(
+                "BUNDLE_DUPLICATE_MEMBER",
+                "the bundle manifest declares the same member path more than once",
+                {"path": path, "source": "members"},
+            )
         declared[path] = digest
 
     observed: dict[str, str] = {}
@@ -314,6 +325,12 @@ def require_clean_extraction(
                 "BUNDLE_MEMBER_UNSAFE_PATH",
                 "an extracted bundle member escapes the extraction root",
                 {"path": path},
+            )
+        if path in observed:
+            _fail(
+                "BUNDLE_DUPLICATE_MEMBER",
+                "the extraction produced the same member path more than once",
+                {"path": path, "source": "extracted"},
             )
         observed[path] = content_hash
 

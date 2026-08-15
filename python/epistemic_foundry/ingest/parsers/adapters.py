@@ -200,10 +200,14 @@ def _hash_json(value: object) -> str:
 
 
 def _bytes_snapshot(value: object) -> bytes:
-    if isinstance(value, bytes):
-        return value
-    if isinstance(value, (bytearray, memoryview)):
-        return bytes(value)
+    if isinstance(value, (bytes, bytearray, memoryview)):
+        try:
+            return memoryview(value).tobytes()
+        except (TypeError, ValueError) as error:
+            raise ParserContractError(
+                "PARSER_ARTIFACT_INVALID",
+                "payload must expose a readable bytes snapshot",
+            ) from error
     _fail("PARSER_ARTIFACT_INVALID", "payload must be bytes-like")
 
 
@@ -243,7 +247,16 @@ def _nullable_integer(value: object, label: str, *, minimum: int = 0) -> int | N
 def _finite_number(value: object, label: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         _fail("PARSER_OUTPUT_INVALID", f"{label} must be a finite number")
-    number = float(value)
+    try:
+        if isinstance(value, int):
+            number = float(int.__int__(value))
+        else:
+            number = float.__float__(value)
+    except (OverflowError, TypeError, ValueError) as error:
+        raise ParserContractError(
+            "PARSER_OUTPUT_INVALID",
+            f"{label} must be a finite number",
+        ) from error
     if not math.isfinite(number):
         _fail("PARSER_OUTPUT_INVALID", f"{label} must be a finite number")
     return 0.0 if number == 0 else number
@@ -508,8 +521,11 @@ class ParserAttempt:
     stream: ParserStream | None
     error_code: str | None
     error_message: str | None
+    source_artifact_id: str | None = None
 
     def __post_init__(self) -> None:
+        if self.source_artifact_id is not None:
+            _text(self.source_artifact_id, "source_artifact_id")
         successful = self.status in (ParserStatus.PASS, ParserStatus.PARTIAL)
         if successful:
             if self.stream is None or self.error_code is not None or self.error_message is not None:
@@ -517,7 +533,11 @@ class ParserAttempt:
                     "PARSER_ATTEMPT_INVALID",
                     "successful attempts require one stream and no error",
                 )
-            if self.stream.pin != self.pin or self.stream.status is not self.status:
+            if (
+                self.stream.pin != self.pin
+                or self.stream.status is not self.status
+                or self.stream.artifact.source_artifact_id != self.source_artifact_id
+            ):
                 _fail("PARSER_ATTEMPT_INVALID", "attempt and stream identity must match")
         else:
             if self.stream is not None or self.error_code is None or self.error_message is None:
@@ -534,6 +554,7 @@ class ParserAttempt:
             "error_code": self.error_code,
             "error_message": self.error_message,
             "pin": self.pin.projection(),
+            "source_artifact_id": self.source_artifact_id,
             "status": self.status.value,
             "stream_hash": self.stream.stream_hash if self.stream is not None else None,
         }
@@ -668,20 +689,54 @@ def _make_stream(
 
 
 def _success(stream: ParserStream) -> ParserAttempt:
-    return ParserAttempt(stream.pin, stream.status, stream, None, None)
+    return ParserAttempt(
+        stream.pin,
+        stream.status,
+        stream,
+        None,
+        None,
+        stream.artifact.source_artifact_id,
+    )
 
 
-def _failure(pin: ParserPin, error: ParserContractError) -> ParserAttempt:
-    return ParserAttempt(pin, ParserStatus.FAIL, None, error.code, str(error))
+def _failure(
+    pin: ParserPin,
+    error: ParserContractError,
+    *,
+    source_artifact_id: str,
+) -> ParserAttempt:
+    return ParserAttempt(
+        pin,
+        ParserStatus.FAIL,
+        None,
+        error.code,
+        str(error),
+        source_artifact_id,
+    )
 
 
-def blocked_attempt(pin: ParserPin, code: str, message: str) -> ParserAttempt:
+def blocked_attempt(
+    pin: ParserPin,
+    code: str,
+    message: str,
+    *,
+    source_artifact_id: str | None = None,
+) -> ParserAttempt:
     """Record an unavailable credential/service/backend without faking output."""
 
     if _ERROR_CODE_PATTERN.fullmatch(code) is None:
         _fail("PARSER_ATTEMPT_INVALID", "blocked error code must be stable uppercase")
     _text(message, "message")
-    return ParserAttempt(pin, ParserStatus.BLOCKED, None, code, message)
+    if source_artifact_id is not None:
+        _text(source_artifact_id, "source_artifact_id")
+    return ParserAttempt(
+        pin,
+        ParserStatus.BLOCKED,
+        None,
+        code,
+        message,
+        source_artifact_id,
+    )
 
 
 def _element_id(
@@ -816,7 +871,10 @@ def adapt_grobid_artifact(
         _require_role(pin, ParserRole.GROBID_STRUCTURE)
         if artifact.media_type not in _GROBID_MEDIA_TYPES:
             _fail("GROBID_OUTPUT_MALFORMED", "GROBID output must be retained TEI XML")
-        lowered = artifact.payload.lower()
+        # XML markup remains ASCII across UTF-8 and the usual UTF-16/32
+        # encodings. Removing encoding NULs before the declaration scan keeps a
+        # non-UTF-8 artifact from bypassing the DTD/entity refusal.
+        lowered = artifact.payload.replace(b"\x00", b"").lower()
         if b"<!doctype" in lowered or b"<!entity" in lowered:
             _fail("GROBID_UNSAFE_XML", "DTD and entity declarations are forbidden")
         try:
@@ -930,19 +988,46 @@ def adapt_grobid_artifact(
         stream = _make_stream(pin, artifact, elements)
         return _success(stream)
     except ParserContractError as error:
-        return _failure(pin, error)
+        return _failure(
+            pin,
+            error,
+            source_artifact_id=artifact.source_artifact_id,
+        )
 
 
 def _json_object(payload: bytes) -> dict[str, object]:
+    def reject_duplicate_keys(
+        pairs: list[tuple[str, object]],
+    ) -> dict[str, object]:
+        result: dict[str, object] = {}
+        for key, entry in pairs:
+            if type(key) is not str or key in result:
+                _fail(
+                    "PARSER_OUTPUT_MALFORMED",
+                    "parser JSON object keys must be unique strings",
+                )
+            result[key] = entry
+        return result
+
+    def reject_non_finite_constant(value: str) -> object:
+        _fail(
+            "PARSER_OUTPUT_MALFORMED",
+            f"parser JSON must not contain the non-finite constant {value}",
+        )
+
     try:
         decoded = payload.decode("utf-8", errors="strict")
-        value = json.loads(decoded)
+        value = json.loads(
+            decoded,
+            object_pairs_hook=reject_duplicate_keys,
+            parse_constant=reject_non_finite_constant,
+        )
     except (UnicodeDecodeError, json.JSONDecodeError) as error:
         raise ParserContractError(
             "PARSER_OUTPUT_MALFORMED",
             "parser JSON output must be strict UTF-8 JSON",
         ) from error
-    if not isinstance(value, dict) or any(type(key) is not str for key in value):
+    if type(value) is not dict:
         _fail("PARSER_OUTPUT_MALFORMED", "parser JSON root must be an object")
     return value
 
@@ -1084,7 +1169,11 @@ def adapt_docling_artifact(
         )
         return _success(stream)
     except ParserContractError as error:
-        return _failure(pin, error)
+        return _failure(
+            pin,
+            error,
+            source_artifact_id=artifact.source_artifact_id,
+        )
 
 
 def adapt_fallback_artifact(
@@ -1110,7 +1199,11 @@ def adapt_fallback_artifact(
         )
         return _success(stream)
     except ParserContractError as error:
-        return _failure(pin, error)
+        return _failure(
+            pin,
+            error,
+            source_artifact_id=artifact.source_artifact_id,
+        )
 
 
 def _fallback_hash(
@@ -1178,6 +1271,15 @@ def resolve_fallback(
             primary,
             None,
             primary.stream,
+        )
+
+    if (
+        fallback is not None
+        and primary.source_artifact_id != fallback.source_artifact_id
+    ):
+        _fail(
+            "PARSER_SOURCE_MISMATCH",
+            "primary and fallback attempts must describe the same immutable source artifact",
         )
 
     if fallback is None:
@@ -1252,6 +1354,7 @@ def _differing_fields(
         ("links", tuple(item.links for item in observations)),
         ("row_headers", tuple(item.row_headers for item in observations)),
         ("column_headers", tuple(item.column_headers for item in observations)),
+        ("confidence", tuple(item.confidence for item in observations)),
     )
     for name, values in projections:
         if len(set(values)) > 1:

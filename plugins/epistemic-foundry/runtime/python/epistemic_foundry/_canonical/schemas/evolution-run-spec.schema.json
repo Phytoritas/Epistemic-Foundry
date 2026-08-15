@@ -1,0 +1,495 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/schemas/evolution-run-spec.schema.json",
+  "title": "EvolutionRunSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "exact_version_or_revision": {
+      "type": "string",
+      "minLength": 1,
+      "allOf": [
+        {
+          "not": {
+            "pattern": "(?:^|[/:@._-])(?:[Mm][Aa][Ii][Nn]|[Ll][Aa][Tt][Ee][Ss][Tt])(?:$|[/:@._-])"
+          }
+        },
+        {
+          "not": {
+            "pattern": "[<>=~^*]"
+          }
+        }
+      ]
+    },
+    "immutable_locator": {
+      "type": "string",
+      "pattern": "^(?!file:)(?!\\.{0,2}/)(?![A-Za-z]:\\\\)[a-z][a-z0-9+.-]*://.+$"
+    },
+    "resolved_reference_base": {
+      "type": "object",
+      "properties": {
+        "logical_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exact_version_or_revision": {
+          "$ref": "#/$defs/exact_version_or_revision"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "resolver_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolver_version": {
+          "$ref": "#/$defs/exact_version_or_revision"
+        },
+        "resolved_artifact_locator": {
+          "$ref": "#/$defs/immutable_locator"
+        },
+        "resolved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authority_source_class": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "reproducibility_class": {
+          "enum": [
+            "byte_pinned",
+            "content_addressed",
+            "deterministic_fixture",
+            "provider_snapshot_pinned",
+            "provider_versioned_not_byte_pinned"
+          ]
+        }
+      },
+      "required": [
+        "logical_id",
+        "exact_version_or_revision",
+        "content_hash",
+        "resolver_id",
+        "resolver_version",
+        "resolved_artifact_locator",
+        "resolved_at",
+        "authority_source_class",
+        "reproducibility_class"
+      ]
+    },
+    "resolved_reference": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/resolved_reference_base"
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "remote_model_disclosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exact_exposed_model_identifier": {
+          "type": "string",
+          "minLength": 1,
+          "not": {
+            "enum": [
+              "default",
+              "latest",
+              "gpt-4o",
+              "gpt-4.1",
+              "claude-sonnet",
+              "gemini-pro"
+            ]
+          }
+        },
+        "exposed_snapshot_or_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "adapter_version": {
+          "$ref": "#/$defs/exact_version_or_revision"
+        },
+        "adapter_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "decoding_parameters": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null",
+              "array"
+            ]
+          }
+        },
+        "capability_report_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "reproducibility_class": {
+          "enum": [
+            "provider_snapshot_pinned",
+            "provider_versioned_not_byte_pinned"
+          ]
+        }
+      },
+      "required": [
+        "provider",
+        "exact_exposed_model_identifier",
+        "exposed_snapshot_or_revision",
+        "adapter_version",
+        "adapter_hash",
+        "decoding_parameters",
+        "capability_report_hash",
+        "reproducibility_class"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "exposed_snapshot_or_revision": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "exposed_snapshot_or_revision"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reproducibility_class": {
+                "const": "provider_versioned_not_byte_pinned"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "provider_adapter_reference": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/resolved_reference_base"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "remote_models": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/remote_model_disclosure"
+              }
+            }
+          },
+          "required": [
+            "remote_models"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "external_backend_reference": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/resolved_reference_base"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "source_pin": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "exact_source_commit": {
+                  "type": "string",
+                  "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+                },
+                "immutable_package_digest": {
+                  "$ref": "#/$defs/sha256"
+                },
+                "immutable_container_digest": {
+                  "$ref": "#/$defs/sha256"
+                }
+              },
+              "anyOf": [
+                {
+                  "required": [
+                    "exact_source_commit"
+                  ]
+                },
+                {
+                  "required": [
+                    "immutable_package_digest"
+                  ]
+                },
+                {
+                  "required": [
+                    "immutable_container_digest"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "source_pin"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  },
+  "properties": {
+    "evolution_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_run_spec_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "population_types": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "hypothesis",
+          "challenge",
+          "experiment",
+          "measurement",
+          "mechanism"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "x-canonical-sort": "unicode-codepoint-ascending"
+    },
+    "seed_genome_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "x-canonical-sort": "unicode-codepoint-ascending"
+    },
+    "evaluator_bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "holdout_manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operator_registry_version": {
+      "$ref": "#/$defs/exact_version_or_revision"
+    },
+    "max_generations": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_candidates": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "budget_envelope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stop_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "random_seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "external_backend_enabled": {
+      "type": "boolean"
+    },
+    "resolved_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "base_run_spec": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "schema_bundle": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "workflow": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "policy_bundle": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "corpus_evidence_snapshot": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "ontology": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "domain_pack": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "evaluator_bundle": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "holdout_manifest": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "operator_registry": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "prompt_bundle": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "model_routing_policy": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "provider_adapter_manifest": {
+          "$ref": "#/$defs/provider_adapter_reference"
+        },
+        "statistical_plan": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "selection_policy": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "stop_policy": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "replication_policy": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "archive_niche_policy": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "budget_envelope": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "execution_environment_toolchain_manifest": {
+          "$ref": "#/$defs/resolved_reference"
+        },
+        "external_backend_manifest": {
+          "$ref": "#/$defs/external_backend_reference"
+        }
+      },
+      "required": [
+        "base_run_spec",
+        "schema_bundle",
+        "workflow",
+        "policy_bundle",
+        "corpus_evidence_snapshot",
+        "ontology",
+        "domain_pack",
+        "evaluator_bundle",
+        "holdout_manifest",
+        "operator_registry",
+        "prompt_bundle",
+        "model_routing_policy",
+        "provider_adapter_manifest",
+        "statistical_plan",
+        "selection_policy",
+        "stop_policy",
+        "replication_policy",
+        "archive_niche_policy",
+        "budget_envelope",
+        "execution_environment_toolchain_manifest"
+      ]
+    },
+    "spec_hash": {
+      "$ref": "#/$defs/sha256",
+      "description": "RFC 8785 JCS-equivalent UTF-8 SHA-256 over the complete sealed document after schema-declared set sorting and with spec_hash itself excluded."
+    }
+  },
+  "required": [
+    "evolution_run_id",
+    "base_run_spec_id",
+    "objective",
+    "population_types",
+    "seed_genome_ids",
+    "evaluator_bundle_id",
+    "holdout_manifest_id",
+    "operator_registry_version",
+    "max_generations",
+    "max_candidates",
+    "budget_envelope_id",
+    "selection_policy",
+    "stop_policy",
+    "random_seed",
+    "external_backend_enabled",
+    "resolved_refs",
+    "spec_hash"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "external_backend_enabled": {
+            "const": true
+          }
+        },
+        "required": [
+          "external_backend_enabled"
+        ]
+      },
+      "then": {
+        "properties": {
+          "resolved_refs": {
+            "required": [
+              "external_backend_manifest"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "external_backend_enabled": {
+            "const": false
+          }
+        },
+        "required": [
+          "external_backend_enabled"
+        ]
+      },
+      "then": {
+        "properties": {
+          "resolved_refs": {
+            "not": {
+              "required": [
+                "external_backend_manifest"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "description": "Seals an evolution run's objective, evaluator, holdout, policy, statistics, budget, toolchain, and every authority-bearing reference before execution. String identifiers alone are not pins."
+}

@@ -1,12 +1,12 @@
-// The CLI command table, derived from the composed MCP tool surface.
+// The CLI command table, derived from the T01 MCP read/planning surface.
 //
 // Command names are not declared here.  They are projected from the sealed
-// catalogs so the CLI cannot expose a command the tool surface does not have,
-// or miss one it does: `foundry.claim.promote` becomes `claim promote`, and the
-// mapping is reversible so a captured command line can be traced back to the
-// exact tool it invoked.
+// T01 catalog so the CLI cannot expose a command the read/planning surface does
+// not have, or miss one it does: `foundry.search.plan` becomes `search plan`,
+// and the mapping is reversible so a captured command line can be traced back
+// to the exact tool it invoked.
 
-import { mergedToolDescriptors } from "../mcp/write/catalog-set.mjs";
+import { toolDescriptors } from "../mcp/read/mcp-server.mjs";
 import { CliContractError, exitCodeFor, EXIT_SUCCESS } from "./error-codes.mjs";
 import { emitJson, JSON_FLAG } from "./envelope.mjs";
 
@@ -26,7 +26,7 @@ function commandPathFor(toolName) {
 function buildSurface() {
   const byCommand = new Map();
   const byTool = new Map();
-  for (const descriptor of mergedToolDescriptors()) {
+  for (const descriptor of toolDescriptors()) {
     const toolName = String(descriptor.name);
     const segments = commandPathFor(toolName);
     const command = segments.join(" ");
@@ -49,7 +49,7 @@ function buildSurface() {
   if (byCommand.size === 0) {
     throw new CliContractError(
       "COMMAND_SURFACE_EMPTY",
-      "the composed catalog projected no commands",
+      "the T01 read/planning catalog projected no commands",
     );
   }
   return { byCommand, byTool };
@@ -98,7 +98,7 @@ export function commandForTool(toolName) {
 }
 
 /** Flags that consume the token after them; their values are never segments. */
-const VALUE_FLAGS = Object.freeze(["--input", "--request-id", "--workspace"]);
+const VALUE_FLAGS = Object.freeze(["--input"]);
 
 /**
  * Split argv into command segments, flags, and the parsed `--input` object.
@@ -121,6 +121,13 @@ export function parseArgv(argv) {
       continue;
     }
     if (VALUE_FLAGS.includes(token)) {
+      if (values.has(token)) {
+        throw new CliContractError(
+          "ARGUMENTS_INVALID",
+          `${token} may be supplied only once`,
+          { flag: token },
+        );
+      }
       const value = argv[index + 1];
       if (typeof value !== "string") {
         throw new CliContractError(

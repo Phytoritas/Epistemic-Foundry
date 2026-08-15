@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   SchedulerError,
   assertSchedulerPlanIntegrity,
+  canonicalizeSchedulerJson,
   compileSchedulerPlan,
   createDagScheduler,
   replaySchedulerCommands,
@@ -495,6 +496,76 @@ test("scheduler_property_test: typed hard budgets enforce calls and concurrency 
   assert.equal(unmetered.metering_authority, null);
 });
 
+test("scheduler_property_test: negative zero cannot alias canonical scheduler numbers", () => {
+  assert.throws(
+    () => canonicalizeSchedulerJson(-0),
+    expectCode("NON_CANONICAL_JSON"),
+  );
+  const budgetCandidate = structuredClone(hardBudgetFixture());
+  delete budgetCandidate.budget_hash;
+  budgetCandidate.soft_cost_amount = -0;
+  assert.throws(
+    () => sealBudgetEnvelope(budgetCandidate),
+    expectCode("BUDGET_ENVELOPE_INVALID"),
+  );
+
+  const fixture = twoNodeLoopFixture();
+  const loopCandidate = structuredClone(fixture.loop);
+  delete loopCandidate.contract_hash;
+  loopCandidate.workflow_id = "n03_negative_zero_loop";
+  const { scheduler } = createSchedulerFixture({
+    workflowId: "n03_negative_zero_loop",
+    nodes: fixture.nodes,
+    loopContracts: [sealLoopContract(loopCandidate)],
+  });
+  assert.throws(
+    () =>
+      scheduler.recordLoopRound({
+        loop_id: fixture.loop.loop_id,
+        at: "2026-07-31T00:01:00.000Z",
+        observed_item_keys: [],
+        cost_units: -0,
+        convergence_met: false,
+      }),
+    expectCode("LOOP_ROUND_INVALID"),
+  );
+  assert.equal(scheduler.snapshot().loop_states[fixture.loop.loop_id].iterations, 0);
+});
+
+test("scheduler_property_test: non-enumerable data cannot disappear from canonical identity", () => {
+  const value = { visible: "bound" };
+  Object.defineProperty(value, "hidden", {
+    enumerable: false,
+    value: "must-not-disappear",
+  });
+
+  assert.throws(
+    () => canonicalizeSchedulerJson(value),
+    expectCode("NON_CANONICAL_JSON"),
+  );
+});
+
+test("scheduler_property_test: array subclasses cannot execute during canonicalization", () => {
+  let trapCount = 0;
+  class HostileArray extends Array {
+    map() {
+      trapCount += 1;
+      throw new Error("must not execute");
+    }
+
+    forEach() {
+      trapCount += 1;
+      throw new Error("must not execute");
+    }
+  }
+
+  assert.throws(
+    () => canonicalizeSchedulerJson(new HostileArray("value")),
+    expectCode("NON_CANONICAL_JSON"),
+  );
+  assert.equal(trapCount, 0);
+});
+
 test("scheduler_property_test: bounded loops dedupe all seen items and enforce dry rounds and limits", () => {
   const fixture = twoNodeLoopFixture();
   const { scheduler } = createSchedulerFixture({
@@ -609,6 +680,58 @@ test("scheduler_property_test: command replay reproduces exact state and rejects
         commands: tampered,
       }),
     (error) => error instanceof SchedulerError,
+  );
+});
+
+test("scheduler_property_test: replay rejects hostile top-level wrappers before property access", () => {
+  const nodes = [nodeContractFixture({ nodeId: "deterministic" })];
+  const { scheduler, plan, budget, runId } = createSchedulerFixture({ nodes });
+  runNodeSuccessfully(scheduler, "deterministic");
+  const replayInput = {
+    run_id: runId,
+    plan,
+    budget_envelope: budget,
+    commands: scheduler.commandLog(),
+  };
+
+  let trapCount = 0;
+  const hostile = new Proxy(replayInput, {
+    get() {
+      trapCount += 1;
+      throw new Error("must not execute");
+    },
+    ownKeys() {
+      trapCount += 1;
+      throw new Error("must not execute");
+    },
+  });
+  assert.throws(
+    () => replaySchedulerCommands(hostile),
+    expectCode("SCHEDULER_REPLAY_INVALID"),
+  );
+  assert.equal(trapCount, 0);
+
+  const accessor = { ...replayInput };
+  Object.defineProperty(accessor, "commands", {
+    enumerable: true,
+    get() {
+      trapCount += 1;
+      throw new Error("must not execute");
+    },
+  });
+  assert.throws(
+    () => replaySchedulerCommands(accessor),
+    expectCode("SCHEDULER_REPLAY_INVALID"),
+  );
+  assert.equal(trapCount, 0);
+
+  assert.throws(
+    () => replaySchedulerCommands({ ...replayInput, surprise: true }),
+    expectCode("SCHEDULER_REPLAY_INVALID"),
+  );
+  assert.throws(
+    () => replaySchedulerCommands(null),
+    expectCode("SCHEDULER_REPLAY_INVALID"),
   );
 });
 

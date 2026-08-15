@@ -190,6 +190,40 @@ test("existing symlink or junction components are denied by no-follow policy", (
     );
   }));
 
+test("hard-linked final files are denied for read and write access", (t) =>
+  withResourceRoot(({ parent, root }) => {
+    const outside = path.join(parent, "outside-hard-link.txt");
+    fs.writeFileSync(outside, "synthetic fixture", "utf8");
+    const link = path.join(root, "data", "linked-outside.txt");
+    try {
+      fs.linkSync(outside, link);
+    } catch (error) {
+      if (
+        error !== null &&
+        typeof error === "object" &&
+        ["EPERM", "EACCES", "ENOSYS", "ENOTSUP", "EOPNOTSUPP"].includes(error.code)
+      ) {
+        t.skip("host does not permit creation of a hard-link fixture");
+        return;
+      }
+      throw error;
+    }
+
+    const policy = createPolicy(root);
+    for (const operation of [PATH_OPERATION.READ, PATH_OPERATION.WRITE]) {
+      assert.throws(
+        () =>
+          guard.authorizePathAccess(policy, {
+            rootId: "workspace",
+            relativePath: "data/linked-outside.txt",
+            operation,
+          }),
+        expectCode("PATH_LINK_DENIED"),
+        operation,
+      );
+    }
+  }));
+
 test("linked resource roots and non-directory traversal are denied", (t) =>
   withResourceRoot(({ parent, root }) => {
     assert.throws(
