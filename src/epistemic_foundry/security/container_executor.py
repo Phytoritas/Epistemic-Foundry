@@ -241,6 +241,8 @@ def _snapshot_mapping(value: object, label: str, *, allowed_keys: frozenset[str]
                 snapshot[key] = value[key]
     except CandidateContainerRefused:
         raise
+    except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        raise
     except BaseException:
         raise CandidateContainerRefused(f'{label} could not be snapshotted') from None
     if not required.issubset(seen):
@@ -252,6 +254,8 @@ def _iter_bounded_sequence(value: object, label: str, *, maximum_items: int) -> 
         _refuse(f'{label} must be a sequence')
     try:
         iterator = iter(value)
+    except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        raise
     except BaseException:
         raise CandidateContainerRefused(f'{label} could not be snapshotted') from None
     item_count = 0
@@ -260,6 +264,8 @@ def _iter_bounded_sequence(value: object, label: str, *, maximum_items: int) -> 
             item = next(iterator)
         except StopIteration:
             return
+        except (KeyboardInterrupt, SystemExit, GeneratorExit):
+            raise
         except BaseException:
             raise CandidateContainerRefused(f'{label} could not be snapshotted') from None
         if item_count >= maximum_items:
@@ -336,6 +342,8 @@ def _async_callable(value: object) -> bool:
     try:
         call = getattr(value, '__call__', None)
         return inspect.iscoroutinefunction(value) or inspect.isasyncgenfunction(value) or inspect.iscoroutinefunction(call) or inspect.isasyncgenfunction(call)
+    except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        raise
     except BaseException:
         return True
 
@@ -351,6 +359,8 @@ def _resolve_sync(resolver: Callable[[str], object], identifier: str, label: str
         raise CandidateContainerRefused(f'{label} resolver failed') from None
     try:
         asynchronous = inspect.isawaitable(result) or inspect.isasyncgen(result)
+    except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        raise
     except BaseException:
         raise CandidateContainerRefused(f'{label} resolver returned an uninspectable result') from None
     if asynchronous:
@@ -358,6 +368,8 @@ def _resolve_sync(resolver: Callable[[str], object], identifier: str, label: str
             close = getattr(result, 'close', None)
             if callable(close):
                 close()
+        except (KeyboardInterrupt, SystemExit, GeneratorExit):
+            raise
         except BaseException:
             pass
         _refuse(f'{label} resolver returned an asynchronous result')
@@ -617,10 +629,18 @@ def _ancestors_are_plain(path: str) -> bool:
         current = parent
 
 
-def _pin_existing_path(value: object, *, label: str, executable: bool=False) -> _PathPin:
-    if type(value) is not str:
-        _refuse(f'{label} must be a built-in string path')
-    raw = value
+def _pin_existing_path(
+    value: str | os.PathLike[str],
+    *,
+    label: str,
+    executable: bool = False,
+) -> _PathPin:
+    try:
+        raw = os.fspath(value)
+    except TypeError:
+        _refuse(f'{label} is invalid')
+    if type(raw) is not str:
+        _refuse(f'{label} must resolve to a built-in string path')
     if not raw or '\x00' in raw or (not os.path.isabs(raw)):
         _refuse(f'{label} must be absolute')
     absolute = os.path.abspath(raw)
@@ -736,10 +756,11 @@ def _read_pipe(
     stopping: threading.Event,
 ) -> None:
     try:
-        descriptor = stream.fileno()
-        while True:
-            chunk = os.read(descriptor, _READ_CHUNK_BYTES)
+        while not stopping.is_set():
+            chunk = stream.read(_READ_CHUNK_BYTES)
             if not chunk:
+                break
+            if stopping.is_set():
                 break
             budget.observe(capture, chunk)
     except Exception:
@@ -752,13 +773,17 @@ def _read_pipe(
             pass
 
 
-def _write_stdin(stream: BinaryIO, payload: bytes, state: _StdinWrite) -> None:
+def _write_stdin(
+    stream: BinaryIO,
+    payload: bytes,
+    state: _StdinWrite,
+    stopping: threading.Event,
+) -> None:
     try:
-        descriptor = stream.fileno()
         remaining = memoryview(payload)
-        while remaining:
-            written = os.write(descriptor, remaining[:_READ_CHUNK_BYTES])
-            if written <= 0:
+        while remaining and not stopping.is_set():
+            written = stream.write(remaining[:_READ_CHUNK_BYTES])
+            if written is None or written <= 0 or stopping.is_set():
                 break
             state.byte_count += written
             remaining = remaining[written:]
@@ -870,7 +895,7 @@ def _run_process(*, runtime: _PathPin, runtime_parent: _PathPin, expected_runtim
     stderr_thread = threading.Thread(target=_read_pipe, args=(process.stderr, stderr_capture, budget, capture_error, stopping), daemon=True, name='candidate-container-stderr')
     stdin_thread = None
     if stdin_payload is not None and process.stdin is not None:
-        stdin_thread = threading.Thread(target=_write_stdin, args=(process.stdin, stdin_payload, stdin_state), daemon=True, name='candidate-container-stdin')
+        stdin_thread = threading.Thread(target=_write_stdin, args=(process.stdin, stdin_payload, stdin_state, stopping), daemon=True, name='candidate-container-stdin')
     threads = [stdout_thread, stderr_thread]
     if stdin_thread is not None:
         threads.append(stdin_thread)
@@ -903,6 +928,8 @@ def _run_process(*, runtime: _PathPin, runtime_parent: _PathPin, expected_runtim
     if stdin_thread is not None:
         _join_thread_observing_process(stdin_thread, process=process, observation=wall_observation, timeout_seconds=_THREAD_JOIN_SECONDS)
         if stdin_thread.is_alive():
+            capture_error.set()
+            stopping.set()
             _close_stream(process.stdin)
             _join_thread_observing_process(stdin_thread, process=process, observation=wall_observation, timeout_seconds=_THREAD_JOIN_SECONDS)
         if stdin_thread.is_alive():
@@ -1748,10 +1775,10 @@ def _execute_container(
 
 def create_candidate_container_executor(
     *,
-    runtime_executable: str,
-    trusted_runtime_parent: str,
+    runtime_executable: str | os.PathLike[str],
+    trusted_runtime_parent: str | os.PathLike[str],
     expected_runtime_sha256: str,
-    trusted_host_cwd: str,
+    trusted_host_cwd: str | os.PathLike[str],
     resolve_candidate_artifact: Callable[[str], Mapping[str, Any]],
     resolve_execution_authority: Callable[[str], Mapping[str, Any]],
     trusted_candidate_artifact_byte_cap: int,
