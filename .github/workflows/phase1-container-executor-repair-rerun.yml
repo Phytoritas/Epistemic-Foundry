@@ -1,0 +1,78 @@
+name: Apply Phase 1 container executor repair
+on:
+  push:
+    branches: [pro/plugin-alpha-completion]
+permissions:
+  contents: write
+jobs:
+  repair:
+    if: github.event.head_commit.message == 'Apply Phase 1 container executor repair'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.12.3"
+      - name: Apply, verify, commit and push
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir .phase1_tmp
+          python - <<'PY'
+          import ast, base64, gzip
+          from pathlib import Path
+
+          text = Path('.github/workflows/phase1-container-executor-repair.yml').read_text(encoding='utf-8')
+          start = text.index("          x={\n") + len("          x=")
+          end = text.index("\n          for n,v in x.items()", start)
+          payloads = ast.literal_eval(text[start:end])
+          for name, chunks in payloads.items():
+              Path('.phase1_tmp', name).write_bytes(
+                  gzip.decompress(base64.b64decode(''.join(chunks)))
+              )
+
+          patch = Path('.phase1_tmp/a.py')
+          source = patch.read_text(encoding='utf-8')
+          replacements = (
+              (
+                  'def once(s,o,n,l):\n    c=s.count(o)\n    if c!=1: raise Refused(f"{l}: {c}")',
+                  'def once(s,o,n,label):\n    c=s.count(o)\n    if c!=1: raise Refused(f"{label}: {c}")',
+              ),
+              (
+                  '        \'"profile_name": _require_text(\',',
+                  '        "\'profile_name\': _require_text(",',
+              ),
+              (
+                  '        \'"issued_at": _require_text(\',',
+                  '        "\'issued_at\': _require_text(",',
+              ),
+          )
+          for old, new in replacements:
+              if source.count(old) != 1:
+                  raise SystemExit('repair-runner anchor mismatch')
+              source = source.replace(old, new)
+          patch.write_text(source, encoding='utf-8', newline='\n')
+          PY
+
+          target=src/epistemic_foundry/security/container_executor.py
+          python .phase1_tmp/a.py .
+          PYTHONPYCACHEPREFIX="$RUNNER_TEMP/phase1-pyc" python -m py_compile "$target" .phase1_tmp/a.py .phase1_tmp/t.py
+          python .phase1_tmp/t.py
+          git diff --check
+          test "$(git diff --name-only)" = "$target"
+          test "$(git hash-object "$target")" != 23d72babd8d9ad30d4e6b49b86a301b67c20e59e
+          git config user.name Phytoritas
+          git config user.email phmoon08@gmail.com
+          git add "$target"
+          git diff --cached --quiet && exit 1
+          git commit -m "Harden resolver snapshots and wall-deadline observations"
+          git push origin HEAD:refs/heads/pro/plugin-alpha-completion
