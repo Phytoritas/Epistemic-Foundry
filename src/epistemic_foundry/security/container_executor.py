@@ -68,6 +68,8 @@ _MAX_PORTABLE_PATH_BYTES = 100
 _TAR_BLOCK_BYTES = 512
 _TAR_RECORD_BLOCKS = 20
 _CANDIDATE_DIRECTORY = "/candidate"
+_CANDIDATE_ARCHIVE_ROOT = "candidate"
+_INVOCATION_NONCE_BYTES = 16
 _DOCKER_CONTEXT_ARGUMENTS = ("--context", "default")
 _REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x0400)
 
@@ -159,6 +161,7 @@ class _ProcessObservation:
     kill_sent: bool
     stopped: bool
     duration_seconds: float
+    observed_duration_seconds: float
 
 
 class _BoundedBytesIO(io.BytesIO):
@@ -176,10 +179,45 @@ def _refuse(message: str) -> None:
     raise CandidateContainerRefused(message)
 
 
-def _require_mapping(value: object, label: str) -> Mapping[str, Any]:
+def _require_mapping(value: object, label: str) -> dict[str, Any]:
     if not isinstance(value, Mapping):
         _refuse(f"{label} must be a mapping")
-    return value
+    try:
+        snapshot = dict(value)
+    except Exception:
+        raise CandidateContainerRefused(
+            f"{label} could not be snapshotted"
+        ) from None
+    if any(type(key) is not str for key in snapshot):
+        _refuse(f"{label} keys must be built-in strings")
+    return snapshot
+
+
+def _snapshot_sequence(
+    value: object,
+    label: str,
+    *,
+    maximum_items: int | None = None,
+) -> tuple[Any, ...]:
+    if isinstance(value, (str, bytes)) or not isinstance(value, Sequence):
+        _refuse(f"{label} must be a sequence")
+    try:
+        item_count = len(value)
+    except Exception:
+        raise CandidateContainerRefused(
+            f"{label} size could not be snapshotted"
+        ) from None
+    if maximum_items is not None and item_count > maximum_items:
+        _refuse(f"{label} is too large")
+    try:
+        snapshot = tuple(value)
+    except Exception:
+        raise CandidateContainerRefused(
+            f"{label} could not be snapshotted"
+        ) from None
+    if len(snapshot) != item_count:
+        _refuse(f"{label} changed while it was snapshotted")
+    return snapshot
 
 
 def _require_text(value: object, label: str, *, maximum: int = _MAX_TEXT_BYTES) -> str:
@@ -191,7 +229,7 @@ def _require_text(value: object, label: str, *, maximum: int = _MAX_TEXT_BYTES) 
         _refuse(f"{label} must be UTF-8 encodable")
     if len(encoded) > maximum:
         _refuse(f"{label} is too large")
-    return value
+    return encoded.decode("utf-8")
 
 
 def _require_id(value: object, label: str) -> str:
@@ -204,12 +242,15 @@ def _require_text_sequence(
     *,
     nonempty: bool,
 ) -> tuple[str, ...]:
-    if isinstance(value, (str, bytes)) or not isinstance(value, Sequence):
-        _refuse(f"{label} must be a sequence of strings")
+    snapshot = _snapshot_sequence(
+        value,
+        label,
+        maximum_items=_MAX_TEXT_BYTES,
+    )
     result: list[str] = []
     total_bytes = 0
     seen: set[str] = set()
-    for item in value:
+    for item in snapshot:
         text = _require_text(item, label)
         if text in seen:
             _refuse(f"{label} must not contain duplicates")
@@ -224,20 +265,24 @@ def _require_text_sequence(
 
 
 def _require_argv(value: object) -> tuple[str, ...]:
-    if isinstance(value, (str, bytes)) or not isinstance(value, Sequence):
-        _refuse("argv must be a sequence of strings")
+    snapshot = _snapshot_sequence(
+        value,
+        "argv",
+        maximum_items=_MAX_TEXT_BYTES,
+    )
     result: list[str] = []
     total_bytes = 0
-    for item in value:
+    for item in snapshot:
         if not isinstance(item, str) or "\x00" in item:
             _refuse("argv must contain only strings without NUL characters")
         try:
-            total_bytes += len(item.encode("utf-8"))
+            encoded = item.encode("utf-8")
         except UnicodeEncodeError:
             _refuse("argv must be UTF-8 encodable")
+        total_bytes += len(encoded)
         if total_bytes > _MAX_TEXT_BYTES:
             _refuse("argv is too large")
-        result.append(item)
+        result.append(encoded.decode("utf-8"))
     return tuple(result)
 
 
@@ -246,7 +291,7 @@ def _positive_integer(value: object, label: str) -> int:
         _refuse(f"{label} must be a positive integer")
     if value > _MAX_SIGNED_QUOTA:
         _refuse(f"{label} cannot be represented safely")
-    return value
+    return int(value)
 
 
 def _async_callable(value: object) -> bool:
@@ -314,15 +359,19 @@ def _implicit_directories(paths: Sequence[str]) -> tuple[str, ...]:
     return tuple(sorted(directories, key=lambda item: (item.count("/"), item)))
 
 
+def _tar_bytes_for_blocks(blocks: int) -> int:
+    records = (blocks + _TAR_RECORD_BLOCKS - 1) // _TAR_RECORD_BLOCKS
+    return records * _TAR_RECORD_BLOCKS * _TAR_BLOCK_BYTES
+
+
 def _expected_tar_bytes(
     files: Sequence[tuple[str, bytes]],
     directories: Sequence[str],
 ) -> int:
-    blocks = 2 + len(directories)
+    blocks = 3 + len(directories)
     for _, content in files:
         blocks += 1 + (len(content) + _TAR_BLOCK_BYTES - 1) // _TAR_BLOCK_BYTES
-    records = (blocks + _TAR_RECORD_BLOCKS - 1) // _TAR_RECORD_BLOCKS
-    return records * _TAR_RECORD_BLOCKS * _TAR_BLOCK_BYTES
+    return _tar_bytes_for_blocks(blocks)
 
 
 def _snapshot_candidate_artifact(
@@ -340,15 +389,25 @@ def _snapshot_candidate_artifact(
     )
     if resolved_id != expected_artifact_id:
         _refuse("candidate resolver returned a different artifact identity")
-    raw_files = source.get("files")
-    if isinstance(raw_files, (str, bytes)) or not isinstance(raw_files, Sequence):
-        _refuse("candidate artifact files must be a sequence")
+    maximum_file_headers = max(
+        0,
+        trusted_byte_cap // _TAR_BLOCK_BYTES - 3,
+    )
+    raw_files = _snapshot_sequence(
+        source.get("files"),
+        "candidate artifact files",
+        maximum_items=maximum_file_headers,
+    )
     if not raw_files:
         _refuse("candidate artifact must contain at least one regular file")
+    if _tar_bytes_for_blocks(3 + len(raw_files)) > trusted_byte_cap:
+        _refuse("candidate file headers exceed the trusted artifact byte cap")
 
     files: list[tuple[str, bytes]] = []
     path_keys: set[str] = set()
+    directory_spellings: dict[str, str] = {}
     total_bytes = 0
+    tar_blocks = 3
     content_limit = min(trusted_byte_cap, disk_byte_cap)
     for raw_file in raw_files:
         file_source = _require_mapping(raw_file, "candidate file")
@@ -358,20 +417,52 @@ def _snapshot_candidate_artifact(
         path_key = path.casefold()
         if path_key in path_keys:
             _refuse("candidate artifact contains duplicate portable paths")
-        path_keys.add(path_key)
+        if path_key in directory_spellings:
+            _refuse("candidate artifact path is both a file and a directory")
+
+        pending_directories: list[tuple[str, str]] = []
+        for directory in _implicit_directories((path,)):
+            directory_key = directory.casefold()
+            existing = directory_spellings.get(directory_key)
+            if existing is not None:
+                if existing != directory:
+                    _refuse(
+                        "candidate artifact contains colliding portable directories"
+                    )
+                continue
+            if directory_key in path_keys:
+                _refuse("candidate artifact path is both a file and a directory")
+            pending_directories.append((directory_key, directory))
+
         content = file_source.get("bytes")
         if type(content) is not bytes:
             _refuse("candidate file content must be immutable in-memory bytes")
-        total_bytes += len(content)
-        if total_bytes > content_limit:
+        next_total_bytes = total_bytes + len(content)
+        if next_total_bytes > content_limit:
             _refuse("candidate artifact exceeds its trusted or profile byte cap")
+        next_tar_blocks = (
+            tar_blocks
+            + len(pending_directories)
+            + 1
+            + (len(content) + _TAR_BLOCK_BYTES - 1) // _TAR_BLOCK_BYTES
+        )
+        if _tar_bytes_for_blocks(next_tar_blocks) > trusted_byte_cap:
+            _refuse("candidate tar exceeds the trusted artifact byte cap")
+
+        path_keys.add(path_key)
+        for directory_key, directory in pending_directories:
+            directory_spellings[directory_key] = directory
+        total_bytes = next_total_bytes
+        tar_blocks = next_tar_blocks
         files.append((path, content))
 
     files.sort(key=lambda item: item[0])
-    directories = _implicit_directories([path for path, _ in files])
-    file_path_keys = {path.casefold() for path, _ in files}
-    if any(directory.casefold() in file_path_keys for directory in directories):
-        _refuse("candidate artifact path is both a file and a directory")
+    directories = tuple(
+        sorted(
+            directory_spellings.values(),
+            key=lambda item: (item.count("/"), item),
+        )
+    )
     if _expected_tar_bytes(files, directories) > trusted_byte_cap:
         _refuse("candidate tar exceeds the trusted artifact byte cap")
 
@@ -416,11 +507,23 @@ def _build_candidate_tar(
             mode="w",
             format=tarfile.USTAR_FORMAT,
         ) as archive:
+            archive.addfile(
+                _tar_info(_CANDIDATE_ARCHIVE_ROOT, directory=True)
+            )
             for directory in candidate.directories:
-                archive.addfile(_tar_info(directory, directory=True))
+                archive.addfile(
+                    _tar_info(
+                        f"{_CANDIDATE_ARCHIVE_ROOT}/{directory}",
+                        directory=True,
+                    )
+                )
             for path, content in candidate.files:
                 archive.addfile(
-                    _tar_info(path, directory=False, size=len(content)),
+                    _tar_info(
+                        f"{_CANDIDATE_ARCHIVE_ROOT}/{path}",
+                        directory=False,
+                        size=len(content),
+                    ),
                     io.BytesIO(content),
                 )
         payload = stream.getvalue()
@@ -835,10 +938,12 @@ def _run_process(
     terminate_sent = False
     kill_sent = False
     stopped = True
+    observed_duration = max(0.0, time.monotonic() - started)
 
     if process.stdout is None or process.stderr is None or (
         stdin_payload is not None and process.stdin is None
     ):
+        observed_duration = max(0.0, time.monotonic() - started)
         stopping.set()
         terminate_sent, kill_sent, stopped = _stop_process(process)
         return _ProcessObservation(
@@ -856,6 +961,7 @@ def _run_process(
             kill_sent=kill_sent,
             stopped=stopped,
             duration_seconds=max(0.0, time.monotonic() - started),
+            observed_duration_seconds=observed_duration,
         )
 
     stdout_thread = threading.Thread(
@@ -887,23 +993,30 @@ def _run_process(
             thread.start()
             started_threads.append(thread)
     except RuntimeError:
+        observed_duration = max(0.0, time.monotonic() - started)
         capture_error.set()
         stopping.set()
         terminate_sent, kill_sent, stopped = _stop_process(process)
 
     timed_out = False
     if len(started_threads) == len(threads):
-        while process.poll() is None:
-            if budget.exceeded.is_set() or capture_error.is_set():
-                stopping.set()
-                terminate_sent, kill_sent, stopped = _stop_process(process)
+        deadline = started + timeout_seconds
+        while True:
+            returncode = process.poll()
+            observed_at = time.monotonic()
+            observed_duration = max(0.0, observed_at - started)
+            if returncode is not None:
                 break
-            if time.monotonic() - started >= timeout_seconds:
+            if observed_at >= deadline:
                 timed_out = True
                 stopping.set()
                 terminate_sent, kill_sent, stopped = _stop_process(process)
                 break
-            time.sleep(_POLL_SECONDS)
+            if budget.exceeded.is_set() or capture_error.is_set():
+                stopping.set()
+                terminate_sent, kill_sent, stopped = _stop_process(process)
+                break
+            time.sleep(min(_POLL_SECONDS, max(0.0, deadline - observed_at)))
 
     if stdin_thread is not None:
         stdin_thread.join(timeout=_THREAD_JOIN_SECONDS)
@@ -945,6 +1058,7 @@ def _run_process(
         kill_sent=kill_sent,
         stopped=stopped,
         duration_seconds=max(0.0, time.monotonic() - started),
+        observed_duration_seconds=observed_duration,
     )
 
 
@@ -987,8 +1101,10 @@ def _force_remove_container(
     runtime_parent: _PathPin,
     expected_runtime_digest: str,
     trusted_cwd: _PathPin,
-    container_reference: str,
+    container_id: str,
 ) -> bool:
+    if _CONTAINER_ID.fullmatch(container_id) is None:
+        return False
     try:
         _verify_runtime(runtime, runtime_parent, expected_runtime_digest)
         _verify_pin(trusted_cwd, "trusted host working directory")
@@ -1012,7 +1128,7 @@ def _force_remove_container(
                 "container",
                 "rm",
                 "-f",
-                container_reference,
+                container_id,
             ],
             **kwargs,
         )
@@ -1151,7 +1267,6 @@ def _create_container(
     expected_runtime_digest: str,
     trusted_cwd: _PathPin,
     arguments: Sequence[str],
-    container_name: str,
     control_timeout: float,
 ) -> str:
     result = _run_control(
@@ -1163,25 +1278,20 @@ def _create_container(
         timeout_seconds=control_timeout,
     )
     identifier = bytes(result.stdout.retained).decode("ascii", errors="ignore").strip()
-    if _control_clean(result) and _CONTAINER_ID.fullmatch(identifier):
-        return identifier
-    cleanup_reference = identifier if _CONTAINER_ID.fullmatch(identifier) else container_name
-    if (
-        result.returncode == 0
-        or result.timed_out
-        or result.output_limit_exceeded
-        or result.capture_error
-    ):
+    owned_id = identifier if _CONTAINER_ID.fullmatch(identifier) else None
+    if _control_clean(result) and owned_id is not None:
+        return owned_id
+    if owned_id is not None:
         cleaned = _force_remove_container(
             runtime=runtime,
             runtime_parent=runtime_parent,
             expected_runtime_digest=expected_runtime_digest,
             trusted_cwd=trusted_cwd,
-            container_reference=cleanup_reference,
+            container_id=owned_id,
         )
         if not cleaned:
-            _refuse("container creation outcome could not be cleaned up safely")
-    _refuse("container could not be created under a known identifier")
+            _refuse("owned container creation outcome could not be cleaned up safely")
+    _refuse("container create did not return a clean owned identifier")
 
 
 def _inspect_container(
@@ -1363,7 +1473,7 @@ def _populate_container(
             "container",
             "cp",
             "-",
-            f"{container_id}:{_CANDIDATE_DIRECTORY}",
+            f"{container_id}:/",
         ),
         timeout_seconds=control_timeout,
         stdin_payload=tar_payload,
@@ -1443,6 +1553,13 @@ def _container_state(
     return observed_exit, running, oom_killed, observation_error
 
 
+def _invocation_nonce() -> str:
+    try:
+        return os.urandom(_INVOCATION_NONCE_BYTES).hex()
+    except (OSError, NotImplementedError):
+        _refuse("container invocation nonce could not be generated")
+
+
 def _container_name(
     *,
     factory_fingerprint: str,
@@ -1452,6 +1569,7 @@ def _container_name(
     image_digest: str,
     argv: Sequence[str],
     stdin_payload: bytes,
+    invocation_nonce: str,
 ) -> str:
     payload = json.dumps(
         {
@@ -1462,6 +1580,7 @@ def _container_name(
             "factory": factory_fingerprint,
             "fence": authority.current_fencing_token,
             "image": image_digest,
+            "invocation_nonce": invocation_nonce,
             "lease": authority.lease["lease_id"],
             "profile": authority.profile["profile_id"],
             "stdin": f"sha256:{hashlib.sha256(stdin_payload).hexdigest()}",
@@ -1511,7 +1630,6 @@ def _execute_container(
             argv=argv,
             quotas=quotas,
         ),
-        container_name=container_name,
         control_timeout=control_timeout,
     )
     cleanup_attempted = False
@@ -1579,7 +1697,7 @@ def _execute_container(
                 runtime_parent=runtime_parent,
                 expected_runtime_digest=expected_runtime_digest,
                 trusted_cwd=trusted_cwd,
-                container_reference=container_id,
+                container_id=container_id,
             )
             if cleanup_failed:
                 _refuse("container launch failed and daemon cleanup was not confirmed")
@@ -1600,7 +1718,7 @@ def _execute_container(
             runtime_parent=runtime_parent,
             expected_runtime_digest=expected_runtime_digest,
             trusted_cwd=trusted_cwd,
-            container_reference=container_id,
+            container_id=container_id,
         )
         finished_monotonic = time.monotonic()
         finished_at = _utc_now()
@@ -1615,11 +1733,15 @@ def _execute_container(
         if not forced_stop and running is not False:
             state_error = True
         elapsed = max(0.0, finished_monotonic - started_monotonic)
+        observed_duration = process.observed_duration_seconds
+        wall_quota = float(quotas["wall_clock_seconds"])
         if process.timed_out:
             wall_observation: bool | None = True
+        elif observed_duration >= wall_quota:
+            wall_observation = None
         elif running is False and exit_code is not None:
             wall_observation = False
-        elif forced_stop and not cleanup_failed and elapsed < quotas["wall_clock_seconds"]:
+        elif forced_stop and not cleanup_failed:
             wall_observation = False
         else:
             wall_observation = None
@@ -1691,7 +1813,7 @@ def _execute_container(
                 runtime_parent=runtime_parent,
                 expected_runtime_digest=expected_runtime_digest,
                 trusted_cwd=trusted_cwd,
-                container_reference=container_id,
+                container_id=container_id,
             )
         if cleanup_failed:
             raise CandidateContainerRefused(
@@ -1815,6 +1937,7 @@ def create_candidate_container_executor(
             image_digest=image_digest,
             argv=command_argv,
             stdin_payload=stdin_payload,
+            invocation_nonce=_invocation_nonce(),
         )
         return _execute_container(
             runtime=runtime,
