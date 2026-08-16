@@ -56,6 +56,8 @@ const PREVIOUS_DIST_NAME = "previous-dist";
 const PREVIOUS_RUNTIME_NAME = "previous-runtime";
 const FOUNDRY_KERNEL_SOURCE = "packages/foundry-kernel/src";
 const FOUNDRY_KERNEL_OUTPUT = "foundry-kernel";
+const PLUGIN_HOST_SOURCE = "packages/plugin-host/src";
+const PLUGIN_HOST_OUTPUT = "plugin-host";
 
 /** Exact Foundry Kernel ESM closure copied into the plugin payload. */
 const FOUNDRY_KERNEL_FILES = Object.freeze([
@@ -79,6 +81,15 @@ const FOUNDRY_KERNEL_FILES = Object.freeze([
   "forge/session/canonical-json.mjs",
 ]);
 
+/** Exact Plugin Host ESM/data closure copied into the plugin payload. */
+const PLUGIN_HOST_FILES = Object.freeze([
+  "mcp/read/mcp-server.mjs",
+  "mcp/read/local-stdio-handler.mjs",
+  "mcp/read/local-stdio-binding.mjs",
+  "mcp/generated/tool-descriptors.json",
+  "paths/path-resolution.mjs",
+]);
+
 /** Exact repository inputs that may affect the generated plugin payload. */
 const RELEASE_INPUTS = Object.freeze([
   "plugins/epistemic-foundry/src",
@@ -86,29 +97,21 @@ const RELEASE_INPUTS = Object.freeze([
   ...FOUNDRY_KERNEL_FILES.map(
     (relative) => `${FOUNDRY_KERNEL_SOURCE}/${relative}`,
   ),
+  ...PLUGIN_HOST_FILES.map(
+    (relative) => `${PLUGIN_HOST_SOURCE}/${relative}`,
+  ),
   "src/epistemic_foundry",
-  "packages/plugin-host/src/mcp/generated/tool-descriptors.json",
   "packages/plugin-host/src/cli/bundle-map-worker.mjs",
   "packages/workspace-map/src",
 ]);
-
-const CANONICAL_DESCRIPTORS_RELATIVE =
-  "packages/plugin-host/src/mcp/generated/tool-descriptors.json";
-const CANONICAL_DESCRIPTORS = join(
-  REPOSITORY_ROOT,
-  "packages",
-  "plugin-host",
-  "src",
-  "mcp",
-  "generated",
-  "tool-descriptors.json",
-);
 
 /** Source files copied verbatim into the payload. */
 const COPIED = Object.freeze([
   "cli.mjs",
   "python-runtime.mjs",
   "runtime-observation.mjs",
+  "installed-forge-runtime.mjs",
+  "store-read-model.mjs",
   "mcp-server.mjs",
   "hook-runner.mjs",
 ]);
@@ -138,7 +141,11 @@ const DIST_FILES = new Set([
   "tool-descriptors.json",
   "payload-manifest.json",
 ]);
-const DIST_DIRECTORIES = new Set([FOUNDRY_KERNEL_OUTPUT, "workspace-map"]);
+const DIST_DIRECTORIES = new Set([
+  FOUNDRY_KERNEL_OUTPUT,
+  PLUGIN_HOST_OUTPUT,
+  "workspace-map",
+]);
 
 const sha256Bytes = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
@@ -327,9 +334,11 @@ function readHeadOid() {
 function releaseTreeEntries(headOid) {
   const requested = [
     ...COPIED.map((relative) => `plugins/epistemic-foundry/src/${relative}`),
-    CANONICAL_DESCRIPTORS_RELATIVE,
     ...FOUNDRY_KERNEL_FILES.map(
       (relative) => `${FOUNDRY_KERNEL_SOURCE}/${relative}`,
+    ),
+    ...PLUGIN_HOST_FILES.map(
+      (relative) => `${PLUGIN_HOST_SOURCE}/${relative}`,
     ),
     ...RELEASE_WORKSPACE_MAP_FILES.map(
       (relative) => `${RELEASE_WORKSPACE_MAP_SOURCE}/${relative}`,
@@ -385,6 +394,16 @@ function expectedFileBytes(file) {
   return Buffer.from(file.contentBase64, "base64");
 }
 
+function requiredExpectedFile(files, relative, label) {
+  const matches = files.filter((file) => file.relative === relative);
+  if (matches.length !== 1) {
+    throw new BuildRefusedError(
+      `${label}: expected exactly one ${relative} entry`,
+    );
+  }
+  return matches[0];
+}
+
 function pinnedFile(entries, blobCache, source, relative = source) {
   const entry = entries.get(source);
   if (!entry) {
@@ -420,11 +439,6 @@ function captureReleaseClosure(headOid) {
       relative,
     ),
   );
-  const descriptorSource = pinnedFile(
-    entries,
-    blobCache,
-    CANONICAL_DESCRIPTORS_RELATIVE,
-  );
   const foundryKernelFiles = FOUNDRY_KERNEL_FILES.map((relative) =>
     pinnedFile(
       entries,
@@ -433,10 +447,18 @@ function captureReleaseClosure(headOid) {
       relative,
     ),
   );
+  const pluginHostFiles = PLUGIN_HOST_FILES.map((relative) =>
+    pinnedFile(
+      entries,
+      blobCache,
+      `${PLUGIN_HOST_SOURCE}/${relative}`,
+      relative,
+    ),
+  );
   const distPayload = prepareDistPayloadFromBytes(
     copied,
-    expectedFileBytes(descriptorSource),
     foundryKernelFiles,
+    pluginHostFiles,
   );
 
   const workspaceFiles = RELEASE_WORKSPACE_MAP_FILES.map((relative) =>
@@ -817,22 +839,35 @@ function cleanupPrivateStage(stageRoot) {
 
 function prepareDistPayloadFromBytes(
   copied,
-  canonicalDescriptorBytes,
   foundryKernelFiles,
+  pluginHostFiles,
 ) {
   const closedFoundryKernelFiles = Object.freeze([...foundryKernelFiles]);
+  const closedPluginHostFiles = Object.freeze([...pluginHostFiles]);
   const payloadKernelFiles = closedFoundryKernelFiles.map((file) =>
     immutableExpectedFile(
       `${FOUNDRY_KERNEL_OUTPUT}/${file.relative}`,
       expectedFileBytes(file),
     ),
   );
-  const files = [...copied, ...payloadKernelFiles];
+  const payloadPluginHostFiles = closedPluginHostFiles.map((file) =>
+    immutableExpectedFile(
+      `${PLUGIN_HOST_OUTPUT}/${file.relative}`,
+      expectedFileBytes(file),
+    ),
+  );
+  const files = [...copied, ...payloadKernelFiles, ...payloadPluginHostFiles];
   const manifestFiles = {};
   for (const file of files) {
     manifestFiles[file.relative] = `sha256:${file.sha256}`;
   }
 
+  const descriptorSource = requiredExpectedFile(
+    closedPluginHostFiles,
+    "mcp/generated/tool-descriptors.json",
+    "plugin-host closure",
+  );
+  const canonicalDescriptorBytes = expectedFileBytes(descriptorSource);
   const canonical = JSON.parse(canonicalDescriptorBytes.toString("utf8"));
   const { generated_from: _provenance, ...packaged } = canonical;
   const descriptor = immutableExpectedFile(
@@ -846,6 +881,7 @@ function prepareDistPayloadFromBytes(
     files: Object.freeze(files),
     foundryKernelFiles: closedFoundryKernelFiles,
     manifestFiles: Object.freeze(manifestFiles),
+    pluginHostFiles: closedPluginHostFiles,
   });
 }
 
@@ -862,10 +898,19 @@ function prepareDistPayload() {
       ),
     ),
   );
+  const pluginHostFiles = PLUGIN_HOST_FILES.map((relative) =>
+    immutableExpectedFile(
+      relative,
+      readStableFileBytes(
+        join(REPOSITORY_ROOT, PLUGIN_HOST_SOURCE, relative),
+        `${PLUGIN_HOST_SOURCE}/${relative}`,
+      ),
+    ),
+  );
   return prepareDistPayloadFromBytes(
     copied,
-    readFileSync(CANONICAL_DESCRIPTORS),
     foundryKernelFiles,
+    pluginHostFiles,
   );
 }
 
@@ -1071,6 +1116,11 @@ function verifyReleaseGeneratedClosure(distRoot, runtimeRoot, releaseClosure) {
       "release foundry-kernel",
     ),
     ...verifyClosedFileTree(
+      join(distRoot, PLUGIN_HOST_OUTPUT),
+      releaseClosure.distPayload.pluginHostFiles,
+      "release plugin-host",
+    ),
+    ...verifyClosedFileTree(
       join(distRoot, "workspace-map"),
       releaseClosure.workspaceFiles,
       "release workspace-map",
@@ -1104,7 +1154,7 @@ function bindRuntimeManifest(prepared, runtimeManifestBytes) {
       files: prepared.manifestFiles,
       runtime_manifest_sha256: runtimeManifestSha256,
       source:
-        "plugins/epistemic-foundry/src + packages/foundry-kernel/src",
+        "plugins/epistemic-foundry/src + packages/foundry-kernel/src + packages/plugin-host/src",
     },
     null,
     2,
@@ -1119,7 +1169,12 @@ function bindRuntimeManifest(prepared, runtimeManifestBytes) {
 function compareDistPayload(prepared, targetDist = DIST_DIR) {
   const drift = [];
   for (const file of prepared.files) {
-    if (file.relative.startsWith(`${FOUNDRY_KERNEL_OUTPUT}/`)) continue;
+    if (
+      file.relative.startsWith(`${FOUNDRY_KERNEL_OUTPUT}/`) ||
+      file.relative.startsWith(`${PLUGIN_HOST_OUTPUT}/`)
+    ) {
+      continue;
+    }
     let bundled = null;
     try {
       bundled = readFileSync(join(targetDist, file.relative));
@@ -1148,6 +1203,12 @@ function compareDistPayload(prepared, targetDist = DIST_DIR) {
       join(targetDist, FOUNDRY_KERNEL_OUTPUT),
       prepared.foundryKernelFiles,
       FOUNDRY_KERNEL_OUTPUT,
+      "prepared source closure",
+    ),
+    ...verifyClosedFileTree(
+      join(targetDist, PLUGIN_HOST_OUTPUT),
+      prepared.pluginHostFiles,
+      PLUGIN_HOST_OUTPUT,
       "prepared source closure",
     ),
   );
