@@ -2805,13 +2805,27 @@ work_packages:
   title: MCP mutating tools with intents and receipts
   depends_on:
   - T01
+  - E02
+  - E03
+  - F01
+  - F04
   write_scope:
+  - contracts/mcp/catalog-set.yaml
+  - contracts/mcp/t02/**
+  - docs/t02_mutating_tool_architecture.md
+  - src/epistemic_foundry/application/mcp_mutating/**
   - packages/plugin-host/src/mcp/write/**
+  - tests/mcp/t02/**
+  - tests/node/t02-mcp-write-surface.test.mjs
+  - tests/test_wire_literal_discipline.py
   model_tier: frontier
   independent_review: required
   exit_criteria:
   - no mutation without lease
   - effects reconcile
+  - the canonical T02 v1.1 catalog contains eleven tools and composes with the unchanged T01 thirteen-tool catalog to exactly twenty-four tools
+  - foundry.work.classify and foundry.session.open remain separate receipt-bound mutations over the existing F01 and F04 ports
+  - session OPEN derives its F01 request, run, and policy bindings plus the current E01 head inside the trusted worker rather than accepting caller relabeling
   required_checks:
   - mcp_effect_test
   - approval_test
@@ -2835,6 +2849,7 @@ work_packages:
   title: Stable CLI JSON/error and PATH-less surfaces
   depends_on:
   - T01
+  - T02
   - J02
   write_scope:
   - packages/plugin-host/src/cli/**
@@ -2849,7 +2864,7 @@ work_packages:
   - commands round-trip contracts
   - stable error codes
   - the payload-resident stdio MCP server starts without a repository checkout or secondary runtime copy
-  - the packaged profile advertises the canonical thirteen-tool catalog statically; foundry.status, foundry.health, and foundry.map.query are backed, and every unbound tool returns an explicit UNAVAILABLE result rather than UNKNOWN_TOOL
+  - the CLI consumes the T02-owned mergedToolDescriptors() projection without a second composition or count literal; the installed MCP profile switches atomically from the sealed thirteen-tool read profile to all twenty-four tools only after X01 binds both new mutation runtimes, and every unbound tool returns an explicit UNAVAILABLE result rather than UNKNOWN_TOOL
   - packaged status and health report observed payload and runtime facts rather than hardcoded constants, and degrade to UNAVAILABLE with an explicit reason when the optional efoundry bridge is absent
   - foundry.map.query returns a schema-valid WorkspaceMapSnapshot from the bundled workspace-map producer, requires an explicitly configured workspace root, and reports truncation rather than narrowing what the map claims to cover
   - the bundled workspace-map payload is generated from packages/workspace-map/src with a recorded provenance hash, never hand-edited, and drift is detectable

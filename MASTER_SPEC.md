@@ -1150,15 +1150,44 @@ Every fan-in validates expected count and identity. Every cycle has a LoopContra
 - **T01 — MCP read/planning tools**  
   Dependencies: `E04, G04, S04` · Risk: `high` · Review: `required`
 - **T02 — MCP mutating tools with intents and receipts**  
-  Dependencies: `T01` · Risk: `high` · Review: `required`
+  Dependencies: `T01, E02, E03, F01, F04` · Risk: `high` · Review: `required`
 - **T03 — Stable CLI JSON/error and PATH-less surfaces**  
-  Dependencies: `T01, J02` · Risk: `high` · Review: `required`
+  Dependencies: `T01, T02, J02` · Risk: `high` · Review: `required`
 - **T04 — T-phase sandbox and external tool adapter gate**  
   Dependencies: `T02, T03` · Risk: `high` · Review: `required`
 - **T05 — Evolution CLI/MCP tools, sandbox executors and Shinka backend adapter**  
   Dependencies: `T04, S05, G05` · Risk: `high` · Review: `required`
 - **T06 — External-backend qualification and fallback integration gate**  
   Dependencies: `T05` · Risk: `critical` · Review: `required`
+
+### T02 additive FORGE public mutation contract
+
+- T01 remains the sealed thirteen-tool read/planning catalog. T02 v1.1 contains
+  exactly eleven mutating tools, and the composed catalog contains exactly
+  twenty-four tools. The two additions are appended so the original
+  thirteen-plus-nine names and ordering remain stable.
+- `foundry.work.classify` (`mutate_work_classify`) and
+  `foundry.session.open` (`mutate_session_open`) are separate durable
+  operations. They may not be collapsed into a composite because F01 and F04
+  have distinct idempotency, outbox, ledger, retry, and reconciliation
+  boundaries.
+- Classification requires `mcp.write.classification`; session OPEN reuses
+  `mcp.write.session`. Both are `medium` risk and `POLICY_CONDITIONAL`, and
+  both require the common outer `expected_revision` field to be null.
+- The classification arguments are the existing F01 classification input.
+  Session OPEN accepts only caller-owned OPEN values; its worker derives
+  `request_id`, `run_spec_id`, and `policy_hash` from the sealed F01 replay
+  projection, derives `workspace_id` and `idempotency_key` from the common
+  mutation envelope, and obtains the current E01 ledger head immediately
+  before the F04 call. A caller never supplies or relabels those authoritative
+  values.
+- F01 human override is not exposed by this additive surface. It remains a
+  separate human-authority operation if a later product requirement needs it.
+- T03 projects the composed catalog for CLI commands only after T02 is frozen.
+  The installed surface switches atomically from the sealed T01 thirteen-tool
+  profile to the composed twenty-four-tool profile only after X01 binds both
+  new mutation runtimes; until then, unbound tools remain explicit
+  `UNAVAILABLE` results.
 
 ## U — Foundry Console and API
 

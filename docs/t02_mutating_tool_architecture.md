@@ -1,8 +1,10 @@
 # T02 MCP Mutating Tool Architecture
 
-Status: `ADOPTED DESIGN CONTRACT`
+Status: `ADOPTED DESIGN CONTRACT — v1.1`
 
-Work package: `T02`. Authorized by `HD-EF4-T02-SCOPE-20260801-001`.
+Work package: `T02`. The v1.0 baseline was authorized by
+`HD-EF4-T02-SCOPE-20260801-001`; the v1.1 FORGE additions are authorized by
+`MASTER_SPEC.md` section “T02 additive FORGE public mutation contract”.
 
 This contract records the architecture the T02 implementation must follow. It
 was produced by a persistent ChatGPT Pro reasoning session on 2026-08-01 and
@@ -12,15 +14,17 @@ one Pro assumption was found wrong and corrected.
 
 ## 1. Catalog composition
 
-- `contracts/mcp/t02/tool-catalog.yaml` declares the nine mutating tool names
-  exactly once and carries its own exact-9 test.
+- `contracts/mcp/t02/tool-catalog.yaml` declares the eleven mutating tool names
+  exactly once and carries its own exact-11 test. The original nine remain in
+  their original order; `foundry.work.classify` and `foundry.session.open` are
+  appended.
 - `contracts/mcp/t01/tool-catalog.yaml` and its generated descriptor
   projection stay byte-for-byte unchanged; the sealed exact-13 tests keep
   passing.
 - `contracts/mcp/catalog-set.yaml` owns membership, order, and counts only. It
   contains no MCP tool-name literal.
 - `tools/list` composition concatenates the two generated descriptor
-  projections in catalog-set order and asserts 13 + 9 = 22 with globally
+  projections in catalog-set order and asserts 13 + 11 = 24 with globally
   unique names. No combined catalog YAML or combined descriptor JSON is
   generated: a generated file must never become a second declaring source.
 
@@ -28,7 +32,38 @@ Verified: the EF4-I22 guard in `tests/test_wire_literal_discipline.py` scans
 only `src/epistemic_foundry/**/*.py`, so a contracts-directory catalog is a
 declaring source per the invariant's own registry model rather than a second
 copy. Verified: the sealed T01 `tools/list` test binds the T01 catalog
-specifically, so a higher composition layer may expose 22 without weakening it.
+specifically, so a higher composition layer may expose 24 without weakening it.
+
+### 1.1 FORGE classify and OPEN additions
+
+`foundry.work.classify` and `foundry.session.open` are separate
+`MUTATING_EFFECT` operations. A composite is forbidden: F01 classification and
+F04 OPEN use different durable idempotency records, outboxes, ledger events,
+retry outcomes, and reconciliation paths, so a classification that commits
+before an OPEN conflict cannot be represented by one truthful effect status.
+
+`foundry.work.classify` maps directly to the existing F01 classification input,
+uses `mcp.write.classification`, and binds the successful MutationResult
+`new_revision` to the immutable classification ID. A live success keeps
+`preview` null rather than overloading the dry-run preview channel. `target_ref`
+equals the F01 `request_id`.
+
+`foundry.session.open` uses `mcp.write.session`. Its public arguments contain
+`session_id`, `classification_id`, `corpus_snapshot_hash`, `actor`, and
+`requested_at`. The trusted worker obtains `workspace_id` and
+`idempotency_key` from the common mutation envelope; reads the sealed F01
+replay projection to derive `request_id`, `run_spec_id`, and `policy_hash`; and
+reads the current E01 ledger head immediately before calling F04. `target_ref`
+equals `session_id`. Caller-supplied copies of those authoritative values are
+neither required nor accepted.
+
+Both tools are `medium` risk, `POLICY_CONDITIONAL`, and require the common
+outer `expected_revision` to be null. Dry-run records the existing
+`NOT_EXECUTED` intent/receipt path and makes no F01 or F04 effect call. F01
+human override remains unexposed. On success, classification reports
+`observed_revision: null` and `new_revision: classification_id`; OPEN reports
+`observed_revision: null` and the published F04 session projection's
+`state.revision`, rendered as a decimal string, as `new_revision`.
 
 ## 2. Layering and write scope
 
@@ -107,8 +142,9 @@ touching the sealed schemas.
 A dry run records the `ActionIntent` and a `NOT_EXECUTED` `EffectReceipt`. It
 does not return an unrecorded would-be intent. The dry-run path passes the
 same protocol, schema, authentication, workspace, policy, approval, and lease
-checks, verifies `expected_revision`, persists the intent, performs preview
-only, makes zero target-effect calls, and persists a receipt with
+checks, verifies `expected_revision` where the tool requires it non-null,
+persists the intent, performs preview only, makes zero target-effect calls,
+and persists a receipt with
 `status=NOT_EXECUTED`, `reconciliation_required=false`, and a canonical
 synthetic non-effect `external_operation_id`.
 
@@ -188,7 +224,7 @@ contracts/mcp/t02/tool-catalog.yaml
 contracts/mcp/t02/schemas/common-mutation-input.schema.json
 contracts/mcp/t02/schemas/mutation-result.schema.json
 contracts/mcp/t02/schemas/mutation-error-details.schema.json
-contracts/mcp/t02/schemas/tools/<tool>.input.schema.json      (9)
+contracts/mcp/t02/schemas/tools/<tool>.input.schema.json      (11)
 src/epistemic_foundry/application/mcp_mutating/__init__.py
 src/epistemic_foundry/application/mcp_mutating/ports.py
 src/epistemic_foundry/application/mcp_mutating/service.py
@@ -208,8 +244,6 @@ plugin-host modules in this repository.
 
 ## 7. Open items to resolve during implementation
 
-- The canonical revision-token type must come from a shared reference rather
-  than an independent integer/string choice.
 - `ApprovalRecord.subject_id` is a free-form non-empty string (verified), so
   it can bind a pre-persistence intent-candidate id without inventing a
   mutable draft `ActionIntent`.
