@@ -1,9 +1,9 @@
 // Read-only observations shared by the payload CLI and MCP server.
 //
 // Status and health are a Node-owned PLUGIN_ALPHA critical surface. They read
-// only installed payload bytes and explicit environment configuration; they
-// never start the optional bundled Python runtime and never infer a workspace
-// or caller authority from cwd, PATH, or a repository checkout.
+// only installed payload bytes and explicit environment selectors; they never
+// start the optional bundled Python runtime and never infer caller authority
+// from cwd, PATH, environment values, tool arguments, or a repository checkout.
 
 import { createHash } from "node:crypto";
 import { readFileSync, realpathSync, statSync } from "node:fs";
@@ -15,9 +15,10 @@ import {
   RUNTIME_ERRORS,
 } from "./python-runtime.mjs";
 
-const ALWAYS_BOUND_TOOL_NAMES = Object.freeze([
+const INSTALLED_READ_HANDLER_TOOL_NAMES = Object.freeze([
   "foundry.status",
   "foundry.health",
+  "foundry.map.query",
 ]);
 
 // These reasons are part of the candidate's truthful availability surface.
@@ -40,11 +41,18 @@ const ALWAYS_UNBOUND_REASON = Object.freeze({
     "no run store is bound in this package, so runs cannot be compared",
   "foundry.search.plan":
     "plan compilation requires the durable plan-artifact store, which is not bound in this package",
-  "foundry.session.get":
-    "no FORGE session store is bound in this package; the payload holds no session state",
   "foundry.validation.plan":
     "plan compilation requires the durable plan-artifact store, which is not bound in this package",
 });
+const SESSION_RUNTIME_STATES = new Set([
+  "CONFIGURED_UNVERIFIED",
+  "READY",
+  "UNAVAILABLE",
+]);
+const SESSION_UNPROBED_REASON =
+  "the durable Forge read runtime opens on the first authorized session read and has not been probed";
+const SESSION_UNAVAILABLE_REASON =
+  "the installed Forge read runtime was probed and is unavailable";
 
 export const SERVED_RETRIEVAL_LANES = Object.freeze([
   "lexical",
@@ -58,14 +66,14 @@ const IMPLEMENTATION_TARGET_STATUS = "INCOMPLETE";
 const WORKFLOW_EXECUTION_REASON =
   "workflow execution, promotion, and evidence recomputation are not bound in this package";
 const WORKSPACE_CONFIGURATION_REQUIREMENT =
-  "EFOUNDRY_WORKSPACE_ID and an absolute EFOUNDRY_WORKSPACE_ROOT are both required for workspace mapping; paths alone do not establish caller authority.";
-const MCP_AUTHORIZATION_CONFIGURATION_REQUIREMENT =
-  "EFOUNDRY_PRINCIPAL_ID and JSON-array EFOUNDRY_MCP_CAPABILITIES are required for the local MCP binding; environment configuration is not proof of authority.";
-const MCP_AUTHORIZATION_CONFIGURATION_NOTICE =
-  "the local principal and capability values are configured but have not been independently authenticated; environment configuration is not proof of authority";
-const MAP_READ_CAPABILITY = "mcp.read.map";
-const MAX_PRINCIPAL_ID_LENGTH = 128;
-const EMPTY_CAPABILITIES = Object.freeze([]);
+  "EFOUNDRY_WORKSPACE_ID and an absolute EFOUNDRY_WORKSPACE_ROOT select an installed workspace; only LOCAL_STDIO_READ_V1 grants map or session read authority.";
+const LOCAL_STDIO_AUTHORITY = Object.freeze({
+  authority: "LOCAL_STDIO_READ_V1",
+  binding_location: "PLUGIN_DATA/local-stdio-binding.json",
+  environment_grants_authority: false,
+  status: "LOCAL_STDIO_BINDING_REQUIRED",
+  tool_arguments_grant_authority: false,
+});
 
 const NODE_ONLY_CLI_COMMANDS = Object.freeze([
   "status",
@@ -404,140 +412,21 @@ export function observeWorkspaceRoot(env = process.env) {
   }
 }
 
-function parseMcpCapabilities(value) {
-  if (typeof value !== "string" || value.length === 0) {
-    return {
-      capabilities: EMPTY_CAPABILITIES,
-      message:
-        "EFOUNDRY_MCP_CAPABILITIES must be a JSON array of unique non-empty strings. " +
-        MCP_AUTHORIZATION_CONFIGURATION_REQUIREMENT,
-      ok: false,
-    };
+function normalizeSessionReadState(value) {
+  if (!SESSION_RUNTIME_STATES.has(value)) {
+    throw new TypeError("sessionReadState is not a supported runtime state");
   }
-  let parsed;
-  try {
-    parsed = JSON.parse(value);
-  } catch {
-    return {
-      capabilities: EMPTY_CAPABILITIES,
-      message:
-        "EFOUNDRY_MCP_CAPABILITIES is not valid JSON. " +
-        MCP_AUTHORIZATION_CONFIGURATION_REQUIREMENT,
-      ok: false,
-    };
-  }
-  if (
-    !Array.isArray(parsed) ||
-    parsed.some(
-      (capability) =>
-        typeof capability !== "string" || capability.trim().length === 0,
-    ) ||
-    new Set(parsed).size !== parsed.length
-  ) {
-    return {
-      capabilities: EMPTY_CAPABILITIES,
-      message:
-        "EFOUNDRY_MCP_CAPABILITIES must be a JSON array of unique non-empty strings. " +
-        MCP_AUTHORIZATION_CONFIGURATION_REQUIREMENT,
-      ok: false,
-    };
-  }
-  return { capabilities: Object.freeze([...parsed]), ok: true };
+  return value;
 }
 
-/**
- * Observe the local MCP identity/capability configuration without treating it
- * as authentication evidence or granting authority from paths.
- */
-export function observeMcpAuthorization(env = process.env) {
-  const principalId = env.EFOUNDRY_PRINCIPAL_ID;
-  const principalConfigured =
-    typeof principalId === "string" &&
-    principalId.trim().length > 0 &&
-    principalId.length <= MAX_PRINCIPAL_ID_LENGTH;
-  const capabilityConfiguration = parseMcpCapabilities(
-    env.EFOUNDRY_MCP_CAPABILITIES,
-  );
-  const ok = principalConfigured && capabilityConfiguration.ok;
-  const message = !principalConfigured
-    ? `EFOUNDRY_PRINCIPAL_ID must be a non-empty string of at most ${MAX_PRINCIPAL_ID_LENGTH} characters. ${MCP_AUTHORIZATION_CONFIGURATION_REQUIREMENT}`
-    : !capabilityConfiguration.ok
-      ? capabilityConfiguration.message
-      : MCP_AUTHORIZATION_CONFIGURATION_NOTICE;
-  return Object.freeze({
-    capabilities: capabilityConfiguration.capabilities,
-    capabilities_configured: capabilityConfiguration.ok,
-    map_read_capability_configured:
-      capabilityConfiguration.ok &&
-      capabilityConfiguration.capabilities.includes(MAP_READ_CAPABILITY),
-    message,
-    ok,
-    principal_configured: principalConfigured,
-    principal_id: principalConfigured ? principalId : null,
-    requirement: MCP_AUTHORIZATION_CONFIGURATION_REQUIREMENT,
-    status: ok ? "CONFIGURED" : "UNCONFIGURED",
-  });
-}
-
-/**
- * Observe whether this process may bind one map query. The successful state is
- * deliberately CONFIGURED_UNVERIFIED: only the subsequent producer call can
- * observe whether a snapshot is actually available.
- */
-export function observeMapQueryBinding({
-  authorization,
-  env = process.env,
-  requestedWorkspaceId,
-  workspace,
-} = {}) {
-  const observedAuthorization = authorization ?? observeMcpAuthorization(env);
-  const observedWorkspace = workspace ?? observeWorkspaceRoot(env);
-  let reason = null;
-  if (!observedAuthorization.principal_configured) {
-    reason = observedAuthorization.message;
-  } else if (!observedWorkspace.ok) {
-    reason = observedWorkspace.message;
-  } else if (
-    requestedWorkspaceId !== undefined &&
-    requestedWorkspaceId !== observedWorkspace.workspace_id
-  ) {
-    reason =
-      "requested workspace_id does not exactly match EFOUNDRY_WORKSPACE_ID";
-  } else if (!observedAuthorization.capabilities_configured) {
-    reason = observedAuthorization.message;
-  } else if (!observedAuthorization.map_read_capability_configured) {
-    reason =
-      "EFOUNDRY_MCP_CAPABILITIES does not include mcp.read.map; environment paths alone do not establish caller authority";
-  }
-  return Object.freeze({
-    authorization: observedAuthorization,
-    ok: reason === null,
-    reason: reason ?? MCP_AUTHORIZATION_CONFIGURATION_NOTICE,
-    status: reason === null ? "CONFIGURED_UNVERIFIED" : "UNAVAILABLE",
-    workspace: observedWorkspace,
-  });
-}
-
-function toolAvailability({ authorization, workspace } = {}) {
-  const mapQuery = observeMapQueryBinding({ authorization, workspace });
-  const bound = [...ALWAYS_BOUND_TOOL_NAMES];
+function toolAvailability() {
+  const bound = [...INSTALLED_READ_HANDLER_TOOL_NAMES, "foundry.session.get"];
   const unbound = { ...ALWAYS_UNBOUND_REASON };
-  if (mapQuery.ok) {
-    bound.push("foundry.map.query");
-  } else {
-    unbound["foundry.map.query"] = mapQuery.reason;
-  }
   return Object.freeze({
     bound: Object.freeze(bound),
-    map_query: mapQuery,
     unbound: Object.freeze(unbound),
   });
 }
-
-const DEFAULT_TOOL_AVAILABILITY = toolAvailability();
-
-export const BOUND_TOOL_NAMES = DEFAULT_TOOL_AVAILABILITY.bound;
-export const UNBOUND_REASON = DEFAULT_TOOL_AVAILABILITY.unbound;
 
 export function observeRuntime({
   env = process.env,
@@ -545,7 +434,7 @@ export function observeRuntime({
 } = {}) {
   return {
     interpreter: observeOptionalInterpreter(env),
-    mcp_authorization: observeMcpAuthorization(env),
+    mcp_authorization: LOCAL_STDIO_AUTHORITY,
     node_runtime: {
       executable: process.execPath,
       status: "READY",
@@ -567,18 +456,6 @@ function publicWorkspace(workspace) {
     ...(typeof workspace.message === "string"
       ? { message: workspace.message }
       : {}),
-  };
-}
-
-function publicMcpAuthorization(authorization) {
-  return {
-    capabilities_configured: authorization.capabilities_configured,
-    map_read_capability_configured:
-      authorization.map_read_capability_configured,
-    message: authorization.message,
-    principal_configured: authorization.principal_configured,
-    requirement: authorization.requirement,
-    status: authorization.status,
   };
 }
 
@@ -613,8 +490,8 @@ function optionalPythonReady(observation) {
 function statusDegradationReason(availability) {
   return (
     `PLUGIN_ALPHA implementation is incomplete; exactly ${availability.bound.length} ` +
-    `MCP tools are configured as bound (${availability.bound.join(", ")}), while ` +
-    "durable FORGE session state and workflow execution are unavailable"
+    `MCP read handlers are composed (${availability.bound.join(", ")}); ` +
+    "LOCAL_STDIO_READ_V1 authorizes each request, while workflow execution remains unavailable"
   );
 }
 
@@ -641,11 +518,12 @@ function candidateSurfaces(observation, availability) {
   };
 }
 
-export function createStatusProjection({ observation = observeRuntime() } = {}) {
-  const availability = toolAvailability({
-    authorization: observation.mcp_authorization,
-    workspace: observation.workspace,
-  });
+export function createStatusProjection({
+  observation = observeRuntime(),
+  sessionReadState = "CONFIGURED_UNVERIFIED",
+} = {}) {
+  const normalizedSessionReadState = normalizeSessionReadState(sessionReadState);
+  const availability = toolAvailability();
   const surfaces = candidateSurfaces(observation, availability);
   const runtimeLanes = Array.isArray(observation.python_runtime.served_retrieval_lanes)
     ? observation.python_runtime.served_retrieval_lanes
@@ -660,9 +538,7 @@ export function createStatusProjection({ observation = observeRuntime() } = {}) 
       implementation_target: IMPLEMENTATION_TARGET,
       implementation_target_status: IMPLEMENTATION_TARGET_STATUS,
       interpreter: publicInterpreter(observation.interpreter),
-      mcp_authorization: publicMcpAuthorization(
-        availability.map_query.authorization,
-      ),
+      mcp_authorization: { ...observation.mcp_authorization },
       node_runtime: publicNodeRuntime(observation.node_runtime),
       overall_state: "DEGRADED",
       payload: observation.payload,
@@ -678,13 +554,12 @@ export function createStatusProjection({ observation = observeRuntime() } = {}) 
       },
       runtime: observation.python_runtime,
       runtime_status: "PARTIAL_IMPLEMENTATION",
+      session_read_runtime_state: normalizedSessionReadState,
       unavailable_tool_reasons: { ...availability.unbound },
       unbound_tool_count: Object.keys(availability.unbound).length,
       unbound_tools: Object.keys(availability.unbound).sort(),
       version: observation.payload.plugin_version,
       workspace: publicWorkspace(observation.workspace),
-      mcp_authorization_configuration_requirement:
-        MCP_AUTHORIZATION_CONFIGURATION_REQUIREMENT,
       workspace_configuration_requirement: WORKSPACE_CONFIGURATION_REQUIREMENT,
     },
     degradationReason: statusDegradationReason(availability),
@@ -692,11 +567,12 @@ export function createStatusProjection({ observation = observeRuntime() } = {}) 
   };
 }
 
-export function createHealthProjection({ observation = observeRuntime() } = {}) {
-  const availability = toolAvailability({
-    authorization: observation.mcp_authorization,
-    workspace: observation.workspace,
-  });
+export function createHealthProjection({
+  observation = observeRuntime(),
+  sessionReadState = "CONFIGURED_UNVERIFIED",
+} = {}) {
+  const normalizedSessionReadState = normalizeSessionReadState(sessionReadState);
+  const availability = toolAvailability();
   const pythonReady = optionalPythonReady(observation);
   const pythonReason =
     observation.interpreter.status !== "READY"
@@ -729,8 +605,20 @@ export function createHealthProjection({ observation = observeRuntime() } = {}) 
         },
         {
           component: "workspace_map",
-          reason: availability.map_query.reason,
-          state: availability.map_query.status,
+          reason:
+            "LOCAL_STDIO_READ_V1 authenticates and rechecks the G03 roots for every map request",
+          state: "CONFIGURED",
+        },
+        {
+          component: "forge_session_read",
+          ...(normalizedSessionReadState === "READY"
+            ? { state: "READY" }
+            : normalizedSessionReadState === "UNAVAILABLE"
+              ? { reason: SESSION_UNAVAILABLE_REASON, state: "UNAVAILABLE" }
+              : {
+                  reason: SESSION_UNPROBED_REASON,
+                  state: "CONFIGURED_UNVERIFIED",
+                }),
         },
         {
           component: "workflow_execution",
