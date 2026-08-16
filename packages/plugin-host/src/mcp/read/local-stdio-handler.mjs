@@ -499,40 +499,32 @@ const diagnostic = async ({
   unbound,
 }) => {
   let projected;
-  if (unbound) {
+  const projectionArguments = unbound
+    ? Object.freeze({ ...args, workspace_id: UNBOUND_DIAGNOSTIC_WORKSPACE_ID })
+    : args;
+  try {
+    projected = normalizeProjection(
+      await projection(
+        Object.freeze({
+          arguments: projectionArguments,
+          generatedAt,
+          principalId: unbound ? null : binding.principal_id,
+          principalType: unbound ? null : binding.principal_type,
+          workspaceId,
+          workspaceRoot: unbound ? null : resolution.workspaceRoot,
+          unbound,
+        }),
+      ),
+    );
+  } catch {
     projected = {
       state: "DEGRADED",
       data: {
         diagnostic: spec.name,
-        local_stdio_binding: "UNBOUND",
+        local_stdio_binding: unbound ? "UNBOUND" : "AVAILABLE",
       },
-      degradationReason: "local stdio binding is unavailable",
+      degradationReason: "the Node-local diagnostic projection is degraded",
     };
-  } else {
-    try {
-      projected = normalizeProjection(
-        await projection(
-          Object.freeze({
-            arguments: args,
-            generatedAt,
-            principalId: binding.principal_id,
-            principalType: binding.principal_type,
-            workspaceId,
-            workspaceRoot: resolution.workspaceRoot,
-            unbound: false,
-          }),
-        ),
-      );
-    } catch {
-      projected = {
-        state: "DEGRADED",
-        data: {
-          diagnostic: spec.name,
-          local_stdio_binding: "AVAILABLE",
-        },
-        degradationReason: "the Node-local diagnostic projection is degraded",
-      };
-    }
   }
 
   if (spec.name === "foundry.health" && args.include_components === false) {
