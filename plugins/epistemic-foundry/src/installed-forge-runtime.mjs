@@ -18,6 +18,7 @@ import {
 const AUTHORITY_PRINCIPAL_ID =
   "SVC-PLUGIN-ALPHA-LOCAL-SESSION-AUTHORITY";
 const WORKER_PRINCIPAL_ID = "AG-PLUGIN-ALPHA-LOCAL-SESSION-WORKER";
+const CLASSIFICATION_CAPABILITY = "mcp.write.classification";
 const SESSION_CAPABILITY = "mcp.write.session";
 const LEASE_DURATION_MILLISECONDS = 300_000;
 const POLICY_HASH_PREFIX = "PLUGIN_ALPHA_LOCAL_SESSION_POLICY_V1\0";
@@ -28,7 +29,7 @@ const REQUIRED_ENVIRONMENT_KEYS = Object.freeze([
   "EFOUNDRY_WORKSPACE_ROOT",
   "EFOUNDRY_WORKSPACE_ID",
 ]);
-const LEASE_CONTEXT_KEYS = new Set([
+const COMMON_LEASE_CONTEXT_KEYS = Object.freeze([
   "leaseId",
   "runId",
   "workerPrincipalId",
@@ -37,8 +38,20 @@ const LEASE_CONTEXT_KEYS = new Set([
   "targetRef",
   "semanticFingerprint",
   "idempotencyKey",
-  "transitionRequestArtifactId",
   "requestedAt",
+]);
+const CLASSIFICATION_LEASE_CONTEXT_KEYS = new Set([
+  ...COMMON_LEASE_CONTEXT_KEYS,
+  "authPrincipalId",
+  "argumentsArtifactId",
+]);
+const OPEN_LEASE_CONTEXT_KEYS = new Set([
+  ...COMMON_LEASE_CONTEXT_KEYS,
+  "openRequestArtifactId",
+]);
+const TRANSITION_LEASE_CONTEXT_KEYS = new Set([
+  ...COMMON_LEASE_CONTEXT_KEYS,
+  "transitionRequestArtifactId",
 ]);
 const ERROR_MESSAGES = Object.freeze({
   INVALID_INPUT: "plugin Forge runtime input is invalid",
@@ -314,7 +327,10 @@ const policyHash = (workspaceId) =>
 const capabilityPolicy = (workspaceId) => {
   const empty = () => Object.freeze([]);
   const authorityCapabilities = Object.freeze(["capability:issue"]);
-  const workerCapabilities = Object.freeze([SESSION_CAPABILITY]);
+  const workerCapabilities = Object.freeze([
+    CLASSIFICATION_CAPABILITY,
+    SESSION_CAPABILITY,
+  ]);
   const workerScopes = Object.freeze([workspaceId]);
   return Object.freeze({
     policy_hash: policyHash(workspaceId),
@@ -346,6 +362,10 @@ const capabilityPolicy = (workspaceId) => {
         required_approval_type: null,
       }),
       Object.freeze({
+        capability: CLASSIFICATION_CAPABILITY,
+        required_approval_type: null,
+      }),
+      Object.freeze({
         capability: SESSION_CAPABILITY,
         required_approval_type: null,
       }),
@@ -353,10 +373,10 @@ const capabilityPolicy = (workspaceId) => {
   });
 };
 
-const requireExactLeaseContext = (candidate, workspaceId) => {
+const requireExactLeaseContext = (candidate, workspaceId, allowedKeys) => {
   const context = requirePlainRecord(candidate);
-  rejectUnexpectedKeys(context, LEASE_CONTEXT_KEYS);
-  if (Reflect.ownKeys(context).length !== LEASE_CONTEXT_KEYS.size) invalidInput();
+  rejectUnexpectedKeys(context, allowedKeys);
+  if (Reflect.ownKeys(context).length !== allowedKeys.size) invalidInput();
 
   const leaseId = readDataProperty(context, "leaseId");
   const runId = readDataProperty(context, "runId");
@@ -460,14 +480,14 @@ const leaseExpiry = (requestedAt) => {
   return expiresAt;
 };
 
-const transitionRuntime = (workspaceId) => {
+const mutationRuntime = (workspaceId, capability, leaseContextKeys) => {
   const leaseCommandFactory = (candidate) => {
-    const context = requireExactLeaseContext(candidate, workspaceId);
+    const context = requireExactLeaseContext(candidate, workspaceId, leaseContextKeys);
     return Object.freeze({
       lease_id: context.leaseId,
       run_id: context.runId,
       principal_id: context.workerPrincipalId,
-      capabilities: Object.freeze([SESSION_CAPABILITY]),
+      capabilities: Object.freeze([capability]),
       resource_scopes: Object.freeze([workspaceId]),
       expires_at: leaseExpiry(context.requestedAt),
       approval_ids: context.approvalIds,
@@ -480,6 +500,23 @@ const transitionRuntime = (workspaceId) => {
     leaseCommandFactory,
   });
 };
+
+const classificationRuntime = (workspaceId) =>
+  mutationRuntime(
+    workspaceId,
+    CLASSIFICATION_CAPABILITY,
+    CLASSIFICATION_LEASE_CONTEXT_KEYS,
+  );
+
+const openRuntime = (workspaceId) =>
+  mutationRuntime(workspaceId, SESSION_CAPABILITY, OPEN_LEASE_CONTEXT_KEYS);
+
+const transitionRuntime = (workspaceId) =>
+  mutationRuntime(
+    workspaceId,
+    SESSION_CAPABILITY,
+    TRANSITION_LEASE_CONTEXT_KEYS,
+  );
 
 const closeOnce = (runtime) => {
   let attempted = false;
@@ -529,17 +566,20 @@ export const openPluginForgeRuntime = (options = undefined) => {
   const normalized = normalizeOptions(options);
   const resolution = resolveRoots(normalized.environment);
   const paths = resolveWritableStatePaths(resolution);
+  const workspaceId = normalized.environment.workspaceId;
   let runtime;
   try {
     runtime = openInstalledForgeRuntime({
       databasePath: paths.databasePath,
       artifactRoot: paths.artifactRoot,
-      capabilityPolicy: capabilityPolicy(normalized.environment.workspaceId),
+      capabilityPolicy: capabilityPolicy(workspaceId),
       clock: normalized.clock,
-      transitionRuntime: transitionRuntime(normalized.environment.workspaceId),
+      classificationRuntime: classificationRuntime(workspaceId),
+      openRuntime: openRuntime(workspaceId),
+      transitionRuntime: transitionRuntime(workspaceId),
     });
   } catch {
     unavailable();
   }
-  return opened(normalized.environment.workspaceId, paths, runtime);
+  return opened(workspaceId, paths, runtime);
 };

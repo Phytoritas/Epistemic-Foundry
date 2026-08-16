@@ -12,8 +12,8 @@ import { fileURLToPath } from "node:url";
 
 const require = createRequire(import.meta.url);
 const HERE = dirname(fileURLToPath(import.meta.url));
-// packages/plugin-host/src/mcp/write -> repository root
-const REPOSITORY_ROOT = join(HERE, "..", "..", "..", "..", "..");
+const PACKAGED_PLUGIN_HOST_ROOT = join(HERE, "..", "..");
+const SOURCE_PLUGIN_HOST_PREFIX = "packages/plugin-host/src/";
 
 const mutatingDocument = require("./generated/t02-tool-descriptors.json");
 const catalogSet = mutatingDocument.catalog_set;
@@ -22,8 +22,32 @@ export const PROTOCOL_VERSION = mutatingDocument.protocol_version;
 export const CATALOG_SET_ID = catalogSet.set_id;
 export const GLOBAL_EXACT_COUNT = catalogSet.global_exact_count;
 
+function packagedProjectionPath(sourcePath) {
+  if (
+    typeof sourcePath !== "string" ||
+    !sourcePath.startsWith(SOURCE_PLUGIN_HOST_PREFIX)
+  ) {
+    throw new Error("catalog descriptor projection is outside plugin-host source");
+  }
+  const relative = sourcePath.slice(SOURCE_PLUGIN_HOST_PREFIX.length);
+  const segments = relative.split("/");
+  if (
+    relative.length === 0 ||
+    segments.some(
+      (segment) =>
+        segment.length === 0 ||
+        segment === "." ||
+        segment === ".." ||
+        segment.includes("\\"),
+    )
+  ) {
+    throw new Error("catalog descriptor projection path is not canonical");
+  }
+  return join(PACKAGED_PLUGIN_HOST_ROOT, ...segments);
+}
+
 function loadProjection(entry) {
-  const document = require(join(REPOSITORY_ROOT, entry.descriptor_projection));
+  const document = require(packagedProjectionPath(entry.descriptor_projection));
   if (document.protocol_version !== PROTOCOL_VERSION) {
     throw new Error(`protocol version drifted in ${entry.catalog_id}`);
   }
