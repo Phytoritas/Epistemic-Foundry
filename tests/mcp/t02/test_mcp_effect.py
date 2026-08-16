@@ -57,9 +57,14 @@ def test_a_committed_effect_binds_intent_lease_and_receipt(build_harness) -> Non
     assert mutation["action_intent_id"] == harness.intents.intents[0]["intent_id"]
     assert mutation["capability_lease_id"] == harness.leases.issued[0].lease_id
     assert mutation["effect_receipt_id"] == harness.receipts.receipts[0]["receipt_id"]
-    assert envelope["receipts"][0]["artifact_id"] == mutation["action_intent_id"]
+    assert envelope["receipts"] == []
     assert len(harness.idempotency.attempts) == 1
-    assert harness.idempotency.records["key-1"]["revision"] == 3
+    attempt_id = next(iter(harness.idempotency.attempts))
+    assert (
+        harness.receipts.receipt_attempts[mutation["effect_receipt_id"]]
+        == attempt_id
+    )
+    assert harness.idempotency.records["key-0001"]["revision"] == 3
 
 
 def test_the_lease_is_issued_before_the_effect_and_revalidated(build_harness) -> None:
@@ -171,6 +176,44 @@ def test_a_dry_run_records_evidence_and_executes_nothing(build_harness) -> None:
     assert envelope["data"]["preview"] == {
         "would_change": sorted(schema["properties"]["arguments"]["properties"])
     }
+
+
+def test_a_failed_dry_run_preview_leaves_no_attempt_and_may_retry(
+    build_harness,
+) -> None:
+    executor = FakeExecutor(preview_failures_remaining=1)
+    harness = build_harness(executor=executor)
+
+    first, first_is_error = harness.call(
+        POLICY_ONLY_TOOL,
+        dry_run=True,
+        idempotency_key="preview-retry",
+    )
+
+    assert first_is_error is True
+    assert first["error_code"] == "INTERNAL"
+    assert first["details"] is None
+    assert len(harness.intents.intents) == 1
+    assert harness.idempotency.attempts == {}
+    assert harness.receipts.receipts == []
+    assert executor.executions == []
+    assert executor.previews == ["mutate_session_transition"]
+
+    second, second_is_error = harness.call(
+        POLICY_ONLY_TOOL,
+        dry_run=True,
+        idempotency_key="preview-retry",
+    )
+
+    assert second_is_error is False
+    assert second["data"]["mutation"]["effect_status"] == "NOT_EXECUTED"
+    assert len(harness.idempotency.attempts) == 1
+    assert len(harness.receipts.receipts) == 1
+    assert executor.executions == []
+    assert executor.previews == [
+        "mutate_session_transition",
+        "mutate_session_transition",
+    ]
 
 
 def test_a_dry_run_key_cannot_be_reused_for_a_live_commit(
@@ -300,6 +343,38 @@ def test_an_attempt_without_a_receipt_is_reconciling_and_never_reexecutes(
     assert harness.receipts.receipts == []
 
 
+def test_a_bound_receipt_missing_from_its_attempt_lineage_fails_reconciliation(
+    build_harness,
+) -> None:
+    harness = build_harness()
+    key = "missing-bound-receipt"
+    fingerprint = semantic_fingerprint(
+        arguments=call_arguments(
+            harness.catalog,
+            POLICY_ONLY_TOOL,
+            idempotency_key=key,
+        ),
+        auth=harness.auth(POLICY_ONLY_TOOL),
+        tool=POLICY_ONLY_TOOL,
+    )
+    harness.idempotency.seed(
+        key,
+        fingerprint,
+        intent_id="intent-missing-receipt",
+        attempt_id="attempt-missing-receipt",
+        receipt_id="receipt-missing",
+    )
+
+    envelope, is_error = harness.call(POLICY_ONLY_TOOL, idempotency_key=key)
+
+    assert is_error is True
+    assert envelope["details"]["mutation_error_code"] == "RECONCILIATION_FAILED"
+    assert envelope["details"]["effect_receipt_id"] == "receipt-missing"
+    assert envelope["details"]["reconciliation_required"] is True
+    assert harness.executor.executions == []
+    assert harness.receipts.receipts == []
+
+
 def test_replay_adopts_a_receipt_persisted_before_reservation_binding(
     build_harness,
 ) -> None:
@@ -343,6 +418,54 @@ def test_replay_adopts_a_receipt_persisted_before_reservation_binding(
         == stored["receipt_id"]
     )
     assert harness.idempotency.records[key]["receipt_id"] == stored["receipt_id"]
+
+
+def test_replay_rejects_an_attempt_tail_bound_to_another_idempotency_key(
+    build_harness,
+) -> None:
+    harness = build_harness()
+    key = "receipt-owner-key"
+    intent_id = "intent-cross-key"
+    attempt_id = "attempt-cross-key"
+    fingerprint = semantic_fingerprint(
+        arguments=call_arguments(
+            harness.catalog,
+            POLICY_ONLY_TOOL,
+            idempotency_key=key,
+        ),
+        auth=harness.auth(POLICY_ONLY_TOOL),
+        tool=POLICY_ONLY_TOOL,
+    )
+    harness.idempotency.seed(
+        key,
+        fingerprint,
+        intent_id=intent_id,
+        attempt_id=attempt_id,
+        receipt_id=None,
+    )
+    foreign = harness.receipts.persist(
+        {
+            "error_artifact_ids": [],
+            "external_operation_id": "op-cross-key",
+            "idempotency_key": "receipt-foreign-key",
+            "intent_id": intent_id,
+            "new_revision": "rev-2",
+            "observed_state_hash": "sha256:" + "0" * 64,
+            "reconciliation_required": False,
+            "result_artifact_ids": [],
+            "status": "SUCCEEDED",
+        },
+        attempt_id=attempt_id,
+    )
+
+    envelope, is_error = harness.call(POLICY_ONLY_TOOL, idempotency_key=key)
+
+    assert is_error is True
+    assert envelope["details"]["mutation_error_code"] == "RECONCILIATION_FAILED"
+    assert envelope["details"]["effect_receipt_id"] == foreign["receipt_id"]
+    assert envelope["details"]["reconciliation_required"] is True
+    assert harness.idempotency.records[key]["receipt_id"] is None
+    assert harness.executor.executions == []
 
 
 def test_a_reservation_without_an_intent_may_safely_continue(build_harness) -> None:
@@ -593,5 +716,8 @@ def test_every_mutating_tool_completes_the_lifecycle(build_harness, catalog) -> 
 
         assert is_error is False, tool
         assert envelope["data"]["mutation"]["effect_status"] == "SUCCEEDED", tool
+        assert len(harness.runtime.requests) == 1, tool
+        assert harness.runtime.requests[0].tool_name == tool
+        assert harness.runtime.requests[0].handler_operation == spec.handler_operation
         assert harness.executor.executions == [spec.handler_operation], tool
         assert len(harness.receipts.receipts) == 1, tool

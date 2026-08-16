@@ -1,4 +1,4 @@
-"""T02 catalog integrity: exact nine mutating tools, verified end to end."""
+"""T02 catalog integrity: exact eleven mutating tools, verified end to end."""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ import yaml
 from epistemic_foundry.application.mcp_common import (
     PROTOCOL_VERSION,
     CatalogIntegrityError,
+    McpContractError,
     load_catalog,
 )
 from epistemic_foundry.application.mcp_mutating import (
@@ -67,7 +68,7 @@ def _rebuild(document: dict) -> MutatingToolCatalog:
     )
 
 
-def test_catalog_declares_exactly_nine_mutating_tools() -> None:
+def test_catalog_declares_exactly_eleven_mutating_tools() -> None:
     catalog = load_mutating_catalog(ROOT)
 
     assert len(catalog.tool_names) == EXPECTED_MUTATING_TOOL_COUNT
@@ -110,6 +111,158 @@ def test_expected_revision_nullability_follows_the_catalog() -> None:
             assert declared["type"] == "null"
 
 
+def test_forge_additions_are_appended_with_the_frozen_f01_and_f04_bindings() -> None:
+    catalog = load_mutating_catalog(ROOT)
+
+    assert catalog.tool_names[-2:] == (
+        "foundry.work.classify",
+        "foundry.session.open",
+    )
+    classify = catalog.spec("foundry.work.classify")
+    session_open = catalog.spec("foundry.session.open")
+    assert (
+        classify.handler_operation,
+        classify.capability,
+        classify.risk_class,
+        classify.approval_class,
+        classify.expected_revision_required,
+        classify.data_schema_refs,
+    ) == (
+        "mutate_work_classify",
+        "mcp.write.classification",
+        "medium",
+        "POLICY_CONDITIONAL",
+        False,
+        (
+            "https://epistemic-foundry.local/schemas/"
+            "epistemic-work-classification.schema.json",
+        ),
+    )
+    assert (
+        session_open.handler_operation,
+        session_open.capability,
+        session_open.risk_class,
+        session_open.approval_class,
+        session_open.expected_revision_required,
+        session_open.data_schema_refs,
+    ) == (
+        "mutate_session_open",
+        "mcp.write.session",
+        "medium",
+        "POLICY_CONDITIONAL",
+        False,
+        ("https://epistemic-foundry.local/schemas/forge-session-state.schema.json",),
+    )
+
+    classify_arguments = catalog.input_schema("foundry.work.classify")["properties"][
+        "arguments"
+    ]
+    assert set(classify_arguments["properties"]) == {
+        "run_id",
+        "request_id",
+        "request_text",
+        "request_input_hash",
+        "classifier_version",
+        "policy_bundle_hash",
+        "policy_bundle_signals",
+        "typed_request_metadata",
+        "deterministic_detector_signals",
+        "llm_signal_proposals",
+        "missing_contract_flags",
+    }
+    assert set(classify_arguments["required"]) == set(
+        classify_arguments["properties"]
+    ) - {"classifier_version"}
+    assert classify_arguments["properties"]["classifier_version"]["const"] == (
+        "4.0.1-f01.1"
+    )
+    assert classify_arguments["properties"]["llm_signal_proposals"]["items"] == {}
+    for field in (
+        "policy_bundle_signals",
+        "deterministic_detector_signals",
+        "missing_contract_flags",
+    ):
+        assert "uniqueItems" not in classify_arguments["properties"][field]
+    assert "uniqueItems" not in classify_arguments["properties"][
+        "typed_request_metadata"
+    ]["properties"]["signals"]
+
+    open_arguments = catalog.input_schema("foundry.session.open")["properties"][
+        "arguments"
+    ]
+    assert set(open_arguments["properties"]) == {
+        "session_id",
+        "classification_id",
+        "corpus_snapshot_hash",
+        "actor",
+        "requested_at",
+    }
+    assert set(open_arguments["required"]) == set(open_arguments["properties"])
+    actor = open_arguments["properties"]["actor"]
+    assert set(actor["properties"]) == {"actor_id", "actor_type", "role"}
+    assert set(actor["required"]) == set(actor["properties"])
+
+
+def test_forge_additions_reject_mismatched_business_target_refs() -> None:
+    catalog = load_mutating_catalog(ROOT)
+    digest = "sha256:" + "0" * 64
+    cases = (
+        (
+            "foundry.work.classify",
+            {
+                "workspace_id": "workspace-1",
+                "dry_run": True,
+                "expected_revision": None,
+                "idempotency_key": "classify-key",
+                "approval_record_ids": [],
+                "target_ref": "request-2",
+                "arguments": {
+                    "run_id": "run-1",
+                    "request_id": "request-1",
+                    "request_text": "",
+                    "request_input_hash": digest,
+                    "policy_bundle_hash": digest,
+                    "policy_bundle_signals": [],
+                    "typed_request_metadata": {"signals": []},
+                    "deterministic_detector_signals": [],
+                    "llm_signal_proposals": [],
+                    "missing_contract_flags": [],
+                },
+            },
+        ),
+        (
+            "foundry.session.open",
+            {
+                "workspace_id": "workspace-1",
+                "dry_run": True,
+                "expected_revision": None,
+                "idempotency_key": "open-key",
+                "approval_record_ids": [],
+                "target_ref": "session-2",
+                "arguments": {
+                    "session_id": "session-1",
+                    "classification_id": "classification-1",
+                    "corpus_snapshot_hash": digest,
+                    "actor": {
+                        "actor_id": "actor-1",
+                        "actor_type": "agent",
+                        "role": "operator",
+                    },
+                    "requested_at": "2026-08-16T05:00:00.000Z",
+                },
+            },
+        ),
+    )
+
+    for name, arguments in cases:
+        with pytest.raises(McpContractError) as caught:
+            catalog.validate_arguments(name, arguments)
+
+        assert caught.value.error_code == "INVALID_INPUT"
+        assert str(caught.value) == "target_ref must match the canonical business target"
+        assert caught.value.details is None
+
+
 def test_the_sealed_t01_catalog_is_untouched_and_disjoint() -> None:
     sealed = load_catalog(ROOT)
     mutating = load_mutating_catalog(ROOT)
@@ -123,8 +276,8 @@ def test_the_sealed_t01_catalog_is_untouched_and_disjoint() -> None:
 def test_catalog_set_orders_and_counts_the_composed_surface() -> None:
     catalog_set = load_catalog_set(ROOT)
 
-    assert catalog_set["global_exact_count"] == 22
-    assert [entry["exact_count"] for entry in catalog_set["catalogs"]] == [13, 9]
+    assert catalog_set["global_exact_count"] == 24
+    assert [entry["exact_count"] for entry in catalog_set["catalogs"]] == [13, 11]
     assert catalog_set["merge_order"] == [
         entry["catalog_id"] for entry in catalog_set["catalogs"]
     ]
@@ -195,7 +348,7 @@ def test_mutation_error_codes_map_onto_the_sealed_enum() -> None:
     ("mutate", "fragment"),
     [
         (lambda d: d["tools"].pop(), "cardinality"),
-        (lambda d: d.__setitem__("mutating_tool_count", 8), "cardinality"),
+        (lambda d: d.__setitem__("mutating_tool_count", 10), "cardinality"),
         (lambda d: d.__setitem__("protocol_version", "1999-01-01"), "protocol version"),
         (
             lambda d: d["tools"][0].__setitem__("side_effect_class", "PURE_READ"),
@@ -242,8 +395,8 @@ def test_a_drifted_catalog_set_count_fails_closed(tmp_path: Path) -> None:
             (ROOT / relative).read_text(encoding="utf-8"), encoding="utf-8"
         )
     document = yaml.safe_load(CATALOG_SET_PATH.read_text(encoding="utf-8"))
-    document["catalogs"][1]["exact_count"] = 8
-    document["global_exact_count"] = 21
+    document["catalogs"][1]["exact_count"] = 10
+    document["global_exact_count"] = 23
     (tmp_path / "contracts/mcp/catalog-set.yaml").write_text(
         yaml.safe_dump(document, sort_keys=False), encoding="utf-8"
     )

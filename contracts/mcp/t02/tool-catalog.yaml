@@ -1,4 +1,4 @@
-# T02 canonical mutating tool catalog — the sole declarer of these nine names.
+# T02 canonical mutating tool catalog — the sole declarer of these eleven names.
 #
 # Frozen by HD-EF4-T02-SCOPE-20260801-001 and
 # docs/t02_mutating_tool_architecture.md.  Every mutating handler registry,
@@ -6,9 +6,9 @@
 # file; re-declaring a name, capability, approval class, or schema binding
 # elsewhere violates EF4-I22.  The sealed T01 catalog is not modified.
 catalog_id: MCP-T02-CATALOG
-catalog_version: 1.0.0
+catalog_version: 1.1.0
 protocol_version: "2026-07-28"
-mutating_tool_count: 9
+mutating_tool_count: 11
 common_input_schema: contracts/mcp/t02/schemas/common-mutation-input.schema.json
 mutation_result_schema: contracts/mcp/t02/schemas/mutation-result.schema.json
 mutation_error_details_schema: contracts/mcp/t02/schemas/mutation-error-details.schema.json
@@ -111,4 +111,26 @@ tools:
     capability: mcp.write.skill
     risk_class: critical
     approval_class: HUMAN_REQUIRED
+    expected_revision_required: false
+  - name: foundry.work.classify
+    title: Classify a request through the durable F01 work classifier
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_work_classify
+    input_schema: contracts/mcp/t02/schemas/tools/work-classify.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/epistemic-work-classification.schema.json
+    capability: mcp.write.classification
+    risk_class: medium
+    approval_class: POLICY_CONDITIONAL
+    expected_revision_required: false
+  - name: foundry.session.open
+    title: Open a durable FORGE session from a sealed classification
+    side_effect_class: MUTATING_EFFECT
+    handler_operation: mutate_session_open
+    input_schema: contracts/mcp/t02/schemas/tools/session-open.input.schema.json
+    data_schema_refs:
+      - https://epistemic-foundry.local/schemas/forge-session-state.schema.json
+    capability: mcp.write.session
+    risk_class: medium
+    approval_class: POLICY_CONDITIONAL
     expected_revision_required: false

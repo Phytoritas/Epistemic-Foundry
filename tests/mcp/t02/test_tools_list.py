@@ -1,4 +1,4 @@
-"""The composed tools/list surface: 13 sealed + 9 mutating, in declared order."""
+"""The composed tools/list surface: 13 sealed + 11 mutating, in declared order."""
 
 from __future__ import annotations
 
@@ -21,12 +21,12 @@ def _composed() -> list[dict]:
     ]
 
 
-def test_composed_surface_has_exactly_twenty_two_unique_tools() -> None:
+def test_composed_surface_has_exactly_twenty_four_unique_tools() -> None:
     composed = _composed()
     names = [descriptor["name"] for descriptor in composed]
 
-    assert len(composed) == load_catalog_set(ROOT)["global_exact_count"] == 22
-    assert len(set(names)) == 22
+    assert len(composed) == load_catalog_set(ROOT)["global_exact_count"] == 24
+    assert len(set(names)) == 24
 
 
 def test_merge_order_places_the_sealed_surface_first() -> None:

@@ -34,7 +34,7 @@ from ..mcp_common.contracts import (
 CATALOG_RELATIVE_PATH: Final = "contracts/mcp/t02/tool-catalog.yaml"
 CATALOG_SET_RELATIVE_PATH: Final = "contracts/mcp/catalog-set.yaml"
 MUTATING_SIDE_EFFECT_CLASS: Final = "MUTATING_EFFECT"
-EXPECTED_MUTATING_TOOL_COUNT: Final = 9
+EXPECTED_MUTATING_TOOL_COUNT: Final = 11
 
 #: Closed mutation subcodes carried in the sealed error envelope's details.
 MUTATION_ERROR_CODES: Final = (
@@ -62,6 +62,9 @@ MUTATION_ERROR_MAPPING: Final = {
 }
 APPROVAL_CLASSES: Final = ("POLICY_CONDITIONAL", "CONSENT_REQUIRED", "HUMAN_REQUIRED")
 RISK_CLASSES: Final = ("low", "medium", "high", "critical")
+_TARGET_REF_MISMATCH_MESSAGE: Final = (
+    "target_ref must match the canonical business target"
+)
 
 _TOOL_FIELDS: Final = frozenset(
     {
@@ -162,6 +165,17 @@ class MutatingToolCatalog:
             dict(envelope_error_schema)
         )
         self._tools = self._verify(document, input_schemas)
+        # T02 v1.1 freezes the appended order as F01 classify then F04 OPEN.
+        # Derive the tool names from the catalog so it remains their sole
+        # declaring source while the cross-field identities stay explicit.
+        appended_target_fields = ("request_id", "session_id")
+        self._target_ref_argument_fields = dict(
+            zip(
+                tuple(self._tools)[-len(appended_target_fields) :],
+                appended_target_fields,
+                strict=True,
+            )
+        )
         self._input_schemas = {
             name: dict(input_schemas[spec.input_schema_path])
             for name, spec in self._tools.items()
@@ -285,7 +299,14 @@ class MutatingToolCatalog:
                 f"arguments do not satisfy the canonical input schema for {name}",
                 {"schema_errors": errors},
             )
-        return {str(key): value for key, value in arguments.items()}
+        validated = {str(key): value for key, value in arguments.items()}
+        target_field = self._target_ref_argument_fields.get(name)
+        if (
+            target_field is not None
+            and validated["target_ref"] != validated["arguments"][target_field]
+        ):
+            raise McpContractError("INVALID_INPUT", _TARGET_REF_MISMATCH_MESSAGE)
+        return validated
 
     def validate_result_payload(self, payload: Mapping[str, Any]) -> None:
         errors = sorted(

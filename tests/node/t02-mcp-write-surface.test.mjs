@@ -43,14 +43,14 @@ function successPort(mutation) {
   };
 }
 
-test("the composed surface exposes exactly 13 + 9 unique tools", () => {
+test("the composed surface exposes exactly 13 + 11 unique tools", () => {
   const merged = mergedToolDescriptors();
   const names = merged.map((tool) => tool.name);
 
-  assert.equal(merged.length, 22);
+  assert.equal(merged.length, 24);
   assert.equal(merged.length, GLOBAL_EXACT_COUNT);
   assert.equal(merged.length, composedToolCount());
-  assert.equal(new Set(names).size, 22);
+  assert.equal(new Set(names).size, 24);
 });
 
 test("merge order places the sealed projection first and unchanged", () => {
@@ -64,10 +64,10 @@ test("merge order places the sealed projection first and unchanged", () => {
   assert.deepEqual(merged.slice(0, sealedNames.length), SEALED_PROJECTION.tools);
 });
 
-test("the mutating half is exactly the nine T02 tools", () => {
+test("the mutating half is exactly the eleven T02 tools", () => {
   const mutating = mutatingToolDescriptors();
 
-  assert.equal(mutating.length, 9);
+  assert.equal(mutating.length, 11);
   for (const tool of mutating) {
     assert.equal(tool.annotations.sideEffectClass, "MUTATING_EFFECT");
     assert.equal(tool.annotations.readOnlyHint, false);
@@ -102,7 +102,7 @@ test("tools/list returns the composed table", async () => {
     successPort({ effect_status: "SUCCEEDED", dry_run: false }),
   );
 
-  assert.equal(response.result.tools.length, 22);
+  assert.equal(response.result.tools.length, 24);
   assert.deepEqual(response.result.tools, mergedToolDescriptors());
 });
 
@@ -194,7 +194,7 @@ test("HTTP POST /mcp round-trips the composed table", async () => {
   });
 
   assert.equal(result.status, 200);
-  assert.equal(JSON.parse(result.body).result.tools.length, 22);
+  assert.equal(JSON.parse(result.body).result.tools.length, 24);
 });
 
 test("HTTP transport keeps the sealed framing rules", async () => {
@@ -229,7 +229,7 @@ test("STDIO serves the composed table line by line", async () => {
   const handled = await serveStdio(lines, (line) => written.push(line), successPort(null));
 
   assert.equal(handled, 1);
-  assert.equal(JSON.parse(written[0]).result.tools.length, 22);
+  assert.equal(JSON.parse(written[0]).result.tools.length, 24);
 });
 
 test("an unknown method is rejected by the sealed framing", async () => {

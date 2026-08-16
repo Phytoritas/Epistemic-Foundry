@@ -1,4 +1,4 @@
-"""Compound T02 mutation-runtime handler and exact-nine registry factory."""
+"""Compound T02 mutation-runtime handler and exact-eleven registry factory."""
 
 from __future__ import annotations
 
@@ -103,6 +103,6 @@ def build_mutating_registry(
     catalog: MutatingToolCatalog,
     handler: MutationHandler,
 ) -> dict[str, MutationHandler]:
-    """One handler per catalog row; the verified catalog contains exactly nine."""
+    """One handler per catalog row; the verified catalog contains exactly eleven."""
 
     return {name: handler for name in catalog.tool_names}

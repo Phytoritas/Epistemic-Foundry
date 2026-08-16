@@ -9,10 +9,10 @@
       {
         "catalog_id": "MCP-T02-CATALOG",
         "descriptor_projection": "packages/plugin-host/src/mcp/write/generated/t02-tool-descriptors.json",
-        "exact_count": 9
+        "exact_count": 11
       }
     ],
-    "global_exact_count": 22,
+    "global_exact_count": 24,
     "merge_order": [
       "MCP-T01-CATALOG",
       "MCP-T02-CATALOG"
@@ -781,6 +781,310 @@
         "capability": "mcp.write.skill",
         "dataSchemaRefs": [
           "https://epistemic-foundry.local/schemas/skill-lockfile.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.work.classify",
+      "title": "Classify a request through the durable F01 work classifier",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/work-classify.input.schema.json",
+        "title": "WorkClassifyInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "null"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "run_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "request_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "request_text": {
+                "type": "string"
+              },
+              "request_input_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "classifier_version": {
+                "type": "string",
+                "const": "4.0.1-f01.1"
+              },
+              "policy_bundle_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "policy_bundle_signals": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "TRANSFORM",
+                    "LOOKUP",
+                    "SYNTHESIS",
+                    "MECHANISM",
+                    "CAUSAL",
+                    "VALIDATION",
+                    "HIGH_STAKES",
+                    "EXPENSIVE",
+                    "NOVELTY",
+                    "AMBIGUOUS"
+                  ]
+                }
+              },
+              "typed_request_metadata": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "signals": {
+                    "type": "array",
+                    "items": {
+                      "enum": [
+                        "TRANSFORM",
+                        "LOOKUP",
+                        "SYNTHESIS",
+                        "MECHANISM",
+                        "CAUSAL",
+                        "VALIDATION",
+                        "HIGH_STAKES",
+                        "EXPENSIVE",
+                        "NOVELTY",
+                        "AMBIGUOUS"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "signals"
+                ]
+              },
+              "deterministic_detector_signals": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "TRANSFORM",
+                    "LOOKUP",
+                    "SYNTHESIS",
+                    "MECHANISM",
+                    "CAUSAL",
+                    "VALIDATION",
+                    "HIGH_STAKES",
+                    "EXPENSIVE",
+                    "NOVELTY",
+                    "AMBIGUOUS"
+                  ]
+                }
+              },
+              "llm_signal_proposals": {
+                "type": "array",
+                "items": {}
+              },
+              "missing_contract_flags": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "I01_AMBIGUOUS_SIGNAL",
+                    "I02_CONFLICTING_REQUIREMENTS",
+                    "I03_MISSING_GOAL_OR_DECISION",
+                    "I04_MISSING_SCOPE",
+                    "I05_MISSING_FALSIFIER",
+                    "I06_MISSING_AUTHORITY",
+                    "I07_MISSING_HIGH_RISK_CONTRACT",
+                    "I08_MISSING_NOVELTY_BOUNDARY",
+                    "I09_UNBOUNDED_COST"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "run_id",
+              "request_id",
+              "request_text",
+              "request_input_hash",
+              "policy_bundle_hash",
+              "policy_bundle_signals",
+              "typed_request_metadata",
+              "deterministic_detector_signals",
+              "llm_signal_proposals",
+              "missing_contract_flags"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.classification",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/epistemic-work-classification.schema.json"
+        ],
+        "readOnlyHint": false
+      }
+    },
+    {
+      "name": "foundry.session.open",
+      "title": "Open a durable FORGE session from a sealed classification",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/session-open.input.schema.json",
+        "title": "SessionOpenInput",
+        "type": "object",
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "../common-mutation-input.schema.json"
+          }
+        ],
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "minLength": 3
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "null"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 200
+          },
+          "approval_record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "target_ref": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "session_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 128
+              },
+              "classification_id": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 128
+              },
+              "corpus_snapshot_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "actor": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "actor_id": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 128
+                  },
+                  "actor_type": {
+                    "enum": [
+                      "human",
+                      "agent",
+                      "service"
+                    ]
+                  },
+                  "role": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "actor_id",
+                  "actor_type",
+                  "role"
+                ]
+              },
+              "requested_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "session_id",
+              "classification_id",
+              "corpus_snapshot_hash",
+              "actor",
+              "requested_at"
+            ]
+          }
+        },
+        "required": [
+          "workspace_id",
+          "dry_run",
+          "expected_revision",
+          "idempotency_key",
+          "approval_record_ids",
+          "target_ref",
+          "arguments"
+        ]
+      },
+      "annotations": {
+        "sideEffectClass": "MUTATING_EFFECT",
+        "capability": "mcp.write.session",
+        "dataSchemaRefs": [
+          "https://epistemic-foundry.local/schemas/forge-session-state.schema.json"
         ],
         "readOnlyHint": false
       }

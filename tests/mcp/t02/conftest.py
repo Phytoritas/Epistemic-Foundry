@@ -14,6 +14,7 @@ from harness import (
     FakeIdempotencyStore,
     FakeIntentStore,
     FakeLeaseIssuer,
+    FakeMutationRuntime,
     FakePolicyEvaluator,
     FakeReceiptStore,
     FakeRevisionStore,
@@ -51,8 +52,7 @@ def build_harness(catalog: Any):
         intent_port = FakeIntentStore()
         executor_port = executor or FakeExecutor()
         receipt_port = FakeReceiptStore()
-        handler = MutationHandler(
-            catalog,
+        runtime = FakeMutationRuntime(
             approvals=approval_port,
             executor=executor_port,
             idempotency=idempotency_port,
@@ -62,6 +62,7 @@ def build_harness(catalog: Any):
             receipts=receipt_port,
             revisions=revision_port,
         )
+        handler = MutationHandler(catalog, runtime=runtime)
         return Harness(
             approvals=approval_port,
             catalog=catalog,
@@ -72,6 +73,7 @@ def build_harness(catalog: Any):
             policy=policy_port,
             receipts=receipt_port,
             revisions=revision_port,
+            runtime=runtime,
             service=ToolService(
                 catalog,
                 build_mutating_registry(catalog, handler),

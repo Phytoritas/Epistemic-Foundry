@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/work-classify.input.schema.json",
+  "title": "WorkClassifyInput",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "../common-mutation-input.schema.json"
+    }
+  ],
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dry_run": {
+      "type": "boolean"
+    },
+    "expected_revision": {
+      "type": "null"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "approval_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "target_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "arguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "request_text": {
+          "type": "string"
+        },
+        "request_input_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "classifier_version": {
+          "type": "string",
+          "const": "4.0.1-f01.1"
+        },
+        "policy_bundle_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "policy_bundle_signals": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "TRANSFORM",
+              "LOOKUP",
+              "SYNTHESIS",
+              "MECHANISM",
+              "CAUSAL",
+              "VALIDATION",
+              "HIGH_STAKES",
+              "EXPENSIVE",
+              "NOVELTY",
+              "AMBIGUOUS"
+            ]
+          }
+        },
+        "typed_request_metadata": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "signals": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "TRANSFORM",
+                  "LOOKUP",
+                  "SYNTHESIS",
+                  "MECHANISM",
+                  "CAUSAL",
+                  "VALIDATION",
+                  "HIGH_STAKES",
+                  "EXPENSIVE",
+                  "NOVELTY",
+                  "AMBIGUOUS"
+                ]
+              }
+            }
+          },
+          "required": [
+            "signals"
+          ]
+        },
+        "deterministic_detector_signals": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "TRANSFORM",
+              "LOOKUP",
+              "SYNTHESIS",
+              "MECHANISM",
+              "CAUSAL",
+              "VALIDATION",
+              "HIGH_STAKES",
+              "EXPENSIVE",
+              "NOVELTY",
+              "AMBIGUOUS"
+            ]
+          }
+        },
+        "llm_signal_proposals": {
+          "type": "array",
+          "items": {}
+        },
+        "missing_contract_flags": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "I01_AMBIGUOUS_SIGNAL",
+              "I02_CONFLICTING_REQUIREMENTS",
+              "I03_MISSING_GOAL_OR_DECISION",
+              "I04_MISSING_SCOPE",
+              "I05_MISSING_FALSIFIER",
+              "I06_MISSING_AUTHORITY",
+              "I07_MISSING_HIGH_RISK_CONTRACT",
+              "I08_MISSING_NOVELTY_BOUNDARY",
+              "I09_UNBOUNDED_COST"
+            ]
+          }
+        }
+      },
+      "required": [
+        "run_id",
+        "request_id",
+        "request_text",
+        "request_input_hash",
+        "policy_bundle_hash",
+        "policy_bundle_signals",
+        "typed_request_metadata",
+        "deterministic_detector_signals",
+        "llm_signal_proposals",
+        "missing_contract_flags"
+      ]
+    }
+  },
+  "required": [
+    "workspace_id",
+    "dry_run",
+    "expected_revision",
+    "idempotency_key",
+    "approval_record_ids",
+    "target_ref",
+    "arguments"
+  ]
+}

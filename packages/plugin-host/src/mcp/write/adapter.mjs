@@ -27,7 +27,7 @@ import {
 export { HTTP_MCP_PATH, JSONRPC_VERSION, PROTOCOL_VERSION };
 
 const COMPOSED_INSTRUCTIONS =
-  "Composed stateless surface: the sealed read and planning tools plus nine " +
+  "Composed stateless surface: the sealed read and planning tools plus eleven " +
   "MUTATING_EFFECT tools. Every mutating call requires dry_run, " +
   "expected_revision, and an idempotency key, and answers with an " +
   "ActionIntent, a CapabilityLease id, and an EffectReceipt. An unresolved " +

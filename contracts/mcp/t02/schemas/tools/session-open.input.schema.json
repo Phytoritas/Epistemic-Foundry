@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t02/schemas/tools/session-open.input.schema.json",
+  "title": "SessionOpenInput",
+  "type": "object",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "../common-mutation-input.schema.json"
+    }
+  ],
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 3
+    },
+    "dry_run": {
+      "type": "boolean"
+    },
+    "expected_revision": {
+      "type": "null"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 200
+    },
+    "approval_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "target_ref": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "arguments": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "classification_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "corpus_snapshot_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "actor": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "actor_id": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 128
+            },
+            "actor_type": {
+              "enum": [
+                "human",
+                "agent",
+                "service"
+              ]
+            },
+            "role": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "actor_id",
+            "actor_type",
+            "role"
+          ]
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "session_id",
+        "classification_id",
+        "corpus_snapshot_hash",
+        "actor",
+        "requested_at"
+      ]
+    }
+  },
+  "required": [
+    "workspace_id",
+    "dry_run",
+    "expected_revision",
+    "idempotency_key",
+    "approval_record_ids",
+    "target_ref",
+    "arguments"
+  ]
+}
