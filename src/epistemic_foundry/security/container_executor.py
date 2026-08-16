@@ -26,7 +26,7 @@ import tarfile
 import threading
 import time
 import unicodedata
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Iterator, Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, BinaryIO
@@ -50,6 +50,12 @@ _CANDIDATE_KEYS = frozenset(
     {"candidate_artifact_id", "files", "reachable_resource_ids"}
 )
 _CANDIDATE_FILE_KEYS = frozenset({"path", "bytes"})
+_PROFILE_KEYS = frozenset({'profile_id', 'profile_name', 'declared_capabilities', 'quotas', 'network_policy', 'network_allowlist', 'profile_hash'})
+_LEASE_KEYS = frozenset({'lease_id', 'principal_id', 'principal_type', 'capabilities', 'resource_scopes', 'issued_at', 'expires_at', 'fencing_token', 'policy_hash', 'approval_ids', 'revoked', 'revocation_reason', 'lease_hash'})
+_EXECUTION_AUTHORITY_KEYS = frozenset({'authority_id', 'profile', 'lease', 'current_fencing_token', 'requested_capabilities', 'now', 'evaluator_bundle_id', 'holdout_manifest_id'})
+_EXECUTION_AUTHORITY_REQUIRED_KEYS = frozenset({'profile', 'lease', 'current_fencing_token', 'requested_capabilities', 'now', 'evaluator_bundle_id', 'holdout_manifest_id'})
+_QUOTA_KEYS = frozenset(REQUIRED_QUOTAS)
+
 _READ_CHUNK_BYTES = 64 * 1024
 _CONTROL_OUTPUT_BYTES = 1024 * 1024
 _CONTROL_TIMEOUT_SECONDS = 10.0
@@ -68,6 +74,8 @@ _MAX_PORTABLE_PATH_BYTES = 100
 _TAR_BLOCK_BYTES = 512
 _TAR_RECORD_BLOCKS = 20
 _CANDIDATE_DIRECTORY = "/candidate"
+_CANDIDATE_ARCHIVE_ROOT = "candidate"
+_INVOCATION_NONCE_BYTES = 16
 _DOCKER_CONTEXT_ARGUMENTS = ("--context", "default")
 _REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x0400)
 
@@ -158,8 +166,36 @@ class _ProcessObservation:
     terminate_sent: bool
     kill_sent: bool
     stopped: bool
+    started_monotonic: float
+    wall_deadline_monotonic: float
     duration_seconds: float
+    exit_observed_duration_seconds: float | None
+    live_at_wall_deadline: bool | None
 
+@dataclass(slots=True)
+class _WallDeadlineObservation:
+    started: float
+    deadline: float
+    exit_observed_at: float | None = None
+    live_at_deadline: bool | None = None
+
+    def observe(self, process: subprocess.Popen[bytes]) -> int | None:
+        probe_started_at = time.monotonic()
+        returncode = process.poll()
+        probe_finished_at = time.monotonic()
+        if returncode is None:
+            if probe_started_at >= self.deadline:
+                self.live_at_deadline = True
+        elif self.exit_observed_at is None:
+            self.exit_observed_at = probe_finished_at
+            if probe_finished_at < self.deadline and self.live_at_deadline is None:
+                self.live_at_deadline = False
+        return returncode
+
+    def exit_duration_seconds(self) -> float | None:
+        if self.exit_observed_at is None:
+            return None
+        return max(0.0, self.exit_observed_at - self.started)
 
 class _BoundedBytesIO(io.BytesIO):
     def __init__(self, limit: int) -> None:
@@ -176,114 +212,168 @@ def _refuse(message: str) -> None:
     raise CandidateContainerRefused(message)
 
 
-def _require_mapping(value: object, label: str) -> Mapping[str, Any]:
+def _snapshot_mapping(value: object, label: str, *, allowed_keys: frozenset[str], required_keys: frozenset[str] | None=None, captured_keys: frozenset[str] | None=None) -> dict[str, Any]:
     if not isinstance(value, Mapping):
-        _refuse(f"{label} must be a mapping")
-    return value
-
-
-def _require_text(value: object, label: str, *, maximum: int = _MAX_TEXT_BYTES) -> str:
-    if not isinstance(value, str) or not value or "\x00" in value:
-        _refuse(f"{label} must be a non-empty string")
+        _refuse(f'{label} must be a mapping')
+    required = allowed_keys if required_keys is None else required_keys
+    captured = required if captured_keys is None else captured_keys
+    if not required.issubset(allowed_keys) or not captured.issubset(allowed_keys):
+        raise AssertionError('trusted mapping shape is inconsistent')
+    snapshot: dict[str, Any] = {}
+    seen: set[str] = set()
     try:
-        encoded = value.encode("utf-8")
-    except UnicodeEncodeError:
-        _refuse(f"{label} must be UTF-8 encodable")
-    if len(encoded) > maximum:
-        _refuse(f"{label} is too large")
-    return value
+        iterator = iter(value)
+        while True:
+            try:
+                key = next(iterator)
+            except StopIteration:
+                break
+            if len(seen) >= len(allowed_keys):
+                _refuse(f'{label} is too large')
+            if type(key) is not str:
+                _refuse(f'{label} keys must be built-in strings')
+            if key not in allowed_keys:
+                _refuse(f'{label} contains an unsupported key')
+            if key in seen:
+                _refuse(f'{label} contains duplicate keys')
+            seen.add(key)
+            if key in captured:
+                snapshot[key] = value[key]
+    except CandidateContainerRefused:
+        raise
+    except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        raise
+    except BaseException:
+        raise CandidateContainerRefused(f'{label} could not be snapshotted') from None
+    if not required.issubset(seen):
+        _refuse(f'{label} does not contain its required keys')
+    return snapshot
 
+def _iter_bounded_sequence(value: object, label: str, *, maximum_items: int) -> Iterator[Any]:
+    if isinstance(value, (str, bytes, bytearray)) or not isinstance(value, Sequence):
+        _refuse(f'{label} must be a sequence')
+    try:
+        iterator = iter(value)
+    except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        raise
+    except BaseException:
+        raise CandidateContainerRefused(f'{label} could not be snapshotted') from None
+    item_count = 0
+    while True:
+        try:
+            item = next(iterator)
+        except StopIteration:
+            return
+        except (KeyboardInterrupt, SystemExit, GeneratorExit):
+            raise
+        except BaseException:
+            raise CandidateContainerRefused(f'{label} could not be snapshotted') from None
+        if item_count >= maximum_items:
+            _refuse(f'{label} is too large')
+        item_count += 1
+        yield item
+
+def _require_text(value: object, label: str, *, maximum: int=_MAX_TEXT_BYTES) -> str:
+    if type(value) is not str or not value or '\x00' in value:
+        _refuse(f'{label} must be a non-empty built-in string')
+    try:
+        encoded = str.encode(value, 'utf-8')
+    except UnicodeEncodeError:
+        _refuse(f'{label} must be UTF-8 encodable')
+    if len(encoded) > maximum:
+        _refuse(f'{label} is too large')
+    return value
 
 def _require_id(value: object, label: str) -> str:
     return _require_text(value, label, maximum=_MAX_ID_BYTES)
 
-
-def _require_text_sequence(
-    value: object,
-    label: str,
-    *,
-    nonempty: bool,
-) -> tuple[str, ...]:
-    if isinstance(value, (str, bytes)) or not isinstance(value, Sequence):
-        _refuse(f"{label} must be a sequence of strings")
+def _require_text_sequence(value: object, label: str, *, nonempty: bool) -> tuple[str, ...]:
     result: list[str] = []
     total_bytes = 0
     seen: set[str] = set()
-    for item in value:
+    for item in _iter_bounded_sequence(value, label, maximum_items=_MAX_TEXT_BYTES):
         text = _require_text(item, label)
+        encoded_size = len(str.encode(text, 'utf-8'))
+        if total_bytes > _MAX_TEXT_BYTES - encoded_size:
+            _refuse(f'{label} is too large')
         if text in seen:
-            _refuse(f"{label} must not contain duplicates")
+            _refuse(f'{label} must not contain duplicates')
         seen.add(text)
-        total_bytes += len(text.encode("utf-8"))
-        if total_bytes > _MAX_TEXT_BYTES:
-            _refuse(f"{label} is too large")
+        total_bytes += encoded_size
         result.append(text)
-    if nonempty and not result:
-        _refuse(f"{label} must not be empty")
+    if nonempty and (not result):
+        _refuse(f'{label} must not be empty')
     return tuple(result)
 
-
 def _require_argv(value: object) -> tuple[str, ...]:
-    if isinstance(value, (str, bytes)) or not isinstance(value, Sequence):
-        _refuse("argv must be a sequence of strings")
     result: list[str] = []
     total_bytes = 0
-    for item in value:
-        if not isinstance(item, str) or "\x00" in item:
-            _refuse("argv must contain only strings without NUL characters")
+    for item in _iter_bounded_sequence(value, 'argv', maximum_items=_MAX_TEXT_BYTES):
+        if type(item) is not str or '\x00' in item:
+            _refuse('argv must contain only built-in strings without NUL characters')
         try:
-            total_bytes += len(item.encode("utf-8"))
+            encoded = str.encode(item, 'utf-8')
         except UnicodeEncodeError:
-            _refuse("argv must be UTF-8 encodable")
-        if total_bytes > _MAX_TEXT_BYTES:
-            _refuse("argv is too large")
+            _refuse('argv must be UTF-8 encodable')
+        if total_bytes > _MAX_TEXT_BYTES - len(encoded):
+            _refuse('argv is too large')
+        total_bytes += len(encoded)
         result.append(item)
     return tuple(result)
 
-
 def _positive_integer(value: object, label: str) -> int:
-    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
-        _refuse(f"{label} must be a positive integer")
+    if type(value) is not int or value <= 0:
+        _refuse(f'{label} must be a positive built-in integer')
     if value > _MAX_SIGNED_QUOTA:
-        _refuse(f"{label} cannot be represented safely")
+        _refuse(f'{label} cannot be represented safely')
     return value
 
+def _require_boolean(value: object, label: str) -> bool:
+    if type(value) is not bool:
+        _refuse(f'{label} must be a built-in boolean')
+    return value
+
+def _optional_text(value: object, label: str, *, maximum: int=_MAX_TEXT_BYTES) -> str | None:
+    if value is None:
+        return None
+    return _require_text(value, label, maximum=maximum)
 
 def _async_callable(value: object) -> bool:
-    call = getattr(value, "__call__", None)
-    return (
-        inspect.iscoroutinefunction(value)
-        or inspect.isasyncgenfunction(value)
-        or inspect.iscoroutinefunction(call)
-        or inspect.isasyncgenfunction(call)
-    )
-
+    try:
+        call = getattr(value, '__call__', None)
+        return inspect.iscoroutinefunction(value) or inspect.isasyncgenfunction(value) or inspect.iscoroutinefunction(call) or inspect.isasyncgenfunction(call)
+    except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        raise
+    except BaseException:
+        return True
 
 def _trusted_resolver(value: object, label: str) -> Callable[[str], object]:
     if not callable(value) or _async_callable(value):
-        _refuse(f"{label} must be a trusted synchronous callable")
+        _refuse(f'{label} must be a trusted synchronous callable')
     return value
 
-
-def _resolve_sync(
-    resolver: Callable[[str], object],
-    identifier: str,
-    label: str,
-) -> object:
+def _resolve_sync(resolver: Callable[[str], object], identifier: str, label: str) -> object:
     try:
         result = resolver(identifier)
     except Exception:
-        raise CandidateContainerRefused(f"{label} resolver failed") from None
-    if inspect.isawaitable(result) or inspect.isasyncgen(result):
-        close = getattr(result, "close", None)
-        if callable(close):
-            try:
+        raise CandidateContainerRefused(f'{label} resolver failed') from None
+    try:
+        asynchronous = inspect.isawaitable(result) or inspect.isasyncgen(result)
+    except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        raise
+    except BaseException:
+        raise CandidateContainerRefused(f'{label} resolver returned an uninspectable result') from None
+    if asynchronous:
+        try:
+            close = getattr(result, 'close', None)
+            if callable(close):
                 close()
-            except Exception:
-                pass
-        _refuse(f"{label} resolver returned an asynchronous result")
+        except (KeyboardInterrupt, SystemExit, GeneratorExit):
+            raise
+        except BaseException:
+            pass
+        _refuse(f'{label} resolver returned an asynchronous result')
     return result
-
 
 def _portable_relative_path(value: object) -> str:
     path = _require_text(value, "candidate file path", maximum=_MAX_PORTABLE_PATH_BYTES)
@@ -314,82 +404,76 @@ def _implicit_directories(paths: Sequence[str]) -> tuple[str, ...]:
     return tuple(sorted(directories, key=lambda item: (item.count("/"), item)))
 
 
-def _expected_tar_bytes(
-    files: Sequence[tuple[str, bytes]],
-    directories: Sequence[str],
-) -> int:
-    blocks = 2 + len(directories)
-    for _, content in files:
-        blocks += 1 + (len(content) + _TAR_BLOCK_BYTES - 1) // _TAR_BLOCK_BYTES
+def _tar_bytes_for_blocks(blocks: int) -> int:
     records = (blocks + _TAR_RECORD_BLOCKS - 1) // _TAR_RECORD_BLOCKS
     return records * _TAR_RECORD_BLOCKS * _TAR_BLOCK_BYTES
 
 
-def _snapshot_candidate_artifact(
-    value: object,
-    *,
-    expected_artifact_id: str,
-    trusted_byte_cap: int,
-    disk_byte_cap: int,
-) -> _CandidateArtifact:
-    source = _require_mapping(value, "candidate artifact")
-    if frozenset(source.keys()) != _CANDIDATE_KEYS:
-        _refuse("candidate artifact mapping must use the closed resolver shape")
-    resolved_id = _require_id(
-        source.get("candidate_artifact_id"), "resolved candidate_artifact_id"
-    )
-    if resolved_id != expected_artifact_id:
-        _refuse("candidate resolver returned a different artifact identity")
-    raw_files = source.get("files")
-    if isinstance(raw_files, (str, bytes)) or not isinstance(raw_files, Sequence):
-        _refuse("candidate artifact files must be a sequence")
-    if not raw_files:
-        _refuse("candidate artifact must contain at least one regular file")
+def _expected_tar_bytes(
+    files: Sequence[tuple[str, bytes]],
+    directories: Sequence[str],
+) -> int:
+    blocks = 3 + len(directories)
+    for _, content in files:
+        blocks += 1 + (len(content) + _TAR_BLOCK_BYTES - 1) // _TAR_BLOCK_BYTES
+    return _tar_bytes_for_blocks(blocks)
 
+
+def _snapshot_candidate_artifact(value: object, *, expected_artifact_id: str, trusted_byte_cap: int, disk_byte_cap: int) -> _CandidateArtifact:
+    source = _snapshot_mapping(value, 'candidate artifact', allowed_keys=_CANDIDATE_KEYS)
+    resolved_id = _require_id(source['candidate_artifact_id'], 'resolved candidate_artifact_id')
+    if resolved_id != expected_artifact_id:
+        _refuse('candidate resolver returned a different artifact identity')
+    maximum_file_headers = max(0, trusted_byte_cap // _TAR_BLOCK_BYTES - 3)
     files: list[tuple[str, bytes]] = []
     path_keys: set[str] = set()
+    directory_spellings: dict[str, str] = {}
     total_bytes = 0
+    tar_blocks = 3
     content_limit = min(trusted_byte_cap, disk_byte_cap)
-    for raw_file in raw_files:
-        file_source = _require_mapping(raw_file, "candidate file")
-        if frozenset(file_source.keys()) != _CANDIDATE_FILE_KEYS:
-            _refuse("candidate file mapping must contain only path and bytes")
-        path = _portable_relative_path(file_source.get("path"))
+    for raw_file in _iter_bounded_sequence(source['files'], 'candidate artifact files', maximum_items=maximum_file_headers):
+        file_source = _snapshot_mapping(raw_file, 'candidate file', allowed_keys=_CANDIDATE_FILE_KEYS)
+        path = _portable_relative_path(file_source['path'])
         path_key = path.casefold()
         if path_key in path_keys:
-            _refuse("candidate artifact contains duplicate portable paths")
-        path_keys.add(path_key)
-        content = file_source.get("bytes")
+            _refuse('candidate artifact contains duplicate portable paths')
+        if path_key in directory_spellings:
+            _refuse('candidate artifact path is both a file and a directory')
+        pending_directories: list[tuple[str, str]] = []
+        for directory in _implicit_directories((path,)):
+            directory_key = directory.casefold()
+            existing = directory_spellings.get(directory_key)
+            if existing is not None:
+                if existing != directory:
+                    _refuse('candidate artifact contains colliding portable directories')
+                continue
+            if directory_key in path_keys:
+                _refuse('candidate artifact path is both a file and a directory')
+            pending_directories.append((directory_key, directory))
+        content = file_source['bytes']
         if type(content) is not bytes:
-            _refuse("candidate file content must be immutable in-memory bytes")
-        total_bytes += len(content)
-        if total_bytes > content_limit:
-            _refuse("candidate artifact exceeds its trusted or profile byte cap")
+            _refuse('candidate file content must be immutable in-memory bytes')
+        next_total_bytes = total_bytes + len(content)
+        if next_total_bytes > content_limit:
+            _refuse('candidate artifact exceeds its trusted or profile byte cap')
+        next_tar_blocks = tar_blocks + len(pending_directories) + 1 + (len(content) + _TAR_BLOCK_BYTES - 1) // _TAR_BLOCK_BYTES
+        if _tar_bytes_for_blocks(next_tar_blocks) > trusted_byte_cap:
+            _refuse('candidate tar exceeds the trusted artifact byte cap')
+        path_keys.add(path_key)
+        for directory_key, directory in pending_directories:
+            directory_spellings[directory_key] = directory
+        total_bytes = next_total_bytes
+        tar_blocks = next_tar_blocks
         files.append((path, content))
-
+    if not files:
+        _refuse('candidate artifact must contain at least one regular file')
     files.sort(key=lambda item: item[0])
-    directories = _implicit_directories([path for path, _ in files])
-    file_path_keys = {path.casefold() for path, _ in files}
-    if any(directory.casefold() in file_path_keys for directory in directories):
-        _refuse("candidate artifact path is both a file and a directory")
+    directories = tuple(sorted(directory_spellings.values(), key=lambda item: (item.count('/'), item)))
     if _expected_tar_bytes(files, directories) > trusted_byte_cap:
-        _refuse("candidate tar exceeds the trusted artifact byte cap")
-
-    reachable = set(
-        _require_text_sequence(
-            source.get("reachable_resource_ids"),
-            "reachable_resource_ids",
-            nonempty=False,
-        )
-    )
+        _refuse('candidate tar exceeds the trusted artifact byte cap')
+    reachable = set(_require_text_sequence(source['reachable_resource_ids'], 'reachable_resource_ids', nonempty=False))
     reachable.add(resolved_id)
-    return _CandidateArtifact(
-        artifact_id=resolved_id,
-        files=tuple(files),
-        directories=directories,
-        reachable_resource_ids=tuple(sorted(reachable)),
-    )
-
+    return _CandidateArtifact(artifact_id=resolved_id, files=tuple(files), directories=directories, reachable_resource_ids=tuple(sorted(reachable)))
 
 def _tar_info(name: str, *, directory: bool, size: int = 0) -> tarfile.TarInfo:
     info = tarfile.TarInfo(name=name)
@@ -416,11 +500,23 @@ def _build_candidate_tar(
             mode="w",
             format=tarfile.USTAR_FORMAT,
         ) as archive:
+            archive.addfile(
+                _tar_info(_CANDIDATE_ARCHIVE_ROOT, directory=True)
+            )
             for directory in candidate.directories:
-                archive.addfile(_tar_info(directory, directory=True))
+                archive.addfile(
+                    _tar_info(
+                        f"{_CANDIDATE_ARCHIVE_ROOT}/{directory}",
+                        directory=True,
+                    )
+                )
             for path, content in candidate.files:
                 archive.addfile(
-                    _tar_info(path, directory=False, size=len(content)),
+                    _tar_info(
+                        f"{_CANDIDATE_ARCHIVE_ROOT}/{path}",
+                        directory=False,
+                        size=len(content),
+                    ),
                     io.BytesIO(content),
                 )
         payload = stream.getvalue()
@@ -434,81 +530,37 @@ def _build_candidate_tar(
 
 
 def _snapshot_profile(value: object) -> tuple[dict[str, Any], dict[str, int]]:
-    source = _require_mapping(value, "authority profile")
-    quotas_source = _require_mapping(source.get("quotas"), "authority profile quotas")
-    quotas = {
-        name: _positive_integer(quotas_source.get(name), f"quota {name}")
-        for name in REQUIRED_QUOTAS
-    }
-    profile = {
-        "profile_id": _require_id(source.get("profile_id"), "profile_id"),
-        "declared_capabilities": _require_text_sequence(
-            source.get("declared_capabilities"),
-            "declared_capabilities",
-            nonempty=True,
-        ),
-        "network_policy": _require_text(
-            source.get("network_policy"), "network_policy", maximum=_MAX_ID_BYTES
-        ),
-        "quotas": quotas,
-    }
-    return profile, quotas
-
+    source = _snapshot_mapping(value, 'authority profile', allowed_keys=_PROFILE_KEYS)
+    quotas_source = _snapshot_mapping(source['quotas'], 'authority profile quotas', allowed_keys=_QUOTA_KEYS)
+    quotas = {name: _positive_integer(quotas_source[name], f'quota {name}') for name in REQUIRED_QUOTAS}
+    profile = {'profile_id': _require_id(source['profile_id'], 'profile_id'), 'profile_name': _require_text(source['profile_name'], 'profile_name'), 'declared_capabilities': _require_text_sequence(source['declared_capabilities'], 'declared_capabilities', nonempty=True), 'quotas': quotas, 'network_policy': _require_text(source['network_policy'], 'network_policy', maximum=_MAX_ID_BYTES), 'network_allowlist': _require_text_sequence(source['network_allowlist'], 'network_allowlist', nonempty=False), 'profile_hash': _require_id(source['profile_hash'], 'profile_hash')}
+    return (profile, quotas)
 
 def _snapshot_lease(value: object) -> dict[str, Any]:
-    source = _require_mapping(value, "authority lease")
-    revoked = source.get("revoked")
-    if not isinstance(revoked, bool):
-        _refuse("lease revoked must be a boolean")
-    return {
-        "lease_id": _require_id(source.get("lease_id"), "lease_id"),
-        "capabilities": _require_text_sequence(
-            source.get("capabilities"), "lease capabilities", nonempty=True
-        ),
-        "expires_at": _require_text(source.get("expires_at"), "lease expires_at"),
-        "revoked": revoked,
-        "fencing_token": _positive_integer(
-            source.get("fencing_token"), "lease fencing_token"
-        ),
-    }
+    source = _snapshot_mapping(value, 'authority lease', allowed_keys=_LEASE_KEYS)
+    revoked = _require_boolean(source['revoked'], 'lease revoked')
+    revocation_reason = _optional_text(source['revocation_reason'], 'lease revocation_reason')
+    if revoked and revocation_reason is None:
+        _refuse('revoked lease must carry a revocation reason')
+    if not revoked and revocation_reason is not None:
+        _refuse('active lease must not carry a revocation reason')
+    return {'lease_id': _require_id(source['lease_id'], 'lease_id'), 'principal_id': _require_id(source['principal_id'], 'lease principal_id'), 'principal_type': _require_text(source['principal_type'], 'lease principal_type', maximum=_MAX_ID_BYTES), 'capabilities': _require_text_sequence(source['capabilities'], 'lease capabilities', nonempty=True), 'resource_scopes': _require_text_sequence(source['resource_scopes'], 'lease resource_scopes', nonempty=True), 'issued_at': _require_text(source['issued_at'], 'lease issued_at'), 'expires_at': _require_text(source['expires_at'], 'lease expires_at'), 'fencing_token': _positive_integer(source['fencing_token'], 'lease fencing_token'), 'policy_hash': _require_id(source['policy_hash'], 'lease policy_hash'), 'approval_ids': _require_text_sequence(source['approval_ids'], 'lease approval_ids', nonempty=False), 'revoked': revoked, 'revocation_reason': revocation_reason, 'lease_hash': _require_id(source['lease_hash'], 'lease_hash')}
 
-
-def _snapshot_execution_authority(
-    value: object,
-    *,
-    authority_id: str,
-) -> _ExecutionAuthority:
-    source = _require_mapping(value, "execution authority")
-    profile, quotas = _snapshot_profile(source.get("profile"))
-    lease = _snapshot_lease(source.get("lease"))
-    current_fence = _positive_integer(
-        source.get("current_fencing_token"), "current fencing token"
-    )
-    if lease["fencing_token"] != current_fence:
-        _refuse("lease fencing token is not current")
-    requested = _require_text_sequence(
-        source.get("requested_capabilities"),
-        "requested_capabilities",
-        nonempty=True,
-    )
-    if "compute" not in requested:
-        _refuse("requested_capabilities must include compute")
-    return _ExecutionAuthority(
-        authority_id=authority_id,
-        profile=profile,
-        lease=lease,
-        current_fencing_token=current_fence,
-        now=_require_text(source.get("now"), "authority now"),
-        evaluator_bundle_id=_require_id(
-            source.get("evaluator_bundle_id"), "evaluator_bundle_id"
-        ),
-        holdout_manifest_id=_require_id(
-            source.get("holdout_manifest_id"), "holdout_manifest_id"
-        ),
-        requested_capabilities=requested,
-        quotas=quotas,
-    )
-
+def _snapshot_execution_authority(value: object, *, authority_id: str) -> _ExecutionAuthority:
+    source = _snapshot_mapping(value, 'execution authority', allowed_keys=_EXECUTION_AUTHORITY_KEYS, required_keys=_EXECUTION_AUTHORITY_REQUIRED_KEYS, captured_keys=_EXECUTION_AUTHORITY_KEYS)
+    if 'authority_id' in source:
+        resolved_authority_id = _require_id(source['authority_id'], 'resolved execution_authority_id')
+        if resolved_authority_id != authority_id:
+            _refuse('authority resolver returned a different authority identity')
+    profile, quotas = _snapshot_profile(source['profile'])
+    lease = _snapshot_lease(source['lease'])
+    current_fence = _positive_integer(source['current_fencing_token'], 'current fencing token')
+    if lease['fencing_token'] != current_fence:
+        _refuse('lease fencing token is not current')
+    requested = _require_text_sequence(source['requested_capabilities'], 'requested_capabilities', nonempty=True)
+    if 'compute' not in requested:
+        _refuse('requested_capabilities must include compute')
+    return _ExecutionAuthority(authority_id=authority_id, profile=profile, lease=lease, current_fencing_token=current_fence, now=_require_text(source['now'], 'authority now'), evaluator_bundle_id=_require_id(source['evaluator_bundle_id'], 'evaluator_bundle_id'), holdout_manifest_id=_require_id(source['holdout_manifest_id'], 'holdout_manifest_id'), requested_capabilities=requested, quotas=quotas)
 
 def _permission_guard(
     authority: _ExecutionAuthority,
@@ -586,31 +638,27 @@ def _pin_existing_path(
     try:
         raw = os.fspath(value)
     except TypeError:
-        _refuse(f"{label} is invalid")
-    if not isinstance(raw, str) or not raw or "\x00" in raw or not os.path.isabs(raw):
-        _refuse(f"{label} must be absolute")
+        _refuse(f'{label} is invalid')
+    if type(raw) is not str:
+        _refuse(f'{label} must resolve to a built-in string path')
+    if not raw or '\x00' in raw or (not os.path.isabs(raw)):
+        _refuse(f'{label} must be absolute')
     absolute = os.path.abspath(raw)
     if _is_network_path(raw, absolute):
-        _refuse(f"{label} must be on a local filesystem")
+        _refuse(f'{label} must be on a local filesystem')
     try:
         details = os.lstat(absolute)
         canonical = os.path.realpath(absolute, strict=True)
     except (OSError, ValueError):
-        _refuse(f"{label} is unavailable")
+        _refuse(f'{label} is unavailable')
     if _path_key(absolute) != _path_key(canonical) or not _ancestors_are_plain(absolute):
-        _refuse(f"{label} must not cross a link, junction, or reparse point")
+        _refuse(f'{label} must not cross a link, junction, or reparse point')
     if executable:
         if not stat.S_ISREG(details.st_mode) or not os.access(canonical, os.X_OK):
-            _refuse("container runtime must be an executable regular file")
+            _refuse('container runtime must be an executable regular file')
     elif not stat.S_ISDIR(details.st_mode):
-        _refuse(f"{label} must be a directory")
-    return _PathPin(
-        path=canonical,
-        device=int(details.st_dev),
-        inode=int(details.st_ino),
-        executable=executable,
-    )
-
+        _refuse(f'{label} must be a directory')
+    return _PathPin(path=canonical, device=int(details.st_dev), inode=int(details.st_ino), executable=executable)
 
 def _verify_pin(pin: _PathPin, label: str) -> None:
     current = _pin_existing_path(
@@ -693,13 +741,12 @@ def _verify_runtime(
 
 
 def _parse_image_reference(image_reference: object) -> tuple[str, str]:
-    if not isinstance(image_reference, str) or "\x00" in image_reference:
-        _refuse("container image must be digest-pinned")
+    if type(image_reference) is not str or '\x00' in image_reference:
+        _refuse('container image must be digest-pinned')
     matched = _IMAGE_REFERENCE.fullmatch(image_reference)
     if matched is None:
-        _refuse("container image must use <name>@sha256:<64 lowercase hex>")
-    return image_reference, matched.group("digest")
-
+        _refuse('container image must use <name>@sha256:<64 lowercase hex>')
+    return (image_reference, matched.group('digest'))
 
 def _read_pipe(
     stream: BinaryIO,
@@ -709,10 +756,11 @@ def _read_pipe(
     stopping: threading.Event,
 ) -> None:
     try:
-        descriptor = stream.fileno()
-        while True:
-            chunk = os.read(descriptor, _READ_CHUNK_BYTES)
+        while not stopping.is_set():
+            chunk = stream.read(_READ_CHUNK_BYTES)
             if not chunk:
+                break
+            if stopping.is_set():
                 break
             budget.observe(capture, chunk)
     except Exception:
@@ -725,13 +773,17 @@ def _read_pipe(
             pass
 
 
-def _write_stdin(stream: BinaryIO, payload: bytes, state: _StdinWrite) -> None:
+def _write_stdin(
+    stream: BinaryIO,
+    payload: bytes,
+    state: _StdinWrite,
+    stopping: threading.Event,
+) -> None:
     try:
-        descriptor = stream.fileno()
         remaining = memoryview(payload)
-        while remaining:
-            written = os.write(descriptor, remaining[:_READ_CHUNK_BYTES])
-            if written <= 0:
+        while remaining and not stopping.is_set():
+            written = stream.write(remaining[:_READ_CHUNK_BYTES])
+            if written is None or written <= 0 or stopping.is_set():
                 break
             state.byte_count += written
             remaining = remaining[written:]
@@ -745,11 +797,11 @@ def _write_stdin(stream: BinaryIO, payload: bytes, state: _StdinWrite) -> None:
             pass
 
 
-def _send_process_signal(process: subprocess.Popen[bytes], *, kill: bool) -> bool:
-    if process.poll() is not None:
+def _send_process_signal(process: subprocess.Popen[bytes], observation: _WallDeadlineObservation, *, kill: bool) -> bool:
+    if observation.observe(process) is not None:
         return False
     try:
-        if os.name == "posix":
+        if os.name == 'posix':
             os.killpg(process.pid, signal.SIGKILL if kill else signal.SIGTERM)
         elif kill:
             process.kill()
@@ -757,23 +809,37 @@ def _send_process_signal(process: subprocess.Popen[bytes], *, kill: bool) -> boo
             process.terminate()
         return True
     except (OSError, ProcessLookupError):
+        observation.observe(process)
         return False
 
+def _wait_for_process_exit(process: subprocess.Popen[bytes], observation: _WallDeadlineObservation, timeout_seconds: float) -> bool:
+    wait_deadline = time.monotonic() + timeout_seconds
+    while True:
+        if observation.observe(process) is not None:
+            return True
+        now = time.monotonic()
+        if now >= wait_deadline:
+            observation.observe(process)
+            return False
+        time.sleep(min(_POLL_SECONDS, max(0.0, wait_deadline - now)))
 
-def _stop_process(process: subprocess.Popen[bytes]) -> tuple[bool, bool, bool]:
-    terminate_sent = _send_process_signal(process, kill=False)
-    try:
-        process.wait(timeout=_TERMINATE_GRACE_SECONDS)
-        return terminate_sent, False, True
-    except subprocess.TimeoutExpired:
-        kill_sent = _send_process_signal(process, kill=True)
-    try:
-        process.wait(timeout=_KILL_WAIT_SECONDS)
-        stopped = True
-    except subprocess.TimeoutExpired:
-        stopped = False
-    return terminate_sent, kill_sent, stopped
+def _stop_process(process: subprocess.Popen[bytes], observation: _WallDeadlineObservation) -> tuple[bool, bool, bool]:
+    terminate_sent = _send_process_signal(process, observation, kill=False)
+    if _wait_for_process_exit(process, observation, _TERMINATE_GRACE_SECONDS):
+        return (terminate_sent, False, True)
+    kill_sent = _send_process_signal(process, observation, kill=True)
+    stopped = _wait_for_process_exit(process, observation, _KILL_WAIT_SECONDS)
+    return (terminate_sent, kill_sent, stopped)
 
+def _join_thread_observing_process(thread: threading.Thread, *, process: subprocess.Popen[bytes], observation: _WallDeadlineObservation, timeout_seconds: float) -> None:
+    join_deadline = time.monotonic() + timeout_seconds
+    while thread.is_alive():
+        remaining = join_deadline - time.monotonic()
+        if remaining <= 0:
+            break
+        thread.join(timeout=min(_POLL_SECONDS, remaining))
+        observation.observe(process)
+    observation.observe(process)
 
 def _close_stream(stream: BinaryIO | None) -> None:
     if stream is None:
@@ -782,7 +848,6 @@ def _close_stream(stream: BinaryIO | None) -> None:
         stream.close()
     except Exception:
         pass
-
 
 def _popen_kwargs(cwd: str, *, attached_stdin: bool) -> dict[str, Any]:
     result: dict[str, Any] = {
@@ -802,30 +867,15 @@ def _popen_kwargs(cwd: str, *, attached_stdin: bool) -> dict[str, Any]:
     return result
 
 
-def _run_process(
-    *,
-    runtime: _PathPin,
-    runtime_parent: _PathPin,
-    expected_runtime_digest: str,
-    trusted_cwd: _PathPin,
-    arguments: Sequence[str],
-    timeout_seconds: float,
-    output_byte_cap: int,
-    stdin_payload: bytes | None,
-) -> _ProcessObservation:
+def _run_process(*, runtime: _PathPin, runtime_parent: _PathPin, expected_runtime_digest: str, trusted_cwd: _PathPin, arguments: Sequence[str], timeout_seconds: float, output_byte_cap: int, stdin_payload: bytes | None) -> _ProcessObservation:
     _verify_runtime(runtime, runtime_parent, expected_runtime_digest)
-    _verify_pin(trusted_cwd, "trusted host working directory")
+    _verify_pin(trusted_cwd, 'trusted host working directory')
     started = time.monotonic()
+    wall_observation = _WallDeadlineObservation(started=started, deadline=started + timeout_seconds)
     try:
-        process = subprocess.Popen(
-            [runtime.path, *_DOCKER_CONTEXT_ARGUMENTS, *arguments],
-            **_popen_kwargs(trusted_cwd.path, attached_stdin=stdin_payload is not None),
-        )
+        process = subprocess.Popen([runtime.path, *_DOCKER_CONTEXT_ARGUMENTS, *arguments], **_popen_kwargs(trusted_cwd.path, attached_stdin=stdin_payload is not None))
     except (OSError, ValueError, subprocess.SubprocessError):
-        raise CandidateContainerRefused(
-            "container runtime could not be launched"
-        ) from None
-
+        raise CandidateContainerRefused('container runtime could not be launched') from None
     stdout_capture = _PipeCapture()
     stderr_capture = _PipeCapture()
     budget = _OutputBudget(output_byte_cap)
@@ -835,49 +885,17 @@ def _run_process(
     terminate_sent = False
     kill_sent = False
     stopped = True
-
-    if process.stdout is None or process.stderr is None or (
-        stdin_payload is not None and process.stdin is None
-    ):
+    if process.stdout is None or process.stderr is None or (stdin_payload is not None and process.stdin is None):
+        capture_error.set()
         stopping.set()
-        terminate_sent, kill_sent, stopped = _stop_process(process)
-        return _ProcessObservation(
-            returncode=process.returncode,
-            stdout=stdout_capture,
-            stderr=stderr_capture,
-            output_bytes=0,
-            retained_output_bytes=0,
-            stdin_bytes_written=0,
-            stdin_complete=stdin_payload is None,
-            timed_out=False,
-            output_limit_exceeded=False,
-            capture_error=True,
-            terminate_sent=terminate_sent,
-            kill_sent=kill_sent,
-            stopped=stopped,
-            duration_seconds=max(0.0, time.monotonic() - started),
-        )
-
-    stdout_thread = threading.Thread(
-        target=_read_pipe,
-        args=(process.stdout, stdout_capture, budget, capture_error, stopping),
-        daemon=True,
-        name="candidate-container-stdout",
-    )
-    stderr_thread = threading.Thread(
-        target=_read_pipe,
-        args=(process.stderr, stderr_capture, budget, capture_error, stopping),
-        daemon=True,
-        name="candidate-container-stderr",
-    )
+        terminate_sent, kill_sent, stopped = _stop_process(process, wall_observation)
+        wall_observation.observe(process)
+        return _ProcessObservation(returncode=process.returncode, stdout=stdout_capture, stderr=stderr_capture, output_bytes=0, retained_output_bytes=0, stdin_bytes_written=0, stdin_complete=stdin_payload is None, timed_out=False, output_limit_exceeded=False, capture_error=True, terminate_sent=terminate_sent, kill_sent=kill_sent, stopped=stopped, started_monotonic=started, wall_deadline_monotonic=wall_observation.deadline, duration_seconds=max(0.0, time.monotonic() - started), exit_observed_duration_seconds=wall_observation.exit_duration_seconds(), live_at_wall_deadline=wall_observation.live_at_deadline)
+    stdout_thread = threading.Thread(target=_read_pipe, args=(process.stdout, stdout_capture, budget, capture_error, stopping), daemon=True, name='candidate-container-stdout')
+    stderr_thread = threading.Thread(target=_read_pipe, args=(process.stderr, stderr_capture, budget, capture_error, stopping), daemon=True, name='candidate-container-stderr')
     stdin_thread = None
     if stdin_payload is not None and process.stdin is not None:
-        stdin_thread = threading.Thread(
-            target=_write_stdin,
-            args=(process.stdin, stdin_payload, stdin_state),
-            daemon=True,
-            name="candidate-container-stdin",
-        )
+        stdin_thread = threading.Thread(target=_write_stdin, args=(process.stdin, stdin_payload, stdin_state, stopping), daemon=True, name='candidate-container-stdin')
     threads = [stdout_thread, stderr_thread]
     if stdin_thread is not None:
         threads.append(stdin_thread)
@@ -889,64 +907,48 @@ def _run_process(
     except RuntimeError:
         capture_error.set()
         stopping.set()
-        terminate_sent, kill_sent, stopped = _stop_process(process)
-
+        terminate_sent, kill_sent, stopped = _stop_process(process, wall_observation)
     timed_out = False
     if len(started_threads) == len(threads):
-        while process.poll() is None:
-            if budget.exceeded.is_set() or capture_error.is_set():
-                stopping.set()
-                terminate_sent, kill_sent, stopped = _stop_process(process)
+        while True:
+            returncode = wall_observation.observe(process)
+            if returncode is not None:
                 break
-            if time.monotonic() - started >= timeout_seconds:
+            if wall_observation.live_at_deadline is True:
                 timed_out = True
                 stopping.set()
-                terminate_sent, kill_sent, stopped = _stop_process(process)
+                terminate_sent, kill_sent, stopped = _stop_process(process, wall_observation)
                 break
-            time.sleep(_POLL_SECONDS)
-
+            if budget.exceeded.is_set() or capture_error.is_set():
+                stopping.set()
+                terminate_sent, kill_sent, stopped = _stop_process(process, wall_observation)
+                break
+            remaining = max(0.0, wall_observation.deadline - time.monotonic())
+            time.sleep(min(_POLL_SECONDS, remaining))
     if stdin_thread is not None:
-        stdin_thread.join(timeout=_THREAD_JOIN_SECONDS)
-        if stdin_thread.is_alive():
-            _close_stream(process.stdin)
-            stdin_thread.join(timeout=_THREAD_JOIN_SECONDS)
+        _join_thread_observing_process(stdin_thread, process=process, observation=wall_observation, timeout_seconds=_THREAD_JOIN_SECONDS)
         if stdin_thread.is_alive():
             capture_error.set()
-
-    for thread, stream in (
-        (stdout_thread, process.stdout),
-        (stderr_thread, process.stderr),
-    ):
+            stopping.set()
+            _close_stream(process.stdin)
+            _join_thread_observing_process(stdin_thread, process=process, observation=wall_observation, timeout_seconds=_THREAD_JOIN_SECONDS)
+        if stdin_thread.is_alive():
+            capture_error.set()
+    for thread, stream in ((stdout_thread, process.stdout), (stderr_thread, process.stderr)):
         if thread in started_threads:
-            thread.join(timeout=_THREAD_JOIN_SECONDS)
+            _join_thread_observing_process(thread, process=process, observation=wall_observation, timeout_seconds=_THREAD_JOIN_SECONDS)
             if thread.is_alive():
                 stopping.set()
                 capture_error.set()
                 _close_stream(stream)
-                thread.join(timeout=_THREAD_JOIN_SECONDS)
+                _join_thread_observing_process(thread, process=process, observation=wall_observation, timeout_seconds=_THREAD_JOIN_SECONDS)
             if thread.is_alive():
                 stopped = False
-
     _close_stream(process.stdin)
     _close_stream(process.stdout)
     _close_stream(process.stderr)
-    return _ProcessObservation(
-        returncode=process.returncode,
-        stdout=stdout_capture,
-        stderr=stderr_capture,
-        output_bytes=budget.observed_bytes,
-        retained_output_bytes=budget.retained_bytes,
-        stdin_bytes_written=stdin_state.byte_count,
-        stdin_complete=stdin_state.complete,
-        timed_out=timed_out,
-        output_limit_exceeded=budget.exceeded.is_set(),
-        capture_error=capture_error.is_set(),
-        terminate_sent=terminate_sent,
-        kill_sent=kill_sent,
-        stopped=stopped,
-        duration_seconds=max(0.0, time.monotonic() - started),
-    )
-
+    wall_observation.observe(process)
+    return _ProcessObservation(returncode=process.returncode, stdout=stdout_capture, stderr=stderr_capture, output_bytes=budget.observed_bytes, retained_output_bytes=budget.retained_bytes, stdin_bytes_written=stdin_state.byte_count, stdin_complete=stdin_state.complete, timed_out=timed_out, output_limit_exceeded=budget.exceeded.is_set(), capture_error=capture_error.is_set(), terminate_sent=terminate_sent, kill_sent=kill_sent, stopped=stopped, started_monotonic=started, wall_deadline_monotonic=wall_observation.deadline, duration_seconds=max(0.0, time.monotonic() - started), exit_observed_duration_seconds=wall_observation.exit_duration_seconds(), live_at_wall_deadline=wall_observation.live_at_deadline)
 
 def _control_clean(result: _ProcessObservation) -> bool:
     return (
@@ -987,8 +989,10 @@ def _force_remove_container(
     runtime_parent: _PathPin,
     expected_runtime_digest: str,
     trusted_cwd: _PathPin,
-    container_reference: str,
+    container_id: str,
 ) -> bool:
+    if _CONTAINER_ID.fullmatch(container_id) is None:
+        return False
     try:
         _verify_runtime(runtime, runtime_parent, expected_runtime_digest)
         _verify_pin(trusted_cwd, "trusted host working directory")
@@ -1012,14 +1016,19 @@ def _force_remove_container(
                 "container",
                 "rm",
                 "-f",
-                container_reference,
+                container_id,
             ],
             **kwargs,
         )
         try:
             process.wait(timeout=_CLEANUP_TIMEOUT_SECONDS)
         except subprocess.TimeoutExpired:
-            _stop_process(process)
+            cleanup_started = time.monotonic()
+            cleanup_observation = _WallDeadlineObservation(
+                started=cleanup_started,
+                deadline=cleanup_started + _CLEANUP_TIMEOUT_SECONDS,
+            )
+            _stop_process(process, cleanup_observation)
             return False
         return process.returncode == 0
     except Exception:
@@ -1151,7 +1160,6 @@ def _create_container(
     expected_runtime_digest: str,
     trusted_cwd: _PathPin,
     arguments: Sequence[str],
-    container_name: str,
     control_timeout: float,
 ) -> str:
     result = _run_control(
@@ -1163,25 +1171,20 @@ def _create_container(
         timeout_seconds=control_timeout,
     )
     identifier = bytes(result.stdout.retained).decode("ascii", errors="ignore").strip()
-    if _control_clean(result) and _CONTAINER_ID.fullmatch(identifier):
-        return identifier
-    cleanup_reference = identifier if _CONTAINER_ID.fullmatch(identifier) else container_name
-    if (
-        result.returncode == 0
-        or result.timed_out
-        or result.output_limit_exceeded
-        or result.capture_error
-    ):
+    owned_id = identifier if _CONTAINER_ID.fullmatch(identifier) else None
+    if _control_clean(result) and owned_id is not None:
+        return owned_id
+    if owned_id is not None:
         cleaned = _force_remove_container(
             runtime=runtime,
             runtime_parent=runtime_parent,
             expected_runtime_digest=expected_runtime_digest,
             trusted_cwd=trusted_cwd,
-            container_reference=cleanup_reference,
+            container_id=owned_id,
         )
         if not cleaned:
-            _refuse("container creation outcome could not be cleaned up safely")
-    _refuse("container could not be created under a known identifier")
+            _refuse("owned container creation outcome could not be cleaned up safely")
+    _refuse("container create did not return a clean owned identifier")
 
 
 def _inspect_container(
@@ -1363,7 +1366,7 @@ def _populate_container(
             "container",
             "cp",
             "-",
-            f"{container_id}:{_CANDIDATE_DIRECTORY}",
+            f"{container_id}:/",
         ),
         timeout_seconds=control_timeout,
         stdin_payload=tar_payload,
@@ -1408,6 +1411,32 @@ def _quota_exceeded(observations: Mapping[str, bool | None]) -> bool | None:
     return None
 
 
+def _container_deadline_observation(*, process: _ProcessObservation, running: bool | None, state_probe_started_at: float, state_probe_finished_at: float, cleanup_failed: bool, cleanup_observed_at: float) -> tuple[bool | None, float | None]:
+    exit_observed_at: float | None = None
+    if running is False:
+        exit_observed_at = state_probe_finished_at
+    if not cleanup_failed and (exit_observed_at is None or cleanup_observed_at < exit_observed_at):
+        exit_observed_at = cleanup_observed_at
+    if running is True and state_probe_started_at >= process.wall_deadline_monotonic:
+        return (True, exit_observed_at)
+    if exit_observed_at is not None and exit_observed_at < process.wall_deadline_monotonic:
+        return (False, exit_observed_at)
+    return (None, exit_observed_at)
+
+def _wall_quota_observation(process: _ProcessObservation, *, wall_quota: float, forced_stop: bool, container_live_at_wall_deadline: bool | None, container_exit_observed_at: float | None) -> bool | None:
+    if process.live_at_wall_deadline is True or container_live_at_wall_deadline is True:
+        return True
+    if forced_stop:
+        if container_exit_observed_at is not None and container_exit_observed_at < process.wall_deadline_monotonic:
+            return False
+        return None
+    observed_exit = process.exit_observed_duration_seconds
+    if observed_exit is not None and observed_exit < wall_quota:
+        return False
+    if container_exit_observed_at is not None and container_exit_observed_at < process.wall_deadline_monotonic:
+        return False
+    return None
+
 def _container_state(
     record: Mapping[str, Any] | None,
 ) -> tuple[int | None, bool | None, bool | None, bool]:
@@ -1443,6 +1472,13 @@ def _container_state(
     return observed_exit, running, oom_killed, observation_error
 
 
+def _invocation_nonce() -> str:
+    try:
+        return os.urandom(_INVOCATION_NONCE_BYTES).hex()
+    except (OSError, NotImplementedError):
+        _refuse("container invocation nonce could not be generated")
+
+
 def _container_name(
     *,
     factory_fingerprint: str,
@@ -1452,6 +1488,7 @@ def _container_name(
     image_digest: str,
     argv: Sequence[str],
     stdin_payload: bytes,
+    invocation_nonce: str,
 ) -> str:
     payload = json.dumps(
         {
@@ -1462,6 +1499,7 @@ def _container_name(
             "factory": factory_fingerprint,
             "fence": authority.current_fencing_token,
             "image": image_digest,
+            "invocation_nonce": invocation_nonce,
             "lease": authority.lease["lease_id"],
             "profile": authority.profile["profile_id"],
             "stdin": f"sha256:{hashlib.sha256(stdin_payload).hexdigest()}",
@@ -1511,7 +1549,6 @@ def _execute_container(
             argv=argv,
             quotas=quotas,
         ),
-        container_name=container_name,
         control_timeout=control_timeout,
     )
     cleanup_attempted = False
@@ -1579,12 +1616,13 @@ def _execute_container(
                 runtime_parent=runtime_parent,
                 expected_runtime_digest=expected_runtime_digest,
                 trusted_cwd=trusted_cwd,
-                container_reference=container_id,
+                container_id=container_id,
             )
             if cleanup_failed:
                 _refuse("container launch failed and daemon cleanup was not confirmed")
             _refuse("container candidate could not be launched safely")
 
+        state_probe_started_at = time.monotonic()
         state_record = _inspect_container(
             runtime=runtime,
             runtime_parent=runtime_parent,
@@ -1593,6 +1631,7 @@ def _execute_container(
             container_id=container_id,
             timeout_seconds=min(control_timeout, _STATE_INSPECT_TIMEOUT_SECONDS),
         )
+        state_probe_finished_at = time.monotonic()
         exit_code, running, oom_killed, state_error = _container_state(state_record)
         cleanup_attempted = True
         cleanup_failed = not _force_remove_container(
@@ -1600,9 +1639,21 @@ def _execute_container(
             runtime_parent=runtime_parent,
             expected_runtime_digest=expected_runtime_digest,
             trusted_cwd=trusted_cwd,
-            container_reference=container_id,
+            container_id=container_id,
         )
-        finished_monotonic = time.monotonic()
+        cleanup_observed_at = time.monotonic()
+        (
+            container_live_at_wall_deadline,
+            container_exit_observed_at,
+        ) = _container_deadline_observation(
+            process=process,
+            running=running,
+            state_probe_started_at=state_probe_started_at,
+            state_probe_finished_at=state_probe_finished_at,
+            cleanup_failed=cleanup_failed,
+            cleanup_observed_at=cleanup_observed_at,
+        )
+        finished_monotonic = cleanup_observed_at
         finished_at = _utc_now()
 
         forced_stop = (
@@ -1615,14 +1666,16 @@ def _execute_container(
         if not forced_stop and running is not False:
             state_error = True
         elapsed = max(0.0, finished_monotonic - started_monotonic)
-        if process.timed_out:
-            wall_observation: bool | None = True
-        elif running is False and exit_code is not None:
-            wall_observation = False
-        elif forced_stop and not cleanup_failed and elapsed < quotas["wall_clock_seconds"]:
-            wall_observation = False
-        else:
-            wall_observation = None
+        wall_quota = float(quotas["wall_clock_seconds"])
+        wall_observation = _wall_quota_observation(
+            process,
+            wall_quota=wall_quota,
+            forced_stop=forced_stop,
+            container_live_at_wall_deadline=(
+                container_live_at_wall_deadline
+            ),
+            container_exit_observed_at=container_exit_observed_at,
+        )
         quota_observations: dict[str, bool | None] = {
             "wall_clock_seconds": wall_observation,
             "cpu_seconds": None,
@@ -1664,6 +1717,24 @@ def _execute_container(
             "daemon_cleanup_attempted": cleanup_attempted,
             "daemon_cleanup_failed": cleanup_failed,
             "container_running_when_observed": running,
+            "exit_observed_duration_seconds": (
+                process.exit_observed_duration_seconds
+            ),
+            "container_exit_observed_duration_seconds": (
+                None
+                if container_exit_observed_at is None
+                else max(
+                    0.0,
+                    container_exit_observed_at - process.started_monotonic,
+                )
+            ),
+            "process_live_at_wall_deadline": (
+                process.live_at_wall_deadline
+            ),
+            "container_live_at_wall_deadline": (
+                container_live_at_wall_deadline
+            ),
+            "live_at_wall_deadline": wall_observation,
             "stdin_bytes": len(stdin_payload),
             "stdin_bytes_written": process.stdin_bytes_written,
             "stdin_byte_cap": stdin_byte_cap,
@@ -1691,7 +1762,7 @@ def _execute_container(
                 runtime_parent=runtime_parent,
                 expected_runtime_digest=expected_runtime_digest,
                 trusted_cwd=trusted_cwd,
-                container_reference=container_id,
+                container_id=container_id,
             )
         if cleanup_failed:
             raise CandidateContainerRefused(
@@ -1716,7 +1787,7 @@ def create_candidate_container_executor(
 ) -> Callable[..., dict[str, Any]]:
     """Create an executor whose candidate and authority inputs are resolver-owned."""
 
-    if not isinstance(expected_runtime_sha256, str) or not _SHA256.fullmatch(
+    if type(expected_runtime_sha256) is not str or not _SHA256.fullmatch(
         expected_runtime_sha256
     ):
         _refuse("expected runtime digest must use sha256:<64 lowercase hex>")
@@ -1774,16 +1845,15 @@ def create_candidate_container_executor(
         )
         image, image_digest = _parse_image_reference(image_reference)
         command_argv = _require_argv(argv)
-        if not isinstance(stdin_text, str):
-            _refuse("stdin_text must be a UTF-8 string")
+        if type(stdin_text) is not str:
+            _refuse("stdin_text must be a built-in UTF-8 string")
         try:
-            stdin_payload = stdin_text.encode("utf-8")
+            stdin_payload = str.encode(stdin_text, "utf-8")
         except UnicodeEncodeError:
-            _refuse("stdin_text must be a UTF-8 string")
+            _refuse("stdin_text must be a built-in UTF-8 string")
         if len(stdin_payload) > stdin_cap:
             _refuse("stdin_text exceeds the trusted adapter byte cap")
-        if not isinstance(network_requested, bool):
-            _refuse("network_requested must be a boolean")
+        _require_boolean(network_requested, "network_requested")
 
         authority = _snapshot_execution_authority(
             _resolve_sync(authority_resolver, authority_id, "execution authority"),
@@ -1815,6 +1885,7 @@ def create_candidate_container_executor(
             image_digest=image_digest,
             argv=command_argv,
             stdin_payload=stdin_payload,
+            invocation_nonce=_invocation_nonce(),
         )
         return _execute_container(
             runtime=runtime,
