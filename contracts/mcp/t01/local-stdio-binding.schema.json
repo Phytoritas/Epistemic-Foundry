@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epistemic-foundry.local/contracts/mcp/t01/local-stdio-binding.schema.json",
+  "title": "LocalStdioBinding",
+  "description": "LOCAL_STDIO_READ_V1 authority binding stored only under the G03 PLUGIN_DATA boundary. This record is not an E03 CapabilityLease.",
+  "$comment": "grant_hash is SHA-256 over compact JSON excluding grant_hash. Top-level preimage keys are ordered binding_version, capabilities, expires_at, issued_at, plugin_data_root_identity, principal_id, principal_type, protocol_version, workspace_id, workspace_root, workspace_root_identity. Each root identity uses G03 order birthtime_ns, file_id, identity_version, volume_id.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "binding_version": {
+      "const": "LOCAL_STDIO_READ_V1"
+    },
+    "protocol_version": {
+      "const": "2026-07-28"
+    },
+    "principal_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "principal_type": {
+      "enum": [
+        "human",
+        "agent",
+        "service",
+        "tool"
+      ]
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "workspace_root": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?:/|[A-Za-z]:\\\\|\\\\\\\\)"
+    },
+    "workspace_root_identity": {
+      "$ref": "#/$defs/g03RootIdentity"
+    },
+    "plugin_data_root_identity": {
+      "$ref": "#/$defs/g03RootIdentity"
+    },
+    "capabilities": {
+      "type": "array",
+      "description": "Non-empty, duplicate-free mcp.read.* capabilities in ascending lexical order.",
+      "items": {
+        "type": "string",
+        "pattern": "^mcp\\.read\\.[a-z][a-z0-9_]*(?:\\.[a-z][a-z0-9_]*)*$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "grant_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "binding_version",
+    "protocol_version",
+    "principal_id",
+    "principal_type",
+    "workspace_id",
+    "workspace_root",
+    "workspace_root_identity",
+    "plugin_data_root_identity",
+    "capabilities",
+    "issued_at",
+    "expires_at",
+    "grant_hash"
+  ],
+  "$defs": {
+    "g03RootIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "birthtime_ns": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[1-9][0-9]*$"
+        },
+        "file_id": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "identity_version": {
+          "const": "G03_ROOT_IDENTITY_V1"
+        },
+        "volume_id": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]{0,19})$"
+        }
+      },
+      "required": [
+        "identity_version",
+        "volume_id",
+        "file_id",
+        "birthtime_ns"
+      ]
+    }
+  }
+}
