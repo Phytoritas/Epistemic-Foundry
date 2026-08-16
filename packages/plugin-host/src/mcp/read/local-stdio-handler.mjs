@@ -21,6 +21,7 @@ const READ_MODEL_STATES = new Set([
 ]);
 const DIAGNOSTIC_TOOLS = new Set(["foundry.status", "foundry.health"]);
 const MAP_TOOL = "foundry.map.query";
+const SESSION_TOOL = "foundry.session.get";
 const TOOL_SPECS = new Map(toolDescriptors().map((descriptor) => [descriptor.name, descriptor]));
 const FACTORY_FIELDS = new Set([
   "pluginRoot",
@@ -29,8 +30,10 @@ const FACTORY_FIELDS = new Set([
   "buildWorkspaceMapSnapshot",
   "statusProjection",
   "healthProjection",
+  "sessionReadPort",
   "clock",
 ]);
+const SESSION_OUTCOME_FIELDS = new Set(["found", "state", "data", "reason"]);
 const RFC3339_PATTERN =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/u;
 
@@ -277,6 +280,180 @@ const unavailable = (spec, requestId, workspaceId, generatedAt) =>
     }),
   );
 
+const providerErrorCode = (error) => {
+  if (
+    error === null ||
+    (typeof error !== "object" && typeof error !== "function") ||
+    utilTypes.isProxy(error)
+  ) {
+    return null;
+  }
+  const descriptor = Object.getOwnPropertyDescriptor(error, "code");
+  return descriptor !== undefined &&
+    "value" in descriptor &&
+    typeof descriptor.value === "string"
+    ? descriptor.value
+    : null;
+};
+
+const normalizeSessionOutcome = (candidate) => {
+  if (!isPlainObject(candidate)) {
+    fail("INTERNAL", "session read provider returned a noncanonical outcome");
+  }
+  for (const key of Reflect.ownKeys(candidate)) {
+    if (typeof key !== "string" || !SESSION_OUTCOME_FIELDS.has(key)) {
+      fail("INTERNAL", "session read outcome contains an unexpected field");
+    }
+  }
+  for (const key of SESSION_OUTCOME_FIELDS) {
+    if (!Object.hasOwn(candidate, key)) {
+      fail("INTERNAL", `session read outcome is missing ${key}`);
+    }
+  }
+
+  const found = readDataProperty(candidate, "found", "INTERNAL");
+  const state = readDataProperty(candidate, "state", "INTERNAL");
+  const data = readDataProperty(candidate, "data", "INTERNAL");
+  const reason = readDataProperty(candidate, "reason", "INTERNAL");
+  if (typeof found !== "boolean") {
+    fail("INTERNAL", "session read outcome found must be boolean");
+  }
+  if (typeof state !== "string" || !READ_MODEL_STATES.has(state)) {
+    fail("INTERNAL", "session read outcome state is not canonical");
+  }
+  if (data !== null && !isPlainObject(data)) {
+    fail("INTERNAL", "session read outcome data must be an object or null");
+  }
+  if (reason !== null && typeof reason !== "string") {
+    fail("INTERNAL", "session read outcome reason must be a string or null");
+  }
+  if (state === "READY" && (!found || data === null)) {
+    fail("INTERNAL", "READY requires found data");
+  }
+  if (
+    state === "EMPTY_CONFIRMED" &&
+    (found || data !== null || reason !== null)
+  ) {
+    fail("INTERNAL", "EMPTY_CONFIRMED requires an absent null result");
+  }
+  if (state === "DEGRADED" && (reason === null || reason.length === 0)) {
+    fail("INTERNAL", "DEGRADED requires a non-empty reason");
+  }
+  return Object.freeze({
+    found,
+    state,
+    data: data === null ? null : cloneCanonicalJson(data),
+    reason,
+  });
+};
+
+const sessionRead = async ({
+  spec,
+  args,
+  requestId,
+  generatedAt,
+  binding,
+  resolution,
+  sessionReadPort,
+  sessionFetch,
+}) => {
+  let candidate;
+  let providerFailed = false;
+  let providerFailure;
+  try {
+    candidate = await sessionFetch.call(
+      sessionReadPort,
+      "read_session",
+      binding.workspace_id,
+      args,
+    );
+  } catch (error) {
+    providerFailed = true;
+    providerFailure = error;
+  }
+
+  try {
+    assertLocalStdioBindingRoots(binding, resolution);
+  } catch (error) {
+    return failure(
+      spec,
+      requestId,
+      "WORKSPACE_DENIED",
+      "the authenticated workspace boundary changed during the request",
+      error instanceof PluginPathResolutionError
+        ? g03Details(error)
+        : error instanceof LocalStdioBindingError
+          ? bindingDetails(error)
+          : null,
+    );
+  }
+
+  if (providerFailed) {
+    const code = providerErrorCode(providerFailure);
+    if (code === "READ_MODEL_INPUT_INVALID") {
+      return failure(
+        spec,
+        requestId,
+        "INVALID_INPUT",
+        "the session read provider rejected the canonical input",
+      );
+    }
+    if (code === "READ_MODEL_NOT_FOUND") {
+      return failure(
+        spec,
+        requestId,
+        "NOT_FOUND",
+        "the resource does not exist in the authorized scope",
+      );
+    }
+    return outcome(
+      resultEnvelope({
+        spec,
+        requestId,
+        workspaceId: binding.workspace_id,
+        state: "UNAVAILABLE",
+        data: null,
+        degradationReason: "the session read provider is unavailable",
+        generatedAt,
+      }),
+    );
+  }
+
+  let normalized;
+  try {
+    normalized = normalizeSessionOutcome(candidate);
+  } catch (error) {
+    if (error instanceof LocalStdioHandlerError) {
+      return failure(spec, requestId, error.errorCode, error.message, error.details);
+    }
+    return failure(
+      spec,
+      requestId,
+      "INTERNAL",
+      "session read provider returned an invalid outcome",
+    );
+  }
+  if (!normalized.found && normalized.state === "EMPTY_CONFIRMED") {
+    return failure(
+      spec,
+      requestId,
+      "NOT_FOUND",
+      "the resource does not exist in the authorized scope",
+    );
+  }
+  return outcome(
+    resultEnvelope({
+      spec,
+      requestId,
+      workspaceId: binding.workspace_id,
+      state: normalized.state,
+      data: normalized.data,
+      degradationReason: normalized.reason,
+      generatedAt,
+    }),
+  );
+};
+
 const normalizeProjection = (candidate) => {
   if (!isPlainObject(candidate)) {
     fail("INTERNAL", "diagnostic projection must be a plain object");
@@ -499,6 +676,19 @@ export function createLocalStdioHandlerPort(options) {
   );
   const statusProjection = readDataProperty(options, "statusProjection", "INTERNAL");
   const healthProjection = readDataProperty(options, "healthProjection", "INTERNAL");
+  const sessionReadPort = Object.hasOwn(options, "sessionReadPort")
+    ? readDataProperty(options, "sessionReadPort", "INTERNAL")
+    : null;
+  let sessionFetch = null;
+  if (sessionReadPort !== null) {
+    if (!isPlainObject(sessionReadPort)) {
+      throw new TypeError("sessionReadPort must be null or a trusted plain object");
+    }
+    sessionFetch = readDataProperty(sessionReadPort, "fetch", "INTERNAL");
+    if (typeof sessionFetch !== "function") {
+      throw new TypeError("sessionReadPort.fetch must be a function");
+    }
+  }
   const clock = Object.hasOwn(options, "clock")
     ? readDataProperty(options, "clock", "INTERNAL")
     : () => new Date().toISOString();
@@ -626,6 +816,18 @@ export function createLocalStdioHandlerPort(options) {
           binding,
           resolution,
           buildWorkspaceMapSnapshot,
+        });
+      }
+      if (spec.name === SESSION_TOOL && sessionFetch !== null) {
+        return sessionRead({
+          spec,
+          args: validated,
+          requestId,
+          generatedAt,
+          binding,
+          resolution,
+          sessionReadPort,
+          sessionFetch,
         });
       }
       return unavailable(spec, requestId, binding.workspace_id, generatedAt);
