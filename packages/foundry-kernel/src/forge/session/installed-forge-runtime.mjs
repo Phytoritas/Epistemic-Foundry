@@ -11,7 +11,10 @@ import {
   SQLITE_STORE_MODE,
   openSQLiteStateStore,
 } from "../../state/sqlite/sqlite-state-store.mjs";
-import { createClassificationCommitter } from "../classifier/index.mjs";
+import {
+  createClassificationCommitter,
+  createWorkClassificationWorker,
+} from "../classifier/index.mjs";
 
 import {
   OBJECT_FREEZE,
@@ -19,6 +22,7 @@ import {
   requirePlainRecord,
 } from "./canonical-json.mjs";
 import { createDurableForgeSessionPort } from "./durable-forge-session.mjs";
+import { createSessionOpenWorker } from "./session-open-worker.mjs";
 import { createSessionTransitionWorker } from "./session-transition-worker.mjs";
 
 const OBJECT_HAS_OWN = Object.hasOwn;
@@ -34,6 +38,8 @@ const READ_OPTION_KEYS = OBJECT_FREEZE([
 const FULL_OPTION_KEYS = OBJECT_FREEZE([
   ...READ_OPTION_KEYS,
   "capabilityPolicy",
+  "classificationRuntime",
+  "openRuntime",
   "transitionRuntime",
 ]);
 
@@ -85,6 +91,12 @@ const normalizeOptions = (candidate, { allowedKeys, requiredKeys, includeMutatio
         "options",
         OPTIONS_ERROR_CODE,
       );
+      normalized.classificationRuntime = OBJECT_HAS_OWN(value, "classificationRuntime")
+        ? readDataProperty(value, "classificationRuntime", "options", OPTIONS_ERROR_CODE)
+        : null;
+      normalized.openRuntime = OBJECT_HAS_OWN(value, "openRuntime")
+        ? readDataProperty(value, "openRuntime", "options", OPTIONS_ERROR_CODE)
+        : null;
     }
     return OBJECT_FREEZE(normalized);
   } catch {
@@ -247,13 +259,38 @@ export const openInstalledForgeRuntime = (options) => {
       clock: normalized.clock,
       runtime: normalized.transitionRuntime,
     });
+    const classificationWorker = normalized.classificationRuntime === null
+      ? null
+      : createWorkClassificationWorker({
+          stateStore: base.stateStore,
+          artifactStore: base.artifactStore,
+          ledger: base.ledger,
+          authority,
+          classification: base.classificationPort,
+          clock: normalized.clock,
+          runtime: normalized.classificationRuntime,
+        });
+    const openWorker = normalized.openRuntime === null
+      ? null
+      : createSessionOpenWorker({
+          stateStore: base.stateStore,
+          artifactStore: base.artifactStore,
+          ledger: base.ledger,
+          authority,
+          session: base.sessionPort,
+          classification: base.classificationPort,
+          clock: normalized.clock,
+          runtime: normalized.openRuntime,
+        });
     return OBJECT_FREEZE({
       stateStore: base.stateStore,
       artifactStore: base.artifactStore,
       ledger: base.ledger,
       classificationPort: base.classificationPort,
+      classificationWorker,
       authority,
       sessionPort: base.sessionPort,
+      openWorker,
       transitionWorker,
       close: base.close,
     });

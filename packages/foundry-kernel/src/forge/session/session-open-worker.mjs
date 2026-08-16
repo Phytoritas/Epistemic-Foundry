@@ -5,6 +5,12 @@ import {
 import {
   getCapabilityAuthorityDependencyIdentity,
 } from "../../capabilities/capability-authority.mjs";
+import {
+  assertClassificationArtifactIntegrity,
+} from "../classifier/index.mjs";
+import {
+  resolveClassificationWorkerAuthority,
+} from "../classifier/classification-worker-authority.mjs";
 
 import {
   ARRAY_IS_ARRAY,
@@ -31,31 +37,19 @@ import {
   resolveDurableForgeSessionWorkerAuthority,
 } from "./session-worker-authority.mjs";
 
-const TOOL_NAME = "foundry.session.transition";
-const HANDLER_OPERATION = "mutate_session_transition";
+const TOOL_NAME = "foundry.session.open";
+const HANDLER_OPERATION = "mutate_session_open";
 const REQUIRED_CAPABILITY = "mcp.write.session";
 const CATALOG_RISK_CLASS = "medium";
 const APPROVAL_CLASS = "POLICY_CONDITIONAL";
 const ACTION_RISK_CLASS = "controlled_effect";
-const NODE_ID = "T02/foundry.session.transition/mutate_session_transition";
-const IDENTITY_CONTRACT = "T02_SESSION_TRANSITION_WORKER_V1";
+const NODE_ID = "T02/foundry.session.open/mutate_session_open";
+const IDENTITY_CONTRACT = "T02_SESSION_OPEN_WORKER_V1";
 const DRY_RUN_OPERATION_ID = "urn:epistemic-foundry:non-effect:dry-run";
 const PROTOCOL_VERSION = "2026-07-28";
-const TRANSITION_REQUEST_SCHEMA_REF =
-  "https://epistemic-foundry.local/schemas/forge-transition-request.schema.json";
-const TRANSITION_REQUEST_PROVENANCE_ID = "PROV-T02-forge-transition-request";
-const TRANSITION_REQUEST_ENCRYPTION_KEY_REF = "local://t02-forge-transition-request";
+const OPEN_REQUEST_PROVENANCE_ID = "PROV-T02-forge-open-request";
+const OPEN_REQUEST_ENCRYPTION_KEY_REF = "local://t02-forge-open-request";
 const SHA256_PATTERN = /^sha256:[0-9a-f]{64}$/u;
-const UNSIGNED_DECIMAL_PATTERN = /^(?:0|[1-9][0-9]*)$/u;
-const OUTER_PHASE_TO_FORGE = OBJECT_FREEZE({
-  FRAME: "F",
-  OBSERVE: "O",
-  REASON: "R",
-  GATE: "G",
-  EXPORT: "E",
-  IDLE: "IDLE",
-});
-const FORGE_PHASES = new Set(["IDLE", "I", "F", "O", "R", "G", "E"]);
 const ACTOR_TYPES = new Set(["human", "agent", "service"]);
 const REQUEST_KEYS = OBJECT_FREEZE([
   "tool_name",
@@ -81,20 +75,20 @@ const MUTATION_ARGUMENT_KEYS = OBJECT_FREEZE([
 ]);
 const TOOL_ARGUMENT_KEYS = OBJECT_FREEZE([
   "session_id",
-  "to_phase",
-  "transition_request_artifact_id",
+  "classification_id",
+  "corpus_snapshot_hash",
+  "actor",
+  "requested_at",
 ]);
-const TRANSITION_REQUEST_KEYS = OBJECT_FREEZE([
+const OPEN_REQUEST_KEYS = OBJECT_FREEZE([
   "request_id",
   "session_id",
-  "expected_revision",
-  "from_phase",
-  "to_phase",
+  "workspace_id",
+  "run_spec_id",
+  "classification_id",
+  "policy_hash",
+  "corpus_snapshot_hash",
   "actor",
-  "artifact_receipt_ids",
-  "gate_result_ids",
-  "human_decision_id",
-  "reason",
   "idempotency_key",
   "requested_at",
 ]);
@@ -117,29 +111,29 @@ const PREPARATION_RESULT_KEYS = OBJECT_FREEZE([
   "new_revision",
 ]);
 
-export class SessionTransitionWorkerError extends Error {
+export class SessionOpenWorkerError extends Error {
   constructor(code, message, details = undefined, options = undefined) {
     super(message, options);
-    this.name = "SessionTransitionWorkerError";
+    this.name = "SessionOpenWorkerError";
     this.code = code;
     if (details !== undefined) this.details = detached(details);
   }
 }
 
-export class MutationRuntimeUnavailableError extends SessionTransitionWorkerError {
+export class SessionOpenRuntimeUnavailableError extends SessionOpenWorkerError {
   constructor(reason, details = undefined) {
     super("MUTATION_RUNTIME_UNAVAILABLE", reason, details);
-    this.name = "MutationRuntimeUnavailableError";
+    this.name = "SessionOpenRuntimeUnavailableError";
     this.reason = reason;
   }
 }
 
 const fail = (code, message, details = undefined, options = undefined) => {
-  throw new SessionTransitionWorkerError(code, message, details, options);
+  throw new SessionOpenWorkerError(code, message, details, options);
 };
 
 const unavailable = (reason, details = undefined) => {
-  throw new MutationRuntimeUnavailableError(reason, details);
+  throw new SessionOpenRuntimeUnavailableError(reason, details);
 };
 
 const dependencyMethod = (dependency, method, label) => {
@@ -149,16 +143,16 @@ const dependencyMethod = (dependency, method, label) => {
     IS_PROXY(dependency) ||
     typeof dependency[method] !== "function"
   ) {
-    fail("SESSION_TRANSITION_INVALID_DEPENDENCY", `${label}.${method} is required`);
+    fail("SESSION_OPEN_INVALID_DEPENDENCY", `${label}.${method} is required`);
   }
 };
 
 const canonicalTimestamp = (candidate, label) => {
   const value = candidate instanceof Date ? candidate.toISOString() : candidate;
-  requireTimestamp(value, label, "SESSION_TRANSITION_INPUT_INVALID");
+  requireTimestamp(value, label, "SESSION_OPEN_INPUT_INVALID");
   const canonical = new Date(value).toISOString();
   if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(canonical)) {
-    fail("SESSION_TRANSITION_INPUT_INVALID", `${label} is outside the canonical range`);
+    fail("SESSION_OPEN_INPUT_INVALID", `${label} is outside the canonical range`);
   }
   return canonical;
 };
@@ -168,12 +162,12 @@ const timestampFromClock = (clock) => {
   try {
     value = clock();
   } catch (error) {
-    fail("SESSION_TRANSITION_CLOCK_FAILED", "worker clock failed", undefined, {
+    fail("SESSION_OPEN_CLOCK_FAILED", "worker clock failed", undefined, {
       cause: error,
     });
   }
   if (value !== null && ["object", "function"].includes(typeof value) && "then" in value) {
-    fail("SESSION_TRANSITION_ASYNC_CLOCK_DENIED", "worker clock must be synchronous");
+    fail("SESSION_OPEN_ASYNC_CLOCK_DENIED", "worker clock must be synchronous");
   }
   return canonicalTimestamp(value, "clock result");
 };
@@ -187,140 +181,201 @@ const requireUniqueStrings = (
   label,
   { min = 1, max = undefined, sort = true } = {},
 ) => {
-  const entries = requireDenseArray(candidate, label, "SESSION_TRANSITION_INPUT_INVALID").map(
+  const entries = requireDenseArray(candidate, label, "SESSION_OPEN_INPUT_INVALID").map(
     (entry, index) => requireString(entry, `${label}[${index}]`, {
       min,
       max,
-      code: "SESSION_TRANSITION_INPUT_INVALID",
+      code: "SESSION_OPEN_INPUT_INVALID",
     }),
   );
   if (new Set(entries).size !== entries.length) {
-    fail("SESSION_TRANSITION_INPUT_INVALID", `${label} contains duplicate values`);
+    fail("SESSION_OPEN_INPUT_INVALID", `${label} contains duplicate values`);
   }
   return OBJECT_FREEZE(sort ? [...entries].sort() : [...entries]);
 };
 
-const requireUnsignedRevision = (candidate, label) => {
-  if (typeof candidate !== "string" || !UNSIGNED_DECIMAL_PATTERN.test(candidate)) {
-    fail("SESSION_TRANSITION_BINDING_MISMATCH", `${label} is not canonical unsigned decimal`);
-  }
-  const value = Number(candidate);
-  if (!NUMBER_IS_SAFE_INTEGER(value) || value < 0 || String(value) !== candidate) {
-    fail("SESSION_TRANSITION_BINDING_MISMATCH", `${label} is outside the safe revision range`);
-  }
-  return value;
-};
-
-const normalizeTransitionRequest = (candidate) => {
+const normalizeOpenRequest = (candidate) => {
   const value = exactKeys(
     candidate,
-    TRANSITION_REQUEST_KEYS,
-    "ForgeTransitionRequest",
-    "SESSION_TRANSITION_REQUEST_INVALID",
+    OPEN_REQUEST_KEYS,
+    "ForgeOpenRequest",
+    "SESSION_OPEN_REQUEST_INVALID",
   );
-  const expectedRevision = readDataProperty(value, "expected_revision");
-  if (!NUMBER_IS_SAFE_INTEGER(expectedRevision) || expectedRevision < 0) {
-    fail("SESSION_TRANSITION_REQUEST_INVALID", "expected_revision is invalid");
-  }
-  const fromPhase = readDataProperty(value, "from_phase");
-  const toPhase = readDataProperty(value, "to_phase");
-  if (!FORGE_PHASES.has(fromPhase) || !FORGE_PHASES.has(toPhase)) {
-    fail("SESSION_TRANSITION_REQUEST_INVALID", "Forge transition phase is invalid");
-  }
   const actor = exactKeys(
     readDataProperty(value, "actor"),
     ["actor_id", "actor_type", "role"],
-    "ForgeTransitionRequest.actor",
-    "SESSION_TRANSITION_REQUEST_INVALID",
+    "ForgeOpenRequest.actor",
+    "SESSION_OPEN_REQUEST_INVALID",
   );
   const actorType = readDataProperty(actor, "actor_type");
   if (!ACTOR_TYPES.has(actorType)) {
-    fail("SESSION_TRANSITION_REQUEST_INVALID", "Forge transition actor_type is invalid");
-  }
-  const humanDecisionId = readDataProperty(value, "human_decision_id");
-  if (humanDecisionId !== null) {
-    requireString(humanDecisionId, "human_decision_id", {
-      code: "SESSION_TRANSITION_REQUEST_INVALID",
-    });
+    fail("SESSION_OPEN_REQUEST_INVALID", "Forge open actor_type is invalid");
   }
   return detached({
     request_id: requireString(readDataProperty(value, "request_id"), "request_id", {
       min: 3,
       max: 128,
-      code: "SESSION_TRANSITION_REQUEST_INVALID",
+      code: "SESSION_OPEN_REQUEST_INVALID",
     }),
     session_id: requireString(readDataProperty(value, "session_id"), "session_id", {
       min: 3,
       max: 128,
-      code: "SESSION_TRANSITION_REQUEST_INVALID",
+      code: "SESSION_OPEN_REQUEST_INVALID",
     }),
-    expected_revision: expectedRevision,
-    from_phase: fromPhase,
-    to_phase: toPhase,
+    workspace_id: requireString(readDataProperty(value, "workspace_id"), "workspace_id", {
+      min: 3,
+      max: 128,
+      code: "SESSION_OPEN_REQUEST_INVALID",
+    }),
+    run_spec_id: requireString(readDataProperty(value, "run_spec_id"), "run_spec_id", {
+      min: 3,
+      max: 128,
+      code: "SESSION_OPEN_REQUEST_INVALID",
+    }),
+    classification_id: requireString(
+      readDataProperty(value, "classification_id"),
+      "classification_id",
+      { min: 3, max: 128, code: "SESSION_OPEN_REQUEST_INVALID" },
+    ),
+    policy_hash: requireHash(
+      readDataProperty(value, "policy_hash"),
+      "policy_hash",
+      "SESSION_OPEN_REQUEST_INVALID",
+    ),
+    corpus_snapshot_hash: requireHash(
+      readDataProperty(value, "corpus_snapshot_hash"),
+      "corpus_snapshot_hash",
+      "SESSION_OPEN_REQUEST_INVALID",
+    ),
     actor: {
       actor_id: requireString(readDataProperty(actor, "actor_id"), "actor.actor_id", {
         min: 3,
         max: 128,
-        code: "SESSION_TRANSITION_REQUEST_INVALID",
+        code: "SESSION_OPEN_REQUEST_INVALID",
       }),
       actor_type: actorType,
       role: requireString(readDataProperty(actor, "role"), "actor.role", {
-        code: "SESSION_TRANSITION_REQUEST_INVALID",
+        code: "SESSION_OPEN_REQUEST_INVALID",
       }),
     },
-    artifact_receipt_ids: requireUniqueStrings(
-      readDataProperty(value, "artifact_receipt_ids"),
-      "artifact_receipt_ids",
-      { min: 3, max: 128, sort: false },
-    ),
-    gate_result_ids: requireUniqueStrings(
-      readDataProperty(value, "gate_result_ids"),
-      "gate_result_ids",
-      { min: 3, max: 128, sort: false },
-    ),
-    human_decision_id: humanDecisionId,
-    reason: requireString(readDataProperty(value, "reason"), "reason", {
-      min: 1,
-      code: "SESSION_TRANSITION_REQUEST_INVALID",
-    }),
     idempotency_key: requireString(
       readDataProperty(value, "idempotency_key"),
       "idempotency_key",
-      { min: 8, code: "SESSION_TRANSITION_REQUEST_INVALID" },
+      { min: 8, code: "SESSION_OPEN_REQUEST_INVALID" },
     ),
     requested_at: requireTimestamp(
       readDataProperty(value, "requested_at"),
       "requested_at",
-      "SESSION_TRANSITION_REQUEST_INVALID",
+      "SESSION_OPEN_REQUEST_INVALID",
     ),
   });
 };
 
-export const publishSessionTransitionRequest = (artifactStore, candidate) => {
+const normalizeClassificationProjection = (candidate, classificationId) => {
+  const code = "SESSION_OPEN_CLASSIFICATION_INVALID";
+  const keys = [
+    "projection_version",
+    "classification",
+    "identity_context",
+    "artifact_binding",
+    "ledger_binding",
+    "projection_hash",
+    "projection_id",
+  ];
+  const value = exactKeys(candidate, keys, "classification replay projection", code);
+  if (value.projection_version !== "DURABLE_FORGE_V1") {
+    fail(code, "classification replay projection version is incompatible");
+  }
+  const semantic = Object.fromEntries(
+    keys
+      .filter((key) => !["projection_hash", "projection_id"].includes(key))
+      .map((key) => [key, readDataProperty(value, key)]),
+  );
+  const projectionHash = requireHash(value.projection_hash, "projection_hash", code);
+  if (
+    projectionHash !== hashJson(semantic) ||
+    value.projection_id !== `F01RP-${projectionHash.slice("sha256:".length)}`
+  ) {
+    fail(code, "classification replay projection identity is invalid");
+  }
+  const classification = requirePlainRecord(value.classification, "classification", { code });
+  const identityContext = requirePlainRecord(value.identity_context, "identity_context", { code });
+  const artifactBinding = exactKeys(
+    value.artifact_binding,
+    ["artifact_id", "content_hash", "artifact_manifest_hash", "receipt_id", "receipt_hash", "schema_ref"],
+    "artifact_binding",
+    code,
+  );
+  const ledgerBinding = exactKeys(
+    value.ledger_binding,
+    ["run_id", "event_id", "sequence", "event_hash", "payload_hash"],
+    "ledger_binding",
+    code,
+  );
+  if (
+    classification.classification_id !== classificationId ||
+    artifactBinding.artifact_id !== classificationId
+  ) {
+    fail(code, "classification replay projection does not bind the requested classification");
+  }
+  requireString(classification.request_id, "classification.request_id", { min: 3, max: 128, code });
+  requireHash(identityContext.policy_bundle_hash, "identity_context.policy_bundle_hash", code);
+  requireString(ledgerBinding.run_id, "ledger_binding.run_id", { min: 3, code });
+  if (!NUMBER_IS_SAFE_INTEGER(ledgerBinding.sequence) || ledgerBinding.sequence < 1) {
+    fail(code, "classification ledger sequence is invalid");
+  }
+  for (const key of ["content_hash", "artifact_manifest_hash", "receipt_hash"]) {
+    requireHash(artifactBinding[key], `artifact_binding.${key}`, code);
+  }
+  for (const key of ["event_hash", "payload_hash"]) {
+    requireHash(ledgerBinding[key], `ledger_binding.${key}`, code);
+  }
+  try {
+    assertClassificationArtifactIntegrity(classification, identityContext);
+  } catch {
+    fail(code, "classification replay projection contains an invalid F01 artifact");
+  }
+  return detached(value);
+};
+
+const resolveClassificationProjection = (classificationPort, classificationId) => {
+  let projection;
+  try {
+    projection = classificationPort.readClassificationReplayProjection(classificationId);
+  } catch {
+    fail(
+      "SESSION_OPEN_CLASSIFICATION_UNAVAILABLE",
+      "sealed F01 replay projection is unavailable",
+    );
+  }
+  return normalizeClassificationProjection(projection, classificationId);
+};
+
+export const publishSessionOpenRequest = (artifactStore, candidate) => {
   dependencyMethod(artifactStore, "putArtifact", "artifactStore");
-  const request = normalizeTransitionRequest(candidate);
+  const request = normalizeOpenRequest(candidate);
   const bytes = Buffer.from(canonicalJson(request), "utf8");
   const contentHash = hashBytes(bytes);
-  const artifactId = `FTR-T02-${contentHash.slice("sha256:".length)}`;
+  const artifactId = `FSOR-T02-${contentHash.slice("sha256:".length)}`;
   const receiptId = `AR-${artifactId}`;
 
   artifactStore.putArtifact(bytes, {
     artifact: {
       artifactId,
-      artifactType: "forge_transition_request",
+      artifactType: "forge_open_request",
       confidentiality: "internal",
       createdAt: request.requested_at,
       createdBy: request.actor.actor_id,
       encryption: {
         atRest: true,
         inTransit: true,
-        keyRef: TRANSITION_REQUEST_ENCRYPTION_KEY_REF,
+        keyRef: OPEN_REQUEST_ENCRYPTION_KEY_REF,
       },
-      inputArtifactIds: [],
+      inputArtifactIds: [request.classification_id],
       license: null,
       lineageEventIds: [],
       mediaType: "application/json",
-      provenanceManifestId: TRANSITION_REQUEST_PROVENANCE_ID,
+      provenanceManifestId: OPEN_REQUEST_PROVENANCE_ID,
       retentionClass: "project",
     },
     receipt: {
@@ -331,7 +386,7 @@ export const publishSessionTransitionRequest = (artifactStore, candidate) => {
         actorType: request.actor.actor_type,
       },
       receiptId,
-      schemaRef: TRANSITION_REQUEST_SCHEMA_REF,
+      schemaRef: null,
       validationResults: [],
     },
   });
@@ -339,58 +394,12 @@ export const publishSessionTransitionRequest = (artifactStore, candidate) => {
   return detached({ artifactId, receiptId, contentHash, request });
 };
 
-const resolveTransitionRequestArtifact = (artifactStore, artifactId) => {
-  let bytes;
-  let manifest;
-  try {
-    bytes = artifactStore.readArtifact(artifactId);
-    manifest = artifactStore.readManifest(artifactId);
-  } catch (error) {
-    fail(
-      "SESSION_TRANSITION_ARTIFACT_UNAVAILABLE",
-      "ForgeTransitionRequest artifact could not be resolved through D03",
-      { artifactId, causeCode: error?.code ?? error?.name ?? "unknown" },
-      { cause: error },
-    );
-  }
-  if (!Buffer.isBuffer(bytes) && !(bytes instanceof Uint8Array)) {
-    fail("SESSION_TRANSITION_ARTIFACT_INVALID", "D03 did not return artifact bytes");
-  }
-  const content = Buffer.from(bytes);
-  const text = content.toString("utf8");
-  if (!Buffer.from(text, "utf8").equals(content)) {
-    fail("SESSION_TRANSITION_ARTIFACT_INVALID", "ForgeTransitionRequest is not canonical UTF-8");
-  }
-  let parsed;
-  try {
-    parsed = JSON.parse(text);
-  } catch (error) {
-    fail("SESSION_TRANSITION_ARTIFACT_INVALID", "ForgeTransitionRequest is malformed JSON", undefined, {
-      cause: error,
-    });
-  }
-  if (canonicalJson(parsed) !== text) {
-    fail("SESSION_TRANSITION_ARTIFACT_INVALID", "ForgeTransitionRequest bytes are not canonical JSON");
-  }
-  const contentHash = hashBytes(content);
-  if (
-    manifest?.artifact_id !== artifactId ||
-    manifest?.content_hash !== contentHash
-  ) {
-    fail("SESSION_TRANSITION_ARTIFACT_INVALID", "D03 artifact binding changed during resolution");
-  }
-  return OBJECT_FREEZE({
-    contentHash,
-    request: normalizeTransitionRequest(parsed),
-  });
-};
-
 const normalizeInvocation = (candidate) => {
   const request = exactKeys(
     candidate,
     REQUEST_KEYS,
-    "session transition worker request",
-    "SESSION_TRANSITION_INPUT_INVALID",
+    "session OPEN worker request",
+    "SESSION_OPEN_INPUT_INVALID",
   );
   const toolName = readDataProperty(request, "tool_name");
   const handlerOperation = readDataProperty(request, "handler_operation");
@@ -404,36 +413,44 @@ const normalizeInvocation = (candidate) => {
     readDataProperty(request, "capability") !== REQUIRED_CAPABILITY ||
     readDataProperty(request, "risk_class") !== CATALOG_RISK_CLASS ||
     readDataProperty(request, "approval_class") !== APPROVAL_CLASS ||
-    readDataProperty(request, "expected_revision_required") !== true
+    readDataProperty(request, "expected_revision_required") !== false
   ) {
-    unavailable("the foundry.session.transition catalog binding is unavailable");
+    unavailable("the foundry.session.open catalog binding is unavailable");
   }
   const outer = exactKeys(
     readDataProperty(request, "validated_arguments"),
     MUTATION_ARGUMENT_KEYS,
     "validated_arguments",
-    "SESSION_TRANSITION_INPUT_INVALID",
+    "SESSION_OPEN_INPUT_INVALID",
   );
   const toolArguments = exactKeys(
     readDataProperty(outer, "arguments"),
     TOOL_ARGUMENT_KEYS,
     "validated_arguments.arguments",
-    "SESSION_TRANSITION_INPUT_INVALID",
+    "SESSION_OPEN_INPUT_INVALID",
   );
   const dryRun = readDataProperty(outer, "dry_run");
   if (typeof dryRun !== "boolean") {
-    fail("SESSION_TRANSITION_INPUT_INVALID", "dry_run must be boolean");
+    fail("SESSION_OPEN_INPUT_INVALID", "dry_run must be boolean");
   }
-  const outerPhase = readDataProperty(toolArguments, "to_phase");
-  if (!Object.hasOwn(OUTER_PHASE_TO_FORGE, outerPhase)) {
-    fail("SESSION_TRANSITION_INPUT_INVALID", "to_phase is not canonical");
+  if (readDataProperty(outer, "expected_revision") !== null) {
+    fail("SESSION_OPEN_INPUT_INVALID", "expected_revision must be null");
+  }
+  const actor = exactKeys(
+    readDataProperty(toolArguments, "actor"),
+    ["actor_id", "actor_type", "role"],
+    "validated_arguments.arguments.actor",
+    "SESSION_OPEN_INPUT_INVALID",
+  );
+  if (!ACTOR_TYPES.has(readDataProperty(actor, "actor_type"))) {
+    fail("SESSION_OPEN_INPUT_INVALID", "actor.actor_type is not canonical");
   }
   const auth = requirePlainRecord(readDataProperty(request, "auth"), "auth", {
-    code: "SESSION_TRANSITION_INPUT_INVALID",
+    code: "SESSION_OPEN_INPUT_INVALID",
   });
   const semanticFingerprint = readDataProperty(request, "semantic_fingerprint");
   if (typeof semanticFingerprint !== "string" || !SHA256_PATTERN.test(semanticFingerprint)) {
-    fail("SESSION_TRANSITION_INPUT_INVALID", "semantic_fingerprint is not canonical SHA-256");
+    fail("SESSION_OPEN_INPUT_INVALID", "semantic_fingerprint is not canonical SHA-256");
   }
   return OBJECT_FREEZE({
     approvalRecordIds: requireUniqueStrings(
@@ -442,69 +459,87 @@ const normalizeInvocation = (candidate) => {
     ),
     authPrincipalId: requireString(readDataProperty(auth, "principal_id"), "auth.principal_id", {
       min: 3,
-      code: "SESSION_TRANSITION_INPUT_INVALID",
+      code: "SESSION_OPEN_INPUT_INVALID",
     }),
     authWorkspaceId: Object.hasOwn(auth, "workspace_id")
       ? requireString(readDataProperty(auth, "workspace_id"), "auth.workspace_id", {
-          min: 1,
-          code: "SESSION_TRANSITION_INPUT_INVALID",
+          min: 3,
+          code: "SESSION_OPEN_INPUT_INVALID",
         })
       : null,
     dryRun,
-    expectedRevision: requireString(
-      readDataProperty(outer, "expected_revision"),
-      "expected_revision",
-      { min: 1, code: "SESSION_TRANSITION_INPUT_INVALID" },
+    actor: detached({
+      actor_id: requireString(readDataProperty(actor, "actor_id"), "actor.actor_id", {
+        min: 3,
+        max: 128,
+        code: "SESSION_OPEN_INPUT_INVALID",
+      }),
+      actor_type: readDataProperty(actor, "actor_type"),
+      role: requireString(readDataProperty(actor, "role"), "actor.role", {
+        min: 1,
+        code: "SESSION_OPEN_INPUT_INVALID",
+      }),
+    }),
+    classificationId: requireString(
+      readDataProperty(toolArguments, "classification_id"),
+      "arguments.classification_id",
+      { min: 3, max: 128, code: "SESSION_OPEN_INPUT_INVALID" },
+    ),
+    corpusSnapshotHash: requireHash(
+      readDataProperty(toolArguments, "corpus_snapshot_hash"),
+      "arguments.corpus_snapshot_hash",
+      "SESSION_OPEN_INPUT_INVALID",
     ),
     generatedAt: canonicalTimestamp(readDataProperty(request, "generated_at"), "generated_at"),
     idempotencyKey: requireString(
       readDataProperty(outer, "idempotency_key"),
       "idempotency_key",
-      { min: 1, max: 200, code: "SESSION_TRANSITION_INPUT_INVALID" },
+      { min: 8, max: 200, code: "SESSION_OPEN_INPUT_INVALID" },
     ),
-    outerPhase,
     requestId: requireString(readDataProperty(request, "request_id"), "request_id", {
       min: 1,
-      code: "SESSION_TRANSITION_INPUT_INVALID",
+      code: "SESSION_OPEN_INPUT_INVALID",
     }),
     semanticFingerprint,
     sessionId: requireString(readDataProperty(toolArguments, "session_id"), "arguments.session_id", {
-      min: 1,
-      code: "SESSION_TRANSITION_INPUT_INVALID",
+      min: 3,
+      max: 128,
+      code: "SESSION_OPEN_INPUT_INVALID",
     }),
     targetRef: requireString(readDataProperty(outer, "target_ref"), "target_ref", {
-      min: 1,
-      code: "SESSION_TRANSITION_INPUT_INVALID",
+      min: 3,
+      max: 128,
+      code: "SESSION_OPEN_INPUT_INVALID",
     }),
-    transitionRequestArtifactId: requireString(
-      readDataProperty(toolArguments, "transition_request_artifact_id"),
-      "arguments.transition_request_artifact_id",
-      { min: 1, code: "SESSION_TRANSITION_INPUT_INVALID" },
+    requestedAt: canonicalTimestamp(
+      readDataProperty(toolArguments, "requested_at"),
+      "arguments.requested_at",
     ),
     workspaceId: requireString(readDataProperty(outer, "workspace_id"), "workspace_id", {
-      min: 1,
-      code: "SESSION_TRANSITION_INPUT_INVALID",
+      min: 3,
+      max: 128,
+      code: "SESSION_OPEN_INPUT_INVALID",
     }),
   });
 };
 
-export const createSessionTransitionRuntimeRequest = (candidate) => {
+export const createSessionOpenRuntimeRequest = (candidate) => {
   const value = exactKeys(
     candidate,
     RUNTIME_REQUEST_FACTORY_KEYS,
-    "session transition runtime request options",
-    "SESSION_TRANSITION_INPUT_INVALID",
+    "session OPEN runtime request options",
+    "SESSION_OPEN_INPUT_INVALID",
   );
   const auth = requirePlainRecord(
     readDataProperty(value, "auth"),
     "auth",
-    { code: "SESSION_TRANSITION_INPUT_INVALID" },
+    { code: "SESSION_OPEN_INPUT_INVALID" },
   );
   const validatedArguments = exactKeys(
     readDataProperty(value, "validatedArguments"),
     MUTATION_ARGUMENT_KEYS,
     "validatedArguments",
-    "SESSION_TRANSITION_INPUT_INVALID",
+    "SESSION_OPEN_INPUT_INVALID",
   );
   const semanticFingerprint = hashJson({
     arguments: readDataProperty(validatedArguments, "arguments"),
@@ -522,7 +557,7 @@ export const createSessionTransitionRuntimeRequest = (candidate) => {
     capability: REQUIRED_CAPABILITY,
     risk_class: CATALOG_RISK_CLASS,
     approval_class: APPROVAL_CLASS,
-    expected_revision_required: true,
+    expected_revision_required: false,
     validated_arguments: validatedArguments,
     auth,
     semantic_fingerprint: semanticFingerprint,
@@ -537,12 +572,12 @@ export const createSessionTransitionRuntimeRequest = (candidate) => {
 const normalizeDependencies = (options) => {
   const value = exactKeys(
     options,
-    ["stateStore", "artifactStore", "ledger", "authority", "session", "clock", "runtime"],
-    "session transition worker options",
-    "SESSION_TRANSITION_INVALID_DEPENDENCY",
+    ["stateStore", "artifactStore", "ledger", "authority", "session", "classification", "clock", "runtime"],
+    "session OPEN worker options",
+    "SESSION_OPEN_INVALID_DEPENDENCY",
   );
   const dependencies = Object.fromEntries(
-    ["stateStore", "artifactStore", "ledger", "authority", "session", "clock", "runtime"]
+    ["stateStore", "artifactStore", "ledger", "authority", "session", "classification", "clock", "runtime"]
       .map((key) => [key, readDataProperty(value, key)]),
   );
   for (const method of ["transaction", "readRevisionedRecord", "createRevisionedRecord", "compareAndSwapRevision"]) {
@@ -562,31 +597,47 @@ const normalizeDependencies = (options) => {
   ]) {
     dependencyMethod(dependencies.authority, method, "authority");
   }
-  for (const method of ["readSession", "transitionSession"]) {
+  dependencyMethod(
+    dependencies.classification,
+    "readClassificationReplayProjection",
+    "classification",
+  );
+  for (const method of ["openSession"]) {
     dependencyMethod(dependencies.session, method, "session");
   }
   if (typeof dependencies.clock !== "function" || IS_PROXY(dependencies.clock)) {
-    fail("SESSION_TRANSITION_INVALID_DEPENDENCY", "clock must be a trusted synchronous function");
+    fail("SESSION_OPEN_INVALID_DEPENDENCY", "clock must be a trusted synchronous function");
   }
   let authorityIdentity;
+  let classificationAuthority;
   let sessionAuthority;
   try {
     authorityIdentity = getCapabilityAuthorityDependencyIdentity(dependencies.authority);
+    classificationAuthority = resolveClassificationWorkerAuthority(
+      dependencies.classification,
+      dependencies,
+    );
     sessionAuthority = resolveDurableForgeSessionWorkerAuthority(
       dependencies.session,
-      dependencies,
+      { ...dependencies, classificationPort: dependencies.classification },
     );
   } catch (error) {
     fail(
-      "SESSION_TRANSITION_INVALID_DEPENDENCY",
-      "authority and session must be canonical Kernel ports",
+      "SESSION_OPEN_INVALID_DEPENDENCY",
+      "authority, classification, and session must be canonical Kernel ports",
       { causeCode: error?.code ?? error?.name ?? "unknown" },
       { cause: error },
     );
   }
+  if (classificationAuthority === null) {
+    fail(
+      "SESSION_OPEN_DEPENDENCY_IDENTITY_MISMATCH",
+      "classification does not share the worker dependencies",
+    );
+  }
   if (sessionAuthority === null) {
     fail(
-      "SESSION_TRANSITION_DEPENDENCY_IDENTITY_MISMATCH",
+      "SESSION_OPEN_DEPENDENCY_IDENTITY_MISMATCH",
       "session does not share the worker dependencies",
     );
   }
@@ -594,7 +645,7 @@ const normalizeDependencies = (options) => {
     for (const key of ["stateStore", "artifactStore", "ledger", "clock"]) {
       if (identity[key] !== dependencies[key]) {
         fail(
-          "SESSION_TRANSITION_DEPENDENCY_IDENTITY_MISMATCH",
+          "SESSION_OPEN_DEPENDENCY_IDENTITY_MISMATCH",
           `${label} does not share the worker ${key}`,
         );
       }
@@ -608,13 +659,13 @@ const normalizeDependencies = (options) => {
   const runtime = exactKeys(
     dependencies.runtime,
     ["authorityPrincipalId", "workerPrincipalId", "leaseCommandFactory"],
-    "session transition runtime config",
-    "SESSION_TRANSITION_INVALID_DEPENDENCY",
+    "session OPEN runtime config",
+    "SESSION_OPEN_INVALID_DEPENDENCY",
   );
   const leaseCommandFactory = readDataProperty(runtime, "leaseCommandFactory");
   if (typeof leaseCommandFactory !== "function" || IS_PROXY(leaseCommandFactory)) {
     fail(
-      "SESSION_TRANSITION_INVALID_DEPENDENCY",
+      "SESSION_OPEN_INVALID_DEPENDENCY",
       "runtime.leaseCommandFactory must be a trusted synchronous function",
     );
   }
@@ -626,56 +677,54 @@ const normalizeDependencies = (options) => {
       authorityPrincipalId: requireString(
         readDataProperty(runtime, "authorityPrincipalId"),
         "runtime.authorityPrincipalId",
-        { min: 3, code: "SESSION_TRANSITION_INVALID_DEPENDENCY" },
+        { min: 3, code: "SESSION_OPEN_INVALID_DEPENDENCY" },
       ),
       workerPrincipalId: requireString(
         readDataProperty(runtime, "workerPrincipalId"),
         "runtime.workerPrincipalId",
-        { min: 3, code: "SESSION_TRANSITION_INVALID_DEPENDENCY" },
+        { min: 3, code: "SESSION_OPEN_INVALID_DEPENDENCY" },
       ),
       leaseCommandFactory,
     }),
   });
 };
 
-const bindInvocation = ({ invocation, transitionRequest, published, requireCurrentState }) => {
-  const state = requirePlainRecord(published?.state, "published session state", {
-    code: "SESSION_TRANSITION_SESSION_INVALID",
-  });
-  const revision = readDataProperty(state, "revision");
-  const outerRevision = requireUnsignedRevision(invocation.expectedRevision, "expected_revision");
+const bindCallerInvocation = (invocation) => {
   if (
-    invocation.targetRef !== invocation.sessionId ||
-    invocation.sessionId !== transitionRequest.session_id ||
-    transitionRequest.session_id !== readDataProperty(state, "session_id")
+    invocation.targetRef !== invocation.sessionId
   ) {
-    fail("SESSION_TRANSITION_BINDING_MISMATCH", "target_ref and session identities disagree");
+    fail("SESSION_OPEN_BINDING_MISMATCH", "target_ref and session identities disagree");
   }
   if (
-    invocation.workspaceId !== readDataProperty(state, "workspace_id") ||
     (invocation.authWorkspaceId !== null && invocation.authWorkspaceId !== invocation.workspaceId)
   ) {
-    fail("SESSION_TRANSITION_BINDING_MISMATCH", "workspace binding disagrees with F04 state");
+    fail("SESSION_OPEN_BINDING_MISMATCH", "authenticated workspace differs from workspace_id");
   }
-  if (invocation.authPrincipalId !== transitionRequest.actor.actor_id) {
-    fail("SESSION_TRANSITION_BINDING_MISMATCH", "authenticated principal differs from request actor");
+  if (invocation.authPrincipalId !== invocation.actor.actor_id) {
+    fail("SESSION_OPEN_BINDING_MISMATCH", "authenticated principal differs from request actor");
   }
-  if (invocation.idempotencyKey !== transitionRequest.idempotency_key) {
-    fail("SESSION_TRANSITION_BINDING_MISMATCH", "outer and stored idempotency keys disagree");
+};
+
+const bindInvocation = ({ invocation, openRequest, classificationProjection }) => {
+  if (
+    invocation.sessionId !== openRequest.session_id ||
+    invocation.workspaceId !== openRequest.workspace_id
+  ) {
+    fail("SESSION_OPEN_BINDING_MISMATCH", "completed OPEN caller bindings changed");
+  }
+  if (invocation.idempotencyKey !== openRequest.idempotency_key) {
+    fail("SESSION_OPEN_BINDING_MISMATCH", "outer and stored idempotency keys disagree");
   }
   if (
-    outerRevision !== transitionRequest.expected_revision ||
-    (requireCurrentState && outerRevision !== revision)
+    invocation.classificationId !== openRequest.classification_id ||
+    invocation.corpusSnapshotHash !== openRequest.corpus_snapshot_hash ||
+    classificationProjection.classification.classification_id !== openRequest.classification_id ||
+    classificationProjection.classification.request_id !== openRequest.request_id ||
+    classificationProjection.ledger_binding.run_id !== openRequest.run_spec_id ||
+    classificationProjection.identity_context.policy_bundle_hash !== openRequest.policy_hash
   ) {
-    fail("SESSION_TRANSITION_BINDING_MISMATCH", "expected revision differs from request or F04 state");
+    fail("SESSION_OPEN_BINDING_MISMATCH", "caller and sealed F01 OPEN bindings disagree");
   }
-  if (
-    transitionRequest.to_phase !== OUTER_PHASE_TO_FORGE[invocation.outerPhase] ||
-    (requireCurrentState && transitionRequest.from_phase !== readDataProperty(state, "phase"))
-  ) {
-    fail("SESSION_TRANSITION_BINDING_MISMATCH", "outer or stored transition phase disagrees with F04 state");
-  }
-  return OBJECT_FREEZE({ outerRevision, state });
 };
 
 const identitiesFor = (invocation, artifactContentHash) => {
@@ -703,21 +752,21 @@ const normalizeLeaseCommand = (candidate, expected) => {
     candidate,
     ["lease_id", "run_id", "principal_id", "capabilities", "resource_scopes", "expires_at", "approval_ids"],
     "lease command factory result",
-    "SESSION_TRANSITION_LEASE_COMMAND_INVALID",
+    "SESSION_OPEN_LEASE_COMMAND_INVALID",
   );
   const command = detached({
     lease_id: requireString(readDataProperty(value, "lease_id"), "lease_id", {
       min: 3,
       max: 128,
-      code: "SESSION_TRANSITION_LEASE_COMMAND_INVALID",
+      code: "SESSION_OPEN_LEASE_COMMAND_INVALID",
     }),
     run_id: requireString(readDataProperty(value, "run_id"), "run_id", {
-      min: 1,
-      code: "SESSION_TRANSITION_LEASE_COMMAND_INVALID",
+      min: 3,
+      code: "SESSION_OPEN_LEASE_COMMAND_INVALID",
     }),
     principal_id: requireString(readDataProperty(value, "principal_id"), "principal_id", {
       min: 3,
-      code: "SESSION_TRANSITION_LEASE_COMMAND_INVALID",
+      code: "SESSION_OPEN_LEASE_COMMAND_INVALID",
     }),
     capabilities: requireUniqueStrings(readDataProperty(value, "capabilities"), "capabilities"),
     resource_scopes: requireUniqueStrings(
@@ -735,7 +784,7 @@ const normalizeLeaseCommand = (candidate, expected) => {
     !sameCanonical(command.approval_ids, expected.approvalRecordIds)
   ) {
     fail(
-      "SESSION_TRANSITION_LEASE_COMMAND_INVALID",
+      "SESSION_OPEN_LEASE_COMMAND_INVALID",
       "lease command factory escaped its deterministic policy-bound request",
     );
   }
@@ -747,12 +796,12 @@ const issueLease = (dependencies, context) => {
   try {
     candidate = dependencies.runtime.leaseCommandFactory(detached(context));
   } catch (error) {
-    fail("SESSION_TRANSITION_LEASE_COMMAND_FAILED", "lease command factory failed", undefined, {
+    fail("SESSION_OPEN_LEASE_COMMAND_FAILED", "lease command factory failed", undefined, {
       cause: error,
     });
   }
   if (candidate !== null && ["object", "function"].includes(typeof candidate) && "then" in candidate) {
-    fail("SESSION_TRANSITION_LEASE_COMMAND_FAILED", "lease command factory must be synchronous");
+    fail("SESSION_OPEN_LEASE_COMMAND_FAILED", "lease command factory must be synchronous");
   }
   const command = normalizeLeaseCommand(candidate, context);
   let lease;
@@ -776,9 +825,9 @@ const issueLease = (dependencies, context) => {
     !sameCanonical(lease?.resource_scopes, command.resource_scopes) ||
     !sameCanonical(lease?.approval_ids, command.approval_ids)
   ) {
-    fail("SESSION_TRANSITION_LEASE_INVALID", "E03 returned a lease outside the requested binding");
+    fail("SESSION_OPEN_LEASE_INVALID", "E03 returned a lease outside the requested binding");
   }
-  requireHash(lease.lease_hash, "lease.lease_hash", "SESSION_TRANSITION_LEASE_INVALID");
+  requireHash(lease.lease_hash, "lease.lease_hash", "SESSION_OPEN_LEASE_INVALID");
   return OBJECT_FREEZE({ command, lease });
 };
 
@@ -787,12 +836,12 @@ const readLedgerEvents = (ledger, runId) => {
   try {
     events = ledger.readEvents(runId);
   } catch (error) {
-    fail("SESSION_TRANSITION_LEDGER_INVALID", "E01 readEvents failed", undefined, {
+    fail("SESSION_OPEN_LEDGER_INVALID", "E01 readEvents failed", undefined, {
       cause: error,
     });
   }
   if (!ARRAY_IS_ARRAY(events)) {
-    fail("SESSION_TRANSITION_LEDGER_INVALID", "E01 readEvents did not return an array");
+    fail("SESSION_OPEN_LEDGER_INVALID", "E01 readEvents did not return an array");
   }
   const eventIds = new Set();
   for (let index = 0; index < events.length; index += 1) {
@@ -803,9 +852,9 @@ const readLedgerEvents = (ledger, runId) => {
       typeof event.event_id !== "string" ||
       eventIds.has(event.event_id)
     ) {
-      fail("SESSION_TRANSITION_LEDGER_INVALID", "E01 event sequence or identity is invalid");
+      fail("SESSION_OPEN_LEDGER_INVALID", "E01 event sequence or identity is invalid");
     }
-    requireHash(event.event_hash, "event.event_hash", "SESSION_TRANSITION_LEDGER_INVALID");
+    requireHash(event.event_hash, "event.event_hash", "SESSION_OPEN_LEDGER_INVALID");
     eventIds.add(event.event_id);
   }
   return events;
@@ -820,41 +869,41 @@ const currentLedgerHead = (ledger, runId) => {
   return detached({
     event_count: events.length,
     tail_event_id: requireString(tail.event_id, "tail.event_id", {
-      code: "SESSION_TRANSITION_LEDGER_INVALID",
+      code: "SESSION_OPEN_LEDGER_INVALID",
     }),
     tail_event_hash: requireHash(
       tail.event_hash,
       "tail.event_hash",
-      "SESSION_TRANSITION_LEDGER_INVALID",
+      "SESSION_OPEN_LEDGER_INVALID",
     ),
   });
 };
 
-const normalizePreparationResult = (candidate, transitionRequest) => {
+const normalizePreparationResult = (candidate, openRequest) => {
   const value = exactKeys(
     candidate,
     PREPARATION_RESULT_KEYS,
-    "F04 transition preparation result",
-    "SESSION_TRANSITION_PREPARATION_INVALID",
+    "F04 open preparation result",
+    "SESSION_OPEN_PREPARATION_INVALID",
   );
   if (!new Set(["PREPARED", "EXISTING"]).has(value.status)) {
-    fail("SESSION_TRANSITION_PREPARATION_INVALID", "F04 preparation status is invalid");
+    fail("SESSION_OPEN_PREPARATION_INVALID", "F04 preparation status is invalid");
   }
   for (const key of ["request_hash", "candidate_state_hash"]) {
-    requireHash(value[key], `preparation.${key}`, "SESSION_TRANSITION_PREPARATION_INVALID");
+    requireHash(value[key], `preparation.${key}`, "SESSION_OPEN_PREPARATION_INVALID");
   }
   if (
-    value.session_id !== transitionRequest.session_id ||
-    value.expected_revision !== transitionRequest.expected_revision ||
+    value.session_id !== openRequest.session_id ||
+    value.expected_revision !== null ||
     !NUMBER_IS_SAFE_INTEGER(value.new_revision) ||
     value.new_revision < 0
   ) {
-    fail("SESSION_TRANSITION_PREPARATION_INVALID", "F04 preparation result changed transition identity");
+    fail("SESSION_OPEN_PREPARATION_INVALID", "F04 preparation result changed open identity");
   }
   for (const key of ["operation_id", "outbox_id", "payload_artifact_id"]) {
     requireString(value[key], `preparation.${key}`, {
       min: 1,
-      code: "SESSION_TRANSITION_PREPARATION_INVALID",
+      code: "SESSION_OPEN_PREPARATION_INVALID",
     });
   }
   return detached(value);
@@ -883,7 +932,7 @@ const normalizeLeaseUseInspection = ({ candidate, context, lease }) => {
       "event",
     ],
     "E03 lease-use inspection",
-    "SESSION_TRANSITION_RECOVERY_INVALID",
+    "SESSION_OPEN_RECOVERY_INVALID",
   );
   const event = exactKeys(
     value.event,
@@ -900,7 +949,7 @@ const normalizeLeaseUseInspection = ({ candidate, context, lease }) => {
       "event_hash",
     ],
     "E03 lease-use event binding",
-    "SESSION_TRANSITION_RECOVERY_INVALID",
+    "SESSION_OPEN_RECOVERY_INVALID",
   );
   if (
     value.status !== "COMMITTED" ||
@@ -914,15 +963,15 @@ const normalizeLeaseUseInspection = ({ candidate, context, lease }) => {
     event.actor_id !== context.workerPrincipalId ||
     event.schema_version !== "4.0.0"
   ) {
-    fail("SESSION_TRANSITION_RECOVERY_INVALID", "E03 lease-use recovery binding changed");
+    fail("SESSION_OPEN_RECOVERY_INVALID", "E03 lease-use recovery binding changed");
   }
   for (const key of ["request_hash", "lease_use_hash"]) {
-    requireHash(value[key], `lease use.${key}`, "SESSION_TRANSITION_RECOVERY_INVALID");
+    requireHash(value[key], `lease use.${key}`, "SESSION_OPEN_RECOVERY_INVALID");
   }
   for (const key of ["lease_use_id", "event_outbox_id"]) {
     requireString(value[key], `lease use.${key}`, {
       min: 1,
-      code: "SESSION_TRANSITION_RECOVERY_INVALID",
+      code: "SESSION_OPEN_RECOVERY_INVALID",
     });
   }
   if (
@@ -931,55 +980,55 @@ const normalizeLeaseUseInspection = ({ candidate, context, lease }) => {
     ) ||
     (value.event_publication_status === "PUBLISHED") !== (event.event_hash !== null)
   ) {
-    fail("SESSION_TRANSITION_RECOVERY_INVALID", "E03 event publication state is invalid");
+    fail("SESSION_OPEN_RECOVERY_INVALID", "E03 event publication state is invalid");
   }
   requireString(event.event_id, "lease use event.event_id", {
     min: 1,
-    code: "SESSION_TRANSITION_RECOVERY_INVALID",
+    code: "SESSION_OPEN_RECOVERY_INVALID",
   });
   requireString(event.payload_artifact_id, "lease use event.payload_artifact_id", {
     min: 1,
-    code: "SESSION_TRANSITION_RECOVERY_INVALID",
+    code: "SESSION_OPEN_RECOVERY_INVALID",
   });
   canonicalTimestamp(event.occurred_at, "lease use event.occurred_at");
   if (event.event_hash !== null) {
-    requireHash(event.event_hash, "lease use event.event_hash", "SESSION_TRANSITION_RECOVERY_INVALID");
+    requireHash(event.event_hash, "lease use event.event_hash", "SESSION_OPEN_RECOVERY_INVALID");
   }
   return detached(value);
 };
 
-const normalizePublishedTransitionInspection = ({ candidate, prepared, context }) => {
+const normalizePublishedOpenInspection = ({ candidate, prepared, context }) => {
   const value = exactKeys(
     candidate,
     ["status", "preparation", "projection", "ledger_event", "artifact"],
-    "F04 transition inspection",
-    "SESSION_TRANSITION_RECOVERY_INVALID",
+    "F04 open inspection",
+    "SESSION_OPEN_RECOVERY_INVALID",
   );
   if (!new Set(["ABSENT", "PENDING", "PUBLISHED", "CONFLICTED"]).has(value.status)) {
-    fail("SESSION_TRANSITION_RECOVERY_INVALID", "F04 transition inspection status is invalid");
+    fail("SESSION_OPEN_RECOVERY_INVALID", "F04 open inspection status is invalid");
   }
   if (value.status !== "PUBLISHED") return null;
   const inspectedPreparation = normalizePreparationResult(
     value.preparation,
-    context.transitionRequest,
+    context.openRequest,
   );
   if (!sameCanonical(preparationBinding(inspectedPreparation), preparationBinding(prepared))) {
-    fail("SESSION_TRANSITION_RECOVERY_INVALID", "F04 preparation identity changed during recovery");
+    fail("SESSION_OPEN_RECOVERY_INVALID", "F04 preparation identity changed during recovery");
   }
   const projection = requirePlainRecord(value.projection, "F04 operation projection", {
-    code: "SESSION_TRANSITION_RECOVERY_INVALID",
+    code: "SESSION_OPEN_RECOVERY_INVALID",
   });
   const state = requirePlainRecord(projection.state, "F04 operation state", {
-    code: "SESSION_TRANSITION_RECOVERY_INVALID",
+    code: "SESSION_OPEN_RECOVERY_INVALID",
   });
   const artifact = exactKeys(
     value.artifact,
     ["artifact_id", "content_hash", "manifest_hash", "receipt_id", "receipt_hash"],
     "F04 operation artifact",
-    "SESSION_TRANSITION_RECOVERY_INVALID",
+    "SESSION_OPEN_RECOVERY_INVALID",
   );
   const ledgerEvent = requirePlainRecord(value.ledger_event, "F04 operation ledger event", {
-    code: "SESSION_TRANSITION_RECOVERY_INVALID",
+    code: "SESSION_OPEN_RECOVERY_INVALID",
   });
   if (
     artifact.artifact_id !== prepared.payload_artifact_id ||
@@ -987,21 +1036,21 @@ const normalizePublishedTransitionInspection = ({ candidate, prepared, context }
     state.revision !== prepared.new_revision ||
     state.state_hash !== prepared.candidate_state_hash ||
     ledgerEvent.run_id !== context.intent.run_id ||
-    ledgerEvent.event_type !== "forge.session.transitioned" ||
+    ledgerEvent.event_type !== "forge.session.opened" ||
     ledgerEvent.aggregate_type !== "forge_session" ||
     ledgerEvent.aggregate_id !== prepared.session_id ||
-    ledgerEvent.actor_id !== context.transitionRequest.actor.actor_id ||
+    ledgerEvent.actor_id !== context.openRequest.actor.actor_id ||
     ledgerEvent.payload_artifact_id !== prepared.payload_artifact_id ||
     projection.last_session_event_id !== ledgerEvent.event_id ||
     projection.last_session_event_hash !== ledgerEvent.event_hash
   ) {
-    fail("SESSION_TRANSITION_RECOVERY_INVALID", "F04 published operation binding changed");
+    fail("SESSION_OPEN_RECOVERY_INVALID", "F04 published operation binding changed");
   }
   for (const key of ["content_hash", "manifest_hash", "receipt_hash"]) {
-    requireHash(artifact[key], `F04 artifact.${key}`, "SESSION_TRANSITION_RECOVERY_INVALID");
+    requireHash(artifact[key], `F04 artifact.${key}`, "SESSION_OPEN_RECOVERY_INVALID");
   }
-  requireHash(projection.projection_hash, "F04 projection_hash", "SESSION_TRANSITION_RECOVERY_INVALID");
-  requireHash(ledgerEvent.event_hash, "F04 event_hash", "SESSION_TRANSITION_RECOVERY_INVALID");
+  requireHash(projection.projection_hash, "F04 projection_hash", "SESSION_OPEN_RECOVERY_INVALID");
+  requireHash(ledgerEvent.event_hash, "F04 event_hash", "SESSION_OPEN_RECOVERY_INVALID");
   return detached({ artifact, ledgerEvent, projection });
 };
 
@@ -1011,7 +1060,7 @@ const ledgerContainsExactEvent = ({ ledger, runId, event }) => {
   return matching.length === 1 && sameCanonical(matching[0], event);
 };
 
-const ledgerProvesPublishedTransition = ({ ledger, runId, leaseUse, published }) => {
+const ledgerProvesPublishedOpen = ({ ledger, runId, leaseUse, published }) => {
   const events = readLedgerEvents(ledger, runId);
   const byId = new Map(events.map((event) => [event.event_id, event]));
   const f04Event = byId.get(published.ledgerEvent.event_id);
@@ -1039,49 +1088,48 @@ const ledgerProvesPublishedTransition = ({ ledger, runId, leaseUse, published })
 const strictF04Payload = (artifactStore, artifactId) => {
   const bytes = artifactStore.readArtifact(artifactId);
   if (!Buffer.isBuffer(bytes) && !(bytes instanceof Uint8Array)) {
-    fail("SESSION_TRANSITION_RESULT_INVALID", "F04 result artifact bytes are unavailable");
+    fail("SESSION_OPEN_RESULT_INVALID", "F04 result artifact bytes are unavailable");
   }
   const content = Buffer.from(bytes);
   const text = content.toString("utf8");
   if (!Buffer.from(text, "utf8").equals(content) || !text.endsWith("\n")) {
-    fail("SESSION_TRANSITION_RESULT_INVALID", "F04 result artifact is not canonical UTF-8 JSON");
+    fail("SESSION_OPEN_RESULT_INVALID", "F04 result artifact is not canonical UTF-8 JSON");
   }
   let payload;
   try {
     payload = JSON.parse(text.slice(0, -1));
   } catch (error) {
-    fail("SESSION_TRANSITION_RESULT_INVALID", "F04 result artifact is malformed", undefined, {
+    fail("SESSION_OPEN_RESULT_INVALID", "F04 result artifact is malformed", undefined, {
       cause: error,
     });
   }
   if (`${canonicalJson(payload)}\n` !== text) {
-    fail("SESSION_TRANSITION_RESULT_INVALID", "F04 result artifact is not canonical JSON");
+    fail("SESSION_OPEN_RESULT_INVALID", "F04 result artifact is not canonical JSON");
   }
   return requirePlainRecord(payload, "F04 result payload", {
-    code: "SESSION_TRANSITION_RESULT_INVALID",
+    code: "SESSION_OPEN_RESULT_INVALID",
   });
 };
 
-const resultRevisionFromReceipt = (artifactStore, receipt, transitionRequest) => {
+const resultRevisionFromReceipt = (artifactStore, receipt, openRequest) => {
   if (receipt.result_artifact_ids.length !== 1) {
-    fail("SESSION_TRANSITION_RESULT_INVALID", "successful receipt must bind one F04 payload");
+    fail("SESSION_OPEN_RESULT_INVALID", "successful receipt must bind one F04 payload");
   }
   const payload = strictF04Payload(artifactStore, receipt.result_artifact_ids[0]);
   const candidateState = requirePlainRecord(payload.candidate_state, "F04 candidate_state", {
-    code: "SESSION_TRANSITION_RESULT_INVALID",
+    code: "SESSION_OPEN_RESULT_INVALID",
   });
   if (
-    payload.kind !== "TRANSITION" ||
+    payload.kind !== "OPEN" ||
     payload.operation_id !== receipt.external_operation_id ||
-    payload.session_id !== transitionRequest.session_id ||
-    payload.request?.idempotency_key !== transitionRequest.idempotency_key ||
-    payload.request?.expected_revision !== transitionRequest.expected_revision
+    payload.session_id !== openRequest.session_id ||
+    !sameCanonical(payload.request, openRequest)
   ) {
-    fail("SESSION_TRANSITION_RESULT_INVALID", "successful receipt differs from its F04 operation");
+    fail("SESSION_OPEN_RESULT_INVALID", "successful receipt differs from its F04 operation");
   }
   const revision = candidateState.revision;
   if (!NUMBER_IS_SAFE_INTEGER(revision) || revision < 0) {
-    fail("SESSION_TRANSITION_RESULT_INVALID", "F04 result revision is invalid");
+    fail("SESSION_OPEN_RESULT_INVALID", "F04 result revision is invalid");
   }
   return String(revision);
 };
@@ -1090,12 +1138,12 @@ const mutationPayload = ({
   invocation,
   leaseId,
   outcome,
-  transitionRequest,
+  openRequest,
   artifactStore,
 }) => {
   const receipt = outcome.receipt;
   if (receipt === null || receipt === undefined) {
-    fail("SESSION_TRANSITION_RECEIPT_MISSING", "E02 outcome has no EffectReceipt");
+    fail("SESSION_OPEN_RECEIPT_MISSING", "E02 outcome has no EffectReceipt");
   }
   const status = receipt.status;
   const committed = status === "UNKNOWN" ? null : status === "SUCCEEDED";
@@ -1107,11 +1155,11 @@ const mutationPayload = ({
       dry_run: invocation.dryRun,
       effect_status: status,
       committed,
-      expected_revision: invocation.expectedRevision,
-      observed_revision: invocation.expectedRevision,
+      expected_revision: null,
+      observed_revision: null,
       new_revision:
         status === "SUCCEEDED"
-          ? resultRevisionFromReceipt(artifactStore, receipt, transitionRequest)
+          ? resultRevisionFromReceipt(artifactStore, receipt, openRequest)
           : null,
       reconciliation_required: status === "UNKNOWN",
     },
@@ -1119,7 +1167,7 @@ const mutationPayload = ({
   });
 };
 
-const unknownTransitionReceiptInput = ({ dependencies, context, prepared }) => {
+const unknownOpenReceiptInput = ({ dependencies, context, prepared }) => {
   const finishedAt = latestTimestamp(
     context.attempt.started_at,
     timestampFromClock(dependencies.clock),
@@ -1132,7 +1180,7 @@ const unknownTransitionReceiptInput = ({ dependencies, context, prepared }) => {
     status: "UNKNOWN",
     result_artifact_ids: [],
     error_artifact_ids: [],
-    observed_state_hash: context.initialProjection.projection_hash,
+    observed_state_hash: context.classificationProjection.projection_hash,
     idempotency_key: context.invocation.idempotencyKey,
     started_at: context.attempt.started_at,
     finished_at: finishedAt,
@@ -1140,7 +1188,7 @@ const unknownTransitionReceiptInput = ({ dependencies, context, prepared }) => {
   };
 };
 
-const dryRunTransitionReceiptInput = ({ dependencies, context, outcome }) => ({
+const dryRunOpenReceiptInput = ({ dependencies, context, outcome }) => ({
   receipt_id: context.identities.dryReceiptId,
   intent_id: context.intent.intent_id,
   run_id: context.intent.run_id,
@@ -1148,7 +1196,7 @@ const dryRunTransitionReceiptInput = ({ dependencies, context, outcome }) => ({
   status: "NOT_EXECUTED",
   result_artifact_ids: [],
   error_artifact_ids: [],
-  observed_state_hash: context.initialProjection.projection_hash,
+  observed_state_hash: context.classificationProjection.projection_hash,
   idempotency_key: context.invocation.idempotencyKey,
   started_at: context.attempt.started_at,
   finished_at: latestTimestamp(
@@ -1159,7 +1207,7 @@ const dryRunTransitionReceiptInput = ({ dependencies, context, outcome }) => ({
   reconciliation_required: false,
 });
 
-const succeededTransitionReceiptInput = ({
+const succeededOpenReceiptInput = ({
   dependencies,
   context,
   outcome,
@@ -1186,9 +1234,10 @@ const succeededTransitionReceiptInput = ({
 });
 
 const RECOVERY_EVIDENCE_FAILURE_CODES = new Set([
-  "SESSION_TRANSITION_RECOVERY_INVALID",
-  "SESSION_TRANSITION_PREPARATION_INVALID",
-  "SESSION_TRANSITION_INPUT_INVALID",
+  "SESSION_OPEN_RECOVERY_INVALID",
+  "SESSION_OPEN_PREPARATION_INVALID",
+  "SESSION_OPEN_INPUT_INVALID",
+  "SESSION_OPEN_LEDGER_INVALID",
   "NON_CANONICAL_JSON",
   "CAPABILITY_STATE_INTEGRITY_FAILED",
   "CAPABILITY_STATE_MISSING",
@@ -1208,7 +1257,7 @@ const isRecoveryEvidenceFailure = (error) =>
   typeof error === "object" &&
   RECOVERY_EVIDENCE_FAILURE_CODES.has(error.code);
 
-const reconcilePublishedTransitionProof = ({ dependencies, context, lease, outcome }) => {
+const reconcilePublishedOpenProof = ({ dependencies, context, lease, outcome }) => {
   const inspectedLeaseUse = dependencies.authority.inspectLeaseUse(
     context.identities.leaseUseOperationId,
   );
@@ -1221,7 +1270,7 @@ const reconcilePublishedTransitionProof = ({ dependencies, context, lease, outco
 
   const prepared = normalizePreparationResult(
     leaseUse.result,
-    context.transitionRequest,
+    context.openRequest,
   );
   if (
     outcome.receipt?.external_operation_id !== null &&
@@ -1229,16 +1278,16 @@ const reconcilePublishedTransitionProof = ({ dependencies, context, lease, outco
     outcome.receipt.external_operation_id !== prepared.operation_id
   ) {
     fail(
-      "SESSION_TRANSITION_RECOVERY_INVALID",
+      "SESSION_OPEN_RECOVERY_INVALID",
       "UNKNOWN receipt is bound to another F04 operation",
     );
   }
 
-  const inspection = dependencies.sessionAuthority.inspectTransition({
-    transition_request: context.transitionRequest,
+  const inspection = dependencies.sessionAuthority.inspectOpen({
+    open_request: context.openRequest,
     expected_ledger_head: prepared.expected_ledger_head,
   });
-  const published = normalizePublishedTransitionInspection({
+  const published = normalizePublishedOpenInspection({
     candidate: inspection,
     prepared,
     context,
@@ -1261,7 +1310,7 @@ const reconcilePublishedTransitionProof = ({ dependencies, context, lease, outco
     });
     if (leaseUse?.event_publication_status !== "PUBLISHED") return null;
   }
-  if (!ledgerProvesPublishedTransition({
+  if (!ledgerProvesPublishedOpen({
     ledger: dependencies.ledger,
     runId: context.intent.run_id,
     leaseUse,
@@ -1276,12 +1325,13 @@ const reconcilePublishedTransitionProof = ({ dependencies, context, lease, outco
   });
 };
 
-const executeTransitionEffect = ({ dependencies, context, lease, setPrepared }) => {
+const executeOpenEffect = ({ dependencies, context, lease, setPrepared }) => {
   const runId = context.intent.run_id;
   const head = currentLedgerHead(dependencies.ledger, runId);
   const initialCandidate = detached({
-    transition_request: context.transitionRequest,
+    open_request: context.openRequest,
     expected_ledger_head: head,
+    classification_projection: context.classificationProjection,
   });
   const leaseCommit = dependencies.authority.commitWithLeaseDeferredEvent(
     {
@@ -1292,32 +1342,29 @@ const executeTransitionEffect = ({ dependencies, context, lease, setPrepared }) 
       capability: REQUIRED_CAPABILITY,
       resource_scopes: lease.resource_scopes,
     },
-    (transactionStore) => dependencies.sessionAuthority.prepareTransition(
+    (transactionStore) => dependencies.sessionAuthority.prepareOpen(
       transactionStore,
       initialCandidate,
     ),
     Object.values(DURABLE_FORGE_SESSION_RECORD_TYPES),
   );
-  const prepared = normalizePreparationResult(
-    leaseCommit.result,
-    context.transitionRequest,
-  );
+  const prepared = normalizePreparationResult(leaseCommit.result, context.openRequest);
   setPrepared(prepared);
-  const published = dependencies.session.transitionSession({
-    transition_request: context.transitionRequest,
+  const published = dependencies.session.openSession({
+    ...context.openRequest,
     expected_ledger_head: prepared.expected_ledger_head,
   });
   if (
     published.state.revision !== prepared.new_revision ||
     published.state.state_hash !== prepared.candidate_state_hash
   ) {
-    fail("SESSION_TRANSITION_RESULT_INVALID", "published F04 projection differs from preparation");
+    fail("SESSION_OPEN_RESULT_INVALID", "published F04 projection differs from preparation");
   }
-  const inspection = dependencies.sessionAuthority.inspectTransition({
-    transition_request: context.transitionRequest,
+  const inspection = dependencies.sessionAuthority.inspectOpen({
+    open_request: context.openRequest,
     expected_ledger_head: prepared.expected_ledger_head,
   });
-  const publishedEvidence = normalizePublishedTransitionInspection({
+  const publishedEvidence = normalizePublishedOpenInspection({
     candidate: inspection,
     prepared,
     context,
@@ -1331,7 +1378,7 @@ const executeTransitionEffect = ({ dependencies, context, lease, setPrepared }) 
     })
   ) {
     fail(
-      "SESSION_TRANSITION_RESULT_INVALID",
+      "SESSION_OPEN_RESULT_INVALID",
       "F04 publication is not durably present in E01",
     );
   }
@@ -1343,17 +1390,17 @@ const executeTransitionEffect = ({ dependencies, context, lease, setPrepared }) 
     lease,
   });
   if (leaseUse === null) {
-    fail("SESSION_TRANSITION_RESULT_INVALID", "E03 lease use is missing after F04 publication");
+    fail("SESSION_OPEN_RESULT_INVALID", "E03 lease use is missing after F04 publication");
   }
   const inspectedPreparation = normalizePreparationResult(
     leaseUse.result,
-    context.transitionRequest,
+    context.openRequest,
   );
   if (!sameCanonical(
     preparationBinding(inspectedPreparation),
     preparationBinding(prepared),
   )) {
-    fail("SESSION_TRANSITION_RESULT_INVALID", "E03 and F04 operation bindings disagree");
+    fail("SESSION_OPEN_RESULT_INVALID", "E03 and F04 operation bindings disagree");
   }
   if (leaseUse.event_publication_status !== "PUBLISHED") {
     leaseUse = normalizeLeaseUseInspection({
@@ -1366,7 +1413,7 @@ const executeTransitionEffect = ({ dependencies, context, lease, setPrepared }) 
   }
   if (
     leaseUse?.event_publication_status !== "PUBLISHED" ||
-    !ledgerProvesPublishedTransition({
+    !ledgerProvesPublishedOpen({
       ledger: dependencies.ledger,
       runId,
       leaseUse,
@@ -1374,7 +1421,7 @@ const executeTransitionEffect = ({ dependencies, context, lease, setPrepared }) 
     })
   ) {
     fail(
-      "SESSION_TRANSITION_RESULT_INVALID",
+      "SESSION_OPEN_RESULT_INVALID",
       "E01 does not prove the required F04 then E03 publication order",
     );
   }
@@ -1389,44 +1436,38 @@ const makeWorker = (dependencies) => createDurableMutationOrchestrator({
   }),
   effects: dependencies.effects,
   errors: OBJECT_FREEZE({
-    effectInvalid: (message) => fail("SESSION_TRANSITION_EFFECT_INVALID", message),
-    recoveryInvalid: (message) => fail("SESSION_TRANSITION_RECOVERY_INVALID", message),
+    effectInvalid: (message) => fail("SESSION_OPEN_EFFECT_INVALID", message),
+    recoveryInvalid: (message) => fail("SESSION_OPEN_RECOVERY_INVALID", message),
     reconciliationRequired: (message, details = undefined, options = undefined) =>
-      fail("SESSION_TRANSITION_RECONCILIATION_REQUIRED", message, details, options),
+      fail("SESSION_OPEN_RECONCILIATION_REQUIRED", message, details, options),
   }),
   hooks: OBJECT_FREEZE({
     bindOperation: ({ preparedCandidate, priorEffect }) => {
       const {
+        classificationProjection,
         identities,
-        initialProjection,
         invocation,
-        resolved,
-        transitionRequest,
+        openRequest,
+        publishedRequest,
       } = preparedCandidate;
-      const { state } = bindInvocation({
-        invocation,
-        transitionRequest,
-        published: initialProjection,
-        requireCurrentState: priorEffect === null,
-      });
-      const runId = requireString(state.run_spec_id, "session.run_spec_id", {
-        min: 1,
-        code: "SESSION_TRANSITION_SESSION_INVALID",
+      const runId = requireString(openRequest.run_spec_id, "open_request.run_spec_id", {
+        min: 3,
+        code: "SESSION_OPEN_REQUEST_INVALID",
       });
       const startedAt = priorEffect?.intent?.created_at ?? invocation.generatedAt;
       return OBJECT_FREEZE({
         attemptId: identities.attemptId,
+        classificationProjection,
         dryRun: invocation.dryRun,
         identities,
-        initialProjection,
         intentInput: {
           intent_id: identities.intentId,
           run_id: runId,
           node_id: NODE_ID,
           action_type: HANDLER_OPERATION,
           target_ref: invocation.targetRef,
-          arguments_artifact_id: invocation.transitionRequestArtifactId,
-          arguments_hash: resolved.contentHash,
+          arguments_artifact_id: publishedRequest.artifactId,
+          arguments_hash: publishedRequest.contentHash,
           idempotency_key: invocation.idempotencyKey,
           required_capabilities: [REQUIRED_CAPABILITY],
           approval_record_ids: invocation.approvalRecordIds,
@@ -1434,34 +1475,35 @@ const makeWorker = (dependencies) => createDurableMutationOrchestrator({
           created_at: startedAt,
         },
         invocation,
+        openRequest,
+        publishedRequest,
         runId,
         startedAt,
-        transitionRequest,
       });
     },
     createContext: ({ attempt, intent, operation }) => OBJECT_FREEZE({
       attempt,
+      classificationProjection: operation.classificationProjection,
       identities: operation.identities,
-      initialProjection: operation.initialProjection,
       intent,
       invocation: operation.invocation,
-      transitionRequest: operation.transitionRequest,
+      openRequest: operation.openRequest,
       workerPrincipalId: dependencies.runtime.workerPrincipalId,
     }),
-    dryRunReceiptInput: ({ context, outcome }) => dryRunTransitionReceiptInput({
+    dryRunReceiptInput: ({ context, outcome }) => dryRunOpenReceiptInput({
       dependencies,
       context,
       outcome,
     }),
     errorCode: (error) => error?.code ?? error?.name ?? "unknown",
-    executeEffect: ({ context, lease, setPrepared }) => executeTransitionEffect({
+    executeEffect: ({ context, lease, setPrepared }) => executeOpenEffect({
       dependencies,
       context,
       lease,
       setPrepared,
     }),
-    existingAttemptReconciliationError: () => new SessionTransitionWorkerError(
-      "SESSION_TRANSITION_EFFECT_RECONCILING",
+    existingAttemptReconciliationError: () => new SessionOpenWorkerError(
+      "SESSION_OPEN_EFFECT_RECONCILING",
       "an existing Attempt cannot dispatch the F04 effect again",
     ),
     isRecoveryEvidenceFailure,
@@ -1475,51 +1517,64 @@ const makeWorker = (dependencies) => createDurableMutationOrchestrator({
         targetRef: operation.invocation.targetRef,
         semanticFingerprint: operation.invocation.semanticFingerprint,
         idempotencyKey: operation.invocation.idempotencyKey,
-        transitionRequestArtifactId: operation.invocation.transitionRequestArtifactId,
-        requestedAt: operation.transitionRequest.requested_at,
+        openRequestArtifactId: operation.publishedRequest.artifactId,
+        requestedAt: operation.openRequest.requested_at,
       });
       return issueLease(dependencies, leaseContext).lease;
     },
     prepareCandidate: (candidate) => {
       const invocation = normalizeInvocation(candidate);
-      const resolved = resolveTransitionRequestArtifact(
-        dependencies.artifactStore,
-        invocation.transitionRequestArtifactId,
+      bindCallerInvocation(invocation);
+      const classificationProjection = resolveClassificationProjection(
+        dependencies.classification,
+        invocation.classificationId,
       );
-      const transitionRequest = resolved.request;
-      const initialProjection = dependencies.session.readSession(invocation.sessionId);
-      if (initialProjection === null) {
-        fail("SESSION_TRANSITION_SESSION_NOT_FOUND", "published F04 session does not exist");
-      }
-      const identities = identitiesFor(invocation, resolved.contentHash);
+      const openRequest = normalizeOpenRequest({
+        request_id: classificationProjection.classification.request_id,
+        session_id: invocation.sessionId,
+        workspace_id: invocation.workspaceId,
+        run_spec_id: classificationProjection.ledger_binding.run_id,
+        classification_id: invocation.classificationId,
+        policy_hash: classificationProjection.identity_context.policy_bundle_hash,
+        corpus_snapshot_hash: invocation.corpusSnapshotHash,
+        actor: invocation.actor,
+        idempotency_key: invocation.idempotencyKey,
+        requested_at: invocation.requestedAt,
+      });
+      bindInvocation({ invocation, openRequest, classificationProjection });
+      const publishedRequest = publishSessionOpenRequest(
+        dependencies.artifactStore,
+        openRequest,
+      );
+      const identities = identitiesFor(invocation, publishedRequest.contentHash);
       return OBJECT_FREEZE({
+        classificationProjection,
         identities,
-        initialProjection,
         intentId: identities.intentId,
         invocation,
-        resolved,
-        transitionRequest,
+        openRequest,
+        publishedRequest,
       });
     },
     projectResult: ({ lease, operation, outcome }) => mutationPayload({
       invocation: operation.invocation,
       leaseId: lease === null ? operation.identities.leaseId : lease.lease_id,
       outcome,
-      transitionRequest: operation.transitionRequest,
+      openRequest: operation.openRequest,
       artifactStore: dependencies.artifactStore,
     }),
     recoverEffect: ({ context, lease, outcome }) =>
-      reconcilePublishedTransitionProof({ dependencies, context, lease, outcome }),
+      reconcilePublishedOpenProof({ dependencies, context, lease, outcome }),
     sameRecord: sameCanonical,
     successReceiptInput: ({ context, effectResult, outcome, prepared }) =>
-      succeededTransitionReceiptInput({
+      succeededOpenReceiptInput({
         dependencies,
         context,
         outcome,
         prepared,
         projection: effectResult.projection,
       }),
-    unknownReceiptInput: ({ context, prepared }) => unknownTransitionReceiptInput({
+    unknownReceiptInput: ({ context, prepared }) => unknownOpenReceiptInput({
       dependencies,
       context,
       prepared,
@@ -1545,5 +1600,5 @@ const makeWorker = (dependencies) => createDurableMutationOrchestrator({
   }),
 });
 
-export const createSessionTransitionWorker = (options) =>
+export const createSessionOpenWorker = (options) =>
   makeWorker(normalizeDependencies(options));

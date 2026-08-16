@@ -57,6 +57,9 @@ import {
   validateOutboxEnvelope,
   validateSessionRecord,
 } from "./session-records.mjs";
+import {
+  bindDurableForgeSessionWorkerAuthority,
+} from "./session-worker-authority.mjs";
 
 export { DurableForgeSessionError, DURABLE_FORGE_SESSION_RECORD_TYPES };
 
@@ -67,8 +70,6 @@ const EVENT_TYPES = OBJECT_FREEZE({
   OPEN: "forge.session.opened",
   TRANSITION: "forge.session.transitioned",
 });
-const DURABLE_FORGE_SESSION_DEPENDENCY_IDENTITIES = new WeakMap();
-
 const dependencyMethod = (dependency, method, label) => {
   if (
     dependency === null ||
@@ -245,6 +246,43 @@ const normalizeOpenInput = (candidate) => {
     request: detached(request),
     expectedHead: normalizeExpectedHead(readDataProperty(value, "expected_ledger_head")),
   };
+};
+
+const normalizeOpenOperationInput = (candidate, { includeProjection = false } = {}) => {
+  const allowedKeys = includeProjection
+    ? ["open_request", "expected_ledger_head", "classification_projection"]
+    : ["open_request", "expected_ledger_head"];
+  const value = exactKeys(
+    candidate,
+    allowedKeys,
+    "open session operation input",
+    "FORGE_INPUT_INVALID",
+  );
+  const openRequest = detached(
+    readDataProperty(value, "open_request", "open session operation input", "FORGE_INPUT_INVALID"),
+  );
+  const normalized = normalizeOpenInput({
+    ...openRequest,
+    expected_ledger_head: readDataProperty(
+      value,
+      "expected_ledger_head",
+      "open session operation input",
+      "FORGE_INPUT_INVALID",
+    ),
+  });
+  return includeProjection
+    ? {
+        ...normalized,
+        projection: validateClassificationProjection(
+          readDataProperty(
+            value,
+            "classification_projection",
+            "open session operation input",
+            "FORGE_INPUT_INVALID",
+          ),
+        ),
+      }
+    : normalized;
 };
 
 const normalizeTransitionInput = (candidate) => {
@@ -1414,6 +1452,26 @@ const transitionPreparationResult = (outbox, status) => {
   });
 };
 
+const openPreparationResult = (outbox, status) => {
+  const value = validateOutboxRecord(outbox);
+  if (value === null || value.value.intent.kind !== "OPEN") {
+    fail("FORGE_OUTBOX_INTEGRITY_FAILED", "OPEN preparation outbox is unavailable");
+  }
+  const intent = value.value.intent;
+  return detached({
+    status,
+    operation_id: intent.operation_id,
+    outbox_id: intent.outbox_id,
+    session_id: intent.session_id,
+    request_hash: intent.request_hash,
+    payload_artifact_id: intent.payload_artifact_id,
+    candidate_state_hash: intent.candidate_state.state_hash,
+    expected_ledger_head: intent.expected_ledger_head,
+    expected_revision: null,
+    new_revision: intent.candidate_state.revision,
+  });
+};
+
 const createOperationRecords = ({
   store,
   bindings,
@@ -1975,6 +2033,147 @@ const makePort = (dependencies) => {
     stateTransaction(stateStore, (store) =>
       readExistingOperation(store, bindings, identity, requestHash));
 
+  const inspectOpen = (candidate) => {
+    const { request, expectedHead } = normalizeOpenOperationInput(candidate);
+    const requestHash = requestHashFor("OPEN", request, expectedHead);
+    const identity = operationIdentity("OPEN", request.session_id, requestHash);
+    const bindings = requestBindingsFor({
+      sessionId: request.session_id,
+      requestId: request.request_id,
+      idempotencyKey: request.idempotency_key,
+    });
+    return stateTransaction(stateStore, (store) => {
+      const existing = readExistingOperation(store, bindings, identity, requestHash);
+      if (existing === null) {
+        return detached({
+          status: "ABSENT",
+          preparation: null,
+          projection: null,
+          ledger_event: null,
+          artifact: null,
+        });
+      }
+      const record = validateOutboxRecord(
+        store.readRevisionedRecord(OUTBOX_RECORD_VERSION, existing),
+      );
+      if (record === null) {
+        fail("FORGE_OUTBOX_INTEGRITY_FAILED", "bound OPEN outbox is missing");
+      }
+      const preparation = openPreparationResult(record, "EXISTING");
+      if (record.value.state !== "PUBLISHED") {
+        return detached({
+          status: record.value.state,
+          preparation,
+          projection: null,
+          ledger_event: null,
+          artifact: null,
+        });
+      }
+      const projection = buildPublishedProjection({
+        state: record.value.intent.candidate_state,
+        phaseArtifactSets: record.value.intent.phase_artifact_sets,
+        supersededPhaseArtifactSets: record.value.intent.superseded_phase_artifact_sets,
+        event: record.value.resolution.ledger.event,
+        classificationProjection: record.value.intent.classification_projection,
+      });
+      if (projection.projection_hash !== record.value.resolution.projection_hash) {
+        fail("FORGE_SESSION_STATE_INTEGRITY_FAILED", "operation projection resolution changed");
+      }
+      const session = validateSessionRecord(
+        store.readRevisionedRecord(SESSION_RECORD_VERSION, request.session_id),
+      );
+      if (session === null || session.value.published === null) {
+        fail("FORGE_SESSION_STATE_INTEGRITY_FAILED", "published session projection is missing");
+      }
+      const current = session.value.published;
+      if (
+        current.state.revision < projection.state.revision ||
+        (current.state.revision === projection.state.revision &&
+          current.projection_hash !== projection.projection_hash)
+      ) {
+        fail(
+          "FORGE_SESSION_STATE_INTEGRITY_FAILED",
+          "published session does not contain the inspected OPEN operation",
+        );
+      }
+      return detached({
+        status: "PUBLISHED",
+        preparation,
+        projection,
+        ledger_event: record.value.resolution.ledger.event,
+        artifact: record.value.resolution.artifact,
+      });
+    });
+  };
+
+  const prepareOpen = (transactionStore, candidate) => {
+    for (const method of [
+      "readRevisionedRecord",
+      "createRevisionedRecord",
+      "compareAndSwapRevision",
+    ]) {
+      dependencyMethod(transactionStore, method, "transactionStore");
+    }
+    const { request, expectedHead, projection } = normalizeOpenOperationInput(candidate, {
+      includeProjection: true,
+    });
+    bindOpenToClassification(request, projection);
+    const requestHash = requestHashFor("OPEN", request, expectedHead);
+    const identity = operationIdentity("OPEN", request.session_id, requestHash);
+    const bindings = requestBindingsFor({
+      sessionId: request.session_id,
+      requestId: request.request_id,
+      idempotencyKey: request.idempotency_key,
+    });
+    const existing = readExistingOperation(
+      transactionStore,
+      bindings,
+      identity,
+      requestHash,
+    );
+    if (existing !== null) {
+      return openPreparationResult(
+        transactionStore.readRevisionedRecord(OUTBOX_RECORD_VERSION, existing),
+        "EXISTING",
+      );
+    }
+
+    const existingSession = validateSessionRecord(
+      transactionStore.readRevisionedRecord(SESSION_RECORD_VERSION, request.session_id),
+    );
+    if (existingSession !== null && existingSession.value.pending !== null) {
+      fail("FORGE_SESSION_PENDING", "session already has an unpublished operation");
+    }
+    if (existingSession !== null && existingSession.value.published !== null) {
+      fail("FORGE_SESSION_ALREADY_OPEN", "session already has a published OPEN event");
+    }
+    const occurredAt = timestampFromClock(clock);
+    if (compareTimes(occurredAt, request.requested_at) < 0) {
+      fail("FORGE_CLOCK_INVALID", "OPEN event cannot precede requested_at");
+    }
+    const intent = createOpenIntent({
+      request,
+      expectedHead,
+      requestHash,
+      identity,
+      projection,
+      occurredAt,
+    });
+    createOperationRecords({
+      store: transactionStore,
+      bindings,
+      identity,
+      sessionId: request.session_id,
+      requestHash,
+      intent,
+      existingSession,
+    });
+    return openPreparationResult(
+      transactionStore.readRevisionedRecord(OUTBOX_RECORD_VERSION, identity.outboxId),
+      "PREPARED",
+    );
+  };
+
   const inspectTransition = (candidate) => {
     const { request, requestId, sessionId, idempotencyKey, expectedHead } =
       normalizeTransitionInput(candidate);
@@ -2133,43 +2332,12 @@ const makePort = (dependencies) => {
 
     const projection = readClassificationProjection(classificationPort, request.classification_id);
     bindOpenToClassification(request, projection);
-    const occurredAt = timestampFromClock(clock);
-    if (compareTimes(occurredAt, request.requested_at) < 0) {
-      fail("FORGE_CLOCK_INVALID", "OPEN event cannot precede requested_at");
-    }
-
-    const result = stateTransaction(stateStore, (store) => {
-      const raced = readExistingOperation(store, bindings, identity, requestHash);
-      if (raced !== null) return { outboxId: raced };
-      const existingSession = validateSessionRecord(
-        store.readRevisionedRecord(SESSION_RECORD_VERSION, request.session_id),
-      );
-      if (existingSession !== null && existingSession.value.pending !== null) {
-        fail("FORGE_SESSION_PENDING", "session already has an unpublished operation");
-      }
-      if (existingSession !== null && existingSession.value.published !== null) {
-        fail("FORGE_SESSION_ALREADY_OPEN", "session already has a published OPEN event");
-      }
-      const intent = createOpenIntent({
-        request,
-        expectedHead,
-        requestHash,
-        identity,
-        projection,
-        occurredAt,
-      });
-      createOperationRecords({
-        store,
-        bindings,
-        identity,
-        sessionId: request.session_id,
-        requestHash,
-        intent,
-        existingSession,
-      });
-      return { outboxId: identity.outboxId };
-    });
-    return publishedAfterOperation(dependencies, result.outboxId);
+    const prepared = stateTransaction(stateStore, (store) => prepareOpen(store, {
+      open_request: request,
+      expected_ledger_head: expectedHead,
+      classification_projection: projection,
+    }));
+    return publishedAfterOperation(dependencies, prepared.outbox_id);
   };
 
   const transitionSession = (candidate) => {
@@ -2380,39 +2548,28 @@ const makePort = (dependencies) => {
     return detached(replayedPublished);
   };
 
-  return OBJECT_FREEZE({
+  const port = OBJECT_FREEZE({
     openSession,
-    inspectTransition,
-    prepareTransition,
     transitionSession,
     readSession,
     reconcilePending,
     restoreSession,
   });
-};
-
-export const getDurableForgeSessionDependencyIdentity = (sessionPort) => {
-  const identity = DURABLE_FORGE_SESSION_DEPENDENCY_IDENTITIES.get(sessionPort);
-  if (identity === undefined) {
-    fail(
-      "FORGE_INVALID_DEPENDENCY",
-      "sessionPort must come from createDurableForgeSessionPort()",
-    );
-  }
-  return identity;
+  bindDurableForgeSessionWorkerAuthority(port, {
+    artifactStore,
+    classificationPort,
+    ledger,
+    stateStore,
+    clock,
+    inspectOpen,
+    prepareOpen,
+    inspectTransition,
+    prepareTransition,
+  });
+  return port;
 };
 
 export const createDurableForgeSessionPort = (options) => {
   const dependencies = normalizeDependencies(options);
-  const port = makePort(dependencies);
-  DURABLE_FORGE_SESSION_DEPENDENCY_IDENTITIES.set(
-    port,
-    OBJECT_FREEZE({
-      artifactStore: dependencies.artifactStore,
-      ledger: dependencies.ledger,
-      stateStore: dependencies.stateStore,
-      clock: dependencies.clock,
-    }),
-  );
-  return port;
+  return makePort(dependencies);
 };

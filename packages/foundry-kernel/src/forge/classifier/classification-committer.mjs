@@ -2,6 +2,10 @@ import { createHash } from "node:crypto";
 import { types as utilTypes } from "node:util";
 
 import {
+  bindClassificationWorkerAuthority,
+} from "./classification-worker-authority.mjs";
+
+import {
   applyHumanClassificationOverride,
   assertClassificationArtifactIntegrity,
   assertStrictClassificationReplay,
@@ -86,6 +90,7 @@ const E01_EVENT_RECORD_KEYS = OBJECT_FREEZE([
 const E01_EVENT_HASH_INPUT_KEYS = OBJECT_FREEZE(
   E01_EVENT_RECORD_KEYS.filter((key) => key !== "event_hash"),
 );
+const CLASSIFICATION_PREPARATION_STATES = new WeakMap();
 
 export const CLASSIFICATION_RECORD_TYPES = OBJECT_FREEZE({
   CLASSIFICATION: "foundry.forge.classification.v1",
@@ -1216,40 +1221,49 @@ class ClassificationCommitter {
     this.#ledger = dependencies.ledger;
     this.#stateStore = dependencies.stateStore;
     this.#clock = dependencies.clock;
+    bindClassificationWorkerAuthority(this, {
+      artifactStore: dependencies.artifactStore,
+      ledger: dependencies.ledger,
+      stateStore: dependencies.stateStore,
+      clock: dependencies.clock,
+      prepareClassification: (store, candidate, prepareOptions = {}) =>
+        this.#prepareClassification(store, candidate, prepareOptions),
+    });
   }
 
-  classify(candidate, options = {}) {
+  #prepareClassification(store, candidate, options = {}) {
     validateClassifierCapabilities(options.capabilities ?? ["artifact_read", "artifact_write"]);
     const initial = evaluateEpistemicWork(candidate);
     const idempotencyKey = classificationIdempotencyKey(initial);
-    const transactionResult = this.#stateStore.transaction((store) => {
-      const bindingRecord = store.readRevisionedRecord(
-        CLASSIFICATION_RECORD_TYPES.IDEMPOTENCY,
-        idempotencyKey,
-      );
-      if (bindingRecord !== null) {
-        if (bindingRecord.revision !== 0) {
-          fail("CLASSIFICATION_STATE_INTEGRITY_FAILED", "idempotency binding was revised");
-        }
-        const binding = recordValue(bindingRecord, "classification idempotency binding");
-        const replay = evaluateEpistemicWork(candidate, {
-          prior_classification: binding.prior_context,
-        });
-        const expected = binding.prior_context === null
-          ? replay
-          : (() => {
-              const priorHash = binding.classification_hash === replay.classification_hash
-                ? null
-                : loadClassification(store, binding.classification_id)
-                    .identity_context.supersedes_classification_hash;
-              return priorHash === null ? replay : sealClassificationSupersession(replay, priorHash);
-            })();
-        if (expected.classification_hash !== binding.classification_hash) {
-          fail("IDEMPOTENCY_CONFLICT", "idempotency key is bound to a different classification preimage");
-        }
-        return { state: loadClassification(store, binding.classification_id), status: "EXISTING" };
+    const bindingRecord = store.readRevisionedRecord(
+      CLASSIFICATION_RECORD_TYPES.IDEMPOTENCY,
+      idempotencyKey,
+    );
+    let state;
+    let status;
+    if (bindingRecord !== null) {
+      if (bindingRecord.revision !== 0) {
+        fail("CLASSIFICATION_STATE_INTEGRITY_FAILED", "idempotency binding was revised");
       }
-
+      const binding = recordValue(bindingRecord, "classification idempotency binding");
+      const replay = evaluateEpistemicWork(candidate, {
+        prior_classification: binding.prior_context,
+      });
+      const expected = binding.prior_context === null
+        ? replay
+        : (() => {
+            const priorHash = binding.classification_hash === replay.classification_hash
+              ? null
+              : loadClassification(store, binding.classification_id)
+                  .identity_context.supersedes_classification_hash;
+            return priorHash === null ? replay : sealClassificationSupersession(replay, priorHash);
+          })();
+      if (expected.classification_hash !== binding.classification_hash) {
+        fail("IDEMPOTENCY_CONFLICT", "idempotency key is bound to a different classification preimage");
+      }
+      state = loadClassification(store, binding.classification_id);
+      status = "EXISTING";
+    } else {
       const activeRecord = store.readRevisionedRecord(
         CLASSIFICATION_RECORD_TYPES.ACTIVE,
         initial.request_id,
@@ -1270,7 +1284,7 @@ class ClassificationCommitter {
           priorState.classification.classification_hash,
         );
       }
-      const state = commitNewState({
+      state = commitNewState({
         store,
         decision,
         classifiedAt: timestampFromClock(this.#clock),
@@ -1282,10 +1296,32 @@ class ClassificationCommitter {
         priorContext,
         binding: { type: "idempotency" },
       });
-      return { state, status: "CREATED" };
-    });
-    this.#publish(transactionResult.state.outbox_id);
-    return resultFromState(transactionResult.state, this.#artifactStore, transactionResult.status);
+      status = "CREATED";
+    }
+    const preparation = deepFreeze(cloneJson({
+      status,
+      classification_id: state.classification.classification_id,
+      classification_hash: state.classification.classification_hash,
+      request_id: state.classification.request_id,
+      run_id: state.run_id,
+      outbox_id: state.outbox_id,
+    }));
+    CLASSIFICATION_PREPARATION_STATES.set(preparation, state);
+    return preparation;
+  }
+
+  classify(candidate, options = {}) {
+    const preparation = this.#stateStore.transaction((store) =>
+      this.#prepareClassification(store, candidate, options));
+    this.#publish(preparation.outbox_id);
+    const state = CLASSIFICATION_PREPARATION_STATES.get(preparation);
+    if (state === undefined) {
+      fail(
+        "CLASSIFICATION_STATE_INTEGRITY_FAILED",
+        "classification preparation lost its private state binding",
+      );
+    }
+    return resultFromState(state, this.#artifactStore, preparation.status);
   }
 
   override(candidate, options = {}) {
