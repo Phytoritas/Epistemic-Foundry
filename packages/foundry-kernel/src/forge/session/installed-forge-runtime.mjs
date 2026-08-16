@@ -42,6 +42,7 @@ const FULL_OPTION_KEYS = OBJECT_FREEZE([
   "openRuntime",
   "transitionRuntime",
 ]);
+const READ_RUNTIME_DEPENDENCIES = new WeakMap();
 
 const stableCauseCode = (candidate, fallback) => {
   const value = candidate?.code;
@@ -85,17 +86,14 @@ const normalizeOptions = (candidate, { allowedKeys, requiredKeys, includeMutatio
         "options",
         OPTIONS_ERROR_CODE,
       );
-      normalized.transitionRuntime = readDataProperty(
-        value,
-        "transitionRuntime",
-        "options",
-        OPTIONS_ERROR_CODE,
-      );
       normalized.classificationRuntime = OBJECT_HAS_OWN(value, "classificationRuntime")
         ? readDataProperty(value, "classificationRuntime", "options", OPTIONS_ERROR_CODE)
         : null;
       normalized.openRuntime = OBJECT_HAS_OWN(value, "openRuntime")
         ? readDataProperty(value, "openRuntime", "options", OPTIONS_ERROR_CODE)
+        : null;
+      normalized.transitionRuntime = OBJECT_HAS_OWN(value, "transitionRuntime")
+        ? readDataProperty(value, "transitionRuntime", "options", OPTIONS_ERROR_CODE)
         : null;
     }
     return OBJECT_FREEZE(normalized);
@@ -117,7 +115,6 @@ const normalizeFullOptions = (candidate) => normalizeOptions(candidate, {
     "artifactRoot",
     "capabilityPolicy",
     "clock",
-    "transitionRuntime",
   ],
   includeMutation: true,
 });
@@ -187,6 +184,39 @@ const openArtifactStore = (artifactRoot) => {
   }
 };
 
+const createArtifactReadPort = (artifactStore) => OBJECT_FREEZE({
+  enumerateReceipts: (...args) => artifactStore.enumerateReceipts(...args),
+  readArtifact: (...args) => artifactStore.readArtifact(...args),
+  readManifest: (...args) => artifactStore.readManifest(...args),
+  readReceipt: (...args) => artifactStore.readReceipt(...args),
+  resolveReceipt: (...args) => artifactStore.resolveReceipt(...args),
+});
+
+const createClassificationReadPort = (classificationPort) => OBJECT_FREEZE({
+  readActiveClassification: (...args) => classificationPort.readActiveClassification(...args),
+  readClassification: (...args) => classificationPort.readClassification(...args),
+  readClassificationReplayProjection: (...args) =>
+    classificationPort.readClassificationReplayProjection(...args),
+  strictReplay: (...args) => classificationPort.strictReplay(...args),
+});
+
+const createSessionReadPort = (sessionPort) => OBJECT_FREEZE({
+  readSession: (...args) => sessionPort.readSession(...args),
+});
+
+const bindReadRuntimeDependencies = (runtime, dependencies) => {
+  READ_RUNTIME_DEPENDENCIES.set(runtime, OBJECT_FREEZE(dependencies));
+  return runtime;
+};
+
+const resolveReadRuntimeDependencies = (runtime) => {
+  const dependencies = READ_RUNTIME_DEPENDENCIES.get(runtime);
+  if (dependencies === undefined) {
+    throw new InstalledForgeRuntimeOpenError("INSTALLED_FORGE_RUNTIME_DEPENDENCY_BINDING_MISSING");
+  }
+  return dependencies;
+};
+
 const openReadRuntime = (options) => {
   let stateStore = null;
   let artifactStore = null;
@@ -220,13 +250,18 @@ const openReadRuntime = (options) => {
       classificationPort,
       clock: options.clock,
     });
-    return OBJECT_FREEZE({
+    const runtime = OBJECT_FREEZE({
+      artifactStore: createArtifactReadPort(artifactStore),
+      classificationPort: createClassificationReadPort(classificationPort),
+      sessionPort: createSessionReadPort(sessionPort),
+      close: createClose(artifactStore, stateStore),
+    });
+    return bindReadRuntimeDependencies(runtime, {
       stateStore,
       artifactStore,
       ledger,
       classificationPort,
       sessionPort,
-      close: createClose(artifactStore, stateStore),
     });
   } catch (error) {
     closeAfterConstructionFailure(artifactStore, stateStore);
@@ -242,53 +277,53 @@ export const openInstalledForgeRuntime = (options) => {
   let base = null;
   try {
     base = openReadRuntime(normalized);
+    const dependencies = resolveReadRuntimeDependencies(base);
     const policy = sealCapabilityPolicy(normalized.capabilityPolicy);
     const authority = createCapabilityAuthority({
-      stateStore: base.stateStore,
-      artifactStore: base.artifactStore,
-      ledger: base.ledger,
+      stateStore: dependencies.stateStore,
+      artifactStore: dependencies.artifactStore,
+      ledger: dependencies.ledger,
       policy,
       clock: normalized.clock,
-    });
-    const transitionWorker = createSessionTransitionWorker({
-      stateStore: base.stateStore,
-      artifactStore: base.artifactStore,
-      ledger: base.ledger,
-      authority,
-      session: base.sessionPort,
-      clock: normalized.clock,
-      runtime: normalized.transitionRuntime,
     });
     const classificationWorker = normalized.classificationRuntime === null
       ? null
       : createWorkClassificationWorker({
-          stateStore: base.stateStore,
-          artifactStore: base.artifactStore,
-          ledger: base.ledger,
+          stateStore: dependencies.stateStore,
+          artifactStore: dependencies.artifactStore,
+          ledger: dependencies.ledger,
           authority,
-          classification: base.classificationPort,
+          classification: dependencies.classificationPort,
           clock: normalized.clock,
           runtime: normalized.classificationRuntime,
         });
     const openWorker = normalized.openRuntime === null
       ? null
       : createSessionOpenWorker({
-          stateStore: base.stateStore,
-          artifactStore: base.artifactStore,
-          ledger: base.ledger,
+          stateStore: dependencies.stateStore,
+          artifactStore: dependencies.artifactStore,
+          ledger: dependencies.ledger,
           authority,
-          session: base.sessionPort,
-          classification: base.classificationPort,
+          session: dependencies.sessionPort,
+          classification: dependencies.classificationPort,
           clock: normalized.clock,
           runtime: normalized.openRuntime,
         });
+    const transitionWorker = normalized.transitionRuntime === null
+      ? null
+      : createSessionTransitionWorker({
+          stateStore: dependencies.stateStore,
+          artifactStore: dependencies.artifactStore,
+          ledger: dependencies.ledger,
+          authority,
+          session: dependencies.sessionPort,
+          clock: normalized.clock,
+          runtime: normalized.transitionRuntime,
+        });
     return OBJECT_FREEZE({
-      stateStore: base.stateStore,
       artifactStore: base.artifactStore,
-      ledger: base.ledger,
       classificationPort: base.classificationPort,
       classificationWorker,
-      authority,
       sessionPort: base.sessionPort,
       openWorker,
       transitionWorker,
