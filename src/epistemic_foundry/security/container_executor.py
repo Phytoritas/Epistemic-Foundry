@@ -121,6 +121,14 @@ class _PipeCapture:
     truncated: bool = False
 
 
+@dataclass(frozen=True, slots=True)
+class _PipeSnapshot:
+    retained: bytes
+    byte_count: int
+    digest_hexdigest: str
+    truncated: bool
+
+
 @dataclass(slots=True)
 class _OutputBudget:
     limit: int
@@ -130,9 +138,9 @@ class _OutputBudget:
     retained_bytes: int = 0
 
     def observe(self, capture: _PipeCapture, chunk: bytes) -> None:
-        capture.byte_count += len(chunk)
-        capture.digest.update(chunk)
         with self.lock:
+            capture.byte_count += len(chunk)
+            capture.digest.update(chunk)
             self.observed_bytes += len(chunk)
             remaining = max(0, self.limit - self.retained_bytes)
             retained = chunk[:remaining]
@@ -144,18 +152,55 @@ class _OutputBudget:
             if self.observed_bytes > self.limit:
                 self.exceeded.set()
 
+    def snapshot(
+        self,
+        stdout: _PipeCapture,
+        stderr: _PipeCapture,
+    ) -> tuple[_PipeSnapshot, _PipeSnapshot, int, int, bool]:
+        with self.lock:
+            return (
+                _PipeSnapshot(
+                    retained=bytes(stdout.retained),
+                    byte_count=stdout.byte_count,
+                    digest_hexdigest=stdout.digest.hexdigest(),
+                    truncated=stdout.truncated,
+                ),
+                _PipeSnapshot(
+                    retained=bytes(stderr.retained),
+                    byte_count=stderr.byte_count,
+                    digest_hexdigest=stderr.digest.hexdigest(),
+                    truncated=stderr.truncated,
+                ),
+                self.observed_bytes,
+                self.retained_bytes,
+                self.exceeded.is_set(),
+            )
+
 
 @dataclass(slots=True)
 class _StdinWrite:
     byte_count: int = 0
     complete: bool = False
+    lock: threading.Lock = field(default_factory=threading.Lock)
+
+    def observe(self, written: int) -> None:
+        with self.lock:
+            self.byte_count += written
+
+    def finish(self, payload_size: int) -> None:
+        with self.lock:
+            self.complete = self.byte_count == payload_size
+
+    def snapshot(self) -> tuple[int, bool]:
+        with self.lock:
+            return (self.byte_count, self.complete)
 
 
 @dataclass(slots=True)
 class _ProcessObservation:
     returncode: int | None
-    stdout: _PipeCapture
-    stderr: _PipeCapture
+    stdout: _PipeSnapshot
+    stderr: _PipeSnapshot
     output_bytes: int
     retained_output_bytes: int
     stdin_bytes_written: int
@@ -749,7 +794,7 @@ def _parse_image_reference(image_reference: object) -> tuple[str, str]:
     return (image_reference, matched.group('digest'))
 
 def _read_pipe(
-    stream: BinaryIO,
+    descriptor: int,
     capture: _PipeCapture,
     budget: _OutputBudget,
     capture_error: threading.Event,
@@ -757,7 +802,7 @@ def _read_pipe(
 ) -> None:
     try:
         while not stopping.is_set():
-            chunk = stream.read(_READ_CHUNK_BYTES)
+            chunk = os.read(descriptor, _READ_CHUNK_BYTES)
             if not chunk:
                 break
             if stopping.is_set():
@@ -767,14 +812,11 @@ def _read_pipe(
         if not stopping.is_set():
             capture_error.set()
     finally:
-        try:
-            stream.close()
-        except Exception:
-            pass
+        _close_descriptor(descriptor)
 
 
 def _write_stdin(
-    stream: BinaryIO,
+    descriptor: int,
     payload: bytes,
     state: _StdinWrite,
     stopping: threading.Event,
@@ -782,19 +824,16 @@ def _write_stdin(
     try:
         remaining = memoryview(payload)
         while remaining and not stopping.is_set():
-            written = stream.write(remaining[:_READ_CHUNK_BYTES])
+            written = os.write(descriptor, remaining[:_READ_CHUNK_BYTES])
             if written is None or written <= 0 or stopping.is_set():
                 break
-            state.byte_count += written
+            state.observe(written)
             remaining = remaining[written:]
     except (BrokenPipeError, OSError, ValueError):
         pass
     finally:
-        state.complete = state.byte_count == len(payload)
-        try:
-            stream.close()
-        except Exception:
-            pass
+        state.finish(len(payload))
+        _close_descriptor(descriptor)
 
 
 def _send_process_signal(process: subprocess.Popen[bytes], observation: _WallDeadlineObservation, *, kill: bool) -> bool:
@@ -849,6 +888,27 @@ def _close_stream(stream: BinaryIO | None) -> None:
     except Exception:
         pass
 
+
+def _close_descriptor(descriptor: int | None) -> None:
+    if descriptor is None:
+        return
+    try:
+        os.close(descriptor)
+    except OSError:
+        pass
+
+
+def _duplicate_stream_descriptor(stream: BinaryIO) -> int | None:
+    descriptor = None
+    try:
+        descriptor = os.dup(stream.fileno())
+        os.set_inheritable(descriptor, False)
+        return descriptor
+    except (AttributeError, OSError, TypeError, ValueError):
+        _close_descriptor(descriptor)
+        return None
+
+
 def _popen_kwargs(cwd: str, *, attached_stdin: bool) -> dict[str, Any]:
     result: dict[str, Any] = {
         "bufsize": 0,
@@ -889,16 +949,47 @@ def _run_process(*, runtime: _PathPin, runtime_parent: _PathPin, expected_runtim
         capture_error.set()
         stopping.set()
         terminate_sent, kill_sent, stopped = _stop_process(process, wall_observation)
+        _close_stream(process.stdin)
+        _close_stream(process.stdout)
+        _close_stream(process.stderr)
         wall_observation.observe(process)
-        return _ProcessObservation(returncode=process.returncode, stdout=stdout_capture, stderr=stderr_capture, output_bytes=0, retained_output_bytes=0, stdin_bytes_written=0, stdin_complete=stdin_payload is None, timed_out=False, output_limit_exceeded=False, capture_error=True, terminate_sent=terminate_sent, kill_sent=kill_sent, stopped=stopped, started_monotonic=started, wall_deadline_monotonic=wall_observation.deadline, duration_seconds=max(0.0, time.monotonic() - started), exit_observed_duration_seconds=wall_observation.exit_duration_seconds(), live_at_wall_deadline=wall_observation.live_at_deadline)
-    stdout_thread = threading.Thread(target=_read_pipe, args=(process.stdout, stdout_capture, budget, capture_error, stopping), daemon=True, name='candidate-container-stdout')
-    stderr_thread = threading.Thread(target=_read_pipe, args=(process.stderr, stderr_capture, budget, capture_error, stopping), daemon=True, name='candidate-container-stderr')
+        stdout_snapshot, stderr_snapshot, output_bytes, retained_output_bytes, output_limit_exceeded = budget.snapshot(stdout_capture, stderr_capture)
+        stdin_bytes_written, stdin_complete = stdin_state.snapshot()
+        return _ProcessObservation(returncode=process.returncode, stdout=stdout_snapshot, stderr=stderr_snapshot, output_bytes=output_bytes, retained_output_bytes=retained_output_bytes, stdin_bytes_written=stdin_bytes_written, stdin_complete=stdin_complete, timed_out=False, output_limit_exceeded=output_limit_exceeded, capture_error=True, terminate_sent=terminate_sent, kill_sent=kill_sent, stopped=stopped, started_monotonic=started, wall_deadline_monotonic=wall_observation.deadline, duration_seconds=max(0.0, time.monotonic() - started), exit_observed_duration_seconds=wall_observation.exit_duration_seconds(), live_at_wall_deadline=wall_observation.live_at_deadline)
+    stdout_descriptor = _duplicate_stream_descriptor(process.stdout)
+    stderr_descriptor = _duplicate_stream_descriptor(process.stderr)
+    stdin_descriptor = None if stdin_payload is None or process.stdin is None else _duplicate_stream_descriptor(process.stdin)
+    if stdout_descriptor is None or stderr_descriptor is None or (stdin_payload is not None and stdin_descriptor is None):
+        _close_descriptor(stdout_descriptor)
+        _close_descriptor(stderr_descriptor)
+        _close_descriptor(stdin_descriptor)
+        capture_error.set()
+        stopping.set()
+        terminate_sent, kill_sent, stopped = _stop_process(process, wall_observation)
+        _close_stream(process.stdin)
+        _close_stream(process.stdout)
+        _close_stream(process.stderr)
+        wall_observation.observe(process)
+        stdout_snapshot, stderr_snapshot, output_bytes, retained_output_bytes, output_limit_exceeded = budget.snapshot(stdout_capture, stderr_capture)
+        stdin_bytes_written, stdin_complete = stdin_state.snapshot()
+        return _ProcessObservation(returncode=process.returncode, stdout=stdout_snapshot, stderr=stderr_snapshot, output_bytes=output_bytes, retained_output_bytes=retained_output_bytes, stdin_bytes_written=stdin_bytes_written, stdin_complete=stdin_complete, timed_out=False, output_limit_exceeded=output_limit_exceeded, capture_error=True, terminate_sent=terminate_sent, kill_sent=kill_sent, stopped=stopped, started_monotonic=started, wall_deadline_monotonic=wall_observation.deadline, duration_seconds=max(0.0, time.monotonic() - started), exit_observed_duration_seconds=wall_observation.exit_duration_seconds(), live_at_wall_deadline=wall_observation.live_at_deadline)
+    # Each worker exclusively owns a non-inheritable duplicate. Closing a descriptor
+    # from another thread is not portable cancellation on POSIX or Windows and can
+    # let its number be reused while a blocked syscall still exists.
+    _close_stream(process.stdin)
+    _close_stream(process.stdout)
+    _close_stream(process.stderr)
+    stdout_thread = threading.Thread(target=_read_pipe, args=(stdout_descriptor, stdout_capture, budget, capture_error, stopping), daemon=True, name='candidate-container-stdout')
+    stderr_thread = threading.Thread(target=_read_pipe, args=(stderr_descriptor, stderr_capture, budget, capture_error, stopping), daemon=True, name='candidate-container-stderr')
     stdin_thread = None
-    if stdin_payload is not None and process.stdin is not None:
-        stdin_thread = threading.Thread(target=_write_stdin, args=(process.stdin, stdin_payload, stdin_state, stopping), daemon=True, name='candidate-container-stdin')
+    if stdin_payload is not None and stdin_descriptor is not None:
+        stdin_thread = threading.Thread(target=_write_stdin, args=(stdin_descriptor, stdin_payload, stdin_state, stopping), daemon=True, name='candidate-container-stdin')
     threads = [stdout_thread, stderr_thread]
     if stdin_thread is not None:
         threads.append(stdin_thread)
+    thread_descriptors = [(stdout_thread, stdout_descriptor), (stderr_thread, stderr_descriptor)]
+    if stdin_thread is not None and stdin_descriptor is not None:
+        thread_descriptors.append((stdin_thread, stdin_descriptor))
     started_threads: list[threading.Thread] = []
     try:
         for thread in threads:
@@ -908,6 +999,9 @@ def _run_process(*, runtime: _PathPin, runtime_parent: _PathPin, expected_runtim
         capture_error.set()
         stopping.set()
         terminate_sent, kill_sent, stopped = _stop_process(process, wall_observation)
+        for thread, descriptor in thread_descriptors:
+            if thread not in started_threads:
+                _close_descriptor(descriptor)
     timed_out = False
     if len(started_threads) == len(threads):
         while True:
@@ -925,22 +1019,20 @@ def _run_process(*, runtime: _PathPin, runtime_parent: _PathPin, expected_runtim
                 break
             remaining = max(0.0, wall_observation.deadline - time.monotonic())
             time.sleep(min(_POLL_SECONDS, remaining))
-    if stdin_thread is not None:
+    if stdin_thread is not None and stdin_thread in started_threads:
         _join_thread_observing_process(stdin_thread, process=process, observation=wall_observation, timeout_seconds=_THREAD_JOIN_SECONDS)
         if stdin_thread.is_alive():
             capture_error.set()
             stopping.set()
-            _close_stream(process.stdin)
             _join_thread_observing_process(stdin_thread, process=process, observation=wall_observation, timeout_seconds=_THREAD_JOIN_SECONDS)
         if stdin_thread.is_alive():
             capture_error.set()
-    for thread, stream in ((stdout_thread, process.stdout), (stderr_thread, process.stderr)):
+    for thread in (stdout_thread, stderr_thread):
         if thread in started_threads:
             _join_thread_observing_process(thread, process=process, observation=wall_observation, timeout_seconds=_THREAD_JOIN_SECONDS)
             if thread.is_alive():
                 stopping.set()
                 capture_error.set()
-                _close_stream(stream)
                 _join_thread_observing_process(thread, process=process, observation=wall_observation, timeout_seconds=_THREAD_JOIN_SECONDS)
             if thread.is_alive():
                 stopped = False
@@ -948,7 +1040,9 @@ def _run_process(*, runtime: _PathPin, runtime_parent: _PathPin, expected_runtim
     _close_stream(process.stdout)
     _close_stream(process.stderr)
     wall_observation.observe(process)
-    return _ProcessObservation(returncode=process.returncode, stdout=stdout_capture, stderr=stderr_capture, output_bytes=budget.observed_bytes, retained_output_bytes=budget.retained_bytes, stdin_bytes_written=stdin_state.byte_count, stdin_complete=stdin_state.complete, timed_out=timed_out, output_limit_exceeded=budget.exceeded.is_set(), capture_error=capture_error.is_set(), terminate_sent=terminate_sent, kill_sent=kill_sent, stopped=stopped, started_monotonic=started, wall_deadline_monotonic=wall_observation.deadline, duration_seconds=max(0.0, time.monotonic() - started), exit_observed_duration_seconds=wall_observation.exit_duration_seconds(), live_at_wall_deadline=wall_observation.live_at_deadline)
+    stdout_snapshot, stderr_snapshot, output_bytes, retained_output_bytes, output_limit_exceeded = budget.snapshot(stdout_capture, stderr_capture)
+    stdin_bytes_written, stdin_complete = stdin_state.snapshot()
+    return _ProcessObservation(returncode=process.returncode, stdout=stdout_snapshot, stderr=stderr_snapshot, output_bytes=output_bytes, retained_output_bytes=retained_output_bytes, stdin_bytes_written=stdin_bytes_written, stdin_complete=stdin_complete, timed_out=timed_out, output_limit_exceeded=output_limit_exceeded, capture_error=capture_error.is_set(), terminate_sent=terminate_sent, kill_sent=kill_sent, stopped=stopped, started_monotonic=started, wall_deadline_monotonic=wall_observation.deadline, duration_seconds=max(0.0, time.monotonic() - started), exit_observed_duration_seconds=wall_observation.exit_duration_seconds(), live_at_wall_deadline=wall_observation.live_at_deadline)
 
 def _control_clean(result: _ProcessObservation) -> bool:
     return (
@@ -1747,8 +1841,8 @@ def _execute_container(
             "output_byte_cap": output_byte_cap,
             "stdout_truncated": process.stdout.truncated,
             "stderr_truncated": process.stderr.truncated,
-            "stdout_sha256": f"sha256:{process.stdout.digest.hexdigest()}",
-            "stderr_sha256": f"sha256:{process.stderr.digest.hexdigest()}",
+            "stdout_sha256": f"sha256:{process.stdout.digest_hexdigest}",
+            "stderr_sha256": f"sha256:{process.stderr.digest_hexdigest}",
             "started_at": started_at,
             "finished_at": finished_at,
             "duration_seconds": elapsed,
