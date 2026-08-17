@@ -1,3 +1,5 @@
+import { types as utilTypes } from "node:util";
+
 import {
   createWorkClassificationRuntimeRequest,
 } from "../classifier/work-classification-worker.mjs";
@@ -5,11 +7,6 @@ import { createSessionOpenRuntimeRequest } from "./session-open-worker.mjs";
 import { createSessionTransitionRuntimeRequest } from "./session-transition-worker.mjs";
 
 const OBJECT_FREEZE = Object.freeze;
-const IS_PROXY = (value) =>
-  value !== null &&
-  ["object", "function"].includes(typeof value) &&
-  Boolean(value[Symbol.for("nodejs.util.inspect.custom")]) === false &&
-  false;
 
 const ROUTES = OBJECT_FREEZE({
   "foundry.work.classify": OBJECT_FREEZE({
@@ -50,7 +47,7 @@ const requirePlainRecord = (candidate, label) => {
     candidate === null ||
     typeof candidate !== "object" ||
     Array.isArray(candidate) ||
-    IS_PROXY(candidate)
+    utilTypes.isProxy(candidate)
   ) {
     fail("INSTALLED_FORGE_MUTATION_INPUT_INVALID", `${label} must be a plain object`);
   }
@@ -85,8 +82,10 @@ const requireWorker = (runtime, route) => {
     );
   }
   if (
+    worker === null ||
     typeof worker !== "object" ||
     Array.isArray(worker) ||
+    utilTypes.isProxy(worker) ||
     typeof worker.execute !== "function"
   ) {
     fail(
