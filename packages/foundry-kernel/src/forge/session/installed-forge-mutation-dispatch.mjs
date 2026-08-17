@@ -8,7 +8,7 @@ import { createSessionTransitionRuntimeRequest } from "./session-transition-work
 
 const OBJECT_FREEZE = Object.freeze;
 
-const ROUTES = OBJECT_FREEZE({
+const ROUTES = OBJECT_FREEZE(Object.assign(Object.create(null), {
   "foundry.work.classify": OBJECT_FREEZE({
     worker: "classificationWorker",
     requestFactory: createWorkClassificationRuntimeRequest,
@@ -21,7 +21,7 @@ const ROUTES = OBJECT_FREEZE({
     worker: "transitionWorker",
     requestFactory: createSessionTransitionRuntimeRequest,
   }),
-});
+}));
 
 const CONTEXT_KEYS = new Set([
   "auth",
