@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import test from "node:test";
 
 import {
@@ -6,9 +7,16 @@ import {
   createInstalledForgeMutationDispatch,
   installedForgeMutationToolNames,
 } from "../../packages/foundry-kernel/src/forge/session/installed-forge-mutation-dispatch.mjs";
+import {
+  mutatingToolDescriptors,
+} from "../../packages/plugin-host/src/mcp/write/catalog-set.mjs";
 
 const HASH_A = `sha256:${"a".repeat(64)}`;
 const GENERATED_AT = "2026-08-17T08:00:00.000Z";
+const INSTALLED_MCP_SOURCE = fs.readFileSync(
+  new URL("../../plugins/epistemic-foundry/src/mcp-server.mjs", import.meta.url),
+  "utf8",
+);
 
 const auth = Object.freeze({
   principal_id: "AG-TEST",
@@ -77,6 +85,28 @@ test("installed Forge mutation dispatch owns exactly the three durable FORGE rou
   ]);
 });
 
+test("the public installed write surface cannot activate before every T02 runtime is backed", () => {
+  const installed = new Set(installedForgeMutationToolNames());
+  const canonical = new Set(mutatingToolDescriptors().map(({ name }) => name));
+  const writeSurfaceActive = INSTALLED_MCP_SOURCE.includes(
+    "./plugin-host/mcp/write/adapter.mjs",
+  );
+
+  assert.equal(canonical.size, 11);
+  assert.equal(installed.size, 3);
+  for (const name of installed) assert.equal(canonical.has(name), true, name);
+
+  if (writeSurfaceActive) {
+    assert.deepEqual(
+      [...installed].sort(),
+      [...canonical].sort(),
+      "installed MCP write framing may activate only when every canonical T02 tool has a runtime route",
+    );
+  } else {
+    assert.equal(installed.size < canonical.size, true);
+  }
+});
+
 test("session transition is converted by the canonical worker request factory", () => {
   const calls = [];
   const dispatch = createInstalledForgeMutationDispatch({
@@ -140,16 +170,12 @@ test("T02 tools without a canonical installed runtime remain explicit UNAVAILABL
     transitionWorker: null,
   });
 
-  for (const toolName of [
-    "foundry.corpus.register",
-    "foundry.search.execute",
-    "foundry.claim.promote",
-    "foundry.parliament.execute",
-    "foundry.validation.execute",
-    "foundry.passport.publish",
-    "foundry.memory.write",
-    "foundry.skill.activate",
-  ]) {
+  const unbacked = mutatingToolDescriptors()
+    .map(({ name }) => name)
+    .filter((name) => !installedForgeMutationToolNames().includes(name));
+  assert.equal(unbacked.length, 8);
+
+  for (const toolName of unbacked) {
     assert.throws(
       () => dispatch.execute(toolName, null),
       (error) => assertDispatchError(error, "INSTALLED_FORGE_MUTATION_UNAVAILABLE"),
@@ -176,6 +202,21 @@ test("runtime and dispatch contexts reject proxies and noncanonical fields", () 
     ),
     (error) => assertDispatchError(error, "INSTALLED_FORGE_MUTATION_INPUT_INVALID"),
   );
+});
+
+test("prototype-looking tool names cannot escape the closed route table", () => {
+  const dispatch = createInstalledForgeMutationDispatch({
+    classificationWorker: null,
+    openWorker: null,
+    transitionWorker: null,
+  });
+  for (const toolName of ["__proto__", "constructor", "toString"]) {
+    assert.throws(
+      () => dispatch.execute(toolName, null),
+      (error) => assertDispatchError(error, "INSTALLED_FORGE_MUTATION_UNAVAILABLE"),
+      toolName,
+    );
+  }
 });
 
 test("mutation workers are a synchronous port", () => {
