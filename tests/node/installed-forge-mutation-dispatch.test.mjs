@@ -17,6 +17,39 @@ const INSTALLED_MCP_SOURCE = fs.readFileSync(
   new URL("../../plugins/epistemic-foundry/src/mcp-server.mjs", import.meta.url),
   "utf8",
 );
+const T02_DESCRIPTORS = mutatingToolDescriptors();
+
+function oneDescriptor(predicate, label) {
+  const matches = T02_DESCRIPTORS.filter(predicate);
+  assert.equal(matches.length, 1, `${label} must resolve exactly one T02 descriptor`);
+  return matches[0];
+}
+
+const classificationDescriptor = oneDescriptor(
+  (descriptor) => descriptor.annotations.capability === "mcp.write.classification",
+  "classification route",
+);
+const sessionDescriptors = T02_DESCRIPTORS.filter(
+  (descriptor) => descriptor.annotations.capability === "mcp.write.session",
+);
+assert.equal(sessionDescriptors.length, 2);
+const openDescriptor = oneDescriptor(
+  (descriptor) =>
+    descriptor.annotations.capability === "mcp.write.session" &&
+    descriptor.inputSchema.properties.expected_revision.type === "null",
+  "session OPEN route",
+);
+const transitionDescriptor = oneDescriptor(
+  (descriptor) =>
+    descriptor.annotations.capability === "mcp.write.session" &&
+    descriptor.inputSchema.properties.expected_revision.type === "string",
+  "session transition route",
+);
+const ROUTE_NAMES = Object.freeze({
+  classificationToolName: classificationDescriptor.name,
+  openToolName: openDescriptor.name,
+  transitionToolName: transitionDescriptor.name,
+});
 
 const auth = Object.freeze({
   principal_id: "AG-TEST",
@@ -77,17 +110,21 @@ function assertDispatchError(error, code) {
   return true;
 }
 
-test("installed Forge mutation dispatch owns exactly the three durable FORGE routes", () => {
-  assert.deepEqual(installedForgeMutationToolNames(), [
-    "foundry.work.classify",
-    "foundry.session.open",
-    "foundry.session.transition",
+function dispatchFor(runtime) {
+  return createInstalledForgeMutationDispatch(runtime, ROUTE_NAMES);
+}
+
+test("Forge route names are derived from the canonical T02 descriptor projection", () => {
+  assert.deepEqual(installedForgeMutationToolNames(ROUTE_NAMES), [
+    classificationDescriptor.name,
+    openDescriptor.name,
+    transitionDescriptor.name,
   ]);
 });
 
 test("the public installed write surface cannot activate before every T02 runtime is backed", () => {
-  const installed = new Set(installedForgeMutationToolNames());
-  const canonical = new Set(mutatingToolDescriptors().map(({ name }) => name));
+  const installed = new Set(installedForgeMutationToolNames(ROUTE_NAMES));
+  const canonical = new Set(T02_DESCRIPTORS.map(({ name }) => name));
   const writeSurfaceActive = INSTALLED_MCP_SOURCE.includes(
     "./plugin-host/mcp/write/adapter.mjs",
   );
@@ -109,20 +146,20 @@ test("the public installed write surface cannot activate before every T02 runtim
 
 test("session transition is converted by the canonical worker request factory", () => {
   const calls = [];
-  const dispatch = createInstalledForgeMutationDispatch({
+  const dispatch = dispatchFor({
     classificationWorker: null,
     openWorker: null,
     transitionWorker: worker(calls),
   });
 
   const result = dispatch.execute(
-    "foundry.session.transition",
+    transitionDescriptor.name,
     context(transitionArguments),
   );
 
   assert.deepEqual(result, { ok: true });
   assert.equal(calls.length, 1);
-  assert.equal(calls[0].tool_name, "foundry.session.transition");
+  assert.equal(calls[0].tool_name, transitionDescriptor.name);
   assert.equal(calls[0].handler_operation, "mutate_session_transition");
   assert.equal(calls[0].capability, "mcp.write.session");
   assert.equal(calls[0].expected_revision_required, true);
@@ -133,46 +170,47 @@ test("session transition is converted by the canonical worker request factory", 
 test("session OPEN is independently routed and never falls back to transition", () => {
   const openCalls = [];
   const transitionCalls = [];
-  const dispatch = createInstalledForgeMutationDispatch({
+  const dispatch = dispatchFor({
     classificationWorker: null,
     openWorker: worker(openCalls),
     transitionWorker: worker(transitionCalls),
   });
 
-  dispatch.execute("foundry.session.open", context(openArguments));
+  dispatch.execute(openDescriptor.name, context(openArguments));
 
   assert.equal(openCalls.length, 1);
   assert.equal(transitionCalls.length, 0);
-  assert.equal(openCalls[0].tool_name, "foundry.session.open");
+  assert.equal(openCalls[0].tool_name, openDescriptor.name);
   assert.equal(openCalls[0].handler_operation, "mutate_session_open");
   assert.equal(openCalls[0].expected_revision_required, false);
 });
 
 test("an omitted route worker is explicit UNAVAILABLE rather than a sibling fallback", () => {
   const transitionCalls = [];
-  const dispatch = createInstalledForgeMutationDispatch({
+  const dispatch = dispatchFor({
     classificationWorker: null,
     openWorker: null,
     transitionWorker: worker(transitionCalls),
   });
 
   assert.throws(
-    () => dispatch.execute("foundry.session.open", context(openArguments)),
+    () => dispatch.execute(openDescriptor.name, context(openArguments)),
     (error) => assertDispatchError(error, "INSTALLED_FORGE_MUTATION_UNAVAILABLE"),
   );
   assert.equal(transitionCalls.length, 0);
 });
 
 test("T02 tools without a canonical installed runtime remain explicit UNAVAILABLE", () => {
-  const dispatch = createInstalledForgeMutationDispatch({
+  const dispatch = dispatchFor({
     classificationWorker: null,
     openWorker: null,
     transitionWorker: null,
   });
 
-  const unbacked = mutatingToolDescriptors()
+  const installedNames = new Set(installedForgeMutationToolNames(ROUTE_NAMES));
+  const unbacked = T02_DESCRIPTORS
     .map(({ name }) => name)
-    .filter((name) => !installedForgeMutationToolNames().includes(name));
+    .filter((name) => !installedNames.has(name));
   assert.equal(unbacked.length, 8);
 
   for (const toolName of unbacked) {
@@ -184,20 +222,47 @@ test("T02 tools without a canonical installed runtime remain explicit UNAVAILABL
   }
 });
 
-test("runtime and dispatch contexts reject proxies and noncanonical fields", () => {
+test("catalog route misbinding fails before a worker can execute", () => {
+  const calls = [];
+  const misbound = Object.freeze({
+    ...ROUTE_NAMES,
+    openToolName: transitionDescriptor.name,
+    transitionToolName: openDescriptor.name,
+  });
+  const dispatch = createInstalledForgeMutationDispatch(
+    {
+      classificationWorker: null,
+      openWorker: worker(calls),
+      transitionWorker: worker(calls),
+    },
+    misbound,
+  );
+
   assert.throws(
-    () => createInstalledForgeMutationDispatch(new Proxy({}, {})),
+    () => dispatch.execute(transitionDescriptor.name, context(openArguments)),
+    (error) => assertDispatchError(error, "INSTALLED_FORGE_MUTATION_BINDING_INVALID"),
+  );
+  assert.equal(calls.length, 0);
+});
+
+test("runtime, route names, and dispatch contexts reject proxies or noncanonical fields", () => {
+  assert.throws(
+    () => createInstalledForgeMutationDispatch(new Proxy({}, {}), ROUTE_NAMES),
+    (error) => assertDispatchError(error, "INSTALLED_FORGE_MUTATION_INPUT_INVALID"),
+  );
+  assert.throws(
+    () => createInstalledForgeMutationDispatch({}, new Proxy(ROUTE_NAMES, {})),
     (error) => assertDispatchError(error, "INSTALLED_FORGE_MUTATION_INPUT_INVALID"),
   );
 
-  const dispatch = createInstalledForgeMutationDispatch({
+  const dispatch = dispatchFor({
     classificationWorker: null,
     openWorker: null,
     transitionWorker: worker([]),
   });
   assert.throws(
     () => dispatch.execute(
-      "foundry.session.transition",
+      transitionDescriptor.name,
       { ...context(transitionArguments), extra: true },
     ),
     (error) => assertDispatchError(error, "INSTALLED_FORGE_MUTATION_INPUT_INVALID"),
@@ -205,7 +270,7 @@ test("runtime and dispatch contexts reject proxies and noncanonical fields", () 
 });
 
 test("prototype-looking tool names cannot escape the closed route table", () => {
-  const dispatch = createInstalledForgeMutationDispatch({
+  const dispatch = dispatchFor({
     classificationWorker: null,
     openWorker: null,
     transitionWorker: null,
@@ -220,7 +285,7 @@ test("prototype-looking tool names cannot escape the closed route table", () => 
 });
 
 test("mutation workers are a synchronous port", () => {
-  const dispatch = createInstalledForgeMutationDispatch({
+  const dispatch = dispatchFor({
     classificationWorker: null,
     openWorker: null,
     transitionWorker: Object.freeze({
@@ -231,7 +296,7 @@ test("mutation workers are a synchronous port", () => {
   });
 
   assert.throws(
-    () => dispatch.execute("foundry.session.transition", context(transitionArguments)),
+    () => dispatch.execute(transitionDescriptor.name, context(transitionArguments)),
     (error) => assertDispatchError(error, "INSTALLED_FORGE_MUTATION_RUNTIME_INVALID"),
   );
 });
