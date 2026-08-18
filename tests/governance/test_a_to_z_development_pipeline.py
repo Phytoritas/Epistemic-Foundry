@@ -16,8 +16,11 @@ from __future__ import annotations
 
 from collections import Counter
 import importlib.util
+import json
 from pathlib import Path
 import re
+import shutil
+import subprocess
 
 import yaml
 
@@ -27,20 +30,24 @@ VALIDATOR_PATH = ROOT / "tools" / "validate_spec_bundle.py"
 MASTER_SPEC_PATH = ROOT / "MASTER_SPEC.md"
 DEVELOPMENT_PATH = ROOT / "manifests" / "development_manifest.yaml"
 ACCEPTANCE_PATH = ROOT / "manifests" / "acceptance_matrix.yaml"
-INSTALLED_MCP_PATH = (
-    ROOT / "plugins" / "epistemic-foundry" / "src" / "mcp-server.mjs"
+PLUGIN_SOURCE_PATH = ROOT / "plugins" / "epistemic-foundry" / "src"
+T01_DESCRIPTOR_PATH = (
+    ROOT
+    / "packages"
+    / "plugin-host"
+    / "src"
+    / "mcp"
+    / "generated"
+    / "tool-descriptors.json"
 )
-PLUGIN_BUILD_PATH = (
-    ROOT / "plugins" / "epistemic-foundry" / "scripts" / "build.mjs"
+PACKAGED_MODULE_SOURCES = (
+    (ROOT / "packages" / "foundry-kernel" / "src", "foundry-kernel"),
+    (ROOT / "packages" / "plugin-host" / "src", "plugin-host"),
+    (ROOT / "packages" / "workspace-map" / "src", "workspace-map"),
 )
 
 MASTER_INVENTORY_RE = re.compile(r"(?m)^- \*\*([A-Z]\d{2}) — ")
 MASTER_TOTAL_RE = re.compile(r"Total: \*\*(\d+) work packages\*\*")
-ACTIVE_DESCRIPTOR_RE = re.compile(
-    r'const descriptorSource = requiredExpectedFile\(\s*'
-    r'closedPluginHostFiles,\s*"([^"]+)"',
-    re.MULTILINE,
-)
 
 
 def _load_yaml(path: Path) -> dict:
@@ -117,42 +124,38 @@ def test_master_spec_manifest_and_acceptance_inventory_stay_synchronized() -> No
     assert set(declared_work_package_gates) <= set(manifest_ids)
 
 
-def test_installed_catalog_activation_tracks_canonical_write_reachability() -> None:
-    """Packaging T02 bytes must not publish them before handlers are reachable."""
+def test_source_mcp_process_advertises_the_sealed_t01_catalog_before_cutover(
+    tmp_path: Path,
+) -> None:
+    """The executable source composition stays on T01 before write cutover."""
 
-    mcp_source = INSTALLED_MCP_PATH.read_text(encoding="utf-8")
-    build_source = PLUGIN_BUILD_PATH.read_text(encoding="utf-8")
+    node = shutil.which("node")
+    assert node is not None, "the pinned Node runtime is required"
+    payload = tmp_path / "payload"
+    shutil.copytree(PLUGIN_SOURCE_PATH, payload)
+    for source, relative in PACKAGED_MODULE_SOURCES:
+        shutil.copytree(source, payload / relative)
 
-    write_adapter_active = "./plugin-host/mcp/write/adapter.mjs" in mcp_source
-    write_runtime_active = bool(
-        re.search(r"\bopenPluginForgeRuntime\b", mcp_source)
+    request = {"jsonrpc": "2.0", "id": 1, "method": "tools/list"}
+    completed = subprocess.run(
+        [node, str(payload / "mcp-server.mjs")],
+        input=f"{json.dumps(request, separators=(',', ':'))}\n",
+        capture_output=True,
+        check=False,
+        encoding="utf-8",
+        timeout=15,
     )
-    assert write_adapter_active == write_runtime_active, (
-        "installed write framing and the full Forge runtime must become "
-        "reachable in the same composition change"
-    )
+    assert completed.returncode == 0, completed.stderr
+    responses = [
+        json.loads(line)
+        for line in completed.stdout.splitlines()
+        if line.strip()
+    ]
+    assert len(responses) == 1
+    response = responses[0]
+    assert response.get("id") == 1
+    assert "error" not in response
 
-    descriptor_match = ACTIVE_DESCRIPTOR_RE.search(build_source)
-    assert descriptor_match is not None
-    active_descriptor_source = descriptor_match.group(1)
-    read_catalog_active = (
-        active_descriptor_source == "mcp/generated/tool-descriptors.json"
-    )
-
-    if write_adapter_active:
-        assert not read_catalog_active, (
-            "the installed MCP write adapter is reachable but the packaged "
-            "CLI catalog is still pinned to the T01-only descriptors"
-        )
-    else:
-        assert read_catalog_active, (
-            "the packaged catalog must stay on T01 until the installed MCP "
-            "composition binds the canonical write adapter and Forge runtime"
-        )
-        assert "openPluginForgeReadRuntime" in mcp_source
-
-    # T02 bytes may be package-reachable before activation.  Their mere
-    # presence is not evidence that a canonical handler is callable.
-    assert '"mcp/write/adapter.mjs"' in build_source
-    assert '"mcp/write/catalog-set.mjs"' in build_source
-    assert '"mcp/write/generated/t02-tool-descriptors.json"' in build_source
+    t01_tools = json.loads(T01_DESCRIPTOR_PATH.read_text(encoding="utf-8"))["tools"]
+    assert len(t01_tools) == 13
+    assert response["result"]["tools"] == t01_tools

@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import fs from "node:fs";
 import test from "node:test";
 
 import {
@@ -8,15 +7,12 @@ import {
   installedForgeMutationToolNames,
 } from "../../packages/foundry-kernel/src/forge/session/installed-forge-mutation-dispatch.mjs";
 import {
+  mergedToolDescriptors,
   mutatingToolDescriptors,
 } from "../../packages/plugin-host/src/mcp/write/catalog-set.mjs";
 
 const HASH_A = `sha256:${"a".repeat(64)}`;
 const GENERATED_AT = "2026-08-17T08:00:00.000Z";
-const INSTALLED_MCP_SOURCE = fs.readFileSync(
-  new URL("../../plugins/epistemic-foundry/src/mcp-server.mjs", import.meta.url),
-  "utf8",
-);
 const T02_DESCRIPTORS = mutatingToolDescriptors();
 
 function oneDescriptor(predicate, label) {
@@ -122,26 +118,16 @@ test("Forge route names are derived from the canonical T02 descriptor projection
   ]);
 });
 
-test("the public installed write surface cannot activate before every T02 runtime is backed", () => {
+test("the composed catalog keeps three runtime routes and eight explicit unavailable tools", () => {
   const installed = new Set(installedForgeMutationToolNames(ROUTE_NAMES));
   const canonical = new Set(T02_DESCRIPTORS.map(({ name }) => name));
-  const writeSurfaceActive = INSTALLED_MCP_SOURCE.includes(
-    "./plugin-host/mcp/write/adapter.mjs",
-  );
+  const unbacked = [...canonical].filter((name) => !installed.has(name));
 
+  assert.equal(mergedToolDescriptors().length, 24);
   assert.equal(canonical.size, 11);
   assert.equal(installed.size, 3);
   for (const name of installed) assert.equal(canonical.has(name), true, name);
-
-  if (writeSurfaceActive) {
-    assert.deepEqual(
-      [...installed].sort(),
-      [...canonical].sort(),
-      "installed MCP write framing may activate only when every canonical T02 tool has a runtime route",
-    );
-  } else {
-    assert.equal(installed.size < canonical.size, true);
-  }
+  assert.equal(unbacked.length, 8);
 });
 
 test("session transition is converted by the canonical worker request factory", () => {
